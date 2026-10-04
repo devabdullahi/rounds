@@ -59,23 +59,34 @@ struct IncomingPatient: Identifiable, Equatable {
     let bp: String
     let spo2: Int
     let stElevation: Bool
+    let rotation: Clerkship
+    let system: OrganSystem
     var hasCase: Bool { id == "B4" }
 }
 
 extension Ward {
+    /// Patients on the ward that fit a focus. Drives the counts in the focus pickers.
+    static func count(for focus: StudyFocus) -> Int {
+        incoming.filter { focus.matches(rotation: $0.rotation, system: $0.system) }.count
+    }
+
+    static func count(for selection: FocusSelection) -> Int {
+        incoming.filter { selection.matches(rotation: $0.rotation, system: $0.system) }.count
+    }
+
     static let incoming: [IncomingPatient] = [
         IncomingPatient(id: "B4", meta: "M · 54 · chest pain", quote: "My chest has been hurting since this morning.",
-                        hr: 104, bp: "148/92", spo2: 95, stElevation: true),
+                        hr: 104, bp: "148/92", spo2: 95, stElevation: true, rotation: .internalMedicine, system: .cardiovascular),
         IncomingPatient(id: "B7", meta: "F · 31 · palpitations", quote: "My heart keeps racing.",
-                        hr: 148, bp: "118/76", spo2: 98, stElevation: false),
+                        hr: 148, bp: "118/76", spo2: 98, stElevation: false, rotation: .internalMedicine, system: .cardiovascular),
         IncomingPatient(id: "B9", meta: "M · 67 · dyspnea", quote: "I get breathless on stairs.",
-                        hr: 96, bp: "152/88", spo2: 91, stElevation: false),
+                        hr: 96, bp: "152/88", spo2: 91, stElevation: false, rotation: .internalMedicine, system: .respiratory),
         IncomingPatient(id: "R4", meta: "M · 24 · wheeze", quote: "I can't stop wheezing.",
-                        hr: 118, bp: "128/80", spo2: 93, stElevation: false),
+                        hr: 118, bp: "128/80", spo2: 93, stElevation: false, rotation: .familyMedicine, system: .respiratory),
         IncomingPatient(id: "A3", meta: "F · 19 · abdominal pain", quote: "The pain moved to my right side.",
-                        hr: 102, bp: "110/70", spo2: 99, stElevation: false),
+                        hr: 102, bp: "110/70", spo2: 99, stElevation: false, rotation: .surgery, system: .gastrointestinal),
         IncomingPatient(id: "N2", meta: "F · 45 · headache", quote: "Worst headache of my life.",
-                        hr: 88, bp: "172/98", spo2: 98, stElevation: false),
+                        hr: 88, bp: "172/98", spo2: 98, stElevation: false, rotation: .neurology, system: .nervous),
     ]
 }
 
@@ -88,6 +99,8 @@ struct PatientDeck: View {
     var stage: Int
 
     @State private var queue: [IncomingPatient] = Ward.incoming
+    @State private var ordered = false
+    @AppStorage(StudyFocus.storageKey) private var focusStored = ""
     @State private var drag: CGSize = .zero
     @State private var pastCommit = false
     @State private var busy = false
@@ -115,6 +128,12 @@ struct PatientDeck: View {
             Text("Bed \(unavailable?.id ?? "")'s case isn't scripted yet. Try Bed B4.")
         }
         .sensoryFeedback(.selection, trigger: pastCommit)
+        .onAppear {
+            guard !ordered else { return }
+            ordered = true
+            putFocusFirst()
+        }
+        .onChange(of: focusStored) { withAnimation(STACK.restack) { putFocusFirst() } }
         #if DEBUG
         .task {
             switch DebugLaunch.screen {
@@ -238,6 +257,13 @@ struct PatientDeck: View {
     }
 
     /// Left: the top patient goes to the back of the list.
+    /// Matching patients move to the front, in their current order; the rest follow.
+    private func putFocusFirst() {
+        let focus = FocusSelection(stored: focusStored)
+        let matching = queue.filter { focus.matches(rotation: $0.rotation, system: $0.system) }
+        queue = matching + queue.filter { !focus.matches(rotation: $0.rotation, system: $0.system) }
+    }
+
     private func later() {
         guard !busy, queue.count > 1 else { withAnimation(SWIPE.snapBack) { drag = .zero }; return }
         busy = true
@@ -282,6 +308,9 @@ struct PatientCard: View {
     var dragging = false
     var onTake: () -> Void
 
+    @AppStorage(StudyFocus.storageKey) private var focusStored = ""
+    private var focus: FocusSelection { FocusSelection(stored: focusStored) }
+
     private enum VITALS {
         static let stagger = 0.08
         static let offsetY: CGFloat = 8
@@ -320,7 +349,23 @@ struct PatientCard: View {
                 .foregroundStyle(revisit ? Theme.info : Theme.warn)
             }
 
-            Spacer(minLength: 20)
+            // Where it fits. A patient in the student's focus says so once, instead of
+            // repeating the focus name that already sits above the deck.
+            HStack(spacing: 6) {
+                if !focus.isMix, focus.matches(rotation: patient.rotation, system: patient.system) {
+                    Pill(text: "Your focus", glyph: .target)
+                    // Name whichever tag the focus didn't already cover.
+                    Pill(text: focus.contains(.rotation(patient.rotation)) ? patient.system.label : patient.rotation.label,
+                         fg: Theme.muted, bg: Theme.text.opacity(0.07))
+                } else {
+                    Pill(text: patient.rotation.label, fg: Theme.muted, bg: Theme.text.opacity(0.07))
+                    Pill(text: patient.system.label, fg: Theme.muted, bg: Theme.text.opacity(0.07))
+                }
+            }
+            .padding(.top, 14)
+            .accessibilityElement(children: .combine)
+
+            Spacer(minLength: 16)
 
             // What they say: the hero of the card
             Text("\u{201C}\(patient.quote)\u{201D}")

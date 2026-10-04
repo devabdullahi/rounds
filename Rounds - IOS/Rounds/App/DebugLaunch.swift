@@ -2,7 +2,7 @@
 import SwiftUI
 
 /// Dev-only deep link for screenshots: launch with `-screen <name>`.
-/// Names: firstopen, signin, signup, onboarding, home, patients, patients-open, profile, brief, interview, examine, workup, diagnosis, debrief.
+/// Names: firstopen, firstopen-auth, signin, signup, onboarding, focus-rotation, focus-system, focus-sheet, home, patients, patients-open, profile, brief, interview, examine, workup, diagnosis, debrief.
 enum DebugLaunch {
     static var screen: String? { UserDefaults.standard.string(forKey: "screen") }
 
@@ -12,20 +12,28 @@ enum DebugLaunch {
         return v > 0 ? v : nil
     }
 
-    private static let authScreens = ["firstopen", "signin", "signup", "onboarding"]
+    private static let authScreens = ["firstopen", "firstopen-auth", "signin", "signup", "onboarding", "focus-rotation", "focus-system"]
 
     /// Runs before the first frame so the root picks the right side (auth vs app).
     static func prepareDefaults() {
         guard let screen else { return }
         let d = UserDefaults.standard
         d.set(!authScreens.contains(screen), forKey: "signedIn")
-        d.set(screen != "firstopen", forKey: "hasSeenFirstOpen")
+        switch screen {
+        case "focus-system": d.set(TrainingLevel.ms12.rawValue, forKey: TrainingLevel.storageKey)
+        case "focus-rotation", "focus-sheet", "home", "settings":
+            d.set(TrainingLevel.ms3.rawValue, forKey: TrainingLevel.storageKey)
+            d.set(StudyFocus.rotation(.internalMedicine).stored, forKey: StudyFocus.storageKey)
+        default: break
+        }
     }
 
     static var authPath: [AuthStep] {
         switch screen {
+        case "signin": [.signIn]
         case "signup": [.signUp]
         case "onboarding": [.signUp, .onboarding]
+        case "focus-rotation", "focus-system": [.signUp, .onboarding, .focus]
         default: []
         }
     }
@@ -37,7 +45,7 @@ enum DebugLaunch {
         case "cards", "cards-flip", "cards-correct", "cards-unknown", "cards-new", "cards-new-color", "cards-new-answer": tab = .cards
         case "patients-open": tab = .patients; expandedPatient = "R2"
         case "profile", "settings": tab = .profile
-        case "home", "splash", "home-swipe-right", "home-swipe-left": tab = .today
+        case "home", "focus-sheet", "splash", "home-swipe-right", "home-swipe-left": tab = .today
         default:
             let s = CaseSession()
             let path: [CaseStep]

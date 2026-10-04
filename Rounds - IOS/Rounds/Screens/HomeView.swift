@@ -36,6 +36,9 @@ struct HomeView: View {
     var openProfile: () -> Void
 
     @State private var stage = homeHasPlayed ? 4 : -1
+    @State private var editingFocus = false
+    @AppStorage(StudyFocus.storageKey) private var focusStored = ""
+    private var focus: FocusSelection { FocusSelection(stored: focusStored) }
 
     var body: some View {
         ScrimScrollView {
@@ -62,6 +65,10 @@ struct HomeView: View {
             GlowBackdrop()   // Metal shader paints the background colour plus the glows
         }
         .task { await play() }
+        .sheet(isPresented: $editingFocus) { FocusSheet() }
+        #if DEBUG
+        .onAppear { if DebugLaunch.screen == "focus-sheet" { editingFocus = true } }
+        #endif
     }
 
     private func play() async {
@@ -117,10 +124,45 @@ struct HomeView: View {
                 .accessibilityLabel("\(app.streak) day streak")
             }
 
-            Text(shiftTitle)
-                .font(.system(size: 34, weight: .bold))
-                .tracking(-0.5)
-                .accessibilityAddTraits(.isHeader)
+            VStack(alignment: .leading, spacing: 10) {
+                Text(shiftTitle)
+                    .font(.system(size: 34, weight: .bold))
+                    .tracking(-0.5)
+                    .accessibilityAddTraits(.isHeader)
+                // An empty focus says so beside the chip, on the same line, so the deck doesn't move.
+                HStack(spacing: 10) {
+                    focusChip
+                    if !focus.isMix, Ward.count(for: focus) == 0 {
+                        Text("None yet · showing a mix")
+                            .font(.system(size: 13))
+                            .foregroundStyle(Theme.muted)
+                            .lineLimit(1)
+                            .transition(.opacity)
+                    }
+                }
+            }
+            .animation(.easeOut(duration: 0.2), value: focusStored)
         }
+    }
+
+    /// What the deck puts first. Tapping opens the focus sheet.
+    private var focusChip: some View {
+        return Button { editingFocus = true } label: {
+            HStack(spacing: 8) {
+                AppIcon(.target, size: 18).foregroundStyle(Theme.accentText)
+                Text(focus.label).font(.system(size: 15, weight: .semibold))
+                AppIcon(.chevronDown, size: 14).foregroundStyle(Theme.muted)
+            }
+            .foregroundStyle(Theme.text)
+            .padding(.leading, 10)
+            .padding(.trailing, 12)
+            .frame(height: 36)
+            .background(Theme.text.opacity(0.07), in: Capsule())
+            .overlay(Capsule().strokeBorder(Theme.ring, lineWidth: 1))
+            .contentShape(Capsule())
+        }
+        .buttonStyle(PressableStyle())
+        .accessibilityLabel("Study focus: \(focus.label)")
+        .accessibilityHint("Changes which patients come first")
     }
 }

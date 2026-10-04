@@ -110,13 +110,15 @@ struct IconButton: View {
     let glyph: IconGlyph
     let label: String
     var size: CGFloat = 22
+    /// Neutral glass for secondary navigation on screens whose primary action is already blue.
+    var quiet = false
     let action: () -> Void
     var body: some View {
         Button(action: action) {
             AppIcon(glyph, size: size * 0.8)
-                .foregroundStyle(.white)
+                .foregroundStyle(quiet ? Theme.text : .white)
                 .frame(width: 38, height: 38)
-                .glassCircle(tint: Theme.accent)
+                .glassCircle(tint: quiet ? Theme.text.opacity(0.10) : Theme.accent)
                 .frame(width: 44, height: 44)
                 .contentShape(Rectangle())
         }
@@ -395,8 +397,10 @@ enum ECG {
         return (phase - phase.rounded(.down)) * cell
     }
 
+    /// Shrinks the complex so P→T ends inside its own cell, after the lead-in, with a short
+    /// baseline before the next beat. Without this the last T wave overruns the right edge.
     static func complexScale(_ cellUnits: CGFloat) -> CGFloat {
-        min(1, (cellUnits - 8) / complexWidth)
+        min(1, (cellUnits * (1 - beatLead) - 8) / complexWidth)
     }
 }
 

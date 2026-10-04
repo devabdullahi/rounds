@@ -16,7 +16,7 @@ struct SignUpView: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                IconButton(glyph: .chevronLeft, label: "Back to sign in") { router.back() }
+                IconButton(glyph: .chevronLeft, label: "Back to welcome") { router.back() }
                 Spacer()
             }
             .padding(.leading, 7)   // chevron edge on the 24pt auth margin
@@ -66,7 +66,7 @@ struct SignUpView: View {
                     .buttonStyle(PrimaryButtonStyle(height: 52))
                 HStack(spacing: 4) {
                     Text("Already have an account?").foregroundStyle(Theme.muted)
-                    Button("Sign in") { router.back() }
+                    Button("Log in") { router.path = [.signIn] }
                         .fontWeight(.semibold)
                         .foregroundStyle(Theme.accent)
                 }

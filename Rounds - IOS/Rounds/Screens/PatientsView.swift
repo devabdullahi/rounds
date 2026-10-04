@@ -111,8 +111,9 @@ struct PatientsView: View {
                         .foregroundStyle(.white)
                         .padding(.horizontal, 14)
                         .frame(minHeight: 36)
-                        .glassFill(on ? Theme.accent : Theme.faint, in: Capsule(), strength: on ? 1 : 0.7)
-                        .buttonStyle(.plain)
+                        // Static glass: interactive glass flares white while held, too bright for a filter chip.
+                        .glassFill(on ? Theme.accent : Theme.faint, in: Capsule(), strength: on ? 1 : 0.7, interactive: false)
+                        .buttonStyle(PressDownStyle())
                         .accessibilityAddTraits(on ? .isSelected : [])
                 }
             }

@@ -5,6 +5,7 @@ struct RoundsApp: App {
     @State private var app = AppState()
     /// 0 = follow the system, 1 = light, 2 = dark.
     @AppStorage("appearance") private var appearance = 0
+    @AppStorage("signedIn") private var signedIn = false
 
     init() {
         #if DEBUG
@@ -16,7 +17,8 @@ struct RoundsApp: App {
         WindowGroup {
             RootView()
                 .environment(app)
-                .preferredColorScheme(appearance == 1 ? .light : appearance == 2 ? .dark : nil)
+                // Signed-out screens (welcome, sign up, onboarding) are designed for light mode.
+                .preferredColorScheme(!signedIn || appearance == 1 ? .light : appearance == 2 ? .dark : nil)
                 .tint(Theme.accent)
         }
     }
@@ -48,14 +50,14 @@ enum Tab: CaseIterable {
 struct RootView: View {
     @AppStorage("signedIn") private var signedIn = false
     /// Fresh on every cold launch (process start), so the splash replays each time the app is reopened
-    /// after being closed. First-time users skip it: First open already plays the same intro.
+    /// after being closed. Signed-out launches skip it: the welcome screen plays the same heart trace.
     @State private var showSplash = RootView.splashOnLaunch
 
     private static var splashOnLaunch: Bool {
         #if DEBUG
         if let screen = DebugLaunch.screen { return screen == "splash" }
         #endif
-        return UserDefaults.standard.bool(forKey: "hasSeenFirstOpen")
+        return UserDefaults.standard.bool(forKey: "signedIn")
     }
 
     var body: some View {
