@@ -35,6 +35,9 @@ struct SettingsView: View {
     @State private var streakAlerts = true
     @State private var confirmSignOut = false
     @AppStorage("signedIn") private var signedIn = true
+    @AppStorage(StudyFocus.storageKey) private var focusStored = ""
+    @AppStorage(TrainingLevel.storageKey) private var levelStored = ""
+    @State private var editingFocus = false
 
     private let limits: [(Int, String)] = [(5, "5 min"), (10, "10"), (15, "15"), (20, "20"), (0, "Off")]
 
@@ -53,6 +56,12 @@ struct SettingsView: View {
                         navRow(.keyRound, "Signed in with", value: "Apple")
                     }
 
+                    section("Training") {
+                        yearRow
+                        Hairline()
+                        navRow(.target, "Study focus", value: focusSummary) { editingFocus = true }
+                    }
+
                     section("Appearance") {
                         Segmented(options: [(0, "System"), (1, "Light"), (2, "Dark")], selection: $appearance)
                             .padding(12)
@@ -66,8 +75,6 @@ struct SettingsView: View {
                         .padding(16)
                         Hairline()
                         toggleRow(.bookOpen, "Start in Exam mode", detail: "No hints until the debrief", isOn: $examByDefault)
-                        Hairline()
-                        navRow(.activity, "Rotation focus", value: "Cardiology", detail: "Sets your Up next list")
                     }
 
                     section("Talking to patients") {
@@ -149,6 +156,7 @@ struct SettingsView: View {
         }
         .background(Theme.bg)
         .toolbar(.hidden, for: .navigationBar)
+        .sheet(isPresented: $editingFocus) { FocusSheet() }
         .confirmationDialog("Sign out of Rounds?", isPresented: $confirmSignOut, titleVisibility: .visible) {
             Button("Sign out", role: .destructive) { signedIn = false }
             Button("Cancel", role: .cancel) {}
@@ -198,8 +206,40 @@ struct SettingsView: View {
         .frame(minHeight: 56)
     }
 
-    private func navRow(_ glyph: IconGlyph, _ title: String, value: String? = nil, detail: String? = nil) -> some View {
-        Button {} label: {
+    /// Short enough for a settings row: one name, or a count once there are several.
+    private var focusSummary: String {
+        let focus = FocusSelection(stored: focusStored)
+        return focus.items.count > 1 ? "\(focus.items.count) picked" : focus.label
+    }
+
+    /// Year is a three-way choice, so it opens a menu in place rather than a whole sheet.
+    private var yearRow: some View {
+        Menu {
+            Picker("Training year", selection: $levelStored) {
+                ForEach(TrainingLevel.allCases) { level in
+                    Text(level.label).tag(level.rawValue)
+                }
+            }
+        } label: {
+            HStack(spacing: 12) {
+                iconTile(.graduationCap)
+                Text("Training year").font(.system(size: 16))
+                Spacer()
+                Text(TrainingLevel(rawValue: levelStored)?.shortLabel ?? "Not set")
+                    .font(.system(size: 15))
+                    .foregroundStyle(Theme.muted)
+                AppIcon(.chevronDown, size: 16).foregroundStyle(Theme.faint)
+            }
+            .foregroundStyle(Theme.text)
+            .padding(.horizontal, 16)
+            .frame(minHeight: 56)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(PressableStyle())
+    }
+
+    private func navRow(_ glyph: IconGlyph, _ title: String, value: String? = nil, detail: String? = nil, action: @escaping () -> Void = {}) -> some View {
+        Button(action: action) {
             HStack(spacing: 12) {
                 iconTile(glyph)
                 VStack(alignment: .leading, spacing: 1) {

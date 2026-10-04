@@ -3,6 +3,13 @@ options:
   bundleIdPrefix: com.abdul
   deploymentTarget:
     iOS: "17.0"
+packages:
+  Supabase:
+    url: https://github.com/supabase/supabase-swift
+    from: 2.0.0
+configFiles:
+  Debug: Config/Base.xcconfig
+  Release: Config/Base.xcconfig
 settings:
   base:
     SWIFT_VERSION: "5.0"
@@ -13,11 +20,15 @@ targets:
     type: application
     platform: iOS
     sources: [Rounds]
+    dependencies:
+      - package: Supabase
     info:
       path: Rounds/Info.plist
       properties:
         UILaunchScreen:
           UIColorName: LaunchBackground
+        SupabaseURL: $(SUPABASE_URL)
+        SupabaseAnonKey: $(SUPABASE_ANON_KEY)
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.abdul.rounds

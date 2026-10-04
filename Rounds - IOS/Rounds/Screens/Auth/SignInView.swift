@@ -1,23 +1,21 @@
 import SwiftUI
 
 /* ─────────────────────────────────────────────────────────
- * ANIMATION STORYBOARD · Sign in
+ * ANIMATION STORYBOARD · Log in (email)
  *
- * Picks up from First open: the ECG mark redraws, then monitors.
+ * Pushed from the welcome sheet's "Log in to Rounds". Apple and Google live on that
+ * sheet, so this screen is email only.
  *
  *    0ms   ECG mark draws (900ms, ease in-out)
- *  250ms   "Welcome back" rises, y 12 → 0
+ *  250ms   "Log in" rises, y 12 → 0
  *  330ms   subtitle rises
- *  450ms   Apple button rises
- *  510ms   Google button rises
- *  600ms   "or use email" divider fades in
- *  660ms   email field rises
- *  720ms   password field rises
- *  780ms   Sign in button rises
- *  900ms   footer link fades in
+ *  450ms   email field rises
+ *  510ms   password field rises
+ *  570ms   Log in button rises
+ *  700ms   footer link fades in
  * 1200ms   bright pulse sweeps the mark, every 2.4s, forever
  *
- * 60ms stagger, ~0.9s total; nothing blocks taps.
+ * 60ms stagger, ~0.7s total; nothing blocks taps.
  * Fields glow mint on focus; buttons press down.
  * Reduce Motion: no sweep, no rise.
  * ───────────────────────────────────────────────────────── */
@@ -25,13 +23,10 @@ import SwiftUI
 private enum TIMING {
     static let title    = 0.25
     static let subtitle = 0.33
-    static let apple    = 0.45
-    static let google   = 0.51
-    static let divider  = 0.60
-    static let email    = 0.66
-    static let password = 0.72
-    static let submit   = 0.78
-    static let footer   = 0.90
+    static let email    = 0.45
+    static let password = 0.51
+    static let submit   = 0.57
+    static let footer   = 0.70
 }
 
 private enum MARK {
@@ -59,11 +54,18 @@ struct SignInView: View {
     @State private var appearedAt = Date.now
 
     var body: some View {
+        VStack(spacing: 0) {
+            HStack {
+                IconButton(glyph: .chevronLeft, label: "Back to welcome") { router.back() }
+                Spacer()
+            }
+            .padding(.leading, 7)   // chevron edge on the 24pt auth margin
+
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
                 VStack(alignment: .leading, spacing: 10) {
                     mark
-                    Text("Welcome back")
+                    Text("Log in")
                         .font(.system(size: 34, weight: .bold))
                         .tracking(-0.5)
                         .rise(shown, at: TIMING.title)
@@ -73,18 +75,6 @@ struct SignInView: View {
                         .rise(shown, at: TIMING.subtitle)
                 }
 
-                VStack(spacing: 12) {
-                    SocialButton(provider: .apple, title: "Sign in with Apple") { signedIn = true }
-                        .rise(shown, at: TIMING.apple)
-                    SocialButton(provider: .google, title: "Continue with Google") { signedIn = true }
-                        .rise(shown, at: TIMING.google)
-                }
-                .padding(.top, 36)
-
-                OrDivider(text: "or use email")
-                    .padding(.vertical, 24)
-                    .rise(shown, at: TIMING.divider, fadeOnly: true)
-
                 VStack(spacing: 14) {
                     AuthField(label: "Email", text: $email, placeholder: "you@school.edu",
                               contentType: .emailAddress, keyboard: .emailAddress)
@@ -93,8 +83,9 @@ struct SignInView: View {
                               accessoryTitle: "Forgot password?")
                         .rise(shown, at: TIMING.password)
                 }
+                .padding(.top, 32)
 
-                Button("Sign in") { signedIn = true }
+                Button("Log in") { signedIn = true }
                     .buttonStyle(PrimaryButtonStyle(height: 52))
                     .padding(.top, 22)
                     .rise(shown, at: TIMING.submit)
@@ -103,7 +94,7 @@ struct SignInView: View {
 
                 HStack(spacing: 4) {
                     Text("New to Rounds?").foregroundStyle(Theme.muted)
-                    Button("Create an account") { router.go(.signUp) }
+                    Button("Create an account") { router.path = [.signUp] }
                         .fontWeight(.semibold)
                         .foregroundStyle(Theme.accent)
                 }
@@ -113,12 +104,13 @@ struct SignInView: View {
                 .rise(shown, at: TIMING.footer, fadeOnly: true)
             }
             .padding(.horizontal, 24)
-            .padding(.top, 18)
+            .padding(.top, 8)
             .padding(.bottom, 8)
-            .frame(minHeight: UIScreen.main.bounds.height - 120, alignment: .top)
+            .frame(minHeight: UIScreen.main.bounds.height - 170, alignment: .top)
         }
         .scrollIndicators(.hidden)
         .scrollDismissesKeyboard(.interactively)
+        }
         .background(Theme.bg.ignoresSafeArea())
         #if DEBUG
         .devSkip()

@@ -3,7 +3,7 @@ import Observation
 
 // MARK: - Flow
 
-enum AuthStep: Hashable { case signIn, signUp, onboarding }
+enum AuthStep: Hashable { case signIn, signUp, onboarding, focus }
 
 @Observable
 final class AuthRouter {
@@ -14,23 +14,17 @@ final class AuthRouter {
 
 /// Signed-out shell. Mock navigation only: every "sign in" just flips `signedIn`.
 struct AuthFlowView: View {
-    @AppStorage("hasSeenFirstOpen") private var hasSeenFirstOpen = false
     @State private var router = AuthRouter()
 
     var body: some View {
         NavigationStack(path: $router.path) {
-            ZStack {
-                if hasSeenFirstOpen {
-                    SignInView().transition(.opacity)
-                } else {
-                    FirstOpenView(
-                        onGetStarted: { hasSeenFirstOpen = true; router.go(.signUp) },
-                        onHaveAccount: { hasSeenFirstOpen = true }
-                    )
-                    .transition(.opacity)
-                }
-            }
-            .animation(.easeInOut(duration: 0.35), value: hasSeenFirstOpen)
+            // Everyone signed out lands on the welcome screen; its sheet branches to
+            // sign up, email log in, or Apple/Google (straight to the year question).
+            FirstOpenView(
+                onSignUp: { router.go(.signUp) },
+                onLogIn: { router.go(.signIn) },
+                onSocial: { router.go(.onboarding) }
+            )
             .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(for: AuthStep.self) { step in
                 Group {
@@ -38,6 +32,7 @@ struct AuthFlowView: View {
                     case .signIn: SignInView()
                     case .signUp: SignUpView()
                     case .onboarding: OnboardingView()
+                    case .focus: FocusOnboardingView()
                     }
                 }
                 .toolbar(.hidden, for: .navigationBar)
@@ -242,11 +237,9 @@ extension View {
 /// Dev shortcut past auth. Compiled out of release builds.
 struct DevSkipButton: View {
     @AppStorage("signedIn") private var signedIn = false
-    @AppStorage("hasSeenFirstOpen") private var hasSeenFirstOpen = false
 
     var body: some View {
         Button {
-            hasSeenFirstOpen = true
             signedIn = true
         } label: {
             HStack(spacing: 4) {

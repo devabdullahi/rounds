@@ -47,6 +47,8 @@ enum IconGlyph: String, CaseIterable {
     case logOut = "sign-out"
     case circle = "circle"
     case brandMark = "brand-mark"   // the app icon's cross, for in-app branding
+    case target = "target"
+    case graduationCap = "graduation-cap"
 
     /// Asset catalog name ("Icons" folder provides the namespace).
     var assetName: String { "Icons/\(rawValue)" }
