@@ -1,0 +1,1586 @@
+{
+  "schema_version": "0.2",
+  "slug": "cellulitis",
+  "triage": {
+    "name": "Cellulitis",
+    "case_suitable": true,
+    "reason": "Acute spreading skin infection with fever and erythema; diagnosis is clinical and mimics DVT and necrotizing infection, a strong teaching case.",
+    "kind": "disease",
+    "category": "skin and soft tissue infection",
+    "organ_systems": [
+      "musculoskeletal"
+    ],
+    "primary_clerkship": "emergency",
+    "secondary_clerkships": [
+      "internalMedicine",
+      "familyMedicine",
+      "surgery"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "emergency",
+      "clinic",
+      "inpatient"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:16:21Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:52:34Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:52:40Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:52:49Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:53:03Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:53:10Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'ct of the affected area with iv contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'mri of the affected area with and without contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ct of the affected area with iv contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'mri of the affected area with and without contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "differential deep-vein-thrombosis: no profile yet",
+        "differential necrotizing-soft-tissue-infection: no profile yet",
+        "differential abscess: no profile yet",
+        "differential stasis-dermatitis: no profile yet",
+        "differential contact-dermatitis: no profile yet",
+        "differential gout: no profile yet",
+        "differential septic-arthritis: no profile yet",
+        "differential hidradenitis-suppurativa: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 30,
+      "typical_max": 75,
+      "peak": "40–70",
+      "possible_min": 1,
+      "possible_max": 100
+    },
+    "sex": "either",
+    "demographics": [
+      "More common in adults than children",
+      "Slightly more common in men in many series",
+      "More common in people with lower socioeconomic status and in those with repeated healthcare contact"
+    ],
+    "risk_factors": [
+      {
+        "text": "Break in the skin such as a cut, scrape, insect bite, or surgical wound",
+        "strength": "strong"
+      },
+      {
+        "text": "Tinea pedis with fissures between the toes",
+        "strength": "strong"
+      },
+      {
+        "text": "Chronic leg swelling or venous insufficiency",
+        "strength": "strong"
+      },
+      {
+        "text": "Lymphedema or prior lymph node removal",
+        "strength": "strong"
+      },
+      {
+        "text": "Obesity",
+        "strength": "moderate"
+      },
+      {
+        "text": "Diabetes mellitus",
+        "strength": "moderate"
+      },
+      {
+        "text": "Prior episode of cellulitis at the same site",
+        "strength": "moderate"
+      },
+      {
+        "text": "Injection drug use",
+        "strength": "moderate"
+      },
+      {
+        "text": "Animal or human bite",
+        "strength": "weak"
+      },
+      {
+        "text": "Water exposure or swimming in fresh water with an open wound",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Diabetes mellitus",
+      "Chronic venous insufficiency",
+      "Lymphedema",
+      "Peripheral arterial disease",
+      "Immunosuppression",
+      "Cirrhosis",
+      "Chronic kidney disease",
+      "Heart failure"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Injection drug use",
+      "Occupations with skin trauma such as farming or construction",
+      "Homelessness or crowded living conditions"
+    ],
+    "exposures": [
+      "Recent insect bite",
+      "Recent skin wound or abrasion",
+      "Recent surgery",
+      "Animal bite",
+      "Fresh water exposure with an open wound"
+    ],
+    "risk_medications": [
+      "prednisone",
+      "methotrexate",
+      "tacrolimus",
+      "cyclosporine",
+      "infliximab",
+      "adalimumab"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My leg is red, swollen, and hurts",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "The redness is spreading",
+        "frequency": "common"
+      },
+      {
+        "text": "I feel hot and achy",
+        "frequency": "common"
+      },
+      {
+        "text": "My arm is red and tender",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Fairly rapid, over 1–3 days; often the patient can point to a bite, scrape, or crack in the skin that came first",
+      "duration": "Usually 1–4 days at presentation",
+      "progression": "The area of redness and swelling enlarges steadily; pain and warmth increase; fever and chills may develop as it spreads",
+      "location": "Most often the lower leg, but can be the arm, face, or any site of skin breakdown",
+      "radiation": "No radiation; the process spreads locally rather than following a nerve",
+      "quality": "Burning, throbbing, and tender to the touch; the skin feels tight and hot",
+      "severity": "Moderate; pain is often 4–7/10 and worse with standing or walking",
+      "timing": "Constant, gradually worsening",
+      "aggravating": [
+        "Standing or walking on the affected leg",
+        "Touching or pressing the area",
+        "Tight clothing or shoes"
+      ],
+      "relieving": [
+        "Elevating the limb",
+        "Resting",
+        "Acetaminophen or ibuprofen"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Fever",
+          "frequency": "common"
+        },
+        {
+          "text": "Chills",
+          "frequency": "common"
+        },
+        {
+          "text": "Swollen or tender lymph nodes near the area",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Feeling generally unwell or achy",
+          "frequency": "common"
+        },
+        {
+          "text": "A red streak running up the limb",
+          "frequency": "rare"
+        },
+        {
+          "text": "Clear or pus-filled drainage from the wound",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Nausea",
+          "frequency": "sometimes"
+        }
+      ],
+      "pertinent_negatives": [
+        "Pain out of proportion to the exam or rapidly worsening pain",
+        "Skin turning dusky, gray, or black",
+        "Crepitus or crackling under the skin",
+        "Numbness or loss of sensation in the area",
+        "Severe pain with light touch out of keeping with the redness",
+        "Recent long flight or immobility with calf pain",
+        "Joint swelling with inability to bear weight",
+        "Recurrent boils or draining sinus tracts"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fever",
+            "frequency": "common"
+          },
+          {
+            "text": "Chills",
+            "frequency": "common"
+          },
+          {
+            "text": "Fatigue or feeling unwell",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Weight loss",
+          "Night sweats"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [
+          {
+            "text": "Red, warm, swollen area of skin",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Tenderness to touch",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "A break in the skin, bite, or scrape at the edge of the redness",
+            "frequency": "common"
+          },
+          {
+            "text": "Blisters or peeling skin over the red area",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Drainage or pus from the wound",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Black or dead-looking skin",
+          "Skin cracking or popping when pressed",
+          "Multiple draining boils",
+          "Rash on both legs in the same pattern"
+        ],
+        "argues_against": [
+          "Necrotizing soft tissue infection",
+          "Stasis dermatitis"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Limb swelling",
+            "frequency": "common"
+          },
+          {
+            "text": "Pain with movement of the nearby joint",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Joint locked or unable to bear weight",
+          "Muscle weakness out of proportion to pain"
+        ],
+        "argues_against": [
+          "Septic arthritis",
+          "Deep vein thrombosis"
+        ]
+      },
+      {
+        "system": "hematologic",
+        "positives": [
+          {
+            "text": "Tender lymph nodes near the area",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Easy bruising or bleeding",
+          "Blood clots in the legs"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Nausea",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Vomiting",
+          "Abdominal pain"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [],
+        "negatives": [
+          "Numbness or tingling in the affected limb",
+          "Confusion",
+          "Severe pain out of proportion to exam"
+        ],
+        "argues_against": [
+          "Necrotizing soft tissue infection",
+          "Sepsis with altered mental status"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "older_adults",
+        "how_it_differs": "May have little or no fever and less pain; redness can be mistaken for chronic venous changes, and they can become confused or hypotensive quickly.",
+        "missing_classic_features": [
+          "Fever",
+          "Marked pain"
+        ]
+      },
+      {
+        "population": "diabetes",
+        "how_it_differs": "Often presents with a foot ulcer or a deeper, less obvious infection; neuropathy can blunt pain and the redness may be less striking.",
+        "missing_classic_features": [
+          "Prominent pain",
+          "Clear area of spreading redness"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "Can progress faster and with fewer local signs; fever may be the main clue and unusual organisms are more likely.",
+        "missing_classic_features": [
+          "Marked local warmth and redness"
+        ]
+      },
+      {
+        "population": "children",
+        "how_it_differs": "Often follows an insect bite or minor trauma; the child may refuse to walk or use the limb and may be fussy rather than describing pain.",
+        "missing_classic_features": [
+          "Clear description of spreading redness"
+        ]
+      },
+      {
+        "population": "infants",
+        "how_it_differs": "Presents with irritability, poor feeding, and fever; the skin finding may be subtle or on the diaper area.",
+        "missing_classic_features": [
+          "Localized pain report",
+          "Obvious redness"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Lower leg swelling is common in pregnancy, so cellulitis can be mistaken for normal swelling; redness and warmth help distinguish it.",
+        "missing_classic_features": [
+          "Clear asymmetry of the legs"
+        ]
+      },
+      {
+        "population": "obesity",
+        "how_it_differs": "Skin folds and leg swelling make the redness harder to see and the area harder to examine; recurrent episodes are more common.",
+        "missing_classic_features": [
+          "Easy visualization of the affected area"
+        ]
+      },
+      {
+        "population": "renal_impairment",
+        "how_it_differs": "Fluid overload and chronic skin changes can mask or mimic cellulitis; antibiotic dosing needs adjustment.",
+        "missing_classic_features": [
+          "Sharp demarcation of redness"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Well-appearing, comfortable at rest, no distress",
+      "moderate": "Mildly ill-appearing, favors the affected limb, uncomfortable with movement",
+      "severe": "Ill-appearing, flushed, tachycardic, reluctant to move the limb",
+      "critical": "Toxic-appearing, pale or mottled, diaphoretic, may be confused or lethargic"
+    },
+    "findings": [
+      {
+        "id": "erythema",
+        "region": "skin",
+        "maneuver": "Inspect the affected area in good light, comparing with the opposite limb",
+        "finding": "Diffuse, poorly demarcated area of erythema",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "warmth",
+        "region": "skin",
+        "maneuver": "Palpate the red area and compare with the unaffected side",
+        "finding": "Increased warmth of the involved skin",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "tenderness",
+        "region": "skin",
+        "maneuver": "Gently palpate the involved area",
+        "finding": "Tenderness to palpation",
+        "frequency": "almost_always",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "edema",
+        "region": "extremities",
+        "maneuver": "Inspect and palpate the limb for swelling, comparing sides",
+        "finding": "Localized swelling or pitting edema of the affected limb",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "skin-break",
+        "region": "skin",
+        "maneuver": "Search the skin at and around the edge of the redness for a wound, bite, or fissure",
+        "finding": "A break in the skin, insect bite, scrape, or interdigital fissure",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "lymphangitic-streak",
+        "region": "extremities",
+        "maneuver": "Inspect the limb proximal to the red area along its length",
+        "finding": "A red streak running proximally (lymphangitis)",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "regional-adenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the draining lymph node basins (inguinal or axillary)",
+        "finding": "Tender, enlarged regional lymph nodes",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "blisters",
+        "region": "skin",
+        "maneuver": "Inspect the surface of the red area",
+        "finding": "Blisters or bullae over the involved skin",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "drainage",
+        "region": "skin",
+        "maneuver": "Inspect any wound for discharge",
+        "finding": "Serous or purulent drainage from the wound",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "no-fluctuance",
+        "region": "skin",
+        "maneuver": "Palpate the involved area for a fluid collection",
+        "finding": "No fluctuant mass or drainable pocket",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-crepitus",
+        "region": "skin",
+        "maneuver": "Palpate the skin and subcutaneous tissue for crackling",
+        "finding": "No crepitus or subcutaneous gas",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "no-dusky-skin",
+        "region": "skin",
+        "maneuver": "Inspect the skin color and check for sloughing or anesthesia",
+        "finding": "No dusky, gray, or black skin, no bullae with sloughing, no sensory loss",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "no-pain-out-of-proportion",
+        "region": "extremities",
+        "maneuver": "Assess pain with light touch and passive movement of the limb",
+        "finding": "Pain is proportionate to the visible inflammation; no severe pain with light touch",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "no-joint-effusion",
+        "region": "musculoskeletal",
+        "maneuver": "Examine the adjacent joint for swelling, warmth, and range of motion",
+        "finding": "No joint effusion; joint moves without disproportionate pain",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-calf-asymmetry",
+        "region": "extremities",
+        "maneuver": "Measure calf circumference and palpate the calf for focal tenderness",
+        "finding": "No focal calf tenderness or marked asymmetry beyond the area of cellulitis",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-bilateral-rash",
+        "region": "skin",
+        "maneuver": "Inspect both lower legs",
+        "finding": "No symmetric bilateral rash with weeping or stasis changes",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 98.6,
+        "max": 100.2
+      },
+      "moderate": {
+        "min": 99.5,
+        "max": 101.5
+      },
+      "severe": {
+        "min": 100.4,
+        "max": 103.0
+      },
+      "critical": {
+        "min": 101.0,
+        "max": 104.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 70,
+        "max": 100
+      },
+      "moderate": {
+        "min": 90,
+        "max": 110
+      },
+      "severe": {
+        "min": 100,
+        "max": 125
+      },
+      "critical": {
+        "min": 115,
+        "max": 145
+      }
+    },
+    "rr": {
+      "severe": {
+        "min": 18,
+        "max": 24
+      },
+      "critical": {
+        "min": 22,
+        "max": 30
+      }
+    },
+    "sbp": {
+      "severe": {
+        "min": 90,
+        "max": 105
+      },
+      "critical": {
+        "min": 75,
+        "max": 95
+      }
+    },
+    "dbp": {
+      "severe": {
+        "min": 55,
+        "max": 70
+      },
+      "critical": {
+        "min": 40,
+        "max": 60
+      }
+    },
+    "spo2": {
+      "severe": {
+        "min": 92,
+        "max": 96
+      },
+      "critical": {
+        "min": 88,
+        "max": 94
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "mild": {
+          "min": 10.5,
+          "max": 14.0
+        },
+        "moderate": {
+          "min": 12.0,
+          "max": 17.0
+        },
+        "severe": {
+          "min": 15.0,
+          "max": 22.0
+        },
+        "critical": {
+          "min": 18.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "A normal white count does not rule out cellulitis; mild cases often have normal labs."
+    },
+    {
+      "test_id": "neut_pct",
+      "ranges": {
+        "mild": {
+          "min": 70,
+          "max": 80
+        },
+        "moderate": {
+          "min": 75,
+          "max": 85
+        },
+        "severe": {
+          "min": 80,
+          "max": 90
+        },
+        "critical": {
+          "min": 82,
+          "max": 92
+        }
+      },
+      "frequency": "common",
+      "importance": "optional"
+    },
+    {
+      "test_id": "bands_pct",
+      "ranges": {
+        "severe": {
+          "min": 5,
+          "max": 12
+        },
+        "critical": {
+          "min": 8,
+          "max": 20
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "mild": {
+          "min": 1.0,
+          "max": 4.0
+        },
+        "moderate": {
+          "min": 3.0,
+          "max": 10.0
+        },
+        "severe": {
+          "min": 8.0,
+          "max": 20.0
+        },
+        "critical": {
+          "min": 12.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "common",
+      "importance": "optional",
+      "caveat": "Nonspecific; helps track response but does not distinguish cellulitis from a deep infection."
+    },
+    {
+      "test_id": "esr",
+      "ranges": {
+        "mild": {
+          "min": 20,
+          "max": 35
+        },
+        "moderate": {
+          "min": 30,
+          "max": 55
+        },
+        "severe": {
+          "min": 45,
+          "max": 80
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "severe": {
+          "min": 2.2,
+          "max": 4.0
+        },
+        "critical": {
+          "min": 3.0,
+          "max": 8.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevated lactate with hypotension or organ dysfunction suggests sepsis and need for IV antibiotics and fluids."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "moderate": {
+          "min": 1.2,
+          "max": 1.6
+        },
+        "severe": {
+          "min": 1.4,
+          "max": 2.2
+        },
+        "critical": {
+          "min": 1.8,
+          "max": 3.5
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Rises with dehydration or sepsis; guides antibiotic dosing."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "moderate": {
+          "min": 18,
+          "max": 28
+        },
+        "severe": {
+          "min": 22,
+          "max": 40
+        },
+        "critical": {
+          "min": 30,
+          "max": 60
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "From poor intake, fever, and third-spacing."
+    },
+    {
+      "test_id": "na",
+      "ranges": {
+        "severe": {
+          "min": 130,
+          "max": 134
+        },
+        "critical": {
+          "min": 126,
+          "max": 132
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "moderate": {
+          "min": 100,
+          "max": 180
+        },
+        "severe": {
+          "min": 140,
+          "max": 250
+        },
+        "critical": {
+          "min": 180,
+          "max": 400
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Uncontrolled hyperglycemia in diabetes predisposes to and worsens skin infection."
+    },
+    {
+      "test_id": "ck",
+      "ranges": {
+        "severe": {
+          "min": 250,
+          "max": 1000
+        },
+        "critical": {
+          "min": 500,
+          "max": 5000
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Marked elevation with pain out of proportion should raise concern for necrotizing infection or myositis."
+    },
+    {
+      "test_id": "procalcitonin",
+      "ranges": {
+        "severe": {
+          "min": 0.5,
+          "max": 2.0
+        },
+        "critical": {
+          "min": 2.0,
+          "max": 10.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "May help gauge bacterial burden and sepsis risk but is not required for diagnosis."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Negative. Required in anyone who could be pregnant before antibiotics or imaging that could affect a pregnancy."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rate",
+        "finding": "Sinus tachycardia",
+        "frequency": "common",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Sinus rhythm",
+        "frequency": "almost_always",
+        "min_severity": "mild"
+      },
+      {
+        "feature": "other",
+        "finding": "Nonspecific ST-T changes with tachycardia",
+        "frequency": "sometimes",
+        "min_severity": "severe"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Ultrasound of the affected soft tissue",
+      "modality": "ultrasound",
+      "preferred_when": "Suspected abscess or fluid collection beneath the cellulitis",
+      "findings": [
+        {
+          "text": "Diffuse subcutaneous thickening and increased echogenicity (edema)",
+          "frequency": "common"
+        },
+        {
+          "text": "Hyperemia on color Doppler",
+          "frequency": "common"
+        },
+        {
+          "text": "Well-defined fluid collection with posterior acoustic enhancement (abscess)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "No discrete drainable collection",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "CT of the affected area with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Concern for deep infection, necrotizing fasciitis, or abscess not seen on ultrasound",
+      "findings": [
+        {
+          "text": "Skin thickening and subcutaneous fat stranding",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Fluid collection with rim enhancement (abscess)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Asymmetric fascial thickening with fluid tracking along fascia",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Subcutaneous or intramuscular gas",
+          "frequency": "rare"
+        },
+        {
+          "text": "No gas or fascial involvement (argues against necrotizing infection)",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "MRI of the affected area with and without contrast",
+      "modality": "mri",
+      "preferred_when": "Equivocal deep infection or when CT is unavailable or contraindicated",
+      "findings": [
+        {
+          "text": "Subcutaneous edema and skin thickening",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Fascial enhancement and fluid along fascial planes",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Muscle involvement with T2 hyperintensity and enhancement",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Plain radiograph of the affected limb",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Soft tissue swelling",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Usually no bony abnormality",
+          "frequency": "common"
+        },
+        {
+          "text": "Subcutaneous gas (suggests gas-forming infection)",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Looks for leukocytosis and left shift; normal does not exclude cellulitis"
+      },
+      {
+        "test": "bmp",
+        "why": "Assesses hydration, renal function, and glucose before antibiotic dosing"
+      },
+      {
+        "test": "crp",
+        "why": "Supports bacterial infection and helps track response",
+        "only_if": "moderate or severe disease or diagnostic uncertainty"
+      },
+      {
+        "test": "lactate",
+        "why": "Screens for sepsis when fever, tachycardia, or hypotension is present",
+        "only_if": "systemic signs or concern for sepsis"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before antibiotics or imaging in anyone who could be pregnant"
+      },
+      {
+        "test": "Ultrasound of the affected soft tissue",
+        "why": "Distinguishes abscess from simple cellulitis when a fluid collection is suspected",
+        "only_if": "fluctuance, severe pain, or failure to improve"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "procalcitonin",
+        "why": "May support bacterial infection and sepsis risk when the diagnosis is unclear",
+        "only_if": "diagnostic uncertainty or suspected sepsis"
+      },
+      {
+        "test": "ck",
+        "why": "Evaluates for muscle involvement when pain is out of proportion to findings",
+        "only_if": "severe pain or suspected necrotizing infection"
+      },
+      {
+        "test": "CT of the affected area with IV contrast",
+        "why": "Defines deep infection or abscess when ultrasound is nondiagnostic",
+        "only_if": "suspected deep infection, abscess, or necrotizing fasciitis"
+      },
+      {
+        "test": "MRI of the affected area with and without contrast",
+        "why": "Clarifies deep infection when CT is equivocal or contraindicated",
+        "only_if": "equivocal deep infection"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "d_dimer",
+        "why": "No role in diagnosing cellulitis; may be considered only if DVT is a competing diagnosis"
+      },
+      {
+        "test": "pt",
+        "why": "Not needed unless the patient is on anticoagulants or has bleeding"
+      },
+      {
+        "test": "inr",
+        "why": "Not needed unless the patient is on anticoagulants or has bleeding"
+      },
+      {
+        "test": "lipase",
+        "why": "No role in skin infection"
+      },
+      {
+        "test": "ua",
+        "why": "Not indicated unless urinary symptoms or sepsis of unclear source"
+      },
+      {
+        "test": "Plain radiograph of the affected limb",
+        "why": "Rarely changes management of uncomplicated cellulitis"
+      },
+      {
+        "test": "CT of the affected area with IV contrast",
+        "why": "Not routine for uncomplicated cellulitis",
+        "only_if": "suspected deep infection, abscess, or necrotizing fasciitis"
+      },
+      {
+        "test": "MRI of the affected area with and without contrast",
+        "why": "Not routine for uncomplicated cellulitis",
+        "only_if": "equivocal deep infection"
+      }
+    ],
+    "decision_points": [
+      "Diagnosis is clinical; do not delay antibiotics for cultures or imaging in uncomplicated cases",
+      "Pregnancy test before antibiotics or imaging in anyone who could be pregnant",
+      "Look for an abscess when there is fluctuance or failure to improve; ultrasound or CT if uncertain",
+      "Suspect necrotizing infection with pain out of proportion, dusky skin, bullae, crepitus, or rapid progression; urgent surgical consultation and CT if needed",
+      "Blood cultures are low yield in mild cellulitis and are reserved for severe disease, immunocompromised patients, or unusual exposures"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Deep vein thrombosis",
+      "slug": "deep-vein-thrombosis",
+      "why_considered": "Unilateral leg swelling, pain, and warmth are the classic shared presentation with lower extremity cellulitis.",
+      "must_not_miss": true,
+      "trigger": "Unilateral leg swelling with calf pain but no clear skin break, no spreading erythema, and no fever",
+      "discriminators": {
+        "history": [
+          "Recent long travel, immobilization, surgery, or active cancer",
+          "Prior DVT or known thrombophilia",
+          "Calf pain and swelling that came on gradually without a wound or bite",
+          "No fever or chills"
+        ],
+        "exam": [
+          "Calf tenderness and asymmetric calf circumference without a sharply warm, red, spreading plaque",
+          "No skin break, fissure, or bite at the edge of the swelling",
+          "No lymphangitic streaking"
+        ],
+        "labs": [
+          "D-dimer negative makes DVT unlikely in low-risk patients",
+          "WBC and CRP typically normal"
+        ],
+        "imaging": [
+          "Compression ultrasound of the leg shows a non-compressible vein with intraluminal thrombus",
+          "Soft tissue ultrasound shows no subcutaneous thickening or hyperemia"
+        ]
+      }
+    },
+    {
+      "name": "Necrotizing soft tissue infection",
+      "slug": "necrotizing-soft-tissue-infection",
+      "why_considered": "Begins as a red, painful, swollen area that can be mistaken for simple cellulitis early in its course.",
+      "must_not_miss": true,
+      "trigger": "Pain out of proportion to the exam, dusky or gray skin, bullae with sloughing, crepitus, or rapid progression over hours",
+      "discriminators": {
+        "history": [
+          "Pain far worse than the visible redness suggests",
+          "Rapid worsening over hours rather than days",
+          "Diabetes, immunosuppression, injection drug use, or recent surgery",
+          "Systemic toxicity with high fever and feeling very unwell"
+        ],
+        "exam": [
+          "Dusky, gray, or black skin; bullae with sloughing",
+          "Crepitus or crackling under the skin",
+          "Sensory loss or anesthesia over the involved area",
+          "Severe pain with light touch or passive movement",
+          "Tachycardia and hypotension out of keeping with the local findings"
+        ],
+        "labs": [
+          "Markedly elevated WBC, CRP, and lactate",
+          "Elevated CK suggesting muscle involvement",
+          "Hyponatremia and renal dysfunction in advanced disease"
+        ],
+        "imaging": [
+          "CT shows asymmetric fascial thickening, fluid tracking along fascia, and subcutaneous or intramuscular gas",
+          "MRI shows fascial enhancement and fluid along fascial planes",
+          "Plain radiograph may show subcutaneous gas"
+        ]
+      }
+    },
+    {
+      "name": "Abscess",
+      "slug": "abscess",
+      "why_considered": "A focal collection of pus in the skin and soft tissue can present with redness, warmth, tenderness, and fever, overlapping with cellulitis.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "A focal, throbbing lump that is more localized than the diffuse spread of cellulitis",
+          "Often follows a boil, injection, or minor trauma",
+          "May have already been treated with oral antibiotics without improvement"
+        ],
+        "exam": [
+          "A fluctuant, dome-shaped, tender mass with a pointing center",
+          "Surrounding cellulitis may be present but the focal collection is palpable",
+          "Purulent drainage may be expressed"
+        ],
+        "labs": [
+          "WBC and CRP may be elevated but do not distinguish abscess from cellulitis"
+        ],
+        "imaging": [
+          "Ultrasound shows a well-defined fluid collection with posterior acoustic enhancement",
+          "CT shows a rim-enhancing fluid collection"
+        ]
+      }
+    },
+    {
+      "name": "Stasis dermatitis",
+      "slug": "stasis-dermatitis",
+      "why_considered": "Chronic venous insufficiency causes bilateral lower leg redness, swelling, and warmth that can be mistaken for cellulitis.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Long-standing leg swelling and varicose veins",
+          "Chronic, slowly progressive redness rather than acute onset over 1–3 days",
+          "No fever or chills",
+          "Itching and weeping rather than pain"
+        ],
+        "exam": [
+          "Bilateral, symmetric lower leg erythema and edema",
+          "Brown hemosiderin staining, varicose veins, and lipodermatosclerosis",
+          "No sharply warm, spreading plaque and no skin break at the edge"
+        ],
+        "labs": [
+          "WBC and CRP typically normal"
+        ],
+        "imaging": [
+          "Venous duplex shows venous reflux or obstruction without soft tissue infection"
+        ]
+      }
+    },
+    {
+      "name": "Contact dermatitis",
+      "slug": "contact-dermatitis",
+      "why_considered": "Localized redness, swelling, and tenderness of the skin can resemble early cellulitis, especially on the hands or face.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Exposure to a new soap, plant, metal, or topical agent",
+          "Intense itching rather than pain",
+          "No fever or systemic symptoms"
+        ],
+        "exam": [
+          "Well-demarcated erythema with vesicles or weeping, often in a pattern matching the exposure",
+          "No warmth out of proportion and no lymphangitic streaking",
+          "No skin break or bite at the leading edge"
+        ],
+        "labs": [
+          "WBC and CRP typically normal"
+        ],
+        "imaging": [
+          "Not indicated; diagnosis is clinical"
+        ]
+      }
+    },
+    {
+      "name": "Gout",
+      "slug": "gout",
+      "why_considered": "An acutely swollen, red, hot, and tender joint can be mistaken for cellulitis overlying a joint, especially at the first metatarsophalangeal joint or knee.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Sudden onset of severe joint pain reaching maximum intensity within hours",
+          "Prior similar attacks, alcohol use, or diuretic use",
+          "No skin break or bite"
+        ],
+        "exam": [
+          "Joint effusion, warmth, and extreme tenderness localized to the joint",
+          "Tophi may be present",
+          "No spreading erythema beyond the joint"
+        ],
+        "labs": [
+          "Elevated uric acid between attacks; may be normal during an attack",
+          "Joint aspiration shows needle-shaped negatively birefringent crystals"
+        ],
+        "imaging": [
+          "Ultrasound shows a double contour sign or joint effusion",
+          "Plain radiograph may show erosions in chronic disease"
+        ]
+      }
+    },
+    {
+      "name": "Septic arthritis",
+      "slug": "septic-arthritis",
+      "why_considered": "A hot, swollen, painful joint with fever can mimic cellulitis overlying a joint.",
+      "must_not_miss": true,
+      "trigger": "Joint effusion with inability to bear weight or move the joint, especially with fever",
+      "discriminators": {
+        "history": [
+          "Fever and chills with a single swollen joint",
+          "Recent joint surgery, injection, or bacteremia",
+          "Inability to bear weight"
+        ],
+        "exam": [
+          "Large joint effusion with markedly reduced range of motion",
+          "Tenderness localized to the joint line",
+          "No spreading skin erythema or skin break"
+        ],
+        "labs": [
+          "Elevated WBC and CRP",
+          "Joint aspiration shows purulent fluid with elevated WBC and positive Gram stain or culture"
+        ],
+        "imaging": [
+          "Ultrasound shows joint effusion",
+          "Plain radiograph may show joint space narrowing or erosions in late disease"
+        ]
+      }
+    },
+    {
+      "name": "Hidradenitis suppurativa",
+      "slug": "hidradenitis-suppurativa",
+      "why_considered": "Recurrent painful boils and draining sinus tracts in the axillae, groin, or under the breasts can be mistaken for recurrent cellulitis.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Recurrent boils and draining sinuses over months to years",
+          "Involvement of intertriginous areas such as axillae, groin, and inframammary folds",
+          "Family history of similar lesions",
+          "Often associated with obesity and smoking"
+        ],
+        "exam": [
+          "Comedones, double-ended pseudocomedones, nodules, abscesses, and sinus tracts",
+          "Scarring and rope-like tracts in the affected areas",
+          "No spreading erythema beyond the affected follicles"
+        ],
+        "labs": [
+          "WBC and CRP may be elevated during flares but are not diagnostic"
+        ],
+        "imaging": [
+          "Ultrasound shows subcutaneous nodules, fluid collections, and sinus tracts"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Uncomplicated cellulitis: limited area of erythema, no systemic symptoms, able to take oral antibiotics, no significant comorbidity.",
+      "moderate": "Cellulitis with fever, chills, or moderate pain; larger area of involvement; may need IV antibiotics or observation.",
+      "severe": "Cellulitis with systemic toxicity, rapid progression, or significant comorbidity; requires IV antibiotics and admission.",
+      "critical": "Cellulitis complicated by sepsis with hypotension, altered mental status, or organ dysfunction; or progression to necrotizing soft tissue infection."
+    },
+    "red_flags": [
+      {
+        "finding": "Pain out of proportion to the exam or rapidly worsening pain",
+        "meaning": "Suggests necrotizing soft tissue infection; needs urgent surgical evaluation"
+      },
+      {
+        "finding": "Dusky, gray, or black skin; bullae with sloughing; or anesthesia over the area",
+        "meaning": "Suggests necrotizing soft tissue infection; needs urgent surgical evaluation"
+      },
+      {
+        "finding": "Crepitus or crackling under the skin",
+        "meaning": "Suggests gas-forming infection or necrotizing soft tissue infection; needs urgent surgical evaluation"
+      },
+      {
+        "finding": "Hypotension, tachycardia, or altered mental status",
+        "meaning": "Suggests sepsis; needs IV fluids, IV antibiotics, and admission"
+      },
+      {
+        "finding": "Rapid progression of erythema over hours",
+        "meaning": "Suggests aggressive infection or necrotizing soft tissue infection; reassess and consider surgical consultation"
+      },
+      {
+        "finding": "Failure to improve after 48–72 hours of appropriate antibiotics",
+        "meaning": "Consider abscess, resistant organism, or alternative diagnosis; reassess and image"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Abscess formation",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Fluctuant mass within the area of cellulitis",
+          "Persistent fever despite antibiotics",
+          "Failure to improve after 48–72 hours"
+        ]
+      },
+      {
+        "name": "Sepsis",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Hypotension",
+          "Tachycardia",
+          "Altered mental status",
+          "Elevated lactate"
+        ]
+      },
+      {
+        "name": "Necrotizing soft tissue infection",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Pain out of proportion",
+          "Dusky skin",
+          "Bullae",
+          "Crepitus",
+          "Rapid progression"
+        ]
+      },
+      {
+        "name": "Lymphangitis",
+        "timing": "early",
+        "seriousness": "minor",
+        "frequency": "rare",
+        "clues": [
+          "Red streak running proximally from the area of cellulitis",
+          "Tender regional lymph nodes"
+        ]
+      },
+      {
+        "name": "Recurrent cellulitis",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Prior episodes at the same site",
+          "Persistent risk factors such as tinea pedis, lymphedema, or venous insufficiency"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "older_adults",
+        "differences": "May have little or no fever and less pain; redness can be mistaken for chronic venous changes, and they can become confused or hypotensive quickly."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Often presents with a foot ulcer or a deeper, less obvious infection; neuropathy can blunt pain and the redness may be less striking."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Can progress faster and with fewer local signs; fever may be the main clue and unusual organisms are more likely."
+      },
+      {
+        "population": "children",
+        "differences": "Often follows an insect bite or minor trauma; the child may refuse to walk or use the limb and may be fussy rather than describing pain."
+      },
+      {
+        "population": "infants",
+        "differences": "Presents with irritability, poor feeding, and fever; the skin finding may be subtle or on the diaper area."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Lower leg swelling is common in pregnancy, so cellulitis can be mistaken for normal swelling; redness and warmth help distinguish it."
+      },
+      {
+        "population": "obesity",
+        "differences": "Skin folds and leg swelling make the redness harder to see and the area harder to examine; recurrent episodes are more common."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "Fluid overload and chronic skin changes can mask or mimic cellulitis; antibiotic dosing needs adjustment."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "When did the redness start, and has it changed since then?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Onset over 1–3 days with steady enlargement of the red area; rapid spread over hours raises concern for a necrotizing infection"
+      },
+      {
+        "question": "Where did it start, and did you notice a cut, scrape, bite, or crack in the skin there?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "A portal of entry such as an insect bite, abrasion, surgical wound, or fissure between the toes"
+      },
+      {
+        "question": "How bad is the pain, and is it worse than the redness would suggest?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Pain proportionate to the visible inflammation; pain far out of proportion suggests necrotizing soft tissue infection"
+      },
+      {
+        "question": "Have you had fever, chills, or sweats?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Fever and chills suggest systemic involvement and a need for IV antibiotics or admission"
+      },
+      {
+        "question": "Is the skin turning dark, gray, or black, or are there blisters or peeling?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Dusky or black skin, bullae with sloughing, or numbness — features of necrotizing soft tissue infection requiring urgent surgical evaluation"
+      },
+      {
+        "question": "Does the area crackle or pop when you press it, or do you feel gas under the skin?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Crepitus suggests a gas-forming or necrotizing infection"
+      },
+      {
+        "question": "Have you had this kind of infection before in the same spot?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Prior episodes at the same site suggest ongoing risk factors such as tinea pedis, lymphedema, or venous insufficiency"
+      },
+      {
+        "question": "Do you have diabetes, leg swelling, lymphedema, or a weakened immune system?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Comorbidities that lower the threshold for admission and IV antibiotics and predict a worse course"
+      },
+      {
+        "question": "Are you taking prednisone, methotrexate, or a biologic such as infliximab or adalimumab?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Immunosuppression, which can blunt local signs and speed progression"
+      },
+      {
+        "question": "Have you had a recent long flight, surgery, or period of immobility, or any prior blood clot in the leg?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Features that raise the possibility of deep vein thrombosis as a competing diagnosis"
+      },
+      {
+        "question": "Do you inject drugs, or have you had a recent animal bite or fresh water exposure with an open wound?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Unusual exposures that broaden the organism differential and change antibiotic choice"
+      },
+      {
+        "question": "Any allergies to antibiotics, especially penicillins or cephalosporins?",
+        "category": "allergies",
+        "importance": "important",
+        "looking_for": "Determines safe antibiotic selection"
+      },
+      {
+        "question": "Could you be pregnant? When was your last menstrual period?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Pregnancy status before antibiotics or imaging that could affect a pregnancy"
+      },
+      {
+        "question": "Any nausea, vomiting, or feeling generally unwell?",
+        "category": "associated",
+        "importance": "optional",
+        "looking_for": "Systemic symptoms that support a more severe course"
+      },
+      {
+        "question": "Any numbness or loss of feeling over the red area?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Sensory loss over the involved skin suggests necrotizing soft tissue infection"
+      }
+    ],
+    "accepted_names": [
+      "Cellulitis",
+      "Skin and soft tissue infection",
+      "SSTI",
+      "Bacterial cellulitis",
+      "Nonpurulent cellulitis"
+    ],
+    "reasoning_points": [
+      "Acute onset over 1–3 days of a spreading, warm, tender, poorly demarcated red area, usually on the lower leg",
+      "A portal of entry such as an insect bite, abrasion, surgical wound, or interdigital fissure",
+      "Fever, chills, or malaise supporting a systemic bacterial infection",
+      "Risk factors such as diabetes, venous insufficiency, lymphedema, obesity, or immunosuppression",
+      "No fluctuance, crepitus, dusky skin, or pain out of proportion, which argues against abscess and necrotizing soft tissue infection",
+      "Alternative diagnoses such as deep vein thrombosis, stasis dermatitis, contact dermatitis, gout, or septic arthritis considered and excluded",
+      "Diagnosis is clinical; antibiotics should not be delayed for cultures or imaging in uncomplicated cases",
+      "Pregnancy excluded before antibiotics or imaging when applicable"
+    ],
+    "difficulty": {
+      "easy": [
+        "Classic lower leg presentation with a clear insect bite or abrasion",
+        "Fever and chills with a warm, spreading red plaque",
+        "Leukocytosis with neutrophil predominance",
+        "No fluctuance or red flags"
+      ],
+      "medium": [
+        "Older adult with diabetes and a foot ulcer, less striking redness and blunted pain",
+        "Bilateral leg swelling from venous insufficiency making the asymmetry harder to see",
+        "Mild pyuria or nonspecific labs that raise a urinary or other source",
+        "Patient with prior cellulitis at the same site and ongoing tinea pedis"
+      ],
+      "hard": [
+        "Immunocompromised patient with fever but minimal local signs",
+        "Pain out of proportion with early dusky skin suggesting necrotizing soft tissue infection",
+        "Pregnant patient with leg swelling mistaken for normal pregnancy changes",
+        "Failure to improve after 48–72 hours of appropriate antibiotics suggesting an occult abscess or resistant organism",
+        "Injection drug user with an atypical organism or a deep collection"
+      ]
+    }
+  }
+}

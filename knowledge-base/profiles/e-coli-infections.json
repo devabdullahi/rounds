@@ -1,0 +1,1590 @@
+{
+  "schema_version": "0.2",
+  "slug": "e-coli-infections",
+  "triage": {
+    "name": "E. coli Infections",
+    "case_suitable": true,
+    "reason": "A specific pathogen with distinct clinical syndromes (UTI, gastroenteritis, sepsis) that students diagnose via history, exam and cultures.",
+    "kind": "disease",
+    "category": "bacterial infection",
+    "organ_systems": [
+      "blood",
+      "renal",
+      "gastrointestinal"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "pediatrics",
+      "emergency",
+      "familyMedicine"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "clinic",
+      "inpatient",
+      "emergency"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:17:07Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T05:08:32Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T05:08:38Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T05:08:59Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T05:09:08Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T05:09:13Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'stool culture' was in ['initial', 'confirmatory'], kept ['initial']",
+        "auto-repaired: workup: 'blood cultures' was in ['initial', 'confirmatory'], kept ['initial']",
+        "differential salmonella-infections: no profile yet",
+        "differential campylobacter-infections: no profile yet",
+        "differential shigellosis: no profile yet",
+        "differential viral-gastroenteritis: no profile yet",
+        "differential urinary-tract-infection: no profile yet",
+        "differential hemolytic-uremic-syndrome: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 1,
+      "typical_max": 85,
+      "peak": "bimodal: young children and older adults",
+      "possible_min": 0,
+      "possible_max": 100
+    },
+    "sex": "female_predominant",
+    "demographics": [
+      "Urinary tract infections from E. coli are far more common in women than men",
+      "Enteric (diarrheal) E. coli infections affect both sexes and are most common in young children and older adults",
+      "Bloodstream infections are more common in hospitalized and older patients"
+    ],
+    "risk_factors": [
+      {
+        "text": "Female anatomy (short urethra) for urinary tract infection",
+        "strength": "strong"
+      },
+      {
+        "text": "Sexual activity or recent new sexual partner for urinary tract infection",
+        "strength": "moderate"
+      },
+      {
+        "text": "Undercooked ground beef, unpasteurized milk or juice, or contaminated produce",
+        "strength": "strong"
+      },
+      {
+        "text": "Contact with farm animals or petting zoos",
+        "strength": "moderate"
+      },
+      {
+        "text": "Swallowing contaminated water (pools, lakes)",
+        "strength": "weak"
+      },
+      {
+        "text": "Recent antibiotic use or hospitalization (for resistant or healthcare-associated strains)",
+        "strength": "moderate"
+      },
+      {
+        "text": "Urinary catheter or recent urinary instrumentation",
+        "strength": "strong"
+      },
+      {
+        "text": "Age over 65 or under 5 years",
+        "strength": "moderate"
+      }
+    ],
+    "comorbidities": [
+      "Diabetes mellitus",
+      "Immunosuppression",
+      "Chronic kidney disease",
+      "Benign prostatic hyperplasia",
+      "Urinary tract abnormalities"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Recent travel, especially to areas with poor sanitation",
+      "Attendance at daycare or contact with a child in daycare",
+      "Food prepared or eaten at a restaurant or large gathering"
+    ],
+    "exposures": [
+      "Undercooked ground beef",
+      "Unpasteurized milk or juice",
+      "Raw or unwashed vegetables and sprouts",
+      "Contaminated water",
+      "Farm animals or petting zoos",
+      "Close contact with a person who has diarrhea"
+    ],
+    "risk_medications": [
+      "Antibiotics",
+      "Immunosuppressants",
+      "Proton pump inhibitors"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I have bad stomach cramps and diarrhea",
+        "frequency": "common"
+      },
+      {
+        "text": "It hurts when I pee",
+        "frequency": "common"
+      },
+      {
+        "text": "I have a fever and feel awful",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Diarrheal illness starts abruptly, often 1–3 days after exposure; urinary symptoms build over 1–2 days",
+      "duration": "Diarrhea usually lasts 5–10 days; urinary symptoms progress over hours to days",
+      "progression": "Watery diarrhea may become bloody over 1–2 days; urinary symptoms may progress from burning to flank pain and fever",
+      "location": "Lower abdomen for enteric infection; suprapubic or flank for urinary infection",
+      "radiation": "Flank pain may radiate to the groin or back in pyelonephritis",
+      "quality": "Crampy abdominal pain; burning or stinging with urination",
+      "severity": "Moderate to severe; cramps can be 7–8/10",
+      "timing": "Cramps come in waves before bowel movements; urinary burning is constant with voiding",
+      "aggravating": [
+        "Eating",
+        "Bowel movements",
+        "Urination"
+      ],
+      "relieving": [
+        "Rest",
+        "Nothing much helps"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Watery diarrhea",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Abdominal cramps",
+          "frequency": "common"
+        },
+        {
+          "text": "Nausea",
+          "frequency": "common"
+        },
+        {
+          "text": "Vomiting",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Bloody diarrhea",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Fever or chills",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Fatigue",
+          "frequency": "common"
+        },
+        {
+          "text": "Painful urination",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Urinary urgency or frequency",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Flank pain",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Vomiting before diarrhea started",
+        "Bloody diarrhea with no prior watery stools",
+        "Recent antibiotic use before diarrhea",
+        "Sick contacts with similar illness",
+        "Joint pain or rash",
+        "Recent hospitalization"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Feeling tired",
+            "frequency": "common"
+          },
+          {
+            "text": "Fever",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Chills",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Weight loss",
+          "Night sweats"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Watery diarrhea",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Abdominal cramps",
+            "frequency": "common"
+          },
+          {
+            "text": "Nausea",
+            "frequency": "common"
+          },
+          {
+            "text": "Vomiting",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Blood in stool",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Black tarry stools",
+          "Jaundice",
+          "Constipation"
+        ],
+        "argues_against": [
+          "Bloody diarrhea without watery stools",
+          "Vomiting before diarrhea"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [
+          {
+            "text": "Burning with urination",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Going to the bathroom more often",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Urgency",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Flank pain",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Blood in urine",
+          "Difficulty starting urination",
+          "Dribbling"
+        ],
+        "argues_against": [
+          "Flank pain with high fever and chills suggests kidney involvement"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [],
+        "negatives": [
+          "Rash",
+          "Pallor",
+          "Bruising"
+        ],
+        "argues_against": [
+          "Petechial rash"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [],
+        "negatives": [
+          "Confusion",
+          "Headache",
+          "Neck stiffness"
+        ],
+        "argues_against": [
+          "Altered mental status"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Infants and young children may present with irritability, poor feeding, vomiting, and fever without localizing symptoms; bloody diarrhea can be the first sign.",
+        "missing_classic_features": [
+          "Clear description of cramps",
+          "Localized urinary symptoms"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "May have milder fever and less pain but more risk of dehydration, confusion, and progression to bloodstream infection.",
+        "missing_classic_features": [
+          "High fever",
+          "Severe abdominal pain"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "Higher risk of invasive disease, including bloodstream infection and sepsis, with less prominent gastrointestinal symptoms.",
+        "missing_classic_features": [
+          "Prominent diarrhea",
+          "Localizing urinary symptoms"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Urinary tract infection is more likely to ascend to the kidney and can trigger preterm labor; symptoms may be attributed to normal pregnancy discomfort.",
+        "missing_classic_features": [
+          "Dysuria",
+          "Frequency (may be baseline)"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Alert, well-appearing, mild discomfort, able to converse and move comfortably",
+      "moderate": "Ill-appearing but interactive, uncomfortable, prefers to lie still during cramps",
+      "severe": "Toxic-appearing, pale, diaphoretic, visibly uncomfortable, reluctant to move",
+      "critical": "Lethargic or confused, pale or mottled, diaphoretic, may be obtunded"
+    },
+    "findings": [
+      {
+        "id": "abdominal-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate all four quadrants, starting away from the area of maximal pain",
+        "finding": "Diffuse or lower abdominal tenderness without focal peritoneal signs",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "suprapubic-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate the suprapubic region",
+        "finding": "Suprapubic tenderness",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "cva-tenderness",
+        "region": "abdomen",
+        "maneuver": "Percuss each costovertebral angle",
+        "finding": "Costovertebral angle tenderness on the affected side",
+        "frequency": "sometimes",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "guarding",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen gently and then deeply",
+        "finding": "Voluntary guarding",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "rebound-tenderness",
+        "region": "abdomen",
+        "maneuver": "Ask the patient to cough, or gently release deep pressure",
+        "finding": "Rebound tenderness suggesting peritoneal irritation",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "rigid-abdomen",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen",
+        "finding": "Diffuse rigidity",
+        "frequency": "rare",
+        "min_severity": "critical",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "hyperactive-bowel-sounds",
+        "region": "abdomen",
+        "maneuver": "Auscultate the abdomen in all four quadrants",
+        "finding": "Hyperactive bowel sounds",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-bowel-sounds",
+        "region": "abdomen",
+        "maneuver": "Auscultate the abdomen",
+        "finding": "Normal bowel sounds",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-organomegaly",
+        "region": "abdomen",
+        "maneuver": "Palpate for liver and spleen",
+        "finding": "No hepatosplenomegaly",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-murphy-sign",
+        "region": "abdomen",
+        "maneuver": "Palpate the right upper quadrant during inspiration",
+        "finding": "No Murphy sign",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-jaundice",
+        "region": "heent",
+        "maneuver": "Inspect the sclerae and skin",
+        "finding": "No scleral icterus or jaundice",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "dry-mucous-membranes",
+        "region": "heent",
+        "maneuver": "Inspect the oral mucosa",
+        "finding": "Dry mucous membranes",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "tachycardia",
+        "region": "cardiac",
+        "maneuver": "Auscultate the heart and palpate the radial pulse",
+        "finding": "Tachycardia",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "no-murmur",
+        "region": "cardiac",
+        "maneuver": "Auscultate the heart",
+        "finding": "No new murmur",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "clear-lungs",
+        "region": "lung",
+        "maneuver": "Auscultate the lungs",
+        "finding": "Clear breath sounds bilaterally",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-rash",
+        "region": "skin",
+        "maneuver": "Inspect the skin",
+        "finding": "No rash or petechiae",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-cervical-motion-tenderness",
+        "region": "pelvic",
+        "maneuver": "Perform a pelvic exam when a gynecologic cause is possible",
+        "finding": "No cervical motion tenderness or adnexal mass",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "alert-mental-status",
+        "region": "mental_status",
+        "maneuver": "Assess orientation and level of consciousness",
+        "finding": "Alert and oriented",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 98.6,
+        "max": 100.4
+      },
+      "moderate": {
+        "min": 100.0,
+        "max": 101.5
+      },
+      "severe": {
+        "min": 101.0,
+        "max": 103.0
+      },
+      "critical": {
+        "min": 101.5,
+        "max": 104.5
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 100
+      },
+      "moderate": {
+        "min": 90,
+        "max": 115
+      },
+      "severe": {
+        "min": 105,
+        "max": 130
+      },
+      "critical": {
+        "min": 120,
+        "max": 150
+      }
+    },
+    "rr": {
+      "moderate": {
+        "min": 16,
+        "max": 22
+      },
+      "severe": {
+        "min": 20,
+        "max": 28
+      },
+      "critical": {
+        "min": 24,
+        "max": 34
+      }
+    },
+    "sbp": {
+      "moderate": {
+        "min": 100,
+        "max": 130
+      },
+      "severe": {
+        "min": 88,
+        "max": 110
+      },
+      "critical": {
+        "min": 70,
+        "max": 95
+      }
+    },
+    "dbp": {
+      "severe": {
+        "min": 50,
+        "max": 70
+      },
+      "critical": {
+        "min": 35,
+        "max": 60
+      }
+    },
+    "spo2": {
+      "severe": {
+        "min": 92,
+        "max": 98
+      },
+      "critical": {
+        "min": 85,
+        "max": 94
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "mild": {
+          "min": 10.5,
+          "max": 14.0
+        },
+        "moderate": {
+          "min": 12.0,
+          "max": 18.0
+        },
+        "severe": {
+          "min": 15.0,
+          "max": 24.0
+        },
+        "critical": {
+          "min": 18.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "A normal white count does not exclude E. coli infection, especially in early gastroenteritis or in older adults."
+    },
+    {
+      "test_id": "neut_pct",
+      "ranges": {
+        "mild": {
+          "min": 68,
+          "max": 80
+        },
+        "moderate": {
+          "min": 74,
+          "max": 86
+        },
+        "severe": {
+          "min": 80,
+          "max": 92
+        },
+        "critical": {
+          "min": 82,
+          "max": 94
+        }
+      },
+      "frequency": "common",
+      "importance": "important"
+    },
+    {
+      "test_id": "bands_pct",
+      "ranges": {
+        "moderate": {
+          "min": 5,
+          "max": 10
+        },
+        "severe": {
+          "min": 8,
+          "max": 18
+        },
+        "critical": {
+          "min": 10,
+          "max": 25
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "hgb",
+      "ranges": {
+        "severe": {
+          "min": 9.0,
+          "max": 12.0
+        },
+        "critical": {
+          "min": 7.0,
+          "max": 10.5
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Falls with heavy bloody diarrhea or hemolytic uremic syndrome."
+    },
+    {
+      "test_id": "plt",
+      "ranges": {
+        "severe": {
+          "min": 100,
+          "max": 150
+        },
+        "critical": {
+          "min": 20,
+          "max": 90
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Thrombocytopenia is a hallmark of hemolytic uremic syndrome after Shiga toxin-producing E. coli."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "moderate": {
+          "min": 1.2,
+          "max": 1.8
+        },
+        "severe": {
+          "min": 1.6,
+          "max": 3.0
+        },
+        "critical": {
+          "min": 2.5,
+          "max": 8.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "essential",
+      "caveat": "Rising creatinine with anemia and low platelets suggests hemolytic uremic syndrome; also rises with dehydration or pyelonephritis."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "moderate": {
+          "min": 18,
+          "max": 30
+        },
+        "severe": {
+          "min": 25,
+          "max": 45
+        },
+        "critical": {
+          "min": 35,
+          "max": 70
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Rises with dehydration and poor intake."
+    },
+    {
+      "test_id": "na",
+      "ranges": {
+        "moderate": {
+          "min": 131,
+          "max": 135
+        },
+        "severe": {
+          "min": 128,
+          "max": 133
+        },
+        "critical": {
+          "min": 125,
+          "max": 132
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "From diarrhea and volume loss."
+    },
+    {
+      "test_id": "k",
+      "ranges": {
+        "moderate": {
+          "min": 3.0,
+          "max": 3.5
+        },
+        "severe": {
+          "min": 2.6,
+          "max": 3.3
+        },
+        "critical": {
+          "min": 2.2,
+          "max": 3.2
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hypokalemia from diarrhea; hyperkalemia can occur with acute kidney injury."
+    },
+    {
+      "test_id": "hco3",
+      "ranges": {
+        "moderate": {
+          "min": 18,
+          "max": 22
+        },
+        "severe": {
+          "min": 14,
+          "max": 20
+        },
+        "critical": {
+          "min": 8,
+          "max": 16
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Metabolic acidosis from bicarbonate loss in diarrhea or from sepsis."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "severe": {
+          "min": 2.2,
+          "max": 4.0
+        },
+        "critical": {
+          "min": 3.0,
+          "max": 8.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevated lactate with hypotension or organ dysfunction suggests sepsis from a bloodstream infection."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "mild": {
+          "min": 1.0,
+          "max": 4.0
+        },
+        "moderate": {
+          "min": 3.0,
+          "max": 10.0
+        },
+        "severe": {
+          "min": 8.0,
+          "max": 20.0
+        },
+        "critical": {
+          "min": 15.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "common",
+      "importance": "optional"
+    },
+    {
+      "test_id": "procalcitonin",
+      "ranges": {
+        "moderate": {
+          "min": 0.5,
+          "max": 2.0
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 10.0
+        },
+        "critical": {
+          "min": 5.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Supports a bacterial cause and invasive disease but does not identify the organism."
+    },
+    {
+      "test_id": "ua_le",
+      "qualitative": {
+        "mild": "Trace",
+        "moderate": "1+",
+        "severe": "2+",
+        "critical": "3+"
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Present in urinary tract infection; a negative result makes urinary infection much less likely."
+    },
+    {
+      "test_id": "ua_nitrite",
+      "qualitative": {
+        "moderate": "Positive",
+        "severe": "Positive",
+        "critical": "Positive"
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Positive nitrite is fairly specific for Enterobacteriaceae such as E. coli."
+    },
+    {
+      "test_id": "ua_wbc",
+      "ranges": {
+        "mild": {
+          "min": 5,
+          "max": 15
+        },
+        "moderate": {
+          "min": 10,
+          "max": 40
+        },
+        "severe": {
+          "min": 25,
+          "max": 100
+        },
+        "critical": {
+          "min": 50,
+          "max": 200
+        }
+      },
+      "frequency": "common",
+      "importance": "important"
+    },
+    {
+      "test_id": "ua_bacteria",
+      "qualitative": {
+        "mild": "Few",
+        "moderate": "Moderate",
+        "severe": "Many",
+        "critical": "Many"
+      },
+      "frequency": "common",
+      "importance": "important"
+    },
+    {
+      "test_id": "ua_blood",
+      "qualitative": {
+        "mild": "Trace",
+        "moderate": "1+",
+        "severe": "2+",
+        "critical": "3+"
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Negative. Required in anyone who could be pregnant before imaging or antibiotics; pregnancy changes management of urinary infection."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rate",
+        "finding": "Sinus tachycardia",
+        "frequency": "common",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Sinus rhythm",
+        "frequency": "almost_always"
+      },
+      {
+        "feature": "other",
+        "finding": "Nonspecific ST-T changes with severe sepsis or electrolyte disturbance",
+        "frequency": "rare",
+        "min_severity": "severe"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "CT abdomen and pelvis with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Adults with severe abdominal pain, suspected abscess, or when another cause of acute abdomen must be excluded",
+      "findings": [
+        {
+          "text": "Colonic wall thickening with pericolonic fat stranding",
+          "frequency": "common"
+        },
+        {
+          "text": "Dilated fluid-filled loops of small and large bowel",
+          "frequency": "common"
+        },
+        {
+          "text": "No abscess or free air in uncomplicated colitis",
+          "frequency": "common"
+        },
+        {
+          "text": "Intra-abdominal abscess or free air suggesting perforation",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "CT abdomen and pelvis without contrast",
+      "modality": "ct",
+      "preferred_when": "When IV contrast cannot be given (allergy, kidney injury)",
+      "findings": [
+        {
+          "text": "Bowel wall thickening and surrounding inflammatory change",
+          "frequency": "common"
+        },
+        {
+          "text": "Less sensitive for abscess than contrast-enhanced study",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "Ultrasound of the abdomen (right upper quadrant and kidneys)",
+      "modality": "ultrasound",
+      "preferred_when": "Children and pregnancy; suspected biliary or renal source",
+      "findings": [
+        {
+          "text": "Gallbladder and biliary tree normal",
+          "frequency": "common"
+        },
+        {
+          "text": "Hydronephrosis or renal enlargement in pyelonephritis",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "No gallstones or biliary dilation",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "CT urogram",
+      "modality": "ct",
+      "preferred_when": "Recurrent or complicated urinary infection in adults",
+      "findings": [
+        {
+          "text": "Normal upper tracts in most uncomplicated infections",
+          "frequency": "common"
+        },
+        {
+          "text": "Obstructing stone or urinary tract abnormality",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Renal or perinephric abscess",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Abdominal x-ray (kidneys, ureters, bladder)",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Usually nonspecific; may show dilated bowel loops or a radiopaque stone",
+          "frequency": "sometimes"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Looks for leukocytosis, anemia, and thrombocytopenia (hemolytic uremic syndrome)"
+      },
+      {
+        "test": "bmp",
+        "why": "Assesses dehydration, electrolytes, bicarbonate, and kidney function"
+      },
+      {
+        "test": "ua",
+        "why": "Screens for urinary tract infection with leukocyte esterase, nitrite, and bacteria"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before imaging and guides antibiotic choice"
+      },
+      {
+        "test": "Stool culture",
+        "why": "Identifies E. coli and other bacterial causes in bloody or severe diarrhea"
+      },
+      {
+        "test": "Blood cultures",
+        "why": "Detects bloodstream infection in fever, rigors, or sepsis",
+        "only_if": "fever, rigors, hypotension, or other signs of sepsis"
+      },
+      {
+        "test": "lactate",
+        "why": "Screens for sepsis and tissue hypoperfusion",
+        "only_if": "hypotension, tachycardia, or concern for sepsis"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Urine culture",
+        "why": "Confirms E. coli urinary tract infection and guides antibiotic choice"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "crp",
+        "why": "Supports a bacterial cause and tracks response"
+      },
+      {
+        "test": "procalcitonin",
+        "why": "Supports bacterial infection and invasive disease"
+      },
+      {
+        "test": "Stool testing for Shiga toxin",
+        "why": "Identifies Shiga toxin-producing E. coli and guides avoidance of antibiotics",
+        "only_if": "bloody diarrhea or suspected hemolytic uremic syndrome"
+      },
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Excludes abscess, perforation, or another acute abdomen",
+        "only_if": "severe abdominal pain, peritoneal signs, or suspected abscess"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "lipase",
+        "why": "Not needed unless pain is epigastric or pancreatic disease is suspected"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in infectious diarrhea or urinary infection"
+      },
+      {
+        "test": "tsh",
+        "why": "Does not help diagnose an acute infection"
+      },
+      {
+        "test": "a1c",
+        "why": "Not part of the acute workup"
+      },
+      {
+        "test": "Abdominal x-ray (kidneys, ureters, bladder)",
+        "why": "Rarely changes management of uncomplicated infection"
+      },
+      {
+        "test": "CT urogram",
+        "why": "Not needed for a first uncomplicated urinary infection",
+        "only_if": "recurrent or complicated urinary infection"
+      }
+    ],
+    "decision_points": [
+      "Pregnancy test before imaging or antibiotics in anyone who could be pregnant",
+      "Stool culture and Shiga toxin testing before antibiotics in bloody diarrhea, since antibiotics may increase the risk of hemolytic uremic syndrome with Shiga toxin-producing E. coli",
+      "Blood cultures before antibiotics when sepsis is suspected",
+      "Urine culture before antibiotics in urinary infection to guide therapy"
+    ],
+    "criteria": [],
+    "scores": [
+      "curb_65",
+      "qsofa"
+    ]
+  },
+  "differential": [
+    {
+      "name": "Salmonella infection",
+      "slug": "salmonella-infections",
+      "why_considered": "Both cause acute watery or bloody diarrhea with fever and abdominal cramps after a food exposure.",
+      "must_not_miss": true,
+      "trigger": "Bloody diarrhea with fever after undercooked poultry, eggs, or contact with reptiles.",
+      "discriminators": {
+        "history": [
+          "Exposure to undercooked poultry, eggs, or reptiles",
+          "Diarrhea may be prolonged or relapsing",
+          "Higher fever at onset"
+        ],
+        "exam": [
+          "Diffuse abdominal tenderness",
+          "Rose spots are rare but suggest enteric fever"
+        ],
+        "labs": [
+          "Stool culture grows Salmonella, not E. coli",
+          "Blood culture may be positive in invasive disease"
+        ],
+        "imaging": [
+          "Usually normal; may show nonspecific bowel wall thickening"
+        ]
+      }
+    },
+    {
+      "name": "Campylobacter infection",
+      "slug": "campylobacter-infections",
+      "why_considered": "Leading cause of bacterial bloody diarrhea with cramps and fever.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Exposure to undercooked poultry or unpasteurized milk",
+          "Diarrhea may be bloody and last longer than E. coli",
+          "Can be followed by reactive arthritis"
+        ],
+        "exam": [
+          "Diffuse abdominal tenderness",
+          "May have rebound tenderness if colitis is severe"
+        ],
+        "labs": [
+          "Stool culture grows Campylobacter",
+          "Leukocytes in stool"
+        ],
+        "imaging": [
+          "Usually normal; may show colitis on CT"
+        ]
+      }
+    },
+    {
+      "name": "Shigella infection",
+      "slug": "shigellosis",
+      "why_considered": "Causes bloody diarrhea with fever and cramps, often with small-volume stools.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Exposure to contaminated food or water, or close contact with an infected person",
+          "Small-volume, bloody, mucoid stools",
+          "Tenesmus"
+        ],
+        "exam": [
+          "Lower abdominal tenderness",
+          "Signs of dehydration"
+        ],
+        "labs": [
+          "Stool culture grows Shigella",
+          "Fecal leukocytes present"
+        ],
+        "imaging": [
+          "Usually normal; may show colonic thickening"
+        ]
+      }
+    },
+    {
+      "name": "Viral gastroenteritis",
+      "slug": "viral-gastroenteritis",
+      "why_considered": "Common cause of watery diarrhea, vomiting, and abdominal cramps.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Vomiting often precedes diarrhea",
+          "Watery, non-bloody diarrhea",
+          "Sick contacts with similar illness"
+        ],
+        "exam": [
+          "Diffuse mild abdominal tenderness",
+          "Signs of dehydration"
+        ],
+        "labs": [
+          "Stool studies negative for bacterial pathogens",
+          "Normal or mildly elevated white count"
+        ],
+        "imaging": [
+          "Not indicated"
+        ]
+      }
+    },
+    {
+      "name": "Urinary tract infection (non-E. coli)",
+      "slug": "urinary-tract-infection",
+      "why_considered": "E. coli is the most common cause, but other bacteria can cause identical urinary symptoms.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Dysuria, frequency, urgency",
+          "Suprapubic pain",
+          "Flank pain if pyelonephritis"
+        ],
+        "exam": [
+          "Suprapubic tenderness",
+          "Costovertebral angle tenderness"
+        ],
+        "labs": [
+          "Urinalysis with leukocyte esterase, nitrites, and white blood cells",
+          "Urine culture grows a different organism"
+        ],
+        "imaging": [
+          "Not routinely needed"
+        ]
+      }
+    },
+    {
+      "name": "Hemolytic uremic syndrome (other causes)",
+      "slug": "hemolytic-uremic-syndrome",
+      "why_considered": "Can present with bloody diarrhea followed by anemia, thrombocytopenia, and kidney injury, but may be caused by other pathogens or conditions.",
+      "must_not_miss": true,
+      "trigger": "Bloody diarrhea followed by pallor, decreased urine output, and petechiae.",
+      "discriminators": {
+        "history": [
+          "Recent bloody diarrhea",
+          "Decreased urine output",
+          "Fatigue and pallor"
+        ],
+        "exam": [
+          "Pallor",
+          "Petechiae or bruising",
+          "Edema"
+        ],
+        "labs": [
+          "Anemia, thrombocytopenia, elevated creatinine",
+          "Schistocytes on peripheral smear",
+          "Negative stool culture for E. coli O157:H7 in some cases"
+        ],
+        "imaging": [
+          "Not diagnostic"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Uncomplicated watery diarrhea or cystitis; able to tolerate oral fluids, no fever or low-grade fever, no blood in stool, normal kidney function.",
+      "moderate": "Persistent diarrhea with dehydration, fever, or dysuria with suprapubic pain; may have leukocytosis but no organ dysfunction.",
+      "severe": "Bloody diarrhea with severe cramps, fever, dehydration, or pyelonephritis with flank pain and systemic symptoms; may have acute kidney injury or electrolyte abnormalities.",
+      "critical": "Sepsis with hypotension, tachycardia, altered mental status, or hemolytic uremic syndrome with anemia, thrombocytopenia, and acute kidney injury requiring dialysis."
+    },
+    "red_flags": [
+      {
+        "finding": "Bloody diarrhea",
+        "meaning": "Suggests Shiga toxin-producing E. coli or other invasive pathogen; risk of hemolytic uremic syndrome."
+      },
+      {
+        "finding": "Decreased urine output",
+        "meaning": "May indicate dehydration or acute kidney injury from hemolytic uremic syndrome."
+      },
+      {
+        "finding": "Pallor or petechiae",
+        "meaning": "Suggests anemia and thrombocytopenia, possibly hemolytic uremic syndrome."
+      },
+      {
+        "finding": "Hypotension or tachycardia",
+        "meaning": "Suggests sepsis or severe dehydration."
+      },
+      {
+        "finding": "Altered mental status",
+        "meaning": "Suggests severe dehydration, electrolyte imbalance, or sepsis."
+      },
+      {
+        "finding": "Severe abdominal pain with peritoneal signs",
+        "meaning": "Suggests perforation or another acute abdomen."
+      }
+    ],
+    "complications": [
+      {
+        "name": "Hemolytic uremic syndrome",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Bloody diarrhea followed by pallor, decreased urine output, and petechiae",
+          "Anemia, thrombocytopenia, elevated creatinine",
+          "Schistocytes on peripheral smear"
+        ]
+      },
+      {
+        "name": "Dehydration and electrolyte imbalance",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Dry mucous membranes, tachycardia, decreased skin turgor",
+          "Low bicarbonate, low potassium"
+        ]
+      },
+      {
+        "name": "Sepsis",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Fever, hypotension, tachycardia, elevated lactate",
+          "Positive blood cultures"
+        ]
+      },
+      {
+        "name": "Pyelonephritis",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Flank pain, fever, costovertebral angle tenderness",
+          "Urinalysis with white blood cells and bacteria"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Higher risk of hemolytic uremic syndrome after Shiga toxin-producing E. coli; may present with irritability, poor feeding, and bloody diarrhea."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Higher risk of severe dehydration, bloodstream infection, and death; may have milder symptoms but more rapid progression."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Urinary tract infection can ascend to pyelonephritis and trigger preterm labor; antibiotics must be chosen carefully."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Higher risk of invasive disease and sepsis; may have less prominent gastrointestinal symptoms."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "When did the diarrhea start, and how many times a day are you going?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Abrupt onset 1-3 days after exposure; frequent stools; duration under 10 days"
+      },
+      {
+        "question": "Is there blood or mucus in the stool?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Bloody diarrhea suggests Shiga toxin-producing E. coli and risk of hemolytic uremic syndrome"
+      },
+      {
+        "question": "Did the vomiting start before or after the diarrhea?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Vomiting after diarrhea; vomiting first suggests viral gastroenteritis"
+      },
+      {
+        "question": "What have you eaten in the last few days, especially ground beef, unpasteurized milk or juice, or raw produce?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Undercooked ground beef, unpasteurized dairy or juice, unwashed vegetables or sprouts"
+      },
+      {
+        "question": "Have you had contact with farm animals, petting zoos, or someone with diarrhea?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Animal contact or a sick contact with similar illness"
+      },
+      {
+        "question": "Have you traveled recently, especially to an area with poor sanitation?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Recent travel consistent with travelers' diarrhea"
+      },
+      {
+        "question": "Do you have burning with urination, going more often, or urgency?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Dysuria, frequency, urgency suggesting urinary tract infection"
+      },
+      {
+        "question": "Do you have pain in your back or side, fever, or chills?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Flank pain with fever and chills suggests pyelonephritis"
+      },
+      {
+        "question": "How much are you drinking, and how much urine are you making?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Poor intake or decreased urine output suggests dehydration or kidney injury"
+      },
+      {
+        "question": "Have you taken antibiotics recently, or been in the hospital?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Recent antibiotics or hospitalization for resistant or healthcare-associated strains"
+      },
+      {
+        "question": "Do you take immunosuppressants, steroids, or proton pump inhibitors?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Immunosuppression or acid suppression raising risk of invasive disease"
+      },
+      {
+        "question": "Do you have diabetes, kidney disease, or a weakened immune system?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Comorbidities that raise the risk of severe or invasive infection"
+      },
+      {
+        "question": "Do you use a urinary catheter or have you had urinary procedures?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Catheter or instrumentation as a source of urinary infection"
+      },
+      {
+        "question": "Could you be pregnant? When was your last period?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Pregnancy changes antibiotic choice and raises risk of ascending infection"
+      },
+      {
+        "question": "Any new sexual partner or recent sexual activity?",
+        "category": "sexual",
+        "importance": "optional",
+        "looking_for": "Sexual activity as a risk factor for urinary tract infection"
+      },
+      {
+        "question": "Any rash, bruising, or unusual bleeding?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Petechiae or bruising suggesting thrombocytopenia from hemolytic uremic syndrome"
+      },
+      {
+        "question": "Any confusion, lightheadedness, or fainting?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Altered mental status or hypotension suggesting sepsis or severe dehydration"
+      }
+    ],
+    "accepted_names": [
+      "E. coli infection",
+      "Escherichia coli infection",
+      "E. coli",
+      "Escherichia coli",
+      "E. coli gastroenteritis",
+      "E. coli urinary tract infection",
+      "E. coli UTI",
+      "Shiga toxin-producing E. coli infection",
+      "STEC infection",
+      "E. coli O157:H7 infection",
+      "E. coli sepsis",
+      "E. coli bacteremia"
+    ],
+    "reasoning_points": [
+      "Acute diarrheal illness or urinary symptoms with a compatible exposure history",
+      "Watery diarrhea that may become bloody, with crampy abdominal pain and low-grade fever",
+      "Dysuria, frequency, urgency, or flank pain suggesting urinary tract infection",
+      "Risk factors such as undercooked ground beef, unpasteurized products, animal contact, female anatomy, or catheter use",
+      "Leukocytosis with neutrophil predominance and possible dehydration on labs",
+      "Urinalysis with leukocyte esterase, nitrites, and white blood cells in urinary infection",
+      "Stool culture or Shiga toxin testing identifies the organism in diarrheal illness",
+      "Urine culture confirms E. coli urinary tract infection",
+      "Blood cultures positive in invasive or bloodstream infection",
+      "Complications such as hemolytic uremic syndrome, dehydration, pyelonephritis, or sepsis considered"
+    ],
+    "difficulty": {
+      "easy": [
+        "Young child with bloody diarrhea after eating undercooked ground beef",
+        "Classic watery then bloody diarrhea with severe cramps",
+        "Urinalysis with positive nitrites and leukocyte esterase in a woman with dysuria",
+        "Leukocytosis with left shift"
+      ],
+      "medium": [
+        "Older adult with mild diarrhea and dehydration but no fever",
+        "Pregnant woman with urinary symptoms and risk of ascending infection",
+        "Patient with recent antibiotic use and resistant organism",
+        "Diarrhea with no clear food exposure"
+      ],
+      "hard": [
+        "Infant with irritability, poor feeding, and bloody diarrhea progressing to hemolytic uremic syndrome",
+        "Immunocompromised patient with sepsis and minimal gastrointestinal symptoms",
+        "Older adult with confusion and hypotension from E. coli bloodstream infection",
+        "Bloody diarrhea followed by pallor, decreased urine output, and thrombocytopenia"
+      ]
+    }
+  }
+}

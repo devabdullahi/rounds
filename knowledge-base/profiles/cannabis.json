@@ -1,0 +1,1416 @@
+{
+  "schema_version": "0.2",
+  "slug": "cannabis",
+  "triage": {
+    "name": "Cannabis",
+    "case_suitable": true,
+    "reason": "Substance use presentation with intoxication, withdrawal, and cannabis hyperemesis; reachable by history and tox screen, though framed as a use disorder rather than a single disease.",
+    "kind": "other",
+    "category": "substance use disorder",
+    "organ_systems": [
+      "behavioral"
+    ],
+    "primary_clerkship": "psychiatry",
+    "secondary_clerkships": [
+      "emergency",
+      "familyMedicine",
+      "internalMedicine"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "psychiatric",
+      "emergency",
+      "clinic"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:16:21Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:50:45Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:50:52Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:51:01Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:51:11Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:51:17Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'troponin' to 'hs_tnt'",
+        "differential cannabinoid-hyperemesis-syndrome: no profile yet",
+        "differential cyclic-vomiting-syndrome: no profile yet",
+        "differential gastroenteritis: no profile yet",
+        "differential acute-pancreatitis: no profile yet",
+        "differential cannabis-intoxication: no profile yet",
+        "differential cannabis-withdrawal: no profile yet",
+        "differential alcohol-use-disorder: no profile yet",
+        "differential serotonin-syndrome: no profile yet",
+        "differential schizophrenia: no profile yet",
+        "differential major-depressive-disorder: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 16,
+      "typical_max": 45,
+      "peak": "18–30",
+      "possible_min": 12,
+      "possible_max": 80
+    },
+    "sex": "either",
+    "demographics": [
+      "Most common illicit drug used in the US; use is more prevalent in adolescents and young adults",
+      "Use is reported more often by males than females",
+      "Higher rates of use in states with legal recreational cannabis",
+      "More common in people with other substance use, including alcohol and tobacco"
+    ],
+    "risk_factors": [
+      {
+        "text": "Adolescent or young adult age",
+        "strength": "strong"
+      },
+      {
+        "text": "Daily or near-daily use",
+        "strength": "strong"
+      },
+      {
+        "text": "High-THC products (concentrates, dabs, vape cartridges)",
+        "strength": "strong"
+      },
+      {
+        "text": "Peer or household use",
+        "strength": "moderate"
+      },
+      {
+        "text": "Other substance use, including alcohol or tobacco",
+        "strength": "moderate"
+      },
+      {
+        "text": "Male sex",
+        "strength": "weak"
+      },
+      {
+        "text": "Family history of substance use disorder",
+        "strength": "moderate"
+      }
+    ],
+    "comorbidities": [
+      "Depression",
+      "Anxiety disorders",
+      "Attention-deficit/hyperactivity disorder",
+      "Alcohol use disorder",
+      "Tobacco use disorder",
+      "Psychotic disorders"
+    ],
+    "family_history": [
+      "Substance use disorder in a first-degree relative"
+    ],
+    "social_history": [
+      "Use with friends or alone",
+      "Use before driving or at work or school",
+      "Trying to cut down or quit and having trouble doing so",
+      "Legal or school consequences related to use"
+    ],
+    "exposures": [
+      "Smoked joints, blunts, pipes, or bongs",
+      "Vaped cannabis oil",
+      "Edibles",
+      "Dabs or concentrates",
+      "Secondhand cannabis smoke"
+    ],
+    "risk_medications": []
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I smoke weed every day and I can't seem to stop",
+        "frequency": "common"
+      },
+      {
+        "text": "I've been throwing up over and over and nothing helps",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "I feel anxious and shaky when I don't use it",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "My parents made me come in because of my marijuana use",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "I've been feeling paranoid and spaced out since I used",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Often begins in the teens or early twenties, frequently with occasional social use that escalates over months to years",
+      "duration": "Chronic, often years of use by the time of presentation",
+      "progression": "Increasing frequency and amount over time, sometimes with a switch to stronger products such as concentrates or vape cartridges; may progress to daily use and difficulty cutting back",
+      "location": "Not applicable",
+      "radiation": "Not applicable",
+      "quality": "Patients describe a relaxed, euphoric 'high' with altered time sense and increased appetite; with heavy use, they describe feeling foggy, unmotivated, or needing it just to feel normal",
+      "severity": "Variable; some present for a routine visit, others after an emergency such as severe vomiting or a panic reaction",
+      "timing": "Often daily or several times a day; withdrawal symptoms appear within a day or two of stopping and peak over the first week",
+      "aggravating": [
+        "Stress",
+        "Being around others who use",
+        "Boredom",
+        "Stopping suddenly after heavy use"
+      ],
+      "relieving": [
+        "Using more cannabis",
+        "For hyperemesis, hot showers or baths"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Cravings for cannabis",
+          "frequency": "common"
+        },
+        {
+          "text": "Irritability when not using",
+          "frequency": "common"
+        },
+        {
+          "text": "Trouble sleeping, especially when cutting back",
+          "frequency": "common"
+        },
+        {
+          "text": "Decreased appetite when not using",
+          "frequency": "common"
+        },
+        {
+          "text": "Anxiety or restlessness",
+          "frequency": "common"
+        },
+        {
+          "text": "Feeling foggy or having trouble with memory and focus",
+          "frequency": "common"
+        },
+        {
+          "text": "Cough or wheeze with smoking",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Repeated episodes of nausea, vomiting, and belly pain in heavy long-term users",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Panic, paranoia, or hallucinations after high doses",
+          "frequency": "sometimes"
+        }
+      ],
+      "pertinent_negatives": [
+        "Vomiting blood or black stools",
+        "Fever",
+        "Focal weakness or numbness",
+        "Chest pain",
+        "Weight loss despite normal appetite",
+        "Symptoms that began before any cannabis use"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fatigue or low energy",
+            "frequency": "common"
+          },
+          {
+            "text": "Decreased appetite when not using",
+            "frequency": "common"
+          },
+          {
+            "text": "Feeling hot or sweaty during withdrawal",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Fever",
+          "Unintentional weight loss"
+        ]
+      },
+      {
+        "system": "psychiatric",
+        "positives": [
+          {
+            "text": "Cravings",
+            "frequency": "common"
+          },
+          {
+            "text": "Irritability",
+            "frequency": "common"
+          },
+          {
+            "text": "Anxiety",
+            "frequency": "common"
+          },
+          {
+            "text": "Low mood",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Paranoia or suspiciousness after use",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Hallucinations after high doses",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Suicidal intent",
+          "Manic episodes",
+          "Persistent psychosis between episodes of use"
+        ],
+        "argues_against": [
+          "Primary psychotic disorder",
+          "Bipolar disorder"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Nausea",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Vomiting",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Upper abdominal pain",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Increased appetite while using",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Hematemesis",
+          "Melena",
+          "Jaundice"
+        ],
+        "argues_against": [
+          "Peptic ulcer disease",
+          "Gastroenteritis"
+        ]
+      },
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "Cough",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Wheeze",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Sore throat",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Hemoptysis",
+          "Pleuritic chest pain",
+          "Shortness of breath at rest"
+        ],
+        "argues_against": [
+          "Pneumonia",
+          "Pulmonary embolism"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Slowed reaction time",
+            "frequency": "common"
+          },
+          {
+            "text": "Trouble concentrating",
+            "frequency": "common"
+          },
+          {
+            "text": "Dizziness",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Focal weakness",
+          "Numbness",
+          "Seizures",
+          "Severe headache"
+        ],
+        "argues_against": [
+          "Stroke",
+          "Intracranial process"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [
+          {
+            "text": "Racing heartbeat after use",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Chest pain",
+          "Syncope",
+          "Leg swelling"
+        ],
+        "argues_against": [
+          "Acute coronary syndrome",
+          "Arrhythmia"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Awake, alert, relaxed; may appear mildly euphoric or giggly; no distress",
+      "moderate": "Sedated or mildly disinhibited; conjunctival injection; speech may be slow; cooperative",
+      "severe": "Markedly sedated or agitated; disoriented to time or place; poor coordination; may be diaphoretic from repeated vomiting",
+      "critical": "Obtunded or severely agitated with paranoid or hallucinatory behavior; unable to cooperate with exam; signs of dehydration or hemodynamic instability"
+    },
+    "findings": [
+      {
+        "id": "conjunctival-injection",
+        "region": "heent",
+        "maneuver": "Inspect the conjunctivae in room light",
+        "finding": "Red, injected conjunctivae without discharge or photophobia",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "pupils-normal",
+        "region": "heent",
+        "maneuver": "Check pupillary size and reactivity to light",
+        "finding": "Pupils equal, round, and reactive; normal size",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "oropharynx-normal",
+        "region": "heent",
+        "maneuver": "Inspect the oropharynx",
+        "finding": "No exudate, no tonsillar swelling, no drooling",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "tachycardia",
+        "region": "cardiac",
+        "maneuver": "Auscultate the heart and palpate the radial pulse",
+        "finding": "Regular tachycardia without murmur or gallop",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "cardiac-normal",
+        "region": "cardiac",
+        "maneuver": "Auscultate the heart",
+        "finding": "Normal S1 and S2 without murmur, rub, or gallop",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "wheeze",
+        "region": "lung",
+        "maneuver": "Auscultate all lung fields",
+        "finding": "Diffuse expiratory wheeze",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "lungs-clear",
+        "region": "lung",
+        "maneuver": "Auscultate all lung fields",
+        "finding": "Clear breath sounds without crackles or wheeze",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "epigastric-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen, starting away from any pain",
+        "finding": "Mild epigastric or periumbilical tenderness without guarding or rebound",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "abdomen-benign",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen",
+        "finding": "Soft, non-tender, no organomegaly or mass",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "skin-warm-dry",
+        "region": "skin",
+        "maneuver": "Assess skin temperature and moisture",
+        "finding": "Warm, dry skin without rash or track marks",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "skin-diaphoresis",
+        "region": "skin",
+        "maneuver": "Assess skin temperature and moisture",
+        "finding": "Cool, diaphoretic skin",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "gait-ataxia",
+        "region": "neuro",
+        "maneuver": "Observe the patient walking and perform a finger-to-nose test",
+        "finding": "Unsteady gait or impaired coordination",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "neuro-nonfocal",
+        "region": "neuro",
+        "maneuver": "Perform a focused neurologic exam including strength, sensation, and cranial nerves",
+        "finding": "No focal weakness, sensory loss, or cranial nerve deficit",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "nystagmus",
+        "region": "neuro",
+        "maneuver": "Check for nystagmus on horizontal and vertical gaze",
+        "finding": "Horizontal nystagmus",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "mental-status-intact",
+        "region": "mental_status",
+        "maneuver": "Assess orientation, attention, and memory",
+        "finding": "Alert and oriented to person, place, and time; intact attention and recall",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "mental-status-impaired",
+        "region": "mental_status",
+        "maneuver": "Assess orientation, attention, and memory",
+        "finding": "Disorientation, inattention, or impaired short-term recall",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "paranoia",
+        "region": "mental_status",
+        "maneuver": "Observe behavior and ask about suspiciousness or hallucinations",
+        "finding": "Paranoid or suspicious behavior, or reported hallucinations",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "no-focal-deficit",
+        "region": "neuro",
+        "maneuver": "Screen for focal neurologic deficits",
+        "finding": "No focal deficit",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      }
+    ]
+  },
+  "vitals": {
+    "hr": {
+      "mild": {
+        "min": 70,
+        "max": 100
+      },
+      "moderate": {
+        "min": 90,
+        "max": 120
+      },
+      "severe": {
+        "min": 100,
+        "max": 130
+      },
+      "critical": {
+        "min": 110,
+        "max": 150
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 100,
+        "max": 130
+      },
+      "moderate": {
+        "min": 90,
+        "max": 120
+      },
+      "severe": {
+        "min": 85,
+        "max": 115
+      },
+      "critical": {
+        "min": 80,
+        "max": 100
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 60,
+        "max": 80
+      },
+      "moderate": {
+        "min": 55,
+        "max": 75
+      },
+      "severe": {
+        "min": 50,
+        "max": 70
+      },
+      "critical": {
+        "min": 45,
+        "max": 65
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "ua_ketones",
+      "qualitative": {
+        "moderate": "Small",
+        "severe": "Moderate"
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Dehydration and poor oral intake during cannabinoid hyperemesis can produce ketonuria; a positive result is nonspecific."
+    },
+    {
+      "test_id": "hco3",
+      "ranges": {
+        "moderate": {
+          "min": 18,
+          "max": 21
+        },
+        "severe": {
+          "min": 14,
+          "max": 18
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Low bicarbonate reflects vomiting and volume depletion in cannabinoid hyperemesis; a normal value does not exclude it."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "moderate": {
+          "min": 18,
+          "max": 30
+        },
+        "severe": {
+          "min": 25,
+          "max": 45
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Elevated from dehydration and poor intake during hyperemesis."
+    },
+    {
+      "test_id": "k",
+      "ranges": {
+        "moderate": {
+          "min": 3.0,
+          "max": 3.4
+        },
+        "severe": {
+          "min": 2.5,
+          "max": 3.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hypokalemia from repeated vomiting; check before giving fluids."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "moderate": {
+          "min": 1.2,
+          "max": 1.6
+        },
+        "severe": {
+          "min": 1.5,
+          "max": 2.5
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Rises with dehydration from hyperemesis; a normal value does not exclude significant volume loss."
+    },
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "moderate": {
+          "min": 60,
+          "max": 69
+        },
+        "severe": {
+          "min": 45,
+          "max": 60
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hypoglycemia can occur with poor intake and vomiting; check before attributing altered mental status to cannabis alone."
+    },
+    {
+      "test_id": "tsh",
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Ordered to exclude thyroid disease when vomiting, anxiety, or tachycardia is prominent."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Negative. Required in anyone who could be pregnant before attributing nausea and vomiting to cannabis."
+    },
+    {
+      "test_id": "lipase",
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Ordered when epigastric pain is prominent to exclude pancreatitis."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rhythm",
+        "finding": "Sinus tachycardia",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "rate",
+        "finding": "Normal sinus rhythm at 60–100 bpm",
+        "frequency": "common"
+      },
+      {
+        "feature": "qt",
+        "finding": "Normal QT interval",
+        "frequency": "almost_always"
+      },
+      {
+        "feature": "conduction",
+        "finding": "Normal PR and QRS intervals without block",
+        "frequency": "almost_always"
+      },
+      {
+        "feature": "st",
+        "finding": "No ST elevation or depression",
+        "frequency": "almost_always"
+      },
+      {
+        "feature": "t_wave",
+        "finding": "No T-wave inversion",
+        "frequency": "almost_always"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Abdominal x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Usually normal; no dilated loops or free air",
+          "frequency": "almost_always"
+        }
+      ]
+    },
+    {
+      "study": "CT abdomen and pelvis with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Severe or atypical abdominal pain, or when another cause is suspected",
+      "findings": [
+        {
+          "text": "No bowel obstruction, perforation, or inflammatory mass",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Gastric distension or air-fluid levels from vomiting",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Ultrasound of the right upper quadrant",
+      "modality": "ultrasound",
+      "preferred_when": "Epigastric or right upper quadrant pain to exclude biliary disease",
+      "findings": [
+        {
+          "text": "No gallstones or gallbladder wall thickening",
+          "frequency": "almost_always"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before attributing nausea and vomiting to cannabis"
+      },
+      {
+        "test": "bmp",
+        "why": "Assesses dehydration, electrolyte losses, and renal function in vomiting or withdrawal"
+      },
+      {
+        "test": "ua",
+        "why": "Looks for ketones, infection, or other causes of symptoms"
+      },
+      {
+        "test": "glucose",
+        "why": "Excludes hypoglycemia as a cause of altered mental status or weakness"
+      },
+      {
+        "test": "cbc",
+        "why": "Screens for infection or anemia when symptoms are atypical"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Urine drug screen",
+        "why": "Detects cannabis metabolites; supports recent use but does not establish a use disorder or hyperemesis"
+      },
+      {
+        "test": "Clinical interview for cannabis use disorder",
+        "why": "The diagnosis rests on history of impaired control, craving, and continued use despite harm; no laboratory test confirms it"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "tsh",
+        "why": "Excludes thyroid disease when anxiety, tachycardia, or vomiting is prominent",
+        "only_if": "thyroid disease is suspected"
+      },
+      {
+        "test": "lipase",
+        "why": "Excludes pancreatitis when epigastric pain is prominent",
+        "only_if": "epigastric pain is prominent"
+      },
+      {
+        "test": "crp",
+        "why": "Adds evidence for an inflammatory cause when infection is suspected",
+        "only_if": "infection or inflammatory process is suspected"
+      },
+      {
+        "test": "Abdominal x-ray",
+        "why": "Screens for obstruction or perforation when vomiting is severe",
+        "only_if": "severe or persistent vomiting with abdominal distension"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "ct abdomen and pelvis with IV contrast",
+        "why": "Not routine; reserve for severe or atypical abdominal pain or suspected surgical cause",
+        "only_if": "severe or atypical abdominal pain, or another cause is suspected"
+      },
+      {
+        "test": "mri brain",
+        "why": "No role unless focal neurologic deficits or new seizures are present"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in uncomplicated cannabis use or hyperemesis"
+      },
+      {
+        "test": "hs_tnt",
+        "why": "Not indicated unless chest pain or ischemic symptoms are present"
+      },
+      {
+        "test": "blood alcohol level",
+        "why": "Not routine; order only if co-ingestion is suspected and clinically relevant"
+      }
+    ],
+    "decision_points": [
+      "Pregnancy test before attributing vomiting to cannabis in anyone who could be pregnant",
+      "Urine drug screen supports recent use but a negative result does not exclude cannabis use disorder",
+      "Consider cannabinoid hyperemesis syndrome in heavy long-term users with recurrent vomiting and compulsive hot showers",
+      "Evaluate for alternative causes when focal neurologic deficits, fever, or severe abdominal pain are present"
+    ],
+    "criteria": [
+      {
+        "name": "Cannabis use disorder (paraphrased)",
+        "summary": "A problematic pattern of cannabis use leading to impairment or distress, with at least two of the following in a 12-month period: using more or longer than intended; persistent desire or unsuccessful efforts to cut down; spending a lot of time obtaining, using, or recovering; craving; failure to fulfill obligations at work, school, or home; continued use despite social or interpersonal problems; giving up important activities; using in physically hazardous situations; continued use despite physical or psychological problems; tolerance; withdrawal.",
+        "items": [
+          "Using more or longer than intended",
+          "Persistent desire or unsuccessful efforts to cut down",
+          "Spending a lot of time obtaining, using, or recovering",
+          "Craving",
+          "Failure to fulfill major obligations",
+          "Continued use despite social or interpersonal problems",
+          "Giving up important activities",
+          "Use in physically hazardous situations",
+          "Continued use despite physical or psychological problems",
+          "Tolerance",
+          "Withdrawal"
+        ]
+      },
+      {
+        "name": "Cannabinoid hyperemesis syndrome (clinical)",
+        "summary": "A syndrome in heavy, long-term cannabis users characterized by recurrent episodes of severe nausea and vomiting, abdominal pain, and compulsive hot showers or baths that relieve symptoms; symptoms improve with cannabis cessation.",
+        "items": [
+          "Heavy long-term cannabis use",
+          "Recurrent severe nausea and vomiting",
+          "Abdominal pain",
+          "Compulsive hot showers or baths that relieve symptoms",
+          "Resolution with cannabis cessation"
+        ]
+      }
+    ],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Cannabinoid hyperemesis syndrome",
+      "slug": "cannabinoid-hyperemesis-syndrome",
+      "why_considered": "Recurrent severe nausea and vomiting in a heavy long-term cannabis user",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Years of daily use",
+          "Compulsive hot showers or baths that relieve symptoms",
+          "Episodes recur in a similar pattern",
+          "Symptoms improve with cessation"
+        ],
+        "exam": [
+          "Diaphoresis and dehydration during episodes",
+          "Mild epigastric tenderness without peritoneal signs"
+        ],
+        "labs": [
+          "Hypokalemia and low bicarbonate from vomiting",
+          "Elevated BUN and creatinine from volume loss"
+        ],
+        "imaging": [
+          "Abdominal imaging normal without obstruction or inflammation"
+        ]
+      }
+    },
+    {
+      "name": "Cyclic vomiting syndrome",
+      "slug": "cyclic-vomiting-syndrome",
+      "why_considered": "Stereotyped recurrent episodes of severe vomiting separated by symptom-free intervals",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Episodes begin in childhood or young adulthood",
+          "No heavy cannabis use",
+          "Hot showers do not reliably relieve symptoms",
+          "Personal or family history of migraine"
+        ],
+        "exam": [
+          "Normal between episodes",
+          "Dehydration during episodes"
+        ],
+        "labs": [
+          "Normal between episodes",
+          "Electrolyte derangements during episodes"
+        ]
+      }
+    },
+    {
+      "name": "Acute gastroenteritis",
+      "slug": "gastroenteritis",
+      "why_considered": "Nausea, vomiting, and abdominal discomfort",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Acute onset over hours to a day",
+          "Diarrhea",
+          "Sick contacts or recent travel",
+          "No chronic cannabis use pattern"
+        ],
+        "exam": [
+          "Diffuse mild abdominal tenderness",
+          "Signs of dehydration"
+        ],
+        "labs": [
+          "Usually normal or mild electrolyte changes"
+        ]
+      }
+    },
+    {
+      "name": "Acute pancreatitis",
+      "slug": "acute-pancreatitis",
+      "why_considered": "Severe epigastric pain with nausea and vomiting",
+      "must_not_miss": true,
+      "trigger": "Severe epigastric pain radiating to the back, especially with alcohol use",
+      "discriminators": {
+        "history": [
+          "Constant severe epigastric pain radiating to the back",
+          "Alcohol use or gallstones",
+          "Pain worsened by eating"
+        ],
+        "exam": [
+          "Epigastric tenderness with guarding",
+          "Decreased bowel sounds"
+        ],
+        "labs": [
+          "Lipase elevated more than three times the upper limit of normal"
+        ],
+        "imaging": [
+          "Pancreatic edema or peripancreatic fluid on CT"
+        ]
+      }
+    },
+    {
+      "name": "Cannabis intoxication",
+      "slug": "cannabis-intoxication",
+      "why_considered": "Recent use with euphoria, sedation, and impaired coordination",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Symptoms begin within minutes to hours of use",
+          "Resolve over several hours",
+          "No recurrent vomiting pattern"
+        ],
+        "exam": [
+          "Conjunctival injection",
+          "Slowed speech and impaired coordination",
+          "Tachycardia"
+        ],
+        "labs": [
+          "Urine drug screen positive for cannabis metabolites"
+        ]
+      }
+    },
+    {
+      "name": "Cannabis withdrawal",
+      "slug": "cannabis-withdrawal",
+      "why_considered": "Irritability, anxiety, insomnia, and decreased appetite after stopping heavy use",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Symptoms begin within a day or two of stopping",
+          "Peak over the first week",
+          "Craving for cannabis"
+        ],
+        "exam": [
+          "Restlessness",
+          "Mild tachycardia",
+          "No focal deficits"
+        ],
+        "labs": [
+          "Urine drug screen may be positive or negative depending on timing"
+        ]
+      }
+    },
+    {
+      "name": "Alcohol intoxication or withdrawal",
+      "slug": "alcohol-use-disorder",
+      "why_considered": "Altered mental status, vomiting, and autonomic symptoms in a patient who uses substances",
+      "must_not_miss": true,
+      "trigger": "Tremor, sweating, and tachycardia after stopping alcohol, or ataxia and slurred speech with recent drinking",
+      "discriminators": {
+        "history": [
+          "Heavy alcohol use",
+          "Symptoms begin hours to days after last drink",
+          "Prior withdrawal seizures or delirium tremens"
+        ],
+        "exam": [
+          "Tremor, diaphoresis, agitation",
+          "Ataxia, dysarthria, or confusion with intoxication"
+        ],
+        "labs": [
+          "Elevated AST and ALT with AST greater than ALT",
+          "Elevated GGT or MCV",
+          "Blood alcohol level detectable"
+        ],
+        "ecg": [
+          "Sinus tachycardia"
+        ]
+      }
+    },
+    {
+      "name": "Serotonin syndrome",
+      "slug": "serotonin-syndrome",
+      "why_considered": "Agitation, tachycardia, diaphoresis, and altered mental status in a patient taking serotonergic drugs",
+      "must_not_miss": true,
+      "trigger": "Recent addition or dose increase of a serotonergic medication with clonus or hyperreflexia",
+      "discriminators": {
+        "history": [
+          "Recent serotonergic medication change",
+          "Rapid onset over hours"
+        ],
+        "exam": [
+          "Clonus, hyperreflexia, and hyperthermia",
+          "Dilated pupils",
+          "Muscle rigidity"
+        ],
+        "labs": [
+          "No specific confirmatory test",
+          "Normal or mildly elevated creatine kinase"
+        ]
+      }
+    },
+    {
+      "name": "Primary psychotic disorder",
+      "slug": "schizophrenia",
+      "why_considered": "Paranoia or hallucinations in a young person who uses cannabis",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Psychotic symptoms persist between episodes of use",
+          "Symptoms began before cannabis use or continue with abstinence",
+          "Functional decline over months"
+        ],
+        "exam": [
+          "Disorganized speech or behavior",
+          "Persistent delusions or hallucinations"
+        ],
+        "labs": [
+          "Urine drug screen may be positive but does not explain persistent symptoms"
+        ]
+      }
+    },
+    {
+      "name": "Major depressive disorder",
+      "slug": "major-depressive-disorder",
+      "why_considered": "Low mood, fatigue, and decreased appetite in a patient who uses cannabis",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Depressed mood or anhedonia most of the day for at least two weeks",
+          "Symptoms persist with cannabis cessation",
+          "Sleep and appetite changes independent of use"
+        ],
+        "exam": [
+          "Psychomotor retardation or agitation",
+          "No focal neurologic deficits"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Occasional use with mild euphoria, no functional impairment, and no withdrawal symptoms",
+      "moderate": "Regular use with cravings, tolerance, and mild withdrawal symptoms such as irritability and insomnia when stopping; some problems at school or work",
+      "severe": "Daily heavy use with impaired control, continued use despite harm, and prominent withdrawal; may include recurrent vomiting from cannabinoid hyperemesis or a panic reaction",
+      "critical": "Severe agitation with paranoia or hallucinations, or cannabinoid hyperemesis with dehydration, hypokalemia, and acute kidney injury requiring IV fluids"
+    },
+    "red_flags": [
+      {
+        "finding": "Severe agitation with paranoia or hallucinations",
+        "meaning": "Acute psychosis; needs close observation and may require antipsychotic treatment"
+      },
+      {
+        "finding": "Persistent vomiting with inability to keep fluids down",
+        "meaning": "Dehydration and electrolyte loss; needs IV fluids and electrolyte replacement"
+      },
+      {
+        "finding": "Hypotension or heart rate over 120",
+        "meaning": "Volume depletion or another acute process; needs urgent evaluation"
+      },
+      {
+        "finding": "Focal weakness, numbness, or new seizure",
+        "meaning": "Not explained by cannabis; evaluate for a structural or vascular cause"
+      },
+      {
+        "finding": "Chest pain or syncope after use",
+        "meaning": "Possible cardiac complication; needs ECG and further workup"
+      },
+      {
+        "finding": "Suicidal ideation",
+        "meaning": "Immediate safety risk; needs psychiatric evaluation"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Cannabinoid hyperemesis syndrome",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Years of daily use",
+          "Recurrent vomiting",
+          "Compulsive hot showers that relieve symptoms"
+        ]
+      },
+      {
+        "name": "Dehydration and acute kidney injury",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Persistent vomiting",
+          "Elevated BUN and creatinine",
+          "Low bicarbonate"
+        ]
+      },
+      {
+        "name": "Hypokalemia from vomiting",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Repeated vomiting",
+          "Muscle weakness",
+          "Low serum potassium"
+        ]
+      },
+      {
+        "name": "Cannabis-induced psychosis",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "High-THC product use",
+          "Paranoia or hallucinations",
+          "Agitation"
+        ]
+      },
+      {
+        "name": "Cannabis use disorder",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Daily use",
+          "Failed attempts to cut down",
+          "Continued use despite problems"
+        ]
+      },
+      {
+        "name": "Withdrawal syndrome",
+        "timing": "early",
+        "seriousness": "minor",
+        "frequency": "common",
+        "clues": [
+          "Irritability, anxiety, insomnia, and decreased appetite within a day or two of stopping"
+        ]
+      },
+      {
+        "name": "Impaired driving and injury",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Use before driving",
+          "Slowed reaction time",
+          "Motor vehicle collision"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Adolescent use can interfere with brain development and is associated with poorer school performance; presentation is often driven by a parent or school rather than the patient."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Less common but increasing; may present with falls, confusion, or interactions with other medications; use may be for medical symptoms such as pain or insomnia."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Use during pregnancy is associated with lower birth weight and problems with fetal and child development; screening and counseling are important, and abrupt cessation should be supported."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Smoked cannabis carries a risk of fungal and other respiratory infections; consider this in patients with neutropenia or transplant."
+      },
+      {
+        "population": "hepatic_impairment",
+        "differences": "Cannabinoids are metabolized in the liver; effects may be prolonged and stronger in patients with cirrhosis."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "How often do you use cannabis, and how much on a typical day?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Daily or near-daily use; escalating amounts over time"
+      },
+      {
+        "question": "How long have you been using, and when did it become regular?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Years of use, often starting in the teens or early twenties"
+      },
+      {
+        "question": "How do you use it — smoked, vaped, edibles, dabs, concentrates?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "High-THC products such as concentrates or vape cartridges raise risk of dependence and hyperemesis"
+      },
+      {
+        "question": "Have you tried to cut down or stop? What happened?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Failed attempts to cut down; a core feature of cannabis use disorder"
+      },
+      {
+        "question": "Do you get cravings, or feel irritable, anxious, or unable to sleep when you are not using?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Withdrawal symptoms beginning within a day or two of stopping and peaking in the first week"
+      },
+      {
+        "question": "Has your use caused problems at school, work, or home, or with relationships?",
+        "category": "social",
+        "importance": "essential",
+        "looking_for": "Failure to meet obligations, giving up activities, or continued use despite problems"
+      },
+      {
+        "question": "Have you ever used before driving or in other risky situations?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Use in physically hazardous situations; impaired driving"
+      },
+      {
+        "question": "Have you had repeated episodes of severe vomiting with belly pain? Do hot showers or baths help?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Cannabinoid hyperemesis syndrome: recurrent vomiting with compulsive hot showers that relieve symptoms"
+      },
+      {
+        "question": "Do you use alcohol, tobacco, or other drugs?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Co-occurring substance use, which is common and affects treatment"
+      },
+      {
+        "question": "Have you felt depressed, anxious, or had thoughts of harming yourself?",
+        "category": "ros",
+        "importance": "essential",
+        "looking_for": "Co-occurring depression, anxiety, or suicidal ideation"
+      },
+      {
+        "question": "Have you ever felt paranoid or heard or seen things that were not there, especially after using?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Cannabis-induced psychosis; symptoms that persist between episodes of use suggest a primary psychotic disorder"
+      },
+      {
+        "question": "Are you pregnant, or could you be pregnant?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Pregnancy status; use in pregnancy affects fetal development"
+      },
+      {
+        "question": "Does anyone in your family have a problem with alcohol or drugs?",
+        "category": "family",
+        "importance": "important",
+        "looking_for": "Family history of substance use disorder"
+      },
+      {
+        "question": "Do you take any medications, including prescribed, over-the-counter, or herbal?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Interactions and other causes of symptoms"
+      }
+    ],
+    "accepted_names": [
+      "Cannabis use disorder",
+      "Marijuana use disorder",
+      "Cannabis dependence",
+      "Cannabis abuse",
+      "Cannabinoid hyperemesis syndrome",
+      "Cannabis intoxication",
+      "Cannabis withdrawal"
+    ],
+    "reasoning_points": [
+      "A problematic pattern of cannabis use causing impairment or distress, with features such as using more than intended, failed attempts to cut down, craving, and continued use despite harm",
+      "Tolerance and withdrawal (irritability, insomnia, decreased appetite, anxiety) support the diagnosis",
+      "Urine drug screen supports recent use but does not confirm a use disorder; a negative result does not exclude it",
+      "Cannabinoid hyperemesis syndrome should be considered in heavy long-term users with recurrent vomiting and compulsive hot showers",
+      "Pregnancy must be excluded before attributing vomiting to cannabis",
+      "Alternative causes such as pancreatitis, gastroenteritis, or primary psychotic disorder should be considered when symptoms are atypical"
+    ],
+    "difficulty": {
+      "easy": [
+        "Young adult with daily use and clear functional impairment",
+        "Classic withdrawal symptoms after stopping",
+        "Conjunctival injection and relaxed affect on exam"
+      ],
+      "medium": [
+        "Patient presents with vomiting and abdominal pain, requiring recognition of cannabinoid hyperemesis",
+        "Co-occurring anxiety or depression that complicates the picture",
+        "Adolescent brought in by a parent, with limited self-report"
+      ],
+      "hard": [
+        "Older adult with falls and confusion, where cannabis use is not initially disclosed",
+        "Pregnant patient with nausea and vomiting, requiring careful distinction from hyperemesis gravidarum",
+        "Patient with paranoia that persists between episodes of use, raising concern for a primary psychotic disorder"
+      ]
+    }
+  }
+}

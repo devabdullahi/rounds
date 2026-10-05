@@ -1,0 +1,1113 @@
+{
+  "schema_version": "0.2",
+  "slug": "common-cold",
+  "triage": {
+    "name": "Common Cold",
+    "case_suitable": true,
+    "reason": "Extremely common upper respiratory infection with classic history and exam; good for teaching viral URI and antibiotic stewardship.",
+    "kind": "disease",
+    "category": "viral infection",
+    "organ_systems": [
+      "respiratory"
+    ],
+    "primary_clerkship": "familyMedicine",
+    "secondary_clerkships": [
+      "pediatrics",
+      "internalMedicine"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "clinic",
+      "pediatric_clinic"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:16:40Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:57:34Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:57:39Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:57:43Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:57:53Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:57:59Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "differential influenza: no profile yet",
+        "differential covid-19: no profile yet",
+        "differential acute-bacterial-sinusitis: no profile yet",
+        "differential streptococcal-pharyngitis: no profile yet",
+        "differential community-acquired-pneumonia: no profile yet",
+        "differential allergic-rhinitis: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 1,
+      "typical_max": 75,
+      "peak": "children under 10 and adults with young children at home",
+      "possible_min": 0,
+      "possible_max": 100
+    },
+    "sex": "either",
+    "demographics": [
+      "Children average 5–7 colds per year; adults average 2–3",
+      "More frequent in households with school-aged children",
+      "More common in fall, winter, and early spring in temperate climates"
+    ],
+    "risk_factors": [
+      {
+        "text": "Close contact with a person who has a cold",
+        "strength": "strong"
+      },
+      {
+        "text": "Having young children at home or working in childcare or schools",
+        "strength": "strong"
+      },
+      {
+        "text": "Crowded indoor settings such as dormitories, barracks, or offices",
+        "strength": "moderate"
+      },
+      {
+        "text": "Touching the face with unwashed hands after contact with contaminated surfaces",
+        "strength": "moderate"
+      },
+      {
+        "text": "Cigarette smoke exposure, including secondhand smoke",
+        "strength": "moderate"
+      },
+      {
+        "text": "Fall or winter season",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Asthma",
+      "Chronic obstructive pulmonary disease",
+      "Allergic rhinitis"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Household members or coworkers with similar symptoms in the past week",
+      "Children in daycare or school"
+    ],
+    "exposures": [
+      "Sick contacts at home, work, or school",
+      "Recent air travel or crowded gatherings"
+    ],
+    "risk_medications": []
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My nose is stuffy and running",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "My throat is scratchy and sore",
+        "frequency": "common"
+      },
+      {
+        "text": "I keep sneezing",
+        "frequency": "common"
+      },
+      {
+        "text": "I have a cough that won't quit",
+        "frequency": "common"
+      },
+      {
+        "text": "I feel worn down and my head hurts",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual over one to two days, often starting with a scratchy throat or sneezing",
+      "duration": "Symptoms peak in 2–3 days and usually resolve within 7–10 days; cough may linger up to 2 weeks",
+      "progression": "Sore throat and sneezing come first, then nasal congestion and runny nose build over the next day or two, followed by cough; symptoms then slowly improve",
+      "location": "Nose, throat, and upper chest",
+      "radiation": "Not applicable",
+      "quality": "Scratchy throat, watery then thicker nasal drainage, dry or mildly productive cough",
+      "severity": "Mild; annoying but does not keep most people from daily activities",
+      "timing": "Continuous through the day, often worse at night when lying down",
+      "aggravating": [
+        "Lying flat",
+        "Cold air",
+        "Talking a lot",
+        "Smoke or strong odors"
+      ],
+      "relieving": [
+        "Rest",
+        "Warm fluids",
+        "Saline nasal spray",
+        "Over-the-counter decongestants or acetaminophen"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Runny nose with clear discharge",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Nasal congestion",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Sneezing",
+          "frequency": "common"
+        },
+        {
+          "text": "Sore or scratchy throat",
+          "frequency": "common"
+        },
+        {
+          "text": "Cough",
+          "frequency": "common"
+        },
+        {
+          "text": "Headache",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Low-grade fever, more often in children",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Mild body aches",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Postnasal drip",
+          "frequency": "common"
+        },
+        {
+          "text": "Watery eyes",
+          "frequency": "sometimes"
+        }
+      ],
+      "pertinent_negatives": [
+        "High fever above 102°F",
+        "Shortness of breath at rest",
+        "Chest pain with breathing",
+        "Coughing up blood",
+        "Severe headache with stiff neck",
+        "Facial pain or pressure over the sinuses",
+        "Symptoms lasting more than 10 days without any improvement",
+        "Symptoms that improved and then got worse again"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Feeling tired",
+            "frequency": "common"
+          },
+          {
+            "text": "Low-grade fever",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Chills",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Weight loss",
+          "Night sweats",
+          "High fever above 102°F"
+        ],
+        "argues_against": [
+          "Influenza, which typically causes abrupt high fever and severe body aches"
+        ]
+      },
+      {
+        "system": "ent",
+        "positives": [
+          {
+            "text": "Nasal congestion",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Runny nose",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Sneezing",
+            "frequency": "common"
+          },
+          {
+            "text": "Sore throat",
+            "frequency": "common"
+          },
+          {
+            "text": "Postnasal drip",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Ear pain",
+          "Facial pain or pressure",
+          "Loss of smell",
+          "Severe throat pain preventing swallowing"
+        ],
+        "argues_against": [
+          "Bacterial sinusitis",
+          "Streptococcal pharyngitis",
+          "Otitis media"
+        ]
+      },
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "Cough",
+            "frequency": "common"
+          },
+          {
+            "text": "Hoarse voice",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Shortness of breath at rest",
+          "Wheezing",
+          "Coughing up blood",
+          "Chest pain with breathing"
+        ],
+        "argues_against": [
+          "Pneumonia",
+          "Acute bronchitis with significant dyspnea",
+          "Asthma exacerbation"
+        ]
+      },
+      {
+        "system": "eyes",
+        "positives": [
+          {
+            "text": "Watery eyes",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Purulent eye discharge",
+          "Eye pain",
+          "Vision changes"
+        ],
+        "argues_against": [
+          "Bacterial conjunctivitis"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Headache",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Stiff neck",
+          "Confusion",
+          "Severe headache",
+          "Light sensitivity"
+        ],
+        "argues_against": [
+          "Meningitis"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Decreased appetite",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Vomiting",
+          "Diarrhea",
+          "Abdominal pain"
+        ],
+        "argues_against": [
+          "Viral gastroenteritis"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "infants",
+        "how_it_differs": "Infants cannot describe symptoms; they present with fussiness, poor feeding, nasal congestion interfering with feeding, and sometimes fever. Symptoms may last longer than in older children.",
+        "missing_classic_features": [
+          "Sore throat complaint",
+          "Headache complaint"
+        ]
+      },
+      {
+        "population": "children",
+        "how_it_differs": "Children often have higher fevers than adults and may have more prominent cough and nasal symptoms; they may also develop ear infections or sinusitis as complications.",
+        "missing_classic_features": []
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "Fever may be blunted or absent, and symptoms can be milder but complications such as pneumonia are more likely.",
+        "missing_classic_features": [
+          "Fever"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "Colds can be more severe, last longer, and progress to lower respiratory infection or pneumonia more often.",
+        "missing_classic_features": []
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Well-appearing, alert, speaking in full sentences; may sniffle or wipe nose",
+      "moderate": "Mildly uncomfortable, occasional cough, slightly hoarse voice, no distress",
+      "severe": "Tired-appearing with frequent coughing, but no respiratory distress at rest",
+      "critical": "Not applicable; the common cold does not produce a critical general appearance — if the patient looks toxic or is in respiratory distress, consider another diagnosis"
+    },
+    "findings": [
+      {
+        "id": "nasal-mucosa-edema",
+        "region": "heent",
+        "maneuver": "Inspect the nasal mucosa with a light and nasal speculum",
+        "finding": "Erythematous, swollen nasal mucosa with clear to whitish secretions",
+        "frequency": "almost_always",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "clear-rhinorrhea",
+        "region": "heent",
+        "maneuver": "Inspect the nares and ask the patient to sniff",
+        "finding": "Clear, watery nasal discharge",
+        "frequency": "almost_always",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "pharyngeal-erythema",
+        "region": "heent",
+        "maneuver": "Inspect the posterior pharynx with a tongue blade and light",
+        "finding": "Mild diffuse erythema of the posterior pharynx without exudate",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "no-tonsillar-exudate",
+        "region": "heent",
+        "maneuver": "Inspect the tonsils and posterior pharynx",
+        "finding": "No tonsillar exudate or swelling",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "no-cervical-adenopathy",
+        "region": "neck",
+        "maneuver": "Palpate the anterior and posterior cervical lymph node chains",
+        "finding": "No tender or enlarged cervical lymph nodes",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "tympanic-membranes-normal",
+        "region": "heent",
+        "maneuver": "Perform otoscopy of both ears",
+        "finding": "Tympanic membranes pearly gray, translucent, with normal landmarks and mobility",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "no-sinus-tenderness",
+        "region": "heent",
+        "maneuver": "Palpate or percuss over the frontal and maxillary sinuses",
+        "finding": "No tenderness over the sinuses",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "lungs-clear",
+        "region": "lung",
+        "maneuver": "Auscultate all lung fields anteriorly and posteriorly",
+        "finding": "Clear breath sounds without crackles, wheezes, or rhonchi",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "essential"
+      },
+      {
+        "id": "no-tachypnea",
+        "region": "lung",
+        "maneuver": "Observe respiratory rate and effort at rest",
+        "finding": "Normal respiratory rate and unlabored breathing",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "essential"
+      },
+      {
+        "id": "no-accessory-muscle-use",
+        "region": "lung",
+        "maneuver": "Observe for use of accessory muscles, nasal flaring, or retractions",
+        "finding": "No accessory muscle use, nasal flaring, or intercostal retractions",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "no-rash",
+        "region": "skin",
+        "maneuver": "Inspect the skin, including the face and trunk",
+        "finding": "No rash or petechiae",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-neck-stiffness",
+        "region": "neuro",
+        "maneuver": "Flex and rotate the neck passively",
+        "finding": "Full range of motion without pain or resistance",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 98.6,
+        "max": 99.5
+      },
+      "moderate": {
+        "min": 99.5,
+        "max": 100.4
+      },
+      "severe": {
+        "min": 100.4,
+        "max": 102.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 90
+      },
+      "moderate": {
+        "min": 70,
+        "max": 100
+      },
+      "severe": {
+        "min": 80,
+        "max": 110
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 12,
+        "max": 18
+      },
+      "moderate": {
+        "min": 14,
+        "max": 20
+      },
+      "severe": {
+        "min": 16,
+        "max": 22
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 97,
+        "max": 100
+      },
+      "moderate": {
+        "min": 96,
+        "max": 100
+      },
+      "severe": {
+        "min": 95,
+        "max": 99
+      }
+    }
+  },
+  "labs": [],
+  "imaging": [
+    {
+      "study": "Chest x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Clear lungs without focal consolidation, infiltrate, or pleural effusion",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Normal cardiomediastinal silhouette",
+          "frequency": "almost_always"
+        }
+      ]
+    },
+    {
+      "study": "CT sinuses without contrast",
+      "modality": "ct",
+      "findings": [
+        {
+          "text": "Mucosal thickening or fluid within the sinuses, which is common in an uncomplicated viral URI and does not by itself indicate bacterial sinusitis",
+          "frequency": "common"
+        },
+        {
+          "text": "No air-fluid level or complete opacification to suggest bacterial sinusitis",
+          "frequency": "common"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [],
+    "confirmatory": [],
+    "supporting": [],
+    "not_indicated": [
+      {
+        "test": "cbc",
+        "why": "The common cold is a clinical diagnosis; a blood count does not change management"
+      },
+      {
+        "test": "bmp",
+        "why": "Not needed unless the patient is dehydrated or has significant vomiting"
+      },
+      {
+        "test": "crp",
+        "why": "Does not distinguish a cold from other viral illnesses or change management"
+      },
+      {
+        "test": "procalcitonin",
+        "why": "No role in an uncomplicated upper respiratory infection"
+      },
+      {
+        "test": "Rapid influenza test",
+        "why": "Not routine for a cold; reserve for influenza-like illness with abrupt high fever and severe body aches"
+      },
+      {
+        "test": "Rapid strep test",
+        "why": "Only if features suggest streptococcal pharyngitis (exudate, tender anterior adenopathy, fever, absence of cough)"
+      },
+      {
+        "test": "Chest x-ray",
+        "why": "Not indicated for an uncomplicated cold; order only if pneumonia is suspected"
+      },
+      {
+        "test": "CT sinuses without contrast",
+        "why": "Not indicated for uncomplicated viral rhinosinusitis; reserve for suspected complications"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in upper respiratory infection"
+      },
+      {
+        "test": "tsh",
+        "why": "Not part of the evaluation of an acute cold"
+      }
+    ],
+    "decision_points": [
+      "The common cold is a clinical diagnosis; testing is reserved for patients whose features suggest an alternative or complication",
+      "Consider rapid influenza testing when onset is abrupt with high fever and prominent myalgias, especially during influenza season",
+      "Consider rapid strep testing or throat culture only when the pharyngitis features suggest group A streptococcus",
+      "Consider chest x-ray only when pneumonia is suspected (fever, tachypnea, hypoxemia, or focal lung findings)",
+      "Consider sinus imaging only when bacterial sinusitis or a complication is suspected, such as symptoms beyond 10 days without improvement, severe symptoms, or double worsening"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Influenza",
+      "slug": "influenza",
+      "why_considered": "Viral illness with cough, sore throat, and nasal symptoms",
+      "must_not_miss": true,
+      "trigger": "Abrupt onset with high fever and severe body aches during influenza season",
+      "discriminators": {
+        "history": [
+          "Abrupt onset over hours",
+          "High fever (often 102–104°F)",
+          "Severe myalgias and headache",
+          "Prominent fatigue and weakness",
+          "Sick contacts with similar illness"
+        ],
+        "exam": [
+          "Patient appears more ill than with a cold",
+          "Fever documented",
+          "Clear lungs or scattered wheezes",
+          "No rash"
+        ],
+        "labs": [
+          "Rapid influenza antigen or PCR positive",
+          "Leukopenia sometimes"
+        ],
+        "imaging": [
+          "Chest x-ray usually normal; may show infiltrates if pneumonia develops"
+        ]
+      }
+    },
+    {
+      "name": "COVID-19",
+      "slug": "covid-19",
+      "why_considered": "Viral illness with cough, sore throat, nasal congestion, and fatigue",
+      "must_not_miss": true,
+      "trigger": "Known exposure or loss of taste/smell, or severe systemic symptoms",
+      "discriminators": {
+        "history": [
+          "Known exposure to COVID-19",
+          "Loss of taste or smell",
+          "Fever, chills, myalgias",
+          "Shortness of breath may be present"
+        ],
+        "exam": [
+          "May have fever",
+          "Lungs may be clear or show crackles if pneumonia",
+          "Oxygen saturation may be low"
+        ],
+        "labs": [
+          "SARS-CoV-2 PCR or antigen positive"
+        ],
+        "imaging": [
+          "Chest x-ray may show bilateral infiltrates in severe cases"
+        ]
+      }
+    },
+    {
+      "name": "Acute bacterial sinusitis",
+      "slug": "acute-bacterial-sinusitis",
+      "why_considered": "Nasal congestion, runny nose, and cough can overlap with cold",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Facial pain or pressure",
+          "Symptoms lasting >10 days without improvement, or worsening after initial improvement",
+          "Purulent nasal discharge",
+          "Fever may be present"
+        ],
+        "exam": [
+          "Tenderness over sinuses",
+          "Purulent nasal discharge",
+          "Postnasal drip"
+        ],
+        "labs": [
+          "Not routinely needed"
+        ],
+        "imaging": [
+          "CT sinuses shows air-fluid levels or complete opacification"
+        ]
+      }
+    },
+    {
+      "name": "Acute bronchitis",
+      "slug": "acute-bronchitis",
+      "why_considered": "Prominent cough, often post-viral, can be difficult to distinguish from cold",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Cough is the predominant symptom, often lasting >5 days",
+          "May have sputum production",
+          "Usually no high fever",
+          "Often follows a cold"
+        ],
+        "exam": [
+          "Lungs may have coarse breath sounds or wheezes",
+          "No focal crackles",
+          "No tachypnea or hypoxemia"
+        ],
+        "labs": [
+          "Not routinely needed"
+        ],
+        "imaging": [
+          "Chest x-ray normal or shows increased bronchovascular markings; no consolidation"
+        ]
+      }
+    },
+    {
+      "name": "Group A streptococcal pharyngitis",
+      "slug": "streptococcal-pharyngitis",
+      "why_considered": "Sore throat is a common cold symptom",
+      "must_not_miss": true,
+      "trigger": "Sore throat with fever, tonsillar exudate, tender anterior cervical nodes, and absence of cough",
+      "discriminators": {
+        "history": [
+          "Sudden onset of severe sore throat",
+          "Fever",
+          "Absence of cough",
+          "Tender anterior cervical lymph nodes",
+          "Age 5–15 years"
+        ],
+        "exam": [
+          "Tonsillar exudate",
+          "Swollen, tender anterior cervical nodes",
+          "Palatal petechiae",
+          "Scarlet fever rash"
+        ],
+        "labs": [
+          "Rapid strep test or throat culture positive"
+        ],
+        "imaging": [
+          "Not indicated"
+        ]
+      }
+    },
+    {
+      "name": "Pneumonia",
+      "slug": "community-acquired-pneumonia",
+      "why_considered": "Cough, fever, and malaise can be present in both cold and pneumonia",
+      "must_not_miss": true,
+      "trigger": "Tachypnea, hypoxemia, focal lung findings, or high fever",
+      "discriminators": {
+        "history": [
+          "Productive cough",
+          "Fever with chills",
+          "Pleuritic chest pain",
+          "Shortness of breath",
+          "Symptoms may be more severe and prolonged"
+        ],
+        "exam": [
+          "Tachypnea",
+          "Crackles or decreased breath sounds focally",
+          "Dullness to percussion",
+          "Hypoxemia"
+        ],
+        "labs": [
+          "Leukocytosis",
+          "Elevated inflammatory markers",
+          "Sputum culture may identify pathogen"
+        ],
+        "imaging": [
+          "Chest x-ray shows focal consolidation or infiltrate"
+        ]
+      }
+    },
+    {
+      "name": "Allergic rhinitis",
+      "slug": "allergic-rhinitis",
+      "why_considered": "Sneezing, runny nose, and nasal congestion are hallmark symptoms",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Symptoms triggered by allergens (pollen, dust, pets)",
+          "No fever",
+          "Itchy eyes and nose",
+          "Seasonal pattern",
+          "No sore throat or cough typically"
+        ],
+        "exam": [
+          "Pale, boggy nasal mucosa",
+          "Clear rhinorrhea",
+          "Allergic shiners",
+          "Cobblestoning of posterior pharynx"
+        ],
+        "labs": [
+          "Allergy testing if needed"
+        ],
+        "imaging": [
+          "Not indicated"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Mild nasal congestion, sneezing, scratchy throat, no fever, able to perform daily activities",
+      "moderate": "Prominent nasal congestion, runny nose, cough, low-grade fever, mild fatigue, some interference with activities",
+      "severe": "High fever (up to 102°F), significant cough, headache, body aches, feeling quite unwell, but no respiratory distress",
+      "critical": "Not applicable; the common cold itself is not life-threatening. If a patient appears toxic or in respiratory distress, consider another diagnosis."
+    },
+    "red_flags": [
+      {
+        "finding": "Shortness of breath at rest or with minimal exertion",
+        "meaning": "Suggests pneumonia or lower respiratory involvement"
+      },
+      {
+        "finding": "Fever above 102°F or lasting more than 4 days",
+        "meaning": "May indicate a secondary bacterial infection or another diagnosis"
+      },
+      {
+        "finding": "Symptoms lasting more than 10 days without improvement",
+        "meaning": "Consider bacterial sinusitis or other complication"
+      },
+      {
+        "finding": "Symptoms that improve then worsen (double worsening)",
+        "meaning": "Suggests secondary bacterial infection"
+      },
+      {
+        "finding": "Severe headache with stiff neck or confusion",
+        "meaning": "Consider meningitis"
+      },
+      {
+        "finding": "Coughing up blood",
+        "meaning": "Consider pneumonia, tuberculosis, or other serious condition"
+      },
+      {
+        "finding": "Dehydration (decreased urine output, dry mucous membranes, poor feeding in infants)",
+        "meaning": "Needs supportive care and evaluation"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Acute otitis media",
+        "timing": "early",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Ear pain",
+          "Fever",
+          "Bulging, erythematous tympanic membrane",
+          "More common in children"
+        ]
+      },
+      {
+        "name": "Acute bacterial sinusitis",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Facial pain or pressure",
+          "Purulent nasal discharge",
+          "Symptoms >10 days without improvement or double worsening"
+        ]
+      },
+      {
+        "name": "Acute bronchitis",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Persistent cough lasting >5 days",
+          "May have sputum production",
+          "Often post-viral"
+        ]
+      },
+      {
+        "name": "Pneumonia",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "High fever",
+          "Tachypnea",
+          "Hypoxemia",
+          "Focal crackles on lung exam",
+          "Chest x-ray showing consolidation"
+        ]
+      },
+      {
+        "name": "Asthma exacerbation",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Wheezing",
+          "Shortness of breath",
+          "Chest tightness",
+          "Known asthma history"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Higher fever is common; complications like otitis media and sinusitis are more frequent. Children may have more prominent cough and nasal symptoms. Aspirin should be avoided due to risk of Reye syndrome."
+      },
+      {
+        "population": "infants",
+        "differences": "Present with fussiness, poor feeding, nasal congestion interfering with feeding, and fever. Symptoms may last longer. Watch for dehydration and respiratory distress."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Fever may be blunted or absent; symptoms can be milder but complications such as pneumonia are more likely. Monitor for worsening respiratory status."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Colds can be more severe, last longer, and progress to lower respiratory infection or pneumonia more often. Early evaluation and treatment may be needed."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Colds are usually mild, but some over-the-counter medications may not be safe. Acetaminophen is generally preferred for pain and fever. Avoid decongestants and certain cough suppressants unless approved by a provider."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "When did your symptoms start, and how have they changed since then?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Gradual onset over 1–2 days, peaking in 2–3 days; duration under 10 days"
+      },
+      {
+        "question": "What symptoms did you notice first?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Scratchy throat or sneezing first, then congestion and cough"
+      },
+      {
+        "question": "How long have the symptoms lasted?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "7–10 days typical; more than 10 days without improvement suggests bacterial sinusitis"
+      },
+      {
+        "question": "Did your symptoms improve and then get worse again?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Double worsening suggests a secondary bacterial infection"
+      },
+      {
+        "question": "Have you had any fever? How high, and for how long?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Low-grade or none; fever above 102°F or lasting more than 4 days suggests another diagnosis"
+      },
+      {
+        "question": "Are you having any trouble breathing or shortness of breath?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Absent; present suggests pneumonia or lower respiratory involvement"
+      },
+      {
+        "question": "Do you have any pain or pressure over your face or sinuses?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Absent; present suggests bacterial sinusitis"
+      },
+      {
+        "question": "Do you have ear pain or trouble hearing?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Absent; present suggests otitis media"
+      },
+      {
+        "question": "How severe is your sore throat? Can you swallow liquids?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Mild and scratchy with ability to swallow; severe pain or inability to swallow suggests another cause"
+      },
+      {
+        "question": "Has anyone around you been sick with similar symptoms?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Sick contacts at home, work, school, or daycare"
+      },
+      {
+        "question": "Do you have asthma, COPD, or any other chronic lung condition?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Asthma or COPD, which raises the risk of exacerbation or complications"
+      },
+      {
+        "question": "Do you smoke, or are you exposed to secondhand smoke?",
+        "category": "social",
+        "importance": "optional",
+        "looking_for": "Tobacco exposure, which can worsen symptoms and prolong recovery"
+      },
+      {
+        "question": "What have you taken for your symptoms so far?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Over-the-counter cold medicines, acetaminophen, or decongestants; check for duplicate ingredients"
+      },
+      {
+        "question": "Have you had any coughing up of blood?",
+        "category": "red_flag",
+        "importance": "important",
+        "looking_for": "Absent; present suggests pneumonia, tuberculosis, or another serious condition"
+      },
+      {
+        "question": "Any severe headache, stiff neck, or confusion?",
+        "category": "red_flag",
+        "importance": "important",
+        "looking_for": "Absent; present suggests meningitis"
+      }
+    ],
+    "accepted_names": [
+      "Common cold",
+      "Viral upper respiratory infection",
+      "Viral URI",
+      "Upper respiratory infection",
+      "URI",
+      "Rhinovirus infection",
+      "Viral rhinosinusitis",
+      "Acute viral rhinosinusitis"
+    ],
+    "reasoning_points": [
+      "Gradual onset of nasal congestion, runny nose, sneezing, and sore throat over 1–2 days",
+      "Symptoms peak in 2–3 days and improve within 7–10 days, though cough may linger up to 2 weeks",
+      "Low-grade or no fever; absence of high fever, shortness of breath, or focal lung findings",
+      "Clear nasal discharge with erythematous, swollen nasal mucosa on exam",
+      "Tympanic membranes normal and no sinus tenderness, arguing against otitis media or bacterial sinusitis",
+      "Lungs clear without crackles or wheezes and no tachypnea or hypoxemia, arguing against pneumonia",
+      "No features suggesting streptococcal pharyngitis (no exudate, no tender anterior adenopathy, cough present)",
+      "Diagnosis is clinical; testing and antibiotics are not indicated for an uncomplicated cold"
+    ],
+    "difficulty": {
+      "easy": [
+        "Young adult or school-aged child with classic gradual onset of congestion, runny nose, and sneezing",
+        "Clear rhinorrhea and mild pharyngeal erythema on exam",
+        "Afebrile or low-grade fever",
+        "Sick contact at home or school",
+        "Symptoms improving by day 5–7"
+      ],
+      "medium": [
+        "Patient with prominent cough and postnasal drip where acute bronchitis is considered",
+        "Patient with a history of allergic rhinitis and similar recurring symptoms",
+        "Low-grade fever in a child with nasal congestion and fussiness",
+        "Symptoms at day 8–9 with slow but steady improvement",
+        "Patient requesting antibiotics for a cold"
+      ],
+      "hard": [
+        "Infant with fussiness, poor feeding, and nasal congestion but no classic symptom description",
+        "Older adult with blunted fever and mild symptoms where pneumonia must be excluded",
+        "Patient with asthma and cough where an exacerbation must be considered",
+        "Symptoms lasting more than 10 days without improvement, raising concern for bacterial sinusitis",
+        "Patient with double worsening of symptoms suggesting a secondary bacterial infection"
+      ]
+    }
+  }
+}

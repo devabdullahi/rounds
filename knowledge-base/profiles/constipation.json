@@ -1,0 +1,1444 @@
+{
+  "schema_version": "0.2",
+  "slug": "constipation",
+  "triage": {
+    "name": "Constipation",
+    "case_suitable": true,
+    "reason": "Very common symptom-based diagnosis reachable by history and exam; good for teaching red flags and secondary causes.",
+    "kind": "symptom",
+    "category": "gastrointestinal motility disorder",
+    "organ_systems": [
+      "gastrointestinal"
+    ],
+    "primary_clerkship": "familyMedicine",
+    "secondary_clerkships": [
+      "pediatrics",
+      "internalMedicine",
+      "surgery"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "clinic",
+      "pediatric_clinic",
+      "emergency"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:16:40Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:58:51Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:58:56Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:59:15Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:59:25Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:59:30Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'abdominal x-ray' was in ['confirmatory', 'not_indicated'], kept ['not_indicated', 'confirmatory']",
+        "auto-repaired: workup: 'ct abdomen and pelvis with iv contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'colonoscopy' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'abdominal x-ray' was in ['confirmatory', 'not_indicated'], kept ['not_indicated', 'confirmatory']",
+        "auto-repaired: workup: 'ct abdomen and pelvis with iv contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'colonoscopy' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "differential colorectal-cancer: no profile yet",
+        "differential bowel-obstruction: no profile yet",
+        "differential irritable-bowel-syndrome: no profile yet",
+        "differential hypothyroidism: no profile yet",
+        "differential hypercalcemia: no profile yet",
+        "differential fecal-impaction: no profile yet",
+        "differential medication-induced-constipation: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 18,
+      "typical_max": 85,
+      "peak": "bimodal: young women in their 20s–30s and adults over 65",
+      "possible_min": 0,
+      "possible_max": 110
+    },
+    "sex": "female_predominant",
+    "demographics": [
+      "More common in women than men",
+      "Prevalence rises with age, especially after age 65",
+      "More common in people with lower income and lower fiber intake",
+      "Common in people who are bedbound or in long-term care"
+    ],
+    "risk_factors": [
+      {
+        "text": "Low dietary fiber intake",
+        "strength": "strong"
+      },
+      {
+        "text": "Inadequate fluid intake or dehydration",
+        "strength": "moderate"
+      },
+      {
+        "text": "Physical inactivity or immobility",
+        "strength": "moderate"
+      },
+      {
+        "text": "Female sex",
+        "strength": "moderate"
+      },
+      {
+        "text": "Older age",
+        "strength": "moderate"
+      },
+      {
+        "text": "Pregnancy",
+        "strength": "moderate"
+      },
+      {
+        "text": "Ignoring the urge to have a bowel movement",
+        "strength": "moderate"
+      },
+      {
+        "text": "Recent travel or change in routine",
+        "strength": "weak"
+      },
+      {
+        "text": "Low socioeconomic status",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Irritable bowel syndrome",
+      "Hypothyroidism",
+      "Diabetes mellitus",
+      "Parkinson disease",
+      "Depression",
+      "Prior abdominal or pelvic surgery",
+      "Hemorrhoids or anal fissure",
+      "Colorectal cancer",
+      "Hypercalcemia",
+      "Spinal cord injury"
+    ],
+    "family_history": [
+      "Family history of constipation or irritable bowel syndrome"
+    ],
+    "social_history": [
+      "Sedentary lifestyle",
+      "Low-fiber diet",
+      "Inadequate water intake",
+      "Bedbound or limited mobility",
+      "Long-term care residence"
+    ],
+    "exposures": [
+      "Recent travel with change in diet or routine"
+    ],
+    "risk_medications": [
+      "opioids",
+      "iron supplements",
+      "calcium carbonate",
+      "aluminum hydroxide",
+      "diphenhydramine",
+      "oxybutynin",
+      "amitriptyline",
+      "verapamil",
+      "furosemide",
+      "hydrochlorothiazide",
+      "sucralfate",
+      "clonidine",
+      "ondansetron"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I haven't had a bowel movement in days",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "It hurts to poop",
+        "frequency": "common"
+      },
+      {
+        "text": "My poop is hard and dry",
+        "frequency": "common"
+      },
+      {
+        "text": "I feel bloated and full",
+        "frequency": "common"
+      },
+      {
+        "text": "I have to strain to go",
+        "frequency": "common"
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual over days to weeks; often chronic and intermittent over months",
+      "duration": "Usually days to weeks for acute episodes; chronic if present for more than 3 months",
+      "progression": "Slowly worsens as stool becomes harder and more difficult to pass; may improve with diet changes or laxatives",
+      "location": "Lower abdomen, often left lower quadrant",
+      "radiation": "Usually none",
+      "quality": "Dull, crampy, pressure-like discomfort",
+      "severity": "Mild to moderate; 3–6/10",
+      "timing": "Intermittent, often worse after meals",
+      "aggravating": [
+        "Low-fiber meals",
+        "Dehydration",
+        "Sitting for long periods",
+        "Ignoring the urge to go"
+      ],
+      "relieving": [
+        "Passing stool",
+        "Passing gas",
+        "Warm drinks",
+        "Walking",
+        "Laxatives"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Abdominal bloating or distension",
+          "frequency": "common"
+        },
+        {
+          "text": "Straining with bowel movements",
+          "frequency": "common"
+        },
+        {
+          "text": "Sensation of incomplete evacuation",
+          "frequency": "common"
+        },
+        {
+          "text": "Hard or lumpy stools",
+          "frequency": "common"
+        },
+        {
+          "text": "Abdominal pain or cramping",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Nausea",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Decreased appetite",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Rectal bleeding from hemorrhoids or fissure",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Headache",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Vomiting",
+        "Blood in stool (other than streaks from hemorrhoids)",
+        "Unintentional weight loss",
+        "Fever",
+        "Severe constant abdominal pain",
+        "Inability to pass gas",
+        "Night sweats",
+        "Recent travel to areas with poor sanitation"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Feeling tired or sluggish",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Fever",
+          "Unintentional weight loss",
+          "Night sweats"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Bloating",
+            "frequency": "common"
+          },
+          {
+            "text": "Abdominal cramping",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Hard stools",
+            "frequency": "common"
+          },
+          {
+            "text": "Straining",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Vomiting",
+          "Hematochezia",
+          "Melena",
+          "Jaundice"
+        ],
+        "argues_against": [
+          "Blood in stool",
+          "Vomiting",
+          "Severe pain"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [],
+        "negatives": [
+          "Dysuria",
+          "Hematuria",
+          "Urinary retention"
+        ],
+        "argues_against": [
+          "Urinary symptoms suggesting obstruction"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [],
+        "negatives": [
+          "Weakness",
+          "Numbness",
+          "Difficulty walking",
+          "Confusion"
+        ],
+        "argues_against": [
+          "Neurologic deficits suggesting spinal cord lesion"
+        ]
+      },
+      {
+        "system": "psychiatric",
+        "positives": [
+          {
+            "text": "Feeling stressed or anxious",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Depressed mood",
+          "Suicidal ideation"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "infants",
+        "how_it_differs": "Present with crying during bowel movements, hard stools, or infrequent stools; may have anal fissure. Often related to diet transitions or formula.",
+        "missing_classic_features": [
+          "Verbal description of symptoms"
+        ]
+      },
+      {
+        "population": "children",
+        "how_it_differs": "Often present with withholding behavior, soiling, abdominal pain, or urinary symptoms; may have a history of painful bowel movements leading to fear of going.",
+        "missing_classic_features": [
+          "Clear description of stool frequency"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "More likely to have multiple contributing factors including medications, immobility, and comorbid conditions; may present with overflow incontinence or fecal impaction.",
+        "missing_classic_features": [
+          "Abdominal pain"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Very common due to hormonal changes and pressure from the uterus; may present with hemorrhoids and rectal bleeding.",
+        "missing_classic_features": [
+          "Chronic history"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "May have more severe or atypical infections causing constipation, such as Clostridioides difficile or other pathogens; consider infectious causes.",
+        "missing_classic_features": [
+          "Typical dietary causes"
+        ]
+      },
+      {
+        "population": "diabetes",
+        "how_it_differs": "May be due to autonomic neuropathy; often chronic and resistant to usual treatments.",
+        "missing_classic_features": [
+          "Acute onset"
+        ]
+      },
+      {
+        "population": "obesity",
+        "how_it_differs": "Often associated with low fiber intake and sedentary lifestyle; may be part of metabolic syndrome.",
+        "missing_classic_features": [
+          "Normal weight"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Comfortable, no distress",
+      "moderate": "Mild abdominal discomfort, otherwise well-appearing",
+      "severe": "Ill-appearing, diaphoretic, lying still due to pain",
+      "critical": "Toxic-appearing, lethargic, pale, or obtunded"
+    },
+    "findings": [
+      {
+        "id": "abdominal-distension",
+        "region": "abdomen",
+        "maneuver": "Inspect the abdomen",
+        "finding": "Abdominal distension",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "abdominal-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen",
+        "finding": "Mild, diffuse abdominal tenderness without guarding or rebound",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "palpable-stool",
+        "region": "abdomen",
+        "maneuver": "Palpate the left lower quadrant",
+        "finding": "Palpable stool in the descending or sigmoid colon",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "normal-bowel-sounds",
+        "region": "abdomen",
+        "maneuver": "Auscultate bowel sounds",
+        "finding": "Normal bowel sounds",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-guarding",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen",
+        "finding": "No guarding or rebound tenderness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-organomegaly",
+        "region": "abdomen",
+        "maneuver": "Palpate for hepatosplenomegaly",
+        "finding": "No hepatosplenomegaly",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-mass",
+        "region": "abdomen",
+        "maneuver": "Palpate for abdominal masses",
+        "finding": "No abdominal mass",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "rectal-fissure",
+        "region": "rectal",
+        "maneuver": "Inspect the perianal area",
+        "finding": "Anal fissure or hemorrhoids",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "rectal-stool",
+        "region": "rectal",
+        "maneuver": "Perform a digital rectal exam",
+        "finding": "Hard stool in the rectal vault",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "rectal-mass",
+        "region": "rectal",
+        "maneuver": "Perform a digital rectal exam",
+        "finding": "Rectal mass or stricture",
+        "frequency": "rare",
+        "significance": "argues_against",
+        "importance": "essential"
+      },
+      {
+        "id": "normal-neuro",
+        "region": "neuro",
+        "maneuver": "Perform a focused neurologic exam",
+        "finding": "No focal neurologic deficits",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "moderate": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "severe": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "critical": {
+        "min": 97.8,
+        "max": 99.1
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 100
+      },
+      "moderate": {
+        "min": 60,
+        "max": 100
+      },
+      "severe": {
+        "min": 60,
+        "max": 100
+      },
+      "critical": {
+        "min": 60,
+        "max": 100
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 12,
+        "max": 20
+      },
+      "moderate": {
+        "min": 12,
+        "max": 20
+      },
+      "severe": {
+        "min": 12,
+        "max": 20
+      },
+      "critical": {
+        "min": 12,
+        "max": 20
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 90,
+        "max": 120
+      },
+      "moderate": {
+        "min": 90,
+        "max": 120
+      },
+      "severe": {
+        "min": 90,
+        "max": 120
+      },
+      "critical": {
+        "min": 90,
+        "max": 120
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 60,
+        "max": 80
+      },
+      "moderate": {
+        "min": 60,
+        "max": 80
+      },
+      "severe": {
+        "min": 60,
+        "max": 80
+      },
+      "critical": {
+        "min": 60,
+        "max": 80
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 95,
+        "max": 100
+      },
+      "moderate": {
+        "min": 95,
+        "max": 100
+      },
+      "severe": {
+        "min": 95,
+        "max": 100
+      },
+      "critical": {
+        "min": 95,
+        "max": 100
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "tsh",
+      "ranges": {
+        "moderate": {
+          "min": 4.5,
+          "max": 10.0
+        },
+        "severe": {
+          "min": 10.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hypothyroidism is a treatable cause of chronic constipation; a normal TSH makes it unlikely."
+    },
+    {
+      "test_id": "ca",
+      "ranges": {
+        "moderate": {
+          "min": 10.3,
+          "max": 11.5
+        },
+        "severe": {
+          "min": 11.5,
+          "max": 14.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hypercalcemia causes constipation and can be from malignancy or hyperparathyroidism."
+    },
+    {
+      "test_id": "k",
+      "ranges": {
+        "mild": {
+          "min": 3.0,
+          "max": 3.4
+        },
+        "moderate": {
+          "min": 2.5,
+          "max": 2.9
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 2.4
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hypokalemia slows bowel motility; often from diuretics or vomiting."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "moderate": {
+          "min": 1.2,
+          "max": 2.0
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 4.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Dehydration or renal impairment can contribute; guides safe laxative use."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "moderate": {
+          "min": 21,
+          "max": 35
+        },
+        "severe": {
+          "min": 35,
+          "max": 60
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Elevated from dehydration or poor intake."
+    },
+    {
+      "test_id": "hgb",
+      "ranges": {
+        "mild": {
+          "min": 10.0,
+          "max": 11.9
+        },
+        "moderate": {
+          "min": 8.0,
+          "max": 9.9
+        },
+        "severe": {
+          "min": 6.0,
+          "max": 7.9
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Anemia raises concern for colorectal cancer or other chronic disease, especially in older adults."
+    },
+    {
+      "test_id": "mcv",
+      "ranges": {
+        "mild": {
+          "min": 70,
+          "max": 79
+        },
+        "moderate": {
+          "min": 60,
+          "max": 69
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Microcytosis suggests iron deficiency, which may accompany occult gastrointestinal blood loss."
+    },
+    {
+      "test_id": "ferritin",
+      "ranges": {
+        "mild": {
+          "min": 8,
+          "max": 10
+        },
+        "moderate": {
+          "min": 4,
+          "max": 7
+        },
+        "severe": {
+          "min": 1,
+          "max": 3
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Low ferritin supports iron deficiency and warrants evaluation for gastrointestinal blood loss."
+    },
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "moderate": {
+          "min": 11.5,
+          "max": 16.0
+        },
+        "severe": {
+          "min": 16.0,
+          "max": 25.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Leukocytosis is uncommon in simple constipation and suggests an alternative diagnosis such as infection or ischemia."
+    },
+    {
+      "test_id": "a1c",
+      "ranges": {
+        "moderate": {
+          "min": 5.7,
+          "max": 6.4
+        },
+        "severe": {
+          "min": 6.5,
+          "max": 12.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Diabetes can cause autonomic neuropathy and chronic constipation."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Order in anyone who could be pregnant before imaging or laxatives; pregnancy itself causes constipation and changes management."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "moderate": {
+          "min": 1.1,
+          "max": 5.0
+        },
+        "severe": {
+          "min": 5.0,
+          "max": 15.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Elevation is not expected in simple constipation and should prompt evaluation for inflammation or infection."
+    }
+  ],
+  "imaging": [
+    {
+      "study": "Abdominal x-ray",
+      "modality": "xray",
+      "preferred_when": "Suspected fecal impaction or bowel obstruction when the diagnosis is unclear",
+      "findings": [
+        {
+          "text": "Large amount of stool throughout the colon, especially the rectum and sigmoid",
+          "frequency": "common"
+        },
+        {
+          "text": "Dilated loops of bowel with air-fluid levels suggesting obstruction",
+          "frequency": "rare"
+        },
+        {
+          "text": "Nonspecific or normal study",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "CT abdomen and pelvis with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Red flags such as weight loss, severe pain, or suspected obstruction or malignancy",
+      "findings": [
+        {
+          "text": "Colonic stool burden with a dilated colon",
+          "frequency": "common"
+        },
+        {
+          "text": "Colonic mass or stricture causing obstruction",
+          "frequency": "rare"
+        },
+        {
+          "text": "Proximal colonic dilation with a transition point (obstruction)",
+          "frequency": "rare"
+        },
+        {
+          "text": "No acute abnormality",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "Colonoscopy",
+      "modality": "endoscopy",
+      "preferred_when": "Adults with alarm features or age-appropriate colorectal cancer screening",
+      "findings": [
+        {
+          "text": "Normal colon",
+          "frequency": "common"
+        },
+        {
+          "text": "Diverticulosis",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Colorectal mass or polyp",
+          "frequency": "rare"
+        },
+        {
+          "text": "Stricture or inflammatory changes",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Anorectal manometry",
+      "modality": "other",
+      "preferred_when": "Chronic constipation not responding to treatment, to assess pelvic floor function",
+      "findings": [
+        {
+          "text": "Normal resting and squeeze pressures",
+          "frequency": "common"
+        },
+        {
+          "text": "Impaired relaxation of the anal sphincter or absent rectoanal inhibitory reflex (dyssynergic defecation)",
+          "frequency": "sometimes"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Looks for anemia or leukocytosis suggesting bleeding, infection, or malignancy"
+      },
+      {
+        "test": "bmp",
+        "why": "Checks potassium, calcium, and kidney function as reversible contributors"
+      },
+      {
+        "test": "tsh",
+        "why": "Hypothyroidism is a common treatable cause of chronic constipation"
+      },
+      {
+        "test": "hcg",
+        "why": "Pregnancy causes constipation and changes safe treatment choices",
+        "only_if": "patient could be pregnant"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Abdominal x-ray",
+        "why": "Confirms a large stool burden or suggests obstruction when the diagnosis is uncertain",
+        "only_if": "suspected fecal impaction or obstruction"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "a1c",
+        "why": "Identifies diabetes as a cause of autonomic neuropathy",
+        "only_if": "chronic constipation or risk factors for diabetes"
+      },
+      {
+        "test": "ferritin",
+        "why": "Evaluates for iron deficiency from occult gastrointestinal blood loss",
+        "only_if": "anemia or microcytosis on CBC"
+      },
+      {
+        "test": "crp",
+        "why": "Screens for inflammation when infection or ischemia is a concern",
+        "only_if": "fever, severe pain, or systemic symptoms"
+      },
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Evaluates for obstruction, mass, or other structural cause",
+        "only_if": "alarm features such as weight loss, severe pain, or suspected obstruction"
+      },
+      {
+        "test": "Colonoscopy",
+        "why": "Evaluates for colorectal cancer, stricture, or other mucosal disease",
+        "only_if": "alarm features or age-appropriate colorectal cancer screening"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Abdominal x-ray",
+        "why": "Not needed for typical constipation without concern for impaction or obstruction"
+      },
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Not routine for uncomplicated constipation"
+      },
+      {
+        "test": "Colonoscopy",
+        "why": "Not routine without alarm features or screening indication"
+      },
+      {
+        "test": "Anorectal manometry",
+        "why": "Reserved for chronic constipation that does not respond to treatment"
+      },
+      {
+        "test": "lipase",
+        "why": "No role unless pancreatitis is suspected"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in constipation"
+      },
+      {
+        "test": "ua",
+        "why": "Not needed unless urinary symptoms suggest another cause"
+      }
+    ],
+    "decision_points": [
+      "Check for alarm features (rectal bleeding, weight loss, anemia, new onset after age 50) before treating as simple constipation",
+      "Pregnancy test before imaging or laxatives in anyone who could be pregnant",
+      "Digital rectal exam is essential to detect impaction, mass, or fissure",
+      "Consider medication review for opioids, iron, anticholinergics, and calcium channel blockers"
+    ],
+    "criteria": [
+      {
+        "name": "Rome IV criteria for functional constipation (paraphrased)",
+        "summary": "Two or more of: straining, hard stools, incomplete evacuation, sensation of blockage, manual maneuvers to pass stool, or fewer than three spontaneous bowel movements per week, present for at least three months with symptom onset at least six months earlier, and not explained by another condition.",
+        "items": [
+          "Straining with more than a quarter of bowel movements",
+          "Hard or lumpy stools in more than a quarter of bowel movements",
+          "Sensation of incomplete evacuation in more than a quarter of bowel movements",
+          "Sensation of anorectal blockage in more than a quarter of bowel movements",
+          "Manual maneuvers to help pass stool in more than a quarter of bowel movements",
+          "Fewer than three spontaneous bowel movements per week"
+        ]
+      }
+    ],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Colorectal cancer",
+      "slug": "colorectal-cancer",
+      "why_considered": "A colonic mass can narrow the lumen and cause progressively worsening constipation, especially in older adults.",
+      "must_not_miss": true,
+      "trigger": "New constipation after age 50, rectal bleeding, unintentional weight loss, or iron deficiency anemia",
+      "discriminators": {
+        "history": [
+          "Change in stool caliber (pencil-thin stools)",
+          "Unintentional weight loss",
+          "Rectal bleeding or blood mixed with stool",
+          "Family history of colorectal cancer"
+        ],
+        "exam": [
+          "Palpable abdominal mass",
+          "Rectal mass on digital rectal exam",
+          "Pallor suggesting anemia"
+        ],
+        "labs": [
+          "Iron deficiency anemia with low ferritin and low MCV",
+          "Occult blood in stool"
+        ],
+        "imaging": [
+          "Colonic mass or stricture on CT or colonoscopy",
+          "Apple-core lesion on barium enema"
+        ]
+      }
+    },
+    {
+      "name": "Bowel obstruction",
+      "slug": "bowel-obstruction",
+      "why_considered": "Constipation with abdominal pain and distension can be the presenting picture of a mechanical obstruction.",
+      "must_not_miss": true,
+      "trigger": "Inability to pass gas, vomiting, severe distension, or prior abdominal surgery",
+      "discriminators": {
+        "history": [
+          "Inability to pass gas or stool",
+          "Vomiting, often bilious or feculent",
+          "Prior abdominal or pelvic surgery (adhesions)",
+          "Colicky abdominal pain"
+        ],
+        "exam": [
+          "Marked abdominal distension",
+          "High-pitched or absent bowel sounds",
+          "Tympanitic abdomen"
+        ],
+        "labs": [
+          "Elevated BUN/creatinine from dehydration",
+          "Leukocytosis if ischemia or perforation",
+          "Metabolic alkalosis from vomiting"
+        ],
+        "imaging": [
+          "Dilated bowel loops with air-fluid levels on x-ray",
+          "Transition point on CT"
+        ]
+      }
+    },
+    {
+      "name": "Irritable bowel syndrome with constipation",
+      "slug": "irritable-bowel-syndrome",
+      "why_considered": "Chronic constipation with abdominal pain and bloating is common in IBS-C and overlaps with functional constipation.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Recurrent abdominal pain related to defecation",
+          "Pain relieved by bowel movement",
+          "Alternating constipation and diarrhea over time",
+          "Symptoms for years with no alarm features"
+        ],
+        "exam": [
+          "Mild diffuse tenderness without guarding",
+          "Normal rectal exam"
+        ],
+        "labs": [
+          "Normal CBC, TSH, calcium"
+        ],
+        "imaging": [
+          "Normal colonoscopy if performed"
+        ]
+      }
+    },
+    {
+      "name": "Hypothyroidism",
+      "slug": "hypothyroidism",
+      "why_considered": "Slowed metabolism and gut motility from hypothyroidism can cause chronic constipation.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Fatigue, cold intolerance, weight gain",
+          "Dry skin, hair loss",
+          "Menstrual irregularities"
+        ],
+        "exam": [
+          "Bradycardia",
+          "Delayed relaxation of deep tendon reflexes",
+          "Diffuse hair thinning, dry skin"
+        ],
+        "labs": [
+          "Elevated TSH with low free T4"
+        ]
+      }
+    },
+    {
+      "name": "Hypercalcemia",
+      "slug": "hypercalcemia",
+      "why_considered": "Elevated calcium slows bowel motility and can present with constipation, especially in malignancy or hyperparathyroidism.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Polyuria, polydipsia",
+          "Confusion or lethargy",
+          "Bone pain",
+          "History of cancer or kidney stones"
+        ],
+        "exam": [
+          "Altered mental status",
+          "Dehydration"
+        ],
+        "labs": [
+          "Elevated serum calcium",
+          "Elevated PTH (hyperparathyroidism) or suppressed PTH (malignancy)"
+        ]
+      }
+    },
+    {
+      "name": "Fecal impaction",
+      "slug": "fecal-impaction",
+      "why_considered": "A hard stool mass in the rectum can cause obstruction-like symptoms and overflow incontinence, especially in older or immobile patients.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "No bowel movement for many days",
+          "Leakage of liquid stool (overflow incontinence)",
+          "Chronic opioid use or immobility"
+        ],
+        "exam": [
+          "Hard stool palpable in the rectal vault on digital rectal exam",
+          "Palpable stool in the left lower quadrant"
+        ],
+        "imaging": [
+          "Large stool burden in the rectum and sigmoid on abdominal x-ray"
+        ]
+      }
+    },
+    {
+      "name": "Medication-induced constipation",
+      "slug": "medication-induced-constipation",
+      "why_considered": "Many common medications slow gut motility and are a frequent reversible cause of constipation.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Recent start or dose increase of opioids, iron, calcium channel blockers, anticholinergics, or diuretics",
+          "Temporal relationship between medication change and symptom onset"
+        ],
+        "exam": [
+          "No alarm features",
+          "Normal abdominal and rectal exam"
+        ],
+        "labs": [
+          "Normal TSH, calcium, potassium"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Infrequent hard stools with mild straining and bloating; patient is comfortable, no distension, normal vitals, and symptoms respond to diet and lifestyle changes.",
+      "moderate": "Persistent constipation with abdominal discomfort, bloating, and distension; may have palpable stool or mild tenderness; no systemic symptoms or alarm features.",
+      "severe": "Marked distension and pain with inability to pass stool despite laxatives; may have vomiting or signs of impaction; requires urgent evaluation for obstruction.",
+      "critical": "Constipation complicated by bowel obstruction, perforation, or sepsis with hemodynamic instability; life-threatening and requires emergency intervention."
+    },
+    "red_flags": [
+      {
+        "finding": "Rectal bleeding or blood mixed with stool",
+        "meaning": "Suggests colorectal cancer, ischemia, or other serious mucosal disease; needs evaluation"
+      },
+      {
+        "finding": "Unintentional weight loss",
+        "meaning": "Raises concern for malignancy or chronic disease"
+      },
+      {
+        "finding": "New constipation after age 50",
+        "meaning": "Warrants evaluation for colorectal cancer"
+      },
+      {
+        "finding": "Inability to pass gas or stool with vomiting",
+        "meaning": "Suggests bowel obstruction; urgent imaging and surgical evaluation"
+      },
+      {
+        "finding": "Severe constant abdominal pain or peritoneal signs",
+        "meaning": "Suggests perforation, ischemia, or peritonitis; emergency"
+      },
+      {
+        "finding": "Iron deficiency anemia",
+        "meaning": "Suggests occult gastrointestinal blood loss, possibly from colorectal cancer"
+      },
+      {
+        "finding": "Fever or leukocytosis",
+        "meaning": "Suggests infection, ischemia, or perforation rather than simple constipation"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Fecal impaction",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "No bowel movement for many days",
+          "Overflow incontinence of liquid stool",
+          "Hard stool on digital rectal exam"
+        ]
+      },
+      {
+        "name": "Hemorrhoids and anal fissure",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "common",
+        "clues": [
+          "Painful bowel movements",
+          "Bright red blood on toilet paper",
+          "Anal pain or itching"
+        ]
+      },
+      {
+        "name": "Bowel obstruction",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Vomiting",
+          "Marked distension",
+          "Inability to pass gas",
+          "Dilated bowel loops on imaging"
+        ]
+      },
+      {
+        "name": "Fecal impaction with perforation",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Severe abdominal pain",
+          "Peritoneal signs",
+          "Free air on imaging"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Often present with withholding behavior, soiling, abdominal pain, or urinary symptoms; may have a history of painful bowel movements leading to fear of going. Treatment focuses on education, toilet training, and disimpaction."
+      },
+      {
+        "population": "infants",
+        "differences": "Present with crying during bowel movements, hard stools, or infrequent stools; may have anal fissure. Often related to diet transitions or formula. Breastfed infants may normally have infrequent stools."
+      },
+      {
+        "population": "older_adults",
+        "differences": "More likely to have multiple contributing factors including medications, immobility, and comorbid conditions; may present with overflow incontinence or fecal impaction. Higher risk of colorectal cancer and obstruction."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Very common due to hormonal changes and pressure from the uterus; may present with hemorrhoids and rectal bleeding. Treatment focuses on fiber, fluids, and safe laxatives; avoid stimulant laxatives unless advised."
+      },
+      {
+        "population": "diabetes",
+        "differences": "May be due to autonomic neuropathy; often chronic and resistant to usual treatments. Evaluate for other causes and optimize glycemic control."
+      },
+      {
+        "population": "obesity",
+        "differences": "Often associated with low fiber intake and sedentary lifestyle; may be part of metabolic syndrome. Weight loss and increased activity can help."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "How many bowel movements have you had in the past week?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Fewer than three per week suggests constipation; a normal frequency argues against it"
+      },
+      {
+        "question": "When did this start, and has it been getting worse?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Gradual onset over days to weeks; new or progressive change in a person over 50 raises concern for a structural cause"
+      },
+      {
+        "question": "What do your stools look like — hard, lumpy, or dry?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Hard or lumpy stools support the diagnosis"
+      },
+      {
+        "question": "Do you have to strain, or feel like you cannot completely empty?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Straining and incomplete evacuation are core features"
+      },
+      {
+        "question": "Does it hurt to pass stool, or have you seen blood on the toilet paper?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Painful passage or bright red streaks suggest hemorrhoids or an anal fissure; blood mixed with stool is a red flag"
+      },
+      {
+        "question": "Have you been unable to pass gas, or had vomiting?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Inability to pass gas or stool with vomiting suggests bowel obstruction and needs urgent evaluation"
+      },
+      {
+        "question": "Have you lost weight without trying?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Unintentional weight loss raises concern for malignancy or chronic disease"
+      },
+      {
+        "question": "Any fever, severe constant pain, or night sweats?",
+        "category": "red_flag",
+        "importance": "important",
+        "looking_for": "Suggests infection, ischemia, or another serious cause rather than simple constipation"
+      },
+      {
+        "question": "What do you usually eat and drink in a day?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Low fiber and low fluid intake are common reversible contributors"
+      },
+      {
+        "question": "How much do you move around during the day?",
+        "category": "social",
+        "importance": "optional",
+        "looking_for": "Sedentary lifestyle or immobility slows bowel motility"
+      },
+      {
+        "question": "Do you ever hold it in or ignore the urge to go?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Ignoring the urge is a common behavioral contributor, especially in children and busy adults"
+      },
+      {
+        "question": "What medications do you take, including anything for pain, iron, or allergies?",
+        "category": "medications",
+        "importance": "essential",
+        "looking_for": "Opioids, iron, calcium carbonate, anticholinergics, calcium channel blockers, and diuretics are common causes"
+      },
+      {
+        "question": "Have you had abdominal or pelvic surgery before?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Prior surgery raises concern for adhesions or obstruction"
+      },
+      {
+        "question": "Do you have thyroid problems, diabetes, or Parkinson disease?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Hypothyroidism, diabetes with autonomic neuropathy, and Parkinson disease cause chronic constipation"
+      },
+      {
+        "question": "Does anyone in your family have constipation, IBS, or colon cancer?",
+        "category": "family",
+        "importance": "optional",
+        "looking_for": "Family history of constipation or IBS; colon cancer raises concern for a structural cause"
+      },
+      {
+        "question": "Could you be pregnant? When was your last period?",
+        "category": "obstetric",
+        "importance": "important",
+        "looking_for": "Pregnancy causes constipation and changes safe treatment choices"
+      },
+      {
+        "question": "Any burning with urination, blood in the urine, or trouble urinating?",
+        "category": "ros",
+        "importance": "optional",
+        "looking_for": "Urinary symptoms may point to another cause or to pelvic floor dysfunction"
+      },
+      {
+        "question": "Any weakness, numbness, or trouble walking?",
+        "category": "ros",
+        "importance": "optional",
+        "looking_for": "Neurologic deficits suggest a spinal cord lesion rather than simple constipation"
+      }
+    ],
+    "accepted_names": [
+      "Constipation",
+      "Functional constipation",
+      "Chronic constipation",
+      "Simple constipation",
+      "Idiopathic constipation"
+    ],
+    "reasoning_points": [
+      "Fewer than three bowel movements per week with hard stools, straining, or incomplete evacuation",
+      "Symptoms are chronic or recurrent rather than a single episode",
+      "No alarm features: no rectal bleeding, weight loss, fever, vomiting, or inability to pass gas",
+      "Medication review identifies or excludes opioids, iron, anticholinergics, and calcium channel blockers",
+      "Reversible causes considered and checked: hypothyroidism, hypercalcemia, hypokalemia, dehydration, pregnancy",
+      "Digital rectal exam performed to look for impaction, mass, or fissure",
+      "Red flags prompt evaluation for obstruction or colorectal cancer rather than routine treatment"
+    ],
+    "difficulty": {
+      "easy": [
+        "Young adult with low fiber and fluid intake",
+        "Fewer than three bowel movements a week with hard stools",
+        "Bloating and straining, otherwise well",
+        "No alarm features and normal vitals"
+      ],
+      "medium": [
+        "Older adult on multiple medications including an opioid or calcium channel blocker",
+        "Chronic constipation with intermittent abdominal pain and bloating suggesting IBS-C",
+        "Pregnancy with hemorrhoids and rectal bleeding",
+        "Hypothyroidism or hypercalcemia found on labs"
+      ],
+      "hard": [
+        "Older adult with new constipation, weight loss, and iron deficiency anemia suggesting colorectal cancer",
+        "Patient with vomiting and inability to pass gas suggesting bowel obstruction",
+        "Older or immobile patient with overflow incontinence from fecal impaction",
+        "Child with withholding behavior and soiling rather than a clear complaint of constipation"
+      ]
+    }
+  }
+}

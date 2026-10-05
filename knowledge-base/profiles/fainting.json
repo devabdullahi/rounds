@@ -1,0 +1,1594 @@
+{
+  "schema_version": "0.2",
+  "slug": "fainting",
+  "triage": {
+    "name": "Fainting",
+    "case_suitable": true,
+    "reason": "Syncope is a classic undifferentiated symptom with a broad differential (cardiac, reflex, orthostatic) reachable by history, orthostatics, ECG and targeted testing.",
+    "kind": "symptom",
+    "category": "transient loss of consciousness",
+    "organ_systems": [
+      "cardiovascular",
+      "nervous"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "emergency",
+      "familyMedicine",
+      "neurology",
+      "pediatrics"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "emergency",
+      "clinic",
+      "inpatient"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:17:26Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T05:13:17Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T05:13:23Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T05:13:35Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T05:13:45Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T05:13:51Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'ecg' to 'ECG'",
+        "auto-repaired: ecg: dropped extra keys ['note'] (findings carry their own leads)",
+        "auto-repaired: workup: 'echocardiogram, transthoracic' was in ['initial', 'confirmatory'], kept ['initial']",
+        "auto-repaired: workup: 'ct head without contrast' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'mri brain with and without contrast' was in ['confirmatory', 'not_indicated'], kept ['not_indicated', 'confirmatory']",
+        "auto-repaired: workup: 'ct pulmonary angiogram' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ct head without contrast' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'mri brain with and without contrast' was in ['confirmatory', 'not_indicated'], kept ['not_indicated', 'confirmatory']",
+        "auto-repaired: workup: 'ct pulmonary angiogram' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "differential seizure: no profile yet",
+        "differential hypoglycemia: no profile yet",
+        "differential orthostatic-hypotension: no profile yet",
+        "differential cardiac-arrhythmia: no profile yet",
+        "differential structural-heart-disease: no profile yet",
+        "differential pulmonary-embolism: no profile yet",
+        "differential transient-ischemic-attack: no profile yet",
+        "differential psychogenic-pseudosyncope: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 15,
+      "typical_max": 85,
+      "peak": "bimodal: teens/young adults and adults over 60",
+      "possible_min": 1,
+      "possible_max": 100
+    },
+    "sex": "either",
+    "demographics": [
+      "Reflex (vasovagal) fainting is the most common type and is especially frequent in adolescents and young adults",
+      "Fainting from heart rhythm problems or orthostatic causes becomes more common with age",
+      "Lifetime occurrence is common in the general population"
+    ],
+    "risk_factors": [
+      {
+        "text": "Previous fainting episodes",
+        "strength": "strong"
+      },
+      {
+        "text": "Prolonged standing, warm environments, or crowded rooms",
+        "strength": "moderate"
+      },
+      {
+        "text": "Emotional stress, pain, or the sight of blood",
+        "strength": "moderate"
+      },
+      {
+        "text": "Dehydration or missed meals",
+        "strength": "moderate"
+      },
+      {
+        "text": "Straining, coughing, or urinating (situational triggers)",
+        "strength": "weak"
+      },
+      {
+        "text": "Family history of fainting",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Heart disease, including arrhythmias, valve disease, or heart failure",
+      "Diabetes",
+      "Parkinson disease or other conditions causing autonomic dysfunction",
+      "Anemia",
+      "Pregnancy"
+    ],
+    "family_history": [
+      "Fainting or sudden cardiac death in a close relative"
+    ],
+    "social_history": [
+      "Athletic training or military drill with prolonged standing",
+      "Hot weather or outdoor work"
+    ],
+    "exposures": [
+      "Warm, crowded environments",
+      "Prolonged motionless standing"
+    ],
+    "risk_medications": [
+      "hydrochlorothiazide",
+      "furosemide",
+      "lisinopril",
+      "metoprolol",
+      "doxazosin",
+      "nitroglycerin",
+      "sertraline",
+      "insulin"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I passed out",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "I felt like I was going to faint",
+        "frequency": "common"
+      },
+      {
+        "text": "I blacked out for a few seconds",
+        "frequency": "common"
+      }
+    ],
+    "hpi": {
+      "onset": "Sudden, often while standing or shortly after standing up",
+      "duration": "Loss of consciousness lasts seconds to about a minute; full recovery within minutes",
+      "progression": "A warning feeling of lightheadedness, warmth, or nausea builds over seconds, then consciousness is lost and the person slumps or falls; recovery is quick and complete",
+      "location": "Whole-body event; no focal location",
+      "radiation": "Not applicable",
+      "quality": "Brief loss of consciousness with loss of muscle tone",
+      "severity": "Episodes are brief but can cause injury from falling",
+      "timing": "Occurs while standing or sitting upright; not during sleep",
+      "aggravating": [
+        "Standing for a long time",
+        "Warm or crowded rooms",
+        "Pain or the sight of blood",
+        "Emotional stress",
+        "Standing up quickly",
+        "Straining or coughing"
+      ],
+      "relieving": [
+        "Lying down",
+        "Sitting with the head lowered",
+        "Cool air and fluids"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Lightheadedness or dizziness before the event",
+          "frequency": "common"
+        },
+        {
+          "text": "Nausea",
+          "frequency": "common"
+        },
+        {
+          "text": "Cold, clammy skin and sweating",
+          "frequency": "common"
+        },
+        {
+          "text": "Blurred, dimming, or tunnel vision",
+          "frequency": "common"
+        },
+        {
+          "text": "Ringing in the ears",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Brief jerking movements of the arms or legs during the faint",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Feeling tired or confused for a short time afterward",
+          "frequency": "sometimes"
+        }
+      ],
+      "pertinent_negatives": [
+        "Chest pain or palpitations before the event",
+        "Loss of consciousness during exercise or while lying down",
+        "Confusion lasting more than a few minutes after waking",
+        "Tongue biting",
+        "Loss of bladder or bowel control",
+        "Fever",
+        "One-sided weakness or numbness",
+        "Severe headache",
+        "Recent head injury"
+      ]
+    },
+    "ros": [
+      {
+        "system": "cardiovascular",
+        "positives": [
+          {
+            "text": "Palpitations just before fainting",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Feeling of the heart racing",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Chest pain",
+          "Fainting during exertion",
+          "Leg swelling"
+        ],
+        "argues_against": [
+          "Fainting during exercise suggests a heart rhythm or structural heart cause"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Lightheadedness before the event",
+            "frequency": "common"
+          },
+          {
+            "text": "Brief jerking movements during the faint",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Persistent confusion",
+          "Weakness on one side",
+          "Trouble speaking",
+          "Severe headache",
+          "Vision loss in one eye"
+        ],
+        "argues_against": [
+          "Prolonged confusion after the event",
+          "Focal neurologic deficits"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Nausea",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Vomiting blood",
+          "Black stools",
+          "Severe abdominal pain"
+        ],
+        "argues_against": [
+          "Bleeding causing low blood volume"
+        ]
+      },
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Feeling warm or sweaty before the event",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Fever",
+          "Weight loss",
+          "Night sweats"
+        ]
+      },
+      {
+        "system": "psychiatric",
+        "positives": [
+          {
+            "text": "Anxiety or emotional stress before the event",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Symptoms occurring only when observed by others",
+          "Intentional self-injury"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "older_adults",
+        "how_it_differs": "Fainting is more often caused by heart rhythm problems, medication effects, or orthostatic drops in blood pressure; warning symptoms may be absent and injuries from falls are more common.",
+        "missing_classic_features": [
+          "Clear warning before the event",
+          "Obvious trigger such as heat or emotion"
+        ]
+      },
+      {
+        "population": "children",
+        "how_it_differs": "Young children may not describe warning symptoms and instead appear pale, limp, or briefly unresponsive, often after a fall, pain, or crying.",
+        "missing_classic_features": [
+          "Ability to describe lightheadedness or vision changes"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Fainting can occur from pressure of the uterus on the large veins when lying flat, from low blood sugar, or from anemia; it is more likely in later pregnancy.",
+        "missing_classic_features": [
+          "Fainting only while standing"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Alert, fully oriented, no distress; normal between episodes",
+      "moderate": "Pale and diaphoretic, looks unwell but fully alert and oriented",
+      "severe": "Pale, clammy, anxious; may have injured themselves in the fall",
+      "critical": "Altered mental status or persistent unresponsiveness; may have obvious trauma"
+    },
+    "findings": [
+      {
+        "id": "orthostatic-vitals",
+        "region": "general",
+        "maneuver": "Measure blood pressure and heart rate supine, then after standing for 1 and 3 minutes",
+        "finding": "Drop in systolic blood pressure of at least 20 mm Hg or diastolic of at least 10 mm Hg within 3 minutes of standing, often with a rise in heart rate",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "pallor",
+        "region": "skin",
+        "maneuver": "Inspect the face, conjunctivae, and palms",
+        "finding": "Pallor",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "diaphoresis",
+        "region": "skin",
+        "maneuver": "Inspect and palpate the skin",
+        "finding": "Cool, clammy, sweaty skin",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "no-focal-neuro-deficit",
+        "region": "neuro",
+        "maneuver": "Screen cranial nerves, strength, sensation, and coordination",
+        "finding": "No focal neurologic deficit",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "normal-mental-status",
+        "region": "mental_status",
+        "maneuver": "Assess orientation and attention",
+        "finding": "Alert and fully oriented with normal attention",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "no-tongue-laceration",
+        "region": "heent",
+        "maneuver": "Inspect the tongue and oral mucosa",
+        "finding": "No tongue biting or oral laceration",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-head-trauma",
+        "region": "heent",
+        "maneuver": "Inspect and palpate the scalp, face, and skull",
+        "finding": "No hematoma, laceration, or palpable skull deformity",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "carotid-no-bruit",
+        "region": "neck",
+        "maneuver": "Auscultate the carotid arteries",
+        "finding": "No carotid bruit",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-heart-sounds",
+        "region": "cardiac",
+        "maneuver": "Auscultate the heart in the sitting and supine positions",
+        "finding": "Normal S1 and S2 without murmur, gallop, or rub",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "murmur",
+        "region": "cardiac",
+        "maneuver": "Auscultate the heart, including with the patient standing and squatting",
+        "finding": "Systolic murmur that changes with position, suggesting structural heart disease such as aortic stenosis or hypertrophic cardiomyopathy",
+        "frequency": "rare",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "irregular-rhythm",
+        "region": "cardiac",
+        "maneuver": "Palpate the radial pulse and auscultate the heart",
+        "finding": "Irregularly irregular rhythm or bradycardia",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "clear-lungs",
+        "region": "lung",
+        "maneuver": "Auscultate both lungs",
+        "finding": "Clear breath sounds without crackles or wheeze",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-abdominal-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen",
+        "finding": "No tenderness, mass, or pulsatile mass",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-fecal-blood",
+        "region": "rectal",
+        "maneuver": "Perform a digital rectal exam when gastrointestinal bleeding is suspected",
+        "finding": "No gross blood or melena",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-limb-trauma",
+        "region": "extremities",
+        "maneuver": "Inspect and palpate the limbs and joints",
+        "finding": "No deformity, swelling, or focal tenderness from the fall",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "important"
+      }
+    ]
+  },
+  "vitals": {
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 100
+      },
+      "moderate": {
+        "min": 50,
+        "max": 110
+      },
+      "severe": {
+        "min": 40,
+        "max": 130
+      },
+      "critical": {
+        "min": 30,
+        "max": 150
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 100,
+        "max": 130
+      },
+      "moderate": {
+        "min": 85,
+        "max": 110
+      },
+      "severe": {
+        "min": 70,
+        "max": 100
+      },
+      "critical": {
+        "min": 50,
+        "max": 90
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 60,
+        "max": 85
+      },
+      "moderate": {
+        "min": 50,
+        "max": 75
+      },
+      "severe": {
+        "min": 40,
+        "max": 65
+      },
+      "critical": {
+        "min": 30,
+        "max": 60
+      }
+    },
+    "spo2": {
+      "severe": {
+        "min": 88,
+        "max": 94
+      },
+      "critical": {
+        "min": 80,
+        "max": 92
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "hgb",
+      "ranges": {
+        "mild": {
+          "min": 10.5,
+          "max": 11.9
+        },
+        "moderate": {
+          "min": 8.5,
+          "max": 10.4
+        },
+        "severe": {
+          "min": 6.5,
+          "max": 8.4
+        },
+        "critical": {
+          "min": 4.5,
+          "max": 6.4
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Anemia can cause or worsen fainting; a normal hemoglobin does not exclude acute blood loss early."
+    },
+    {
+      "test_id": "hct",
+      "ranges": {
+        "mild": {
+          "min": 32,
+          "max": 35
+        },
+        "moderate": {
+          "min": 26,
+          "max": 31
+        },
+        "severe": {
+          "min": 20,
+          "max": 25
+        },
+        "critical": {
+          "min": 14,
+          "max": 19
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "mild": {
+          "min": 55,
+          "max": 69
+        },
+        "moderate": {
+          "min": 40,
+          "max": 54
+        },
+        "severe": {
+          "min": 25,
+          "max": 39
+        },
+        "critical": {
+          "min": 15,
+          "max": 24
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "essential",
+      "caveat": "Hypoglycemia is a key mimic of fainting; check a bedside glucose in anyone with altered mental status or diabetes."
+    },
+    {
+      "test_id": "na",
+      "ranges": {
+        "mild": {
+          "min": 130,
+          "max": 134
+        },
+        "moderate": {
+          "min": 125,
+          "max": 129
+        },
+        "severe": {
+          "min": 118,
+          "max": 124
+        },
+        "critical": {
+          "min": 110,
+          "max": 117
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hyponatremia can cause lightheadedness and confusion that mimic fainting."
+    },
+    {
+      "test_id": "k",
+      "ranges": {
+        "mild": {
+          "min": 3.0,
+          "max": 3.4
+        },
+        "moderate": {
+          "min": 2.5,
+          "max": 2.9
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 2.4
+        },
+        "critical": {
+          "min": 1.5,
+          "max": 1.9
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Low potassium from diuretics can trigger arrhythmias and fainting."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "mild": {
+          "min": 21,
+          "max": 30
+        },
+        "moderate": {
+          "min": 31,
+          "max": 45
+        },
+        "severe": {
+          "min": 46,
+          "max": 70
+        },
+        "critical": {
+          "min": 71,
+          "max": 110
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "A high BUN with a high BUN/creatinine ratio suggests dehydration or low blood volume."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "mild": {
+          "min": 1.2,
+          "max": 1.5
+        },
+        "moderate": {
+          "min": 1.6,
+          "max": 2.2
+        },
+        "severe": {
+          "min": 2.3,
+          "max": 3.5
+        },
+        "critical": {
+          "min": 3.6,
+          "max": 6.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important"
+    },
+    {
+      "test_id": "hs_tnt",
+      "ranges": {
+        "mild": {
+          "min": 15,
+          "max": 30
+        },
+        "moderate": {
+          "min": 31,
+          "max": 80
+        },
+        "severe": {
+          "min": 81,
+          "max": 300
+        },
+        "critical": {
+          "min": 301,
+          "max": 2000
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Order when chest pain, exertional fainting, or concern for myocardial ischemia; a normal troponin does not exclude arrhythmic syncope."
+    },
+    {
+      "test_id": "bnp",
+      "ranges": {
+        "mild": {
+          "min": 101,
+          "max": 300
+        },
+        "moderate": {
+          "min": 301,
+          "max": 900
+        },
+        "severe": {
+          "min": 901,
+          "max": 2500
+        },
+        "critical": {
+          "min": 2501,
+          "max": 6000
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Elevated in heart failure or structural heart disease; not a routine syncope test."
+    },
+    {
+      "test_id": "tsh",
+      "ranges": {
+        "mild": {
+          "min": 4.1,
+          "max": 8.0
+        },
+        "moderate": {
+          "min": 8.1,
+          "max": 15.0
+        },
+        "severe": {
+          "min": 15.1,
+          "max": 30.0
+        },
+        "critical": {
+          "min": 30.1,
+          "max": 60.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Thyroid disease can contribute to palpitations, arrhythmia, or orthostasis."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Check in anyone who could be pregnant; a positive result changes imaging and medication choices and raises concern for ectopic pregnancy with rupture."
+    },
+    {
+      "test_id": "cortisol_am",
+      "ranges": {
+        "mild": {
+          "min": 3,
+          "max": 4
+        },
+        "moderate": {
+          "min": 2,
+          "max": 2.9
+        },
+        "severe": {
+          "min": 1,
+          "max": 1.9
+        },
+        "critical": {
+          "min": 0.1,
+          "max": 0.9
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Only when adrenal insufficiency is suspected from hypotension, hyperpigmentation, or chronic steroid use."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rhythm",
+        "finding": "Sinus rhythm",
+        "frequency": "common"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Atrial fibrillation or atrial flutter with a rapid or slow ventricular response",
+        "frequency": "sometimes"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Sinus bradycardia",
+        "frequency": "sometimes"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Ventricular tachycardia or other wide-complex tachycardia",
+        "frequency": "rare"
+      },
+      {
+        "feature": "rate",
+        "finding": "Heart rate under 50 beats per minute",
+        "frequency": "sometimes"
+      },
+      {
+        "feature": "rate",
+        "finding": "Heart rate over 150 beats per minute",
+        "frequency": "rare"
+      },
+      {
+        "feature": "pr",
+        "finding": "Prolonged PR interval (first-degree AV block)",
+        "frequency": "sometimes"
+      },
+      {
+        "feature": "pr",
+        "finding": "Progressively lengthening PR then a dropped QRS (second-degree AV block, Mobitz I)",
+        "frequency": "rare"
+      },
+      {
+        "feature": "pr",
+        "finding": "Intermittent dropped QRS without PR lengthening (Mobitz II) or complete AV block",
+        "frequency": "rare"
+      },
+      {
+        "feature": "qrs",
+        "finding": "Widened QRS over 120 ms",
+        "frequency": "sometimes"
+      },
+      {
+        "feature": "qrs",
+        "finding": "Left ventricular hypertrophy by voltage criteria",
+        "frequency": "sometimes"
+      },
+      {
+        "feature": "qt",
+        "finding": "Prolonged QTc over 480 ms",
+        "frequency": "sometimes"
+      },
+      {
+        "feature": "qt",
+        "finding": "Short QTc under 340 ms (short QT syndrome)",
+        "frequency": "rare"
+      },
+      {
+        "feature": "st",
+        "finding": "ST elevation or depression suggesting acute myocardial ischemia or infarction",
+        "frequency": "rare"
+      },
+      {
+        "feature": "t_wave",
+        "finding": "T-wave inversion in precordial leads",
+        "frequency": "sometimes"
+      },
+      {
+        "feature": "other",
+        "finding": "Epsilon wave or T-wave inversion in V1 to V3 (arrhythmogenic right ventricular cardiomyopathy)",
+        "frequency": "rare"
+      },
+      {
+        "feature": "other",
+        "finding": "Brugada pattern with coved ST elevation in V1 to V2",
+        "frequency": "rare"
+      },
+      {
+        "feature": "other",
+        "finding": "Pacemaker spikes or an implanted defibrillator",
+        "frequency": "rare"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Echocardiogram, transthoracic",
+      "modality": "echo",
+      "preferred_when": "Suspected structural heart disease, murmur, exertional fainting, or abnormal ECG",
+      "findings": [
+        {
+          "text": "Normal chamber size and function",
+          "frequency": "common"
+        },
+        {
+          "text": "Aortic stenosis with a thickened, restricted aortic valve",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Left ventricular hypertrophy with asymmetric septal thickening (hypertrophic cardiomyopathy)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Reduced left ventricular ejection fraction",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Right ventricular dilation with reduced function (arrhythmogenic right ventricular cardiomyopathy)",
+          "frequency": "rare"
+        },
+        {
+          "text": "Intracardiac mass such as an atrial myxoma",
+          "frequency": "rare"
+        },
+        {
+          "text": "Pericardial effusion",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "CT head without contrast",
+      "modality": "ct",
+      "preferred_when": "Head trauma from the fall, focal neurologic findings, or persistent altered mental status",
+      "findings": [
+        {
+          "text": "No acute intracranial abnormality",
+          "frequency": "common"
+        },
+        {
+          "text": "Intracranial hemorrhage such as subdural or subarachnoid blood",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Skull fracture",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "MRI brain with and without contrast",
+      "modality": "mri",
+      "preferred_when": "Focal neurologic deficits or suspected seizure or structural brain lesion",
+      "findings": [
+        {
+          "text": "No acute abnormality",
+          "frequency": "common"
+        },
+        {
+          "text": "Cortical or hippocampal signal change suggesting seizure",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Mass lesion or stroke",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "CT pulmonary angiogram",
+      "modality": "ct",
+      "preferred_when": "Suspected pulmonary embolism with tachycardia, hypoxemia, or pleuritic chest pain",
+      "findings": [
+        {
+          "text": "Filling defect in the pulmonary arteries",
+          "frequency": "common"
+        },
+        {
+          "text": "Right ventricular enlargement",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "No pulmonary embolism",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "Chest x-ray",
+      "modality": "xray",
+      "preferred_when": "Dyspnea, chest pain, or suspected cardiac or pulmonary cause",
+      "findings": [
+        {
+          "text": "Normal heart size and clear lungs",
+          "frequency": "common"
+        },
+        {
+          "text": "Cardiomegaly or pulmonary vascular congestion",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Widened mediastinum suggesting aortic dissection",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "ECG",
+        "why": "First-line test for arrhythmia, conduction disease, ischemia, and channelopathy"
+      },
+      {
+        "test": "glucose",
+        "why": "Bedside glucose to exclude hypoglycemia as a mimic"
+      },
+      {
+        "test": "cbc",
+        "why": "Anemia or infection contributing to fainting"
+      },
+      {
+        "test": "bmp",
+        "why": "Electrolytes, renal function, and hydration status"
+      },
+      {
+        "test": "hcg",
+        "why": "Pregnancy status before imaging and medications",
+        "only_if": "patient could be pregnant"
+      },
+      {
+        "test": "hs_tnt",
+        "why": "Concern for myocardial ischemia or infarction",
+        "only_if": "chest pain, exertional fainting, or ischemic ECG changes"
+      },
+      {
+        "test": "Echocardiogram, transthoracic",
+        "why": "Structural heart disease, murmur, or exertional fainting",
+        "only_if": "suspected structural heart disease or abnormal ECG"
+      },
+      {
+        "test": "CT head without contrast",
+        "why": "Head trauma from the fall or focal neurologic findings",
+        "only_if": "head injury, focal deficit, or persistent altered mental status"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "MRI brain with and without contrast",
+        "why": "Evaluates for seizure or structural brain lesion when neurologic cause is suspected",
+        "only_if": "focal neurologic deficits or suspected seizure"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "tsh",
+        "why": "Thyroid dysfunction can cause palpitations or arrhythmia"
+      },
+      {
+        "test": "cortisol_am",
+        "why": "Adrenal insufficiency when hypotension or hyperpigmentation is present",
+        "only_if": "suspected adrenal insufficiency"
+      },
+      {
+        "test": "CT pulmonary angiogram",
+        "why": "Pulmonary embolism can present with syncope and tachycardia",
+        "only_if": "suspected pulmonary embolism"
+      },
+      {
+        "test": "Chest x-ray",
+        "why": "Assesses cardiac size and pulmonary causes",
+        "only_if": "dyspnea, chest pain, or suspected cardiopulmonary cause"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "d_dimer",
+        "why": "Not a routine syncope test; use only in a validated pulmonary embolism pathway"
+      },
+      {
+        "test": "lipase",
+        "why": "No role unless abdominal pain suggests pancreatitis"
+      },
+      {
+        "test": "ua",
+        "why": "Not routinely helpful for fainting"
+      },
+      {
+        "test": "abg",
+        "why": "Reserved for suspected hypoxemia or acid-base disturbance"
+      },
+      {
+        "test": "csf",
+        "why": "Only if meningitis or subarachnoid hemorrhage is suspected"
+      },
+      {
+        "test": "CT head without contrast",
+        "why": "Not routine for syncope without trauma or focal findings"
+      },
+      {
+        "test": "MRI brain with and without contrast",
+        "why": "Not routine for syncope without neurologic findings"
+      },
+      {
+        "test": "CT pulmonary angiogram",
+        "why": "Not routine without features suggesting pulmonary embolism"
+      }
+    ],
+    "decision_points": [
+      "Check a bedside glucose in any patient with altered mental status or diabetes",
+      "Obtain an ECG in every patient with fainting",
+      "Pregnancy test before CT or medications in anyone who could be pregnant",
+      "Consider cardiac cause when fainting occurs during exertion, while supine, or with palpitations",
+      "Orthostatic vital signs guide volume and medication review"
+    ],
+    "criteria": [],
+    "scores": [
+      "san_francisco_syncope",
+      "canadian_syncope_risk",
+      "rose"
+    ]
+  },
+  "differential": [
+    {
+      "name": "Seizure",
+      "slug": "seizure",
+      "why_considered": "Both cause transient loss of consciousness with a fall and sometimes brief jerking movements.",
+      "must_not_miss": true,
+      "trigger": "Tongue biting, prolonged confusion after the event, or a witnessed tonic-clonic phase",
+      "discriminators": {
+        "history": [
+          "Aura before the event",
+          "Tongue biting, especially the side of the tongue",
+          "Loss of bladder or bowel control",
+          "Confusion or drowsiness lasting minutes to hours after the event",
+          "No clear trigger such as standing, heat, or emotion"
+        ],
+        "exam": [
+          "Tongue laceration or oral injury",
+          "Persistent postictal confusion or focal neurologic deficit",
+          "Lateralizing signs such as weakness on one side"
+        ],
+        "labs": [
+          "Elevated creatine kinase after a generalized seizure",
+          "Prolactin may be elevated shortly after a generalized seizure"
+        ],
+        "imaging": [
+          "MRI brain may show cortical or hippocampal signal change",
+          "CT head if trauma or acute intracranial cause is suspected"
+        ]
+      }
+    },
+    {
+      "name": "Hypoglycemia",
+      "slug": "hypoglycemia",
+      "why_considered": "Low blood sugar causes lightheadedness, sweating, confusion, and loss of consciousness.",
+      "must_not_miss": true,
+      "trigger": "Diabetes, insulin or sulfonylurea use, or altered mental status that improves with glucose",
+      "discriminators": {
+        "history": [
+          "Diabetes with insulin or sulfonylurea use",
+          "Missed meal or excessive exercise",
+          "Symptoms improve quickly with sugar or food",
+          "No clear positional or emotional trigger"
+        ],
+        "exam": [
+          "Diaphoresis, tremor, or confusion",
+          "Symptoms resolve after glucose administration"
+        ],
+        "labs": [
+          "Low bedside glucose",
+          "Low serum glucose with symptoms that resolve after correction"
+        ]
+      }
+    },
+    {
+      "name": "Orthostatic hypotension",
+      "slug": "orthostatic-hypotension",
+      "why_considered": "A drop in blood pressure on standing causes lightheadedness and fainting, often with a similar trigger.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Symptoms only when standing up",
+          "Use of blood pressure medications, diuretics, or alpha-blockers",
+          "Dehydration, vomiting, or diarrhea",
+          "Parkinson disease or autonomic dysfunction"
+        ],
+        "exam": [
+          "Drop in systolic blood pressure of at least 20 mm Hg or diastolic of at least 10 mm Hg within 3 minutes of standing",
+          "Heart rate may rise or fail to rise depending on cause"
+        ],
+        "labs": [
+          "Elevated BUN/creatinine ratio suggesting dehydration",
+          "Anemia"
+        ]
+      }
+    },
+    {
+      "name": "Cardiac arrhythmia",
+      "slug": "cardiac-arrhythmia",
+      "why_considered": "Abnormal heart rhythms can cause sudden loss of consciousness without warning.",
+      "must_not_miss": true,
+      "trigger": "Fainting during exertion, while supine, or with palpitations",
+      "discriminators": {
+        "history": [
+          "Palpitations just before fainting",
+          "Fainting during exercise or while lying down",
+          "Family history of sudden cardiac death",
+          "Known heart disease"
+        ],
+        "exam": [
+          "Irregular pulse",
+          "Murmur suggesting structural heart disease",
+          "Signs of heart failure"
+        ],
+        "labs": [
+          "Electrolyte abnormalities such as low potassium or magnesium",
+          "Elevated troponin if ischemia is the trigger"
+        ],
+        "ecg": [
+          "Arrhythmia such as atrial fibrillation, ventricular tachycardia, or bradyarrhythmia",
+          "Conduction disease such as Mobitz II or complete heart block",
+          "Prolonged QTc, Brugada pattern, or epsilon waves"
+        ],
+        "imaging": [
+          "Echocardiogram may show structural heart disease"
+        ]
+      }
+    },
+    {
+      "name": "Structural heart disease",
+      "slug": "structural-heart-disease",
+      "why_considered": "Valve disease or cardiomyopathy can limit blood flow and cause fainting, especially with exertion.",
+      "must_not_miss": true,
+      "trigger": "Murmur, exertional fainting, or abnormal ECG",
+      "discriminators": {
+        "history": [
+          "Fainting during exertion",
+          "Chest pain or shortness of breath with activity",
+          "Family history of sudden cardiac death or cardiomyopathy"
+        ],
+        "exam": [
+          "Systolic murmur that changes with position",
+          "Signs of heart failure such as crackles or elevated jugular venous pressure"
+        ],
+        "ecg": [
+          "Left ventricular hypertrophy",
+          "T-wave inversion in precordial leads"
+        ],
+        "imaging": [
+          "Echocardiogram showing aortic stenosis, hypertrophic cardiomyopathy, or reduced ejection fraction"
+        ]
+      }
+    },
+    {
+      "name": "Pulmonary embolism",
+      "slug": "pulmonary-embolism",
+      "why_considered": "A large clot in the lungs can cause sudden fainting with low oxygen and fast heart rate.",
+      "must_not_miss": true,
+      "trigger": "Tachycardia, hypoxemia, or pleuritic chest pain after immobility or surgery",
+      "discriminators": {
+        "history": [
+          "Recent surgery, immobility, or long travel",
+          "Pleuritic chest pain",
+          "Shortness of breath"
+        ],
+        "exam": [
+          "Tachycardia",
+          "Hypoxemia",
+          "Signs of deep vein thrombosis such as leg swelling"
+        ],
+        "labs": [
+          "Elevated D-dimer in low-risk patients",
+          "Low oxygen saturation"
+        ],
+        "imaging": [
+          "CT pulmonary angiogram showing filling defect in pulmonary arteries"
+        ]
+      }
+    },
+    {
+      "name": "Transient ischemic attack or stroke",
+      "slug": "transient-ischemic-attack",
+      "why_considered": "Reduced blood flow to part of the brain can cause brief loss of consciousness or focal symptoms.",
+      "must_not_miss": true,
+      "trigger": "Focal neurologic symptoms such as weakness, numbness, or trouble speaking",
+      "discriminators": {
+        "history": [
+          "Sudden weakness or numbness on one side",
+          "Trouble speaking or understanding",
+          "Vision loss in one eye",
+          "Symptoms not clearly positional or emotional"
+        ],
+        "exam": [
+          "Focal neurologic deficit",
+          "Carotid bruit"
+        ],
+        "imaging": [
+          "MRI brain showing acute infarction",
+          "CT head may be normal early"
+        ]
+      }
+    },
+    {
+      "name": "Psychogenic pseudosyncope",
+      "slug": "psychogenic-pseudosyncope",
+      "why_considered": "Episodes of apparent loss of consciousness without true cerebral hypoperfusion.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Episodes occur only when observed by others",
+          "Prolonged duration without injury",
+          "No trigger such as standing or emotion",
+          "History of anxiety or trauma"
+        ],
+        "exam": [
+          "Normal vital signs and examination during and between episodes",
+          "Eyes may be closed and resistant to opening during episodes"
+        ],
+        "labs": [
+          "Normal glucose and electrolytes"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Brief episode with clear warning, quick full recovery, no injury, and normal vital signs and ECG",
+      "moderate": "Recurrent episodes or a fall with minor injury; vital signs or ECG may be mildly abnormal",
+      "severe": "Fainting during exertion or while supine, with palpitations, chest pain, or abnormal ECG suggesting a cardiac cause",
+      "critical": "Persistent loss of consciousness, severe hypotension, life-threatening arrhythmia, or major trauma from the fall"
+    },
+    "red_flags": [
+      {
+        "finding": "Fainting during exertion or while lying down",
+        "meaning": "Suggests a cardiac cause such as arrhythmia or structural heart disease"
+      },
+      {
+        "finding": "Palpitations or chest pain before the event",
+        "meaning": "Possible arrhythmia or myocardial ischemia"
+      },
+      {
+        "finding": "Family history of sudden cardiac death",
+        "meaning": "Possible inherited arrhythmia or cardiomyopathy"
+      },
+      {
+        "finding": "Abnormal ECG such as prolonged QTc, Brugada pattern, or heart block",
+        "meaning": "High risk for life-threatening arrhythmia"
+      },
+      {
+        "finding": "Persistent confusion or focal neurologic deficit",
+        "meaning": "Suggests seizure, stroke, or other neurologic cause"
+      },
+      {
+        "finding": "Hypotension or tachycardia after the event",
+        "meaning": "Possible volume loss, bleeding, or pulmonary embolism"
+      },
+      {
+        "finding": "Major trauma from the fall",
+        "meaning": "Requires evaluation for fracture, head injury, or internal bleeding"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Injury from fall",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Pain, swelling, or deformity after the event",
+          "Head trauma or loss of consciousness with injury"
+        ]
+      },
+      {
+        "name": "Fracture",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Focal bone tenderness",
+          "Inability to bear weight"
+        ]
+      },
+      {
+        "name": "Intracranial hemorrhage",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Head trauma",
+          "Persistent altered mental status",
+          "Focal neurologic deficit"
+        ]
+      },
+      {
+        "name": "Recurrent fainting with injury",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Multiple episodes",
+          "No warning before episodes"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "older_adults",
+        "differences": "More often caused by arrhythmia, medication effects, or orthostatic hypotension; warning symptoms may be absent and injuries from falls are more common."
+      },
+      {
+        "population": "children",
+        "differences": "Young children may not describe warning symptoms and instead appear pale, limp, or briefly unresponsive, often after a fall, pain, or crying."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Fainting can occur from pressure of the uterus on the large veins when lying flat, from low blood sugar, or from anemia; it is more likely in later pregnancy."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "What were you doing right before you passed out?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Standing for a long time, warm or crowded room, pain, the sight of blood, or emotional stress suggests reflex fainting; fainting during exercise or while lying down suggests a cardiac cause"
+      },
+      {
+        "question": "Did you have any warning before it happened, like dizziness, warmth, nausea, or your vision dimming?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "A brief warning of lightheadedness, warmth, sweating, or tunnel vision suggests reflex fainting; no warning suggests arrhythmia"
+      },
+      {
+        "question": "How long were you out, and how long until you felt normal again?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Seconds to about a minute of unconsciousness with full recovery within minutes; prolonged confusion suggests seizure"
+      },
+      {
+        "question": "Did anyone see jerking or shaking of your arms or legs?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Brief jerking can happen with fainting; a sustained tonic-clonic phase suggests seizure"
+      },
+      {
+        "question": "Did you bite your tongue, or lose control of your bladder or bowels?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Tongue biting or incontinence points toward seizure"
+      },
+      {
+        "question": "Did you have chest pain, palpitations, or a racing heart before or during the event?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Palpitations or chest pain suggest arrhythmia or ischemia"
+      },
+      {
+        "question": "Have you fainted before, and how many times?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Recurrent episodes raise concern and suggest a chronic cause"
+      },
+      {
+        "question": "Do you get lightheaded when you stand up quickly?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Symptoms only on standing suggest orthostatic hypotension"
+      },
+      {
+        "question": "Have you been drinking enough fluids? Any vomiting, diarrhea, or missed meals?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Dehydration or low blood sugar as a trigger"
+      },
+      {
+        "question": "What medicines do you take, including anything for blood pressure, water pills, or diabetes medicines?",
+        "category": "medications",
+        "importance": "essential",
+        "looking_for": "Diuretics, antihypertensives, alpha-blockers, nitrates, or insulin can cause fainting"
+      },
+      {
+        "question": "Do you have any heart conditions, diabetes, or Parkinson disease?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Heart disease, diabetes, or autonomic dysfunction raises the risk of a dangerous cause"
+      },
+      {
+        "question": "Has anyone in your family fainted or died suddenly at a young age?",
+        "category": "family",
+        "importance": "essential",
+        "looking_for": "Family history of sudden cardiac death suggests an inherited arrhythmia or cardiomyopathy"
+      },
+      {
+        "question": "Did you hit your head or injure yourself when you fell?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Head trauma or other injury from the fall that needs evaluation"
+      },
+      {
+        "question": "Could you be pregnant? When was your last period?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Pregnancy changes the workup and raises concern for ectopic pregnancy or anemia"
+      },
+      {
+        "question": "Any weakness or numbness on one side, trouble speaking, or a severe headache?",
+        "category": "ros",
+        "importance": "essential",
+        "looking_for": "Focal neurologic symptoms suggest stroke or another neurologic cause"
+      }
+    ],
+    "accepted_names": [
+      "Fainting",
+      "Syncope",
+      "Vasovagal syncope",
+      "Neurocardiogenic syncope",
+      "Reflex syncope",
+      "Passing out"
+    ],
+    "reasoning_points": [
+      "A brief loss of consciousness with loss of muscle tone and quick, complete recovery",
+      "A warning of lightheadedness, warmth, sweating, or vision changes before the event",
+      "A trigger such as prolonged standing, a warm crowded room, pain, or emotional stress",
+      "No chest pain, no fainting during exertion, and no fainting while lying down",
+      "No tongue biting, incontinence, or prolonged confusion after the event",
+      "Orthostatic vital signs and a normal ECG",
+      "Bedside glucose checked to exclude hypoglycemia",
+      "Pregnancy considered in anyone who could be pregnant",
+      "Red flags for a cardiac cause reviewed, including exertional fainting, palpitations, abnormal ECG, and family history of sudden cardiac death"
+    ],
+    "difficulty": {
+      "easy": [
+        "Teenager or young adult who faints while standing in a warm, crowded room",
+        "Clear warning of lightheadedness, nausea, and tunnel vision",
+        "Quick full recovery with no injury",
+        "Normal exam, orthostatic vitals, and ECG"
+      ],
+      "medium": [
+        "Older adult on a diuretic with a drop in blood pressure on standing",
+        "Fainting with brief jerking movements that raises concern for seizure",
+        "Recurrent episodes with no obvious trigger",
+        "Mildly abnormal ECG that needs interpretation"
+      ],
+      "hard": [
+        "Fainting during exercise or while lying down suggesting a cardiac cause",
+        "Fainting with palpitations and a family history of sudden cardiac death",
+        "Older adult with no warning symptoms and a fall with injury",
+        "Young child who appears pale and limp after a fall or crying",
+        "Pregnant patient who faints when lying flat"
+      ]
+    }
+  }
+}
