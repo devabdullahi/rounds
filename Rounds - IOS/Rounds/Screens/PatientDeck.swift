@@ -108,7 +108,9 @@ struct PatientDeck: View {
     var body: some View {
         VStack(spacing: 14) {
             ZStack {
-                if queue.isEmpty {
+                // The admit card also covers the deck while a patient is being written, so the
+                // shuffle button's "admit a new patient" shows progress even with others waiting.
+                if queue.isEmpty || app.isAdmitting {
                     AdmitCard(admitting: app.isAdmitting, loading: app.isLoadingWard && app.ward.isEmpty) { admit() }
                 } else {
                     ForEach(Array(queue.prefix(STACK.visible).enumerated()).reversed(), id: \.element.id) { depth, p in
