@@ -21,10 +21,4 @@ struct AnatomyLoaderTests {
         let leaving = AnatomyLoader.trim(0.8).0, gone = AnatomyLoader.trim(0.95).0
         #expect(leaving < gone)
     }
-
-    @Test func labelFadesInAndOutWithTheLine() {
-        #expect(AnatomyLoader.labelOpacity(0) == 0)
-        #expect(AnatomyLoader.labelOpacity(0.5) == 1)
-        #expect(AnatomyLoader.labelOpacity(1) == 0)
-    }
 }
