@@ -6,6 +6,7 @@ Reference material for **drafting fictional cases**. Each file has one JSON reco
 |---|---|---|
 | `conditions.jsonl` | Diseases and symptoms: summary, MeSH, ICD-10-CM candidates, differentials, PubMed refs | `build_kb.py` |
 | `drugs.jsonl` | Common prescription generics: indications, dosing, contraindications, boxed warning, interactions | `drugs.py` |
+| `reference_ranges.json` | Adult normal ranges in US units for 108 tests and vitals: sex-specific ranges, critical values, report decimals, formulas for derived values | Written by hand (teaching values, not clinical) |
 | `cdc_pages.jsonl` | CDC overview pages linked by `condition_id` (mostly infectious and chronic disease) | `cdc.py` (run after `build_kb.py`) |
 
 ```bash
