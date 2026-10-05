@@ -345,9 +345,9 @@ struct CardFace: View {
 
     var body: some View {
         ZStack {
-            side(label: card.topic, text: card.front, footnote: "Question")
+            side(label: "\(card.topic) · Question", text: card.front)
                 .opacity(flipped ? 0 : 1)
-            side(label: "Answer", text: card.back, footnote: card.topic)
+            side(label: "\(card.topic) · Answer", text: card.back)
                 .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
                 .opacity(flipped ? 1 : 0)
         }
@@ -371,7 +371,7 @@ struct CardFace: View {
         .accessibilityHint(flipped ? "" : "Double-tap to flip")
     }
 
-    private func side(label: String, text: String, footnote: String) -> some View {
+    private func side(label: String, text: String) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             Eyebrow(label, color: card.color.tint)
             Spacer()
@@ -380,7 +380,6 @@ struct CardFace: View {
                 .lineSpacing(3)
                 .minimumScaleFactor(0.8)
             Spacer()
-            Text(footnote).font(.system(size: 13)).foregroundStyle(Theme.faint)
         }
         .padding(24)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
@@ -477,7 +476,7 @@ struct NewCardSheet: View {
                         .animation(.easeOut(duration: 0.2), value: color)
 
                     VStack(alignment: .leading, spacing: 10) {
-                        FieldLabel("Colour")
+                        FieldLabel("Color")
                         HStack(spacing: 0) {
                             ForEach(CardColor.allCases) { c in swatch(c).frame(maxWidth: .infinity) }
                         }

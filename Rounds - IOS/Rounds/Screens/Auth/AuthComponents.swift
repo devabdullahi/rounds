@@ -3,7 +3,7 @@ import Observation
 
 // MARK: - Flow
 
-enum AuthStep: Hashable { case signIn, signUp, onboarding, focus }
+enum AuthStep: Hashable { case signIn, signUp, focus }
 
 @Observable
 final class AuthRouter {
@@ -23,7 +23,7 @@ struct AuthFlowView: View {
             FirstOpenView(
                 onSignUp: { router.go(.signUp) },
                 onLogIn: { router.go(.signIn) },
-                onSocial: { router.go(.onboarding) }
+                onSocial: { router.go(.focus) }
             )
             .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(for: AuthStep.self) { step in
@@ -31,7 +31,6 @@ struct AuthFlowView: View {
                     switch step {
                     case .signIn: SignInView()
                     case .signUp: SignUpView()
-                    case .onboarding: OnboardingView()
                     case .focus: FocusOnboardingView()
                     }
                 }

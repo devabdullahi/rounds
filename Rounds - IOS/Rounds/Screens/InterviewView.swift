@@ -387,12 +387,13 @@ struct InterviewView: View {
                                 .transition(.scale(scale: 0.5).combined(with: .opacity))
                         } else {
                             // Visible action so the row reads as a button, not a checklist.
+                            // Soft, not saturated: six rows of bright buttons drowned out the findings.
                             Text("Examine")
                                 .font(.system(size: 14, weight: .semibold))
-                                .foregroundStyle(.white)
+                                .foregroundStyle(Theme.accentText)
                                 .padding(.horizontal, 12)
                                 .frame(minHeight: 32)
-                                .glassCapsule(tint: Theme.accent)
+                                .background(Theme.accentSoft, in: Capsule())
                                 .transition(.opacity)
                         }
                     }

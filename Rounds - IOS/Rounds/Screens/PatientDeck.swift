@@ -219,7 +219,7 @@ struct PatientDeck: View {
         HStack(spacing: 28) {
             roundButton(.clock, label: "Later", tint: Theme.streak, size: 60) { later() }
             roundButton(.shuffle, label: "Random patient", tint: Theme.shuffle, size: 50) { random() }
-            roundButton(.check, label: "Take patient", tint: Theme.correct, size: 60) { take() }
+            // No ✓ here: "Take the patient" on the card (or a right swipe) is the one way to take.
         }
         .frame(maxWidth: .infinity)
         .disabled(busy)

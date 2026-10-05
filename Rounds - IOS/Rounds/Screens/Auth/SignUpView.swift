@@ -16,7 +16,7 @@ struct SignUpView: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                IconButton(glyph: .chevronLeft, label: "Back to welcome") { router.back() }
+                IconButton(glyph: .chevronLeft, label: "Back to welcome", quiet: true) { router.back() }
                 Spacer()
             }
             .padding(.leading, 7)   // chevron edge on the 24pt auth margin
@@ -33,14 +33,7 @@ struct SignUpView: View {
                     }
                     .padding(.top, 8)
 
-                    HStack(spacing: 12) {
-                        SocialButton(provider: .apple, title: "Apple", height: 50) { router.go(.onboarding) }
-                        SocialButton(provider: .google, title: "Google", height: 50) { router.go(.onboarding) }
-                    }
-                    .padding(.top, 24)
-
-                    OrDivider(text: "or sign up with email").padding(.vertical, 20)
-
+                    // Email only: Apple and Google are one tap away on the welcome sheet.
                     VStack(spacing: 12) {
                         AuthField(label: "Name", text: $name, placeholder: "What should Dr. Okafor call you?", contentType: .name)
                         AuthField(label: "Email", text: $email, placeholder: "you@school.edu",
@@ -52,6 +45,7 @@ struct SignUpView: View {
                             }
                         }
                     }
+                    .padding(.top, 28)
                 }
                 .padding(.horizontal, 24)
                 .padding(.bottom, 16)
@@ -62,7 +56,7 @@ struct SignUpView: View {
 
             VStack(spacing: 14) {
                 legal
-                Button("Create account") { router.go(.onboarding) }
+                Button("Create account") { router.go(.focus) }
                     .buttonStyle(PrimaryButtonStyle(height: 52))
                 HStack(spacing: 4) {
                     Text("Already have an account?").foregroundStyle(Theme.muted)

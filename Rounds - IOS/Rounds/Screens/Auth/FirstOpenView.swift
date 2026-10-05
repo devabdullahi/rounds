@@ -162,7 +162,7 @@ struct FirstOpenView: View {
                 .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 26) {
-                Text("Practice the hard calls before they're real.")
+                Text("Practice the hard\ncalls before\nthey're real.")
                     .font(.system(size: 40, weight: .bold))
                     .tracking(-1)
                     .lineSpacing(-4)
@@ -391,13 +391,12 @@ private struct DiagnosisChip: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 9)
             .background(Theme.surface, in: Capsule())
-            .overlay(Capsule().strokeBorder(Theme.text.opacity(0.10)))
             .opacity(struck ? 0.38 : 1)
             .fixedSize()
     }
 }
 
-/// The right answer: outlined green until picked, then filled with a check.
+/// The right answer: soft green until picked, then filled with a check.
 private struct AnswerChip: View {
     let label: String
     let picked: Bool
@@ -414,8 +413,8 @@ private struct AnswerChip: View {
         .foregroundStyle(picked ? .white : welcomeGreen)
         .padding(.horizontal, 18)
         .padding(.vertical, 11)
-        .background(picked ? welcomeGreen : Theme.surface, in: Capsule())
-        .overlay(Capsule().strokeBorder(welcomeGreen.opacity(picked ? 0 : 0.5), lineWidth: 1.5))
+        // No outline: a soft green wash marks the answer before it's picked.
+        .background(picked ? welcomeGreen : Color(hex: 0xE3F5EA), in: Capsule())
         .shadow(color: welcomeGreen.opacity(picked ? 0.3 : 0), radius: 14, y: 8)
         .scaleEffect(picked ? 1.12 : 1)
         .fixedSize()

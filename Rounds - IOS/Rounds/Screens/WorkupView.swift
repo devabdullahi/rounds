@@ -165,12 +165,13 @@ struct WorkupView: View {
                 Text(t.detail).font(.system(size: 13)).foregroundStyle(Theme.muted)
             }
             Spacer()
+            // Soft like Examine: prices are choices to weigh, not calls to action.
             Button("$\(t.cost)") { requestOrder(t) }
-                .font(.system(size: 15, weight: .semibold))
-                .foregroundStyle(.white)
+                .font(.mono(15, weight: .semibold))
+                .foregroundStyle(Theme.accentText)
                 .padding(.horizontal, 12)
                 .frame(minWidth: 44, minHeight: 36)
-                .glassCapsule(tint: Theme.accent)
+                .background(Theme.accentSoft, in: Capsule())
                 .buttonStyle(PressableStyle())
                 .accessibilityLabel("Order \(t.name), \(t.cost) dollars")
         }

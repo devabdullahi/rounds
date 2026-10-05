@@ -87,6 +87,7 @@ struct BriefView: View {
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 12)
+                .padding(.bottom, 28)   // clears the bottom fade so the last line stays readable
             }
             .scrollIndicators(.hidden)
             .overlay(alignment: .bottom) {

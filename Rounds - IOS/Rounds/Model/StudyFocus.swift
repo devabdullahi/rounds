@@ -1,43 +1,9 @@
 import Foundation
 
-/// What the student is studying right now. US schools each run their own curriculum,
-/// so cases are tagged by what every school shares: the core clerkships (each with an
-/// NBME shelf exam) and the USMLE organ systems. Clerkship students pick a rotation;
-/// pre-clinical students pick a system, since schools teach systems in different orders.
-
-enum TrainingLevel: String, CaseIterable, Identifiable {
-    case ms12, ms3, ms4
-    var id: String { rawValue }
-
-    static let storageKey = "trainingLevel"
-
-    var label: String {
-        switch self {
-        case .ms12: "Pre-clinical (MS1–MS2)"
-        case .ms3: "Clerkships (MS3)"
-        case .ms4: "Final year (MS4)"
-        }
-    }
-
-    var detail: String {
-        switch self {
-        case .ms12: "History-taking fundamentals"
-        case .ms3: "Common presentations, clear red flags"
-        case .ms4: "Messier histories, more differentials"
-        }
-    }
-
-    var shortLabel: String {
-        switch self {
-        case .ms12: "MS1–MS2"
-        case .ms3: "MS3"
-        case .ms4: "MS4"
-        }
-    }
-
-    /// Pre-clinical students study by system; clerkship students by rotation.
-    var studiesByRotation: Bool { self != .ms12 }
-}
+/// What the student wants to practice. US schools each run their own curriculum, so cases
+/// are tagged by topics every school shares: the core clerkships (each with an NBME shelf
+/// exam) and the USMLE organ systems. Anyone can pick any mix of both; training year
+/// plays no part.
 
 enum Clerkship: String, CaseIterable, Identifiable {
     case internalMedicine, surgery, pediatrics, obgyn, psychiatry, familyMedicine, neurology, emergency

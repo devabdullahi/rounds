@@ -38,6 +38,8 @@ struct DebriefView: View {
     @State private var grade: Grade?
     @State private var startRating = 0
     @State private var showMisses = false
+    @Environment(\.reference) private var reference
+    @State private var assist = ReferenceAssist()
 
     var body: some View {
         VStack(spacing: 0) {
@@ -60,6 +62,7 @@ struct DebriefView: View {
                         scoreCard(grade)
                         attendingCard(grade)
                         summary(grade)
+                        if !assist.topics.isEmpty { learnMore }
                     }
                     .padding(.horizontal, 20)
                     .padding(.top, 6)
@@ -89,6 +92,45 @@ struct DebriefView: View {
         .navigationBarBackButtonHidden()
         .lockSwipeBack()
         .task { await play() }
+        .task {
+            assist.reference = reference
+            await assist.loadTopics(for: session.clinical.canonicalDiagnosis)
+        }
+    }
+
+    /// Plain-language reading for the case's diagnosis (MedlinePlus), after the score settles.
+    private var learnMore: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Eyebrow("Learn more")
+            VStack(spacing: 0) {
+                ForEach(Array(assist.topics.enumerated()), id: \.element.id) { i, topic in
+                    Link(destination: topic.url) {
+                        HStack(spacing: 12) {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(topic.title).font(.system(size: 16, weight: .semibold))
+                                Text(topic.summary).font(.system(size: 13)).foregroundStyle(Theme.muted)
+                                    .multilineTextAlignment(.leading)
+                            }
+                            Spacer(minLength: 8)
+                            AppIcon(.externalLink, size: 18).foregroundStyle(Theme.faint)
+                        }
+                        .foregroundStyle(Theme.text)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 12)
+                        .contentShape(Rectangle())
+                    }
+                    .accessibilityHint("Opens MedlinePlus in Safari")
+                    if i < assist.topics.count - 1 { Hairline() }
+                }
+            }
+            .listSurface()
+            Text("From MedlinePlus, U.S. National Library of Medicine.")
+                .font(.system(size: 12))
+                .foregroundStyle(Theme.faint)
+        }
+        .padding(.top, 6)
+        .opacity(stage >= 4 ? 1 : 0)
+        .animation(.easeOut(duration: 0.35).delay(0.15), value: stage)
     }
 
     private func play() async {
