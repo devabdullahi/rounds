@@ -17,7 +17,7 @@ export function writerPrompt(profile: Profile, plan: CasePlan): string {
   const mustNotMiss = profile.differential.filter((d) => d.must_not_miss).map((d) => ({ name: d.name, trigger: d.trigger ?? d.why_considered }));
   return `Hidden diagnosis (never reveal): ${plan.condition}
 Severity: ${plan.severity}: ${plan.severityText}
-Patient: ${plan.age}-year-old ${plan.sex === "F" ? "woman" : "man"}. Typical setting: ${profile.triage.settings.join(", ")}.
+Patient: ${plan.age}-year-old ${plan.age < 18 ? (plan.sex === "F" ? "girl" : "boy") : plan.sex === "F" ? "woman" : "man"}${plan.pregnant ? ", pregnant (choose a gestational age that fits the condition and say it in her facts)" : ""}. Typical setting: ${profile.triage.settings.join(", ")}.${plan.age < 13 ? " A child this age answers simply; a parent or guardian is present and can answer for them, so write facts as the child or the parent would say them." : ""}
 Vitals (already decided): ${JSON.stringify(plan.vitals)}
 
 Presentation pattern: ${JSON.stringify(profile.presentation.hpi)}

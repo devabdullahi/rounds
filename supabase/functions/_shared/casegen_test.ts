@@ -1,5 +1,5 @@
 import { assert, assertEquals } from "jsr:@std/assert@1";
-import { leaks, leakTerms, planCase, type Profile } from "./casegen.ts";
+import { isPregnant, leaks, leakTerms, planCase, type Profile } from "./casegen.ts";
 import { seeded } from "./labs.ts";
 
 const dir = new URL("../../../knowledge-base/profiles/", import.meta.url);
@@ -34,4 +34,19 @@ Deno.test("leak check finds diagnosis names case-insensitively", () => {
   assert(terms.length > 0);
   assertEquals(leaks(`I think I have ${terms[0].toUpperCase()}`, terms).length > 0, true);
   assertEquals(leaks("My chest hurts when I cough.", terms.filter((t) => !"my chest hurts when i cough.".includes(t))), []);
+});
+
+Deno.test("pregnancy comes from pregnancy-only conditions, for women of childbearing age", () => {
+  const profile = { ...profiles[0], triage: { ...profiles[0].triage, name: "Ectopic Pregnancy" } };
+  assert(isPregnant(profile, "F", 28));
+  assert(!isPregnant(profile, "M", 28));
+  assert(!isPregnant(profile, "F", 9));
+  assert(!isPregnant(profiles.find((p) => p.slug === "acute-bronchitis") ?? profiles[0], "F", 28));
+});
+
+Deno.test("a child's vitals are judged against child norms", () => {
+  for (const profile of profiles.filter((p) => p.patient.age.typical_max < 12)) {
+    const plan = planCase(profile, seeded(4));
+    assert((plan.vitals.hr as number) > 60, `${profile.slug} child HR ${plan.vitals.hr}`);
+  }
 });

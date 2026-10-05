@@ -12,6 +12,7 @@ import { sql } from "../_shared/db.ts";
 import { completeJSON, currentModel } from "../_shared/llm.ts";
 import { CASE_WRITER, PROMPT_VERSION } from "../_shared/prompts.ts";
 import { type CasePlan, leakTerms, planCase, type Profile } from "../_shared/casegen.ts";
+import { flag, type Patient, TESTS } from "../_shared/labs.ts";
 import { buildRubric, checkWriting, neutralIds, type Writing, writerPrompt } from "./writer.ts";
 
 type Request = { focus?: string };
@@ -64,15 +65,18 @@ function bedCode(): string {
 
 const VITAL_LABELS: Record<string, string> = { hr: "HR", sbp: "BP", rr: "RR", spo2: "SpO₂", temp: "Temp" };
 
-/** Door-note vitals with an abnormal flag; the app turns the flag into a color. */
+/** Door-note vitals with an abnormal flag from this patient's normal ranges (age, pregnancy);
+ *  the app turns the flag into a color. */
 function doorVitals(plan: CasePlan) {
   const v = plan.vitals as Record<string, number>;
+  const patient: Patient = { sex: plan.sex, age: plan.age, pregnant: plan.pregnant };
+  const off = (id: string) => !!flag(TESTS.get(id)!, v[id], patient);
   const out = [
-    { id: "hr", value: `${v.hr}`, abnormal: v.hr > 100 || v.hr < 60 },
-    { id: "sbp", value: `${v.sbp}/${v.dbp}`, abnormal: v.sbp >= 140 || v.sbp < 90 || v.dbp >= 90 },
-    { id: "spo2", value: `${v.spo2}%`, abnormal: v.spo2 < 95 },
-    { id: "rr", value: `${v.rr}`, abnormal: v.rr > 20 || v.rr < 12 },
-    { id: "temp", value: `${v.temp.toFixed(1)}°F`, abnormal: v.temp >= 100.4 || v.temp < 96.8 },
+    { id: "hr", value: `${v.hr}`, abnormal: off("hr") },
+    { id: "sbp", value: `${v.sbp}/${v.dbp}`, abnormal: off("sbp") || off("dbp") },
+    { id: "spo2", value: `${v.spo2}%`, abnormal: off("spo2") },
+    { id: "rr", value: `${v.rr}`, abnormal: off("rr") },
+    { id: "temp", value: `${v.temp.toFixed(1)}°F`, abnormal: off("temp") },
   ];
   return out.map((x) => ({ ...x, label: VITAL_LABELS[x.id] }));
 }
@@ -113,7 +117,7 @@ async function save(userId: string, profile: Profile, plan: CasePlan, w: Writing
           insert into private.case_content (case_id, facts, exam, tests, answer_key, condition_slug, severity, persona, rubric)
           values (${id}, ${tx.json(w.facts)}, ${tx.json(w.maneuvers)}, ${tx.json(tests)},
             ${tx.json({ diagnosis: profile.triage.name, accepted: profile.teaching.accepted_names })},
-            ${profile.slug}, ${plan.severity}, ${tx.json({ ...w.persona, name: w.patient.name, age: plan.age, sex: plan.sex, model: currentModel(), prompt_version: PROMPT_VERSION })},
+            ${profile.slug}, ${plan.severity}, ${tx.json({ ...w.persona, name: w.patient.name, age: plan.age, sex: plan.sex, pregnant: plan.pregnant, model: currentModel(), prompt_version: PROMPT_VERSION })},
             ${tx.json(buildRubric(profile, plan, w, tests))})`;
       });
       return id;

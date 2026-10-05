@@ -253,6 +253,10 @@ def run_profile(slug: str, conditions: dict[str, dict], triage: dict[str, dict],
             {"stage": stage, "model": f"{provider}/{model}", "prompt_version": PROMPT_VERSION, "generated_at": now()})
         print(f"    {stage}: {'ok' if not errors else 'FAILED'}", file=sys.stderr)
 
+    # A model that couldn't be reached says nothing about the condition: don't save, so a rerun retries it.
+    if any("LLM request failed" in e for e in all_errors):
+        print(f"  {slug}: not saved, the model was unreachable", file=sys.stderr)
+        return
     for section in OPTIONAL_SECTIONS:
         if profile.get(section) in ({}, {"findings": []}):
             profile.pop(section)

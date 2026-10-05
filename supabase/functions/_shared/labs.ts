@@ -20,7 +20,14 @@ export type RefTest = {
   derived?: string;
   normal?: string;
   abnormal?: string[];
+  /** Age bands under 18: the first whose max_age (years, exclusive) exceeds the age applies. */
+  pediatric?: { max_age: number; low: number; high: number }[];
+  /** Second- and third-trimester interval. */
+  pregnancy?: { low: number; high: number };
 };
+
+/** Whose normal ranges apply: adult by sex, a child's age band, or pregnancy. */
+export type Patient = { sex: Sex; age: number; pregnant: boolean };
 export type RefPanel = { id: string; name: string; tests: RefTest[] };
 export type ProfileLab = {
   test_id: string;
@@ -34,9 +41,20 @@ export const TESTS: Map<string, RefTest> = new Map(PANELS.flatMap((p) => p.tests
 export type Value = number | string;
 export type Values = Record<string, Value>;
 
-export function interval(test: RefTest, sex: Sex): Interval {
-  const bySex = sex === "F" ? test.female : test.male;
+/** The normal interval for this patient: pregnancy, then a child's age band, then adult by sex. */
+export function interval(test: RefTest, p: Patient): Interval {
+  if (p.pregnant && test.pregnancy) return [test.pregnancy.low, test.pregnancy.high];
+  if (p.age < 18) {
+    const band = test.pediatric?.find((b) => p.age < b.max_age);
+    if (band) return [band.low, band.high];
+  }
+  const bySex = p.sex === "F" ? test.female : test.male;
   return bySex ?? [test.low ?? null, test.high ?? null];
+}
+
+/** The same patient as a non-pregnant adult, for converting adult-based profile ranges. */
+export function adultOf(p: Patient): Patient {
+  return { sex: p.sex, age: 30, pregnant: false };
 }
 
 function round(value: number, decimals = 0): number {
@@ -49,8 +67,8 @@ function between(rng: () => number, min: number, max: number): number {
 }
 
 /** A normal value, kept to the middle 60% of the interval so it never reads borderline. */
-function normalValue(test: RefTest, sex: Sex, rng: () => number): number {
-  let [low, high] = interval(test, sex);
+function normalValue(test: RefTest, p: Patient, rng: () => number): number {
+  let [low, high] = interval(test, p);
   if (low === null && high === null) return 0;
   if (low === null) low = high! * 0.4;
   if (high === null) high = low * 1.6;
@@ -63,7 +81,7 @@ export function primaryValues(
   panelIds: string[],
   labs: ProfileLab[],
   severity: Severity,
-  sex: Sex,
+  patient: Patient,
   rng: () => number,
 ): Values {
   const byId = new Map(labs.map((l) => [l.test_id, l]));
@@ -77,7 +95,7 @@ export function primaryValues(
         continue;
       }
       const r = lab?.ranges?.[severity];
-      values[test.id] = round(r ? between(rng, r.min, r.max) : normalValue(test, sex, rng), test.decimals);
+      values[test.id] = round(r ? between(rng, r.min, r.max) : normalValue(test, patient, rng), test.decimals);
     }
   }
   // Hct tracks Hgb unless the profile sets it.
@@ -97,7 +115,7 @@ export function egfr(creatinine: number, age: number, sex: Sex): number {
 }
 
 /** Fills derived values from primaries that are present. Blood gas pH follows from HCO₃ and PaCO₂. */
-export function deriveValues(v: Values, age: number, sex: Sex): Values {
+export function deriveValues(v: Values, patient: Patient): Values {
   const out = { ...v };
   const n = (id: string) => (typeof out[id] === "number" ? out[id] as number : undefined);
   const set = (id: string, value: number) => {
@@ -107,7 +125,8 @@ export function deriveValues(v: Values, age: number, sex: Sex): Values {
   const [na, cl, hco3, bun, cr, glucose] = ["na", "cl", "hco3", "bun", "cr", "glucose"].map(n);
   if (na !== undefined && cl !== undefined && hco3 !== undefined) set("anion_gap", na - (cl + hco3));
   if (bun !== undefined && cr !== undefined) set("bun_cr", bun / cr);
-  if (cr !== undefined) out.egfr = egfr(cr, age, sex);
+  // CKD-EPI is validated for adults only; children's eGFR needs height (bedside Schwartz).
+  if (cr !== undefined && patient.age >= 18) out.egfr = egfr(cr, patient.age, patient.sex);
   if (na !== undefined && glucose !== undefined && bun !== undefined) {
     set("calc_osm", 2 * na + glucose / 18 + bun / 2.8);
     const osm = n("osm");
@@ -139,9 +158,9 @@ export function deriveValues(v: Values, age: number, sex: Sex): Values {
 
 export type Flag = "H" | "L" | "HH" | "LL" | "";
 
-export function flag(test: RefTest, value: Value, sex: Sex): Flag {
+export function flag(test: RefTest, value: Value, patient: Patient): Flag {
   if (typeof value === "string") return test.normal !== undefined && value !== test.normal ? "H" : "";
-  const [low, high] = interval(test, sex);
+  const [low, high] = interval(test, patient);
   const t = test as RefTest & { critical_low?: number; critical_high?: number };
   if (t.critical_low != null && value < t.critical_low) return "LL";
   if (t.critical_high != null && value > t.critical_high) return "HH";
@@ -162,7 +181,7 @@ export function shortName(name: string): string {
 export type PanelResult = { text: string; abnormal: boolean };
 
 /** Report text for one panel or single test: "Na 138 mmol/L · K 5.9 mmol/L (H) · …". */
-export function report(id: string, values: Values, sex: Sex): PanelResult {
+export function report(id: string, values: Values, patient: Patient): PanelResult {
   const panel = PANELS.find((p) => p.id === id);
   const tests = panel ? panel.tests : [TESTS.get(id)].filter((t): t is RefTest => !!t);
   let abnormal = false;
@@ -170,7 +189,7 @@ export function report(id: string, values: Values, sex: Sex): PanelResult {
   for (const test of tests) {
     const value = values[test.id];
     if (value === undefined) continue;
-    const f = flag(test, value, sex);
+    const f = flag(test, value, patient);
     if (f) abnormal = true;
     const unit = typeof value === "number" && test.unit ? ` ${test.unit}` : "";
     // A single test is already named on its card; a panel names each line.
