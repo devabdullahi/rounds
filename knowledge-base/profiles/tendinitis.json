@@ -1,0 +1,956 @@
+{
+  "schema_version": "0.2",
+  "slug": "tendinitis",
+  "triage": {
+    "name": "Tendinitis",
+    "case_suitable": true,
+    "reason": "Common overuse injury with focal pain and exam findings; straightforward diagnosis with good differential teaching.",
+    "kind": "injury",
+    "category": "overuse tendon injury",
+    "organ_systems": [
+      "musculoskeletal"
+    ],
+    "primary_clerkship": "familyMedicine",
+    "secondary_clerkships": [
+      "emergency",
+      "internalMedicine"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "clinic",
+      "emergency"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:20:30Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:16:20Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:16:25Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:16:31Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:16:42Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:16:48Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'x-ray of the affected region' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'x-ray of the affected region' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "differential rotator-cuff-tear: no profile yet",
+        "differential septic-arthritis: no profile yet",
+        "differential rheumatoid-arthritis: no profile yet",
+        "differential gout: no profile yet",
+        "differential stress-fracture: no profile yet",
+        "differential polymyalgia-rheumatica: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 18,
+      "typical_max": 65,
+      "peak": "30–50",
+      "possible_min": 5,
+      "possible_max": 90
+    },
+    "sex": "either",
+    "demographics": [
+      "More common in people who do repetitive or forceful activities with the affected limb",
+      "Slightly more common in males for sport-related tendinitis",
+      "Common in working-age adults with physically demanding jobs"
+    ],
+    "risk_factors": [
+      {
+        "text": "Repetitive or forceful use of the affected tendon (sports, manual labor, keyboarding)",
+        "strength": "strong"
+      },
+      {
+        "text": "Sudden increase in training intensity, duration, or frequency",
+        "strength": "strong"
+      },
+      {
+        "text": "Age-related tendon degeneration",
+        "strength": "moderate"
+      },
+      {
+        "text": "Poor technique or improper equipment (e.g., racquet grip, running shoes)",
+        "strength": "moderate"
+      },
+      {
+        "text": "Diabetes mellitus",
+        "strength": "moderate"
+      },
+      {
+        "text": "Obesity",
+        "strength": "weak"
+      },
+      {
+        "text": "Use of fluoroquinolone antibiotics",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Diabetes mellitus",
+      "Obesity",
+      "Inflammatory arthritis (e.g., rheumatoid arthritis, spondyloarthritis)"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Participation in racket sports, throwing sports, running, or swimming",
+      "Occupations involving repetitive gripping, lifting, or overhead work"
+    ],
+    "exposures": [],
+    "risk_medications": [
+      "ciprofloxacin",
+      "levofloxacin",
+      "moxifloxacin"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My elbow hurts when I use it",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "It hurts right here where the tendon attaches",
+        "frequency": "common"
+      },
+      {
+        "text": "The pain started after I increased my activity",
+        "frequency": "common"
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual, over days to weeks, often after a change in activity or repetitive use",
+      "duration": "Usually weeks to months at presentation",
+      "progression": "Pain starts mild and activity-related, then becomes more frequent and can occur with light activity or at rest if untreated",
+      "location": "Focal, directly over the affected tendon near its attachment to bone (e.g., lateral elbow, shoulder, wrist, Achilles, patellar tendon)",
+      "radiation": "Usually none; may spread a few centimeters along the tendon",
+      "quality": "Aching, sore, or burning; sometimes sharp with specific movements",
+      "severity": "Mild to moderate, typically 3–6/10; worse with activity",
+      "timing": "Worse with activity and at the start of movement; may ease after warm-up, then ache afterward",
+      "aggravating": [
+        "Repetitive or forceful use of the affected limb",
+        "Gripping, lifting, or overhead reaching",
+        "Starting activity after rest",
+        "Direct pressure over the tendon"
+      ],
+      "relieving": [
+        "Rest",
+        "Ice",
+        "Over-the-counter pain relievers",
+        "Avoiding the aggravating activity"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Mild swelling or thickening over the tendon",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Stiffness in the morning or after inactivity",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Weakness or feeling that the limb gives way with use",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "A grating or creaking sensation with movement",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Fever or chills",
+        "Redness, warmth, or spreading skin infection over the joint",
+        "Joint swelling with fluid (effusion)",
+        "Locking, catching, or true giving-way of the joint",
+        "Numbness, tingling, or weakness in a nerve distribution",
+        "Pain and stiffness in many joints or symmetric small joints",
+        "Morning stiffness lasting more than an hour",
+        "Recent significant trauma or a fall",
+        "Night pain that wakes them from sleep",
+        "Weight loss, night sweats, or malaise"
+      ]
+    },
+    "ros": [
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Focal pain over a tendon with use",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Tenderness to touch over the tendon",
+            "frequency": "common"
+          },
+          {
+            "text": "Mild swelling or thickening of the tendon",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Stiffness after rest",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Joint swelling or effusion",
+          "Locking or catching",
+          "True instability or giving-way",
+          "Pain in multiple joints",
+          "Morning stiffness lasting more than an hour"
+        ],
+        "argues_against": [
+          "Inflammatory arthritis",
+          "Internal derangement of the joint",
+          "Rotator cuff tear"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [],
+        "negatives": [
+          "Redness",
+          "Warmth",
+          "Rash",
+          "Open wound or drainage"
+        ],
+        "argues_against": [
+          "Cellulitis",
+          "Septic tenosynovitis"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [],
+        "negatives": [
+          "Numbness",
+          "Tingling",
+          "Weakness in a nerve distribution"
+        ],
+        "argues_against": [
+          "Nerve entrapment or radiculopathy"
+        ]
+      },
+      {
+        "system": "constitutional",
+        "positives": [],
+        "negatives": [
+          "Fever",
+          "Chills",
+          "Weight loss",
+          "Night sweats",
+          "Malaise"
+        ],
+        "argues_against": [
+          "Infection",
+          "Malignancy",
+          "Systemic inflammatory disease"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "older_adults",
+        "how_it_differs": "Pain may be more chronic and attributed to arthritis; degenerative tendon changes are common and symptoms can be less clearly tied to a single activity.",
+        "missing_classic_features": [
+          "Clear temporal link to a new activity"
+        ]
+      },
+      {
+        "population": "diabetes",
+        "how_it_differs": "Tendon healing is impaired and tendinitis can be more persistent and recurrent, sometimes with less dramatic pain.",
+        "missing_classic_features": [
+          "Rapid response to rest"
+        ]
+      },
+      {
+        "population": "obesity",
+        "how_it_differs": "Increased load on weight-bearing tendons (Achilles, patellar) can cause more gradual, less activity-specific pain.",
+        "missing_classic_features": [
+          "Obvious overuse trigger"
+        ]
+      },
+      {
+        "population": "children",
+        "how_it_differs": "Overuse tendinitis is less common; apophysitis (e.g., Osgood-Schlatter, Sever disease) is more likely and pain localizes to the growth plate rather than the tendon.",
+        "missing_classic_features": [
+          "Tenderness directly over the tendon midsubstance"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Comfortable at rest, no distress; moves the limb normally until the tendon is loaded",
+      "moderate": "Guards the affected limb with use, mild discomfort on active movement",
+      "severe": "Visibly uncomfortable with any active use of the limb, avoids the aggravating motion",
+      "critical": "Not applicable; tendinitis does not cause a toxic or systemically ill appearance"
+    },
+    "findings": [
+      {
+        "id": "focal-tendon-tenderness",
+        "region": "musculoskeletal",
+        "maneuver": "Palpate along the course of the affected tendon, especially near its bony attachment",
+        "finding": "Focal tenderness directly over the tendon, maximal at the insertion or midsubstance",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "pain-with-resisted-motion",
+        "region": "musculoskeletal",
+        "maneuver": "Have the patient actively contract the affected muscle against resistance while isolating that tendon",
+        "finding": "Reproduction of the patient's pain at the tendon with resisted contraction",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "pain-with-passive-stretch",
+        "region": "musculoskeletal",
+        "maneuver": "Passively stretch the musculotendinous unit across the joint it crosses",
+        "finding": "Pain localized to the tendon with passive stretch",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "tendon-swelling-thickening",
+        "region": "musculoskeletal",
+        "maneuver": "Inspect and palpate the tendon for enlargement compared with the contralateral side",
+        "finding": "Mild fusiform swelling or thickening of the tendon",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "crepitus-with-motion",
+        "region": "musculoskeletal",
+        "maneuver": "Move the affected joint through its range while palpating the tendon",
+        "finding": "A grating or creaking sensation over the tendon",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "reduced-power-due-to-pain",
+        "region": "musculoskeletal",
+        "maneuver": "Test strength of the affected muscle group against resistance",
+        "finding": "Mildly reduced power limited by pain, with full strength when pain is overcome",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "no-joint-effusion",
+        "region": "musculoskeletal",
+        "maneuver": "Inspect and ballotte the adjacent joint for fluid",
+        "finding": "No joint effusion or synovial swelling",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "no-true-instability",
+        "region": "musculoskeletal",
+        "maneuver": "Stress the joint and assess for giving-way or laxity",
+        "finding": "No ligamentous laxity or true instability",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "no-overlying-cellulitis",
+        "region": "skin",
+        "maneuver": "Inspect the skin over the tendon for erythema, warmth, and drainage",
+        "finding": "No redness, warmth, or open wound over the tendon",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "no-neuro-deficit",
+        "region": "neuro",
+        "maneuver": "Test sensation and strength in the distribution of the nerves crossing the region",
+        "finding": "No sensory loss or weakness in a nerve distribution",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "optional"
+      },
+      {
+        "id": "no-systemic-signs",
+        "region": "general",
+        "maneuver": "Assess for fever, rash, and generalized joint involvement",
+        "finding": "No fever, rash, or polyarticular involvement",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      }
+    ]
+  },
+  "vitals": {},
+  "labs": [],
+  "imaging": [
+    {
+      "study": "Ultrasound of the affected tendon",
+      "modality": "ultrasound",
+      "preferred_when": "First-line when the diagnosis is uncertain or symptoms are persistent",
+      "findings": [
+        {
+          "text": "Tendon thickening and hypoechoic swelling of the tendon substance",
+          "frequency": "common"
+        },
+        {
+          "text": "Increased intrasubstance signal with loss of the normal fibrillar pattern",
+          "frequency": "common"
+        },
+        {
+          "text": "Peritendinous fluid or increased Doppler flow (hyperemia) around the tendon",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Partial-thickness intrasubstance tear",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Normal-appearing tendon (does not exclude clinical tendinitis)",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "MRI of the affected tendon",
+      "modality": "mri",
+      "preferred_when": "Persistent symptoms, suspected partial or full-thickness tear, or when ultrasound is nondiagnostic",
+      "findings": [
+        {
+          "text": "Tendon thickening with increased T2 signal within the tendon substance",
+          "frequency": "common"
+        },
+        {
+          "text": "Peritendinous edema and soft tissue inflammation",
+          "frequency": "common"
+        },
+        {
+          "text": "Partial-thickness or full-thickness tendon tear",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Degenerative intrasubstance changes without discrete tear",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "X-ray of the affected region",
+      "modality": "xray",
+      "preferred_when": "Only when fracture, dislocation, or another bony cause is suspected",
+      "findings": [
+        {
+          "text": "Normal bone and joint (typical in tendinitis)",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Tendon calcification or enthesophyte at the tendon insertion",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Degenerative joint changes if coexisting arthritis",
+          "frequency": "sometimes"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "Ultrasound of the affected tendon",
+        "why": "Confirms tendon swelling or tear and excludes other causes when the diagnosis is uncertain",
+        "only_if": "diagnosis is uncertain or symptoms are persistent despite rest"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "MRI of the affected tendon",
+        "why": "Most accurate for characterizing tendon degeneration, partial tears, and excluding other soft tissue causes",
+        "only_if": "symptoms persist, a tear is suspected, or ultrasound is nondiagnostic"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "X-ray of the affected region",
+        "why": "Excludes fracture, dislocation, or bony abnormality",
+        "only_if": "trauma, focal bony tenderness, or another bony cause is suspected"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "cbc",
+        "why": "No role in a focal overuse tendon injury without fever or systemic signs"
+      },
+      {
+        "test": "crp",
+        "why": "Not needed unless inflammatory arthritis or infection is suspected"
+      },
+      {
+        "test": "esr",
+        "why": "Not needed unless inflammatory arthritis or polymyalgia rheumatica is suspected"
+      },
+      {
+        "test": "ck",
+        "why": "Not indicated unless myositis or muscle injury is suspected"
+      },
+      {
+        "test": "uric_acid",
+        "why": "Not indicated unless gout is suspected"
+      },
+      {
+        "test": "X-ray of the affected region",
+        "why": "Not routine; only if fracture or bony cause is suspected"
+      }
+    ],
+    "decision_points": [
+      "Tendinitis is a clinical diagnosis; imaging is reserved for uncertain, persistent, or atypical cases",
+      "Ultrasound is the first-line imaging study when imaging is needed",
+      "MRI is reserved for suspected tear or when ultrasound is nondiagnostic",
+      "X-ray only if fracture, dislocation, or bony pathology is suspected"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Rotator cuff tear",
+      "slug": "rotator-cuff-tear",
+      "why_considered": "Shoulder pain with overhead activity and weakness, often attributed to tendinitis",
+      "must_not_miss": true,
+      "trigger": "Weakness that is out of proportion to pain, or a history of a pop with acute injury",
+      "discriminators": {
+        "history": [
+          "Sudden onset after a fall, lift, or pull, or a pop felt at the time of injury",
+          "Weakness with overhead reaching or lifting that persists even when pain is controlled",
+          "Inability to lift the arm against gravity"
+        ],
+        "exam": [
+          "Marked weakness on resisted abduction or external rotation that does not improve when pain is relieved",
+          "Positive drop arm test",
+          "Positive empty can or external rotation lag sign"
+        ],
+        "imaging": [
+          "Full-thickness or high-grade partial-thickness tear on ultrasound or MRI",
+          "Tendon retraction or muscle atrophy on MRI"
+        ]
+      }
+    },
+    {
+      "name": "Septic tenosynovitis or septic arthritis",
+      "slug": "septic-arthritis",
+      "why_considered": "Painful, swollen tendon or joint region that can be mistaken for inflammatory tendinitis",
+      "must_not_miss": true,
+      "trigger": "Fever, marked focal warmth and redness, or inability to move the digit or joint at all",
+      "discriminators": {
+        "history": [
+          "Fever and chills",
+          "Rapid onset over hours to a day",
+          "Recent penetrating injury, bite, or immunosuppression"
+        ],
+        "exam": [
+          "Erythema, warmth, and severe tenderness along the tendon sheath",
+          "Pain with passive extension of the digit (Kanavel signs in flexor tenosynovitis)",
+          "Joint held rigidly immobile"
+        ],
+        "labs": [
+          "Elevated WBC and CRP",
+          "Positive blood cultures or purulent aspirate with organisms on Gram stain"
+        ],
+        "imaging": [
+          "Ultrasound showing fluid distending the tendon sheath",
+          "MRI showing sheath fluid and surrounding soft tissue edema"
+        ]
+      }
+    },
+    {
+      "name": "Inflammatory arthritis (rheumatoid arthritis or spondyloarthritis)",
+      "slug": "rheumatoid-arthritis",
+      "why_considered": "Joint and periarticular pain with swelling that can be attributed to tendinitis",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Symmetric small joint involvement",
+          "Morning stiffness lasting more than an hour",
+          "Constitutional symptoms such as fatigue and weight loss"
+        ],
+        "exam": [
+          "Joint effusion and synovial thickening",
+          "Involvement of multiple joints rather than a single tendon",
+          "Extra-articular findings such as nodules or rash"
+        ],
+        "labs": [
+          "Elevated ESR and CRP",
+          "Positive rheumatoid factor or anti-CCP",
+          "Anemia of chronic disease"
+        ],
+        "imaging": [
+          "Erosions and symmetric joint space narrowing on X-ray",
+          "Synovitis and bone marrow edema on MRI"
+        ]
+      }
+    },
+    {
+      "name": "Gout or calcium pyrophosphate deposition disease",
+      "slug": "gout",
+      "why_considered": "Acute focal pain and swelling near a joint or tendon insertion",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Sudden severe onset, often overnight",
+          "Prior similar attacks",
+          "History of kidney stones or diuretic use"
+        ],
+        "exam": [
+          "Intensely red, warm, exquisitely tender joint",
+          "Tophi or joint effusion"
+        ],
+        "labs": [
+          "Elevated serum uric acid (may be normal during an attack)",
+          "Negatively birefringent needle-shaped crystals on joint aspirate"
+        ],
+        "imaging": [
+          "Punched-out erosions with overhanging edges on X-ray",
+          "Chondrocalcinosis in CPPD"
+        ]
+      }
+    },
+    {
+      "name": "Nerve entrapment (carpal tunnel syndrome or radial tunnel syndrome)",
+      "slug": "carpal-tunnel-syndrome",
+      "why_considered": "Wrist or forearm pain with activity that can mimic wrist extensor or flexor tendinitis",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Numbness and tingling in a nerve distribution",
+          "Nighttime symptoms that wake the patient",
+          "Symptoms provoked by sustained wrist flexion or extension"
+        ],
+        "exam": [
+          "Positive Tinel or Phalen test",
+          "Sensory loss in the median or radial nerve distribution",
+          "Weakness of thenar muscles in advanced carpal tunnel syndrome"
+        ],
+        "labs": [
+          "Nerve conduction studies showing focal slowing"
+        ],
+        "imaging": [
+          "Ultrasound showing enlarged median nerve cross-sectional area"
+        ]
+      }
+    },
+    {
+      "name": "Stress fracture",
+      "slug": "stress-fracture",
+      "why_considered": "Activity-related focal pain in a weight-bearing or repetitive-load region",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Pain that is worse with weight-bearing and improves with rest",
+          "Recent increase in running or marching distance",
+          "Pain that progresses to occur at rest or at night"
+        ],
+        "exam": [
+          "Focal bony tenderness rather than tendon tenderness",
+          "Pain with axial loading or hopping on the affected leg"
+        ],
+        "imaging": [
+          "Periosteal reaction or fracture line on X-ray (may be normal early)",
+          "Bone marrow edema or fracture line on MRI"
+        ]
+      }
+    },
+    {
+      "name": "Polymyalgia rheumatica",
+      "slug": "polymyalgia-rheumatica",
+      "why_considered": "Shoulder and hip girdle pain and stiffness in older adults",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Bilateral shoulder and hip girdle pain and stiffness",
+          "Morning stiffness lasting more than 45 minutes",
+          "Age over 50"
+        ],
+        "exam": [
+          "Pain with active range of motion but preserved passive range of motion",
+          "No focal tendon tenderness"
+        ],
+        "labs": [
+          "Markedly elevated ESR and CRP",
+          "Normocytic anemia"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Pain only with the aggravating activity, no pain at rest, no swelling, full strength, and full range of motion",
+      "moderate": "Pain with light activity and at the start of movement, mild swelling or thickening over the tendon, stiffness after rest, and mildly reduced power limited by pain",
+      "severe": "Pain at rest or with any use of the limb, marked tenderness and swelling, and significant functional limitation that interferes with work or daily activities",
+      "critical": "Not applicable; tendinitis is not life-threatening, but a suspected tendon rupture or septic tenosynovitis requires urgent evaluation"
+    },
+    "red_flags": [
+      {
+        "finding": "Sudden pop with immediate loss of strength or inability to move the limb",
+        "meaning": "Tendon rupture; needs urgent orthopedic evaluation"
+      },
+      {
+        "finding": "Fever, chills, or marked focal warmth and redness over the tendon",
+        "meaning": "Septic tenosynovitis or septic arthritis; needs aspiration and antibiotics"
+      },
+      {
+        "finding": "Inability to bear weight or use the limb at all after trauma",
+        "meaning": "Fracture or dislocation; needs imaging"
+      },
+      {
+        "finding": "Numbness, tingling, or weakness in a nerve distribution",
+        "meaning": "Nerve entrapment or radiculopathy rather than isolated tendinitis"
+      },
+      {
+        "finding": "Night pain that wakes the patient from sleep or unexplained weight loss",
+        "meaning": "Consider malignancy or infection"
+      },
+      {
+        "finding": "Pain and stiffness in multiple joints with morning stiffness over an hour",
+        "meaning": "Inflammatory arthritis rather than tendinitis"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Chronic tendinopathy",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Symptoms persisting beyond 6 to 12 weeks despite rest",
+          "Pain with light activity",
+          "Tendon thickening on exam"
+        ]
+      },
+      {
+        "name": "Partial-thickness tendon tear",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Increase in pain with a specific movement",
+          "Focal tenderness and swelling",
+          "Intrasubstance tear on ultrasound or MRI"
+        ]
+      },
+      {
+        "name": "Full-thickness tendon rupture",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Sudden pop with immediate weakness",
+          "Palpable gap in the tendon",
+          "Inability to perform the tendon's action against resistance"
+        ]
+      },
+      {
+        "name": "Reduced work or sports participation",
+        "timing": "any",
+        "seriousness": "minor",
+        "frequency": "common",
+        "clues": [
+          "Avoidance of the aggravating activity",
+          "Decreased grip strength or throwing velocity",
+          "Limitation in overhead reaching or running"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "older_adults",
+        "differences": "Degenerative tendon changes are common, symptoms may be more chronic and less clearly linked to a single activity, and the differential includes polymyalgia rheumatica and rotator cuff tear."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Tendon healing is impaired, tendinitis is more persistent and recurrent, and the risk of tendon rupture is higher."
+      },
+      {
+        "population": "obesity",
+        "differences": "Increased load on weight-bearing tendons such as the Achilles and patellar tendons leads to more gradual, less activity-specific pain."
+      },
+      {
+        "population": "children",
+        "differences": "Overuse tendinitis is less common; apophysitis such as Osgood-Schlatter disease or Sever disease is more likely, with tenderness over the growth plate rather than the tendon midsubstance."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "Where exactly is the pain, and can you point to it with one finger?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Focal pain directly over a tendon near its bony attachment (lateral elbow, shoulder, wrist, Achilles, patellar tendon)"
+      },
+      {
+        "question": "Did the pain start suddenly after an injury, or build up gradually?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Gradual onset over days to weeks; sudden onset with a pop suggests a tear"
+      },
+      {
+        "question": "Did anything change in your activity before this started, such as a new sport, more training, or more repetitive work?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "A recent increase in repetitive or forceful use of the affected limb"
+      },
+      {
+        "question": "What movements make it worse, and what makes it better?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Worse with resisted use of the tendon, gripping, lifting, or overhead reaching; better with rest and ice"
+      },
+      {
+        "question": "Does the pain ease after you warm up, then ache afterward?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Warm-up phenomenon typical of tendinopathy"
+      },
+      {
+        "question": "Is there any swelling, stiffness, or a grating feeling over the tendon?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Mild focal swelling or thickening, morning stiffness, or crepitus"
+      },
+      {
+        "question": "Do you feel weak or like the limb gives way when you use it?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Weakness limited by pain; true giving-way or persistent weakness suggests a tear"
+      },
+      {
+        "question": "Have you had any fever, chills, or redness and warmth over the area?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Absent; present suggests septic tenosynovitis or septic arthritis"
+      },
+      {
+        "question": "Did you feel a sudden pop with immediate loss of strength or inability to move the limb?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Absent; present suggests tendon rupture"
+      },
+      {
+        "question": "Do you have pain or stiffness in many joints, especially in the morning?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Absent; symmetric small joint pain with morning stiffness over an hour suggests inflammatory arthritis"
+      },
+      {
+        "question": "Have you taken antibiotics in the last few months, especially a fluoroquinolone?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Recent ciprofloxacin, levofloxacin, or moxifloxacin use, which raises tendon injury risk"
+      },
+      {
+        "question": "Do you have diabetes or another chronic illness?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Diabetes or inflammatory arthritis, which affect tendon healing and the differential"
+      },
+      {
+        "question": "What sports or work activities do you do that involve repetitive gripping, lifting, or overhead motion?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Racket sports, throwing sports, running, swimming, or manual labor with repetitive use"
+      },
+      {
+        "question": "Any numbness, tingling, or weakness in a nerve distribution?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Absent; present suggests nerve entrapment or radiculopathy"
+      },
+      {
+        "question": "Does the pain wake you from sleep, or have you had unexplained weight loss or night sweats?",
+        "category": "red_flag",
+        "importance": "important",
+        "looking_for": "Absent; present raises concern for infection or malignancy"
+      }
+    ],
+    "accepted_names": [
+      "Tendinitis",
+      "Tendonitis",
+      "Tendinopathy",
+      "Overuse tendon injury"
+    ],
+    "reasoning_points": [
+      "Focal pain directly over a tendon near its bony attachment",
+      "Gradual onset after a recent increase in repetitive or forceful activity",
+      "Pain reproduced by resisted contraction and passive stretch of the affected musculotendinous unit",
+      "Mild focal tendon swelling or thickening without joint effusion",
+      "No fever, erythema, or systemic signs to suggest infection",
+      "No true instability, locking, or nerve deficit",
+      "Imaging reserved for uncertain, persistent, or atypical cases"
+    ],
+    "difficulty": {
+      "easy": [
+        "Classic activity-related focal tendon pain in a young or middle-aged adult",
+        "Clear temporal link to a new or increased activity",
+        "Focal tenderness over the tendon with pain on resisted contraction",
+        "No joint effusion, fever, or systemic symptoms"
+      ],
+      "medium": [
+        "Older adult with degenerative tendon changes and less clear activity trigger",
+        "Pain that overlaps with a joint or bursa, making the source less obvious",
+        "Mild swelling and stiffness that raise concern for inflammatory arthritis",
+        "Coexisting diabetes with more persistent symptoms"
+      ],
+      "hard": [
+        "Sudden pop with weakness suggesting a partial or full-thickness tear",
+        "Fever and focal warmth suggesting septic tenosynovitis",
+        "Numbness and tingling suggesting nerve entrapment rather than tendinitis",
+        "Bilateral shoulder and hip girdle pain in an older adult suggesting polymyalgia rheumatica",
+        "Activity-related focal pain that is actually a stress fracture"
+      ]
+    }
+  }
+}

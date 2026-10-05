@@ -1,0 +1,2149 @@
+{
+  "schema_version": "0.2",
+  "slug": "cirrhosis",
+  "triage": {
+    "name": "Cirrhosis",
+    "case_suitable": true,
+    "reason": "Rich multisystem diagnosis reachable from history of alcohol or viral hepatitis, exam stigmata, and labs/imaging; classic complications to explore.",
+    "kind": "disease",
+    "category": "chronic liver disease",
+    "organ_systems": [
+      "gastrointestinal"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "familyMedicine",
+      "emergency",
+      "surgery"
+    ],
+    "commonness": "common",
+    "settings": [
+      "inpatient",
+      "clinic",
+      "emergency"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:16:40Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:39:30Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:39:38Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:39:54Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:40:09Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:40:15Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "differential acute-viral-hepatitis: no profile yet",
+        "differential nephrotic-syndrome: no profile yet",
+        "differential hepatocellular-carcinoma: no profile yet",
+        "differential primary-biliary-cholangitis: no profile yet",
+        "differential primary-sclerosing-cholangitis: no profile yet",
+        "differential hemochromatosis: no profile yet",
+        "differential wilson-disease: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 40,
+      "typical_max": 70,
+      "peak": "50–65",
+      "possible_min": 18,
+      "possible_max": 90
+    },
+    "sex": "either",
+    "demographics": [
+      "More common in men, largely reflecting higher rates of alcohol use and viral hepatitis exposure",
+      "Higher burden in Black and Hispanic populations in the US, driven by hepatitis C and metabolic liver disease",
+      "Increasingly diagnosed in adults with obesity and type 2 diabetes due to steatotic liver disease"
+    ],
+    "risk_factors": [
+      {
+        "text": "Chronic heavy alcohol use",
+        "strength": "strong"
+      },
+      {
+        "text": "Chronic hepatitis B or hepatitis C infection",
+        "strength": "strong"
+      },
+      {
+        "text": "Metabolic dysfunction–associated steatotic liver disease (obesity, type 2 diabetes, dyslipidemia)",
+        "strength": "strong"
+      },
+      {
+        "text": "Male sex",
+        "strength": "moderate"
+      },
+      {
+        "text": "Family history of liver disease",
+        "strength": "moderate"
+      },
+      {
+        "text": "Injection drug use or other bloodborne exposure",
+        "strength": "moderate"
+      },
+      {
+        "text": "Alpha-1 antitrypsin deficiency, hemochromatosis, Wilson disease, or autoimmune hepatitis",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Type 2 diabetes mellitus",
+      "Obesity",
+      "Dyslipidemia",
+      "Chronic viral hepatitis",
+      "Alcohol use disorder",
+      "Chronic kidney disease"
+    ],
+    "family_history": [
+      "Cirrhosis or liver failure in a first-degree relative",
+      "Hereditary hemochromatosis",
+      "Alpha-1 antitrypsin deficiency",
+      "Autoimmune hepatitis"
+    ],
+    "social_history": [
+      "Long-standing heavy alcohol use",
+      "Injection drug use or shared needles",
+      "History of incarceration or blood transfusion before screening",
+      "Tattoos or body piercings with unsterile equipment"
+    ],
+    "exposures": [
+      "Occupational or environmental hepatotoxin exposure",
+      "Herbal or dietary supplements with hepatotoxic potential"
+    ],
+    "risk_medications": [
+      "acetaminophen",
+      "methotrexate",
+      "amiodarone",
+      "isoniazid",
+      "valproate"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My belly is getting bigger and my legs are swollen",
+        "frequency": "common"
+      },
+      {
+        "text": "I feel tired all the time",
+        "frequency": "common"
+      },
+      {
+        "text": "My skin and eyes look yellow",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "I bruise easily and my gums bleed",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "I itch all over and can't sleep",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Insidious, developing over months to years; often discovered incidentally on labs or imaging before symptoms appear",
+      "duration": "Chronic, typically present for years by the time symptoms bring the patient in",
+      "progression": "Slowly progressive; symptoms worsen as liver function declines and portal hypertension develops, with episodes of decompensation such as ascites, variceal bleeding, or confusion",
+      "location": "Abdomen (fullness, swelling), lower extremities (edema), generalized (fatigue, itching, jaundice)",
+      "radiation": "Not applicable",
+      "quality": "Dull abdominal fullness and pressure; aching leg swelling; constant fatigue; generalized itching",
+      "severity": "Mild to moderate early, becoming severe with decompensation",
+      "timing": "Persistent; abdominal swelling and edema worse later in the day and with salty meals",
+      "aggravating": [
+        "Salty foods",
+        "Alcohol",
+        "Standing for long periods",
+        "Nonsteroidal anti-inflammatory drugs"
+      ],
+      "relieving": [
+        "Rest",
+        "Leg elevation",
+        "Low-salt diet",
+        "Diuretics"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Fatigue and weakness",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Loss of appetite and unintended weight loss",
+          "frequency": "common"
+        },
+        {
+          "text": "Abdominal swelling (ascites)",
+          "frequency": "common"
+        },
+        {
+          "text": "Swelling of the legs and ankles",
+          "frequency": "common"
+        },
+        {
+          "text": "Easy bruising or bleeding, nosebleeds",
+          "frequency": "common"
+        },
+        {
+          "text": "Jaundice (yellow skin and eyes)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Severe generalized itching",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Confusion, forgetfulness, or trouble concentrating",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Vomiting blood or black stools",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Nausea and vomiting",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Muscle wasting and weakness",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Decreased sex drive or erectile dysfunction",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Fevers or abdominal pain suggesting infection",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Severe right upper quadrant pain radiating to the back",
+        "Fever with shaking chills",
+        "Profuse watery diarrhea",
+        "Bloody diarrhea",
+        "Recent travel to an endemic area with acute jaundice",
+        "Known cancer diagnosis or weight loss out of proportion to appetite loss"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fatigue",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Loss of appetite",
+            "frequency": "common"
+          },
+          {
+            "text": "Unintended weight loss",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Low-grade fever",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Drenching night sweats",
+          "High fever with chills"
+        ],
+        "argues_against": [
+          "Acute infectious hepatitis with high fever",
+          "Occult malignancy with night sweats"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Abdominal fullness and bloating",
+            "frequency": "common"
+          },
+          {
+            "text": "Nausea",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Vomiting blood or coffee-ground material",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Black tarry stools",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Early satiety",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Severe epigastric pain radiating to the back",
+          "Bloody diarrhea",
+          "Dysphagia"
+        ],
+        "argues_against": [
+          "Acute pancreatitis",
+          "Inflammatory bowel disease flare"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [
+          {
+            "text": "Swelling of the legs and ankles",
+            "frequency": "common"
+          },
+          {
+            "text": "Shortness of breath when lying flat",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Chest pain with exertion",
+          "Palpitations",
+          "Orthopnea requiring multiple pillows"
+        ],
+        "argues_against": [
+          "Congestive heart failure as the primary cause of edema"
+        ]
+      },
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "Shortness of breath with activity",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Cough",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Pleuritic chest pain",
+          "Hemoptysis"
+        ],
+        "argues_against": [
+          "Pulmonary embolism",
+          "Pneumonia"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [
+          {
+            "text": "Yellowing of the skin",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Severe generalized itching",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Easy bruising",
+            "frequency": "common"
+          },
+          {
+            "text": "Spider-like blood vessels on the chest and face",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "New rash",
+          "Skin ulcers",
+          "Palpable purpura"
+        ],
+        "argues_against": [
+          "Vasculitis",
+          "Severe drug eruption"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Confusion or forgetfulness",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Trouble concentrating",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Daytime sleepiness or reversed sleep cycle",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Tremor of the hands",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Focal weakness or numbness",
+          "Sudden severe headache",
+          "Seizures"
+        ],
+        "argues_against": [
+          "Stroke",
+          "Intracranial mass lesion"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [
+          {
+            "text": "Decreased urine output",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Dark urine",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Painful urination",
+          "Blood in urine",
+          "Flank pain"
+        ],
+        "argues_against": [
+          "Urinary tract infection",
+          "Nephrolithiasis"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Muscle wasting and weakness",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Muscle cramps",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Joint swelling and redness",
+          "Morning stiffness lasting hours"
+        ],
+        "argues_against": [
+          "Inflammatory arthritis"
+        ]
+      },
+      {
+        "system": "endocrine",
+        "positives": [
+          {
+            "text": "Loss of sex drive",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Erectile dysfunction",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Breast enlargement in men",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Heat intolerance",
+          "Cold intolerance",
+          "Excessive thirst and urination"
+        ],
+        "argues_against": [
+          "Thyroid disease",
+          "Uncontrolled diabetes"
+        ]
+      },
+      {
+        "system": "hematologic",
+        "positives": [
+          {
+            "text": "Easy bruising",
+            "frequency": "common"
+          },
+          {
+            "text": "Nosebleeds",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Bleeding gums",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Blood clots in the legs or lungs",
+          "Lymph node swelling"
+        ],
+        "argues_against": [
+          "Primary bleeding disorder",
+          "Lymphoma"
+        ]
+      },
+      {
+        "system": "psychiatric",
+        "positives": [
+          {
+            "text": "Depressed mood",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Anxiety",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Irritability",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Suicidal thoughts",
+          "Hallucinations"
+        ],
+        "argues_against": [
+          "Primary psychotic disorder"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "older_adults",
+        "how_it_differs": "May present with confusion, falls, or failure to thrive rather than abdominal swelling or jaundice; symptoms are often attributed to aging.",
+        "missing_classic_features": [
+          "Ascites",
+          "Jaundice",
+          "Abdominal pain"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Can be masked by normal pregnancy changes; may present with severe itching, jaundice, or liver test abnormalities that overlap with intrahepatic cholestasis of pregnancy or HELLP syndrome.",
+        "missing_classic_features": [
+          "Clear temporal relationship of symptoms to liver disease",
+          "Classic stigmata such as spider angiomata"
+        ]
+      },
+      {
+        "population": "diabetes",
+        "how_it_differs": "Often asymptomatic and detected on routine labs; may present with unexplained hypoglycemia or worsening glycemic control due to impaired hepatic glucose handling.",
+        "missing_classic_features": [
+          "Ascites",
+          "Variceal bleeding",
+          "Jaundice"
+        ]
+      },
+      {
+        "population": "obesity",
+        "how_it_differs": "Abdominal swelling may be attributed to central adiposity, delaying recognition of ascites; metabolic steatotic liver disease is the likely underlying cause.",
+        "missing_classic_features": [
+          "Visible abdominal distension distinct from fat",
+          "Classic alcohol-related stigmata"
+        ]
+      },
+      {
+        "population": "hepatic_impairment",
+        "how_it_differs": "Already known liver disease may present with decompensation such as encephalopathy, bleeding, or infection rather than new symptoms of cirrhosis itself.",
+        "missing_classic_features": [
+          "New-onset jaundice",
+          "First presentation of ascites"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Well-appearing or mildly fatigued; may look well despite abnormal labs",
+      "moderate": "Chronically ill-appearing, fatigued, with visible abdominal distension or leg swelling",
+      "severe": "Cachectic and jaundiced, with marked ascites, muscle wasting, and scleral icterus",
+      "critical": "Toxic or encephalopathic, drowsy or confused, with tense ascites, jaundice, and signs of bleeding or infection"
+    },
+    "findings": [
+      {
+        "id": "scleral-icterus",
+        "region": "heent",
+        "maneuver": "Inspect the sclerae in natural light",
+        "finding": "Yellow discoloration of the sclerae (icterus)",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "spider-angiomata",
+        "region": "skin",
+        "maneuver": "Inspect the chest, face, and upper trunk",
+        "finding": "Spider angiomata (central arteriole with radiating vessels that blanch on pressure)",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "palmar-erythema",
+        "region": "extremities",
+        "maneuver": "Inspect the palms",
+        "finding": "Diffuse redness of the thenar and hypothenar eminences",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "caput-medusae",
+        "region": "abdomen",
+        "maneuver": "Inspect the abdominal wall with the patient supine",
+        "finding": "Dilated veins radiating from the umbilicus (caput medusae)",
+        "frequency": "rare",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "ascites-shifting-dullness",
+        "region": "abdomen",
+        "maneuver": "Percuss the flanks and then the midline with the patient supine, then roll the patient to one side",
+        "finding": "Dullness in the dependent flank that shifts with position (shifting dullness)",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "ascites-fluid-wave",
+        "region": "abdomen",
+        "maneuver": "Place one hand on the midline and tap the opposite flank while an assistant stabilizes the midline",
+        "finding": "Palpable fluid wave",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "hepatomegaly",
+        "region": "abdomen",
+        "maneuver": "Palpate the right upper quadrant below the costal margin",
+        "finding": "Enlarged, firm, nodular liver edge",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "splenomegaly",
+        "region": "abdomen",
+        "maneuver": "Palpate the left upper quadrant and percuss Traube's space",
+        "finding": "Enlarged spleen",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "abdominal-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate all four quadrants",
+        "finding": "Diffuse abdominal tenderness, which may indicate spontaneous bacterial peritonitis",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "guarding-rigidity",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen and observe for involuntary guarding",
+        "finding": "Involuntary guarding or rigidity suggesting peritonitis",
+        "frequency": "rare",
+        "min_severity": "critical",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "pedal-edema",
+        "region": "extremities",
+        "maneuver": "Press over the dorsum of the foot and lower shin for several seconds",
+        "finding": "Pitting edema of the lower extremities",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "muscle-wasting",
+        "region": "musculoskeletal",
+        "maneuver": "Inspect and palpate the thenar eminence and temporal muscles",
+        "finding": "Muscle wasting and weakness",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "asterixis",
+        "region": "neuro",
+        "maneuver": "Ask the patient to extend both arms with wrists dorsiflexed and observe for several seconds",
+        "finding": "Brief, irregular flapping of the hands (asterixis) indicating hepatic encephalopathy",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "altered-mental-status",
+        "region": "mental_status",
+        "maneuver": "Assess orientation, attention, and level of consciousness",
+        "finding": "Confusion, disorientation, or drowsiness",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "fetor-hepaticus",
+        "region": "general",
+        "maneuver": "Note the odor of the patient's breath",
+        "finding": "Sweet, musty breath odor",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "gynecomastia",
+        "region": "breast",
+        "maneuver": "Inspect and palpate the male breast tissue",
+        "finding": "Breast enlargement",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "testicular-atrophy",
+        "region": "genitourinary",
+        "maneuver": "Examine the testes",
+        "finding": "Small, soft testes",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-jvp",
+        "region": "neck",
+        "maneuver": "Inspect the internal jugular venous pulsation at 45 degrees",
+        "finding": "Normal jugular venous pressure without prominent v waves",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-lung-exam",
+        "region": "lung",
+        "maneuver": "Auscultate all lung fields",
+        "finding": "Clear breath sounds without crackles or pleural rub",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-heart-exam",
+        "region": "cardiac",
+        "maneuver": "Auscultate the heart and palpate the precordium",
+        "finding": "Normal S1 and S2 without murmur, gallop, or displaced apical impulse",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-focal-neuro-deficit",
+        "region": "neuro",
+        "maneuver": "Perform a focused neurologic exam including strength and cranial nerves",
+        "finding": "No focal motor or sensory deficit",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "moderate": {
+        "min": 97.8,
+        "max": 99.5
+      },
+      "severe": {
+        "min": 98.0,
+        "max": 100.4
+      },
+      "critical": {
+        "min": 96.5,
+        "max": 102.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 90
+      },
+      "moderate": {
+        "min": 70,
+        "max": 100
+      },
+      "severe": {
+        "min": 80,
+        "max": 110
+      },
+      "critical": {
+        "min": 90,
+        "max": 130
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 12,
+        "max": 18
+      },
+      "moderate": {
+        "min": 14,
+        "max": 20
+      },
+      "severe": {
+        "min": 16,
+        "max": 24
+      },
+      "critical": {
+        "min": 18,
+        "max": 30
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 100,
+        "max": 130
+      },
+      "moderate": {
+        "min": 95,
+        "max": 125
+      },
+      "severe": {
+        "min": 85,
+        "max": 115
+      },
+      "critical": {
+        "min": 70,
+        "max": 100
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 60,
+        "max": 80
+      },
+      "moderate": {
+        "min": 55,
+        "max": 78
+      },
+      "severe": {
+        "min": 50,
+        "max": 72
+      },
+      "critical": {
+        "min": 40,
+        "max": 65
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 95,
+        "max": 100
+      },
+      "moderate": {
+        "min": 94,
+        "max": 99
+      },
+      "severe": {
+        "min": 92,
+        "max": 98
+      },
+      "critical": {
+        "min": 88,
+        "max": 96
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "plt",
+      "ranges": {
+        "mild": {
+          "min": 100,
+          "max": 150
+        },
+        "moderate": {
+          "min": 70,
+          "max": 130
+        },
+        "severe": {
+          "min": 40,
+          "max": 100
+        },
+        "critical": {
+          "min": 15,
+          "max": 60
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "Thrombocytopenia from portal hypertension with splenic sequestration and reduced thrombopoietin; often the earliest lab clue to cirrhosis."
+    },
+    {
+      "test_id": "inr",
+      "ranges": {
+        "mild": {
+          "min": 1.1,
+          "max": 1.4
+        },
+        "moderate": {
+          "min": 1.3,
+          "max": 1.8
+        },
+        "severe": {
+          "min": 1.6,
+          "max": 2.5
+        },
+        "critical": {
+          "min": 2.0,
+          "max": 4.0
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "Reflects synthetic failure; a rising INR is a key prognostic marker and part of the MELD score."
+    },
+    {
+      "test_id": "pt",
+      "ranges": {
+        "mild": {
+          "min": 13.0,
+          "max": 16.0
+        },
+        "moderate": {
+          "min": 15.0,
+          "max": 19.0
+        },
+        "severe": {
+          "min": 18.0,
+          "max": 26.0
+        },
+        "critical": {
+          "min": 22.0,
+          "max": 40.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important"
+    },
+    {
+      "test_id": "albumin",
+      "ranges": {
+        "mild": {
+          "min": 3.0,
+          "max": 3.5
+        },
+        "moderate": {
+          "min": 2.5,
+          "max": 3.2
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 2.8
+        },
+        "critical": {
+          "min": 1.5,
+          "max": 2.4
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "Low albumin reflects reduced hepatic synthesis and is a component of the Child-Pugh score; also lowered by inflammation and malnutrition."
+    },
+    {
+      "test_id": "tbili",
+      "ranges": {
+        "mild": {
+          "min": 1.2,
+          "max": 2.0
+        },
+        "moderate": {
+          "min": 1.8,
+          "max": 3.5
+        },
+        "severe": {
+          "min": 3.0,
+          "max": 8.0
+        },
+        "critical": {
+          "min": 6.0,
+          "max": 20.0
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "Jaundice becomes clinically visible above roughly 2.5–3 mg/dL; a rising level suggests decompensation."
+    },
+    {
+      "test_id": "dbili",
+      "ranges": {
+        "mild": {
+          "min": 0.3,
+          "max": 0.8
+        },
+        "moderate": {
+          "min": 0.6,
+          "max": 1.8
+        },
+        "severe": {
+          "min": 1.5,
+          "max": 5.0
+        },
+        "critical": {
+          "min": 3.0,
+          "max": 12.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important"
+    },
+    {
+      "test_id": "ast",
+      "ranges": {
+        "mild": {
+          "min": 40,
+          "max": 80
+        },
+        "moderate": {
+          "min": 60,
+          "max": 150
+        },
+        "severe": {
+          "min": 100,
+          "max": 300
+        },
+        "critical": {
+          "min": 200,
+          "max": 1000
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "AST is usually greater than ALT in alcohol-related liver disease; aminotransferases may be near normal in advanced cirrhosis because of reduced hepatocyte mass."
+    },
+    {
+      "test_id": "alt",
+      "ranges": {
+        "mild": {
+          "min": 40,
+          "max": 70
+        },
+        "moderate": {
+          "min": 55,
+          "max": 120
+        },
+        "severe": {
+          "min": 90,
+          "max": 250
+        },
+        "critical": {
+          "min": 150,
+          "max": 800
+        }
+      },
+      "frequency": "common",
+      "importance": "important"
+    },
+    {
+      "test_id": "alp",
+      "ranges": {
+        "mild": {
+          "min": 147,
+          "max": 220
+        },
+        "moderate": {
+          "min": 200,
+          "max": 400
+        },
+        "severe": {
+          "min": 350,
+          "max": 700
+        },
+        "critical": {
+          "min": 500,
+          "max": 1200
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Disproportionate elevation suggests a cholestatic process such as primary biliary cholangitis, primary sclerosing cholangitis, or infiltrative disease."
+    },
+    {
+      "test_id": "ggt",
+      "ranges": {
+        "mild": {
+          "min": 48,
+          "max": 120
+        },
+        "moderate": {
+          "min": 100,
+          "max": 300
+        },
+        "severe": {
+          "min": 250,
+          "max": 600
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Sensitive but nonspecific marker of hepatobiliary disease and alcohol use."
+    },
+    {
+      "test_id": "na",
+      "ranges": {
+        "mild": {
+          "min": 132,
+          "max": 135
+        },
+        "moderate": {
+          "min": 128,
+          "max": 134
+        },
+        "severe": {
+          "min": 122,
+          "max": 130
+        },
+        "critical": {
+          "min": 115,
+          "max": 126
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "Dilutional hyponatremia from impaired free-water clearance; a low sodium is a strong prognostic marker and part of MELD-Na."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "mild": {
+          "min": 1.0,
+          "max": 1.3
+        },
+        "moderate": {
+          "min": 1.2,
+          "max": 1.8
+        },
+        "severe": {
+          "min": 1.6,
+          "max": 3.0
+        },
+        "critical": {
+          "min": 2.5,
+          "max": 6.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "essential",
+      "caveat": "A normal creatinine can mask significant renal impairment because of reduced muscle mass; hepatorenal syndrome is a feared complication."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "mild": {
+          "min": 20,
+          "max": 30
+        },
+        "moderate": {
+          "min": 25,
+          "max": 45
+        },
+        "severe": {
+          "min": 35,
+          "max": 70
+        },
+        "critical": {
+          "min": 50,
+          "max": 120
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important"
+    },
+    {
+      "test_id": "hgb",
+      "ranges": {
+        "mild": {
+          "min": 11.0,
+          "max": 13.0
+        },
+        "moderate": {
+          "min": 9.0,
+          "max": 12.0
+        },
+        "severe": {
+          "min": 7.0,
+          "max": 10.0
+        },
+        "critical": {
+          "min": 5.0,
+          "max": 8.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Anemia from GI blood loss, hypersplenism, nutritional deficiency, or bone marrow suppression; may be masked by volume overload."
+    },
+    {
+      "test_id": "mcv",
+      "ranges": {
+        "mild": {
+          "min": 100,
+          "max": 108
+        },
+        "moderate": {
+          "min": 105,
+          "max": 115
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Macrocytosis from alcohol, folate deficiency, or hypersplenism."
+    },
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "mild": {
+          "min": 3.0,
+          "max": 4.5
+        },
+        "moderate": {
+          "min": 2.0,
+          "max": 4.0
+        },
+        "severe": {
+          "min": 1.0,
+          "max": 3.5
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Leukopenia from hypersplenism; a rising white count should prompt evaluation for spontaneous bacterial peritonitis or other infection."
+    },
+    {
+      "test_id": "ammonia",
+      "ranges": {
+        "moderate": {
+          "min": 45,
+          "max": 80
+        },
+        "severe": {
+          "min": 70,
+          "max": 150
+        },
+        "critical": {
+          "min": 100,
+          "max": 250
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Poorly correlates with the degree of hepatic encephalopathy; useful mainly when the diagnosis is unclear, not for monitoring."
+    },
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "moderate": {
+          "min": 60,
+          "max": 70
+        },
+        "severe": {
+          "min": 45,
+          "max": 65
+        },
+        "critical": {
+          "min": 30,
+          "max": 55
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hypoglycemia from depleted glycogen stores and impaired gluconeogenesis, especially in acute decompensation."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Negative. Obtained in anyone who could be pregnant before imaging or procedures."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "qt",
+        "finding": "Prolonged QT interval",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "rate",
+        "finding": "Sinus tachycardia",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "other",
+        "finding": "Nonspecific ST-T flattening or T-wave changes",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Abdominal ultrasound with Doppler",
+      "modality": "ultrasound",
+      "preferred_when": "First-line imaging in most patients; no radiation and can assess portal flow",
+      "findings": [
+        {
+          "text": "Coarse, nodular hepatic echotexture with irregular surface",
+          "frequency": "common"
+        },
+        {
+          "text": "Splenomegaly",
+          "frequency": "common"
+        },
+        {
+          "text": "Ascites",
+          "frequency": "common"
+        },
+        {
+          "text": "Reversed or reduced portal venous flow on Doppler",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Recanalized umbilical vein or portosystemic collaterals",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Gallstones or gallbladder wall thickening",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Focal hepatic lesion requiring further characterization",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "CT abdomen and pelvis with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Suspected hepatocellular carcinoma, variceal bleeding, or complications such as thrombosis or abscess",
+      "findings": [
+        {
+          "text": "Nodular liver contour with heterogeneous parenchymal enhancement",
+          "frequency": "common"
+        },
+        {
+          "text": "Ascites",
+          "frequency": "common"
+        },
+        {
+          "text": "Splenomegaly and portosystemic varices",
+          "frequency": "common"
+        },
+        {
+          "text": "Portal or splenic vein thrombosis",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Arterial-phase enhancing lesion with washout suggesting hepatocellular carcinoma",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "MRI abdomen with MRCP",
+      "modality": "mri",
+      "preferred_when": "Characterizing focal liver lesions or evaluating the biliary tree when ultrasound and CT are inconclusive",
+      "findings": [
+        {
+          "text": "Nodular regenerative parenchyma with fibrous septa",
+          "frequency": "common"
+        },
+        {
+          "text": "Biliary ductal changes suggesting primary sclerosing cholangitis",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Focal lesion with characteristic enhancement pattern of hepatocellular carcinoma",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Upper endoscopy",
+      "modality": "endoscopy",
+      "preferred_when": "Screening for varices at diagnosis and after acute GI bleeding",
+      "findings": [
+        {
+          "text": "Esophageal varices, graded by size",
+          "frequency": "common"
+        },
+        {
+          "text": "Gastric varices or portal hypertensive gastropathy",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Actively bleeding varix or stigmata of recent hemorrhage",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "No varices at screening",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Transient elastography (FibroScan)",
+      "modality": "other",
+      "preferred_when": "Estimating fibrosis noninvasively when the diagnosis is uncertain",
+      "findings": [
+        {
+          "text": "Markedly elevated liver stiffness consistent with advanced fibrosis or cirrhosis",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "Chest x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Elevated hemidiaphragms from ascites or pleural effusion",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Usually normal",
+          "frequency": "common"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Thrombocytopenia, leukopenia, and anemia are common and often the first clue"
+      },
+      {
+        "test": "bmp",
+        "why": "Assesses renal function, electrolytes, and hyponatremia"
+      },
+      {
+        "test": "cmp_extra",
+        "why": "Albumin, bilirubin, and aminotransferases establish synthetic function and the pattern of injury"
+      },
+      {
+        "test": "coag",
+        "why": "INR reflects synthetic failure and is part of prognostic scoring"
+      },
+      {
+        "test": "Abdominal ultrasound with Doppler",
+        "why": "Confirms nodular liver, splenomegaly, ascites, and portal flow"
+      },
+      {
+        "test": "Upper endoscopy",
+        "why": "Screens for varices at the time of diagnosis"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before imaging or procedures",
+        "only_if": "patient could be pregnant"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Liver biopsy",
+        "why": "Histology showing regenerative nodules surrounded by fibrous septa is the reference standard when noninvasive testing is inconclusive",
+        "only_if": "diagnosis remains uncertain after labs and imaging"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "ggt",
+        "why": "Supports a hepatobiliary source when alkaline phosphatase is elevated"
+      },
+      {
+        "test": "ammonia",
+        "why": "May support hepatic encephalopathy when the clinical picture is unclear",
+        "only_if": "altered mental status is present"
+      },
+      {
+        "test": "Transient elastography (FibroScan)",
+        "why": "Noninvasive estimate of fibrosis stage"
+      },
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Evaluates suspected hepatocellular carcinoma, variceal bleeding, or vascular thrombosis",
+        "only_if": "focal lesion, GI bleeding, or suspected portal vein thrombosis"
+      },
+      {
+        "test": "MRI abdomen with MRCP",
+        "why": "Characterizes focal lesions or biliary disease",
+        "only_if": "ultrasound and CT are inconclusive"
+      },
+      {
+        "test": "Hepatitis B surface antigen",
+        "why": "Identifies chronic hepatitis B as the underlying cause"
+      },
+      {
+        "test": "Hepatitis C antibody",
+        "why": "Identifies chronic hepatitis C as the underlying cause"
+      },
+      {
+        "test": "Ferritin",
+        "why": "Screens for hemochromatosis",
+        "only_if": "cause is unclear"
+      },
+      {
+        "test": "Alpha-1 antitrypsin level",
+        "why": "Screens for alpha-1 antitrypsin deficiency",
+        "only_if": "cause is unclear or there is early-onset or familial disease"
+      },
+      {
+        "test": "Ceruloplasmin",
+        "why": "Screens for Wilson disease",
+        "only_if": "younger patient with unexplained cirrhosis"
+      },
+      {
+        "test": "Antinuclear antibody",
+        "why": "Screens for autoimmune hepatitis",
+        "only_if": "cause is unclear"
+      },
+      {
+        "test": "Alpha-fetoprotein",
+        "why": "Supports surveillance for hepatocellular carcinoma",
+        "only_if": "cirrhosis is confirmed"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Chest x-ray",
+        "why": "Not routinely needed; reserved for suspected pleural effusion or infection"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in the evaluation of cirrhosis"
+      },
+      {
+        "test": "lipase",
+        "why": "Not needed unless pancreatitis is suspected"
+      },
+      {
+        "test": "ua",
+        "why": "Not part of the routine cirrhosis workup"
+      },
+      {
+        "test": "csf",
+        "why": "Not indicated; encephalopathy is a metabolic diagnosis and lumbar puncture is reserved for suspected CNS infection"
+      }
+    ],
+    "decision_points": [
+      "Diagnostic paracentesis with ascitic fluid cell count and culture is mandatory in any patient with ascites and fever, abdominal pain, or unexplained decompensation to rule out spontaneous bacterial peritonitis",
+      "Screen for varices with endoscopy at diagnosis; if none are found, repeat in 2–3 years",
+      "Begin hepatocellular carcinoma surveillance with ultrasound every 6 months once cirrhosis is confirmed",
+      "Assess MELD-Na and Child-Pugh scores to guide prognosis and transplant referral",
+      "Avoid NSAIDs and nephrotoxins; adjust medication doses for hepatic impairment"
+    ],
+    "criteria": [
+      {
+        "name": "Child-Pugh classification",
+        "summary": "Grades severity of cirrhosis using total bilirubin, albumin, INR, ascites, and hepatic encephalopathy; higher scores indicate worse prognosis and are grouped into classes A, B, and C.",
+        "items": [
+          "Total bilirubin",
+          "Albumin",
+          "INR",
+          "Ascites",
+          "Hepatic encephalopathy"
+        ]
+      },
+      {
+        "name": "MELD-Na score",
+        "summary": "Estimates short-term mortality in chronic liver disease using bilirubin, INR, creatinine, and sodium; used to prioritize liver transplant allocation.",
+        "items": [
+          "Total bilirubin",
+          "INR",
+          "Creatinine",
+          "Sodium"
+        ]
+      }
+    ],
+    "scores": [
+      "child_pugh",
+      "meld_na"
+    ]
+  },
+  "differential": [
+    {
+      "name": "Acute viral hepatitis",
+      "slug": "acute-viral-hepatitis",
+      "why_considered": "Jaundice, fatigue, nausea, and elevated aminotransferases can mimic decompensated cirrhosis",
+      "must_not_miss": true,
+      "trigger": "Acute onset of jaundice with markedly elevated aminotransferases and no prior liver disease",
+      "discriminators": {
+        "history": [
+          "Recent onset over days to weeks rather than years",
+          "Prodromal fever, malaise, and anorexia",
+          "Possible recent exposure or travel"
+        ],
+        "exam": [
+          "Tender hepatomegaly without firm nodular edge",
+          "No ascites, splenomegaly, or spider angiomata",
+          "No asterixis or encephalopathy"
+        ],
+        "labs": [
+          "ALT often greater than 1000 U/L with ALT greater than AST",
+          "Positive hepatitis A IgM, hepatitis B surface antigen with IgM core antibody, or hepatitis C RNA",
+          "Normal or near-normal platelet count and INR"
+        ],
+        "imaging": [
+          "Ultrasound shows normal or enlarged echogenic liver without nodular contour",
+          "No splenomegaly, ascites, or portosystemic collaterals"
+        ]
+      }
+    },
+    {
+      "name": "Metabolic dysfunction-associated steatotic liver disease",
+      "slug": "steatotic-liver-disease",
+      "why_considered": "Often asymptomatic with mildly abnormal liver tests and can progress to cirrhosis, making the two difficult to separate without staging",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Obesity, type 2 diabetes, dyslipidemia, or metabolic syndrome",
+          "No significant alcohol use",
+          "Usually asymptomatic or only mild fatigue"
+        ],
+        "exam": [
+          "May have hepatomegaly but no firm nodular edge",
+          "No ascites, jaundice, or encephalopathy",
+          "No spider angiomata or palmar erythema"
+        ],
+        "labs": [
+          "Mildly elevated ALT and AST, often ALT greater than AST",
+          "Normal platelet count and INR",
+          "Normal albumin and bilirubin"
+        ],
+        "imaging": [
+          "Hepatic steatosis on ultrasound without nodular contour or surface irregularity",
+          "No splenomegaly, ascites, or varices",
+          "Transient elastography shows low to intermediate stiffness"
+        ]
+      }
+    },
+    {
+      "name": "Congestive heart failure",
+      "slug": "heart-failure",
+      "why_considered": "Leg edema, abdominal swelling, and shortness of breath overlap with cirrhotic ascites and edema",
+      "must_not_miss": true,
+      "trigger": "Elevated jugular venous pressure with crackles and orthopnea in a patient with ascites and edema",
+      "discriminators": {
+        "history": [
+          "Orthopnea and paroxysmal nocturnal dyspnea",
+          "Known coronary disease, hypertension, or valvular disease",
+          "No heavy alcohol use or viral hepatitis"
+        ],
+        "exam": [
+          "Elevated jugular venous pressure with prominent v waves",
+          "Lung crackles and S3 gallop",
+          "Ascites less prominent than peripheral edema; no spider angiomata"
+        ],
+        "labs": [
+          "Elevated BNP or NT-proBNP",
+          "Normal platelet count, INR, and albumin",
+          "Mild transaminase elevation from hepatic congestion"
+        ],
+        "imaging": [
+          "Cardiomegaly and pulmonary venous congestion on chest x-ray",
+          "Echocardiogram shows reduced ejection fraction or diastolic dysfunction",
+          "Ultrasound shows dilated hepatic veins and IVC without nodular liver"
+        ]
+      }
+    },
+    {
+      "name": "Nephrotic syndrome",
+      "slug": "nephrotic-syndrome",
+      "why_considered": "Generalized edema, ascites, and hypoalbuminemia can resemble cirrhosis",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Periorbital edema and frothy urine",
+          "Recent infection or known glomerular disease",
+          "No alcohol use or viral hepatitis"
+        ],
+        "exam": [
+          "Periorbital and generalized edema",
+          "No jaundice, spider angiomata, or caput medusae",
+          "Normal liver edge"
+        ],
+        "labs": [
+          "Urine protein greater than 3.5 g/day with low serum albumin",
+          "Normal bilirubin, INR, and platelet count",
+          "Elevated cholesterol"
+        ],
+        "imaging": [
+          "Renal ultrasound may show normal or enlarged kidneys",
+          "Liver ultrasound is normal without nodular contour or portal hypertension"
+        ]
+      }
+    },
+    {
+      "name": "Hepatocellular carcinoma",
+      "slug": "hepatocellular-carcinoma",
+      "why_considered": "Can arise in cirrhosis and cause decompensation, weight loss, and abdominal pain",
+      "must_not_miss": true,
+      "trigger": "New focal liver lesion, worsening liver function, or rising alpha-fetoprotein in a patient with cirrhosis",
+      "discriminators": {
+        "history": [
+          "Known cirrhosis or chronic hepatitis B or C",
+          "Unexplained weight loss and right upper quadrant pain",
+          "Rapid clinical deterioration"
+        ],
+        "exam": [
+          "Palpable hard liver nodule or mass",
+          "Signs of decompensation such as ascites or jaundice",
+          "Possible hepatic bruit"
+        ],
+        "labs": [
+          "Markedly elevated alpha-fetoprotein",
+          "Worsening liver function tests and INR",
+          "Anemia or thrombocytosis"
+        ],
+        "imaging": [
+          "Arterial-phase enhancing lesion with washout on multiphasic CT or MRI",
+          "Focal lesion with capsule or mosaic appearance",
+          "Portal vein invasion or thrombosis"
+        ]
+      }
+    },
+    {
+      "name": "Primary biliary cholangitis",
+      "slug": "primary-biliary-cholangitis",
+      "why_considered": "Chronic cholestatic liver disease that can progress to cirrhosis with jaundice and pruritus",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Middle-aged woman with fatigue and severe pruritus",
+          "Dry eyes and dry mouth (sicca symptoms)",
+          "Gradual onset over months to years"
+        ],
+        "exam": [
+          "Jaundice and excoriations from scratching",
+          "Xanthelasma or hyperpigmentation",
+          "Hepatomegaly without nodular edge early on"
+        ],
+        "labs": [
+          "Markedly elevated alkaline phosphatase and GGT",
+          "Positive antimitochondrial antibody",
+          "Elevated IgM"
+        ],
+        "imaging": [
+          "Ultrasound shows normal biliary tree without dilation",
+          "MRCP shows normal ducts, ruling out obstruction"
+        ]
+      }
+    },
+    {
+      "name": "Primary sclerosing cholangitis",
+      "slug": "primary-sclerosing-cholangitis",
+      "why_considered": "Cholestatic liver disease that can lead to cirrhosis and portal hypertension",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Young to middle-aged man with inflammatory bowel disease, especially ulcerative colitis",
+          "Fatigue, pruritus, and recurrent cholangitis",
+          "Progressive jaundice"
+        ],
+        "exam": [
+          "Jaundice and hepatomegaly",
+          "Signs of chronic liver disease may be present",
+          "No specific stigmata early"
+        ],
+        "labs": [
+          "Elevated alkaline phosphatase and bilirubin",
+          "Positive p-ANCA in some cases",
+          "Normal antimitochondrial antibody"
+        ],
+        "imaging": [
+          "MRCP shows multifocal strictures and dilatations (beaded appearance) of intra- and extrahepatic bile ducts",
+          "Ultrasound may show biliary dilation or gallstones"
+        ]
+      }
+    },
+    {
+      "name": "Hemochromatosis",
+      "slug": "hemochromatosis",
+      "why_considered": "Hereditary iron overload can cause cirrhosis, skin bronzing, and diabetes",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Family history of hemochromatosis or liver disease",
+          "Arthralgia, fatigue, and erectile dysfunction",
+          "Diabetes and skin darkening"
+        ],
+        "exam": [
+          "Bronze or slate-gray skin pigmentation",
+          "Hepatomegaly",
+          "Arthropathy of the hands, especially the second and third metacarpophalangeal joints"
+        ],
+        "labs": [
+          "Elevated transferrin saturation greater than 45%",
+          "Elevated ferritin",
+          "Positive HFE gene mutation"
+        ],
+        "imaging": [
+          "MRI shows decreased liver signal intensity on T2-weighted images due to iron deposition",
+          "Liver biopsy shows iron overload with fibrosis"
+        ]
+      }
+    },
+    {
+      "name": "Wilson disease",
+      "slug": "wilson-disease",
+      "why_considered": "Inherited copper overload can present with cirrhosis, neuropsychiatric symptoms, and hemolysis, especially in younger patients",
+      "must_not_miss": true,
+      "trigger": "Cirrhosis in a patient under 40 with neuropsychiatric symptoms, hemolytic anemia, or Kayser-Fleischer rings",
+      "discriminators": {
+        "history": [
+          "Young age at presentation, usually under 40",
+          "Tremor, dysarthria, or psychiatric symptoms",
+          "Family history of liver or neurologic disease"
+        ],
+        "exam": [
+          "Kayser-Fleischer rings on slit-lamp examination",
+          "Tremor, rigidity, or ataxia",
+          "Hepatomegaly or signs of cirrhosis"
+        ],
+        "labs": [
+          "Low serum ceruloplasmin",
+          "Elevated 24-hour urinary copper",
+          "Coombs-negative hemolytic anemia with low haptoglobin"
+        ],
+        "imaging": [
+          "MRI brain shows basal ganglia signal changes",
+          "Liver biopsy shows copper accumulation and fibrosis"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Compensated cirrhosis: no ascites, variceal bleeding, or encephalopathy; may be asymptomatic or have only fatigue and mild lab abnormalities",
+      "moderate": "Compensated cirrhosis with portal hypertension: thrombocytopenia, splenomegaly, or small varices but no prior decompensation",
+      "severe": "Decompensated cirrhosis: ascites, variceal bleeding, hepatic encephalopathy, or jaundice; requires active management and transplant evaluation",
+      "critical": "Life-threatening decompensation: variceal hemorrhage with shock, spontaneous bacterial peritonitis with sepsis, hepatorenal syndrome, or severe encephalopathy"
+    },
+    "red_flags": [
+      {
+        "finding": "Hematemesis or melena",
+        "meaning": "Variceal bleeding until proven otherwise; requires urgent endoscopy and resuscitation"
+      },
+      {
+        "finding": "Fever and abdominal pain with ascites",
+        "meaning": "Spontaneous bacterial peritonitis; diagnostic paracentesis is mandatory"
+      },
+      {
+        "finding": "Confusion, disorientation, or asterixis",
+        "meaning": "Hepatic encephalopathy; assess for precipitants such as infection, bleeding, or dehydration"
+      },
+      {
+        "finding": "Rapidly worsening jaundice, INR, or creatinine",
+        "meaning": "Acute decompensation or acute-on-chronic liver failure; consider urgent transplant referral"
+      },
+      {
+        "finding": "Hypotension or tachycardia with ascites",
+        "meaning": "Sepsis or hemorrhage; immediate resuscitation and evaluation"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Ascites",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Increasing abdominal girth",
+          "Shifting dullness or fluid wave",
+          "Weight gain and early satiety"
+        ]
+      },
+      {
+        "name": "Spontaneous bacterial peritonitis",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Fever and abdominal pain",
+          "Unexplained encephalopathy",
+          "Ascitic fluid neutrophil count greater than 250 cells/mm3"
+        ]
+      },
+      {
+        "name": "Esophageal variceal bleeding",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Hematemesis or melena",
+          "Hypotension and tachycardia",
+          "Known varices or signs of portal hypertension"
+        ]
+      },
+      {
+        "name": "Hepatic encephalopathy",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Confusion, sleep disturbance, or asterixis",
+          "Precipitated by infection, GI bleeding, constipation, or dehydration",
+          "Elevated ammonia (supportive but not diagnostic)"
+        ]
+      },
+      {
+        "name": "Hepatorenal syndrome",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Rising creatinine with oliguria",
+          "No response to volume expansion",
+          "Absence of other causes of renal failure"
+        ]
+      },
+      {
+        "name": "Hepatocellular carcinoma",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "New focal liver lesion on imaging",
+          "Rising alpha-fetoprotein",
+          "Unexplained weight loss or right upper quadrant pain"
+        ]
+      },
+      {
+        "name": "Coagulopathy and bleeding",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Easy bruising, epistaxis, or bleeding gums",
+          "Elevated INR and thrombocytopenia",
+          "Prolonged bleeding after procedures"
+        ]
+      },
+      {
+        "name": "Portal vein thrombosis",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Sudden worsening ascites or abdominal pain",
+          "Imaging showing filling defect in portal vein",
+          "Variceal bleeding"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "older_adults",
+        "differences": "May present with confusion, falls, or failure to thrive rather than classic stigmata; symptoms are often attributed to aging. Medication sensitivity is increased due to reduced hepatic metabolism."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Can be masked by normal pregnancy changes; may present with severe pruritus, jaundice, or liver test abnormalities overlapping with intrahepatic cholestasis of pregnancy or HELLP syndrome. Variceal bleeding risk increases with pregnancy."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Often asymptomatic and detected on routine labs; may present with unexplained hypoglycemia or worsening glycemic control due to impaired hepatic glucose handling. Metformin should be avoided in severe hepatic impairment."
+      },
+      {
+        "population": "obesity",
+        "differences": "Abdominal swelling may be attributed to central adiposity, delaying recognition of ascites; metabolic steatotic liver disease is the likely underlying cause. Weight loss and metabolic risk factor management are key."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "Creatinine may underestimate renal impairment due to reduced muscle mass; avoid nephrotoxins and adjust medication doses. Hepatorenal syndrome is a feared complication."
+      },
+      {
+        "population": "hepatic_impairment",
+        "differences": "Already known liver disease may present with decompensation such as encephalopathy, bleeding, or infection rather than new symptoms of cirrhosis itself. Medication dosing must be adjusted for hepatic impairment."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "How much alcohol have you drunk over your lifetime, and for how many years?",
+        "category": "social",
+        "importance": "essential",
+        "looking_for": "Long-standing heavy use; a strong risk factor and a treatable cause"
+      },
+      {
+        "question": "Have you ever been told you have hepatitis B or C, or had a blood transfusion or injection drug use?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Chronic viral hepatitis or bloodborne exposure as the underlying cause"
+      },
+      {
+        "question": "When did you first notice your belly getting bigger or your legs swelling?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Insidious onset over weeks to months; recent onset suggests decompensation"
+      },
+      {
+        "question": "Have you vomited blood or had black, tarry stools?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Variceal bleeding; requires urgent resuscitation and endoscopy"
+      },
+      {
+        "question": "Have you or others noticed confusion, forgetfulness, or trouble staying awake?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Hepatic encephalopathy; often precipitated by infection, bleeding, or dehydration"
+      },
+      {
+        "question": "Do you bruise or bleed easily, or get nosebleeds?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Coagulopathy and thrombocytopenia from synthetic failure and hypersplenism"
+      },
+      {
+        "question": "Do you have any itching, yellowing of the eyes or skin, or dark urine?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Cholestasis and jaundice indicating decompensation"
+      },
+      {
+        "question": "Have you had fevers or new abdominal pain since your belly started swelling?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Spontaneous bacterial peritonitis; diagnostic paracentesis is mandatory"
+      },
+      {
+        "question": "What medications, including acetaminophen, herbal products, or supplements, do you take?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Hepatotoxic exposures and drugs needing dose adjustment in hepatic impairment"
+      },
+      {
+        "question": "Has anyone in your family had liver disease, cirrhosis, or liver failure?",
+        "category": "family",
+        "importance": "important",
+        "looking_for": "Hereditary hemochromatosis, alpha-1 antitrypsin deficiency, or autoimmune hepatitis"
+      },
+      {
+        "question": "Have you noticed decreased sex drive, erectile problems, or breast enlargement?",
+        "category": "associated",
+        "importance": "optional",
+        "looking_for": "Endocrine changes from altered hepatic hormone metabolism"
+      },
+      {
+        "question": "Do you have diabetes, high cholesterol, or carry extra weight around your middle?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Metabolic dysfunction-associated steatotic liver disease as the underlying cause"
+      }
+    ],
+    "accepted_names": [
+      "Cirrhosis",
+      "Hepatic cirrhosis",
+      "Liver cirrhosis",
+      "End-stage liver disease",
+      "Decompensated cirrhosis",
+      "Compensated cirrhosis"
+    ],
+    "reasoning_points": [
+      "Chronic risk factor such as heavy alcohol use, viral hepatitis, or metabolic liver disease",
+      "Insidious onset of fatigue, anorexia, and weight loss over months to years",
+      "Signs of portal hypertension: ascites, splenomegaly, thrombocytopenia, or varices",
+      "Signs of hepatic synthetic failure: jaundice, low albumin, elevated INR, and easy bruising",
+      "Exam stigmata such as spider angiomata, palmar erythema, or caput medusae",
+      "Complications considered and addressed: encephalopathy, variceal bleeding, spontaneous bacterial peritonitis, hepatorenal syndrome",
+      "Labs showing thrombocytopenia, hypoalbuminemia, hyperbilirubinemia, and coagulopathy",
+      "Imaging showing a nodular liver, splenomegaly, ascites, or portosystemic collaterals",
+      "Alternative causes excluded, including acute viral hepatitis, heart failure, nephrotic syndrome, and hepatocellular carcinoma",
+      "Severity staged with Child-Pugh or MELD-Na and transplant evaluation considered when decompensated"
+    ],
+    "difficulty": {
+      "easy": [
+        "Middle-aged patient with years of heavy alcohol use",
+        "Classic stigmata: jaundice, spider angiomata, ascites, and palmar erythema",
+        "Thrombocytopenia with low albumin and elevated INR",
+        "Ultrasound shows a nodular liver with splenomegaly and ascites"
+      ],
+      "medium": [
+        "Patient with obesity and type 2 diabetes found to have abnormal liver tests and no alcohol history",
+        "Compensated cirrhosis detected only by thrombocytopenia and mild transaminase elevation",
+        "Ascites attributed to central adiposity, delaying recognition",
+        "Older adult presenting with confusion or falls rather than abdominal swelling"
+      ],
+      "hard": [
+        "Cirrhosis masked by coexisting heart failure with edema and elevated jugular venous pressure",
+        "Young patient with neuropsychiatric symptoms and hemolysis suggesting Wilson disease",
+        "Patient presenting first with variceal bleeding or spontaneous bacterial peritonitis before cirrhosis is known",
+        "Pregnant patient with pruritus and jaundice overlapping with intrahepatic cholestasis of pregnancy",
+        "New focal liver lesion with rising alpha-fetoprotein suggesting hepatocellular carcinoma"
+      ]
+    }
+  }
+}

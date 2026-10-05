@@ -2,7 +2,7 @@ import SwiftUI
 
 @main
 struct RoundsApp: App {
-    @State private var app = AppState()
+    @State private var app = AppState(cases: SupabaseService.client.map { LiveCaseService(client: $0) })
     /// 0 = follow the system, 1 = light, 2 = dark.
     @AppStorage("appearance") private var appearance = 0
     @AppStorage("signedIn") private var signedIn = false
@@ -106,6 +106,13 @@ struct MainTabsView: View {
             DebugLaunch.apply(app: app, tab: &tab, expandedPatient: &debugExpanded)
             #endif
         }
+        .task { await app.refresh() }
+        .alert("Something went wrong", isPresented: Binding(get: { app.problem != nil }, set: { if !$0 { app.problem = nil } })) {
+            Button("Try again") { Task { await app.refresh() } }
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(app.problem ?? "")
+        }
         .fullScreenCover(item: $app.activeCase) { session in
             CaseFlowView(session: session)
                 .environment(app)
@@ -114,7 +121,7 @@ struct MainTabsView: View {
 }
 
 extension CaseSession: Identifiable {
-    var id: ObjectIdentifier { ObjectIdentifier(self) }
+    nonisolated var id: ObjectIdentifier { ObjectIdentifier(self) }
 }
 
 // MARK: - Case flow navigation

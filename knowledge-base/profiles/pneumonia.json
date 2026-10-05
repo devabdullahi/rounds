@@ -1,0 +1,1821 @@
+{
+  "schema_version": "0.2",
+  "slug": "pneumonia",
+  "triage": {
+    "name": "Pneumonia",
+    "case_suitable": true,
+    "reason": "Core undifferentiated fever and respiratory complaint with clear diagnosis by history, exam and imaging; rich severity and differential teaching.",
+    "kind": "disease",
+    "category": "respiratory infection",
+    "organ_systems": [
+      "respiratory"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "emergency",
+      "pediatrics",
+      "familyMedicine"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "emergency",
+      "inpatient",
+      "clinic",
+      "pediatric_clinic",
+      "icu"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:19:35Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:04:53Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:05:01Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:05:14Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:05:30Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:05:39Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'chest x-ray, posteroanterior and lateral' was in ['initial', 'confirmatory'], kept ['initial']",
+        "auto-repaired: workup: 'chest ct with iv contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'chest ultrasound' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'chest ct with iv contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'chest ultrasound' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "differential pulmonary-embolism: no profile yet",
+        "differential tuberculosis: no profile yet",
+        "differential lung-cancer: no profile yet",
+        "differential covid-19: no profile yet",
+        "differential aspiration-pneumonitis: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 2,
+      "typical_max": 85,
+      "peak": "bimodal: children under 5 and adults over 65",
+      "possible_min": 0,
+      "possible_max": 110
+    },
+    "sex": "either",
+    "demographics": [
+      "More common and more severe at the extremes of age",
+      "Slightly more common in males overall",
+      "More common in Black, American Indian and Alaska Native adults than in White adults in the US"
+    ],
+    "risk_factors": [
+      {
+        "text": "Age 65 or older",
+        "strength": "strong"
+      },
+      {
+        "text": "Age 2 or younger",
+        "strength": "strong"
+      },
+      {
+        "text": "Chronic lung disease (COPD, asthma, bronchiectasis)",
+        "strength": "strong"
+      },
+      {
+        "text": "Cigarette smoking or secondhand smoke exposure",
+        "strength": "strong"
+      },
+      {
+        "text": "Heavy alcohol use",
+        "strength": "moderate"
+      },
+      {
+        "text": "Recent viral upper respiratory infection or influenza",
+        "strength": "moderate"
+      },
+      {
+        "text": "Difficulty coughing or swallowing (stroke, dementia, neuromuscular disease)",
+        "strength": "strong"
+      },
+      {
+        "text": "Residence in a nursing home or long-term care facility",
+        "strength": "strong"
+      },
+      {
+        "text": "Recent hospitalization or mechanical ventilation",
+        "strength": "strong"
+      },
+      {
+        "text": "Malnutrition or unintentional weight loss",
+        "strength": "moderate"
+      },
+      {
+        "text": "Exposure to contaminated water systems or air conditioning (Legionella)",
+        "strength": "weak"
+      },
+      {
+        "text": "Exposure to birds or bird droppings",
+        "strength": "weak"
+      },
+      {
+        "text": "Occupational exposure to toxic fumes, chemicals or pollutants",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Chronic obstructive pulmonary disease",
+      "Asthma",
+      "Heart failure",
+      "Diabetes mellitus",
+      "Chronic kidney disease",
+      "Liver cirrhosis",
+      "Stroke or other cause of dysphagia",
+      "Dementia",
+      "HIV infection or other immunocompromising condition",
+      "Sickle cell disease",
+      "Solid organ or stem cell transplant"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Current or former smoking",
+      "Heavy alcohol use",
+      "Residence in a long-term care facility",
+      "Recent travel with hotel or cruise ship stay (Legionella)",
+      "Incarceration or shelter residence",
+      "Exposure to children in daycare or school"
+    ],
+    "exposures": [
+      "Influenza or other circulating respiratory virus",
+      "Contaminated water aerosols (showers, hot tubs, cooling towers)",
+      "Bird or poultry contact",
+      "Farm animal contact",
+      "Recent dental work or aspiration event"
+    ],
+    "risk_medications": [
+      "corticosteroids",
+      "proton pump inhibitors",
+      "chemotherapy",
+      "infliximab",
+      "adalimumab",
+      "rituximab",
+      "tacrolimus",
+      "cyclosporine",
+      "mycophenolate"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I've been coughing up green stuff for a few days",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "I feel like I can't catch my breath",
+        "frequency": "common"
+      },
+      {
+        "text": "It hurts when I take a deep breath",
+        "frequency": "common"
+      },
+      {
+        "text": "I've had a fever and chills",
+        "frequency": "common"
+      },
+      {
+        "text": "I feel really tired and achy",
+        "frequency": "common"
+      }
+    ],
+    "hpi": {
+      "onset": "Subacute, over 1–3 days; often follows a few days of a cold or flu-like illness",
+      "duration": "Usually 2–7 days at presentation",
+      "progression": "Starts as a dry or mildly productive cough with low-grade fever, then worsens over 1–3 days with higher fever, more purulent sputum, pleuritic chest pain and shortness of breath",
+      "location": "Chest, often one side; may be described as under the shoulder blade or in the lower chest",
+      "radiation": "Pleuritic pain may radiate to the shoulder or upper abdomen",
+      "quality": "Cough is wet and productive; chest pain is sharp and stabbing with breathing",
+      "severity": "Moderate to severe; fever 101–103°F, cough and dyspnea interfere with sleep and daily activity",
+      "timing": "Continuous symptoms; fever may spike in the evening; chest pain is worse with each breath",
+      "aggravating": [
+        "Deep breathing",
+        "Coughing",
+        "Lying flat",
+        "Exertion"
+      ],
+      "relieving": [
+        "Sitting upright",
+        "Leaning forward",
+        "Acetaminophen or ibuprofen for fever",
+        "Rest"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Productive cough with yellow, green or rust-colored sputum",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Fever",
+          "frequency": "common"
+        },
+        {
+          "text": "Chills or rigors",
+          "frequency": "common"
+        },
+        {
+          "text": "Shortness of breath with activity",
+          "frequency": "common"
+        },
+        {
+          "text": "Pleuritic chest pain with breathing or coughing",
+          "frequency": "common"
+        },
+        {
+          "text": "Fatigue and generalized weakness",
+          "frequency": "common"
+        },
+        {
+          "text": "Loss of appetite",
+          "frequency": "common"
+        },
+        {
+          "text": "Nausea or vomiting",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Diarrhea",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Headache or muscle aches",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Night sweats",
+          "frequency": "sometimes"
+        }
+      ],
+      "pertinent_negatives": [
+        "Cough lasting more than 3 weeks before this illness",
+        "Hemoptysis",
+        "Weight loss or night sweats for weeks",
+        "Recent travel to a tuberculosis-endemic country",
+        "Known HIV infection or other severe immunosuppression",
+        "Recent hospitalization or antibiotic use within 90 days",
+        "Pleuritic pain that started suddenly with breathlessness in a postoperative or immobilized patient",
+        "Unilateral leg swelling or calf pain",
+        "Recurrent episodes of pneumonia in the same lobe"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fever",
+            "frequency": "common"
+          },
+          {
+            "text": "Chills or rigors",
+            "frequency": "common"
+          },
+          {
+            "text": "Fatigue and malaise",
+            "frequency": "common"
+          },
+          {
+            "text": "Loss of appetite",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Weight loss",
+          "Night sweats for weeks"
+        ]
+      },
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "Productive cough",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Shortness of breath",
+            "frequency": "common"
+          },
+          {
+            "text": "Pleuritic chest pain",
+            "frequency": "common"
+          },
+          {
+            "text": "Rust-colored or blood-streaked sputum",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Hemoptysis",
+          "Wheezing",
+          "Chronic cough for months"
+        ],
+        "argues_against": [
+          "Sudden onset pleuritic pain with breathlessness in an immobilized patient (pulmonary embolism)",
+          "Chronic cough with weight loss and hemoptysis (tuberculosis or malignancy)"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [
+          {
+            "text": "Tachycardia or palpitations with fever",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Chest pressure with exertion",
+          "Orthopnea",
+          "Paroxysmal nocturnal dyspnea",
+          "Unilateral leg swelling"
+        ],
+        "argues_against": [
+          "Exertional chest pressure relieved by rest (acute coronary syndrome)",
+          "Orthopnea and paroxysmal nocturnal dyspnea (heart failure)"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Nausea or vomiting",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Diarrhea",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Hematemesis",
+          "Melena",
+          "Severe abdominal pain"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Headache",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Confusion or altered mental status",
+          "Focal weakness",
+          "Neck stiffness"
+        ],
+        "argues_against": [
+          "Confusion with neck stiffness and photophobia (meningitis)"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Muscle aches",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Focal bone pain",
+          "Joint swelling"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [],
+        "negatives": [
+          "Rash",
+          "Cellulitis",
+          "Jaundice"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "older_adults",
+        "how_it_differs": "May present with confusion, falls or general decline rather than fever and cough; fever may be absent or temperature may be lower than normal, and the chest exam can be unimpressive despite significant infection.",
+        "missing_classic_features": [
+          "Fever",
+          "Productive cough",
+          "Pleuritic chest pain"
+        ]
+      },
+      {
+        "population": "infants",
+        "how_it_differs": "Infants may show no specific signs; they can be irritable, lethargic, feed poorly, vomit or have a fever without a clear source.",
+        "missing_classic_features": [
+          "Productive cough",
+          "Pleuritic chest pain",
+          "Rigors"
+        ]
+      },
+      {
+        "population": "children",
+        "how_it_differs": "Children often have fever, tachypnea and cough but may not produce sputum; abdominal pain or vomiting can be prominent, and wheezing may be heard.",
+        "missing_classic_features": [
+          "Purulent sputum",
+          "Pleuritic chest pain"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "Symptoms may be milder or more prolonged, fever may be blunted, and opportunistic organisms such as Pneumocystis, fungi or mycobacteria should be considered; presentation can be insidious with dry cough and progressive dyspnea.",
+        "missing_classic_features": [
+          "High fever",
+          "Acute onset",
+          "Productive cough"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Presentation is similar to non-pregnant adults, but dyspnea and fatigue are common in normal pregnancy and may delay recognition; physiologic changes can make hypoxemia develop faster.",
+        "missing_classic_features": [
+          "Clear distinction of dyspnea from normal pregnancy"
+        ]
+      },
+      {
+        "population": "diabetes",
+        "how_it_differs": "May have more severe illness and higher risk of bacteremia; fever and symptoms can be blunted, and hyperglycemia may worsen.",
+        "missing_classic_features": [
+          "Prominent fever",
+          "Classic acute inflammatory response"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Alert, comfortable at rest, no distress; may appear mildly fatigued",
+      "moderate": "Ill-appearing, flushed, prefers sitting upright, speaks in short sentences",
+      "severe": "Toxic-appearing, diaphoretic, using accessory muscles, tripod positioning",
+      "critical": "Lethargic or confused, pale or mottled, unable to speak in full sentences, may be obtunded"
+    },
+    "findings": [
+      {
+        "id": "tachypnea",
+        "region": "general",
+        "maneuver": "Observe the respiratory rate and pattern at rest",
+        "finding": "Rapid, shallow breathing",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "accessory-muscle-use",
+        "region": "general",
+        "maneuver": "Observe for use of neck and intercostal muscles and supraclavicular retractions",
+        "finding": "Accessory muscle recruitment, nasal flaring or retractions",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "altered-mental-status",
+        "region": "mental_status",
+        "maneuver": "Assess orientation and level of alertness",
+        "finding": "Confusion, disorientation or lethargy",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "crackles",
+        "region": "lung",
+        "maneuver": "Auscultate all lung fields with the stethoscope",
+        "finding": "Focal inspiratory crackles over the affected lobe",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "bronchial-breath-sounds",
+        "region": "lung",
+        "maneuver": "Auscultate over the area of consolidation",
+        "finding": "Bronchial breath sounds with increased transmission of voice sounds",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "important"
+      },
+      {
+        "id": "dullness-to-percussion",
+        "region": "lung",
+        "maneuver": "Percuss the posterior and lateral chest walls",
+        "finding": "Focal dullness over the consolidated area",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "egophony",
+        "region": "lung",
+        "maneuver": "Ask the patient to say 'E' while auscultating over the area of consolidation",
+        "finding": "E-to-A change (egophony)",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "tactile-fremitus",
+        "region": "lung",
+        "maneuver": "Palpate the chest while the patient repeats '99'",
+        "finding": "Increased tactile fremitus over the affected area",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "wheezing",
+        "region": "lung",
+        "maneuver": "Auscultate for expiratory wheezes",
+        "finding": "Diffuse or focal wheezing",
+        "frequency": "sometimes",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "pleural-rub",
+        "region": "lung",
+        "maneuver": "Auscultate over the area of pleuritic pain",
+        "finding": "Pleural friction rub",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "dullness-with-stony-flatness",
+        "region": "lung",
+        "maneuver": "Percuss the lung bases and assess for decreased breath sounds",
+        "finding": "Stony dullness with absent breath sounds suggesting pleural effusion",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "normal-cardiac-exam",
+        "region": "cardiac",
+        "maneuver": "Auscultate the heart and palpate the precordium",
+        "finding": "No murmur, rub or gallop; normal S1 and S2",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-jvd",
+        "region": "neck",
+        "maneuver": "Inspect the neck veins at 45 degrees",
+        "finding": "No jugular venous distension",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-unilateral-leg-swelling",
+        "region": "extremities",
+        "maneuver": "Inspect and palpate both calves",
+        "finding": "No unilateral calf swelling or tenderness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-rash",
+        "region": "skin",
+        "maneuver": "Inspect the skin for rash or petechiae",
+        "finding": "No rash or petechiae",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 99.5,
+        "max": 100.9
+      },
+      "moderate": {
+        "min": 100.4,
+        "max": 102.2
+      },
+      "severe": {
+        "min": 101.5,
+        "max": 103.5
+      },
+      "critical": {
+        "min": 102.0,
+        "max": 104.5
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 80,
+        "max": 100
+      },
+      "moderate": {
+        "min": 95,
+        "max": 115
+      },
+      "severe": {
+        "min": 110,
+        "max": 130
+      },
+      "critical": {
+        "min": 120,
+        "max": 150
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 16,
+        "max": 20
+      },
+      "moderate": {
+        "min": 20,
+        "max": 26
+      },
+      "severe": {
+        "min": 24,
+        "max": 32
+      },
+      "critical": {
+        "min": 28,
+        "max": 40
+      }
+    },
+    "sbp": {
+      "severe": {
+        "min": 90,
+        "max": 105
+      },
+      "critical": {
+        "min": 70,
+        "max": 90
+      }
+    },
+    "dbp": {
+      "severe": {
+        "min": 55,
+        "max": 70
+      },
+      "critical": {
+        "min": 40,
+        "max": 60
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 94,
+        "max": 98
+      },
+      "moderate": {
+        "min": 90,
+        "max": 94
+      },
+      "severe": {
+        "min": 85,
+        "max": 90
+      },
+      "critical": {
+        "min": 75,
+        "max": 85
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "mild": {
+          "min": 11.0,
+          "max": 15.0
+        },
+        "moderate": {
+          "min": 14.0,
+          "max": 20.0
+        },
+        "severe": {
+          "min": 18.0,
+          "max": 28.0
+        },
+        "critical": {
+          "min": 22.0,
+          "max": 35.0
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "A normal or low white count does not rule out pneumonia and can be seen in older adults or overwhelming sepsis."
+    },
+    {
+      "test_id": "neut_pct",
+      "ranges": {
+        "mild": {
+          "min": 70,
+          "max": 80
+        },
+        "moderate": {
+          "min": 75,
+          "max": 88
+        },
+        "severe": {
+          "min": 80,
+          "max": 92
+        },
+        "critical": {
+          "min": 82,
+          "max": 95
+        }
+      },
+      "frequency": "common",
+      "importance": "important"
+    },
+    {
+      "test_id": "bands_pct",
+      "ranges": {
+        "moderate": {
+          "min": 5,
+          "max": 10
+        },
+        "severe": {
+          "min": 8,
+          "max": 18
+        },
+        "critical": {
+          "min": 10,
+          "max": 25
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "A left shift supports bacterial infection but is not specific."
+    },
+    {
+      "test_id": "lymph_pct",
+      "ranges": {
+        "mild": {
+          "min": 15,
+          "max": 20
+        },
+        "moderate": {
+          "min": 10,
+          "max": 18
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Relative lymphopenia is common with acute bacterial infection; lymphocytosis suggests a viral cause."
+    },
+    {
+      "test_id": "plt",
+      "ranges": {
+        "severe": {
+          "min": 100,
+          "max": 150
+        },
+        "critical": {
+          "min": 50,
+          "max": 100
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Thrombocytopenia can accompany severe sepsis."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "moderate": {
+          "min": 20,
+          "max": 30
+        },
+        "severe": {
+          "min": 25,
+          "max": 45
+        },
+        "critical": {
+          "min": 30,
+          "max": 60
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevated BUN is part of the CURB-65 severity score and may reflect dehydration or renal injury."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "moderate": {
+          "min": 1.2,
+          "max": 1.6
+        },
+        "severe": {
+          "min": 1.5,
+          "max": 2.5
+        },
+        "critical": {
+          "min": 2.0,
+          "max": 4.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Rising creatinine suggests dehydration, sepsis or acute kidney injury and guides antibiotic dosing."
+    },
+    {
+      "test_id": "na",
+      "ranges": {
+        "moderate": {
+          "min": 130,
+          "max": 134
+        },
+        "severe": {
+          "min": 125,
+          "max": 130
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hyponatremia is common in Legionella pneumonia and can occur with SIADH."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "moderate": {
+          "min": 2.0,
+          "max": 3.0
+        },
+        "severe": {
+          "min": 2.5,
+          "max": 4.0
+        },
+        "critical": {
+          "min": 4.0,
+          "max": 8.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevated lactate indicates hypoperfusion and possible sepsis; it is not specific to pneumonia."
+    },
+    {
+      "test_id": "procalcitonin",
+      "ranges": {
+        "moderate": {
+          "min": 0.25,
+          "max": 0.5
+        },
+        "severe": {
+          "min": 0.5,
+          "max": 2.0
+        },
+        "critical": {
+          "min": 2.0,
+          "max": 10.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Supports a bacterial cause and can guide antibiotic duration, but should not be used alone to withhold antibiotics in a sick patient."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "mild": {
+          "min": 1.0,
+          "max": 5.0
+        },
+        "moderate": {
+          "min": 5.0,
+          "max": 15.0
+        },
+        "severe": {
+          "min": 10.0,
+          "max": 30.0
+        },
+        "critical": {
+          "min": 20.0,
+          "max": 50.0
+        }
+      },
+      "frequency": "common",
+      "importance": "optional",
+      "caveat": "Rises with inflammation of any cause; useful for tracking response but not for diagnosis alone."
+    },
+    {
+      "test_id": "ph",
+      "ranges": {
+        "severe": {
+          "min": 7.25,
+          "max": 7.35
+        },
+        "critical": {
+          "min": 7.1,
+          "max": 7.25
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Acidemia on ABG indicates respiratory failure or severe sepsis."
+    },
+    {
+      "test_id": "paco2",
+      "ranges": {
+        "severe": {
+          "min": 45,
+          "max": 55
+        },
+        "critical": {
+          "min": 50,
+          "max": 70
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Rising PaCO2 suggests fatigue and impending respiratory failure."
+    },
+    {
+      "test_id": "pao2",
+      "ranges": {
+        "mild": {
+          "min": 70,
+          "max": 80
+        },
+        "moderate": {
+          "min": 60,
+          "max": 75
+        },
+        "severe": {
+          "min": 50,
+          "max": 65
+        },
+        "critical": {
+          "min": 35,
+          "max": 55
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Hypoxemia out of proportion to the chest x-ray can suggest Pneumocystis pneumonia."
+    },
+    {
+      "test_id": "sao2",
+      "ranges": {
+        "mild": {
+          "min": 92,
+          "max": 95
+        },
+        "moderate": {
+          "min": 88,
+          "max": 93
+        },
+        "severe": {
+          "min": 82,
+          "max": 90
+        },
+        "critical": {
+          "min": 70,
+          "max": 85
+        }
+      },
+      "frequency": "common",
+      "importance": "important"
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Negative. Required in anyone who could be pregnant before obtaining a chest x-ray or CT."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rate",
+        "finding": "Sinus tachycardia",
+        "frequency": "common",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "New atrial fibrillation with rapid ventricular response",
+        "frequency": "rare",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "other",
+        "finding": "Nonspecific ST-T wave changes",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Chest x-ray, posteroanterior and lateral",
+      "modality": "xray",
+      "preferred_when": "Initial imaging in all patients with suspected pneumonia",
+      "findings": [
+        {
+          "text": "Lobar or segmental airspace opacity with air bronchograms",
+          "frequency": "common"
+        },
+        {
+          "text": "Patchy or interstitial opacities",
+          "frequency": "common"
+        },
+        {
+          "text": "Small pleural effusion",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Normal chest x-ray early in the illness or in dehydrated patients",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Cavitation or lung abscess",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Chest CT with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Complicated or nonresolving pneumonia, suspicion of abscess, empyema or an underlying structural lung disease",
+      "findings": [
+        {
+          "text": "Consolidation with air bronchograms",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Pleural effusion or empyema",
+          "frequency": "common"
+        },
+        {
+          "text": "Lung abscess or cavitation",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Centrilobular nodules or tree-in-bud opacities suggesting aspiration or atypical infection",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Mediastinal lymphadenopathy",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Chest ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "Pregnancy, children, or bedside assessment when x-ray is unavailable or nondiagnostic",
+      "findings": [
+        {
+          "text": "Focal B-lines and subpleural consolidation",
+          "frequency": "common"
+        },
+        {
+          "text": "Pleural effusion",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Consolidated lung with shred sign",
+          "frequency": "sometimes"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Assesses leukocytosis and left shift supporting infection"
+      },
+      {
+        "test": "bmp",
+        "why": "Evaluates hydration, renal function and sodium; BUN is part of CURB-65"
+      },
+      {
+        "test": "Chest x-ray, posteroanterior and lateral",
+        "why": "Confirms the diagnosis and defines the extent of consolidation"
+      },
+      {
+        "test": "pulse oximetry",
+        "why": "Detects hypoxemia and guides oxygen therapy"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before chest x-ray",
+        "only_if": "patient could be pregnant"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "blood culture",
+        "why": "Identifies bacteremia and guides therapy",
+        "only_if": "severe disease, immunocompromised, or suspected bacteremia"
+      },
+      {
+        "test": "sputum gram stain and culture",
+        "why": "Identifies the causative organism",
+        "only_if": "severe disease, treatment failure, or suspected drug-resistant organism"
+      },
+      {
+        "test": "urine antigen tests for Streptococcus pneumoniae and Legionella",
+        "why": "Rapid identification of common bacterial causes",
+        "only_if": "severe community-acquired pneumonia or epidemiologic clues"
+      },
+      {
+        "test": "Rapid influenza test",
+        "why": "Detects influenza and allows antiviral therapy",
+        "only_if": "influenza is circulating or the patient has influenza-like illness"
+      },
+      {
+        "test": "SARS-CoV-2 PCR",
+        "why": "Detects COVID-19 and guides isolation and antiviral therapy",
+        "only_if": "COVID-19 is suspected or circulating"
+      },
+      {
+        "test": "procalcitonin",
+        "why": "Supports bacterial infection and can guide antibiotic duration",
+        "only_if": "diagnostic uncertainty about bacterial versus viral cause"
+      },
+      {
+        "test": "lactate",
+        "why": "Assesses for sepsis and hypoperfusion",
+        "only_if": "hypotension, tachycardia or concern for sepsis"
+      },
+      {
+        "test": "abg",
+        "why": "Assesses oxygenation and ventilation in severe disease",
+        "only_if": "severe hypoxemia, respiratory distress or impending failure"
+      },
+      {
+        "test": "Chest CT with IV contrast",
+        "why": "Evaluates complications or nonresolving pneumonia",
+        "only_if": "suspected abscess, empyema or failure to improve"
+      },
+      {
+        "test": "Chest ultrasound",
+        "why": "Avoids radiation and can be done at the bedside",
+        "only_if": "pregnancy, child, or x-ray unavailable"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Chest CT with IV contrast",
+        "why": "Not needed for routine diagnosis when chest x-ray is diagnostic"
+      },
+      {
+        "test": "Chest ultrasound",
+        "why": "Not a first-line study in typical adults with a diagnostic chest x-ray"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in diagnosing pneumonia; may be elevated nonspecifically"
+      },
+      {
+        "test": "hs_tnt",
+        "why": "Not routinely needed unless acute coronary syndrome is suspected"
+      },
+      {
+        "test": "bnp",
+        "why": "Not routinely needed unless heart failure is suspected"
+      },
+      {
+        "test": "lipase",
+        "why": "Not indicated for respiratory symptoms"
+      },
+      {
+        "test": "ua",
+        "why": "Not routinely needed unless urinary symptoms or sepsis of unclear source"
+      }
+    ],
+    "decision_points": [
+      "Pregnancy test before chest x-ray or CT in anyone who could be pregnant",
+      "Use CURB-65 or PSI to decide inpatient versus outpatient care",
+      "Blood and sputum cultures before antibiotics in severe disease",
+      "Consider tuberculosis and fungal infection in nonresolving or cavitary pneumonia",
+      "Escalate to CT when the patient fails to improve or complications are suspected"
+    ],
+    "criteria": [
+      {
+        "name": "CURB-65",
+        "summary": "Severity score for community-acquired pneumonia using confusion, urea (BUN), respiratory rate, blood pressure and age 65 or older; higher scores predict mortality and guide site of care.",
+        "items": [
+          "Confusion",
+          "BUN > 19 mg/dL",
+          "Respiratory rate ≥ 30/min",
+          "Systolic BP < 90 or diastolic BP ≤ 60 mm Hg",
+          "Age ≥ 65"
+        ]
+      },
+      {
+        "name": "Pneumonia Severity Index (PSI)",
+        "summary": "Validated risk score using demographics, comorbidities, exam and lab findings to stratify mortality risk and identify low-risk patients suitable for outpatient treatment.",
+        "items": [
+          "Age",
+          "Nursing home residence",
+          "Cancer",
+          "Liver disease",
+          "Heart failure",
+          "Cerebrovascular disease",
+          "Renal disease",
+          "Altered mental status",
+          "Respiratory rate ≥ 30/min",
+          "Systolic BP < 90 mm Hg",
+          "Temperature < 95°F or ≥ 104°F",
+          "Pulse ≥ 125/min",
+          "pH < 7.35",
+          "BUN ≥ 30 mg/dL",
+          "Sodium < 130 mmol/L",
+          "Glucose ≥ 250 mg/dL",
+          "Hematocrit < 30%",
+          "PaO2 < 60 mm Hg",
+          "Pleural effusion"
+        ]
+      }
+    ],
+    "scores": [
+      "curb_65",
+      "psi"
+    ]
+  },
+  "differential": [
+    {
+      "name": "Pulmonary embolism",
+      "slug": "pulmonary-embolism",
+      "why_considered": "Acute dyspnea, pleuritic chest pain and tachycardia can mimic pneumonia, and both can cause hypoxemia and low-grade fever.",
+      "must_not_miss": true,
+      "trigger": "Sudden-onset dyspnea or pleuritic pain in an immobilized, postoperative, pregnant or cancer patient, or unilateral leg swelling.",
+      "discriminators": {
+        "history": [
+          "Abrupt onset over seconds to minutes rather than days",
+          "Recent surgery, immobilization, long travel or active cancer",
+          "Prior venous thromboembolism",
+          "Hemoptysis may occur but sputum is not purulent"
+        ],
+        "exam": [
+          "Tachycardia out of proportion to fever",
+          "Unilateral calf swelling or tenderness",
+          "Clear lungs on auscultation despite marked dyspnea",
+          "Signs of right heart strain (elevated JVP, loud P2)"
+        ],
+        "labs": [
+          "D-dimer elevated (useful only to rule out in low-risk patients)",
+          "PaO2 low with a widened alveolar-arterial gradient",
+          "WBC usually normal or only mildly elevated"
+        ],
+        "imaging": [
+          "Chest x-ray often normal or shows focal oligemia, not consolidation",
+          "CT pulmonary angiography shows filling defect in a pulmonary artery",
+          "Lower extremity ultrasound may show a deep vein thrombus"
+        ],
+        "ecg": [
+          "Sinus tachycardia",
+          "S1Q3T3 pattern, right axis deviation or new right bundle branch block"
+        ]
+      }
+    },
+    {
+      "name": "Acute decompensated heart failure",
+      "slug": "heart-failure",
+      "why_considered": "Dyspnea, crackles, hypoxemia and chest x-ray opacities overlap with pneumonia, especially in older adults.",
+      "must_not_miss": true,
+      "trigger": "Orthopnea, paroxysmal nocturnal dyspnea, weight gain or leg swelling in a patient with known cardiac disease.",
+      "discriminators": {
+        "history": [
+          "Progressive dyspnea over days to weeks with orthopnea and paroxysmal nocturnal dyspnea",
+          "Weight gain and peripheral edema",
+          "No fever or productive cough",
+          "Known heart failure, coronary disease or valvular disease"
+        ],
+        "exam": [
+          "Bilateral basilar crackles rather than focal findings",
+          "Elevated jugular venous pressure",
+          "S3 gallop",
+          "Bilateral pitting leg edema"
+        ],
+        "labs": [
+          "BNP or NT-proBNP markedly elevated",
+          "WBC normal",
+          "May have hyponatremia and elevated creatinine"
+        ],
+        "imaging": [
+          "Chest x-ray shows cardiomegaly, pulmonary vascular congestion, Kerley B lines and pleural effusions",
+          "Bilateral, symmetric interstitial or alveolar edema rather than a focal lobar opacity",
+          "Lung ultrasound shows bilateral B-lines"
+        ],
+        "ecg": [
+          "May show prior infarction, left ventricular hypertrophy or atrial fibrillation"
+        ]
+      }
+    },
+    {
+      "name": "Acute bronchitis",
+      "slug": "acute-bronchitis",
+      "why_considered": "Cough with sputum, low-grade fever and malaise is the most common mimic and is frequently mistaken for pneumonia.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Cough often dry or minimally productive, lasting days to weeks",
+          "Fever absent or low grade",
+          "No pleuritic chest pain or significant dyspnea",
+          "Often follows a viral upper respiratory infection"
+        ],
+        "exam": [
+          "Lungs clear or diffuse wheezes without focal crackles",
+          "No dullness, egophony or bronchial breath sounds",
+          "Normal respiratory rate and oxygen saturation"
+        ],
+        "labs": [
+          "WBC usually normal",
+          "Procalcitonin low"
+        ],
+        "imaging": [
+          "Chest x-ray normal without consolidation"
+        ]
+      }
+    },
+    {
+      "name": "Tuberculosis",
+      "slug": "tuberculosis",
+      "why_considered": "Cough, fever, night sweats and lung opacities can resemble pneumonia, particularly in the upper lobes or in endemic settings.",
+      "must_not_miss": true,
+      "trigger": "Subacute or chronic cough with weight loss, night sweats, hemoptysis, or upper-lobe or cavitary disease.",
+      "discriminators": {
+        "history": [
+          "Weeks to months of cough, fever, night sweats and weight loss",
+          "Hemoptysis",
+          "Birth or residence in a tuberculosis-endemic country",
+          "Known exposure, incarceration or homelessness",
+          "HIV infection or other immunosuppression"
+        ],
+        "exam": [
+          "Cachexia and chronic illness appearance",
+          "Upper-lobe crackles or amphoric breath sounds with cavitation",
+          "Lymphadenopathy"
+        ],
+        "labs": [
+          "Interferon-gamma release assay or tuberculin skin test positive",
+          "Acid-fast bacilli on sputum smear",
+          "Sputum nucleic acid amplification test positive"
+        ],
+        "imaging": [
+          "Upper-lobe infiltrates, cavitation, fibrosis or miliary pattern",
+          "Mediastinal or hilar lymphadenopathy",
+          "Chest x-ray changes that do not resolve with antibiotics"
+        ]
+      }
+    },
+    {
+      "name": "Lung cancer",
+      "slug": "lung-cancer",
+      "why_considered": "Can present with cough, hemoptysis and a focal opacity, and may cause post-obstructive pneumonia that fails to clear.",
+      "must_not_miss": true,
+      "trigger": "Pneumonia that does not resolve, recurrent pneumonia in the same lobe, or weight loss and hemoptysis in a smoker.",
+      "discriminators": {
+        "history": [
+          "Cough and hemoptysis over weeks to months",
+          "Unintentional weight loss and anorexia",
+          "Long smoking history or occupational exposure",
+          "Recurrent pneumonia in the same location"
+        ],
+        "exam": [
+          "Focal wheeze or diminished breath sounds from endobronchial obstruction",
+          "Hoarseness, Horner syndrome or superior vena cava syndrome",
+          "Clubbing or supraclavicular lymphadenopathy"
+        ],
+        "labs": [
+          "Anemia and elevated inflammatory markers",
+          "No leukocytosis unless there is superimposed infection"
+        ],
+        "imaging": [
+          "Persistent mass, hilar or mediastinal lymphadenopathy, or endobronchial obstruction on chest x-ray or CT",
+          "Opacity that fails to improve after appropriate antibiotics",
+          "Tissue diagnosis by bronchoscopy or biopsy"
+        ]
+      }
+    },
+    {
+      "name": "COVID-19 pneumonia",
+      "slug": "covid-19",
+      "why_considered": "Fever, cough, dyspnea and bilateral opacities are indistinguishable from other viral pneumonias on clinical grounds alone.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Known exposure or outbreak setting",
+          "Anosmia or ageusia",
+          "Progressive dyspnea about a week after initial symptoms"
+        ],
+        "exam": [
+          "Hypoxemia that may be out of proportion to the degree of distress",
+          "Diffuse rather than focal lung findings"
+        ],
+        "labs": [
+          "SARS-CoV-2 PCR or antigen test positive",
+          "Lymphopenia and elevated D-dimer and CRP"
+        ],
+        "imaging": [
+          "Bilateral peripheral ground-glass opacities on chest x-ray or CT",
+          "No lobar consolidation or air bronchograms typical of bacterial pneumonia"
+        ]
+      }
+    },
+    {
+      "name": "Aspiration pneumonitis",
+      "slug": "aspiration-pneumonitis",
+      "why_considered": "Fever, cough, hypoxemia and a focal opacity after an aspiration event can look identical to aspiration pneumonia.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Clear episode of choking or vomiting followed by symptoms within hours",
+          "Impaired swallowing, sedation, alcohol or drug use",
+          "Symptoms may improve within 24 to 48 hours without antibiotics"
+        ],
+        "exam": [
+          "Focal crackles over the right lower or posterior upper lobe",
+          "Signs of dysphagia or reduced consciousness"
+        ],
+        "labs": [
+          "WBC may be normal or mildly elevated",
+          "Procalcitonin often low"
+        ],
+        "imaging": [
+          "Opacity in a dependent segment (right lower lobe or posterior upper lobe)",
+          "Rapid improvement on repeat imaging supports pneumonitis rather than infection"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Afebrile or low-grade fever, mild cough, no dyspnea at rest, oxygen saturation 94% or higher on room air, able to eat and drink, no confusion; suitable for outpatient treatment.",
+      "moderate": "Fever, productive cough, dyspnea on exertion, tachypnea, focal crackles, oxygen saturation 90 to 94%, mild leukocytosis; often needs admission or close observation.",
+      "severe": "Marked dyspnea at rest, accessory muscle use, oxygen saturation below 90%, confusion, hypotension or rising BUN and lactate; requires inpatient care with oxygen and intravenous antibiotics.",
+      "critical": "Respiratory failure requiring mechanical ventilation, septic shock with vasopressors, or multiorgan dysfunction; managed in the intensive care unit."
+    },
+    "red_flags": [
+      {
+        "finding": "Respiratory rate 30/min or higher or oxygen saturation below 90% on room air",
+        "meaning": "Impending respiratory failure; needs immediate oxygen and admission"
+      },
+      {
+        "finding": "Confusion or new altered mental status",
+        "meaning": "Hypoxemia, sepsis or central nervous system infection; a CURB-65 criterion and a poor prognostic sign"
+      },
+      {
+        "finding": "Systolic blood pressure below 90 mm Hg or diastolic 60 mm Hg or lower",
+        "meaning": "Sepsis with hypoperfusion; needs fluid resuscitation and vasopressor assessment"
+      },
+      {
+        "finding": "Lactate 4 mmol/L or higher",
+        "meaning": "Septic shock physiology; urgent resuscitation and intensive care"
+      },
+      {
+        "finding": "Rising PaCO2 or falling pH on blood gas",
+        "meaning": "Respiratory muscle fatigue and impending ventilatory failure"
+      },
+      {
+        "finding": "Temperature below 95°F or above 104°F",
+        "meaning": "Atypical or overwhelming infection; part of the Pneumonia Severity Index and a marker of severe disease"
+      },
+      {
+        "finding": "New atrial fibrillation with rapid ventricular response",
+        "meaning": "Sepsis-related arrhythmia that can worsen hemodynamics"
+      },
+      {
+        "finding": "Failure to improve after 48 to 72 hours of appropriate antibiotics",
+        "meaning": "Consider resistant organism, empyema, abscess, endocarditis, tuberculosis or malignancy"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Pleural effusion",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Persistent fever despite antibiotics",
+          "Stony dullness and decreased breath sounds at the base",
+          "Blunting of the costophrenic angle on chest x-ray"
+        ]
+      },
+      {
+        "name": "Empyema",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "High fever and pleuritic pain that persist",
+          "Loculated pleural fluid on CT or ultrasound",
+          "Pleural fluid pH below 7.2, glucose low, or frank pus"
+        ]
+      },
+      {
+        "name": "Lung abscess",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Weeks of fever and productive cough",
+          "Cavitary lesion with an air-fluid level on imaging",
+          "Foul-smelling sputum suggesting anaerobes"
+        ]
+      },
+      {
+        "name": "Bacteremia and septic shock",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Hypotension and tachycardia",
+          "Elevated lactate",
+          "Positive blood cultures"
+        ]
+      },
+      {
+        "name": "Acute respiratory distress syndrome",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Rapidly worsening hypoxemia despite high-flow oxygen",
+          "Bilateral diffuse opacities not explained by effusion or cardiomegaly",
+          "Reduced lung compliance requiring mechanical ventilation"
+        ]
+      },
+      {
+        "name": "Acute kidney injury",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Rising creatinine and BUN",
+          "Oliguria",
+          "Hypotension or nephrotoxic antibiotic exposure"
+        ]
+      },
+      {
+        "name": "Post-obstructive or nonresolving pneumonia from an underlying malignancy",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Recurrent pneumonia in the same lobe",
+          "Persistent opacity after adequate therapy",
+          "Weight loss and hemoptysis"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Often viral and self-limited; fever, tachypnea and cough dominate, sputum is rarely produced, and abdominal pain or vomiting may be prominent. Chest x-ray is not required for outpatient management, and amoxicillin is first-line when bacterial pneumonia is suspected."
+      },
+      {
+        "population": "infants",
+        "differences": "May show no specific respiratory signs; poor feeding, irritability, lethargy, vomiting or fever without a source may be the only clues. Tachypnea and retractions are the most reliable findings, and young infants often require admission."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Fever may be absent or blunted, and confusion, falls or functional decline may be the presenting complaint. Chest examination can be unimpressive despite significant infection, and mortality is higher."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Presentation is similar to non-pregnant adults, but physiologic dyspnea and fatigue can delay recognition. Hypoxemia develops faster and threatens both mother and fetus; chest ultrasound or a shielded chest x-ray is preferred, and treatment should not be delayed."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Fever may be blunted and symptoms insidious. Consider Pneumocystis jirovecii, fungi, mycobacteria and unusual organisms; hypoxemia may be out of proportion to chest x-ray findings, and bronchoscopy with bronchoalveolar lavage is often needed."
+      },
+      {
+        "population": "diabetes",
+        "differences": "More severe illness and higher risk of bacteremia; fever and symptoms can be blunted, and hyperglycemia often worsens during infection and requires adjustment of therapy."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "Antibiotic doses need adjustment and nephrotoxic agents should be avoided; elevated BUN and creatinine also worsen the CURB-65 and Pneumonia Severity Index scores."
+      },
+      {
+        "population": "obesity",
+        "differences": "Chest x-ray quality is often limited and hypoxemia may be more pronounced; weight-based antibiotic dosing and attention to positioning and ventilation are important."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "How long have you had the cough, and is it bringing anything up?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Acute onset over 1–3 days with productive cough; yellow, green or rust-colored sputum supports bacterial pneumonia"
+      },
+      {
+        "question": "Have you had a fever or chills, and how high did it get?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Fever 101–103°F with chills or rigors; a blunted or absent fever is common in older adults"
+      },
+      {
+        "question": "Are you short of breath, and is it worse with activity or at rest?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Dyspnea on exertion or at rest; resting dyspnea suggests more severe disease and possible hypoxemia"
+      },
+      {
+        "question": "Does it hurt when you take a deep breath or cough?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Sharp, focal pleuritic chest pain that worsens with breathing or coughing"
+      },
+      {
+        "question": "Did this start after a cold or flu-like illness?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "A few days of viral upper respiratory symptoms followed by worsening fever and productive cough"
+      },
+      {
+        "question": "Have you had nausea, vomiting or diarrhea?",
+        "category": "associated",
+        "importance": "optional",
+        "looking_for": "Gastrointestinal symptoms can accompany pneumonia, especially in children and with atypical organisms"
+      },
+      {
+        "question": "Have you had any confusion, falls or a change in your usual level of function?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "New confusion or functional decline, which may be the presenting feature in older adults and is a CURB-65 criterion"
+      },
+      {
+        "question": "Do you have any chronic lung, heart, kidney or liver disease, or diabetes?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Comorbidities that increase risk and severity and affect the Pneumonia Severity Index"
+      },
+      {
+        "question": "Have you been in the hospital, a nursing home or on a ventilator recently?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Healthcare exposure within 90 days raises concern for healthcare-associated or drug-resistant organisms"
+      },
+      {
+        "question": "Do you have trouble swallowing, or have you choked on food or liquids?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Dysphagia or aspiration risk from stroke, dementia or neuromuscular disease"
+      },
+      {
+        "question": "Do you take steroids, chemotherapy, a proton pump inhibitor or any medicine that weakens the immune system?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Immunosuppressive or aspiration-risk medications that broaden the differential and change management"
+      },
+      {
+        "question": "Do you smoke, or have you been around secondhand smoke?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Current or former smoking, a strong risk factor for pneumonia and for underlying lung disease"
+      },
+      {
+        "question": "How much alcohol do you drink?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Heavy alcohol use, which increases risk of aspiration and severe pneumonia"
+      },
+      {
+        "question": "Have you traveled recently, stayed in a hotel or cruise ship, or been around hot tubs or cooling systems?",
+        "category": "social",
+        "importance": "optional",
+        "looking_for": "Exposure to contaminated water aerosols suggesting Legionella"
+      },
+      {
+        "question": "Have you been around birds, poultry or farm animals?",
+        "category": "social",
+        "importance": "optional",
+        "looking_for": "Bird or animal exposure suggesting psittacosis or other zoonotic causes"
+      },
+      {
+        "question": "Have you had a cough for more than 3 weeks, coughed up blood, or lost weight without trying?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Chronic cough, hemoptysis or weight loss suggesting tuberculosis or malignancy rather than acute pneumonia"
+      },
+      {
+        "question": "Have you ever had a blood clot in your leg or lung, or recent surgery or immobility?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Venous thromboembolism risk that would make pulmonary embolism a competing diagnosis"
+      },
+      {
+        "question": "Could you be pregnant? When was your last menstrual period?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Pregnancy must be excluded before chest x-ray or CT and affects antibiotic choice"
+      },
+      {
+        "question": "Have you had your pneumococcal or influenza vaccines?",
+        "category": "pmh",
+        "importance": "optional",
+        "looking_for": "Vaccination status, which modifies risk and supports prevention counseling"
+      },
+      {
+        "question": "Is anyone else at home or at work sick with a similar illness?",
+        "category": "social",
+        "importance": "optional",
+        "looking_for": "Clustering of respiratory illness suggesting a circulating viral infection"
+      }
+    ],
+    "accepted_names": [
+      "Pneumonia",
+      "Community-acquired pneumonia",
+      "CAP",
+      "Bacterial pneumonia",
+      "Lobar pneumonia",
+      "Bronchopneumonia",
+      "Viral pneumonia",
+      "Walking pneumonia",
+      "Atypical pneumonia"
+    ],
+    "reasoning_points": [
+      "Acute onset over 1–3 days of fever, productive cough, pleuritic chest pain and dyspnea",
+      "Focal inspiratory crackles, dullness to percussion, bronchial breath sounds or egophony on lung exam",
+      "Tachypnea, hypoxemia on pulse oximetry, and tachycardia supporting a lower respiratory infection",
+      "Leukocytosis with neutrophil predominance and a left shift on CBC",
+      "Chest x-ray showing a new focal airspace opacity or consolidation with air bronchograms",
+      "Severity assessed with CURB-65 or the Pneumonia Severity Index to guide site of care",
+      "Pregnancy excluded before chest imaging in anyone who could be pregnant",
+      "Competing diagnoses such as pulmonary embolism, heart failure, acute bronchitis, tuberculosis and malignancy considered and addressed",
+      "Blood and sputum cultures obtained before antibiotics in severe disease or when resistant organisms are suspected",
+      "Complications such as pleural effusion, empyema, lung abscess, bacteremia and respiratory failure considered"
+    ],
+    "difficulty": {
+      "easy": [
+        "Young or middle-aged adult with a classic story of fever, productive cough and pleuritic chest pain after a cold",
+        "Focal crackles and dullness over one lobe on auscultation and percussion",
+        "Leukocytosis with neutrophil predominance",
+        "Chest x-ray with a clear lobar consolidation and air bronchograms",
+        "No significant comorbidities and normal oxygen saturation"
+      ],
+      "medium": [
+        "Older adult with a blunted fever and an unimpressive chest exam despite significant infection",
+        "Atypical presentation with dry cough, headache, malaise and diffuse or interstitial opacities",
+        "Overlap with acute decompensated heart failure in a patient with known cardiac disease",
+        "Mild hypoxemia and tachypnea requiring a decision about inpatient versus outpatient care",
+        "Recent antibiotic or healthcare exposure raising concern for a resistant organism"
+      ],
+      "hard": [
+        "Older adult presenting with confusion, a fall or functional decline and no fever or cough",
+        "Immunocompromised patient with insidious dry cough and hypoxemia out of proportion to the chest x-ray",
+        "Pregnant patient with dyspnea that could be physiologic or infectious",
+        "Pneumonia that fails to improve after 48–72 hours of appropriate antibiotics, suggesting empyema, abscess, tuberculosis or malignancy",
+        "Patient with a competing diagnosis such as pulmonary embolism, in whom the chest x-ray is normal or nonspecific",
+        "Infant or young child with fever, poor feeding and tachypnea but no localizing findings"
+      ]
+    }
+  }
+}

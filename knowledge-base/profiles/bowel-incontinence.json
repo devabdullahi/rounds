@@ -1,0 +1,1133 @@
+{
+  "schema_version": "0.2",
+  "slug": "bowel-incontinence",
+  "triage": {
+    "name": "Bowel Incontinence",
+    "case_suitable": true,
+    "reason": "Fecal incontinence/encopresis presents with a clear history and exam, with a differential of organic and behavioral causes worth working up.",
+    "kind": "disease",
+    "category": "functional bowel disorder",
+    "organ_systems": [
+      "gastrointestinal"
+    ],
+    "primary_clerkship": "familyMedicine",
+    "secondary_clerkships": [
+      "pediatrics",
+      "internalMedicine",
+      "surgery"
+    ],
+    "commonness": "common",
+    "settings": [
+      "clinic",
+      "pediatric_clinic"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:16:03Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:31:58Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:32:04Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:32:12Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:32:22Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:32:29Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'ct' to 'CT'",
+        "auto-repaired: labs: dropped 'cbc' (not in the reference table)",
+        "differential colorectal-cancer: no profile yet",
+        "differential inflammatory-bowel-disease: no profile yet",
+        "differential infectious-colitis: no profile yet",
+        "differential irritable-bowel-syndrome: no profile yet",
+        "differential rectal-prolapse: no profile yet",
+        "differential cauda-equina-syndrome: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 40,
+      "typical_max": 85,
+      "peak": "60–80",
+      "possible_min": 3,
+      "possible_max": 100
+    },
+    "sex": "female_predominant",
+    "demographics": [
+      "More common in women, largely related to obstetric and pelvic floor injury",
+      "Prevalence rises with age but it is not a normal part of aging",
+      "Occurs in children as encopresis, usually in the setting of chronic constipation",
+      "More common in residents of nursing homes and long-term care facilities"
+    ],
+    "risk_factors": [
+      {
+        "text": "Older age with frailty or limited mobility",
+        "strength": "strong"
+      },
+      {
+        "text": "Vaginal childbirth, especially with perineal tear or forceps delivery",
+        "strength": "strong"
+      },
+      {
+        "text": "Chronic constipation with fecal impaction or overflow",
+        "strength": "strong"
+      },
+      {
+        "text": "Pelvic floor disorders such as pelvic organ prolapse or prior pelvic surgery",
+        "strength": "moderate"
+      },
+      {
+        "text": "Diabetes mellitus with peripheral or autonomic neuropathy",
+        "strength": "moderate"
+      },
+      {
+        "text": "Neurologic disease affecting the sacral nerves or spinal cord",
+        "strength": "moderate"
+      },
+      {
+        "text": "Cognitive impairment or dementia",
+        "strength": "moderate"
+      },
+      {
+        "text": "Female sex",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Chronic constipation",
+      "Irritable bowel syndrome",
+      "Diabetes mellitus",
+      "Stroke",
+      "Parkinson disease",
+      "Multiple sclerosis",
+      "Spinal cord injury",
+      "Dementia",
+      "Pelvic organ prolapse",
+      "Hemorrhoids or anorectal surgery"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Residence in a nursing home or long-term care facility",
+      "Limited mobility or need for assistance with toileting"
+    ],
+    "exposures": [],
+    "risk_medications": [
+      "loperamide",
+      "metformin",
+      "sennosides",
+      "polyethylene glycol",
+      "docusate",
+      "magnesium hydroxide",
+      "lactulose",
+      "cholestyramine",
+      "olanzapine",
+      "quetiapine"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I can't hold my stool until I get to the bathroom",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "I leak stool into my underwear without knowing it",
+        "frequency": "common"
+      },
+      {
+        "text": "I have accidents in my pants",
+        "frequency": "common"
+      },
+      {
+        "text": "I have to rush to the toilet and sometimes I don't make it",
+        "frequency": "common"
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual over months, often after childbirth, pelvic surgery, or years of constipation; sometimes sudden after a stroke or spinal injury",
+      "duration": "Usually chronic, present for months to years before the patient seeks care",
+      "progression": "Often slowly worsens over time; may fluctuate with stool consistency, and episodes are more frequent when stools are loose",
+      "location": "Anorectal; leakage noticed in the underwear or on clothing",
+      "radiation": "Not applicable",
+      "quality": "Involuntary passage of solid or liquid stool, or staining of underwear with stool",
+      "severity": "Ranges from occasional staining to daily loss of solid stool that limits work, social life, and outings",
+      "timing": "Episodes occur with urgency, after meals, with coughing or lifting, or at night in more severe disease",
+      "aggravating": [
+        "Loose or watery stools",
+        "Urgency that leaves no time to reach a toilet",
+        "Coughing, sneezing, or lifting",
+        "Physical activity or walking",
+        "Not being able to reach a toilet in time"
+      ],
+      "relieving": [
+        "Staying near a bathroom",
+        "Using pads or adult diapers",
+        "Firming the stool with diet or medication",
+        "Emptying the bowels on a schedule"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Urgency to have a bowel movement",
+          "frequency": "common"
+        },
+        {
+          "text": "Passing stool without any warning",
+          "frequency": "common"
+        },
+        {
+          "text": "Staining of underwear between bowel movements",
+          "frequency": "common"
+        },
+        {
+          "text": "Constipation or a feeling of incomplete emptying",
+          "frequency": "common"
+        },
+        {
+          "text": "Bloating and gas",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Itching or soreness around the anus",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Avoiding social activities or leaving home",
+          "frequency": "common"
+        }
+      ],
+      "pertinent_negatives": [
+        "Blood in the stool",
+        "Unintentional weight loss",
+        "Fever",
+        "Nocturnal diarrhea with fever",
+        "Recent antibiotic use",
+        "Travel or sick contacts with diarrhea",
+        "Known inflammatory bowel disease",
+        "Rectal prolapse or a mass protruding from the anus",
+        "New back pain or leg weakness"
+      ]
+    },
+    "ros": [
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Urgency to defecate",
+            "frequency": "common"
+          },
+          {
+            "text": "Constipation or straining",
+            "frequency": "common"
+          },
+          {
+            "text": "Bloating and gas",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Blood in stool",
+          "Black stools",
+          "Unintentional weight loss",
+          "Nocturnal diarrhea with fever"
+        ],
+        "argues_against": [
+          "Inflammatory bowel disease",
+          "Colorectal cancer",
+          "Infectious colitis"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [
+          {
+            "text": "Leakage of urine",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Dysuria",
+          "Hematuria",
+          "Flank pain"
+        ],
+        "argues_against": [
+          "Urinary tract infection",
+          "Kidney stones"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Numbness or tingling in the legs or feet",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "New leg weakness",
+          "Difficulty walking",
+          "New back pain",
+          "Loss of sensation in the saddle area"
+        ],
+        "argues_against": [
+          "Cauda equina syndrome",
+          "Spinal cord compression"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Feeling of a bulge or heaviness in the vagina",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Severe pelvic pain",
+          "Inability to bear weight"
+        ],
+        "argues_against": [
+          "Acute pelvic fracture"
+        ]
+      },
+      {
+        "system": "psychiatric",
+        "positives": [
+          {
+            "text": "Embarrassment or avoiding social activities",
+            "frequency": "common"
+          },
+          {
+            "text": "Low mood or anxiety about accidents",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Suicidal thoughts",
+          "Symptoms of mania"
+        ],
+        "argues_against": [
+          "Primary psychiatric cause of incontinence"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Presents as encopresis, usually with chronic constipation and overflow soiling; the child may hide soiled underwear and deny the problem, and the parent often brings the complaint.",
+        "missing_classic_features": [
+          "Clear awareness of leakage",
+          "Urgency described by the patient"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "May be attributed to aging or dementia and underreported; often coexists with urinary incontinence, immobility, and cognitive impairment, and may present as soiling found by caregivers rather than a complaint.",
+        "missing_classic_features": [
+          "Spontaneous complaint of incontinence",
+          "Ability to describe urgency"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "May first appear in the third trimester or postpartum after a perineal tear or forceps delivery; often improves in the months after delivery but can persist.",
+        "missing_classic_features": [
+          "Chronic duration",
+          "Older age"
+        ]
+      },
+      {
+        "population": "diabetes",
+        "how_it_differs": "May be painless and associated with other neuropathic symptoms such as numbness or tingling in the feet, and with diarrhea from autonomic neuropathy.",
+        "missing_classic_features": [
+          "Obstetric or surgical history",
+          "Anorectal pain"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Well-appearing, no distress; may be reluctant to discuss symptoms",
+      "moderate": "Well-appearing but anxious or embarrassed; may wear a pad or protective undergarment",
+      "severe": "Withdrawn or embarrassed, may smell of stool, avoids sitting for long; possibly frail or with limited mobility",
+      "critical": "Not applicable; bowel incontinence itself is not a critical illness, but a toxic or unstable appearance should prompt evaluation for another cause"
+    },
+    "findings": [
+      {
+        "id": "perianal-soiling",
+        "region": "rectal",
+        "maneuver": "Inspect the perianal skin and underwear or pad",
+        "finding": "Staining of the perianal skin or undergarment with stool",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "perianal-dermatitis",
+        "region": "skin",
+        "maneuver": "Inspect the perianal skin",
+        "finding": "Erythema, maceration, or excoriation of the perianal skin",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "reduced-anal-resting-tone",
+        "region": "rectal",
+        "maneuver": "Perform a digital rectal exam and assess resting anal sphincter tone",
+        "finding": "Decreased resting anal tone, suggesting internal anal sphincter weakness",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "reduced-squeeze-tone",
+        "region": "rectal",
+        "maneuver": "Ask the patient to squeeze the anal sphincter around the examining finger",
+        "finding": "Weak voluntary squeeze, suggesting external anal sphincter or pelvic floor weakness",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "impacted-stool",
+        "region": "rectal",
+        "maneuver": "Perform a digital rectal exam",
+        "finding": "Hard impacted stool in the rectal vault",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "rectal-mass",
+        "region": "rectal",
+        "maneuver": "Perform a digital rectal exam",
+        "finding": "Palpable rectal mass",
+        "frequency": "rare",
+        "significance": "argues_against",
+        "importance": "essential"
+      },
+      {
+        "id": "gross-blood-stool",
+        "region": "rectal",
+        "maneuver": "Inspect the examining glove and any stool on it after the rectal exam",
+        "finding": "Gross blood or melena on the glove",
+        "frequency": "rare",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "prolapse-with-straining",
+        "region": "rectal",
+        "maneuver": "Ask the patient to strain or bear down while inspecting the anus",
+        "finding": "Rectal mucosa or full-thickness rectum protruding through the anus",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "normal-abdominal-exam",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen",
+        "finding": "Soft, non-tender abdomen without mass or guarding",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-neurologic-exam",
+        "region": "neuro",
+        "maneuver": "Test perineal sensation, the anal wink reflex, and lower extremity strength and reflexes",
+        "finding": "Intact perineal sensation, present anal wink, and normal strength and reflexes",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "absent-anal-wink",
+        "region": "neuro",
+        "maneuver": "Stroke the perianal skin and observe for contraction of the external anal sphincter",
+        "finding": "Absent anal wink reflex",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "reduced-perineal-sensation",
+        "region": "neuro",
+        "maneuver": "Test sensation in the saddle distribution around the anus and perineum",
+        "finding": "Decreased perineal or saddle sensation",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "pelvic-organ-prolapse",
+        "region": "pelvic",
+        "maneuver": "Perform a pelvic exam with the patient straining",
+        "finding": "Descent of the vaginal walls, cervix, or uterus",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "normal-pelvic-exam",
+        "region": "pelvic",
+        "maneuver": "Perform a pelvic exam when a gynecologic or pelvic floor cause is possible",
+        "finding": "No cervical motion tenderness, adnexal mass, or prolapse",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {},
+  "labs": [
+    {
+      "test_id": "tsh",
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Thyrotoxicosis can cause chronic diarrhea and urgency that worsen leakage."
+    },
+    {
+      "test_id": "a1c",
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Diabetes is a common cause of autonomic and peripheral neuropathy affecting the anorectum."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "moderate": {
+          "min": 1.0,
+          "max": 5.0
+        },
+        "severe": {
+          "min": 5.0,
+          "max": 15.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Only useful when inflammatory bowel disease or colitis is being considered; usually normal in functional incontinence."
+    },
+    {
+      "test_id": "esr",
+      "ranges": {
+        "moderate": {
+          "min": 20,
+          "max": 40
+        },
+        "severe": {
+          "min": 40,
+          "max": 80
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Nonspecific; supports an inflammatory or infectious process when that is suspected."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Negative. Required before pelvic imaging or surgery in anyone who could be pregnant."
+    }
+  ],
+  "imaging": [
+    {
+      "study": "Endoanal ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "Suspected sphincter injury, such as after obstetric tear or anorectal surgery",
+      "findings": [
+        {
+          "text": "Disruption or thinning of the internal anal sphincter",
+          "frequency": "common"
+        },
+        {
+          "text": "Disruption of the external anal sphincter",
+          "frequency": "common"
+        },
+        {
+          "text": "Normal sphincter anatomy",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Pelvic floor MRI",
+      "modality": "mri",
+      "preferred_when": "Complex or postsurgical anatomy, or when ultrasound is inconclusive",
+      "findings": [
+        {
+          "text": "Sphincter defect or scar tissue",
+          "frequency": "common"
+        },
+        {
+          "text": "Pelvic floor descent or prolapse",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Normal sphincter and pelvic floor",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Defecography (fluoroscopic or MRI)",
+      "modality": "other",
+      "preferred_when": "Symptoms suggest internal intussusception, rectocele, or incomplete evacuation",
+      "findings": [
+        {
+          "text": "Rectocele or enterocele",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Internal intussusception or mucosal prolapse",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Incomplete evacuation of contrast",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Colonoscopy",
+      "modality": "endoscopy",
+      "preferred_when": "Red flags such as rectal bleeding, weight loss, anemia, or age-appropriate cancer screening",
+      "findings": [
+        {
+          "text": "Normal colonic mucosa",
+          "frequency": "common"
+        },
+        {
+          "text": "Diverticulosis",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Colorectal mass or polyp",
+          "frequency": "rare"
+        },
+        {
+          "text": "Mucosal inflammation suggesting inflammatory bowel disease",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Abdominal x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Usually nonspecific; may show a large stool burden in the colon",
+          "frequency": "sometimes"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Screens for anemia from occult bleeding and for infection"
+      },
+      {
+        "test": "bmp",
+        "why": "Assesses hydration and electrolytes, especially if diarrhea or laxative use is prominent"
+      },
+      {
+        "test": "tsh",
+        "why": "Thyroid disease can cause diarrhea and urgency that worsen leakage"
+      },
+      {
+        "test": "a1c",
+        "why": "Diabetes is a common cause of the neuropathy that underlies incontinence"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before pelvic imaging or surgery",
+        "only_if": "patient could be pregnant"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Endoanal ultrasound",
+        "why": "Defines sphincter anatomy and identifies a surgically repairable defect"
+      },
+      {
+        "test": "Anorectal manometry",
+        "why": "Measures resting and squeeze pressures, rectal sensation, and the rectoanal inhibitory reflex"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "crp",
+        "why": "Supports an inflammatory cause when colitis or inflammatory bowel disease is suspected",
+        "only_if": "diarrhea with blood, fever, or weight loss"
+      },
+      {
+        "test": "esr",
+        "why": "Adds to inflammatory markers when an inflammatory cause is suspected",
+        "only_if": "diarrhea with blood, fever, or weight loss"
+      },
+      {
+        "test": "Colonoscopy",
+        "why": "Evaluates the colon for bleeding, inflammation, or neoplasia",
+        "only_if": "rectal bleeding, weight loss, anemia, or age-appropriate cancer screening"
+      },
+      {
+        "test": "Pelvic floor MRI",
+        "why": "Clarifies complex or postsurgical anatomy",
+        "only_if": "endoanal ultrasound is inconclusive or prior anorectal surgery distorts anatomy"
+      },
+      {
+        "test": "Defecography (fluoroscopic or MRI)",
+        "why": "Looks for structural causes of incomplete evacuation",
+        "only_if": "symptoms suggest intussusception, rectocele, or incomplete emptying"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Abdominal x-ray",
+        "why": "Rarely changes management of incontinence"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in the evaluation of bowel incontinence"
+      },
+      {
+        "test": "lipase",
+        "why": "Not needed unless there is epigastric pain suggesting pancreatitis"
+      },
+      {
+        "test": "ua",
+        "why": "Not part of the incontinence workup unless urinary symptoms suggest infection"
+      },
+      {
+        "test": "CT",
+        "why": "Not routinely needed; reserved for suspected mass, abscess, or acute intra-abdominal process"
+      }
+    ],
+    "decision_points": [
+      "Pregnancy test before pelvic imaging or surgery in anyone who could be pregnant",
+      "Digital rectal exam is part of the initial evaluation and guides whether manometry or imaging is needed",
+      "Red flags such as rectal bleeding, weight loss, or anemia prompt colonoscopy before attributing symptoms to a functional cause",
+      "Sphincter defect on endoanal ultrasound identifies patients who may benefit from surgical repair"
+    ],
+    "criteria": [],
+    "scores": [
+      "wexner_continence",
+      "st_marks_continence"
+    ]
+  },
+  "differential": [
+    {
+      "name": "Colorectal cancer",
+      "slug": "colorectal-cancer",
+      "why_considered": "A rectal or distal colonic tumor can cause urgency, tenesmus, and leakage of mucus or stool, and is the most important organic cause to exclude.",
+      "must_not_miss": true,
+      "trigger": "Rectal bleeding, unintentional weight loss, iron-deficiency anemia, or a new change in bowel habit in an adult",
+      "discriminators": {
+        "history": [
+          "Blood mixed with stool or dark stools",
+          "Unintentional weight loss",
+          "Progressive narrowing of stools",
+          "Family history of colorectal cancer"
+        ],
+        "exam": [
+          "Palpable rectal mass on digital rectal exam",
+          "Gross blood or melena on the examining glove",
+          "Pallor suggesting anemia"
+        ],
+        "labs": [
+          "Iron-deficiency anemia on CBC",
+          "Occult blood in the stool"
+        ],
+        "imaging": [
+          "Colonoscopy showing a mass or polyp",
+          "Biopsy confirming adenocarcinoma"
+        ]
+      }
+    },
+    {
+      "name": "Inflammatory bowel disease",
+      "slug": "inflammatory-bowel-disease",
+      "why_considered": "Chronic inflammation of the rectum causes urgency, tenesmus, and leakage of stool or mucus, and can be mistaken for a functional problem.",
+      "must_not_miss": true,
+      "trigger": "Chronic diarrhea with blood, mucus, urgency, or weight loss in a younger patient",
+      "discriminators": {
+        "history": [
+          "Bloody diarrhea with mucus",
+          "Abdominal pain and cramping",
+          "Weight loss and fatigue",
+          "Extraintestinal symptoms such as joint pain or mouth ulcers"
+        ],
+        "exam": [
+          "Abdominal tenderness",
+          "Perianal fistulas, fissures, or skin tags",
+          "Signs of malnutrition"
+        ],
+        "labs": [
+          "Elevated CRP and ESR",
+          "Anemia and low albumin"
+        ],
+        "imaging": [
+          "Colonoscopy with continuous mucosal inflammation",
+          "Biopsy showing chronic inflammation"
+        ]
+      }
+    },
+    {
+      "name": "Infectious colitis",
+      "slug": "infectious-colitis",
+      "why_considered": "Acute diarrhea with urgency and leakage can be caused by an infection, especially after antibiotics or travel.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Acute onset of watery or bloody diarrhea",
+          "Recent antibiotic use, travel, or sick contacts",
+          "Fever and abdominal cramps"
+        ],
+        "exam": [
+          "Fever",
+          "Diffuse abdominal tenderness"
+        ],
+        "labs": [
+          "Leukocytosis",
+          "Positive stool culture or stool PCR for pathogens",
+          "Fecal leukocytes or lactoferrin"
+        ],
+        "imaging": [
+          "Colonoscopy or CT showing segmental colitis if severe"
+        ]
+      }
+    },
+    {
+      "name": "Irritable bowel syndrome",
+      "slug": "irritable-bowel-syndrome",
+      "why_considered": "Alternating constipation and diarrhea with urgency can lead to leakage, and it is a common functional disorder.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Chronic abdominal pain relieved by defecation",
+          "Alternating constipation and diarrhea",
+          "Nocturnal symptoms are uncommon",
+          "No red flags such as bleeding or weight loss"
+        ],
+        "exam": [
+          "Normal abdominal exam",
+          "Normal digital rectal exam"
+        ],
+        "labs": [
+          "Normal CBC, CRP, and celiac serology"
+        ],
+        "imaging": [
+          "Normal colonoscopy if performed"
+        ]
+      }
+    },
+    {
+      "name": "Rectal prolapse",
+      "slug": "rectal-prolapse",
+      "why_considered": "Full-thickness or mucosal prolapse can cause leakage of mucus and stool, and a sensation of incomplete evacuation.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Feeling of a bulge or mass protruding from the anus",
+          "Leakage of mucus and stool",
+          "Straining to defecate"
+        ],
+        "exam": [
+          "Visible protrusion of rectal mucosa on straining",
+          "Palpable full-thickness prolapse"
+        ],
+        "imaging": [
+          "Defecography showing prolapse"
+        ]
+      }
+    },
+    {
+      "name": "Cauda equina syndrome",
+      "slug": "cauda-equina-syndrome",
+      "why_considered": "Compression of the cauda equina can cause loss of bowel control along with saddle anesthesia and leg weakness.",
+      "must_not_miss": true,
+      "trigger": "New back pain with saddle numbness, leg weakness, or urinary retention",
+      "discriminators": {
+        "history": [
+          "Severe low back pain",
+          "Saddle numbness",
+          "Urinary retention or incontinence",
+          "Progressive leg weakness"
+        ],
+        "exam": [
+          "Reduced perineal sensation",
+          "Absent anal wink",
+          "Weak lower extremity strength or reflexes"
+        ],
+        "labs": [
+          "Not specific; urgent imaging is key"
+        ],
+        "imaging": [
+          "MRI of the lumbar spine showing compression of the cauda equina"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Occasional staining of underwear or leakage of small amounts of liquid stool, no need for pads, minimal impact on daily activities.",
+      "moderate": "Regular leakage requiring pads or protective undergarments, urgency that limits outings, some avoidance of social activities.",
+      "severe": "Daily loss of solid stool, need for adult diapers, significant restriction of work and social life, may require assistance with toileting.",
+      "critical": "Not applicable; bowel incontinence itself is not a life-threatening condition, but a toxic or unstable appearance should prompt evaluation for another cause."
+    },
+    "red_flags": [
+      {
+        "finding": "Rectal bleeding or melena",
+        "meaning": "Suggests an organic cause such as colorectal cancer, inflammatory bowel disease, or severe colitis; needs prompt evaluation."
+      },
+      {
+        "finding": "Unintentional weight loss",
+        "meaning": "Raises concern for malignancy or chronic inflammatory disease."
+      },
+      {
+        "finding": "Iron-deficiency anemia",
+        "meaning": "May indicate occult gastrointestinal bleeding from a tumor or inflammation."
+      },
+      {
+        "finding": "New back pain with saddle numbness or leg weakness",
+        "meaning": "Possible cauda equina syndrome; requires urgent imaging."
+      },
+      {
+        "finding": "Fever with bloody diarrhea",
+        "meaning": "Suggests infectious or inflammatory colitis; needs stool studies and possibly colonoscopy."
+      },
+      {
+        "finding": "Palpable rectal mass",
+        "meaning": "Concerning for anorectal or colorectal malignancy; requires biopsy."
+      }
+    ],
+    "complications": [
+      {
+        "name": "Perianal dermatitis",
+        "timing": "any",
+        "seriousness": "minor",
+        "frequency": "common",
+        "clues": [
+          "Erythema, maceration, or excoriation around the anus",
+          "Itching or soreness"
+        ]
+      },
+      {
+        "name": "Social isolation and depression",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Avoiding social activities",
+          "Low mood or anxiety about accidents"
+        ]
+      },
+      {
+        "name": "Urinary tract infection",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Dysuria",
+          "Urinary frequency or urgency",
+          "Positive urine culture"
+        ]
+      },
+      {
+        "name": "Pressure ulcers",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Immobility",
+          "Moisture and stool on the skin",
+          "Skin breakdown over bony prominences"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Presents as encopresis, usually with chronic constipation and overflow soiling; the child may hide soiled underwear and deny the problem, and the parent often brings the complaint. Treatment focuses on bowel retraining and disimpaction."
+      },
+      {
+        "population": "older_adults",
+        "differences": "May be attributed to aging or dementia and underreported; often coexists with urinary incontinence, immobility, and cognitive impairment, and may present as soiling found by caregivers rather than a complaint."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "May first appear in the third trimester or postpartum after a perineal tear or forceps delivery; often improves in the months after delivery but can persist."
+      },
+      {
+        "population": "diabetes",
+        "differences": "May be painless and associated with other neuropathic symptoms such as numbness or tingling in the feet, and with diarrhea from autonomic neuropathy."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "Can you describe what happens when you leak — is it solid stool, liquid stool, or just staining of your underwear?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Type and amount of leakage; liquid stool or staining suggests internal sphincter weakness or overflow, solid stool suggests more severe external sphincter or pelvic floor weakness"
+      },
+      {
+        "question": "Do you feel an urge to go before you leak, or does it happen without any warning?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Urge incontinence suggests external sphincter or pelvic floor weakness; passive leakage without warning suggests internal sphincter weakness or neuropathy"
+      },
+      {
+        "question": "How often does this happen, and how long has it been going on?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Frequency and chronicity; daily leakage of solid stool indicates severe disease, while occasional staining suggests mild disease"
+      },
+      {
+        "question": "What makes it worse — loose stools, coughing, lifting, or not reaching a toilet in time?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Aggravating factors that point to stool consistency, pelvic floor weakness, or urgency as the mechanism"
+      },
+      {
+        "question": "How often do you have a bowel movement, and what is the consistency? Do you strain or feel like you cannot empty completely?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Chronic constipation with impaction or overflow soiling, or diarrhea that overwhelms sphincter control"
+      },
+      {
+        "question": "Have you had vaginal deliveries? Were there tears, an episiotomy, or forceps or vacuum assistance?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Obstetric anal sphincter injury, the most common cause in women"
+      },
+      {
+        "question": "Have you had any surgery on your anus, rectum, or pelvic area?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Prior anorectal or pelvic surgery that may have damaged the sphincter or pelvic floor"
+      },
+      {
+        "question": "Do you have any conditions affecting your nerves or spinal cord, such as diabetes, stroke, Parkinson disease, multiple sclerosis, or a spinal injury?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Neurologic disease affecting the sacral nerves or spinal cord"
+      },
+      {
+        "question": "What medications do you take, including laxatives, stool softeners, and anything for diarrhea?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Laxatives, stool softeners, or antidiarrheals that alter stool consistency and contribute to leakage"
+      },
+      {
+        "question": "Have you noticed any blood in your stool, unintentional weight loss, or a change in your bowel habits?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Red flags for colorectal cancer or inflammatory bowel disease that require prompt evaluation"
+      },
+      {
+        "question": "Do you have new back pain, numbness in the saddle area, or weakness in your legs?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Cauda equina syndrome or spinal cord compression requiring urgent imaging"
+      },
+      {
+        "question": "Do you also leak urine, or feel a bulge or heaviness in the vagina?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Coexisting urinary incontinence or pelvic organ prolapse suggesting a shared pelvic floor disorder"
+      },
+      {
+        "question": "How much does this affect your daily life, work, and social activities?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Impact on quality of life and avoidance behaviors that guide treatment intensity"
+      }
+    ],
+    "accepted_names": [
+      "Bowel incontinence",
+      "Fecal incontinence",
+      "Faecal incontinence",
+      "Stool incontinence",
+      "Encopresis",
+      "Stool soiling",
+      "Anal incontinence"
+    ],
+    "reasoning_points": [
+      "Involuntary passage of solid or liquid stool, or staining of underwear, that the patient cannot control",
+      "Urgency or lack of warning before leakage, distinguishing urge from passive incontinence",
+      "Chronic constipation with impaction or overflow soiling as a common mechanism",
+      "Obstetric history of perineal tear or forceps delivery, or prior anorectal or pelvic surgery",
+      "Neurologic disease such as diabetes, stroke, Parkinson disease, or spinal cord injury affecting the sacral nerves",
+      "Digital rectal exam showing reduced resting or squeeze anal tone, or impacted stool",
+      "Red flags such as rectal bleeding, weight loss, anemia, or a rectal mass excluded before attributing symptoms to a functional cause",
+      "Pregnancy test before pelvic imaging or surgery in anyone who could be pregnant",
+      "Anorectal manometry and endoanal ultrasound define sphincter function and anatomy when conservative treatment fails or surgery is considered"
+    ],
+    "difficulty": {
+      "easy": [
+        "Older multiparous woman with leakage after a forceps delivery and a perineal tear",
+        "Clear history of urgency and leakage of liquid stool",
+        "Digital rectal exam shows reduced anal sphincter tone",
+        "Symptoms worsen with loose stools and improve with firming the stool"
+      ],
+      "medium": [
+        "Older adult with chronic constipation and overflow soiling mistaken for diarrhea",
+        "Patient with diabetes and painless leakage plus peripheral neuropathy",
+        "Coexisting urinary incontinence and pelvic organ prolapse suggesting a shared pelvic floor disorder",
+        "Symptoms attributed to aging or dementia and underreported by the patient"
+      ],
+      "hard": [
+        "Child with encopresis who hides soiled underwear and denies the problem",
+        "Patient with a rectal mass or iron-deficiency anemia where incontinence is a red herring for colorectal cancer",
+        "New back pain with saddle numbness and leg weakness suggesting cauda equina syndrome",
+        "Postpartum patient with symptoms that overlap with normal postpartum changes",
+        "Patient on multiple laxatives whose leakage resolves after medication review"
+      ]
+    }
+  }
+}

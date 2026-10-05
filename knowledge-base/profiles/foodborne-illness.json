@@ -1,0 +1,1617 @@
+{
+  "schema_version": "0.2",
+  "slug": "foodborne-illness",
+  "triage": {
+    "name": "Foodborne Illness",
+    "case_suitable": true,
+    "reason": "Acute GI presentation with exposure history; students reason about organisms, dehydration and when to test or treat.",
+    "kind": "disease",
+    "category": "infectious gastroenteritis",
+    "organ_systems": [
+      "gastrointestinal",
+      "blood"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "emergency",
+      "familyMedicine",
+      "pediatrics"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "emergency",
+      "clinic",
+      "inpatient"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:17:26Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:06:40Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:06:45Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:06:59Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:07:11Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:07:18Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'stool culture' was in ['initial', 'confirmatory', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'stool multiplex pcr panel' was in ['initial', 'confirmatory'], kept ['initial']",
+        "auto-repaired: workup: 'stool ova and parasites' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'stool c. difficile toxin/pcr' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'abdominal x-ray (kidneys, ureters, bladder)' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'ct abdomen and pelvis with iv contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'right upper quadrant ultrasound' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'stool culture' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'stool ova and parasites' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'stool c. difficile toxin/pcr' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'abdominal x-ray (kidneys, ureters, bladder)' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'ct abdomen and pelvis with iv contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'right upper quadrant ultrasound' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "differential inflammatory-bowel-disease: no profile yet",
+        "differential clostridioides-difficile-colitis: no profile yet",
+        "differential acute-appendicitis: no profile yet",
+        "differential ectopic-pregnancy: no profile yet",
+        "differential urinary-tract-infection: no profile yet",
+        "differential mesenteric-ischemia: no profile yet",
+        "differential scombroid-fish-poisoning: no profile yet",
+        "differential viral-gastroenteritis: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 1,
+      "typical_max": 90,
+      "peak": "children under 5 and adults 20–50",
+      "possible_min": 0,
+      "possible_max": 110
+    },
+    "sex": "either",
+    "demographics": [
+      "Affects all ages and both sexes; young children and older adults have the highest rates of severe illness",
+      "More common in warmer months for many bacterial causes",
+      "Outbreaks cluster in households, restaurants, catered events and institutions"
+    ],
+    "risk_factors": [
+      {
+        "text": "Eating undercooked meat, poultry, eggs or seafood",
+        "strength": "strong"
+      },
+      {
+        "text": "Eating raw or unwashed produce, or unpasteurized milk or juice",
+        "strength": "strong"
+      },
+      {
+        "text": "Food left at room temperature more than 2 hours, or poor kitchen hygiene",
+        "strength": "strong"
+      },
+      {
+        "text": "Recent travel to areas with poor sanitation",
+        "strength": "moderate"
+      },
+      {
+        "text": "Recent restaurant or catered meal, or a known outbreak",
+        "strength": "moderate"
+      },
+      {
+        "text": "Contact with reptiles, amphibians, live poultry or farm animals",
+        "strength": "moderate"
+      },
+      {
+        "text": "Age under 5 or over 65",
+        "strength": "moderate"
+      },
+      {
+        "text": "Immunosuppression or chronic illness",
+        "strength": "moderate"
+      },
+      {
+        "text": "Pregnancy",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Immunosuppression (HIV, transplant, cancer therapy)",
+      "Diabetes mellitus",
+      "Chronic kidney disease",
+      "Inflammatory bowel disease",
+      "Achlorhydria or gastric surgery"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Food handling or preparation work",
+      "Household members or close contacts with similar GI illness",
+      "Recent travel",
+      "Attendance at a large gathering or buffet"
+    ],
+    "exposures": [
+      "Undercooked or raw meat, poultry, eggs, seafood",
+      "Unpasteurized milk, cheese or juice",
+      "Raw or unwashed fruits and vegetables, sprouts",
+      "Leftover food kept out of refrigeration",
+      "Untreated or contaminated water",
+      "Reptiles, amphibians, chicks or ducklings",
+      "Recent restaurant meal or catered event"
+    ],
+    "risk_medications": [
+      "proton pump inhibitors",
+      "histamine-2 receptor antagonists",
+      "immunosuppressants",
+      "corticosteroids",
+      "antibiotics"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I've been throwing up and having diarrhea",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "My stomach is cramping",
+        "frequency": "common"
+      },
+      {
+        "text": "I feel like I can't keep anything down",
+        "frequency": "common"
+      },
+      {
+        "text": "I've been running to the bathroom all night",
+        "frequency": "common"
+      }
+    ],
+    "hpi": {
+      "onset": "Sudden, over hours; often within 1–48 hours of the suspect meal, though some organisms cause symptoms days later",
+      "duration": "Usually 1–7 days; most resolve without treatment",
+      "progression": "Starts with nausea and abdominal discomfort, then vomiting and/or diarrhea; symptoms peak in the first day or two and gradually improve",
+      "location": "Diffuse abdominal pain, often periumbilical or lower abdomen",
+      "radiation": "Usually none",
+      "quality": "Crampy, intermittent abdominal pain; watery stools",
+      "severity": "Mild to moderate for most; can be severe with profuse diarrhea, vomiting or dehydration",
+      "timing": "Cramps come in waves, often worse before a bowel movement",
+      "aggravating": [
+        "Eating or drinking",
+        "Certain foods or dairy"
+      ],
+      "relieving": [
+        "Resting",
+        "Sipping fluids",
+        "Passing stool or vomiting"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Nausea",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Diarrhea",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Abdominal cramps",
+          "frequency": "common"
+        },
+        {
+          "text": "Vomiting",
+          "frequency": "common"
+        },
+        {
+          "text": "Low-grade fever or chills",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Muscle aches and headache",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Lightheadedness or dry mouth from dehydration",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Blood or mucus in the stool",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Bloody diarrhea",
+        "High fever above 102°F",
+        "Severe localized right lower quadrant pain",
+        "Symptoms lasting more than a week",
+        "Recent antibiotic use or hospitalization",
+        "Sick contacts with similar illness before the patient's own symptoms",
+        "Weight loss or chronic diarrhea"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Feeling tired and weak",
+            "frequency": "common"
+          },
+          {
+            "text": "Low-grade fever",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Chills",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "High fever",
+          "Weight loss",
+          "Night sweats"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Nausea",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Watery diarrhea",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Abdominal cramping",
+            "frequency": "common"
+          },
+          {
+            "text": "Vomiting",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Blood in stool",
+          "Black or tarry stools",
+          "Jaundice",
+          "Severe localized pain"
+        ],
+        "argues_against": [
+          "Inflammatory bowel disease",
+          "Surgical abdomen"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [
+          {
+            "text": "Decreased urination",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Dysuria",
+          "Flank pain",
+          "Hematuria"
+        ],
+        "argues_against": [
+          "Urinary tract infection",
+          "Kidney stones"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Headache",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Dizziness on standing",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Blurred vision",
+          "Muscle weakness",
+          "Numbness or tingling",
+          "Confusion"
+        ],
+        "argues_against": [
+          "Botulism",
+          "Neurologic causes of vomiting"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Muscle aches",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Joint swelling",
+          "Severe localized muscle pain"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [],
+        "negatives": [
+          "Rash",
+          "Hives",
+          "Flushing"
+        ],
+        "argues_against": [
+          "Scombroid or histamine fish poisoning",
+          "Allergic reaction"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Infants and young children may present with irritability, poor feeding, fewer wet diapers and lethargy rather than clear vomiting or diarrhea; dehydration develops faster.",
+        "missing_classic_features": [
+          "Clear description of nausea",
+          "Localized abdominal cramping"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "May have milder fever and less pain but dehydrate quickly; confusion or falls can be the presenting problem.",
+        "missing_classic_features": [
+          "Fever",
+          "Prominent abdominal cramps"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "More severe, prolonged or invasive disease; higher risk of bacteremia and need for hospitalization.",
+        "missing_classic_features": [
+          "Self-limited course"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Dehydration and electrolyte loss are tolerated poorly; listeriosis can cause fever, myalgias and fetal loss with few GI symptoms.",
+        "missing_classic_features": [
+          "Prominent diarrhea"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Alert, comfortable, well hydrated; mild discomfort between cramps",
+      "moderate": "Uncomfortable, frequent trips to the bathroom, dry lips, mild tachycardia",
+      "severe": "Ill-appearing, weak, sunken eyes, dry mucous membranes, visibly dehydrated",
+      "critical": "Lethargic or confused, cold clammy skin, minimal urine output, shock"
+    },
+    "findings": [
+      {
+        "id": "diffuse-abdominal-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate all four quadrants, starting away from the area of maximal pain",
+        "finding": "Diffuse, mild to moderate abdominal tenderness without localization",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "hyperactive-bowel-sounds",
+        "region": "abdomen",
+        "maneuver": "Auscultate the abdomen in all four quadrants",
+        "finding": "Hyperactive, high-pitched bowel sounds",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "no-guarding-rigidity",
+        "region": "abdomen",
+        "maneuver": "Palpate deeply and ask the patient to cough",
+        "finding": "No guarding, rigidity or rebound tenderness",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "essential"
+      },
+      {
+        "id": "no-localized-rlq-tenderness",
+        "region": "abdomen",
+        "maneuver": "Press at McBurney point",
+        "finding": "No point tenderness at McBurney point",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "dry-mucous-membranes",
+        "region": "heent",
+        "maneuver": "Inspect the oral mucosa and tongue",
+        "finding": "Dry, tacky mucous membranes",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "sunken-eyes",
+        "region": "heent",
+        "maneuver": "Inspect the eyes and periorbital area",
+        "finding": "Sunken eyes with reduced tear production",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "prolonged-capillary-refill",
+        "region": "extremities",
+        "maneuver": "Press the fingertip or nail bed and time the return of color",
+        "finding": "Capillary refill longer than 2 seconds",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "reduced-skin-turgor",
+        "region": "skin",
+        "maneuver": "Pinch the skin over the forearm or abdomen and release",
+        "finding": "Skin tents and returns slowly",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "no-rash",
+        "region": "skin",
+        "maneuver": "Inspect the skin over the trunk and extremities",
+        "finding": "No rash, hives or flushing",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "optional"
+      },
+      {
+        "id": "no-cva-tenderness",
+        "region": "abdomen",
+        "maneuver": "Percuss the costovertebral angles",
+        "finding": "No costovertebral angle tenderness",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-mental-status",
+        "region": "mental_status",
+        "maneuver": "Assess orientation to person, place and time",
+        "finding": "Alert and oriented, no confusion",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-focal-neuro-deficit",
+        "region": "neuro",
+        "maneuver": "Test cranial nerves, strength and sensation",
+        "finding": "No cranial nerve palsies, weakness, or sensory loss",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 98.6,
+        "max": 100.4
+      },
+      "moderate": {
+        "min": 99.5,
+        "max": 101.5
+      },
+      "severe": {
+        "min": 100.4,
+        "max": 102.5
+      },
+      "critical": {
+        "min": 97.0,
+        "max": 104.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 100
+      },
+      "moderate": {
+        "min": 90,
+        "max": 110
+      },
+      "severe": {
+        "min": 100,
+        "max": 130
+      },
+      "critical": {
+        "min": 120,
+        "max": 160
+      }
+    },
+    "rr": {
+      "moderate": {
+        "min": 16,
+        "max": 22
+      },
+      "severe": {
+        "min": 20,
+        "max": 28
+      },
+      "critical": {
+        "min": 24,
+        "max": 36
+      }
+    },
+    "sbp": {
+      "moderate": {
+        "min": 100,
+        "max": 120
+      },
+      "severe": {
+        "min": 85,
+        "max": 105
+      },
+      "critical": {
+        "min": 70,
+        "max": 90
+      }
+    },
+    "dbp": {
+      "moderate": {
+        "min": 60,
+        "max": 80
+      },
+      "severe": {
+        "min": 50,
+        "max": 70
+      },
+      "critical": {
+        "min": 40,
+        "max": 60
+      }
+    },
+    "spo2": {
+      "severe": {
+        "min": 92,
+        "max": 98
+      },
+      "critical": {
+        "min": 88,
+        "max": 95
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "mild": {
+          "min": 4.5,
+          "max": 11.0
+        },
+        "moderate": {
+          "min": 11.0,
+          "max": 15.0
+        },
+        "severe": {
+          "min": 14.0,
+          "max": 22.0
+        },
+        "critical": {
+          "min": 16.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Normal or only mildly elevated in most viral and toxin-mediated causes; marked leukocytosis or left shift suggests invasive bacterial infection."
+    },
+    {
+      "test_id": "neut_pct",
+      "ranges": {
+        "moderate": {
+          "min": 70,
+          "max": 85
+        },
+        "severe": {
+          "min": 78,
+          "max": 90
+        },
+        "critical": {
+          "min": 80,
+          "max": 92
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "bands_pct",
+      "ranges": {
+        "severe": {
+          "min": 5,
+          "max": 12
+        },
+        "critical": {
+          "min": 8,
+          "max": 20
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "moderate": {
+          "min": 18,
+          "max": 30
+        },
+        "severe": {
+          "min": 25,
+          "max": 45
+        },
+        "critical": {
+          "min": 35,
+          "max": 70
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Rises with dehydration and prerenal azotemia; a BUN/creatinine ratio above 20 supports volume depletion."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "severe": {
+          "min": 1.2,
+          "max": 2.0
+        },
+        "critical": {
+          "min": 1.8,
+          "max": 3.5
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Rises later than BUN in dehydration; a rising creatinine with oliguria marks acute kidney injury."
+    },
+    {
+      "test_id": "hco3",
+      "ranges": {
+        "moderate": {
+          "min": 18,
+          "max": 22
+        },
+        "severe": {
+          "min": 12,
+          "max": 18
+        },
+        "critical": {
+          "min": 6,
+          "max": 12
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Falls with bicarbonate loss in diarrhea; a low bicarbonate with a normal anion gap suggests a non-gap metabolic acidosis."
+    },
+    {
+      "test_id": "k",
+      "ranges": {
+        "mild": {
+          "min": 3.2,
+          "max": 3.5
+        },
+        "moderate": {
+          "min": 2.8,
+          "max": 3.4
+        },
+        "severe": {
+          "min": 2.4,
+          "max": 3.2
+        },
+        "critical": {
+          "min": 2.0,
+          "max": 3.0
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "Hypokalemia from vomiting and diarrhea; can also be high in severe dehydration or acute kidney injury."
+    },
+    {
+      "test_id": "na",
+      "ranges": {
+        "moderate": {
+          "min": 130,
+          "max": 135
+        },
+        "severe": {
+          "min": 125,
+          "max": 132
+        },
+        "critical": {
+          "min": 118,
+          "max": 128
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hyponatremia from losses replaced with free water; hypernatremia can occur with poor access to fluids."
+    },
+    {
+      "test_id": "cl",
+      "ranges": {
+        "moderate": {
+          "min": 95,
+          "max": 98
+        },
+        "severe": {
+          "min": 88,
+          "max": 96
+        },
+        "critical": {
+          "min": 80,
+          "max": 94
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "moderate": {
+          "min": 60,
+          "max": 70
+        },
+        "severe": {
+          "min": 50,
+          "max": 65
+        },
+        "critical": {
+          "min": 40,
+          "max": 60
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hypoglycemia in children, older adults and poor oral intake."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "severe": {
+          "min": 2.2,
+          "max": 4.0
+        },
+        "critical": {
+          "min": 3.0,
+          "max": 8.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevated with hypoperfusion from severe dehydration or with invasive bacterial infection; guides resuscitation."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "moderate": {
+          "min": 1.0,
+          "max": 5.0
+        },
+        "severe": {
+          "min": 4.0,
+          "max": 15.0
+        },
+        "critical": {
+          "min": 10.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "procalcitonin",
+      "ranges": {
+        "severe": {
+          "min": 0.5,
+          "max": 2.0
+        },
+        "critical": {
+          "min": 2.0,
+          "max": 10.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "A low value favors a viral or toxin-mediated cause; a high value favors invasive bacterial infection."
+    },
+    {
+      "test_id": "ua_sg",
+      "ranges": {
+        "moderate": {
+          "min": 1.025,
+          "max": 1.035
+        },
+        "severe": {
+          "min": 1.03,
+          "max": 1.04
+        },
+        "critical": {
+          "min": 1.03,
+          "max": 1.045
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "High specific gravity reflects concentrated urine from dehydration."
+    },
+    {
+      "test_id": "ua_ketones",
+      "qualitative": {
+        "moderate": "Small",
+        "severe": "Moderate",
+        "critical": "Large"
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "From poor intake and vomiting; not specific."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "sometimes",
+      "importance": "essential",
+      "caveat": "Negative. Required in anyone who could be pregnant before imaging or medication choices; rules out ectopic pregnancy and hyperemesis gravidarum."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rate",
+        "finding": "Sinus tachycardia from dehydration, fever or pain",
+        "frequency": "common",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Sinus rhythm; irregularly irregular rhythm suggests atrial fibrillation from electrolyte disturbance or sepsis",
+        "frequency": "sometimes",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "t_wave",
+        "finding": "Flattened T waves and prominent U waves from hypokalemia",
+        "frequency": "sometimes",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "st",
+        "finding": "ST depression or nonspecific ST-T changes with severe hypokalemia or hypoperfusion",
+        "frequency": "rare",
+        "min_severity": "critical"
+      },
+      {
+        "feature": "qt",
+        "finding": "Prolonged QT interval from hypokalemia, hypomagnesemia or hypocalcemia",
+        "frequency": "rare",
+        "min_severity": "severe"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Abdominal x-ray (kidneys, ureters, bladder)",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Usually normal or shows nonspecific gas and stool patterns; no free air, obstruction or localized ileus",
+          "frequency": "common"
+        },
+        {
+          "text": "Dilated loops of bowel with air-fluid levels suggesting obstruction (an alternative diagnosis)",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "CT abdomen and pelvis with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Severe or localized abdominal pain, suspected surgical abdomen, or when complications such as abscess, perforation or colitis are considered",
+      "findings": [
+        {
+          "text": "Diffuse small and large bowel wall thickening with mesenteric edema and fluid-filled loops (enterocolitis pattern)",
+          "frequency": "common"
+        },
+        {
+          "text": "No abscess, free air or vascular occlusion",
+          "frequency": "common"
+        },
+        {
+          "text": "Colonic wall thickening with pericolic fat stranding suggesting bacterial colitis",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Abscess, perforation or toxic megacolon (complicated disease)",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Right upper quadrant ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "Right upper quadrant pain, jaundice or suspected biliary disease",
+      "findings": [
+        {
+          "text": "Gallstones or gallbladder wall thickening suggesting cholecystitis (an alternative diagnosis)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Normal gallbladder and biliary tree",
+          "frequency": "common"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "bmp",
+        "why": "Assesses dehydration, electrolyte losses and acid-base status; guides fluid and electrolyte replacement"
+      },
+      {
+        "test": "cbc",
+        "why": "Looks for leukocytosis or left shift suggesting invasive bacterial infection"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy and ectopic pregnancy before imaging or medication choices",
+        "only_if": "patient is a person who could be pregnant"
+      },
+      {
+        "test": "Stool culture",
+        "why": "Identifies bacterial pathogens when antibiotics or public health reporting may be needed",
+        "only_if": "bloody diarrhea, high fever, severe or prolonged illness, immunocompromise, or outbreak setting"
+      },
+      {
+        "test": "Stool multiplex PCR panel",
+        "why": "Rapidly identifies common bacterial, viral and parasitic causes",
+        "only_if": "moderate to severe diarrhea, bloody stools, or when a specific pathogen would change management"
+      },
+      {
+        "test": "Stool ova and parasites",
+        "why": "Detects parasites after prolonged diarrhea or travel exposure",
+        "only_if": "diarrhea lasting more than 7 days, recent travel, or suspected parasitic cause"
+      },
+      {
+        "test": "Stool C. difficile toxin/PCR",
+        "why": "Detects C. difficile colitis",
+        "only_if": "recent antibiotic use, hospitalization, or healthcare exposure"
+      },
+      {
+        "test": "Abdominal x-ray (kidneys, ureters, bladder)",
+        "why": "Looks for obstruction or free air when a surgical abdomen is suspected",
+        "only_if": "severe abdominal pain, distension, or concern for obstruction or perforation"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "lactate",
+        "why": "Marks hypoperfusion or invasive infection in severe illness"
+      },
+      {
+        "test": "crp",
+        "why": "Supports an inflammatory or invasive process when the diagnosis is unclear"
+      },
+      {
+        "test": "procalcitonin",
+        "why": "Helps distinguish bacterial from viral causes when antibiotics are being considered"
+      },
+      {
+        "test": "ua",
+        "why": "Screens for urinary infection or dehydration",
+        "only_if": "dysuria, flank pain, or concern for a urinary source"
+      },
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Evaluates for complications or alternative surgical diagnoses",
+        "only_if": "severe or localized pain, peritoneal signs, or suspected abscess, perforation or colitis"
+      },
+      {
+        "test": "Right upper quadrant ultrasound",
+        "why": "Evaluates for biliary disease",
+        "only_if": "right upper quadrant pain or jaundice"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Stool culture",
+        "why": "Not routine in mild, self-limited watery diarrhea without red flags"
+      },
+      {
+        "test": "Stool ova and parasites",
+        "why": "Not routine in acute diarrhea without travel or prolonged course"
+      },
+      {
+        "test": "Stool C. difficile toxin/PCR",
+        "why": "Not routine without antibiotic or healthcare exposure"
+      },
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Not needed in uncomplicated gastroenteritis"
+      },
+      {
+        "test": "Right upper quadrant ultrasound",
+        "why": "Not needed without right upper quadrant pain or jaundice"
+      },
+      {
+        "test": "Abdominal x-ray (kidneys, ureters, bladder)",
+        "why": "Rarely changes management in uncomplicated disease"
+      },
+      {
+        "test": "lipase",
+        "why": "Not needed unless pain is epigastric or pancreatitis is suspected"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in gastroenteritis"
+      },
+      {
+        "test": "hs_tnt",
+        "why": "Not indicated unless cardiac ischemia is suspected"
+      }
+    ],
+    "decision_points": [
+      "Assess hydration and vital signs first; oral rehydration is preferred when tolerated, IV fluids for severe dehydration or shock",
+      "Stool testing is reserved for bloody diarrhea, high fever, severe or prolonged illness, immunocompromise, recent antibiotics or travel, or outbreak settings",
+      "Pregnancy test before imaging or medication choices in anyone who could be pregnant",
+      "Avoid antimotility agents when there is bloody diarrhea or high fever because of the risk of worsening invasive infection",
+      "Consider surgical consultation for peritoneal signs, toxic megacolon, obstruction or perforation"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Inflammatory bowel disease flare",
+      "slug": "inflammatory-bowel-disease",
+      "why_considered": "Diarrhea, abdominal cramps and fever can mimic an acute infectious gastroenteritis",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Weeks to months of diarrhea, not hours to days",
+          "Weight loss",
+          "Prior similar episodes",
+          "Bloody stools and tenesmus",
+          "Family history of IBD"
+        ],
+        "exam": [
+          "Weight loss, pallor, aphthous ulcers",
+          "Perianal fistulas or tags",
+          "No acute dehydration"
+        ],
+        "labs": [
+          "Anemia and elevated inflammatory markers",
+          "Negative stool culture and PCR",
+          "Fecal calprotectin elevated"
+        ],
+        "imaging": [
+          "Bowel wall thickening with skip lesions on CT or MRI enterography",
+          "Terminal ileum involvement"
+        ]
+      }
+    },
+    {
+      "name": "Clostridioides difficile colitis",
+      "slug": "clostridioides-difficile-colitis",
+      "why_considered": "Acute diarrhea with cramping and fever, often after antibiotics",
+      "must_not_miss": true,
+      "trigger": "Recent antibiotic use, hospitalization or healthcare exposure",
+      "discriminators": {
+        "history": [
+          "Antibiotics within the past 2 months",
+          "Recent hospitalization or nursing home stay",
+          "Watery diarrhea with a distinctive odor",
+          "No foodborne exposure identified"
+        ],
+        "exam": [
+          "Lower abdominal tenderness",
+          "Fever",
+          "Signs of toxic megacolon in severe cases"
+        ],
+        "labs": [
+          "Positive C. difficile toxin or PCR",
+          "Leukocytosis, sometimes marked",
+          "Elevated lactate in severe disease"
+        ],
+        "imaging": [
+          "Colonic wall thickening with thumbprinting on CT",
+          "Dilated colon in toxic megacolon"
+        ]
+      }
+    },
+    {
+      "name": "Acute appendicitis",
+      "slug": "acute-appendicitis",
+      "why_considered": "Nausea, vomiting and abdominal pain can be mistaken for gastroenteritis, especially in children",
+      "must_not_miss": true,
+      "trigger": "Pain migrating to the right lower quadrant with focal tenderness",
+      "discriminators": {
+        "history": [
+          "Periumbilical pain migrating to right lower quadrant",
+          "Pain before vomiting",
+          "Anorexia",
+          "No prominent diarrhea"
+        ],
+        "exam": [
+          "Focal right lower quadrant tenderness at McBurney point",
+          "Guarding or rebound",
+          "Positive Rovsing or psoas sign"
+        ],
+        "labs": [
+          "Leukocytosis with left shift",
+          "Normal stool studies"
+        ],
+        "imaging": [
+          "Enlarged non-compressible appendix with periappendiceal fat stranding on ultrasound or CT"
+        ]
+      }
+    },
+    {
+      "name": "Ectopic pregnancy",
+      "slug": "ectopic-pregnancy",
+      "why_considered": "Lower abdominal pain, nausea and vomiting in a person who could be pregnant",
+      "must_not_miss": true,
+      "trigger": "Any patient of reproductive age with abdominal pain",
+      "discriminators": {
+        "history": [
+          "Missed period",
+          "Vaginal bleeding or spotting",
+          "Unilateral pelvic pain",
+          "No diarrheal illness or food exposure"
+        ],
+        "exam": [
+          "Adnexal tenderness or mass",
+          "Peritoneal signs if ruptured",
+          "Cervical motion tenderness"
+        ],
+        "labs": [
+          "Positive hCG",
+          "Falling hematocrit if ruptured"
+        ],
+        "imaging": [
+          "No intrauterine pregnancy on transvaginal ultrasound",
+          "Adnexal mass or free fluid"
+        ]
+      }
+    },
+    {
+      "name": "Urinary tract infection or pyelonephritis",
+      "slug": "urinary-tract-infection",
+      "why_considered": "Abdominal pain, nausea and vomiting can accompany a urinary source",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Dysuria, urgency, frequency",
+          "Flank pain",
+          "No diarrhea or food exposure"
+        ],
+        "exam": [
+          "Costovertebral angle tenderness",
+          "Suprapubic tenderness",
+          "Fever"
+        ],
+        "labs": [
+          "Pyuria and bacteriuria on urinalysis",
+          "Positive urine culture"
+        ],
+        "imaging": [
+          "Normal bowel on CT",
+          "Perinephric stranding if pyelonephritis"
+        ]
+      }
+    },
+    {
+      "name": "Mesenteric ischemia",
+      "slug": "mesenteric-ischemia",
+      "why_considered": "Severe abdominal pain with vomiting and diarrhea, especially in older adults",
+      "must_not_miss": true,
+      "trigger": "Pain out of proportion to exam, older patient with vascular risk factors",
+      "discriminators": {
+        "history": [
+          "Sudden severe pain, often after meals",
+          "Atrial fibrillation or vascular disease",
+          "Little or no diarrhea initially"
+        ],
+        "exam": [
+          "Diffuse tenderness with a relatively benign abdomen early",
+          "Peritoneal signs late",
+          "Hypotension"
+        ],
+        "labs": [
+          "Marked leukocytosis",
+          "Elevated lactate",
+          "Metabolic acidosis"
+        ],
+        "imaging": [
+          "Vascular occlusion or bowel wall ischemia on CT angiography"
+        ]
+      }
+    },
+    {
+      "name": "Scombroid (histamine) fish poisoning",
+      "slug": "scombroid-fish-poisoning",
+      "why_considered": "Sudden GI symptoms after eating fish, can be confused with infectious foodborne illness",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Symptoms within minutes to an hour of eating fish",
+          "Flushing, headache, palpitations",
+          "Often multiple people affected at the same meal"
+        ],
+        "exam": [
+          "Flushing, urticaria, tachycardia",
+          "No fever",
+          "No significant dehydration"
+        ],
+        "labs": [
+          "No specific lab test; diagnosis is clinical"
+        ],
+        "imaging": [
+          "Not indicated"
+        ]
+      }
+    },
+    {
+      "name": "Viral gastroenteritis (norovirus, rotavirus)",
+      "slug": "viral-gastroenteritis",
+      "why_considered": "Overlapping presentation with foodborne illness; often indistinguishable without exposure history",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Sick contacts with similar illness before the patient's symptoms",
+          "No specific food exposure",
+          "Winter seasonality for norovirus"
+        ],
+        "exam": [
+          "Diffuse mild abdominal tenderness",
+          "No focal findings"
+        ],
+        "labs": [
+          "Stool PCR may identify norovirus or rotavirus",
+          "Stool culture negative"
+        ],
+        "imaging": [
+          "Not indicated"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Acute onset of nausea, vomiting or diarrhea with mild cramps, no fever or low-grade fever, able to tolerate oral fluids, no dehydration, symptoms lasting less than 48 hours",
+      "moderate": "Persistent vomiting or diarrhea with moderate cramps, low-grade fever, mild dehydration (dry mucous membranes, tachycardia), able to take some oral fluids but may need IV fluids",
+      "severe": "Profuse diarrhea or vomiting with severe cramps, high fever, marked dehydration (sunken eyes, prolonged capillary refill, reduced skin turgor), orthostatic hypotension, electrolyte abnormalities, unable to tolerate oral intake",
+      "critical": "Hypovolemic shock, severe electrolyte derangements (hypokalemia, hyponatremia, metabolic acidosis), acute kidney injury, altered mental status, or signs of invasive bacterial infection with sepsis"
+    },
+    "red_flags": [
+      {
+        "finding": "Bloody diarrhea",
+        "meaning": "Suggests invasive bacterial infection (e.g., Shigella, Salmonella, E. coli O157:H7) or inflammatory colitis; requires stool testing and possible antibiotics"
+      },
+      {
+        "finding": "High fever above 102°F",
+        "meaning": "Suggests invasive bacterial infection or systemic illness; warrants further workup"
+      },
+      {
+        "finding": "Severe dehydration (sunken eyes, prolonged capillary refill, reduced skin turgor, oliguria)",
+        "meaning": "Requires immediate IV fluid resuscitation and electrolyte assessment"
+      },
+      {
+        "finding": "Hypotension or tachycardia",
+        "meaning": "May indicate hypovolemic shock or sepsis; needs urgent resuscitation"
+      },
+      {
+        "finding": "Altered mental status or confusion",
+        "meaning": "Suggests severe dehydration, electrolyte imbalance, or sepsis; urgent evaluation"
+      },
+      {
+        "finding": "Symptoms lasting more than 7 days",
+        "meaning": "Suggests a non-infectious cause, parasitic infection, or post-infectious complication"
+      },
+      {
+        "finding": "Recent antibiotic use or hospitalization",
+        "meaning": "Raises concern for C. difficile colitis"
+      },
+      {
+        "finding": "Immunocompromised state",
+        "meaning": "Higher risk of severe, prolonged or invasive disease; lower threshold for testing and treatment"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Dehydration and hypovolemic shock",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Poor oral intake",
+          "Profuse diarrhea or vomiting",
+          "Tachycardia, hypotension, oliguria",
+          "Sunken eyes, dry mucous membranes"
+        ]
+      },
+      {
+        "name": "Electrolyte abnormalities (hypokalemia, hyponatremia, metabolic acidosis)",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Muscle weakness, cramps",
+          "Cardiac arrhythmias",
+          "Abnormal bicarbonate and potassium on BMP"
+        ]
+      },
+      {
+        "name": "Acute kidney injury",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Rising creatinine and BUN",
+          "Oliguria",
+          "Dehydration"
+        ]
+      },
+      {
+        "name": "Bacteremia and sepsis",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "High fever, hypotension, tachycardia",
+          "Positive blood cultures",
+          "Elevated lactate"
+        ]
+      },
+      {
+        "name": "Hemolytic uremic syndrome (HUS)",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Bloody diarrhea followed by anemia, thrombocytopenia, and renal failure",
+          "Most commonly after E. coli O157:H7 infection"
+        ]
+      },
+      {
+        "name": "Reactive arthritis",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Joint pain and swelling weeks after diarrheal illness",
+          "May be associated with urethritis and conjunctivitis"
+        ]
+      },
+      {
+        "name": "Guillain-Barré syndrome",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Ascending weakness and areflexia weeks after Campylobacter infection"
+        ]
+      },
+      {
+        "name": "Toxic megacolon",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Colonic dilation on imaging",
+          "Fever, tachycardia, abdominal distension",
+          "Often associated with C. difficile or inflammatory bowel disease"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Infants and young children dehydrate faster and may present with irritability, poor feeding, fewer wet diapers, and lethargy rather than clear vomiting or diarrhea. Oral rehydration is preferred; antiemetics may be used cautiously."
+      },
+      {
+        "population": "older_adults",
+        "differences": "May have milder fever and less pain but dehydrate quickly; confusion or falls can be the presenting problem. Higher risk of severe illness and complications."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Dehydration and electrolyte loss are tolerated poorly; listeriosis can cause fever, myalgias and fetal loss with few GI symptoms. Avoid certain antibiotics (e.g., fluoroquinolones, tetracyclines) and antimotility agents."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "More severe, prolonged or invasive disease; higher risk of bacteremia and need for hospitalization. Lower threshold for stool testing, blood cultures, and empiric antibiotics."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "When did the symptoms start, and how long after your last meal did they begin?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Short incubation (1–6 hours) suggests preformed toxin (Staph aureus, Bacillus cereus); 8–16 hours suggests C. perfringens; 18–72 hours suggests viral or bacterial infection"
+      },
+      {
+        "question": "What did you eat in the 1–3 days before you got sick?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Specific high-risk foods: undercooked poultry, eggs, ground beef, unpasteurized dairy, raw seafood, sprouts, leftovers left out"
+      },
+      {
+        "question": "Have you had diarrhea? Is there blood or mucus in it?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Bloody diarrhea suggests invasive bacterial infection (Shigella, Salmonella, E. coli O157:H7, Campylobacter) and changes management"
+      },
+      {
+        "question": "Have you been vomiting? How many times, and can you keep fluids down?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Profuse vomiting with inability to keep fluids down predicts dehydration and need for IV fluids"
+      },
+      {
+        "question": "How many stools have you had in the last 24 hours?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Frequency and volume help gauge severity and dehydration risk"
+      },
+      {
+        "question": "Any fever or chills?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "High fever above 102°F suggests invasive bacterial infection; low-grade or absent fever is typical of viral or toxin-mediated illness"
+      },
+      {
+        "question": "Has anyone else you ate with gotten sick?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Multiple people ill after the same meal points to a common food source or outbreak"
+      },
+      {
+        "question": "Have you recently taken antibiotics or been in the hospital?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Recent antibiotics or healthcare exposure raises concern for C. difficile colitis"
+      },
+      {
+        "question": "Have you traveled recently, or been around reptiles, amphibians, or farm animals?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Travel to areas with poor sanitation or animal contact suggests specific pathogens (Salmonella, Campylobacter, parasites)"
+      },
+      {
+        "question": "Do you have any conditions or take medicines that weaken your immune system?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Immunosuppression, diabetes, chronic kidney disease, or acid-suppressing medications increase risk of severe or invasive disease"
+      },
+      {
+        "question": "Are you pregnant, or could you be pregnant?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Pregnancy changes the differential (listeriosis) and limits medication choices; also rules out ectopic pregnancy and hyperemesis"
+      },
+      {
+        "question": "How much are you urinating, and are you able to drink fluids?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Decreased urination, dry mouth, and lightheadedness indicate dehydration"
+      },
+      {
+        "question": "Any severe or localized abdominal pain, or pain out of proportion to the exam?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Severe localized pain, peritoneal signs, or pain out of proportion suggests a surgical abdomen or mesenteric ischemia"
+      },
+      {
+        "question": "Any confusion, weakness, or fainting?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Altered mental status or syncope suggests severe dehydration, electrolyte imbalance, or sepsis"
+      }
+    ],
+    "accepted_names": [
+      "Foodborne illness",
+      "Food poisoning",
+      "Foodborne disease",
+      "Foodborne infection",
+      "Infectious gastroenteritis (foodborne)",
+      "Acute gastroenteritis (foodborne)"
+    ],
+    "reasoning_points": [
+      "Acute onset of nausea, vomiting, diarrhea, and abdominal cramps after a suspicious meal or food exposure",
+      "Incubation period helps narrow the likely organism (toxin-mediated vs. infectious)",
+      "Presence or absence of bloody diarrhea, high fever, and severe dehydration guides testing and treatment",
+      "Risk factors such as undercooked meat, unpasteurized dairy, travel, animal contact, and immunosuppression are identified",
+      "Red flags for invasive bacterial infection, C. difficile, or a surgical abdomen are specifically sought",
+      "Pregnancy is excluded before imaging or medication choices",
+      "Hydration status is assessed and oral rehydration is preferred when tolerated",
+      "Stool testing is reserved for bloody diarrhea, high fever, severe or prolonged illness, immunocompromise, recent antibiotics or travel, or outbreak settings",
+      "Antimotility agents are avoided when there is bloody diarrhea or high fever",
+      "Alternative diagnoses such as appendicitis, ectopic pregnancy, urinary tract infection, mesenteric ischemia, and IBD flare are considered and ruled out"
+    ],
+    "difficulty": {
+      "easy": [
+        "Classic story: sudden nausea, vomiting, and watery diarrhea within hours of a suspect meal",
+        "Multiple people ill after the same gathering",
+        "Mild dehydration, able to tolerate oral fluids",
+        "No blood in stool, no high fever",
+        "Clear food exposure (e.g., undercooked chicken, leftover rice)"
+      ],
+      "medium": [
+        "Bloody diarrhea with fever, requiring stool testing and consideration of antibiotics",
+        "Recent antibiotic use raising concern for C. difficile",
+        "Older adult or young child with moderate dehydration and electrolyte abnormalities",
+        "Symptoms lasting more than a week suggesting parasitic infection",
+        "Pregnant patient with fever and myalgias suggesting listeriosis"
+      ],
+      "hard": [
+        "Immunocompromised patient with severe, prolonged diarrhea and risk of bacteremia",
+        "Patient with severe abdominal pain out of proportion to exam suggesting mesenteric ischemia",
+        "Overlap with appendicitis or ectopic pregnancy in a patient of reproductive age",
+        "Scombroid fish poisoning presenting with flushing and GI symptoms after fish",
+        "Patient with no clear food exposure and a non-infectious cause such as IBD flare"
+      ]
+    }
+  }
+}

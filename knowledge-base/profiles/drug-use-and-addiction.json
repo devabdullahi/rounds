@@ -1,0 +1,2558 @@
+{
+  "schema_version": "0.2",
+  "slug": "drug-use-and-addiction",
+  "triage": {
+    "name": "Drug Use and Addiction",
+    "case_suitable": true,
+    "reason": "Substance use disorders present with recognizable history, exam findings and screening tools, and are a core psychiatry case.",
+    "kind": "disease",
+    "category": "substance use disorder",
+    "organ_systems": [
+      "behavioral"
+    ],
+    "primary_clerkship": "psychiatry",
+    "secondary_clerkships": [
+      "internalMedicine",
+      "emergency",
+      "familyMedicine"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "psychiatric",
+      "clinic",
+      "emergency",
+      "inpatient"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:17:07Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T05:07:40Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T05:07:47Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T05:08:04Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T05:08:17Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T05:08:25Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'ecg' to 'ECG'",
+        "auto-repaired: workup: renamed 'hiv' to 'HIV'",
+        "auto-repaired: ecg: dropped extra keys ['other'] (findings carry their own leads)",
+        "auto-repaired: workup: 'urine drug screen' was in ['initial', 'confirmatory'], kept ['initial']",
+        "auto-repaired: workup: 'ammonia' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'osm' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ct head without contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ct abdomen and pelvis with iv contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'echocardiogram' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ammonia' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'osm' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ct head without contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ct abdomen and pelvis with iv contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'echocardiogram' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "differential opioid-overdose: no profile yet",
+        "differential alcohol-withdrawal: no profile yet",
+        "differential benzodiazepine-withdrawal: no profile yet",
+        "differential major-depressive-disorder: no profile yet",
+        "differential generalized-anxiety-disorder: no profile yet",
+        "differential post-traumatic-stress-disorder: no profile yet",
+        "differential schizophrenia: no profile yet",
+        "differential hypoglycemia: no profile yet",
+        "differential sepsis: no profile yet",
+        "differential acute-coronary-syndrome: no profile yet",
+        "differential serotonin-syndrome: no profile yet",
+        "differential neuroleptic-malignant-syndrome: no profile yet",
+        "differential malingering: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 18,
+      "typical_max": 65,
+      "peak": "late teens to 30s",
+      "possible_min": 12,
+      "possible_max": 90
+    },
+    "sex": "either",
+    "demographics": [
+      "Men are more likely to use most illicit drugs and to have drug use disorders; women progress from first use to dependence more quickly and are more likely to present in primary care or emergency settings",
+      "Highest prevalence of illicit drug use is in adults ages 18–25",
+      "Non-Hispanic American Indian or Alaska Native and multiracial adults have the highest rates of substance use disorder; Asian adults have the lowest",
+      "Sexual and gender minority youth and adults have higher rates of substance use than the general population",
+      "Lower household income and less education are associated with higher rates of drug-related harm"
+    ],
+    "risk_factors": [
+      {
+        "text": "Family history of substance use disorder",
+        "strength": "strong"
+      },
+      {
+        "text": "Untreated mental health condition such as depression, anxiety, PTSD, or ADHD",
+        "strength": "strong"
+      },
+      {
+        "text": "Initiation of drug use in adolescence",
+        "strength": "strong"
+      },
+      {
+        "text": "Peer or social network that uses drugs",
+        "strength": "strong"
+      },
+      {
+        "text": "Adverse childhood experiences, including abuse, neglect, or household substance use",
+        "strength": "strong"
+      },
+      {
+        "text": "Easy access to prescription opioids, benzodiazepines, or stimulants, including a personal or household prescription",
+        "strength": "moderate"
+      },
+      {
+        "text": "Male sex",
+        "strength": "weak"
+      },
+      {
+        "text": "Unstable housing or incarceration",
+        "strength": "moderate"
+      },
+      {
+        "text": "Chronic pain treated with opioids",
+        "strength": "moderate"
+      }
+    ],
+    "comorbidities": [
+      "Major depressive disorder",
+      "Generalized anxiety disorder",
+      "Post-traumatic stress disorder",
+      "Attention-deficit/hyperactivity disorder",
+      "Bipolar disorder",
+      "Chronic pain",
+      "Hepatitis C",
+      "HIV",
+      "Alcohol use disorder",
+      "Tobacco use disorder",
+      "Chronic obstructive pulmonary disease"
+    ],
+    "family_history": [
+      "Substance use disorder in a parent or sibling",
+      "Alcohol use disorder",
+      "Mood or anxiety disorder"
+    ],
+    "social_history": [
+      "Lives with or spends most time with people who use drugs",
+      "Trouble at school, work, or in relationships",
+      "Loss of job, housing, or custody",
+      "Recent release from jail or prison",
+      "Sex work or exchange of sex for drugs or money",
+      "Shares injection equipment"
+    ],
+    "exposures": [
+      "Prescription opioids, benzodiazepines, or stimulants",
+      "Heroin or illicitly manufactured fentanyl",
+      "Cocaine or methamphetamine",
+      "Cannabis",
+      "Club drugs such as MDMA or GHB",
+      "Inhalants",
+      "Anabolic steroids",
+      "Over-the-counter medications used to get high, such as dextromethorphan or loperamide"
+    ],
+    "risk_medications": [
+      "oxycodone",
+      "hydrocodone",
+      "morphine",
+      "fentanyl",
+      "alprazolam",
+      "lorazepam",
+      "diazepam",
+      "clonazepam",
+      "methylphenidate",
+      "amphetamine",
+      "dextroamphetamine",
+      "zolpidem",
+      "gabapentin",
+      "pregabalin",
+      "tramadol",
+      "codeine",
+      "promethazine"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I just can't stop using, even though it's ruining my life",
+        "frequency": "common"
+      },
+      {
+        "text": "I've been feeling awful and shaky since I tried to cut back",
+        "frequency": "common"
+      },
+      {
+        "text": "My family says I have a problem and made me come in",
+        "frequency": "common"
+      },
+      {
+        "text": "I need something for my pain, my usual pills ran out early",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "I've been sleeping terribly and my mood is all over the place",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "I overdosed last week and woke up in the ER",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Usually begins in adolescence or early adulthood, often with a first exposure at a party, from a friend, or through a prescription after an injury; escalation to a problem pattern typically builds over months to years",
+      "duration": "Weeks to decades; most patients describe a pattern lasting at least a year by the time they seek care",
+      "progression": "Use becomes more frequent and in larger amounts than intended; the person spends more time obtaining, using, and recovering; tolerance develops so more is needed for the same effect; withdrawal appears when use stops; use continues despite clear harm to health, work, money, and relationships",
+      "location": "Not applicable",
+      "radiation": "Not applicable",
+      "quality": "The patient describes a loss of control over use, strong craving, and preoccupation with the drug that crowds out other interests",
+      "severity": "Varies; patients often describe it as moderate to severe and worse during withdrawal or after a recent overdose",
+      "timing": "Often daily or several times a day; some use in binges separated by days of crash and recovery",
+      "aggravating": [
+        "Stress",
+        "Being around people who use",
+        "Depression or anxiety",
+        "Physical pain",
+        "Money or relationship problems",
+        "Being in places linked to past use"
+      ],
+      "relieving": [
+        "Using the drug",
+        "Being in treatment or a structured program",
+        "Support from family or a recovery group",
+        "Stopping contact with people who use"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Craving the drug",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Needing more of the drug to get the same effect",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Withdrawal symptoms when cutting down or stopping",
+          "frequency": "common"
+        },
+        {
+          "text": "Neglecting work, school, or family duties",
+          "frequency": "common"
+        },
+        {
+          "text": "Sleep problems, either too little or too much",
+          "frequency": "common"
+        },
+        {
+          "text": "Low mood, irritability, or anxiety",
+          "frequency": "common"
+        },
+        {
+          "text": "Appetite change and weight change",
+          "frequency": "common"
+        },
+        {
+          "text": "Lying about or hiding use",
+          "frequency": "common"
+        },
+        {
+          "text": "Spending more money than planned on the drug",
+          "frequency": "common"
+        },
+        {
+          "text": "Blackouts or memory gaps",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Overdose requiring emergency care",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Injection-related skin infections or abscesses",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Seizures during withdrawal from alcohol or benzodiazepines",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Painless scrotal or testicular mass",
+        "New focal weakness or aphasia of sudden onset",
+        "Fevers with a new heart murmur",
+        "Weight loss with night sweats and enlarged lymph nodes",
+        "Bloody diarrhea with tenesmus",
+        "Polyuria and polydipsia with unintentional weight loss"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fatigue",
+            "frequency": "common"
+          },
+          {
+            "text": "Weight loss",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Night sweats",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Low-grade fevers",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "High fever with rigors",
+          "Drenching night sweats with weight loss"
+        ]
+      },
+      {
+        "system": "psychiatric",
+        "positives": [
+          {
+            "text": "Craving",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Irritability",
+            "frequency": "common"
+          },
+          {
+            "text": "Depressed mood",
+            "frequency": "common"
+          },
+          {
+            "text": "Anxiety",
+            "frequency": "common"
+          },
+          {
+            "text": "Poor concentration",
+            "frequency": "common"
+          },
+          {
+            "text": "Suicidal thoughts",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Hallucinations or paranoia during stimulant intoxication",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Persistent grandiosity lasting weeks outside of intoxication",
+          "Catatonia"
+        ],
+        "argues_against": [
+          "Psychosis that persists for weeks after the drug clears"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Tremor",
+            "frequency": "common"
+          },
+          {
+            "text": "Headache",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Dizziness",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Numbness or tingling in the hands and feet",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Memory problems",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Seizures during withdrawal",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Sudden focal weakness",
+          "New severe headache with neck stiffness"
+        ],
+        "argues_against": [
+          "Acute stroke or meningitis"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Nausea and vomiting",
+            "frequency": "common"
+          },
+          {
+            "text": "Abdominal cramping",
+            "frequency": "common"
+          },
+          {
+            "text": "Diarrhea",
+            "frequency": "common"
+          },
+          {
+            "text": "Constipation",
+            "frequency": "common"
+          },
+          {
+            "text": "Poor appetite",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Bloody stools",
+          "Jaundice"
+        ],
+        "argues_against": [
+          "Acute abdomen"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [
+          {
+            "text": "Palpitations",
+            "frequency": "common"
+          },
+          {
+            "text": "Chest tightness",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Elevated blood pressure and heart rate",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Exertional chest pain relieved by rest",
+          "Leg swelling"
+        ],
+        "argues_against": [
+          "Acute coronary syndrome",
+          "Heart failure"
+        ]
+      },
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "Shortness of breath",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Cough",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Wheezing",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Slow, shallow breathing after opioid use",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Coughing up blood",
+          "Pleuritic chest pain"
+        ],
+        "argues_against": [
+          "Pneumonia",
+          "Pulmonary embolism"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [
+          {
+            "text": "Track marks or scars at injection sites",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Skin abscesses or cellulitis",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Itching or picking at the skin during stimulant use",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Painless ulcer with a clean base",
+          "New rash covering the palms and soles"
+        ],
+        "argues_against": [
+          "Primary syphilis",
+          "Disseminated infection"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [
+          {
+            "text": "Decreased libido",
+            "frequency": "common"
+          },
+          {
+            "text": "Erectile dysfunction",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Painful urination",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Blood in urine",
+          "Flank pain with fever"
+        ],
+        "argues_against": [
+          "Pyelonephritis",
+          "Kidney stone"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Muscle aches and cramps",
+            "frequency": "common"
+          },
+          {
+            "text": "Joint pain",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Hot, swollen single joint",
+          "Proximal muscle weakness with a rash"
+        ],
+        "argues_against": [
+          "Septic arthritis",
+          "Inflammatory myopathy"
+        ]
+      },
+      {
+        "system": "endocrine",
+        "positives": [
+          {
+            "text": "Increased thirst",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Increased urination",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Unintentional weight loss with polyuria and polydipsia"
+        ],
+        "argues_against": [
+          "New-onset diabetes"
+        ]
+      },
+      {
+        "system": "hematologic",
+        "positives": [
+          {
+            "text": "Easy bruising",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Bleeding gums",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Painless swollen lymph nodes",
+          "Recurrent infections with low blood counts"
+        ],
+        "argues_against": [
+          "Lymphoma",
+          "Leukemia"
+        ]
+      },
+      {
+        "system": "allergic_immunologic",
+        "positives": [
+          {
+            "text": "Frequent infections",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Recurrent sinopulmonary infections since childhood"
+        ],
+        "argues_against": [
+          "Primary immunodeficiency"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "older_adults",
+        "how_it_differs": "Often begins with a prescribed opioid, benzodiazepine, or sedative after surgery or for chronic pain; patients may underreport use, present with falls, confusion, or worsening chronic disease rather than a request for help, and are more sensitive to sedation and withdrawal.",
+        "missing_classic_features": [
+          "Adolescent or young-adult onset",
+          "Obvious social or legal consequences",
+          "Self-identification as an addict"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Patients often hide use because of fear of child protective services; presentation may be late or no prenatal care, and withdrawal in the newborn after delivery is a common first sign. Opioid use in pregnancy is treated with methadone or buprenorphine rather than abrupt withdrawal.",
+        "missing_classic_features": [
+          "Volunteered history of use",
+          "Typical social decline story"
+        ]
+      },
+      {
+        "population": "children",
+        "how_it_differs": "Adolescents may present with declining grades, truancy, new peer group, mood swings, or an overdose; younger children present after accidental ingestion of a household medication or an adult's drug.",
+        "missing_classic_features": [
+          "Self-reported craving or loss of control",
+          "Long-standing use history"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "Injection drug use with immune suppression raises the risk of unusual infections such as invasive fungal infections and atypical pneumonia, so fever and focal findings may dominate the picture.",
+        "missing_classic_features": [
+          "Typical withdrawal-focused presentation"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Alert, well-groomed, cooperative; may appear tired or restless",
+      "moderate": "Ill-appearing, poor grooming or hygiene, restless or sedated, avoids eye contact",
+      "severe": "Markedly disheveled, malodorous, thin, agitated or drowsy, poor insight",
+      "critical": "Obtunded or unresponsive, cyanotic, shallow or agonal breathing, pinpoint or dilated pupils"
+    },
+    "findings": [
+      {
+        "id": "pupil-size",
+        "region": "heent",
+        "maneuver": "Inspect both pupils in dim light and test reactivity to light",
+        "finding": "Pinpoint pupils (opioid effect) or dilated pupils (stimulant or anticholinergic effect)",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "nasal-septum",
+        "region": "heent",
+        "maneuver": "Inspect the nasal mucosa and septum with a light",
+        "finding": "Septal perforation, crusting, or bleeding from intranasal use",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "oral-hygiene",
+        "region": "heent",
+        "maneuver": "Inspect the teeth, gums, and oral mucosa",
+        "finding": "Dental caries, missing teeth, gingivitis, or oral candidiasis",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "track-marks",
+        "region": "extremities",
+        "maneuver": "Inspect the antecubital fossae, forearms, hands, feet, and neck for puncture marks",
+        "finding": "Linear scars, hyperpigmented tracks, or fresh injection sites",
+        "frequency": "sometimes",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "skin-abscess",
+        "region": "skin",
+        "maneuver": "Palpate any red, warm, or fluctuant area near injection sites",
+        "finding": "Abscess, cellulitis, or induration",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "skin-picking",
+        "region": "skin",
+        "maneuver": "Inspect the face, arms, and legs for excoriations",
+        "finding": "Excoriations or sores from picking (stimulant use)",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "tremor",
+        "region": "neuro",
+        "maneuver": "Ask the patient to hold both arms outstretched with fingers spread",
+        "finding": "Fine tremor of the hands",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "gait",
+        "region": "neuro",
+        "maneuver": "Observe the patient walking and turning",
+        "finding": "Ataxia, unsteady gait, or wide-based gait",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "mentation",
+        "region": "mental_status",
+        "maneuver": "Assess orientation, attention, and recall during the interview",
+        "finding": "Impaired attention, disorientation, or memory gaps",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "mood-affect",
+        "region": "mental_status",
+        "maneuver": "Ask about mood, anhedonia, and anxiety over the past two weeks",
+        "finding": "Depressed or irritable mood, anxious affect",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "suicidal-ideation",
+        "region": "mental_status",
+        "maneuver": "Ask directly about thoughts of self-harm or suicide",
+        "finding": "Passive or active suicidal ideation",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "psychosis",
+        "region": "mental_status",
+        "maneuver": "Ask about hearing voices or feeling watched or persecuted",
+        "finding": "Paranoia, hallucinations, or disorganized speech during intoxication",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "conjunctival-injection",
+        "region": "heent",
+        "maneuver": "Inspect the conjunctivae and sclerae",
+        "finding": "Red, injected conjunctivae (cannabis or stimulant use)",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "cardiac-regular-rate",
+        "region": "cardiac",
+        "maneuver": "Auscultate the heart at the apex and base",
+        "finding": "Regular rate and rhythm without murmur",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "lung-clear",
+        "region": "lung",
+        "maneuver": "Auscultate all lung fields",
+        "finding": "Clear breath sounds without crackles or wheeze",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "abdomen-nontender",
+        "region": "abdomen",
+        "maneuver": "Palpate all four quadrants",
+        "finding": "Soft, non-tender abdomen without organomegaly",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "neuro-nonfocal",
+        "region": "neuro",
+        "maneuver": "Test strength, sensation, and deep tendon reflexes",
+        "finding": "No focal motor or sensory deficit",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "moderate": {
+        "min": 98.6,
+        "max": 100.4
+      },
+      "severe": {
+        "min": 99.5,
+        "max": 101.5
+      },
+      "critical": {
+        "min": 100.0,
+        "max": 103.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 100
+      },
+      "moderate": {
+        "min": 90,
+        "max": 120
+      },
+      "severe": {
+        "min": 110,
+        "max": 140
+      },
+      "critical": {
+        "min": 40,
+        "max": 150
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 12,
+        "max": 20
+      },
+      "moderate": {
+        "min": 16,
+        "max": 24
+      },
+      "severe": {
+        "min": 22,
+        "max": 30
+      },
+      "critical": {
+        "min": 6,
+        "max": 34
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 100,
+        "max": 130
+      },
+      "moderate": {
+        "min": 120,
+        "max": 150
+      },
+      "severe": {
+        "min": 140,
+        "max": 180
+      },
+      "critical": {
+        "min": 70,
+        "max": 200
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 60,
+        "max": 85
+      },
+      "moderate": {
+        "min": 75,
+        "max": 95
+      },
+      "severe": {
+        "min": 90,
+        "max": 110
+      },
+      "critical": {
+        "min": 40,
+        "max": 120
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 95,
+        "max": 100
+      },
+      "moderate": {
+        "min": 92,
+        "max": 98
+      },
+      "severe": {
+        "min": 88,
+        "max": 95
+      },
+      "critical": {
+        "min": 70,
+        "max": 92
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "hcg",
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Required in anyone who could be pregnant before imaging or starting medication; a positive result changes the entire treatment plan."
+    },
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "moderate": {
+          "min": 100,
+          "max": 180
+        },
+        "severe": {
+          "min": 180,
+          "max": 350
+        },
+        "critical": {
+          "min": 40,
+          "max": 500
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Hyperglycemia from stimulant use or stress; hypoglycemia can mimic intoxication or withdrawal."
+    },
+    {
+      "test_id": "na",
+      "ranges": {
+        "moderate": {
+          "min": 128,
+          "max": 134
+        },
+        "severe": {
+          "min": 120,
+          "max": 127
+        },
+        "critical": {
+          "min": 110,
+          "max": 119
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hyponatremia from MDMA, excessive water intake, or poor nutrition; can cause seizures."
+    },
+    {
+      "test_id": "k",
+      "ranges": {
+        "moderate": {
+          "min": 3.0,
+          "max": 3.4
+        },
+        "severe": {
+          "min": 2.5,
+          "max": 2.9
+        },
+        "critical": {
+          "min": 1.8,
+          "max": 2.4
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hypokalemia from vomiting, diarrhea, or stimulant use; check before starting some medications."
+    },
+    {
+      "test_id": "hco3",
+      "ranges": {
+        "moderate": {
+          "min": 18,
+          "max": 21
+        },
+        "severe": {
+          "min": 12,
+          "max": 17
+        },
+        "critical": {
+          "min": 6,
+          "max": 11
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Low bicarbonate suggests metabolic acidosis from starvation, alcohol, or toxin ingestion."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "moderate": {
+          "min": 21,
+          "max": 35
+        },
+        "severe": {
+          "min": 30,
+          "max": 60
+        },
+        "critical": {
+          "min": 50,
+          "max": 100
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Elevated from dehydration or poor intake; helps assess volume status."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "moderate": {
+          "min": 1.2,
+          "max": 2.0
+        },
+        "severe": {
+          "min": 1.8,
+          "max": 3.5
+        },
+        "critical": {
+          "min": 3.0,
+          "max": 8.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Rises with dehydration, rhabdomyolysis, or nephrotoxic drugs."
+    },
+    {
+      "test_id": "ast",
+      "ranges": {
+        "moderate": {
+          "min": 41,
+          "max": 120
+        },
+        "severe": {
+          "min": 100,
+          "max": 400
+        },
+        "critical": {
+          "min": 300,
+          "max": 2000
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Elevated in hepatitis, alcohol use, or muscle injury; AST>ALT suggests alcohol or muscle source."
+    },
+    {
+      "test_id": "alt",
+      "ranges": {
+        "moderate": {
+          "min": 57,
+          "max": 150
+        },
+        "severe": {
+          "min": 120,
+          "max": 500
+        },
+        "critical": {
+          "min": 400,
+          "max": 2000
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Elevated with hepatitis or drug-induced liver injury."
+    },
+    {
+      "test_id": "ggt",
+      "ranges": {
+        "moderate": {
+          "min": 49,
+          "max": 150
+        },
+        "severe": {
+          "min": 120,
+          "max": 400
+        },
+        "critical": {
+          "min": 300,
+          "max": 1000
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Supports alcohol or medication effect on the liver."
+    },
+    {
+      "test_id": "tbili",
+      "ranges": {
+        "moderate": {
+          "min": 1.3,
+          "max": 3.0
+        },
+        "severe": {
+          "min": 2.5,
+          "max": 8.0
+        },
+        "critical": {
+          "min": 6.0,
+          "max": 20.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "albumin",
+      "ranges": {
+        "moderate": {
+          "min": 2.8,
+          "max": 3.4
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 2.7
+        },
+        "critical": {
+          "min": 1.5,
+          "max": 1.9
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Low with poor nutrition or chronic liver disease."
+    },
+    {
+      "test_id": "ck",
+      "ranges": {
+        "moderate": {
+          "min": 310,
+          "max": 1000
+        },
+        "severe": {
+          "min": 800,
+          "max": 5000
+        },
+        "critical": {
+          "min": 4000,
+          "max": 50000
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Markedly elevated with rhabdomyolysis from stimulants, seizures, or prolonged immobility; risk of acute kidney injury."
+    },
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "moderate": {
+          "min": 11.1,
+          "max": 15.0
+        },
+        "severe": {
+          "min": 14.0,
+          "max": 22.0
+        },
+        "critical": {
+          "min": 20.0,
+          "max": 35.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Leukocytosis suggests infection such as cellulitis, abscess, endocarditis, or pneumonia."
+    },
+    {
+      "test_id": "hgb",
+      "ranges": {
+        "moderate": {
+          "min": 9.0,
+          "max": 11.9
+        },
+        "severe": {
+          "min": 7.0,
+          "max": 8.9
+        },
+        "critical": {
+          "min": 4.0,
+          "max": 6.9
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Anemia from poor nutrition, chronic disease, or gastrointestinal bleeding."
+    },
+    {
+      "test_id": "plt",
+      "ranges": {
+        "moderate": {
+          "min": 100,
+          "max": 149
+        },
+        "severe": {
+          "min": 50,
+          "max": 99
+        },
+        "critical": {
+          "min": 10,
+          "max": 49
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Thrombocytopenia with liver disease, sepsis, or bone marrow suppression."
+    },
+    {
+      "test_id": "tsh",
+      "ranges": {
+        "moderate": {
+          "min": 4.1,
+          "max": 10.0
+        },
+        "severe": {
+          "min": 8.0,
+          "max": 20.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Thyroid disease can mimic or worsen mood and anxiety symptoms."
+    },
+    {
+      "test_id": "a1c",
+      "ranges": {
+        "moderate": {
+          "min": 5.7,
+          "max": 6.4
+        },
+        "severe": {
+          "min": 6.5,
+          "max": 9.0
+        },
+        "critical": {
+          "min": 8.0,
+          "max": 14.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Screens for diabetes, which is more common with some antipsychotics and poor nutrition."
+    },
+    {
+      "test_id": "ua_blood",
+      "qualitative": {
+        "moderate": "1+",
+        "severe": "2+"
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Hematuria can reflect rhabdomyolysis, urinary infection, or trauma."
+    },
+    {
+      "test_id": "ua_ketones",
+      "qualitative": {
+        "moderate": "Small",
+        "severe": "Moderate"
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Ketones from poor intake or starvation."
+    },
+    {
+      "test_id": "ua_le",
+      "qualitative": {
+        "moderate": "1+",
+        "severe": "2+"
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Suggests urinary infection; common in patients with poor hygiene or catheter use."
+    },
+    {
+      "test_id": "ua_nitrite",
+      "qualitative": {
+        "moderate": "Positive"
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Supports urinary infection."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "moderate": {
+          "min": 2.1,
+          "max": 4.0
+        },
+        "severe": {
+          "min": 3.5,
+          "max": 8.0
+        },
+        "critical": {
+          "min": 6.0,
+          "max": 15.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevated with sepsis, seizures, or severe stimulant toxicity."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "moderate": {
+          "min": 1.1,
+          "max": 5.0
+        },
+        "severe": {
+          "min": 4.0,
+          "max": 15.0
+        },
+        "critical": {
+          "min": 10.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Nonspecific; supports infection or inflammation."
+    },
+    {
+      "test_id": "hs_tnt",
+      "ranges": {
+        "moderate": {
+          "min": 15,
+          "max": 50
+        },
+        "severe": {
+          "min": 40,
+          "max": 200
+        },
+        "critical": {
+          "min": 150,
+          "max": 1000
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevated with stimulant-induced myocardial injury or demand ischemia; check if chest pain or dyspnea."
+    },
+    {
+      "test_id": "pt",
+      "ranges": {
+        "moderate": {
+          "min": 13.6,
+          "max": 16.0
+        },
+        "severe": {
+          "min": 15.0,
+          "max": 20.0
+        },
+        "critical": {
+          "min": 18.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Prolonged with liver disease or malnutrition."
+    },
+    {
+      "test_id": "inr",
+      "ranges": {
+        "moderate": {
+          "min": 1.2,
+          "max": 1.5
+        },
+        "severe": {
+          "min": 1.4,
+          "max": 2.0
+        },
+        "critical": {
+          "min": 1.8,
+          "max": 4.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Elevated with liver dysfunction or vitamin K deficiency."
+    },
+    {
+      "test_id": "aptt",
+      "ranges": {
+        "moderate": {
+          "min": 36,
+          "max": 50
+        },
+        "severe": {
+          "min": 45,
+          "max": 70
+        },
+        "critical": {
+          "min": 60,
+          "max": 120
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "b12",
+      "ranges": {
+        "moderate": {
+          "min": 150,
+          "max": 199
+        },
+        "severe": {
+          "min": 100,
+          "max": 149
+        },
+        "critical": {
+          "min": 50,
+          "max": 99
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Low with poor nutrition; can cause neuropathy and anemia."
+    },
+    {
+      "test_id": "folate",
+      "ranges": {
+        "moderate": {
+          "min": 2.0,
+          "max": 2.9
+        },
+        "severe": {
+          "min": 1.0,
+          "max": 1.9
+        },
+        "critical": {
+          "min": 0.5,
+          "max": 0.9
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Low with poor diet or alcohol use."
+    },
+    {
+      "test_id": "mg",
+      "ranges": {
+        "moderate": {
+          "min": 1.4,
+          "max": 1.6
+        },
+        "severe": {
+          "min": 1.0,
+          "max": 1.3
+        },
+        "critical": {
+          "min": 0.5,
+          "max": 0.9
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Low with poor intake or alcohol use; can worsen withdrawal symptoms."
+    },
+    {
+      "test_id": "phos",
+      "ranges": {
+        "moderate": {
+          "min": 2.0,
+          "max": 2.4
+        },
+        "severe": {
+          "min": 1.0,
+          "max": 1.9
+        },
+        "critical": {
+          "min": 0.5,
+          "max": 0.9
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Low with refeeding syndrome or malnutrition."
+    },
+    {
+      "test_id": "ca",
+      "ranges": {
+        "moderate": {
+          "min": 8.0,
+          "max": 8.4
+        },
+        "severe": {
+          "min": 7.0,
+          "max": 7.9
+        },
+        "critical": {
+          "min": 6.0,
+          "max": 6.9
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Low with poor nutrition or vitamin D deficiency."
+    },
+    {
+      "test_id": "lipase",
+      "ranges": {
+        "moderate": {
+          "min": 141,
+          "max": 300
+        },
+        "severe": {
+          "min": 250,
+          "max": 600
+        },
+        "critical": {
+          "min": 500,
+          "max": 2000
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Elevated with alcohol or drug-induced pancreatitis; check if abdominal pain."
+    },
+    {
+      "test_id": "ammonia",
+      "ranges": {
+        "moderate": {
+          "min": 46,
+          "max": 80
+        },
+        "severe": {
+          "min": 70,
+          "max": 150
+        },
+        "critical": {
+          "min": 120,
+          "max": 300
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Elevated with liver failure; can cause encephalopathy."
+    },
+    {
+      "test_id": "osm",
+      "ranges": {
+        "moderate": {
+          "min": 296,
+          "max": 310
+        },
+        "severe": {
+          "min": 305,
+          "max": 330
+        },
+        "critical": {
+          "min": 320,
+          "max": 380
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevated with toxic alcohol ingestion or severe dehydration; helps calculate osmolal gap."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rhythm",
+        "finding": "Sinus tachycardia",
+        "frequency": "common",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "rate",
+        "finding": "Bradycardia",
+        "frequency": "sometimes",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "qt",
+        "finding": "Prolonged QTc",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "st",
+        "finding": "ST elevation or depression suggesting ischemia",
+        "frequency": "rare",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Atrial fibrillation or other arrhythmia",
+        "frequency": "rare",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "conduction",
+        "finding": "Prolonged QRS from sodium channel blocker toxicity",
+        "frequency": "rare",
+        "min_severity": "critical"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Chest x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Clear lungs without infiltrate",
+          "frequency": "common"
+        },
+        {
+          "text": "Pulmonary edema or aspiration pneumonitis",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Cardiomegaly or widened mediastinum",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "CT head without contrast",
+      "modality": "ct",
+      "findings": [
+        {
+          "text": "No acute intracranial abnormality",
+          "frequency": "common"
+        },
+        {
+          "text": "Intracranial hemorrhage",
+          "frequency": "rare"
+        },
+        {
+          "text": "Cerebral edema",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "CT abdomen and pelvis with IV contrast",
+      "modality": "ct",
+      "findings": [
+        {
+          "text": "No acute intra-abdominal process",
+          "frequency": "common"
+        },
+        {
+          "text": "Abscess or bowel ischemia",
+          "frequency": "rare"
+        },
+        {
+          "text": "Pancreatitis",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Ultrasound of the abdomen",
+      "modality": "ultrasound",
+      "findings": [
+        {
+          "text": "Hepatic steatosis or cirrhosis",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Gallstones",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Echocardiogram",
+      "modality": "echo",
+      "findings": [
+        {
+          "text": "Normal ejection fraction and valves",
+          "frequency": "common"
+        },
+        {
+          "text": "Infective endocarditis vegetations",
+          "frequency": "rare"
+        },
+        {
+          "text": "Reduced ejection fraction from stimulant cardiomyopathy",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Screens for anemia, infection, and thrombocytopenia"
+      },
+      {
+        "test": "bmp",
+        "why": "Assesses electrolytes, renal function, and acid-base status"
+      },
+      {
+        "test": "liver panel",
+        "why": "Looks for hepatitis or drug-induced liver injury"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before imaging or medication",
+        "only_if": "patient could be pregnant"
+      },
+      {
+        "test": "ua",
+        "why": "Screens for urinary infection or rhabdomyolysis"
+      },
+      {
+        "test": "ECG",
+        "why": "Checks for arrhythmia or ischemia",
+        "only_if": "chest pain, palpitations, syncope, or before QT-prolonging medication"
+      },
+      {
+        "test": "Chest x-ray",
+        "why": "Evaluates for pneumonia or edema",
+        "only_if": "respiratory symptoms or fever"
+      },
+      {
+        "test": "urine drug screen",
+        "why": "Confirms recent use and guides treatment",
+        "only_if": "patient consents and it will change management"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "HIV",
+        "why": "Injection drug use increases risk; opt-out testing is standard"
+      },
+      {
+        "test": "hepatitis c antibody",
+        "why": "Screens for hepatitis C, common in injection drug use"
+      },
+      {
+        "test": "hepatitis b surface antigen",
+        "why": "Screens for hepatitis B"
+      },
+      {
+        "test": "tsh",
+        "why": "Thyroid disease can mimic mood and anxiety symptoms"
+      },
+      {
+        "test": "a1c",
+        "why": "Screens for diabetes, especially before antipsychotics"
+      },
+      {
+        "test": "ck",
+        "why": "Checks for rhabdomyolysis",
+        "only_if": "severe agitation, seizure, or prolonged immobility"
+      },
+      {
+        "test": "lactate",
+        "why": "Assesses for sepsis or severe toxicity",
+        "only_if": "fever, hypotension, or altered mental status"
+      },
+      {
+        "test": "hs_tnt",
+        "why": "Evaluates for myocardial injury",
+        "only_if": "chest pain or dyspnea"
+      },
+      {
+        "test": "b12",
+        "why": "Checks for deficiency from poor nutrition"
+      },
+      {
+        "test": "folate",
+        "why": "Checks for deficiency from poor nutrition"
+      },
+      {
+        "test": "mg",
+        "why": "Low magnesium can worsen withdrawal"
+      },
+      {
+        "test": "phos",
+        "why": "Checks for refeeding syndrome",
+        "only_if": "malnutrition or planned refeeding"
+      },
+      {
+        "test": "pt",
+        "why": "Assesses coagulation in liver disease"
+      },
+      {
+        "test": "inr",
+        "why": "Assesses coagulation in liver disease"
+      },
+      {
+        "test": "aptt",
+        "why": "Assesses coagulation in liver disease"
+      },
+      {
+        "test": "ammonia",
+        "why": "Evaluates hepatic encephalopathy",
+        "only_if": "altered mental status with liver disease"
+      },
+      {
+        "test": "osm",
+        "why": "Screens for toxic alcohol ingestion",
+        "only_if": "suspected toxic ingestion or unexplained acidosis"
+      },
+      {
+        "test": "CT head without contrast",
+        "why": "Rules out hemorrhage or mass",
+        "only_if": "focal neurologic deficit or head trauma"
+      },
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Evaluates abdominal pain",
+        "only_if": "severe abdominal pain or suspected abscess"
+      },
+      {
+        "test": "Ultrasound of the abdomen",
+        "why": "Evaluates liver or gallbladder",
+        "only_if": "right upper quadrant pain or abnormal liver tests"
+      },
+      {
+        "test": "Echocardiogram",
+        "why": "Evaluates for endocarditis or cardiomyopathy",
+        "only_if": "new murmur, fever, or heart failure symptoms"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "CT head without contrast",
+        "why": "Not routine without neurologic findings"
+      },
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Not routine without abdominal findings"
+      },
+      {
+        "test": "Echocardiogram",
+        "why": "Not routine without cardiac findings"
+      },
+      {
+        "test": "d_dimer",
+        "why": "Nonspecific and not useful in this condition"
+      },
+      {
+        "test": "lipase",
+        "why": "Not routine without abdominal pain"
+      },
+      {
+        "test": "ammonia",
+        "why": "Not routine without encephalopathy"
+      },
+      {
+        "test": "osm",
+        "why": "Not routine without suspicion of toxic ingestion"
+      },
+      {
+        "test": "csf",
+        "why": "Not indicated without signs of meningitis or encephalitis"
+      }
+    ],
+    "decision_points": [
+      "Pregnancy test before imaging or starting medication in anyone who could be pregnant",
+      "Urine drug screen only with patient consent and when results will change management",
+      "ECG before starting QT-prolonging medications",
+      "Assess for withdrawal and treat to prevent seizures or delirium tremens",
+      "Screen for suicide risk and co-occurring mental health conditions"
+    ],
+    "criteria": [
+      {
+        "name": "Substance use disorder",
+        "summary": "A problematic pattern of use leading to impairment or distress, with at least two of the following in a 12-month period: taking more or for longer than intended; wanting to cut down or unsuccessful attempts; spending a lot of time obtaining, using, or recovering; craving; failure to meet obligations; continued use despite social problems; giving up activities; use in hazardous situations; continued use despite physical or psychological harm; tolerance; withdrawal. Severity is mild (2–3), moderate (4–5), or severe (6 or more)."
+      }
+    ],
+    "scores": [
+      "ciwa_ar",
+      "cows",
+      "phq_9",
+      "gad_7",
+      "audit_c"
+    ]
+  },
+  "differential": [
+    {
+      "name": "Opioid intoxication or overdose",
+      "slug": "opioid-overdose",
+      "why_considered": "Altered mental status, sedation, and respiratory depression in a patient who uses drugs",
+      "must_not_miss": true,
+      "trigger": "Pinpoint pupils with slow, shallow breathing or unresponsiveness",
+      "discriminators": {
+        "history": [
+          "Recent use of heroin, fentanyl, or prescription opioids",
+          "Found down with drug paraphernalia nearby",
+          "Known opioid use disorder"
+        ],
+        "exam": [
+          "Pinpoint pupils",
+          "Depressed respiratory rate",
+          "Response to naloxone"
+        ],
+        "labs": [
+          "Hypercapnia with respiratory acidosis on blood gas",
+          "Opioids or fentanyl on urine drug screen"
+        ],
+        "imaging": [
+          "Chest x-ray may show aspiration or pulmonary edema"
+        ]
+      }
+    },
+    {
+      "name": "Alcohol withdrawal and delirium tremens",
+      "slug": "alcohol-withdrawal",
+      "why_considered": "Tremor, agitation, autonomic hyperactivity, and seizures in a patient who uses substances",
+      "must_not_miss": true,
+      "trigger": "Tremor, sweating, and tachycardia hours to days after last drink",
+      "discriminators": {
+        "history": [
+          "Heavy daily alcohol use",
+          "Last drink 6–48 hours ago",
+          "Prior withdrawal seizures"
+        ],
+        "exam": [
+          "Coarse tremor",
+          "Diaphoresis",
+          "Disorientation and hallucinations in severe cases"
+        ],
+        "labs": [
+          "Elevated AST greater than ALT",
+          "Elevated GGT",
+          "Macrocytosis",
+          "Low magnesium and platelets"
+        ],
+        "ecg": [
+          "Sinus tachycardia"
+        ]
+      }
+    },
+    {
+      "name": "Benzodiazepine withdrawal",
+      "slug": "benzodiazepine-withdrawal",
+      "why_considered": "Anxiety, tremor, insomnia, and seizures after stopping sedatives",
+      "must_not_miss": true,
+      "trigger": "Seizure or severe anxiety after abruptly stopping a prescribed or illicit benzodiazepine",
+      "discriminators": {
+        "history": [
+          "Long-term benzodiazepine use",
+          "Abrupt dose reduction or running out of pills",
+          "Prior withdrawal seizure"
+        ],
+        "exam": [
+          "Tremor",
+          "Anxiety and agitation",
+          "Perceptual disturbances"
+        ],
+        "labs": [
+          "Benzodiazepines on urine drug screen",
+          "Normal electrolytes and glucose"
+        ]
+      }
+    },
+    {
+      "name": "Major depressive disorder",
+      "slug": "major-depressive-disorder",
+      "why_considered": "Low mood, anhedonia, sleep and appetite change, and poor function",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Depressed mood most of the day for at least two weeks",
+          "Anhedonia",
+          "Symptoms present during periods of abstinence"
+        ],
+        "exam": [
+          "Depressed mood and affect",
+          "Psychomotor retardation"
+        ],
+        "labs": [
+          "Normal toxicology",
+          "Normal thyroid studies"
+        ]
+      }
+    },
+    {
+      "name": "Generalized anxiety disorder",
+      "slug": "generalized-anxiety-disorder",
+      "why_considered": "Restlessness, irritability, poor concentration, and sleep problems",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Excessive worry most days for at least six months",
+          "Symptoms not tied to intoxication or withdrawal"
+        ],
+        "exam": [
+          "Anxious affect without intoxication signs",
+          "Normal pupils and no track marks"
+        ],
+        "labs": [
+          "Normal toxicology"
+        ]
+      }
+    },
+    {
+      "name": "Post-traumatic stress disorder",
+      "slug": "post-traumatic-stress-disorder",
+      "why_considered": "Avoidance, hyperarousal, nightmares, and substance use as self-medication",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Exposure to trauma",
+          "Intrusive memories or nightmares",
+          "Avoidance of reminders"
+        ],
+        "exam": [
+          "Hypervigilance",
+          "Startle response"
+        ],
+        "labs": [
+          "Normal toxicology"
+        ]
+      }
+    },
+    {
+      "name": "Primary psychotic disorder",
+      "slug": "schizophrenia",
+      "why_considered": "Paranoia, hallucinations, and disorganized behavior that can be mistaken for stimulant intoxication",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Psychosis persists for weeks after the drug clears",
+          "Decline in function before drug use began"
+        ],
+        "exam": [
+          "Psychosis present during prolonged abstinence",
+          "Negative symptoms such as flat affect"
+        ],
+        "labs": [
+          "Negative toxicology during active psychosis"
+        ]
+      }
+    },
+    {
+      "name": "Hypoglycemia",
+      "slug": "hypoglycemia",
+      "why_considered": "Confusion, agitation, tremor, and diaphoresis that mimic intoxication or withdrawal",
+      "must_not_miss": true,
+      "trigger": "Altered mental status with sweating and tremor; check a bedside glucose",
+      "discriminators": {
+        "history": [
+          "Diabetes with insulin or sulfonylurea use",
+          "Missed meal",
+          "Symptoms relieved by eating"
+        ],
+        "exam": [
+          "Diaphoresis",
+          "Tremor",
+          "Improves rapidly with glucose"
+        ],
+        "labs": [
+          "Low serum glucose that corrects with dextrose"
+        ]
+      }
+    },
+    {
+      "name": "Sepsis from injection-related infection",
+      "slug": "sepsis",
+      "why_considered": "Fever, tachycardia, and altered mental status in a patient who injects drugs",
+      "must_not_miss": true,
+      "trigger": "Fever with tachycardia and hypotension in a patient with injection sites",
+      "discriminators": {
+        "history": [
+          "Recent injection",
+          "Skin infection or abscess",
+          "Chills and rigors"
+        ],
+        "exam": [
+          "Fever",
+          "Cellulitis or abscess",
+          "New heart murmur"
+        ],
+        "labs": [
+          "Leukocytosis",
+          "Elevated lactate",
+          "Positive blood cultures"
+        ],
+        "imaging": [
+          "Echocardiogram may show vegetations"
+        ]
+      }
+    },
+    {
+      "name": "Acute coronary syndrome from stimulant use",
+      "slug": "acute-coronary-syndrome",
+      "why_considered": "Chest pain, palpitations, and dyspnea after cocaine or methamphetamine use",
+      "must_not_miss": true,
+      "trigger": "Chest pain with stimulant use or ST changes on ECG",
+      "discriminators": {
+        "history": [
+          "Chest pain after cocaine or methamphetamine",
+          "Pressure-like pain radiating to the arm or jaw"
+        ],
+        "exam": [
+          "Tachycardia",
+          "Diaphoresis",
+          "Hypertension"
+        ],
+        "labs": [
+          "Elevated troponin",
+          "Positive cocaine or amphetamine on toxicology"
+        ],
+        "ecg": [
+          "ST elevation or depression",
+          "Sinus tachycardia"
+        ]
+      }
+    },
+    {
+      "name": "Serotonin syndrome",
+      "slug": "serotonin-syndrome",
+      "why_considered": "Agitation, tremor, clonus, and hyperthermia in a patient taking serotonergic drugs",
+      "must_not_miss": true,
+      "trigger": "Clonus and hyperthermia after starting or combining serotonergic agents",
+      "discriminators": {
+        "history": [
+          "Recent addition or dose increase of an SSRI, SNRI, MAOI, or tramadol",
+          "Use of MDMA or other stimulants"
+        ],
+        "exam": [
+          "Clonus, especially in the lower extremities",
+          "Hyperreflexia",
+          "Dilated pupils",
+          "Hyperthermia"
+        ],
+        "labs": [
+          "Elevated CK",
+          "Leukocytosis",
+          "Normal or elevated bicarbonate"
+        ]
+      }
+    },
+    {
+      "name": "Neuroleptic malignant syndrome",
+      "slug": "neuroleptic-malignant-syndrome",
+      "why_considered": "Rigidity, fever, and altered mental status in a patient taking antipsychotics",
+      "must_not_miss": true,
+      "trigger": "Lead-pipe rigidity with high fever and autonomic instability after an antipsychotic",
+      "discriminators": {
+        "history": [
+          "Recent antipsychotic start or dose increase",
+          "Recent discontinuation of a dopaminergic drug"
+        ],
+        "exam": [
+          "Lead-pipe rigidity",
+          "High fever",
+          "Altered mental status",
+          "Autonomic instability"
+        ],
+        "labs": [
+          "Markedly elevated CK",
+          "Leukocytosis",
+          "Elevated liver enzymes"
+        ]
+      }
+    },
+    {
+      "name": "Malingering or secondary gain",
+      "slug": "malingering",
+      "why_considered": "Requests for controlled substances or exaggerated symptoms for external benefit",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Request for a specific controlled drug",
+          "Symptoms that shift with observers",
+          "Legal or financial incentive"
+        ],
+        "exam": [
+          "Findings inconsistent with reported severity",
+          "No objective signs of intoxication or withdrawal"
+        ],
+        "labs": [
+          "Toxicology negative for the drug the patient claims to use"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Two to three criteria for a substance use disorder met; use continues despite some harm but most obligations are met; no physiologic dependence or withdrawal",
+      "moderate": "Four to five criteria met; clear loss of control, craving, and role impairment; tolerance or withdrawal may be present; still able to engage in treatment",
+      "severe": "Six or more criteria met; daily or binge use, physiologic dependence with withdrawal, major health, legal, and social consequences, and repeated failed attempts to stop",
+      "critical": "Life-threatening presentation: opioid overdose with respiratory depression, severe alcohol or benzodiazepine withdrawal with seizures or delirium, stimulant-induced myocardial infarction or hyperthermia, or sepsis from injection-related infection"
+    },
+    "red_flags": [
+      {
+        "finding": "Pinpoint pupils with respiratory rate under 10 or unresponsiveness",
+        "meaning": "Opioid overdose; give naloxone and support ventilation"
+      },
+      {
+        "finding": "Seizure or confusion after stopping alcohol or benzodiazepines",
+        "meaning": "Impending or active withdrawal delirium; treat immediately"
+      },
+      {
+        "finding": "Fever with a new heart murmur in a patient who injects drugs",
+        "meaning": "Infective endocarditis; obtain blood cultures and echocardiogram"
+      },
+      {
+        "finding": "Chest pain with ST changes after stimulant use",
+        "meaning": "Stimulant-induced myocardial ischemia or infarction"
+      },
+      {
+        "finding": "Temperature above 104 °F with rigidity or clonus",
+        "meaning": "Serotonin syndrome or neuroleptic malignant syndrome; a medical emergency"
+      },
+      {
+        "finding": "Active suicidal ideation with a plan",
+        "meaning": "High risk of self-harm; requires immediate psychiatric evaluation"
+      },
+      {
+        "finding": "Hypotension with tachycardia and elevated lactate",
+        "meaning": "Sepsis; start fluids and antibiotics"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Opioid overdose with respiratory arrest",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Pinpoint pupils",
+          "Slow, shallow breathing",
+          "Unresponsiveness",
+          "Response to naloxone"
+        ]
+      },
+      {
+        "name": "Withdrawal seizures and delirium tremens",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Last drink or benzodiazepine 6–72 hours ago",
+          "Tremor and diaphoresis",
+          "Disorientation and hallucinations"
+        ]
+      },
+      {
+        "name": "Infective endocarditis",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Fever",
+          "New murmur",
+          "Positive blood cultures",
+          "Vegetations on echocardiogram"
+        ]
+      },
+      {
+        "name": "Skin and soft tissue infection or abscess",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Red, warm, tender injection site",
+          "Purulent drainage",
+          "Fever and leukocytosis"
+        ]
+      },
+      {
+        "name": "Blood-borne infections such as HIV and hepatitis C",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Shared injection equipment",
+          "Positive HIV or hepatitis C antibody",
+          "Abnormal liver enzymes"
+        ]
+      },
+      {
+        "name": "Stimulant-induced myocardial infarction or arrhythmia",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Chest pain after cocaine or methamphetamine",
+          "Elevated troponin",
+          "ST changes on ECG"
+        ]
+      },
+      {
+        "name": "Rhabdomyolysis and acute kidney injury",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Severe agitation, seizure, or prolonged immobility",
+          "Markedly elevated CK",
+          "Dark urine with positive dipstick for blood"
+        ]
+      },
+      {
+        "name": "Relapse after a period of abstinence",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Return to people or places linked to past use",
+          "Untreated craving or mood symptoms",
+          "Loss of a structured program"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "pregnancy",
+        "differences": "Opioid use disorder is treated with methadone or buprenorphine rather than abrupt withdrawal; untreated withdrawal risks fetal loss. Newborns may show withdrawal after delivery, and patients often avoid care because of fear of child protective services."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Use often starts with a prescribed opioid, benzodiazepine, or sedative after surgery or for chronic pain; patients may present with falls, confusion, or worsening chronic disease rather than a request for help and are more sensitive to sedation and withdrawal."
+      },
+      {
+        "population": "children",
+        "differences": "Adolescents may present with declining grades, truancy, a new peer group, mood swings, or an overdose; younger children present after accidental ingestion of a household medication or an adult's drug."
+      },
+      {
+        "population": "hepatic_impairment",
+        "differences": "Liver disease changes drug metabolism and raises the risk of toxicity; many medications used for addiction treatment need dose adjustment, and coagulopathy increases bleeding risk."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "Reduced clearance raises the risk of drug accumulation and toxicity; some medications used for opioid use disorder need dose adjustment, and rhabdomyolysis is more likely to cause acute kidney injury."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Injection drug use with immune suppression raises the risk of unusual infections such as invasive fungal infections and atypical pneumonia, so fever and focal findings may dominate the picture."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "Tell me about your drug use — what do you use, how much, and how often?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Specific substances, route (oral, snorting, smoking, injection), amount, and frequency; ask about each class separately"
+      },
+      {
+        "question": "When did you last use, and what happens when you stop or cut back?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Timing of last use and withdrawal symptoms; determines risk of seizures or delirium"
+      },
+      {
+        "question": "Have you ever tried to cut down or stop? What happened?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Unsuccessful attempts to quit or control use — a core feature of a substance use disorder"
+      },
+      {
+        "question": "Do you need more of the drug than you used to for the same effect?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Tolerance"
+      },
+      {
+        "question": "Do you ever use more than you planned, or for longer than you meant to?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Loss of control over amount or duration of use"
+      },
+      {
+        "question": "How much of your day goes to getting, using, or recovering from the drug?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Time spent obtaining, using, and recovering; craving and preoccupation"
+      },
+      {
+        "question": "Has your use caused problems at work, school, or home, or with people close to you?",
+        "category": "social",
+        "importance": "essential",
+        "looking_for": "Failure to meet obligations and continued use despite social or interpersonal problems"
+      },
+      {
+        "question": "Have you given up activities or hobbies you used to enjoy?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Giving up important social, occupational, or recreational activities"
+      },
+      {
+        "question": "Have you used in situations where it was physically dangerous, like driving or operating machinery?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Use in hazardous situations"
+      },
+      {
+        "question": "Have you kept using even though you knew it was hurting your health or your mind?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Continued use despite physical or psychological harm"
+      },
+      {
+        "question": "Have you ever overdosed or woken up in an emergency room after using?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Prior overdose — a strong marker of severe disorder and high risk of another"
+      },
+      {
+        "question": "Do you inject? Do you ever share needles, syringes, or other equipment?",
+        "category": "social",
+        "importance": "essential",
+        "looking_for": "Injection use and sharing — drives risk of HIV, hepatitis B and C, and endocarditis"
+      },
+      {
+        "question": "How do you get the drug, and how do you pay for it?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Prescription sources, illicit supply, sex work or selling drugs, financial strain"
+      },
+      {
+        "question": "Does anyone in your family have a problem with drugs or alcohol?",
+        "category": "family",
+        "importance": "important",
+        "looking_for": "Family history of substance use disorder — a strong risk factor"
+      },
+      {
+        "question": "Have you been feeling depressed, anxious, or unable to sleep? Any thoughts of hurting yourself?",
+        "category": "ros",
+        "importance": "essential",
+        "looking_for": "Co-occurring depression, anxiety, PTSD, or ADHD and any suicidal ideation"
+      },
+      {
+        "question": "Have you ever heard voices or felt paranoid or watched when you were using or coming down?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Stimulant-induced paranoia or hallucinations; whether psychosis clears with abstinence"
+      },
+      {
+        "question": "Are you taking any prescribed medicines, especially opioids, benzodiazepines, or stimulants?",
+        "category": "medications",
+        "importance": "essential",
+        "looking_for": "Prescribed controlled substances, who prescribes them, and whether they are taken as directed"
+      },
+      {
+        "question": "Could you be pregnant? When was your last period?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Pregnancy changes treatment entirely; opioid use disorder in pregnancy is treated with methadone or buprenorphine, not withdrawal"
+      },
+      {
+        "question": "Where are you living now, and who do you spend most of your time with?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Unstable housing, incarceration, or a social network that uses drugs"
+      },
+      {
+        "question": "Any fevers, chills, or sores where you inject?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Skin infection, abscess, or systemic infection such as endocarditis"
+      }
+    ],
+    "accepted_names": [
+      "Drug use and addiction",
+      "Substance use disorder",
+      "Drug use disorder",
+      "Drug addiction",
+      "Substance abuse",
+      "Drug abuse",
+      "Opioid use disorder",
+      "Stimulant use disorder",
+      "Cannabis use disorder",
+      "Sedative use disorder",
+      "Addiction"
+    ],
+    "reasoning_points": [
+      "A problematic pattern of use causing impairment or distress, with at least two features in a 12-month period",
+      "Features include using more or longer than intended, unsuccessful attempts to cut down, craving, and time spent obtaining or recovering",
+      "Continued use despite physical, psychological, or social harm, and giving up important activities",
+      "Tolerance and withdrawal indicate physiologic dependence and raise severity",
+      "Severity is graded by the number of features: mild (2–3), moderate (4–5), severe (6 or more)",
+      "Route of use matters: injection raises risk of HIV, hepatitis B and C, skin infection, and endocarditis",
+      "Screen for co-occurring depression, anxiety, PTSD, ADHD, and suicide risk",
+      "Assess for withdrawal risk, especially alcohol and benzodiazepines, which can cause seizures or delirium",
+      "Pregnancy must be checked because it changes the entire treatment plan"
+    ],
+    "difficulty": {
+      "easy": [
+        "Young adult with a clear story of escalating use, craving, and loss of control",
+        "Obvious consequences such as job loss, arrest, or relationship breakdown",
+        "Physical signs such as track marks or pinpoint pupils",
+        "Patient openly reports the drug and pattern of use"
+      ],
+      "medium": [
+        "Patient minimizes use or presents with a physical complaint such as an abscess or chest pain",
+        "Co-occurring depression or anxiety that masks the substance problem",
+        "Prescription opioid use that started legitimately after surgery or injury",
+        "Withdrawal symptoms that bring the patient in without a stated drug history"
+      ],
+      "hard": [
+        "Older adult started on a prescribed opioid or benzodiazepine who presents with falls or confusion",
+        "Pregnant patient who hides use for fear of child protective services",
+        "Adolescent with declining grades and mood swings but no self-reported use",
+        "Stimulant-induced psychosis that must be distinguished from a primary psychotic disorder",
+        "Patient with a normal exam and normal labs who is seeking controlled substances"
+      ]
+    }
+  }
+}

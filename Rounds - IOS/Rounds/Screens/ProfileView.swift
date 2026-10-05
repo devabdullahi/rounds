@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct ProfileView: View {
+    @AppStorage(StudyFocus.storageKey) private var focusStored = ""
     @Environment(AppState.self) private var app
 
     private let weakSpots: [(String, Double, Bool)] = [
@@ -88,10 +89,13 @@ struct ProfileView: View {
     private var identityCard: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 14) {
-                Avatar(initials: "AK", size: 60, fg: Theme.accentInk, bg: Theme.accent)
+                // MOCK (disabled): sample identity until real accounts exist.
+                // Avatar(initials: "AK", size: 60, fg: Theme.accentInk, bg: Theme.accent)
+                // Text(SampleUser.name) / Text(SampleUser.training)
+                Avatar(initials: "G", size: 60, fg: Theme.accentInk, bg: Theme.accent)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(SampleUser.name).font(.system(size: 20, weight: .bold))
-                    Text(SampleUser.training).font(.system(size: 15)).foregroundStyle(Theme.muted).lineLimit(2)
+                    Text("Guest").font(.system(size: 20, weight: .bold))
+                    Text("Practice account on this device").font(.system(size: 15)).foregroundStyle(Theme.muted).lineLimit(2)
                 }
                 Spacer()
                 VStack(alignment: .trailing, spacing: 0) {
@@ -140,7 +144,10 @@ struct ProfileView: View {
                     }
                 }
             }
-            Button("Practice 5 social history cases") { app.startCase() }
+            Button(app.isAdmitting ? "Preparing patient…" : "Practice a new patient") {
+                Task { await app.admit(focus: FocusSelection(stored: focusStored)) }
+            }
+            .disabled(app.isAdmitting)
                 .buttonStyle(SoftButtonStyle(height: 44, fontSize: 16))
         }
         .card()

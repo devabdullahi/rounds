@@ -1,0 +1,1555 @@
+{
+  "schema_version": "0.2",
+  "slug": "carotid-artery-disease",
+  "triage": {
+    "name": "Carotid Artery Disease",
+    "case_suitable": true,
+    "reason": "Often asymptomatic but can present with TIA or amaurosis fugax; history, exam, and vascular imaging make a solid stroke-prevention case.",
+    "kind": "disease",
+    "category": "cerebrovascular atherosclerosis",
+    "organ_systems": [
+      "cardiovascular",
+      "nervous"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "neurology",
+      "surgery",
+      "familyMedicine"
+    ],
+    "commonness": "common",
+    "settings": [
+      "clinic",
+      "inpatient"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:16:21Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:36:21Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:36:28Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:36:43Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:36:56Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:37:03Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'ecg' to 'ECG'",
+        "auto-repaired: workup: 'carotid duplex ultrasound' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'ct angiography of the head and neck with contrast' was in ['confirmatory', 'not_indicated'], kept ['not_indicated', 'confirmatory']",
+        "auto-repaired: workup: 'carotid duplex ultrasound' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'ct angiography of the head and neck with contrast' was in ['confirmatory', 'not_indicated'], kept ['not_indicated', 'confirmatory']",
+        "differential lacunar-stroke: no profile yet",
+        "differential giant-cell-arteritis: no profile yet",
+        "differential carotid-artery-dissection: no profile yet",
+        "differential vertebrobasilar-insufficiency: no profile yet",
+        "differential vasovagal-syncope: no profile yet",
+        "differential hypoglycemia: no profile yet",
+        "differential seizure: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 55,
+      "typical_max": 85,
+      "peak": "60–80",
+      "possible_min": 30,
+      "possible_max": 100
+    },
+    "sex": "male_predominant",
+    "demographics": [
+      "More common with increasing age; prevalence rises steeply after age 65",
+      "Men are affected somewhat more often than women, though the gap narrows with age",
+      "More common in Black and Hispanic populations, largely reflecting higher rates of hypertension and diabetes"
+    ],
+    "risk_factors": [
+      {
+        "text": "Hypertension",
+        "strength": "strong"
+      },
+      {
+        "text": "Cigarette smoking or history of smoking",
+        "strength": "strong"
+      },
+      {
+        "text": "Hyperlipidemia / elevated LDL cholesterol",
+        "strength": "strong"
+      },
+      {
+        "text": "Diabetes mellitus",
+        "strength": "strong"
+      },
+      {
+        "text": "Age over 65",
+        "strength": "strong"
+      },
+      {
+        "text": "Male sex",
+        "strength": "moderate"
+      },
+      {
+        "text": "Established atherosclerotic disease elsewhere (coronary, peripheral, aortic)",
+        "strength": "moderate"
+      },
+      {
+        "text": "Family history of premature cardiovascular disease",
+        "strength": "moderate"
+      },
+      {
+        "text": "Obesity and physical inactivity",
+        "strength": "moderate"
+      },
+      {
+        "text": "Chronic kidney disease",
+        "strength": "weak"
+      },
+      {
+        "text": "Elevated homocysteine or other thrombophilic states",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Coronary artery disease",
+      "Peripheral arterial disease",
+      "Hypertension",
+      "Type 2 diabetes mellitus",
+      "Chronic kidney disease",
+      "Atrial fibrillation"
+    ],
+    "family_history": [
+      "Premature coronary or carotid artery disease in a first-degree relative",
+      "Stroke in a parent or sibling"
+    ],
+    "social_history": [
+      "Current or former tobacco use",
+      "Sedentary lifestyle",
+      "High-saturated-fat diet",
+      "Heavy alcohol use"
+    ],
+    "exposures": [
+      "Secondhand tobacco smoke",
+      "Neck radiation therapy (for head and neck cancer)"
+    ],
+    "risk_medications": [
+      "Combined oral contraceptives (in smokers over 35)",
+      "Long-term corticosteroid use"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My doctor heard a whooshing sound in my neck",
+        "frequency": "common"
+      },
+      {
+        "text": "I suddenly couldn't see out of one eye for a few minutes",
+        "frequency": "common"
+      },
+      {
+        "text": "My right arm and leg went weak and numb for a little while",
+        "frequency": "common"
+      },
+      {
+        "text": "I couldn't get my words out properly for a few minutes",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "The side of my face drooped for a short time",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Often no symptoms at all; when symptoms occur they come on suddenly, out of the blue, and are maximal within seconds to a minute",
+      "duration": "Episodes typically last a few minutes and resolve within an hour; a completed stroke leaves deficits that persist beyond 24 hours",
+      "progression": "Asymptomatic narrowing may be found incidentally and progress silently over years; symptomatic episodes may be single or recurrent, and a TIA can be followed days to weeks later by a stroke",
+      "location": "Symptoms reflect the opposite side of the body from the affected artery; the eye on the same side as the narrowed artery is typically involved",
+      "radiation": "Not applicable",
+      "quality": "Sudden loss of vision in one eye described as a shade coming down, or sudden weakness, numbness, or clumsiness of one arm, leg, or side of the face",
+      "severity": "Highly variable; TIA symptoms are frightening but fully resolve, while a stroke leaves fixed deficits",
+      "timing": "Abrupt onset, no warning, often at rest or on waking; episodes are brief and self-limited",
+      "aggravating": [],
+      "relieving": [],
+      "associated_symptoms": [
+        {
+          "text": "Sudden weakness or clumsiness of one arm or leg",
+          "frequency": "common"
+        },
+        {
+          "text": "Sudden numbness or tingling of the face, arm, or leg on one side",
+          "frequency": "common"
+        },
+        {
+          "text": "Sudden loss of vision or a dark curtain over one eye (amaurosis fugax)",
+          "frequency": "common"
+        },
+        {
+          "text": "Slurred speech or trouble finding words",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Drooping of one side of the face",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Sudden dizziness, unsteadiness, or trouble walking",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Confusion or trouble understanding speech",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Severe headache at the onset of a stroke",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Gradual, stepwise, or fluctuating weakness over hours to days",
+        "Symptoms in both arms and legs simultaneously",
+        "Fever, neck stiffness, or rash",
+        "Recent head or neck trauma",
+        "Palpitations or known irregular heartbeat",
+        "Thunderclap headache",
+        "Seizure at onset",
+        "Isolated vertigo without other brainstem symptoms",
+        "Symptoms that worsen with neck movement or position"
+      ]
+    },
+    "ros": [
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Transient weakness or numbness of one side of the body",
+            "frequency": "common"
+          },
+          {
+            "text": "Trouble speaking or understanding speech",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Facial droop",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Dizziness or unsteadiness",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Headache",
+          "Seizures",
+          "Confusion that persists between episodes",
+          "Memory loss",
+          "Tremor",
+          "Bowel or bladder incontinence"
+        ],
+        "argues_against": [
+          "Gradual progressive deficits over days",
+          "Symptoms in multiple vascular territories at once"
+        ]
+      },
+      {
+        "system": "eyes",
+        "positives": [
+          {
+            "text": "Sudden painless loss of vision in one eye lasting minutes",
+            "frequency": "common"
+          },
+          {
+            "text": "Blurred or dim vision in one eye",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Eye pain or redness",
+          "Double vision",
+          "Floaters or flashes",
+          "Gradual vision loss over months"
+        ],
+        "argues_against": [
+          "Painful red eye",
+          "Bilateral visual loss"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [
+          {
+            "text": "Whooshing sound heard by the doctor in the neck",
+            "frequency": "common"
+          },
+          {
+            "text": "Chest pain or pressure on exertion",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Leg pain with walking",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Palpitations",
+          "Irregular heartbeat",
+          "Swelling of the legs",
+          "Chest pain at rest"
+        ],
+        "argues_against": [
+          "Known atrial fibrillation with irregular pulse",
+          "Signs of heart failure"
+        ]
+      },
+      {
+        "system": "constitutional",
+        "positives": [],
+        "negatives": [
+          "Fever",
+          "Weight loss",
+          "Night sweats",
+          "Fatigue"
+        ],
+        "argues_against": [
+          "Fever with neck stiffness",
+          "Weight loss with night sweats"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "older_adults",
+        "how_it_differs": "Symptoms may be attributed to aging or arthritis; a TIA can present as confusion, unsteadiness, or a fall rather than clear weakness or vision loss.",
+        "missing_classic_features": [
+          "Clear description of one-sided weakness",
+          "Amaurosis fugax"
+        ]
+      },
+      {
+        "population": "diabetes",
+        "how_it_differs": "Neuropathy and prior small-vessel disease can mask or mimic symptoms, and episodes may be dismissed as low blood sugar.",
+        "missing_classic_features": [
+          "Sudden focal deficit clearly distinct from baseline"
+        ]
+      },
+      {
+        "population": "children",
+        "how_it_differs": "Carotid disease in children is rare and usually related to trauma, dissection, radiation, or a hypercoagulable state rather than atherosclerosis; presentation is stroke or TIA without vascular risk factors.",
+        "missing_classic_features": [
+          "Atherosclerotic risk factors",
+          "Carotid bruit"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Well-appearing, no distress; often completely asymptomatic",
+      "moderate": "Comfortable at rest; may have residual mild focal deficit from a prior TIA or stroke",
+      "severe": "May appear anxious or have a visible focal neurologic deficit (facial droop, arm drift, gait instability)",
+      "critical": "Acutely ill, may be confused, aphasic, or have dense hemiparesis; requires urgent stroke evaluation"
+    },
+    "findings": [
+      {
+        "id": "carotid-bruit",
+        "region": "neck",
+        "maneuver": "Auscultate over the common, internal, and external carotid arteries bilaterally with the bell of the stethoscope while the patient holds their breath",
+        "finding": "A focal, high-pitched systolic bruit over the mid-to-upper neck (over the carotid bifurcation), which may radiate to the jaw or mastoid",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "absent-bruit-severe-stenosis",
+        "region": "neck",
+        "maneuver": "Auscultate the neck when a bruit is expected but not heard",
+        "finding": "Absence of a bruit despite known or suspected disease; a very tight stenosis or near-occlusion may be silent",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "diminished-carotid-pulse",
+        "region": "neck",
+        "maneuver": "Palpate the common carotid artery medial to the sternocleidomastoid at the level of the thyroid cartilage, one side at a time",
+        "finding": "Diminished or asymmetric carotid pulse on the affected side",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "facial-droop",
+        "region": "neuro",
+        "maneuver": "Ask the patient to smile and show their teeth",
+        "finding": "Unilateral lower facial weakness (nasolabial fold flattening, asymmetric smile)",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "arm-drift",
+        "region": "neuro",
+        "maneuver": "Have the patient hold both arms out with eyes closed for 10 seconds",
+        "finding": "Pronator drift or downward drift of one arm",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "unilateral-weakness",
+        "region": "neuro",
+        "maneuver": "Test strength in all four extremities (grip, wrist extension, hip flexion, dorsiflexion) and compare sides",
+        "finding": "Unilateral weakness or clumsiness of the arm, leg, or face",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "sensory-deficit",
+        "region": "neuro",
+        "maneuver": "Test light touch, pinprick, and proprioception in all extremities",
+        "finding": "Unilateral sensory loss or extinction on double simultaneous stimulation",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "dysarthria-aphasia",
+        "region": "neuro",
+        "maneuver": "Ask the patient to repeat a phrase, name objects, and follow a simple command",
+        "finding": "Slurred speech (dysarthria) or difficulty with word finding, comprehension, or repetition (aphasia)",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "visual-field-deficit",
+        "region": "neuro",
+        "maneuver": "Confrontational visual field testing in all four quadrants",
+        "finding": "Homonymous visual field cut or unilateral visual loss consistent with retinal ischemia",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "fundoscopic-cholesterol-emboli",
+        "region": "heent",
+        "maneuver": "Perform a dilated fundoscopic exam of both eyes",
+        "finding": "Hollenhorst plaques (bright, refractile cholesterol emboli at retinal arteriolar bifurcations) or retinal pallor",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-neck-no-bruit",
+        "region": "neck",
+        "maneuver": "Auscultate the neck in a patient with non-vascular causes of dizziness or syncope",
+        "finding": "No carotid bruit; symmetric carotid pulses",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-cardiac-rhythm",
+        "region": "cardiac",
+        "maneuver": "Auscultate the heart and palpate the radial pulse for rate and regularity",
+        "finding": "Regular rate and rhythm without murmur, rub, or gallop; no evidence of atrial fibrillation or valvular source of emboli",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-neuro-exam",
+        "region": "neuro",
+        "maneuver": "Complete a focused neurologic exam including cranial nerves, motor, sensory, coordination, and gait",
+        "finding": "No focal neurologic deficit; normal speech, visual fields, and strength",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "no-cva-tenderness",
+        "region": "neck",
+        "maneuver": "Palpate the posterior neck and percuss the spinous processes",
+        "finding": "No neck tenderness, stiffness, or meningismus",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "sbp": {
+      "mild": {
+        "min": 120,
+        "max": 139
+      },
+      "moderate": {
+        "min": 140,
+        "max": 159
+      },
+      "severe": {
+        "min": 160,
+        "max": 179
+      },
+      "critical": {
+        "min": 180,
+        "max": 220
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 70,
+        "max": 89
+      },
+      "moderate": {
+        "min": 90,
+        "max": 99
+      },
+      "severe": {
+        "min": 100,
+        "max": 109
+      },
+      "critical": {
+        "min": 110,
+        "max": 130
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "chol",
+      "ranges": {
+        "mild": {
+          "min": 200,
+          "max": 239
+        },
+        "moderate": {
+          "min": 240,
+          "max": 279
+        },
+        "severe": {
+          "min": 280,
+          "max": 350
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Fasting lipid panel; hypercholesterolemia is a modifiable risk factor and guides statin therapy."
+    },
+    {
+      "test_id": "ldl",
+      "ranges": {
+        "mild": {
+          "min": 100,
+          "max": 129
+        },
+        "moderate": {
+          "min": 130,
+          "max": 159
+        },
+        "severe": {
+          "min": 160,
+          "max": 250
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "Primary target for lipid-lowering therapy; very high values suggest familial hypercholesterolemia."
+    },
+    {
+      "test_id": "hdl",
+      "ranges": {
+        "mild": {
+          "min": 35,
+          "max": 39
+        },
+        "moderate": {
+          "min": 30,
+          "max": 34
+        },
+        "severe": {
+          "min": 20,
+          "max": 29
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Low HDL is an independent cardiovascular risk factor."
+    },
+    {
+      "test_id": "tg",
+      "ranges": {
+        "mild": {
+          "min": 150,
+          "max": 199
+        },
+        "moderate": {
+          "min": 200,
+          "max": 499
+        },
+        "severe": {
+          "min": 500,
+          "max": 1000
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "a1c",
+      "ranges": {
+        "mild": {
+          "min": 5.7,
+          "max": 6.4
+        },
+        "moderate": {
+          "min": 6.5,
+          "max": 8.0
+        },
+        "severe": {
+          "min": 8.1,
+          "max": 12.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Screens for prediabetes and diabetes, both strong risk factors for carotid atherosclerosis."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "mild": {
+          "min": 1.2,
+          "max": 1.5
+        },
+        "moderate": {
+          "min": 1.6,
+          "max": 2.0
+        },
+        "severe": {
+          "min": 2.1,
+          "max": 4.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Baseline renal function before contrast-enhanced imaging or revascularization; chronic kidney disease is a risk factor."
+    },
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "mild": {
+          "min": 100,
+          "max": 125
+        },
+        "moderate": {
+          "min": 126,
+          "max": 200
+        },
+        "severe": {
+          "min": 201,
+          "max": 350
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "hgb",
+      "ranges": {
+        "mild": {
+          "min": 11.0,
+          "max": 11.9
+        },
+        "moderate": {
+          "min": 9.0,
+          "max": 10.9
+        },
+        "severe": {
+          "min": 7.0,
+          "max": 8.9
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Anemia is not caused by carotid disease but may worsen cerebral ischemia and is checked before surgery."
+    },
+    {
+      "test_id": "plt",
+      "ranges": {
+        "mild": {
+          "min": 100,
+          "max": 149
+        },
+        "moderate": {
+          "min": 50,
+          "max": 99
+        },
+        "severe": {
+          "min": 20,
+          "max": 49
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Relevant before carotid endarterectomy and when antiplatelet therapy is planned."
+    },
+    {
+      "test_id": "inr",
+      "ranges": {
+        "mild": {
+          "min": 1.2,
+          "max": 1.5
+        },
+        "moderate": {
+          "min": 1.6,
+          "max": 2.5
+        },
+        "severe": {
+          "min": 2.6,
+          "max": 5.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Checked before surgery; a prolonged INR raises bleeding risk with endarterectomy."
+    },
+    {
+      "test_id": "tsh",
+      "ranges": {
+        "mild": {
+          "min": 4.1,
+          "max": 6.0
+        },
+        "moderate": {
+          "min": 6.1,
+          "max": 10.0
+        },
+        "severe": {
+          "min": 10.1,
+          "max": 30.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Thyroid disease can cause atrial fibrillation, an alternative embolic source for stroke."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rhythm",
+        "finding": "Sinus rhythm",
+        "frequency": "common"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Atrial fibrillation with irregularly irregular ventricular response",
+        "frequency": "sometimes"
+      },
+      {
+        "feature": "st",
+        "finding": "ST depression or T-wave inversion in a coronary distribution suggesting concomitant coronary artery disease",
+        "frequency": "sometimes"
+      },
+      {
+        "feature": "qrs",
+        "finding": "Pathologic Q waves from a prior myocardial infarction",
+        "frequency": "sometimes"
+      },
+      {
+        "feature": "conduction",
+        "finding": "Left ventricular hypertrophy by voltage criteria from chronic hypertension",
+        "frequency": "sometimes"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Carotid duplex ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "First-line screening and diagnostic test; no radiation or contrast",
+      "findings": [
+        {
+          "text": "Focal plaque at the carotid bifurcation with increased peak systolic velocity in the internal carotid artery",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Elevated internal carotid to common carotid peak systolic velocity ratio consistent with stenosis",
+          "frequency": "common"
+        },
+        {
+          "text": "Plaque described as heterogeneous or echolucent, suggesting a lipid-rich unstable plaque",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Near-occlusion or complete occlusion with absent or reversed flow",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Turbulent flow and spectral broadening at the stenosis",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "CT angiography of the head and neck with contrast",
+      "modality": "ct",
+      "preferred_when": "When duplex is equivocal or discordant with symptoms, or when planning revascularization",
+      "findings": [
+        {
+          "text": "Focal luminal narrowing at the carotid bifurcation with calcified and noncalcified plaque",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Percent stenosis measured by NASCET-style criteria",
+          "frequency": "common"
+        },
+        {
+          "text": "Ulcerated plaque surface",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Tandem intracranial atherosclerotic disease",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Carotid dissection with a mural hematoma or intimal flap",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Magnetic resonance angiography of the neck",
+      "modality": "mri",
+      "preferred_when": "Patients who cannot receive iodinated contrast or when plaque composition is of interest",
+      "findings": [
+        {
+          "text": "Flow-related signal loss at the site of stenosis",
+          "frequency": "common"
+        },
+        {
+          "text": "Plaque with a thin or ruptured fibrous cap on high-resolution sequences",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Intraplaque hemorrhage",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Digital subtraction angiography",
+      "modality": "other",
+      "preferred_when": "Rarely needed; reserved for discordant noninvasive studies or as part of an endovascular procedure",
+      "findings": [
+        {
+          "text": "Direct measurement of the residual lumen at the carotid bifurcation",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Ulcerated or irregular plaque contour",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "MRI of the brain without contrast",
+      "modality": "mri",
+      "preferred_when": "When a TIA or stroke is suspected, to define the infarct and exclude mimics",
+      "findings": [
+        {
+          "text": "Diffusion restriction in a cortical or deep border-zone territory consistent with acute infarction",
+          "frequency": "common"
+        },
+        {
+          "text": "No acute infarct in a pure TIA",
+          "frequency": "common"
+        },
+        {
+          "text": "Old lacunar or cortical infarcts from prior events",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "White matter chronic microvascular changes",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "CT of the head without contrast",
+      "modality": "ct",
+      "preferred_when": "Initial emergency evaluation of a suspected acute stroke to exclude hemorrhage",
+      "findings": [
+        {
+          "text": "No acute hemorrhage",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Hypodensity in a vascular territory if infarction is established",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Old infarct or chronic white matter hypodensity",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "Transthoracic echocardiogram",
+      "modality": "echo",
+      "preferred_when": "When a cardioembolic source is suspected in a patient with TIA or stroke",
+      "findings": [
+        {
+          "text": "Normal study with no intracardiac thrombus or valve vegetation",
+          "frequency": "common"
+        },
+        {
+          "text": "Left atrial enlargement or spontaneous echo contrast suggesting atrial fibrillation",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Left ventricular thrombus or reduced ejection fraction",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Aortic or mitral valve calcification or vegetation",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "Carotid duplex ultrasound",
+        "why": "First-line test to detect and grade carotid stenosis in a patient with a bruit, TIA, or amaurosis fugax",
+        "only_if": "First-line test to detect and grade carotid stenosis in a patient with a bruit, TIA, or amaurosis fugax"
+      },
+      {
+        "test": "lipids",
+        "why": "Identifies hyperlipidemia and guides statin therapy"
+      },
+      {
+        "test": "a1c",
+        "why": "Screens for diabetes, a major modifiable risk factor"
+      },
+      {
+        "test": "bmp",
+        "why": "Baseline renal function and electrolytes before contrast imaging or surgery"
+      },
+      {
+        "test": "cbc",
+        "why": "Baseline blood counts before antiplatelet therapy or endarterectomy"
+      },
+      {
+        "test": "coag",
+        "why": "Baseline coagulation studies before any planned revascularization"
+      },
+      {
+        "test": "ECG",
+        "why": "Looks for atrial fibrillation or coronary disease as an alternative or coexisting cause of stroke"
+      },
+      {
+        "test": "CT of the head without contrast",
+        "why": "Excludes hemorrhage in a patient with acute focal neurologic symptoms",
+        "only_if": "acute stroke or TIA symptoms are present"
+      },
+      {
+        "test": "MRI of the brain without contrast",
+        "why": "Defines the infarct and distinguishes TIA from stroke",
+        "only_if": "TIA or stroke is suspected and the patient is stable"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "CT angiography of the head and neck with contrast",
+        "why": "Confirms and quantifies stenosis when duplex is equivocal or when revascularization is being planned",
+        "only_if": "Confirms and quantifies stenosis when duplex is equivocal or when revascularization is being planned"
+      },
+      {
+        "test": "Magnetic resonance angiography of the neck",
+        "why": "Alternative confirmatory study when iodinated contrast is contraindicated",
+        "only_if": "contrast allergy or severe renal impairment"
+      },
+      {
+        "test": "Digital subtraction angiography",
+        "why": "Gold standard for stenosis measurement when noninvasive studies are discordant",
+        "only_if": "noninvasive studies disagree or endovascular treatment is planned"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "Transthoracic echocardiogram",
+        "why": "Screens for a cardioembolic source such as atrial fibrillation, thrombus, or valve disease",
+        "only_if": "TIA or stroke has occurred and no clear carotid source is found"
+      },
+      {
+        "test": "tsh",
+        "why": "Thyroid dysfunction can cause atrial fibrillation and embolic stroke",
+        "only_if": "atrial fibrillation or unexplained stroke"
+      },
+      {
+        "test": "esr",
+        "why": "Very high values raise concern for giant cell arteritis or another inflammatory vasculopathy",
+        "only_if": "headache, jaw claudication, or systemic symptoms are present"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "d_dimer",
+        "why": "Not useful for diagnosing carotid atherosclerosis"
+      },
+      {
+        "test": "bnp",
+        "why": "Does not help identify or grade carotid stenosis"
+      },
+      {
+        "test": "lactate",
+        "why": "No role in the evaluation of carotid disease"
+      },
+      {
+        "test": "lipase",
+        "why": "Not relevant to neck or neurologic symptoms"
+      },
+      {
+        "test": "ua",
+        "why": "Does not contribute to the diagnosis of carotid artery disease"
+      },
+      {
+        "test": "csf",
+        "why": "Not indicated unless infection or subarachnoid hemorrhage is suspected"
+      },
+      {
+        "test": "Carotid duplex ultrasound",
+        "why": "Screening asymptomatic average-risk adults is not recommended; reserve for symptomatic patients or those with a bruit",
+        "only_if": "asymptomatic screening in a patient without a bruit or vascular risk factors"
+      },
+      {
+        "test": "CT angiography of the head and neck with contrast",
+        "why": "Not a first-line test; exposes the patient to contrast and radiation without adding to a clear duplex result",
+        "only_if": "duplex is equivocal or revascularization is planned"
+      }
+    ],
+    "decision_points": [
+      "Distinguish TIA from stroke by duration of symptoms and imaging findings; both require urgent evaluation",
+      "Confirm and quantify stenosis with a second study before recommending revascularization",
+      "Assess renal function before contrast-enhanced CT angiography",
+      "Consider atrial fibrillation and other cardioembolic sources when carotid disease does not explain the symptoms",
+      "Symptomatic high-grade stenosis is a vascular emergency; involve vascular surgery early"
+    ],
+    "criteria": [
+      {
+        "name": "Symptomatic carotid stenosis",
+        "summary": "Focal neurologic symptoms (TIA, amaurosis fugax, or stroke) in the territory of the affected carotid artery within the preceding six months, with imaging confirming stenosis.",
+        "items": [
+          "Ipsilateral focal neurologic deficit or transient monocular visual loss",
+          "Symptoms attributable to the carotid territory",
+          "Stenosis confirmed on duplex ultrasound or angiography"
+        ]
+      },
+      {
+        "name": "Asymptomatic carotid stenosis",
+        "summary": "Carotid bruit or incidental imaging finding of stenosis in a patient with no recent ipsilateral neurologic symptoms.",
+        "items": [
+          "No TIA, amaurosis fugax, or stroke in the preceding six months",
+          "Stenosis detected on duplex ultrasound or other vascular imaging"
+        ]
+      }
+    ],
+    "scores": [
+      "abcd2"
+    ]
+  },
+  "differential": [
+    {
+      "name": "Cardioembolic stroke from atrial fibrillation",
+      "slug": "atrial-fibrillation",
+      "why_considered": "Sudden focal neurologic deficit or transient monocular visual loss in an older adult with vascular risk factors; embolic strokes can mimic carotid territory ischemia.",
+      "must_not_miss": true,
+      "trigger": "Irregularly irregular pulse or known atrial fibrillation in a patient with a sudden focal deficit",
+      "discriminators": {
+        "history": [
+          "Palpitations or known atrial fibrillation",
+          "Symptoms may occur in multiple vascular territories or at different times",
+          "No preceding neck bruit or amaurosis fugax"
+        ],
+        "exam": [
+          "Irregularly irregular pulse",
+          "No carotid bruit",
+          "Focal deficit may be cortical (aphasia, neglect) rather than purely motor"
+        ],
+        "labs": [
+          "Normal lipid panel does not exclude cardioembolic source",
+          "Thyroid function may be abnormal"
+        ],
+        "imaging": [
+          "Carotid duplex shows no significant stenosis",
+          "Brain MRI shows infarcts in multiple territories or a cortical wedge",
+          "Echocardiogram may show left atrial enlargement, spontaneous echo contrast, or thrombus"
+        ],
+        "ecg": [
+          "Atrial fibrillation with irregularly irregular ventricular response",
+          "Left atrial enlargement"
+        ]
+      }
+    },
+    {
+      "name": "Lacunar stroke from small vessel disease",
+      "slug": "lacunar-stroke",
+      "why_considered": "Sudden focal weakness or sensory loss in a patient with hypertension or diabetes; small vessel disease is a common cause of stroke and can resemble carotid territory ischemia.",
+      "must_not_miss": true,
+      "trigger": "Pure motor or pure sensory deficit without cortical signs in a patient with long-standing hypertension",
+      "discriminators": {
+        "history": [
+          "Long-standing hypertension or diabetes",
+          "No amaurosis fugax or neck bruit",
+          "Deficit may be purely motor or purely sensory"
+        ],
+        "exam": [
+          "No carotid bruit",
+          "No aphasia, neglect, or visual field cut",
+          "Normal fundoscopic exam without Hollenhorst plaques"
+        ],
+        "labs": [
+          "HbA1c often elevated",
+          "Renal function may show chronic kidney disease"
+        ],
+        "imaging": [
+          "Carotid duplex shows no significant stenosis",
+          "Brain MRI shows a small deep infarct in the basal ganglia, thalamus, pons, or internal capsule",
+          "Chronic microvascular white matter changes"
+        ]
+      }
+    },
+    {
+      "name": "Giant cell arteritis",
+      "slug": "giant-cell-arteritis",
+      "why_considered": "Older adult with sudden visual loss or transient visual symptoms; cranial arteritis can cause amaurosis fugax or stroke and is a treatable emergency.",
+      "must_not_miss": true,
+      "trigger": "New headache, jaw claudication, scalp tenderness, or elevated inflammatory markers in an older adult with visual symptoms",
+      "discriminators": {
+        "history": [
+          "New-onset headache, often temporal",
+          "Jaw claudication or scalp tenderness",
+          "Polymyalgia rheumatica symptoms (shoulder or hip girdle pain, morning stiffness)",
+          "Visual loss may be permanent rather than transient"
+        ],
+        "exam": [
+          "Tender, nodular, or pulseless temporal artery",
+          "No carotid bruit",
+          "Fundoscopic exam may show pale, swollen optic disc"
+        ],
+        "labs": [
+          "Markedly elevated ESR and CRP",
+          "Anemia and thrombocytosis may be present"
+        ],
+        "imaging": [
+          "Temporal artery biopsy shows granulomatous inflammation with giant cells",
+          "Carotid duplex may show halo sign in temporal arteries but no bifurcation plaque"
+        ]
+      }
+    },
+    {
+      "name": "Carotid artery dissection",
+      "slug": "carotid-artery-dissection",
+      "why_considered": "Younger patient with sudden neck pain, headache, and focal neurologic symptoms; dissection is a non-atherosclerotic cause of carotid territory ischemia.",
+      "must_not_miss": true,
+      "trigger": "Neck pain or headache with Horner syndrome or focal deficit after neck trauma or manipulation",
+      "discriminators": {
+        "history": [
+          "Recent neck trauma, chiropractic manipulation, or strenuous activity",
+          "Ipsilateral neck pain, headache, or facial pain",
+          "Younger age without traditional atherosclerotic risk factors"
+        ],
+        "exam": [
+          "Partial Horner syndrome (ptosis and miosis without anhidrosis)",
+          "Cranial nerve palsy (especially lower cranial nerves)",
+          "Carotid bruit may be absent"
+        ],
+        "labs": [
+          "Inflammatory markers normal",
+          "Coagulation studies may show hypercoagulable state"
+        ],
+        "imaging": [
+          "CT or MR angiography shows a tapered flame-like occlusion, intimal flap, or mural hematoma",
+          "Carotid duplex may show abnormal flow but is less sensitive for dissection"
+        ]
+      }
+    },
+    {
+      "name": "Vertebrobasilar insufficiency",
+      "slug": "vertebrobasilar-insufficiency",
+      "why_considered": "Dizziness, unsteadiness, or visual symptoms in an older adult with vascular risk factors; posterior circulation ischemia can be mistaken for carotid disease.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Vertigo, diplopia, dysarthria, dysphagia, or ataxia",
+          "Symptoms often bilateral or crossing sides",
+          "No amaurosis fugax"
+        ],
+        "exam": [
+          "Nystagmus, gait ataxia, or cranial nerve findings",
+          "No carotid bruit",
+          "Visual field deficits may be homonymous hemianopsia"
+        ],
+        "imaging": [
+          "Carotid duplex normal",
+          "CT or MR angiography shows stenosis or occlusion in vertebral or basilar arteries",
+          "Brain MRI shows infarct in posterior circulation territory"
+        ]
+      }
+    },
+    {
+      "name": "Vasovagal syncope",
+      "slug": "vasovagal-syncope",
+      "why_considered": "Transient loss of consciousness or near-syncope can be confused with TIA, especially in older adults.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Prodrome of warmth, nausea, diaphoresis, or tunnel vision",
+          "Triggered by prolonged standing, pain, or emotional stress",
+          "No focal neurologic deficit after recovery"
+        ],
+        "exam": [
+          "Normal neurologic exam",
+          "No carotid bruit",
+          "May have orthostatic hypotension"
+        ],
+        "labs": [
+          "Normal glucose and electrolytes",
+          "No anemia"
+        ],
+        "imaging": [
+          "Carotid duplex normal",
+          "Brain MRI normal"
+        ],
+        "ecg": [
+          "Normal sinus rhythm",
+          "No arrhythmia"
+        ]
+      }
+    },
+    {
+      "name": "Hypoglycemia",
+      "slug": "hypoglycemia",
+      "why_considered": "Sudden confusion, weakness, or visual disturbance in a patient with diabetes; hypoglycemia can mimic TIA.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Diabetes treated with insulin or sulfonylurea",
+          "Missed meal or excessive medication",
+          "Symptoms improve with glucose intake"
+        ],
+        "exam": [
+          "Diaphoresis, tremor, tachycardia",
+          "No focal deficit",
+          "No carotid bruit"
+        ],
+        "labs": [
+          "Low blood glucose",
+          "Resolution of symptoms with glucose correction"
+        ]
+      }
+    },
+    {
+      "name": "Seizure with postictal Todd paralysis",
+      "slug": "seizure",
+      "why_considered": "Transient focal weakness after a seizure can be mistaken for TIA or stroke.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Witnessed convulsion or loss of consciousness",
+          "Tongue biting, incontinence, or confusion after event",
+          "No amaurosis fugax"
+        ],
+        "exam": [
+          "Postictal confusion or drowsiness",
+          "Focal weakness that resolves over hours",
+          "No carotid bruit"
+        ],
+        "labs": [
+          "Elevated prolactin may support seizure",
+          "Normal lipids and glucose"
+        ],
+        "imaging": [
+          "Brain MRI may show structural lesion or normal",
+          "Carotid duplex normal"
+        ],
+        "ecg": [
+          "Normal sinus rhythm"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Asymptomatic carotid bruit or incidental finding of less than 50% stenosis; no recent TIA or stroke; well-controlled risk factors",
+      "moderate": "Asymptomatic stenosis of 50–69% or symptomatic stenosis of less than 50%; may have remote history of TIA; risk factors partially controlled",
+      "severe": "Symptomatic high-grade stenosis (70–99%) or asymptomatic stenosis of 70% or greater; recent TIA, amaurosis fugax, or minor stroke; requires urgent vascular evaluation",
+      "critical": "Acute ischemic stroke with fluctuating or progressive neurologic deficit, near-occlusion, or stroke in evolution; requires emergent stroke team evaluation and consideration of revascularization"
+    },
+    "red_flags": [
+      {
+        "finding": "Sudden focal neurologic deficit (face, arm, leg weakness or numbness)",
+        "meaning": "Acute stroke or TIA; activate stroke pathway immediately"
+      },
+      {
+        "finding": "Sudden monocular vision loss (amaurosis fugax)",
+        "meaning": "Retinal ischemia from carotid embolus; high risk of subsequent stroke"
+      },
+      {
+        "finding": "New carotid bruit with recent TIA symptoms",
+        "meaning": "Symptomatic carotid stenosis; urgent vascular imaging and surgical consultation"
+      },
+      {
+        "finding": "Crescendo TIAs (increasing frequency or severity)",
+        "meaning": "Impending stroke; requires emergent evaluation and possible revascularization"
+      },
+      {
+        "finding": "Altered level of consciousness or dense hemiparesis",
+        "meaning": "Large territory stroke; risk of herniation and life-threatening edema"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Transient ischemic attack",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Sudden focal deficit lasting minutes to less than 24 hours",
+          "Complete resolution",
+          "Often precedes a stroke"
+        ]
+      },
+      {
+        "name": "Ischemic stroke",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "common",
+        "clues": [
+          "Persistent focal deficit beyond 24 hours",
+          "Diffusion restriction on brain MRI",
+          "May occur days to weeks after a TIA"
+        ]
+      },
+      {
+        "name": "Amaurosis fugax",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Sudden painless monocular vision loss",
+          "Described as a shade coming down",
+          "Resolves within minutes"
+        ]
+      },
+      {
+        "name": "Carotid occlusion",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Progression of stenosis to complete blockage",
+          "May be asymptomatic or cause large stroke",
+          "Absent flow on duplex ultrasound"
+        ]
+      },
+      {
+        "name": "Plaque rupture with embolization",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Sudden onset of symptoms",
+          "Ulcerated or echolucent plaque on imaging",
+          "Hollenhorst plaques on fundoscopy"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "older_adults",
+        "differences": "Symptoms may be attributed to aging or arthritis; TIA can present as confusion, unsteadiness, or a fall rather than clear weakness or vision loss. Higher prevalence of asymptomatic stenosis and greater surgical risk."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Neuropathy and prior small-vessel disease can mask or mimic symptoms; episodes may be dismissed as hypoglycemia. Higher risk of restenosis after revascularization."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Carotid disease is rare in pregnancy; when it occurs, consider dissection, hypercoagulable states, or preeclampsia. Management must balance fetal safety with maternal stroke prevention."
+      },
+      {
+        "population": "children",
+        "differences": "Carotid disease in children is rare and usually related to trauma, dissection, radiation, or a hypercoagulable state rather than atherosclerosis; presentation is stroke or TIA without vascular risk factors."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "Have you had any sudden weakness, numbness, or clumsiness on one side of your body, even if it went away?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Transient or persistent focal neurologic deficit in a carotid territory; establishes whether the stenosis is symptomatic"
+      },
+      {
+        "question": "Have you had any sudden loss of vision in one eye, like a shade coming down, that then cleared?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Amaurosis fugax, a classic embolic symptom of ipsilateral carotid disease"
+      },
+      {
+        "question": "How long did those symptoms last, and are they completely gone now?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Under an hour with full resolution suggests TIA; persistent deficit beyond 24 hours suggests stroke"
+      },
+      {
+        "question": "Did the symptoms affect one side of your body or one eye only?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Unilateral, lateralizing symptoms consistent with a single carotid territory rather than diffuse or bilateral causes"
+      },
+      {
+        "question": "Have these episodes happened more than once, or are they getting more frequent or severe?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Crescendo TIAs, which signal impending stroke and the need for urgent evaluation"
+      },
+      {
+        "question": "Did you have any trouble speaking, finding words, or understanding what others said?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Aphasia or dysarthria, supporting a left carotid territory event"
+      },
+      {
+        "question": "Has anyone ever told you they heard a whooshing sound or murmur in your neck?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "A known carotid bruit, which may be the only clue in asymptomatic disease"
+      },
+      {
+        "question": "Do you have high blood pressure, high cholesterol, or diabetes, and are they treated?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Major modifiable atherosclerotic risk factors and how well they are controlled"
+      },
+      {
+        "question": "Have you ever had a heart attack, leg artery disease, or a stroke before?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Established atherosclerotic disease elsewhere, which raises the likelihood of carotid involvement"
+      },
+      {
+        "question": "Do you smoke or have you smoked in the past? How much and for how long?",
+        "category": "social",
+        "importance": "essential",
+        "looking_for": "Current or former tobacco use, one of the strongest risk factors for carotid atherosclerosis"
+      },
+      {
+        "question": "Do you have any palpitations or a known irregular heartbeat?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Atrial fibrillation, an alternative embolic source that can mimic carotid disease"
+      },
+      {
+        "question": "Has anyone in your family had a stroke, heart attack, or artery disease at a young age?",
+        "category": "family",
+        "importance": "optional",
+        "looking_for": "Premature cardiovascular disease in a first-degree relative, supporting a genetic predisposition"
+      },
+      {
+        "question": "Have you ever had radiation treatment to your neck or head?",
+        "category": "pmh",
+        "importance": "optional",
+        "looking_for": "Prior neck radiation, which accelerates carotid atherosclerosis"
+      },
+      {
+        "question": "Are you having any weakness, numbness, or vision loss right now?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "An acute ongoing stroke, which requires immediate activation of the stroke pathway"
+      }
+    ],
+    "accepted_names": [
+      "Carotid artery disease",
+      "Carotid artery stenosis",
+      "Carotid stenosis",
+      "Carotid atherosclerotic disease",
+      "Extracranial carotid occlusive disease",
+      "Carotid occlusive disease"
+    ],
+    "reasoning_points": [
+      "Sudden, focal, unilateral neurologic symptoms or transient monocular visual loss in a patient with vascular risk factors",
+      "Symptoms lasting minutes to under an hour with full resolution suggest TIA; persistent deficits suggest stroke",
+      "Carotid bruit on auscultation over the bifurcation supports the diagnosis but its absence does not exclude severe stenosis",
+      "Atherosclerotic risk factors such as hypertension, smoking, hyperlipidemia, diabetes, and older age",
+      "Carotid duplex ultrasound showing focal plaque and elevated peak systolic velocity at the bifurcation",
+      "Confirmation and quantification of stenosis with CT or MR angiography when duplex is equivocal or revascularization is planned",
+      "Exclusion of alternative embolic sources such as atrial fibrillation, and of mimics such as lacunar stroke, dissection, or giant cell arteritis",
+      "Distinction between symptomatic and asymptomatic stenosis, because it drives the urgency and choice of revascularization"
+    ],
+    "difficulty": {
+      "easy": [
+        "Older adult with hypertension and smoking history",
+        "Classic amaurosis fugax described as a shade coming down over one eye",
+        "Focal carotid bruit on auscultation",
+        "Carotid duplex shows high-grade stenosis at the bifurcation"
+      ],
+      "medium": [
+        "Asymptomatic patient with an incidental carotid bruit found on routine exam",
+        "Transient arm and face weakness that resolved before arrival, with a normal neurologic exam",
+        "Patient with both carotid disease and atrial fibrillation, requiring determination of the true embolic source",
+        "Very tight stenosis with no audible bruit"
+      ],
+      "hard": [
+        "Older adult whose TIA presented as confusion, unsteadiness, or a fall rather than clear weakness",
+        "Patient with diabetes whose symptoms were dismissed as hypoglycemia",
+        "Younger patient with neck pain and focal deficit due to carotid dissection rather than atherosclerosis",
+        "Patient with a pure motor lacunar syndrome and no cortical signs, mimicking carotid territory ischemia",
+        "Older adult with visual loss and headache due to giant cell arteritis rather than carotid emboli"
+      ]
+    }
+  }
+}

@@ -1,0 +1,1545 @@
+{
+  "schema_version": "0.2",
+  "slug": "asthma",
+  "triage": {
+    "name": "Asthma",
+    "case_suitable": true,
+    "reason": "Recurrent wheeze, cough and dyspnea with identifiable triggers; history, exam and spirometry lead to the diagnosis and it is a core ambulatory case.",
+    "kind": "disease",
+    "category": "obstructive airway disease",
+    "organ_systems": [
+      "respiratory"
+    ],
+    "primary_clerkship": "familyMedicine",
+    "secondary_clerkships": [
+      "pediatrics",
+      "internalMedicine",
+      "emergency"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "clinic",
+      "emergency",
+      "pediatric_clinic"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:15:42Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:28:02Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:28:08Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:28:29Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:28:44Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:28:51Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: labs: dropped 'ige_total' (not in the reference table)",
+        "auto-repaired: labs: dropped 'cbc' (not in the reference table)",
+        "auto-repaired: labs: dropped 'bmp' (not in the reference table)",
+        "auto-repaired: workup: 'spirometry with bronchodilator response' was in ['initial', 'confirmatory'], kept ['initial']",
+        "differential vocal-cord-dysfunction: no profile yet",
+        "differential foreign-body-aspiration: no profile yet",
+        "differential bronchiolitis: no profile yet",
+        "differential gastroesophageal-reflux-disease: no profile yet",
+        "differential heart-failure: no profile yet",
+        "differential chronic-obstructive-pulmonary-disease: no profile yet",
+        "differential pneumonia: no profile yet",
+        "differential pulmonary-embolism: no profile yet",
+        "differential anaphylaxis: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 5,
+      "typical_max": 45,
+      "peak": "childhood onset, with a second peak in middle-aged women",
+      "possible_min": 1,
+      "possible_max": 90
+    },
+    "sex": "either",
+    "demographics": [
+      "More common in boys during childhood; more common in women in adolescence and adulthood",
+      "Higher prevalence among Black and Puerto Rican patients in the US"
+    ],
+    "risk_factors": [
+      {
+        "text": "Personal or family history of atopy (allergic rhinitis, eczema, food allergy)",
+        "strength": "strong"
+      },
+      {
+        "text": "Parent with asthma, especially the mother",
+        "strength": "strong"
+      },
+      {
+        "text": "Exposure to secondhand smoke in utero or early childhood",
+        "strength": "moderate"
+      },
+      {
+        "text": "Obesity",
+        "strength": "moderate"
+      },
+      {
+        "text": "Frequent viral respiratory infections in early childhood",
+        "strength": "moderate"
+      },
+      {
+        "text": "Occupational exposure to chemical irritants or industrial dusts",
+        "strength": "moderate"
+      },
+      {
+        "text": "Male sex in childhood",
+        "strength": "weak"
+      },
+      {
+        "text": "Female sex in adolescence and adulthood",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Allergic rhinitis",
+      "Atopic dermatitis",
+      "Obesity",
+      "Gastroesophageal reflux disease",
+      "Obstructive sleep apnea",
+      "Anxiety or depression"
+    ],
+    "family_history": [
+      "Asthma in a parent or sibling",
+      "Allergic rhinitis or eczema in the family"
+    ],
+    "social_history": [
+      "Tobacco smoke exposure at home",
+      "Pets in the home",
+      "Cockroach or mouse infestation",
+      "Damp housing or visible mold",
+      "Work with dusts, fumes or chemicals"
+    ],
+    "exposures": [
+      "Dust mites",
+      "Mold",
+      "Pet dander",
+      "Pollen from grass, trees and weeds",
+      "Cockroach or mouse allergen",
+      "Cold air",
+      "Outdoor air pollution",
+      "Tobacco smoke",
+      "Viral upper respiratory infections",
+      "Exercise, especially in dry cold air",
+      "Strong odors, cleaning sprays or perfumes"
+    ],
+    "risk_medications": [
+      "aspirin",
+      "ibuprofen",
+      "naproxen",
+      "propranolol",
+      "metoprolol",
+      "atenolol"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I keep wheezing and I can't catch my breath",
+        "frequency": "common"
+      },
+      {
+        "text": "I've been coughing at night for weeks",
+        "frequency": "common"
+      },
+      {
+        "text": "My chest feels tight",
+        "frequency": "common"
+      },
+      {
+        "text": "I get winded when I run or climb stairs",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Episodic symptoms that come and go over months to years; a single flare can build over hours to days",
+      "duration": "Symptoms are recurrent; each episode lasts hours to days and often resolves with treatment",
+      "progression": "Symptoms wax and wane with triggers; between episodes the patient may feel completely normal",
+      "location": "Chest, felt as tightness or a band around the chest",
+      "radiation": "None",
+      "quality": "Whistling or wheezing breath, chest tightness, and a dry hacking cough",
+      "severity": "Mild to severe; during a flare the patient may only speak in short phrases and feel air-hungry",
+      "timing": "Often worse at night and in the early morning; worse with exercise, cold air or allergen exposure",
+      "aggravating": [
+        "Exercise, especially in cold dry air",
+        "Cold air",
+        "Dust, pollen, mold or pet dander",
+        "Tobacco smoke or strong odors",
+        "Viral colds",
+        "Lying down at night",
+        "Aspirin or NSAIDs in a sensitive patient"
+      ],
+      "relieving": [
+        "Sitting upright and leaning forward",
+        "Resting and avoiding the trigger",
+        "Inhaled albuterol or another rescue inhaler",
+        "Inhaled or oral corticosteroids during a flare"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Wheezing",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Shortness of breath",
+          "frequency": "common"
+        },
+        {
+          "text": "Chest tightness",
+          "frequency": "common"
+        },
+        {
+          "text": "Dry cough, worse at night",
+          "frequency": "common"
+        },
+        {
+          "text": "Itchy watery eyes and sneezing with allergen exposure",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Waking at night from cough or wheeze",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Difficulty completing sentences or feeding during a severe flare",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Fever with chills and productive purulent sputum",
+        "Pleuritic chest pain that worsens with deep breaths",
+        "Hemoptysis",
+        "Unilateral leg swelling or calf pain",
+        "Weight loss or night sweats",
+        "Symptoms that started after starting a new medication such as an ACE inhibitor",
+        "Choking episode before symptom onset",
+        "Occupational exposure with symptoms only at work and improvement on weekends"
+      ]
+    },
+    "ros": [
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "Wheezing",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Shortness of breath",
+            "frequency": "common"
+          },
+          {
+            "text": "Cough, often dry and nocturnal",
+            "frequency": "common"
+          },
+          {
+            "text": "Chest tightness",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Hemoptysis",
+          "Purulent sputum",
+          "Pleuritic chest pain"
+        ],
+        "argues_against": [
+          "Pneumonia",
+          "Pulmonary embolism",
+          "Pneumothorax"
+        ]
+      },
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Feeling tired during flares",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Fever",
+          "Weight loss",
+          "Night sweats"
+        ],
+        "argues_against": [
+          "Chronic infection",
+          "Malignancy"
+        ]
+      },
+      {
+        "system": "ent",
+        "positives": [
+          {
+            "text": "Nasal congestion and sneezing",
+            "frequency": "common"
+          },
+          {
+            "text": "Itchy watery eyes",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Unilateral facial pain with purulent discharge",
+          "Epistaxis"
+        ],
+        "argues_against": [
+          "Acute bacterial sinusitis"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [],
+        "negatives": [
+          "Chest pain with exertion that resolves with rest",
+          "Orthopnea",
+          "Paroxysmal nocturnal dyspnea",
+          "Leg swelling"
+        ],
+        "argues_against": [
+          "Heart failure",
+          "Angina"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [
+          {
+            "text": "Eczema or dry itchy patches",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Urticaria with swelling of lips or tongue"
+        ],
+        "argues_against": [
+          "Anaphylaxis"
+        ]
+      },
+      {
+        "system": "allergic_immunologic",
+        "positives": [
+          {
+            "text": "Known allergies to dust, pollen, pets or mold",
+            "frequency": "common"
+          },
+          {
+            "text": "Seasonal worsening in spring or fall",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Recurrent fevers or infections"
+        ],
+        "argues_against": [
+          "Immunodeficiency"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Young children may not wheeze audibly; they present with recurrent cough, night waking, poor feeding, or exercise limitation. Parents may describe noisy breathing or a chronic 'chesty' cough.",
+        "missing_classic_features": [
+          "Audible wheeze",
+          "Clear trigger history"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "Symptoms may be attributed to aging or COPD; cough and dyspnea on exertion predominate and wheezing may be absent. Spirometry is needed to separate asthma from COPD and heart failure.",
+        "missing_classic_features": [
+          "Prominent wheeze",
+          "Childhood onset"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Symptoms can improve, worsen, or stay the same; dyspnea of pregnancy and reflux cough can mimic asthma, and objective testing is needed before changing therapy.",
+        "missing_classic_features": [
+          "Predictable trigger pattern"
+        ]
+      },
+      {
+        "population": "obesity",
+        "how_it_differs": "Dyspnea and exercise limitation are common from deconditioning and weight, so symptoms may be blamed on weight rather than asthma; spirometry is essential.",
+        "missing_classic_features": [
+          "Clear episodic pattern",
+          "Nocturnal predominance"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Comfortable, speaking in full sentences, no distress",
+      "moderate": "Mildly distressed, speaking in full sentences but pausing, prefers sitting upright",
+      "severe": "Distressed, speaking in short phrases, sitting upright and leaning forward, using accessory muscles",
+      "critical": "Exhausted or drowsy, speaking in single words or unable to speak, tripod position, may be diaphoretic"
+    },
+    "findings": [
+      {
+        "id": "diffuse-wheeze",
+        "region": "lung",
+        "maneuver": "Auscultate all lung fields during quiet breathing, then ask the patient to breathe deeply",
+        "finding": "Diffuse expiratory wheezing, often polyphonic and louder on expiration",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "prolonged-expiratory-phase",
+        "region": "lung",
+        "maneuver": "Auscultate and time the expiratory phase relative to inspiration",
+        "finding": "Expiration is prolonged relative to inspiration",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "accessory-muscle-use",
+        "region": "general",
+        "maneuver": "Observe the patient's breathing at rest, noting use of sternocleidomastoid and intercostal muscles",
+        "finding": "Visible accessory muscle use with breathing",
+        "frequency": "common",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "tripod-position",
+        "region": "general",
+        "maneuver": "Observe the patient's posture and whether they lean forward with arms braced",
+        "finding": "Tripod position with arms braced to support the chest",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "intercostal-retractions",
+        "region": "lung",
+        "maneuver": "Observe the chest wall for inward movement of the intercostal spaces or supraclavicular fossae during inspiration",
+        "finding": "Intercostal or supraclavicular retractions",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "silent-chest",
+        "region": "lung",
+        "maneuver": "Auscultate all lung fields during quiet breathing and with forced expiration",
+        "finding": "Minimal or absent breath sounds with little to no wheeze despite marked respiratory distress",
+        "frequency": "rare",
+        "min_severity": "critical",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "normal-lung-exam-between-episodes",
+        "region": "lung",
+        "maneuver": "Auscultate all lung fields when the patient is asymptomatic",
+        "finding": "Clear breath sounds without wheeze, crackles or rhonchi",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-crackles",
+        "region": "lung",
+        "maneuver": "Auscultate the lung bases for crackles",
+        "finding": "No crackles or rales",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "no-focal-consolidation",
+        "region": "lung",
+        "maneuver": "Auscultate for focal bronchial breath sounds, egophony and tactile fremitus",
+        "finding": "No focal findings of consolidation",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "no-jvd",
+        "region": "neck",
+        "maneuver": "Inspect the neck for jugular venous distension with the patient at 45 degrees",
+        "finding": "Jugular venous pressure is not elevated",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "no-peripheral-edema",
+        "region": "extremities",
+        "maneuver": "Press over the dorsum of each foot and the lower shins for pitting edema",
+        "finding": "No pitting edema",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "allergic-shiners",
+        "region": "heent",
+        "maneuver": "Inspect the face for infraorbital darkening and a transverse nasal crease",
+        "finding": "Allergic shiners or a nasal crease",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "nasal-mucosal-pallor",
+        "region": "heent",
+        "maneuver": "Inspect the nasal mucosa and turbinates",
+        "finding": "Pale, boggy nasal mucosa with clear rhinorrhea",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "eczematous-skin",
+        "region": "skin",
+        "maneuver": "Inspect the skin, especially the flexural surfaces",
+        "finding": "Dry, itchy, eczematous patches",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-mental-status",
+        "region": "mental_status",
+        "maneuver": "Assess orientation and level of alertness",
+        "finding": "Alert and oriented",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-urticaria-angioedema",
+        "region": "skin",
+        "maneuver": "Inspect the skin for urticaria and the lips and tongue for swelling",
+        "finding": "No urticaria or angioedema",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 98.0,
+        "max": 99.0
+      },
+      "moderate": {
+        "min": 98.0,
+        "max": 99.5
+      },
+      "severe": {
+        "min": 98.0,
+        "max": 100.0
+      },
+      "critical": {
+        "min": 98.0,
+        "max": 100.5
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 70,
+        "max": 100
+      },
+      "moderate": {
+        "min": 90,
+        "max": 120
+      },
+      "severe": {
+        "min": 110,
+        "max": 140
+      },
+      "critical": {
+        "min": 120,
+        "max": 160
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 14,
+        "max": 20
+      },
+      "moderate": {
+        "min": 20,
+        "max": 26
+      },
+      "severe": {
+        "min": 26,
+        "max": 34
+      },
+      "critical": {
+        "min": 30,
+        "max": 40
+      }
+    },
+    "sbp": {
+      "severe": {
+        "min": 100,
+        "max": 130
+      },
+      "critical": {
+        "min": 85,
+        "max": 115
+      }
+    },
+    "dbp": {
+      "severe": {
+        "min": 60,
+        "max": 80
+      },
+      "critical": {
+        "min": 50,
+        "max": 70
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 95,
+        "max": 99
+      },
+      "moderate": {
+        "min": 92,
+        "max": 96
+      },
+      "severe": {
+        "min": 88,
+        "max": 93
+      },
+      "critical": {
+        "min": 80,
+        "max": 90
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "eos_pct",
+      "ranges": {
+        "mild": {
+          "min": 4,
+          "max": 8
+        },
+        "moderate": {
+          "min": 5,
+          "max": 10
+        },
+        "severe": {
+          "min": 6,
+          "max": 12
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "A modest eosinophilia supports an allergic (atopic) phenotype but is neither sensitive nor specific; a normal value does not argue against asthma."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "moderate": {
+          "min": 1.0,
+          "max": 3.0
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 6.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Usually normal in asthma; a marked rise should prompt consideration of pneumonia or another infection."
+    },
+    {
+      "test_id": "procalcitonin",
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Normal in asthma; helps exclude bacterial pneumonia when fever or purulent sputum is present."
+    },
+    {
+      "test_id": "paco2",
+      "ranges": {
+        "moderate": {
+          "min": 35,
+          "max": 42
+        },
+        "severe": {
+          "min": 40,
+          "max": 50
+        },
+        "critical": {
+          "min": 50,
+          "max": 70
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Measured on arterial blood gas. Early in a severe flare the PaCO2 is low from hyperventilation; a normal or rising PaCO2 in a distressed patient signals impending respiratory failure."
+    },
+    {
+      "test_id": "pao2",
+      "ranges": {
+        "moderate": {
+          "min": 70,
+          "max": 90
+        },
+        "severe": {
+          "min": 55,
+          "max": 75
+        },
+        "critical": {
+          "min": 40,
+          "max": 60
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Measured on arterial blood gas; hypoxemia worsens with severity."
+    },
+    {
+      "test_id": "ph",
+      "ranges": {
+        "moderate": {
+          "min": 7.4,
+          "max": 7.48
+        },
+        "severe": {
+          "min": 7.3,
+          "max": 7.45
+        },
+        "critical": {
+          "min": 7.15,
+          "max": 7.35
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Respiratory alkalosis early; a falling pH with a rising PaCO2 indicates a life-threatening flare."
+    },
+    {
+      "test_id": "hco3",
+      "ranges": {
+        "severe": {
+          "min": 20,
+          "max": 24
+        },
+        "critical": {
+          "min": 16,
+          "max": 22
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Low bicarbonate with a rising PaCO2 suggests a prolonged severe flare with metabolic compensation."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Order in anyone who could be pregnant before imaging or systemic corticosteroids."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rhythm",
+        "finding": "Sinus tachycardia",
+        "frequency": "common",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "rate",
+        "finding": "Tachycardia proportionate to respiratory distress and beta-agonist use",
+        "frequency": "common",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "axis",
+        "finding": "Right axis deviation from hyperinflation",
+        "frequency": "rare",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "p_wave",
+        "finding": "Peaked P waves in lead II (P pulmonale)",
+        "frequency": "rare",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "other",
+        "finding": "Nonspecific findings; ECG is not needed to diagnose asthma and is used to exclude cardiac causes of dyspnea",
+        "frequency": "common"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Chest x-ray, two views",
+      "modality": "xray",
+      "preferred_when": "When pneumonia, pneumothorax, or another cause of dyspnea is suspected, or when the diagnosis is unclear",
+      "findings": [
+        {
+          "text": "Normal or hyperinflated lungs with flattened diaphragms",
+          "frequency": "common"
+        },
+        {
+          "text": "Peribronchial cuffing or thickened bronchial walls",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "No focal consolidation, pleural effusion, or pneumothorax",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Focal consolidation suggesting pneumonia",
+          "frequency": "rare"
+        },
+        {
+          "text": "Pneumothorax",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "CT chest without contrast",
+      "modality": "ct",
+      "preferred_when": "Not routine; consider when another structural cause of dyspnea or a complication is suspected",
+      "findings": [
+        {
+          "text": "Air trapping and mosaic attenuation",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Bronchial wall thickening",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Normal study",
+          "frequency": "common"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "Spirometry with bronchodilator response",
+        "why": "Confirms airflow obstruction and reversibility; the key diagnostic test"
+      },
+      {
+        "test": "Peak expiratory flow measurement",
+        "why": "Quick objective measure of airflow obstruction; useful for monitoring and during flares"
+      },
+      {
+        "test": "Pulse oximetry",
+        "why": "Assesses oxygenation during a flare"
+      },
+      {
+        "test": "Chest x-ray, two views",
+        "why": "Excludes pneumonia, pneumothorax, or other causes",
+        "only_if": "pneumonia, pneumothorax, or another cause of dyspnea is suspected (fever, focal exam findings, or atypical presentation)"
+      },
+      {
+        "test": "cbc",
+        "why": "Looks for infection or anemia as an alternative cause",
+        "only_if": "infection or anemia is suspected"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before imaging or systemic corticosteroids",
+        "only_if": "the patient could be pregnant"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Methacholine challenge testing",
+        "why": "Confirms airway hyperresponsiveness when spirometry is normal but asthma is still suspected",
+        "only_if": "spirometry is normal or nondiagnostic and the diagnosis remains uncertain"
+      },
+      {
+        "test": "Exercise challenge testing",
+        "why": "Confirms exercise-induced bronchoconstriction when symptoms occur mainly with exercise",
+        "only_if": "symptoms are primarily exercise-induced and baseline spirometry is normal"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "Fractional exhaled nitric oxide (FeNO)",
+        "why": "Supports an eosinophilic, steroid-responsive airway inflammation phenotype",
+        "only_if": "the diagnosis is uncertain or treatment response is being assessed"
+      },
+      {
+        "test": "Allergy skin testing",
+        "why": "Identifies allergic triggers that can be avoided",
+        "only_if": "an allergic phenotype is suspected and trigger identification would change management"
+      },
+      {
+        "test": "Serum specific IgE testing",
+        "why": "Alternative to skin testing for identifying allergic triggers",
+        "only_if": "skin testing is not available or is contraindicated"
+      },
+      {
+        "test": "Peak expiratory flow diary",
+        "why": "Documents variability over time, which supports the diagnosis",
+        "only_if": "diagnosis is uncertain or monitoring is needed"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "CT chest without contrast",
+        "why": "Not needed for routine asthma diagnosis or management"
+      },
+      {
+        "test": "Sputum culture",
+        "why": "Not indicated unless bacterial infection is suspected"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in asthma; consider only if pulmonary embolism is suspected"
+      },
+      {
+        "test": "bnp",
+        "why": "Not indicated unless heart failure is a consideration"
+      },
+      {
+        "test": "esr",
+        "why": "Nonspecific and not helpful in asthma"
+      },
+      {
+        "test": "procalcitonin",
+        "why": "Not routine; reserve for suspected bacterial infection"
+      }
+    ],
+    "decision_points": [
+      "Confirm the diagnosis objectively with spirometry before starting long-term controller therapy",
+      "Assess severity and control at every visit to guide treatment step-up or step-down",
+      "During an acute flare, assess oxygenation, work of breathing, and mental status; a normal or rising PaCO2 in a distressed patient signals impending respiratory failure",
+      "Pregnancy test before imaging or systemic corticosteroids in anyone who could be pregnant",
+      "Chest x-ray only when pneumonia, pneumothorax, or another cause of dyspnea is suspected"
+    ],
+    "criteria": [
+      {
+        "name": "Asthma diagnosis",
+        "summary": "A history of recurrent wheeze, cough, chest tightness, or dyspnea that varies over time and with triggers, plus objective evidence of variable expiratory airflow limitation (reduced FEV1/FVC that improves after a bronchodilator, or documented variability in peak flow or bronchial challenge testing).",
+        "items": [
+          "Recurrent episodes of wheeze, cough, chest tightness, or dyspnea",
+          "Symptoms worse at night or early morning",
+          "Symptoms triggered by exercise, allergens, cold air, or viral infections",
+          "Objective demonstration of reversible or variable airflow obstruction"
+        ]
+      }
+    ],
+    "scores": [
+      "asthma_control_test",
+      "act",
+      "acq"
+    ]
+  },
+  "differential": [
+    {
+      "name": "Vocal cord dysfunction",
+      "slug": "vocal-cord-dysfunction",
+      "why_considered": "Paroxysmal dyspnea and noisy breathing that can mimic an asthma flare, often in younger patients with anxiety or high-level athletes",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Symptoms come on and stop abruptly, often within minutes",
+          "Nocturnal symptoms are uncommon",
+          "Symptoms are triggered by talking, singing, exercise, or strong odors rather than typical allergens",
+          "Poor response to inhaled bronchodilators and corticosteroids"
+        ],
+        "exam": [
+          "Wheeze is loudest over the neck or larynx rather than the chest",
+          "Voice change or hoarseness during an episode",
+          "Wheeze does not change with position or deep breathing"
+        ],
+        "labs": [
+          "Normal pulse oximetry during a severe-appearing episode"
+        ],
+        "imaging": [
+          "Flow-volume loop shows inspiratory flattening rather than the expiratory flattening of asthma",
+          "Laryngoscopy during symptoms shows paradoxical vocal cord adduction"
+        ]
+      }
+    },
+    {
+      "name": "Foreign body aspiration",
+      "slug": "foreign-body-aspiration",
+      "why_considered": "Sudden onset of cough, wheeze, or dyspnea, especially in a toddler who cannot describe a choking event",
+      "must_not_miss": true,
+      "trigger": "Abrupt onset of symptoms in a child or any patient with a choking episode, unilateral wheeze, or asymmetric breath sounds",
+      "discriminators": {
+        "history": [
+          "Sudden onset while eating or playing",
+          "Choking or gagging episode reported by a caregiver",
+          "Symptoms do not respond to bronchodilators",
+          "No prior history of recurrent wheeze"
+        ],
+        "exam": [
+          "Unilateral wheeze or decreased breath sounds",
+          "Focal findings that do not shift with coughing"
+        ],
+        "imaging": [
+          "Chest x-ray may show hyperinflation, atelectasis, or a radiopaque object on the affected side",
+          "Air trapping on expiratory films or CT"
+        ]
+      }
+    },
+    {
+      "name": "Bronchiolitis",
+      "slug": "bronchiolitis",
+      "why_considered": "Wheeze, cough, and increased work of breathing in an infant or toddler during viral season",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "First episode in a child under 2 years",
+          "Preceded by 1-3 days of rhinorrhea and low-grade fever",
+          "Occurs during fall or winter viral season",
+          "No prior recurrent episodes or atopic history"
+        ],
+        "exam": [
+          "Diffuse crackles and wheeze",
+          "Tachypnea and retractions proportionate to illness",
+          "Fever is common"
+        ],
+        "labs": [
+          "Viral testing positive for RSV or another respiratory virus"
+        ],
+        "imaging": [
+          "Chest x-ray shows hyperinflation with perihilar infiltrates or atelectasis"
+        ]
+      }
+    },
+    {
+      "name": "Gastroesophageal reflux disease",
+      "slug": "gastroesophageal-reflux-disease",
+      "why_considered": "Chronic nocturnal cough and chest discomfort that can be mistaken for asthma, and reflux is a common comorbidity that worsens asthma control",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Cough and chest burning worse after meals or when lying flat",
+          "Sour taste or regurgitation",
+          "No clear response to asthma controller therapy",
+          "Symptoms improve with acid suppression"
+        ],
+        "exam": [
+          "Normal lung exam between episodes",
+          "No wheeze on forced expiration"
+        ],
+        "labs": [
+          "Spirometry is normal without reversible obstruction"
+        ],
+        "imaging": [
+          "Normal chest imaging",
+          "Ambulatory pH monitoring shows pathologic acid exposure"
+        ]
+      }
+    },
+    {
+      "name": "Heart failure",
+      "slug": "heart-failure",
+      "why_considered": "Dyspnea, wheeze, and exercise limitation in an older adult can be mistaken for late-onset asthma",
+      "must_not_miss": true,
+      "trigger": "Dyspnea with orthopnea, paroxysmal nocturnal dyspnea, leg swelling, or an elevated jugular venous pressure in an older adult",
+      "discriminators": {
+        "history": [
+          "Progressive dyspnea over weeks rather than episodic flares",
+          "Orthopnea and paroxysmal nocturnal dyspnea",
+          "Leg swelling",
+          "Known coronary disease, hypertension, or valve disease"
+        ],
+        "exam": [
+          "Elevated jugular venous pressure",
+          "Bibasilar crackles",
+          "S3 gallop",
+          "Pitting edema"
+        ],
+        "labs": [
+          "Elevated BNP or NT-proBNP"
+        ],
+        "imaging": [
+          "Chest x-ray shows cardiomegaly, pulmonary venous congestion, or pleural effusions",
+          "Echocardiogram shows reduced ejection fraction or diastolic dysfunction"
+        ]
+      }
+    },
+    {
+      "name": "Chronic obstructive pulmonary disease",
+      "slug": "chronic-obstructive-pulmonary-disease",
+      "why_considered": "Chronic dyspnea, cough, and wheeze with airflow obstruction in an adult, especially a smoker",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Long-standing daily productive cough",
+          "Substantial tobacco or occupational exposure history",
+          "Symptoms are persistent and progressive rather than episodic",
+          "Onset usually after age 40"
+        ],
+        "exam": [
+          "Barrel chest with decreased breath sounds",
+          "Prolonged expiration that does not fully reverse with bronchodilators"
+        ],
+        "labs": [
+          "Spirometry shows obstruction with incomplete or no bronchodilator reversibility"
+        ],
+        "imaging": [
+          "Chest x-ray shows hyperinflation, flattened diaphragms, and increased retrosternal air space"
+        ]
+      }
+    },
+    {
+      "name": "Pneumonia",
+      "slug": "pneumonia",
+      "why_considered": "Cough, dyspnea, and wheeze during an acute flare, especially when fever or purulent sputum is present",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Acute onset over hours to a few days with fever and chills",
+          "Productive cough with purulent sputum",
+          "Pleuritic chest pain"
+        ],
+        "exam": [
+          "Focal crackles, bronchial breath sounds, egophony, or dullness to percussion",
+          "Fever and tachycardia"
+        ],
+        "labs": [
+          "Leukocytosis",
+          "Elevated CRP or procalcitonin",
+          "Positive sputum or blood cultures"
+        ],
+        "imaging": [
+          "Chest x-ray shows focal consolidation or infiltrate"
+        ]
+      }
+    },
+    {
+      "name": "Pulmonary embolism",
+      "slug": "pulmonary-embolism",
+      "why_considered": "Acute dyspnea and chest discomfort that can be mistaken for an asthma flare",
+      "must_not_miss": true,
+      "trigger": "Sudden dyspnea with pleuritic chest pain, tachycardia, unilateral leg swelling, or risk factors such as recent surgery, immobility, or prior VTE",
+      "discriminators": {
+        "history": [
+          "Abrupt onset of dyspnea without a typical trigger",
+          "Pleuritic chest pain",
+          "Recent surgery, immobility, long travel, or prior clot",
+          "Unilateral leg swelling or calf pain"
+        ],
+        "exam": [
+          "Tachycardia out of proportion to the lung exam",
+          "Clear lungs despite marked dyspnea",
+          "Signs of deep vein thrombosis"
+        ],
+        "labs": [
+          "Elevated D-dimer in low-risk patients",
+          "Hypoxemia with a normal chest x-ray"
+        ],
+        "imaging": [
+          "CT pulmonary angiography shows filling defects in the pulmonary arteries"
+        ]
+      }
+    },
+    {
+      "name": "Anaphylaxis",
+      "slug": "anaphylaxis",
+      "why_considered": "Acute wheeze and dyspnea after an allergen exposure, which can look like a severe asthma flare",
+      "must_not_miss": true,
+      "trigger": "Wheeze with urticaria, angioedema, hypotension, or rapid progression after a food, drug, or sting exposure",
+      "discriminators": {
+        "history": [
+          "Exposure to a known or suspected allergen minutes before symptoms",
+          "Rapid progression over minutes",
+          "Flushing, itching, or throat tightness"
+        ],
+        "exam": [
+          "Urticaria, angioedema of the lips or tongue",
+          "Hypotension or tachycardia",
+          "Stridor or diffuse wheeze"
+        ],
+        "labs": [
+          "Elevated serum tryptase in some cases"
+        ],
+        "imaging": [
+          "Not needed; diagnosis is clinical"
+        ]
+      }
+    },
+    {
+      "name": "Inhaled corticosteroid nonadherence or poor inhaler technique",
+      "why_considered": "Symptoms that persist despite escalating therapy, which can be mistaken for severe refractory asthma",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Frequent rescue inhaler use but infrequent controller use",
+          "Running out of controller inhalers early or late",
+          "Symptoms improve during hospitalization or when observed taking medication"
+        ],
+        "exam": [
+          "Poor coordination with a metered-dose inhaler",
+          "No spacer use when prescribed"
+        ],
+        "labs": [
+          "Low or undetectable serum cortisol in some patients on high-dose inhaled steroids"
+        ],
+        "imaging": [
+          "Normal chest imaging"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Symptoms less than twice a week, nighttime awakenings less than twice a month, no limitation of activity, FEV1 at or above 80% predicted, and symptoms controlled with as-needed albuterol alone",
+      "moderate": "Daily symptoms, nighttime awakenings more than once a week, some activity limitation, FEV1 60-79% predicted, and need for daily controller therapy",
+      "severe": "Symptoms throughout the day, frequent nighttime awakenings, marked activity limitation, FEV1 below 60% predicted, and need for high-dose controller therapy; during a flare the patient speaks in short phrases, uses accessory muscles, and has an oxygen saturation in the high 80s to low 90s",
+      "critical": "Life-threatening flare with a silent chest, exhaustion, drowsiness, inability to speak, cyanosis, oxygen saturation below 90%, and a normal or rising PaCO2 in a distressed patient indicating impending respiratory failure"
+    },
+    "red_flags": [
+      {
+        "finding": "Silent chest with minimal or absent breath sounds",
+        "meaning": "Airflow is critically low; impending respiratory arrest"
+      },
+      {
+        "finding": "Normal or rising PaCO2 in a distressed patient",
+        "meaning": "The patient is tiring and heading toward respiratory failure; this is not reassuring"
+      },
+      {
+        "finding": "Drowsiness, confusion, or inability to speak",
+        "meaning": "Hypoxemia and hypercapnia; needs immediate airway support"
+      },
+      {
+        "finding": "Cyanosis or oxygen saturation below 90% on room air",
+        "meaning": "Severe hypoxemia"
+      },
+      {
+        "finding": "Use of accessory muscles, tripod position, or intercostal retractions",
+        "meaning": "Severe increased work of breathing"
+      },
+      {
+        "finding": "Heart rate above 120 or respiratory rate above 30",
+        "meaning": "Severe flare requiring urgent treatment"
+      },
+      {
+        "finding": "Poor response to repeated albuterol doses",
+        "meaning": "Refractory bronchospasm; consider systemic corticosteroids and possible admission"
+      },
+      {
+        "finding": "Peak expiratory flow below 50% of personal best",
+        "meaning": "Severe obstruction"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Acute severe asthma flare requiring emergency care",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Progressive dyspnea over hours to days",
+          "Poor response to rescue inhaler",
+          "Accessory muscle use"
+        ]
+      },
+      {
+        "name": "Respiratory failure with hypercapnia",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Drowsiness",
+          "Rising PaCO2",
+          "Silent chest"
+        ]
+      },
+      {
+        "name": "Pneumothorax",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Sudden unilateral pleuritic chest pain",
+          "Asymmetric breath sounds",
+          "Tracheal deviation in tension pneumothorax"
+        ]
+      },
+      {
+        "name": "Pneumomediastinum",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Sudden chest or neck pain",
+          "Subcutaneous crepitus",
+          "Hamman sign on auscultation"
+        ]
+      },
+      {
+        "name": "Atelectasis from mucus plugging",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Persistent hypoxemia despite bronchodilators",
+          "Focal decreased breath sounds",
+          "New opacity on chest x-ray"
+        ]
+      },
+      {
+        "name": "Airway remodeling with fixed airflow limitation",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Long-standing poorly controlled asthma",
+          "Spirometry that no longer fully reverses with bronchodilators"
+        ]
+      },
+      {
+        "name": "Corticosteroid adverse effects",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Frequent oral corticosteroid courses",
+          "Weight gain, hyperglycemia, osteoporosis, cataracts, or adrenal suppression"
+        ]
+      },
+      {
+        "name": "Sleep disruption and impaired quality of life",
+        "timing": "any",
+        "seriousness": "minor",
+        "frequency": "common",
+        "clues": [
+          "Frequent nighttime awakenings",
+          "Missed school or work",
+          "Reduced exercise tolerance"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Young children may not wheeze audibly and instead present with recurrent cough, night waking, poor feeding, or exercise limitation. Spirometry is feasible from about age 5-6; younger children are managed on symptoms and response to a trial of controller therapy. Caregiver education on inhaler technique with a spacer and mask is essential."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Symptoms may be attributed to aging or COPD, and heart failure is a common mimic. Spirometry is needed to separate asthma from COPD and cardiac disease, and comorbidities and polypharmacy increase the risk of drug interactions."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Symptoms can improve, worsen, or stay the same. Uncontrolled asthma is more dangerous to the fetus than controller therapy, so inhaled corticosteroids should be continued. Dyspnea of pregnancy and reflux cough can mimic asthma, so objective testing is needed before changing therapy. Check a pregnancy test before imaging or systemic corticosteroids in anyone who could be pregnant."
+      },
+      {
+        "population": "obesity",
+        "differences": "Dyspnea and exercise limitation are common from deconditioning and weight, so symptoms may be blamed on weight rather than asthma. Spirometry is essential, and weight loss improves control."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Systemic corticosteroids during flares can cause marked hyperglycemia; monitor glucose closely and adjust diabetes therapy when oral steroids are used."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "Not a major modifier of asthma itself, but monitor electrolytes and renal function when systemic corticosteroids or frequent beta-agonists are used."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Infections are a more likely cause of new wheeze and dyspnea; lower the threshold for chest imaging and infectious workup before attributing symptoms to asthma."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "What do your symptoms feel like — wheezing, chest tightness, cough, or shortness of breath?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Wheeze, chest tightness, dry cough, and dyspnea, often in combination"
+      },
+      {
+        "question": "Do the symptoms come and go, or are they there all the time?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Episodic and variable over time, with symptom-free intervals between flares"
+      },
+      {
+        "question": "What seems to set them off?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Exercise, cold air, dust, pollen, pets, mold, smoke, strong odors, or viral colds"
+      },
+      {
+        "question": "Are they worse at night or early in the morning?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Nocturnal or early-morning worsening, a hallmark of asthma"
+      },
+      {
+        "question": "How often do symptoms occur, and how many nights a month do they wake you?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Frequency of daytime symptoms and nighttime awakenings, which grade control and severity"
+      },
+      {
+        "question": "What makes them better?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Improvement with a rescue inhaler, rest, or avoiding the trigger"
+      },
+      {
+        "question": "Do you have a history of allergies, eczema, or hay fever?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Atopic history supporting an allergic phenotype"
+      },
+      {
+        "question": "Does anyone in your family have asthma, allergies, or eczema?",
+        "category": "family",
+        "importance": "important",
+        "looking_for": "Family history of asthma or atopy, especially in a parent"
+      },
+      {
+        "question": "What inhalers or other medicines do you use, and how often do you actually use them?",
+        "category": "medications",
+        "importance": "essential",
+        "looking_for": "Rescue versus controller inhaler use, frequency, and adherence"
+      },
+      {
+        "question": "Do you take aspirin, ibuprofen, or naproxen, and do they make your breathing worse?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "NSAID sensitivity suggesting aspirin-exacerbated respiratory disease"
+      },
+      {
+        "question": "Does anyone smoke at home, or do you smoke or vape?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Tobacco or secondhand smoke exposure, a common trigger and worsening factor"
+      },
+      {
+        "question": "Are there pets, mold, cockroaches, or mice where you live?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Indoor allergen exposures that can be reduced"
+      },
+      {
+        "question": "What kind of work do you do, and are symptoms better on days away from work?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Occupational exposure with improvement away from work, suggesting occupational asthma"
+      },
+      {
+        "question": "Have you had fever, chills, or coughed up blood or colored sputum?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Absent in typical asthma; present suggests pneumonia or another cause"
+      },
+      {
+        "question": "Have you had sudden chest pain, leg swelling, or a choking episode?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Absent; present raises concern for pneumothorax, pulmonary embolism, or foreign body aspiration"
+      },
+      {
+        "question": "Have you ever been intubated, admitted, or treated in the emergency department for your breathing?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Prior severe flares, which predict future risk"
+      },
+      {
+        "question": "Do you have heartburn, postnasal drip, or nasal congestion?",
+        "category": "associated",
+        "importance": "optional",
+        "looking_for": "Reflux or allergic rhinitis that can worsen control"
+      }
+    ],
+    "accepted_names": [
+      "Asthma",
+      "Bronchial asthma",
+      "Reactive airway disease",
+      "Exercise-induced asthma",
+      "Exercise-induced bronchoconstriction",
+      "Allergic asthma",
+      "Atopic asthma"
+    ],
+    "reasoning_points": [
+      "Recurrent, episodic wheeze, cough, chest tightness, or dyspnea that varies over time",
+      "Symptoms worse at night or early morning and provoked by typical triggers such as exercise, allergens, cold air, or viral infections",
+      "Personal or family history of atopy (allergic rhinitis, eczema, food allergy)",
+      "Between episodes the patient may feel well and the lung exam may be normal",
+      "Objective evidence of variable expiratory airflow limitation, such as a reduced FEV1/FVC ratio that improves after a short-acting bronchodilator on spirometry",
+      "Alternative causes of dyspnea and wheeze considered and excluded, including pneumonia, heart failure, COPD, pulmonary embolism, and foreign body aspiration"
+    ],
+    "difficulty": {
+      "easy": [
+        "Child or young adult with a long history of episodic wheeze",
+        "Clear trigger pattern and nocturnal worsening",
+        "Known atopy or family history of asthma",
+        "Diffuse expiratory wheeze on exam and improvement with albuterol"
+      ],
+      "medium": [
+        "Symptoms mainly with exercise, with a normal exam between episodes",
+        "Cough-variant presentation with chronic nocturnal cough and little wheeze",
+        "Adult with new symptoms that could be COPD or heart failure",
+        "Symptoms during a viral illness that persist after the infection clears"
+      ],
+      "hard": [
+        "Older adult with dyspnea and wheeze later attributed to heart failure",
+        "Toddler with recurrent cough and no audible wheeze",
+        "Patient with symptoms that persist despite escalating therapy because of poor inhaler technique or nonadherence",
+        "Pregnant patient with dyspnea that could be dyspnea of pregnancy or reflux",
+        "Occupational presentation with symptoms only at work"
+      ]
+    }
+  }
+}

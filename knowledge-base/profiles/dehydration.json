@@ -1,0 +1,1726 @@
+{
+  "schema_version": "0.2",
+  "slug": "dehydration",
+  "triage": {
+    "name": "Dehydration",
+    "case_suitable": true,
+    "reason": "Common clinical problem with clear history, exam findings and lab assessment; students must identify cause and severity and manage fluids.",
+    "kind": "disease",
+    "category": "fluid and electrolyte disorder",
+    "organ_systems": [
+      "renal",
+      "gastrointestinal"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "pediatrics",
+      "emergency",
+      "familyMedicine"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "emergency",
+      "inpatient",
+      "clinic",
+      "pediatric_clinic"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:16:50Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T05:03:20Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T05:03:27Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T05:03:39Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T05:03:51Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T05:03:56Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'ecg' to 'ECG'",
+        "auto-repaired: workup: 'bmp' was in ['initial', 'confirmatory'], kept ['initial']",
+        "differential hemorrhagic-shock: no profile yet",
+        "differential diabetic-ketoacidosis: no profile yet",
+        "differential hyperosmolar-hyperglycemic-state: no profile yet",
+        "differential adrenal-insufficiency: no profile yet",
+        "differential acute-kidney-injury: no profile yet",
+        "differential heart-failure: no profile yet",
+        "differential gastroenteritis: no profile yet",
+        "differential heat-exhaustion: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 0,
+      "typical_max": 90,
+      "peak": "bimodal: infants/young children and older adults",
+      "possible_min": 0,
+      "possible_max": 110
+    },
+    "sex": "either",
+    "demographics": [
+      "Infants and young children are at high risk because of higher body water turnover and inability to ask for fluids",
+      "Older adults are at high risk because of blunted thirst and age-related kidney changes",
+      "People who work or exercise outdoors in hot weather",
+      "People with limited access to fluids or who depend on others for care"
+    ],
+    "risk_factors": [
+      {
+        "text": "Acute gastroenteritis with vomiting or diarrhea",
+        "strength": "strong"
+      },
+      {
+        "text": "Fever",
+        "strength": "moderate"
+      },
+      {
+        "text": "Hot weather or strenuous outdoor activity",
+        "strength": "moderate"
+      },
+      {
+        "text": "Older age with reduced thirst",
+        "strength": "moderate"
+      },
+      {
+        "text": "Infants and young children",
+        "strength": "strong"
+      },
+      {
+        "text": "Diabetes mellitus with hyperglycemia or glycosuria",
+        "strength": "moderate"
+      },
+      {
+        "text": "Chronic kidney disease",
+        "strength": "moderate"
+      },
+      {
+        "text": "Use of diuretics",
+        "strength": "moderate"
+      },
+      {
+        "text": "Poor oral intake due to illness or disability",
+        "strength": "moderate"
+      }
+    ],
+    "comorbidities": [
+      "Diabetes mellitus",
+      "Chronic kidney disease",
+      "Cystic fibrosis",
+      "Gastrointestinal illness with vomiting or diarrhea",
+      "Conditions causing polyuria (e.g., diabetes insipidus)",
+      "Dementia or cognitive impairment",
+      "Physical disability limiting access to fluids"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Outdoor work or exercise in hot weather",
+      "Limited access to safe drinking water",
+      "Living alone or dependent on caregivers for fluid intake"
+    ],
+    "exposures": [
+      "Hot weather",
+      "Strenuous physical activity",
+      "Gastroenteritis outbreaks"
+    ],
+    "risk_medications": [
+      "Furosemide",
+      "Hydrochlorothiazide",
+      "Lisinopril",
+      "Losartan",
+      "Metformin",
+      "Lithium",
+      "Fluoxetine",
+      "Sertraline"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I'm so thirsty",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "My mouth is dry",
+        "frequency": "common"
+      },
+      {
+        "text": "I feel dizzy and weak",
+        "frequency": "common"
+      },
+      {
+        "text": "I haven't been urinating much",
+        "frequency": "common"
+      },
+      {
+        "text": "I'm tired",
+        "frequency": "common"
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual over hours to days, depending on the cause",
+      "duration": "Usually less than 3 days at presentation",
+      "progression": "Worsens as fluid losses continue and intake remains inadequate; symptoms progress from thirst and dry mouth to dizziness, weakness, and confusion",
+      "location": "Generalized",
+      "radiation": "Not applicable",
+      "quality": "Thirst, dryness, weakness, lightheadedness",
+      "severity": "Mild to severe; can be life-threatening if untreated",
+      "timing": "Continuous, often worse when standing up",
+      "aggravating": [
+        "Heat",
+        "Exercise",
+        "Vomiting",
+        "Diarrhea",
+        "Not drinking fluids"
+      ],
+      "relieving": [
+        "Drinking fluids",
+        "Resting in a cool place",
+        "Intravenous fluids (if severe)"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Dry mouth and tongue",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Decreased urination",
+          "frequency": "common"
+        },
+        {
+          "text": "Dark yellow urine",
+          "frequency": "common"
+        },
+        {
+          "text": "Fatigue or weakness",
+          "frequency": "common"
+        },
+        {
+          "text": "Dizziness or lightheadedness, especially when standing",
+          "frequency": "common"
+        },
+        {
+          "text": "Headache",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Muscle cramps",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Nausea",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Confusion",
+          "frequency": "rare"
+        },
+        {
+          "text": "Fainting",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Bloody diarrhea",
+        "Severe abdominal pain",
+        "Chest pain",
+        "Shortness of breath",
+        "Fever with rash",
+        "Recent head trauma",
+        "Seizure"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Thirst",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Fatigue",
+            "frequency": "common"
+          },
+          {
+            "text": "Fever (if due to infection)",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Weight loss",
+          "Night sweats"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Dry mouth",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Nausea",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Vomiting",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Diarrhea",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Bloody stools",
+          "Severe abdominal pain"
+        ],
+        "argues_against": [
+          "Acute surgical abdomen"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [
+          {
+            "text": "Decreased urine output",
+            "frequency": "common"
+          },
+          {
+            "text": "Dark urine",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Dysuria",
+          "Hematuria",
+          "Flank pain"
+        ],
+        "argues_against": [
+          "Urinary tract infection"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [
+          {
+            "text": "Lightheadedness on standing",
+            "frequency": "common"
+          },
+          {
+            "text": "Palpitations",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Chest pain",
+          "Orthopnea",
+          "Leg swelling"
+        ],
+        "argues_against": [
+          "Heart failure"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Dizziness",
+            "frequency": "common"
+          },
+          {
+            "text": "Headache",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Confusion",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Focal weakness",
+          "Seizure"
+        ],
+        "argues_against": [
+          "Stroke"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [
+          {
+            "text": "Dry skin",
+            "frequency": "common"
+          },
+          {
+            "text": "Decreased sweating",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Rash",
+          "Jaundice"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Muscle cramps",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Joint swelling",
+          "Muscle pain"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "infants",
+        "how_it_differs": "Infants cannot express thirst; they present with irritability, lethargy, dry diapers, sunken eyes, and a sunken fontanelle. Parents may report no wet diapers for 3 hours or more.",
+        "missing_classic_features": [
+          "Thirst",
+          "Dizziness"
+        ]
+      },
+      {
+        "population": "children",
+        "how_it_differs": "Children may present with lethargy, irritability, decreased playfulness, dry mouth, and few tears when crying. They may not complain of thirst.",
+        "missing_classic_features": [
+          "Thirst",
+          "Lightheadedness"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "Older adults may have blunted thirst and present with confusion, weakness, or falls without reporting thirst. They may have dry mucous membranes and decreased skin turgor.",
+        "missing_classic_features": [
+          "Thirst",
+          "Dizziness"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Pregnant women have increased fluid needs and may become dehydrated more quickly with vomiting or diarrhea. They may present with dizziness, tachycardia, and decreased urine output.",
+        "missing_classic_features": [
+          "Severe thirst"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Alert, comfortable, mildly dry mouth, no distress",
+      "moderate": "Tired-appearing, restless or mildly irritable, dry mucous membranes, wants to lie down",
+      "severe": "Ill-appearing, lethargic or agitated, sunken eyes, markedly dry mouth, weak",
+      "critical": "Obunded or unresponsive, limp, mottled, cold extremities, barely arousable"
+    },
+    "findings": [
+      {
+        "id": "dry-mucous-membranes",
+        "region": "heent",
+        "maneuver": "Inspect the lips, buccal mucosa, and tongue with a penlight",
+        "finding": "Dry, tacky oral mucosa and tongue; no pooling of saliva",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "sunken-eyes",
+        "region": "heent",
+        "maneuver": "Inspect the eyes and periorbital area",
+        "finding": "Sunken-appearing eyes with soft periorbital tissue",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "sunken-fontanelle",
+        "region": "heent",
+        "maneuver": "Palpate the anterior fontanelle in an infant",
+        "finding": "Sunken, soft fontanelle",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "no-tears",
+        "region": "heent",
+        "maneuver": "Observe the infant or child while crying",
+        "finding": "Crying without tears",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "delayed-capillary-refill",
+        "region": "extremities",
+        "maneuver": "Press the fingertip or nail bed for 5 seconds and release",
+        "finding": "Capillary refill longer than 2 seconds",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "cool-extremities",
+        "region": "extremities",
+        "maneuver": "Palpate the hands and feet",
+        "finding": "Cool, mottled extremities with a temperature gradient",
+        "frequency": "common",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "reduced-skin-turgor",
+        "region": "skin",
+        "maneuver": "Pinch and lift the skin over the abdomen or forearm and release",
+        "finding": "Skin tents and returns slowly",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "dry-skin",
+        "region": "skin",
+        "maneuver": "Inspect and palpate the skin",
+        "finding": "Dry, coarse skin without sweat",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "tachycardia",
+        "region": "cardiac",
+        "maneuver": "Auscultate the heart and palpate the radial pulse",
+        "finding": "Tachycardia with a regular rhythm",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "orthostatic-vitals",
+        "region": "cardiac",
+        "maneuver": "Measure blood pressure and heart rate supine, then after standing for 1 minute",
+        "finding": "Systolic blood pressure falls at least 20 mm Hg or heart rate rises at least 20/min on standing",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "flat-neck-veins",
+        "region": "neck",
+        "maneuver": "Inspect the jugular venous pulsation with the patient at 30-45 degrees",
+        "finding": "Low or absent jugular venous pressure",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "clear-lungs",
+        "region": "lung",
+        "maneuver": "Auscultate all lung fields",
+        "finding": "Clear breath sounds without crackles or wheezes",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-edema",
+        "region": "extremities",
+        "maneuver": "Press the pretibial area and ankles",
+        "finding": "No pitting edema",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-abdomen",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen",
+        "finding": "Soft, nontender, no guarding or rebound",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "alert-mental-status",
+        "region": "mental_status",
+        "maneuver": "Assess orientation to person, place, and time",
+        "finding": "Alert and oriented",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "confusion",
+        "region": "mental_status",
+        "maneuver": "Assess orientation and attention",
+        "finding": "Disorientation or inattention",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "lethargy",
+        "region": "mental_status",
+        "maneuver": "Observe the patient's level of arousal",
+        "finding": "Lethargy or decreased responsiveness",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "weak-pulses",
+        "region": "cardiac",
+        "maneuver": "Palpate the radial and dorsalis pedis pulses",
+        "finding": "Weak, thready peripheral pulses",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "muscle-cramps",
+        "region": "musculoskeletal",
+        "maneuver": "Ask about and palpate for muscle cramping",
+        "finding": "Painful muscle cramps, especially in the legs",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 97.8,
+        "max": 99.5
+      },
+      "moderate": {
+        "min": 98.0,
+        "max": 100.4
+      },
+      "severe": {
+        "min": 97.0,
+        "max": 101.5
+      },
+      "critical": {
+        "min": 96.0,
+        "max": 102.5
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 70,
+        "max": 100
+      },
+      "moderate": {
+        "min": 100,
+        "max": 120
+      },
+      "severe": {
+        "min": 120,
+        "max": 140
+      },
+      "critical": {
+        "min": 130,
+        "max": 160
+      }
+    },
+    "rr": {
+      "moderate": {
+        "min": 16,
+        "max": 22
+      },
+      "severe": {
+        "min": 20,
+        "max": 28
+      },
+      "critical": {
+        "min": 24,
+        "max": 34
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 100,
+        "max": 130
+      },
+      "moderate": {
+        "min": 90,
+        "max": 110
+      },
+      "severe": {
+        "min": 80,
+        "max": 100
+      },
+      "critical": {
+        "min": 60,
+        "max": 90
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 60,
+        "max": 80
+      },
+      "moderate": {
+        "min": 55,
+        "max": 75
+      },
+      "severe": {
+        "min": 50,
+        "max": 70
+      },
+      "critical": {
+        "min": 30,
+        "max": 60
+      }
+    },
+    "spo2": {
+      "severe": {
+        "min": 92,
+        "max": 98
+      },
+      "critical": {
+        "min": 85,
+        "max": 95
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "bun",
+      "ranges": {
+        "mild": {
+          "min": 18,
+          "max": 26
+        },
+        "moderate": {
+          "min": 24,
+          "max": 40
+        },
+        "severe": {
+          "min": 35,
+          "max": 60
+        },
+        "critical": {
+          "min": 45,
+          "max": 90
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Rises with volume depletion; a BUN/creatinine ratio above 20 supports dehydration over intrinsic kidney disease."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "moderate": {
+          "min": 1.2,
+          "max": 1.6
+        },
+        "severe": {
+          "min": 1.5,
+          "max": 2.5
+        },
+        "critical": {
+          "min": 2.0,
+          "max": 4.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Often normal early; a rise that does not improve after fluids suggests acute kidney injury."
+    },
+    {
+      "test_id": "na",
+      "ranges": {
+        "mild": {
+          "min": 146,
+          "max": 150
+        },
+        "moderate": {
+          "min": 150,
+          "max": 155
+        },
+        "severe": {
+          "min": 155,
+          "max": 165
+        },
+        "critical": {
+          "min": 160,
+          "max": 175
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "Hypernatremia means water loss exceeds sodium loss; low or normal sodium points to losses replaced with free water or to a sodium-wasting cause."
+    },
+    {
+      "test_id": "k",
+      "ranges": {
+        "mild": {
+          "min": 3.2,
+          "max": 3.5
+        },
+        "moderate": {
+          "min": 2.8,
+          "max": 3.4
+        },
+        "severe": {
+          "min": 2.5,
+          "max": 3.2
+        },
+        "critical": {
+          "min": 2.0,
+          "max": 3.0
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "Hypokalemia is typical with vomiting, diarrhea, or diuretics; hyperkalemia suggests kidney failure or acidosis."
+    },
+    {
+      "test_id": "hco3",
+      "ranges": {
+        "mild": {
+          "min": 20,
+          "max": 22
+        },
+        "moderate": {
+          "min": 16,
+          "max": 21
+        },
+        "severe": {
+          "min": 10,
+          "max": 17
+        },
+        "critical": {
+          "min": 6,
+          "max": 12
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Low bicarbonate suggests a metabolic acidosis from diarrhea, lactic acidosis, or kidney failure."
+    },
+    {
+      "test_id": "cl",
+      "ranges": {
+        "mild": {
+          "min": 107,
+          "max": 112
+        },
+        "moderate": {
+          "min": 110,
+          "max": 118
+        },
+        "severe": {
+          "min": 115,
+          "max": 125
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "High chloride with low bicarbonate fits a normal anion gap acidosis from gastrointestinal losses."
+    },
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "moderate": {
+          "min": 180,
+          "max": 300
+        },
+        "severe": {
+          "min": 250,
+          "max": 500
+        },
+        "critical": {
+          "min": 400,
+          "max": 800
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hyperglycemia with glycosuria causes osmotic diuresis and can be the whole reason for the dehydration."
+    },
+    {
+      "test_id": "hct",
+      "ranges": {
+        "mild": {
+          "min": 46,
+          "max": 50
+        },
+        "moderate": {
+          "min": 50,
+          "max": 55
+        },
+        "severe": {
+          "min": 54,
+          "max": 60
+        },
+        "critical": {
+          "min": 58,
+          "max": 65
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Hemoconcentration supports dehydration but is unreliable when anemia or blood loss is also present."
+    },
+    {
+      "test_id": "albumin",
+      "ranges": {
+        "severe": {
+          "min": 2.5,
+          "max": 3.4
+        },
+        "critical": {
+          "min": 2.0,
+          "max": 3.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Low albumin raises the possibility that third-spacing rather than simple dehydration is driving the volume loss."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "moderate": {
+          "min": 2.0,
+          "max": 3.0
+        },
+        "severe": {
+          "min": 2.5,
+          "max": 5.0
+        },
+        "critical": {
+          "min": 4.0,
+          "max": 10.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevated lactate with hypoperfusion marks severe dehydration or shock and should improve with fluids."
+    },
+    {
+      "test_id": "ua_sg",
+      "ranges": {
+        "mild": {
+          "min": 1.02,
+          "max": 1.026
+        },
+        "moderate": {
+          "min": 1.025,
+          "max": 1.032
+        },
+        "severe": {
+          "min": 1.03,
+          "max": 1.04
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "High specific gravity reflects concentrated urine; it is not reliable if the patient recently received diuretics or IV fluids."
+    },
+    {
+      "test_id": "ua_ketones",
+      "qualitative": {
+        "moderate": "Small",
+        "severe": "Moderate",
+        "critical": "Large"
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Ketones appear with poor intake, vomiting, or diabetic ketoacidosis."
+    },
+    {
+      "test_id": "ua_protein",
+      "qualitative": {
+        "severe": "1+",
+        "critical": "2+"
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Proteinuria suggests intrinsic kidney disease rather than simple dehydration."
+    },
+    {
+      "test_id": "ua_casts",
+      "qualitative": {
+        "severe": "Granular (muddy brown)",
+        "critical": "Granular (muddy brown)"
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Muddy brown casts point to acute tubular necrosis from prolonged hypoperfusion."
+    },
+    {
+      "test_id": "osm",
+      "ranges": {
+        "moderate": {
+          "min": 296,
+          "max": 305
+        },
+        "severe": {
+          "min": 300,
+          "max": 320
+        },
+        "critical": {
+          "min": 310,
+          "max": 340
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "A high measured serum osmolality supports hypertonic dehydration; a high osmolal gap suggests an ingested osmole."
+    },
+    {
+      "test_id": "tsh",
+      "ranges": {
+        "moderate": {
+          "min": 0.01,
+          "max": 0.3
+        },
+        "severe": {
+          "min": 0.01,
+          "max": 0.2
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Order only when hyperthyroidism is suspected as the cause of excess losses."
+    },
+    {
+      "test_id": "cortisol_am",
+      "ranges": {
+        "severe": {
+          "min": 1,
+          "max": 4
+        },
+        "critical": {
+          "min": 1,
+          "max": 3
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "A low morning cortisol raises adrenal insufficiency, which can present with volume depletion and hyperkalemia."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Negative. Check in anyone who could be pregnant before imaging or medications."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rate",
+        "finding": "Sinus tachycardia",
+        "frequency": "common",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Sinus rhythm",
+        "frequency": "almost_always"
+      },
+      {
+        "feature": "conduction",
+        "finding": "Prolonged PR interval or widened QRS with severe hyperkalemia",
+        "frequency": "rare",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "t_wave",
+        "finding": "Peaked T waves with hyperkalemia",
+        "frequency": "rare",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "st",
+        "finding": "ST depression or flattened T waves with hypokalemia",
+        "frequency": "rare",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "qt",
+        "finding": "Prolonged QT with hypokalemia or hypomagnesemia",
+        "frequency": "rare",
+        "min_severity": "moderate"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Point-of-care ultrasound of the inferior vena cava",
+      "modality": "ultrasound",
+      "preferred_when": "Unclear volume status or shock",
+      "findings": [
+        {
+          "text": "Small, collapsible inferior vena cava that does not distend with inspiration",
+          "frequency": "common"
+        },
+        {
+          "text": "Inferior vena cava diameter under 1.5 cm",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "Chest x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Usually normal; no vascular congestion",
+          "frequency": "common"
+        },
+        {
+          "text": "Findings of the underlying cause, such as pneumonia",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "CT abdomen and pelvis with IV contrast",
+      "modality": "ct",
+      "findings": [
+        {
+          "text": "Not needed to diagnose dehydration; may show a flattened inferior vena cava or a cause such as bowel obstruction",
+          "frequency": "sometimes"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "bmp",
+        "why": "Sodium, potassium, bicarbonate, BUN and creatinine define severity and guide fluid choice"
+      },
+      {
+        "test": "cbc",
+        "why": "Hematocrit and white count; helps separate dehydration from infection or anemia"
+      },
+      {
+        "test": "ua",
+        "why": "Specific gravity and ketones support dehydration and screen for a urinary cause"
+      },
+      {
+        "test": "glucose",
+        "why": "Hyperglycemia is a common cause of osmotic diuresis"
+      },
+      {
+        "test": "hcg",
+        "why": "Pregnancy changes fluid and medication choices",
+        "only_if": "patient could be pregnant"
+      },
+      {
+        "test": "lactate",
+        "why": "Marks hypoperfusion in moderate to severe dehydration",
+        "only_if": "tachycardia, hypotension, or altered mental status"
+      },
+      {
+        "test": "ECG",
+        "why": "Looks for arrhythmia from potassium or magnesium abnormalities",
+        "only_if": "severe dehydration, arrhythmia, or known electrolyte abnormality"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "osm",
+        "why": "Confirms hypertonic dehydration when the cause is unclear"
+      },
+      {
+        "test": "mg",
+        "why": "Low magnesium causes refractory hypokalemia",
+        "only_if": "hypokalemia or arrhythmia"
+      },
+      {
+        "test": "phos",
+        "why": "Refeeding or prolonged poor intake can cause hypophosphatemia",
+        "only_if": "severe dehydration or prolonged poor intake"
+      },
+      {
+        "test": "Point-of-care ultrasound of the inferior vena cava",
+        "why": "Rapid bedside estimate of volume status",
+        "only_if": "shock or unclear volume status"
+      },
+      {
+        "test": "Chest x-ray",
+        "why": "Looks for pneumonia or heart failure before aggressive fluids",
+        "only_if": "fever, cough, dyspnea, or suspected heart failure"
+      },
+      {
+        "test": "tsh",
+        "why": "Hyperthyroidism can cause excess losses",
+        "only_if": "suspected hyperthyroidism"
+      },
+      {
+        "test": "cortisol_am",
+        "why": "Adrenal insufficiency can present with volume depletion",
+        "only_if": "hypotension with hyperkalemia or hyponatremia"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Not needed to diagnose dehydration; reserve for a suspected abdominal cause"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in dehydration"
+      },
+      {
+        "test": "bnp",
+        "why": "Not a test for dehydration; use only if heart failure is suspected"
+      },
+      {
+        "test": "lipase",
+        "why": "Not needed unless abdominal pain suggests pancreatitis"
+      },
+      {
+        "test": "csf",
+        "why": "No role unless meningitis or encephalitis is suspected"
+      }
+    ],
+    "decision_points": [
+      "Assess severity from mental status, perfusion, heart rate, blood pressure and urine output before choosing oral versus IV fluids",
+      "Check a pregnancy test before imaging or medication choices in anyone who could be pregnant",
+      "Measure glucose in every patient because hyperglycemia is a common and reversible cause",
+      "Recheck electrolytes and kidney function after fluids; failure to improve suggests ongoing losses or intrinsic kidney injury",
+      "Use isotonic crystalloid for initial IV resuscitation and add potassium only once urine output is established"
+    ],
+    "criteria": [
+      {
+        "name": "Clinical assessment of dehydration severity",
+        "summary": "Severity is judged from mental status, thirst, mucous membranes, eyes, tears, skin turgor, capillary refill, heart rate, blood pressure and urine output rather than from a single lab value.",
+        "items": [
+          "Mild: thirsty, dry mouth, otherwise well, normal vitals",
+          "Moderate: dry mucous membranes, sunken eyes, delayed capillary refill, tachycardia, reduced urine output",
+          "Severe: lethargy or confusion, weak pulses, hypotension, cool extremities, minimal urine output"
+        ]
+      }
+    ],
+    "scores": [
+      "gcs"
+    ]
+  },
+  "differential": [
+    {
+      "name": "Hypovolemic shock from hemorrhage",
+      "slug": "hemorrhagic-shock",
+      "why_considered": "Tachycardia, hypotension, and poor perfusion can look identical to severe dehydration, and both cause a high BUN/creatinine ratio.",
+      "must_not_miss": true,
+      "trigger": "Hypotension or tachycardia with a falling hematocrit, melena, hematemesis, or a known bleeding source",
+      "discriminators": {
+        "history": [
+          "Melena, hematemesis, heavy vaginal bleeding, or recent trauma",
+          "No vomiting, diarrhea, or poor intake",
+          "Blood thinners or known ulcer disease"
+        ],
+        "exam": [
+          "Pallor with cool clammy skin",
+          "Brisk bleeding on rectal or pelvic exam",
+          "No history of fluid losses"
+        ],
+        "labs": [
+          "Falling hematocrit on serial draws",
+          "BUN/creatinine ratio elevated but hematocrit low rather than high",
+          "Positive type and screen or crossmatch needs"
+        ],
+        "imaging": [
+          "CT or endoscopy localizing a bleeding source"
+        ]
+      }
+    },
+    {
+      "name": "Diabetic ketoacidosis",
+      "slug": "diabetic-ketoacidosis",
+      "why_considered": "Osmotic diuresis from hyperglycemia causes profound volume depletion with polyuria, polydipsia, and tachycardia.",
+      "must_not_miss": true,
+      "trigger": "Hyperglycemia with ketones, anion gap acidosis, or Kussmaul respirations",
+      "discriminators": {
+        "history": [
+          "Polyuria and polydipsia for days",
+          "Weight loss, nausea, abdominal pain",
+          "Known diabetes or new-onset hyperglycemia"
+        ],
+        "exam": [
+          "Deep rapid breathing",
+          "Fruity breath odor",
+          "Altered mental status out of proportion to volume loss"
+        ],
+        "labs": [
+          "Glucose often above 250 mg/dL",
+          "Anion gap metabolic acidosis with positive ketones",
+          "Low bicarbonate with elevated beta-hydroxybutyrate"
+        ]
+      }
+    },
+    {
+      "name": "Hyperosmolar hyperglycemic state",
+      "slug": "hyperosmolar-hyperglycemic-state",
+      "why_considered": "Extreme hyperglycemia causes severe osmotic diuresis and the deepest dehydration of any medical cause.",
+      "must_not_miss": true,
+      "trigger": "Glucose above 600 mg/dL with marked hyperosmolality and altered mental status in an older adult",
+      "discriminators": {
+        "history": [
+          "Days to weeks of polyuria and polydipsia",
+          "Progressive confusion or lethargy",
+          "Often older with type 2 diabetes"
+        ],
+        "exam": [
+          "Profound lethargy or coma",
+          "Severe dry mucous membranes",
+          "No Kussmaul breathing"
+        ],
+        "labs": [
+          "Glucose often above 600 mg/dL",
+          "Serum osmolality above 320 mOsm/kg",
+          "Minimal or absent ketones",
+          "Large anion gap from dehydration alone"
+        ]
+      }
+    },
+    {
+      "name": "Adrenal insufficiency",
+      "slug": "adrenal-insufficiency",
+      "why_considered": "Mineralocorticoid deficiency causes salt and water loss with hypotension, weakness, and hyperkalemia that mimics dehydration.",
+      "must_not_miss": true,
+      "trigger": "Hypotension with hyperkalemia and hyponatremia, or chronic steroid use",
+      "discriminators": {
+        "history": [
+          "Chronic fatigue, weight loss, anorexia",
+          "Long-term glucocorticoid use",
+          "Hyperpigmentation of skin creases"
+        ],
+        "exam": [
+          "Hypotension that does not fully correct with fluids",
+          "Hyperpigmented palmar creases or buccal mucosa"
+        ],
+        "labs": [
+          "Hyponatremia with hyperkalemia",
+          "Low morning cortisol with elevated ACTH",
+          "Eosinophilia"
+        ]
+      }
+    },
+    {
+      "name": "Acute kidney injury from intrinsic causes",
+      "slug": "acute-kidney-injury",
+      "why_considered": "Rising creatinine and falling urine output can be attributed to dehydration when the true cause is tubular or interstitial injury.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Nephrotoxic medication exposure such as NSAIDs or contrast",
+          "Rash, fever, or arthralgias suggesting interstitial nephritis"
+        ],
+        "exam": [
+          "Rash or fever",
+          "Volume status that appears adequate"
+        ],
+        "labs": [
+          "BUN/creatinine ratio under 20",
+          "Muddy brown casts on urinalysis",
+          "Creatinine that fails to improve after adequate fluids"
+        ]
+      }
+    },
+    {
+      "name": "Heart failure with volume overload",
+      "slug": "heart-failure",
+      "why_considered": "Patients can present with weakness, dizziness, and reduced urine output from poor forward flow rather than true volume depletion.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Orthopnea, paroxysmal nocturnal dyspnea",
+          "Leg swelling and weight gain",
+          "Known cardiomyopathy"
+        ],
+        "exam": [
+          "Crackles, jugular venous distension, pitting edema",
+          "S3 gallop"
+        ],
+        "labs": [
+          "Elevated BNP",
+          "Low BUN/creatinine ratio"
+        ],
+        "imaging": [
+          "Pulmonary edema or cardiomegaly on chest x-ray",
+          "Dilated inferior vena cava on ultrasound"
+        ]
+      }
+    },
+    {
+      "name": "Viral gastroenteritis without significant dehydration",
+      "slug": "gastroenteritis",
+      "why_considered": "Vomiting and diarrhea are the most common causes of dehydration, but many patients have minimal volume loss.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Sick contacts or food exposure",
+          "Watery diarrhea without blood",
+          "Symptoms improving over 24 to 48 hours"
+        ],
+        "exam": [
+          "Moist mucous membranes",
+          "Normal capillary refill and vital signs"
+        ],
+        "labs": [
+          "Normal BUN and creatinine",
+          "Urine specific gravity under 1.020"
+        ]
+      }
+    },
+    {
+      "name": "Heat exhaustion",
+      "slug": "heat-exhaustion",
+      "why_considered": "Hot weather or exertion causes salt and water losses with weakness, dizziness, and tachycardia.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Outdoor work or exercise in heat",
+          "Heavy sweating",
+          "Symptoms improve with cooling and fluids"
+        ],
+        "exam": [
+          "Core temperature under 104 F",
+          "Sweating skin",
+          "No confusion"
+        ],
+        "labs": [
+          "Mildly elevated sodium or normal",
+          "Creatine kinase may be mildly elevated"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Thirst and dry mouth with normal vital signs, moist mucous membranes, and normal urine output; can be managed with oral fluids at home",
+      "moderate": "Dry mucous membranes, sunken eyes, delayed capillary refill over 2 seconds, tachycardia, orthostatic changes, and reduced urine output; needs oral rehydration solution or IV fluids with monitoring",
+      "severe": "Lethargy or confusion, weak thready pulses, hypotension, cool mottled extremities, and minimal urine output with rising creatinine; requires IV isotonic crystalloid and admission",
+      "critical": "Shock with unresponsiveness, systolic blood pressure under 90 mm Hg, lactate above 4 mmol/L, and acute kidney injury; requires rapid resuscitation and intensive care"
+    },
+    "red_flags": [
+      {
+        "finding": "Altered mental status or lethargy",
+        "meaning": "Severe dehydration with cerebral hypoperfusion; needs IV fluids and admission"
+      },
+      {
+        "finding": "Systolic blood pressure under 90 mm Hg or heart rate over 130",
+        "meaning": "Hypovolemic shock; resuscitate immediately"
+      },
+      {
+        "finding": "Capillary refill over 2 seconds with cool mottled extremities",
+        "meaning": "Poor peripheral perfusion; markers of shock"
+      },
+      {
+        "finding": "Lactate above 4 mmol/L",
+        "meaning": "Tissue hypoperfusion; reassess after fluids and look for another cause"
+      },
+      {
+        "finding": "No urine output for 12 hours or creatinine rising after fluids",
+        "meaning": "Acute kidney injury; may need nephrology involvement"
+      },
+      {
+        "finding": "Sodium above 155 mmol/L or below 125 mmol/L",
+        "meaning": "Severe dysnatremia; correct slowly to avoid neurologic injury"
+      },
+      {
+        "finding": "Potassium below 2.5 or above 6.0 mmol/L",
+        "meaning": "Arrhythmia risk; needs ECG and urgent correction"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Acute kidney injury",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Rising creatinine",
+          "Oliguria",
+          "BUN/creatinine ratio above 20 initially"
+        ]
+      },
+      {
+        "name": "Hypovolemic shock",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Hypotension",
+          "Tachycardia",
+          "Cool mottled skin",
+          "Lactate above 4 mmol/L"
+        ]
+      },
+      {
+        "name": "Electrolyte abnormalities",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Hypokalemia with vomiting or diarrhea",
+          "Hypernatremia with water loss",
+          "Hyperkalemia with kidney failure"
+        ]
+      },
+      {
+        "name": "Arrhythmia",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Palpitations",
+          "Syncope",
+          "ECG showing peaked T waves or prolonged QT"
+        ]
+      },
+      {
+        "name": "Seizure or cerebral edema from rapid sodium correction",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Seizure during fluid resuscitation",
+          "Sodium corrected faster than 10 to 12 mmol/L per day"
+        ]
+      },
+      {
+        "name": "Rhabdomyolysis",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Muscle pain and weakness",
+          "Dark urine with positive dipstick but no red blood cells",
+          "Elevated creatine kinase"
+        ]
+      },
+      {
+        "name": "Thrombosis from hemoconcentration",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Swollen painful limb",
+          "Chest pain or dyspnea",
+          "Elevated hematocrit"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "infants",
+        "differences": "Higher body water turnover and inability to ask for fluids; assess fontanelle, tears, and diaper count. Use oral rehydration solution or IV fluids by weight and monitor glucose and sodium closely."
+      },
+      {
+        "population": "children",
+        "differences": "May present with lethargy and irritability rather than thirst; use clinical scales based on mental status, eyes, mucous membranes, and skin pinch. Oral rehydration is first line when tolerated."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Blunted thirst and age-related kidney changes mean they dehydrate faster and present with confusion or falls without reporting thirst. They are more prone to hypernatremia and medication-related losses."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Increased fluid needs and vomiting from hyperemesis can cause rapid dehydration; check a pregnancy test before imaging and choose fluids and antiemetics compatible with pregnancy."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "Cannot concentrate urine or excrete a potassium load; fluid and potassium replacement must be adjusted and kidney function followed closely."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Hyperglycemia causes osmotic diuresis; dehydration can be the presenting feature of new diabetes or DKA, so check glucose and ketones in every case."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "How much have you been drinking, and how much fluid have you been losing (vomiting, diarrhea, sweating, urinating)?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Losses exceed intake; identifies the mechanism and likely cause"
+      },
+      {
+        "question": "When did this start, and is it getting better or worse?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Hours to days of progressive symptoms; rapid worsening suggests severe dehydration"
+      },
+      {
+        "question": "How many times have you vomited or had diarrhea in the last 24 hours?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "High frequency of losses points to significant volume depletion"
+      },
+      {
+        "question": "Are you able to keep fluids down?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Inability to keep fluids down means oral rehydration will fail and IV fluids are needed"
+      },
+      {
+        "question": "How often are you urinating, and what color is your urine?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Decreased frequency and dark yellow urine indicate reduced volume status"
+      },
+      {
+        "question": "Do you feel dizzy or lightheaded, especially when standing up?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Orthostatic symptoms suggest moderate to severe volume depletion"
+      },
+      {
+        "question": "Any fever, chills, or feeling hot?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Fever increases insensible losses and points to an infectious cause"
+      },
+      {
+        "question": "Any blood in your vomit or stool, or black stools?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Bleeding as a cause of hypovolemia rather than simple dehydration"
+      },
+      {
+        "question": "Have you been confused, unusually sleepy, or hard to wake up?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Altered mental status marks severe dehydration or shock"
+      },
+      {
+        "question": "What medicines do you take, especially water pills or diabetes medicines?",
+        "category": "medications",
+        "importance": "essential",
+        "looking_for": "Diuretics, SGLT2 inhibitors, or other agents causing fluid or electrolyte losses"
+      },
+      {
+        "question": "Do you have diabetes, kidney disease, or any chronic illness?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Conditions causing polyuria or impairing the ability to conserve water"
+      },
+      {
+        "question": "Have you been working or exercising outdoors in hot weather?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Heat and exertion as the source of sweat losses"
+      },
+      {
+        "question": "Could you be pregnant? When was your last period?",
+        "category": "obstetric",
+        "importance": "important",
+        "looking_for": "Pregnancy changes fluid needs and medication choices"
+      },
+      {
+        "question": "Any chest pain, shortness of breath, or leg swelling?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Absent; present suggests heart failure rather than dehydration"
+      },
+      {
+        "question": "Any muscle cramps, weakness, or palpitations?",
+        "category": "associated",
+        "importance": "optional",
+        "looking_for": "Electrolyte disturbance from fluid losses"
+      }
+    ],
+    "accepted_names": [
+      "Dehydration",
+      "Volume depletion",
+      "Hypovolemia",
+      "Fluid volume depletion",
+      "Intravascular volume depletion"
+    ],
+    "reasoning_points": [
+      "Fluid losses exceed intake, identified from vomiting, diarrhea, sweating, polyuria, fever, or poor oral intake",
+      "Symptoms progress from thirst and dry mouth to dizziness, weakness, and reduced urine output",
+      "Exam shows dry mucous membranes, delayed capillary refill, tachycardia, and orthostatic changes",
+      "Severity is graded from mental status, perfusion, vital signs, and urine output rather than a single lab",
+      "Labs show hemoconcentration, a BUN/creatinine ratio above 20, concentrated urine, and electrolyte abnormalities",
+      "The underlying cause is named, such as gastroenteritis, hyperglycemia, diuretics, or heat exposure",
+      "Look-alikes such as hemorrhage, DKA, adrenal insufficiency, and heart failure are considered and excluded"
+    ],
+    "difficulty": {
+      "easy": [
+        "Infant or young child with several days of vomiting and diarrhea",
+        "Clear history of poor intake with hot weather or exertion",
+        "Classic dry mucous membranes, tachycardia, and reduced urine output",
+        "BUN/creatinine ratio above 20 with concentrated urine"
+      ],
+      "medium": [
+        "Older adult on a diuretic with weakness and confusion but no reported thirst",
+        "Hyperglycemia with osmotic diuresis as the cause",
+        "Moderate dehydration with orthostatic changes but normal resting vitals",
+        "Electrolyte abnormality such as hypokalemia or hypernatremia driving the presentation"
+      ],
+      "hard": [
+        "Older adult with confusion and falls where dehydration is not the first thought",
+        "Hypotension with hyperkalemia suggesting adrenal insufficiency rather than simple dehydration",
+        "Patient with heart failure where poor forward flow mimics volume depletion",
+        "Creatinine rising after fluids, suggesting intrinsic kidney injury rather than ongoing dehydration",
+        "Severe hypernatremia requiring slow correction to avoid cerebral edema"
+      ]
+    }
+  }
+}

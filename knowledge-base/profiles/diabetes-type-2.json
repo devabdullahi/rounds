@@ -1,0 +1,1889 @@
+{
+  "schema_version": "0.2",
+  "slug": "diabetes-type-2",
+  "triage": {
+    "name": "Diabetes Type 2",
+    "case_suitable": true,
+    "reason": "Very common clinic presentation with subtle symptoms, screening labs and a broad complication differential; strong teaching case.",
+    "kind": "disease",
+    "category": "endocrine/metabolic",
+    "organ_systems": [
+      "endocrine"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "familyMedicine",
+      "emergency"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "clinic",
+      "inpatient",
+      "emergency"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:16:59Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T05:04:05Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T05:04:12Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T05:04:23Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T05:04:41Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T05:04:47Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'a1c' was in ['initial', 'confirmatory'], kept ['initial']",
+        "auto-repaired: workup: 'glucose' was in ['initial', 'confirmatory'], kept ['initial']",
+        "labs k: both high and low across severities",
+        "differential type-1-diabetes: no profile yet",
+        "differential diabetic-ketoacidosis: no profile yet",
+        "differential hyperosmolar-hyperglycemic-state: no profile yet",
+        "differential medication-induced-hyperglycemia: no profile yet",
+        "differential stress-hyperglycemia: no profile yet",
+        "differential cushing-syndrome: no profile yet",
+        "differential hypothyroidism: no profile yet",
+        "differential pancreatic-diabetes: no profile yet",
+        "differential monogenic-diabetes: no profile yet",
+        "differential gestational-diabetes: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 35,
+      "typical_max": 80,
+      "peak": "45–65",
+      "possible_min": 10,
+      "possible_max": 100
+    },
+    "sex": "either",
+    "demographics": [
+      "More common in Black, Hispanic/Latino, American Indian, Asian American, and Pacific Islander adults in the US",
+      "Slightly more common in men in middle age; more common in women at older ages",
+      "Increasingly diagnosed in adolescents and young adults, especially with obesity"
+    ],
+    "risk_factors": [
+      {
+        "text": "Overweight or obesity",
+        "strength": "strong"
+      },
+      {
+        "text": "Prediabetes (A1C 5.7–6.4% or fasting glucose 100–125 mg/dL)",
+        "strength": "strong"
+      },
+      {
+        "text": "First-degree relative with type 2 diabetes",
+        "strength": "strong"
+      },
+      {
+        "text": "Age over 45",
+        "strength": "moderate"
+      },
+      {
+        "text": "Physically inactive lifestyle",
+        "strength": "moderate"
+      },
+      {
+        "text": "History of gestational diabetes or a baby weighing 9 pounds or more at birth",
+        "strength": "strong"
+      },
+      {
+        "text": "Polycystic ovary syndrome",
+        "strength": "moderate"
+      },
+      {
+        "text": "High blood pressure or high triglycerides with low HDL cholesterol",
+        "strength": "moderate"
+      },
+      {
+        "text": "Acanthosis nigricans (dark velvety skin at the neck or armpits)",
+        "strength": "moderate"
+      },
+      {
+        "text": "Chronic use of glucocorticoids or atypical antipsychotics",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Hypertension",
+      "Hyperlipidemia",
+      "Coronary artery disease",
+      "Stroke",
+      "Metabolic syndrome",
+      "Nonalcoholic fatty liver disease",
+      "Obstructive sleep apnea",
+      "Polycystic ovary syndrome",
+      "Depression"
+    ],
+    "family_history": [
+      "Type 2 diabetes in a parent or sibling",
+      "Gestational diabetes in the mother"
+    ],
+    "social_history": [
+      "Sedentary work or little regular exercise",
+      "Diets high in refined carbohydrates and sugar-sweetened drinks",
+      "Limited access to healthy food or preventive care"
+    ],
+    "exposures": [],
+    "risk_medications": [
+      "prednisone",
+      "prednisolone",
+      "dexamethasone",
+      "olanzapine",
+      "risperidone",
+      "quetiapine",
+      "hydrochlorothiazide",
+      "metoprolol",
+      "tacrolimus",
+      "sirolimus"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I've been so thirsty lately",
+        "frequency": "common"
+      },
+      {
+        "text": "I'm up all night going to the bathroom",
+        "frequency": "common"
+      },
+      {
+        "text": "I just feel tired all the time",
+        "frequency": "common"
+      },
+      {
+        "text": "My doctor said my sugar was high on my blood work",
+        "frequency": "common"
+      },
+      {
+        "text": "I've lost some weight without trying",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "My vision has been blurry",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "The sore on my foot just won't heal",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual, often over months to years; many patients cannot name when it started",
+      "duration": "Symptoms usually present for months; a third or more of patients have no symptoms and are found on routine labs",
+      "progression": "Slowly worsening thirst, urination and fatigue; symptoms may be mild enough to ignore until a routine visit or a complication brings them in",
+      "location": "Whole-body; foot numbness or tingling is in the feet and hands",
+      "radiation": "Not applicable",
+      "quality": "Thirst is constant and hard to satisfy; urination is frequent, including at night; fatigue is a heavy, low-energy feeling",
+      "severity": "Mild to moderate; patients often say they thought it was just getting older",
+      "timing": "Thirst and urination are worse at night and after meals; fatigue is worse in the afternoon",
+      "aggravating": [
+        "Sugary drinks and large meals",
+        "Hot weather",
+        "Being inactive"
+      ],
+      "relieving": [
+        "Drinking water briefly helps the thirst",
+        "Rest helps the tiredness a little"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Increased thirst",
+          "frequency": "common"
+        },
+        {
+          "text": "Frequent urination, including waking at night",
+          "frequency": "common"
+        },
+        {
+          "text": "Tiredness or low energy",
+          "frequency": "common"
+        },
+        {
+          "text": "Blurred vision that comes and goes",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Numbness, tingling or burning in the feet",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Increased hunger",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Unintentional weight loss",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Slow-healing cuts or sores",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Recurrent yeast or urinary infections",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Dry, itchy skin",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Erectile dysfunction",
+          "frequency": "sometimes"
+        }
+      ],
+      "pertinent_negatives": [
+        "Vomiting and deep rapid breathing (as in diabetic ketoacidosis)",
+        "Sudden severe weight loss over weeks",
+        "Chest pain or pressure",
+        "One-sided weakness, numbness or trouble speaking",
+        "Severe abdominal pain",
+        "Fruity or acetone breath",
+        "Symptoms that began over days rather than months"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Tiredness",
+            "frequency": "common"
+          },
+          {
+            "text": "Unintentional weight loss",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Fever",
+          "Night sweats",
+          "Rapid weight loss over weeks"
+        ]
+      },
+      {
+        "system": "eyes",
+        "positives": [
+          {
+            "text": "Blurry vision that fluctuates",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Sudden vision loss",
+          "Eye pain",
+          "Flashes or floaters"
+        ],
+        "argues_against": [
+          "Retinal detachment",
+          "Acute angle-closure glaucoma"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Increased appetite",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Vomiting",
+          "Severe abdominal pain",
+          "Blood in stool",
+          "Jaundice"
+        ],
+        "argues_against": [
+          "Diabetic ketoacidosis",
+          "Acute pancreatitis"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [
+          {
+            "text": "Frequent urination, including at night",
+            "frequency": "common"
+          },
+          {
+            "text": "Recurrent yeast infections",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Erectile dysfunction",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Burning with urination",
+          "Blood in urine",
+          "Flank pain",
+          "Difficulty starting the stream"
+        ],
+        "argues_against": [
+          "Urinary tract infection",
+          "Kidney stones",
+          "Prostate obstruction"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Numbness or tingling in the feet",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Burning pain in the feet at night",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "One-sided weakness",
+          "Trouble speaking",
+          "Sudden severe headache",
+          "Loss of balance"
+        ],
+        "argues_against": [
+          "Stroke",
+          "Acute neuropathy from another cause"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [
+          {
+            "text": "Dark velvety skin at the neck or armpits",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Dry, itchy skin",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Sores that heal slowly",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Rash covering the body",
+          "New blistering",
+          "Skin ulcers with black edges"
+        ],
+        "argues_against": [
+          "Severe skin infection",
+          "Necrotizing fasciitis"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [],
+        "negatives": [
+          "Chest pain",
+          "Shortness of breath at rest",
+          "Swelling in the legs",
+          "Palpitations"
+        ],
+        "argues_against": [
+          "Acute coronary syndrome",
+          "Heart failure"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Type 2 diabetes in children and teens usually comes with obesity and a strong family history; they may have no symptoms and be found on screening, or present with acanthosis nigricans and high blood pressure.",
+        "missing_classic_features": [
+          "Long slow onset over years",
+          "Symptoms attributed to aging"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "Symptoms are often blamed on aging; thirst may be blunted, and they may present with confusion, falls, poor wound healing or a hyperglycemic emergency instead of classic thirst and urination.",
+        "missing_classic_features": [
+          "Marked thirst",
+          "Increased appetite"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "High blood sugar first found in pregnancy is usually gestational diabetes; it is often silent and picked up on routine screening, and it raises the risk of later type 2 diabetes.",
+        "missing_classic_features": [
+          "Classic thirst and urination symptoms"
+        ]
+      },
+      {
+        "population": "obesity",
+        "how_it_differs": "Patients with obesity may have insulin resistance and acanthosis nigricans for years before glucose rises; symptoms stay mild and the diagnosis is often made on screening labs.",
+        "missing_classic_features": [
+          "Unintentional weight loss"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Well-appearing, often overweight or obese, no distress",
+      "moderate": "Well-appearing but tired; may look overweight with central adiposity",
+      "severe": "Ill-appearing, dehydrated, drowsy or confused",
+      "critical": "Lethargic or obtunded, dry mucous membranes, deep rapid breathing, signs of shock"
+    },
+    "findings": [
+      {
+        "id": "elevated-bmi",
+        "region": "general",
+        "maneuver": "Measure height and weight and calculate BMI; measure waist circumference",
+        "finding": "BMI in the overweight or obese range with central adiposity",
+        "frequency": "almost_always",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "acanthosis-nigricans",
+        "region": "skin",
+        "maneuver": "Inspect the back of the neck, axillae and skin folds",
+        "finding": "Dark, thick, velvety skin in flexural areas",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "skin-tags",
+        "region": "skin",
+        "maneuver": "Inspect the neck and axillae",
+        "finding": "Small skin tags",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "foot-ulcer",
+        "region": "extremities",
+        "maneuver": "Inspect the soles, between the toes and over pressure points of both feet",
+        "finding": "Non-healing ulcer or callus, often at a pressure point",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "foot-deformity",
+        "region": "extremities",
+        "maneuver": "Inspect the feet for deformity and dry, cracked skin",
+        "finding": "Hammer toes, prominent metatarsal heads, dry fissured skin",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "diminished-pulses",
+        "region": "extremities",
+        "maneuver": "Palpate the dorsalis pedis and posterior tibial pulses",
+        "finding": "Diminished or absent pedal pulses",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "distal-numbness",
+        "region": "neuro",
+        "maneuver": "Test light touch and pinprick over the distal feet in a stocking distribution",
+        "finding": "Reduced sensation in a symmetric stocking distribution",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "vibratory-loss",
+        "region": "neuro",
+        "maneuver": "Test vibration sense with a 128 Hz tuning fork at the great toe",
+        "finding": "Reduced or absent vibration sense",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "ankle-reflex-loss",
+        "region": "neuro",
+        "maneuver": "Test the ankle reflexes",
+        "finding": "Absent ankle reflexes",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "monofilament-loss",
+        "region": "neuro",
+        "maneuver": "Test with a 10 g monofilament at the plantar surface of the foot",
+        "finding": "Loss of protective sensation",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "hypertensive-retinopathy",
+        "region": "heent",
+        "maneuver": "Perform a fundoscopic exam",
+        "finding": "Arteriovenous nicking, cotton wool spots or flame hemorrhages",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "diabetic-retinopathy",
+        "region": "heent",
+        "maneuver": "Perform a fundoscopic exam",
+        "finding": "Microaneurysms, dot-blot hemorrhages, hard exudates or neovascularization",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "cataract",
+        "region": "heent",
+        "maneuver": "Inspect the lens with a penlight or ophthalmoscope",
+        "finding": "Lens opacity",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "dry-mucous-membranes",
+        "region": "heent",
+        "maneuver": "Inspect the oral mucosa and tongue",
+        "finding": "Dry mucous membranes",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "candidiasis",
+        "region": "heent",
+        "maneuver": "Inspect the oral cavity and tongue",
+        "finding": "White plaques consistent with oral thrush",
+        "frequency": "rare",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-lungs",
+        "region": "lung",
+        "maneuver": "Auscultate all lung fields",
+        "finding": "Clear breath sounds without crackles or wheeze",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-heart",
+        "region": "cardiac",
+        "maneuver": "Auscultate the heart and check for jugular venous distension and edema",
+        "finding": "No murmur, no JVD, no peripheral edema",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-abdomen",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen",
+        "finding": "Soft, non-tender, no organomegaly or mass",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-mental-status",
+        "region": "mental_status",
+        "maneuver": "Assess orientation and level of alertness",
+        "finding": "Alert and oriented, normal attention",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "severe": {
+        "min": 97.0,
+        "max": 100.4
+      },
+      "critical": {
+        "min": 96.0,
+        "max": 101.5
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 100
+      },
+      "moderate": {
+        "min": 70,
+        "max": 105
+      },
+      "severe": {
+        "min": 90,
+        "max": 120
+      },
+      "critical": {
+        "min": 100,
+        "max": 140
+      }
+    },
+    "rr": {
+      "severe": {
+        "min": 16,
+        "max": 24
+      },
+      "critical": {
+        "min": 20,
+        "max": 32
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 110,
+        "max": 145
+      },
+      "moderate": {
+        "min": 115,
+        "max": 155
+      },
+      "severe": {
+        "min": 90,
+        "max": 160
+      },
+      "critical": {
+        "min": 70,
+        "max": 100
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 65,
+        "max": 90
+      },
+      "moderate": {
+        "min": 70,
+        "max": 95
+      },
+      "severe": {
+        "min": 55,
+        "max": 100
+      },
+      "critical": {
+        "min": 40,
+        "max": 65
+      }
+    },
+    "spo2": {
+      "severe": {
+        "min": 92,
+        "max": 98
+      },
+      "critical": {
+        "min": 85,
+        "max": 94
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "a1c",
+      "ranges": {
+        "mild": {
+          "min": 6.5,
+          "max": 7.0
+        },
+        "moderate": {
+          "min": 7.0,
+          "max": 8.5
+        },
+        "severe": {
+          "min": 8.5,
+          "max": 11.0
+        },
+        "critical": {
+          "min": 11.0,
+          "max": 15.0
+        }
+      },
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Reflects average glucose over about 3 months; may be falsely low with anemia, recent transfusion, or hemoglobin variants."
+    },
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "mild": {
+          "min": 126,
+          "max": 160
+        },
+        "moderate": {
+          "min": 160,
+          "max": 250
+        },
+        "severe": {
+          "min": 250,
+          "max": 400
+        },
+        "critical": {
+          "min": 400,
+          "max": 800
+        }
+      },
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Fasting value; a random value over 200 mg/dL with classic symptoms also makes the diagnosis."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "mild": {
+          "min": 1.0,
+          "max": 1.3
+        },
+        "moderate": {
+          "min": 1.2,
+          "max": 1.8
+        },
+        "severe": {
+          "min": 1.5,
+          "max": 3.0
+        },
+        "critical": {
+          "min": 2.5,
+          "max": 6.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Rises with diabetic kidney disease; used to compute eGFR for staging."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "moderate": {
+          "min": 18,
+          "max": 30
+        },
+        "severe": {
+          "min": 25,
+          "max": 50
+        },
+        "critical": {
+          "min": 35,
+          "max": 80
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Rises with dehydration or kidney impairment."
+    },
+    {
+      "test_id": "k",
+      "ranges": {
+        "mild": {
+          "min": 3.3,
+          "max": 3.5
+        },
+        "moderate": {
+          "min": 3.0,
+          "max": 3.4
+        },
+        "severe": {
+          "min": 5.3,
+          "max": 6.0
+        },
+        "critical": {
+          "min": 5.8,
+          "max": 7.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Low with osmotic diuresis or insulin; high with kidney failure or certain diabetes medicines."
+    },
+    {
+      "test_id": "na",
+      "ranges": {
+        "mild": {
+          "min": 132,
+          "max": 135
+        },
+        "moderate": {
+          "min": 128,
+          "max": 134
+        },
+        "severe": {
+          "min": 120,
+          "max": 130
+        },
+        "critical": {
+          "min": 115,
+          "max": 125
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Low with marked hyperglycemia or diuretic use; very high with severe dehydration."
+    },
+    {
+      "test_id": "hco3",
+      "ranges": {
+        "moderate": {
+          "min": 18,
+          "max": 22
+        },
+        "severe": {
+          "min": 12,
+          "max": 18
+        },
+        "critical": {
+          "min": 5,
+          "max": 12
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Low in ketoacidosis or hyperosmolar states; a normal value argues against significant acidosis."
+    },
+    {
+      "test_id": "tg",
+      "ranges": {
+        "mild": {
+          "min": 150,
+          "max": 250
+        },
+        "moderate": {
+          "min": 200,
+          "max": 500
+        },
+        "severe": {
+          "min": 400,
+          "max": 1000
+        },
+        "critical": {
+          "min": 1000,
+          "max": 3000
+        }
+      },
+      "frequency": "common",
+      "importance": "important"
+    },
+    {
+      "test_id": "hdl",
+      "ranges": {
+        "mild": {
+          "min": 35,
+          "max": 45
+        },
+        "moderate": {
+          "min": 30,
+          "max": 40
+        },
+        "severe": {
+          "min": 20,
+          "max": 35
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Low HDL is part of the insulin-resistance pattern."
+    },
+    {
+      "test_id": "ldl",
+      "ranges": {
+        "mild": {
+          "min": 100,
+          "max": 130
+        },
+        "moderate": {
+          "min": 130,
+          "max": 160
+        },
+        "severe": {
+          "min": 160,
+          "max": 220
+        }
+      },
+      "frequency": "common",
+      "importance": "important"
+    },
+    {
+      "test_id": "chol",
+      "ranges": {
+        "mild": {
+          "min": 200,
+          "max": 240
+        },
+        "moderate": {
+          "min": 240,
+          "max": 300
+        },
+        "severe": {
+          "min": 300,
+          "max": 400
+        }
+      },
+      "frequency": "common",
+      "importance": "optional"
+    },
+    {
+      "test_id": "alt",
+      "ranges": {
+        "mild": {
+          "min": 40,
+          "max": 80
+        },
+        "moderate": {
+          "min": 60,
+          "max": 150
+        },
+        "severe": {
+          "min": 100,
+          "max": 300
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Mild elevation suggests fatty liver disease, common with type 2 diabetes."
+    },
+    {
+      "test_id": "ast",
+      "ranges": {
+        "mild": {
+          "min": 40,
+          "max": 80
+        },
+        "moderate": {
+          "min": 60,
+          "max": 150
+        },
+        "severe": {
+          "min": 100,
+          "max": 300
+        }
+      },
+      "frequency": "common",
+      "importance": "optional"
+    },
+    {
+      "test_id": "ua_glucose",
+      "qualitative": {
+        "mild": "Trace",
+        "moderate": "1+",
+        "severe": "3+",
+        "critical": "4+"
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Glucose appears in urine once the blood level exceeds the renal threshold."
+    },
+    {
+      "test_id": "ua_ketones",
+      "qualitative": {
+        "moderate": "Small",
+        "severe": "Moderate",
+        "critical": "Large"
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Large ketones with acidosis suggest ketoacidosis rather than uncomplicated type 2 diabetes."
+    },
+    {
+      "test_id": "ua_protein",
+      "qualitative": {
+        "moderate": "1+",
+        "severe": "2+",
+        "critical": "3+"
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Suggests diabetic kidney disease; confirm with a urine albumin-to-creatinine ratio."
+    },
+    {
+      "test_id": "tsh",
+      "ranges": {
+        "mild": {
+          "min": 4.5,
+          "max": 8.0
+        },
+        "moderate": {
+          "min": 8.0,
+          "max": 15.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Thyroid disease clusters with type 2 diabetes and can worsen glucose control."
+    },
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "moderate": {
+          "min": 11.0,
+          "max": 16.0
+        },
+        "severe": {
+          "min": 14.0,
+          "max": 22.0
+        },
+        "critical": {
+          "min": 18.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Elevated when there is an active infection such as a foot ulcer or urinary infection."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rhythm",
+        "finding": "Normal sinus rhythm",
+        "frequency": "common"
+      },
+      {
+        "feature": "other",
+        "finding": "Signs of left ventricular hypertrophy from long-standing hypertension",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "st",
+        "finding": "ST depression or T-wave inversion suggesting silent ischemia",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "t_wave",
+        "finding": "Flattened or inverted T waves",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "qt",
+        "finding": "Prolonged QTc with severe electrolyte disturbance",
+        "frequency": "rare",
+        "min_severity": "severe"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Dilated retinal exam or retinal photography",
+      "modality": "other",
+      "findings": [
+        {
+          "text": "Microaneurysms",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Dot-blot hemorrhages and hard exudates",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Macular edema",
+          "frequency": "rare"
+        },
+        {
+          "text": "Neovascularization (proliferative retinopathy)",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Coronary CT angiography",
+      "modality": "ct",
+      "preferred_when": "Atypical chest symptoms in a patient at intermediate risk",
+      "findings": [
+        {
+          "text": "Coronary artery calcification and stenosis",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Carotid duplex ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "Carotid bruit or prior stroke or TIA",
+      "findings": [
+        {
+          "text": "Carotid plaque with stenosis",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Ankle-brachial index",
+      "modality": "other",
+      "preferred_when": "Claudication, non-healing foot ulcer, or absent pedal pulses",
+      "findings": [
+        {
+          "text": "Reduced ankle-brachial index indicating peripheral arterial disease",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Falsely elevated index from arterial calcification",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Abdominal ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "Right upper quadrant pain or abnormal liver enzymes",
+      "findings": [
+        {
+          "text": "Increased hepatic echogenicity suggesting fatty liver",
+          "frequency": "common"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "a1c",
+        "why": "Confirms the diagnosis and sets the baseline for control"
+      },
+      {
+        "test": "glucose",
+        "why": "Fasting plasma glucose is an alternative diagnostic test"
+      },
+      {
+        "test": "bmp",
+        "why": "Assesses kidney function, electrolytes and acid-base status"
+      },
+      {
+        "test": "lipids",
+        "why": "Cardiovascular risk and treatment targets"
+      },
+      {
+        "test": "ua",
+        "why": "Screens for glucose, ketones and protein in the urine"
+      },
+      {
+        "test": "cmp_extra",
+        "why": "Liver enzymes and albumin as part of the metabolic assessment"
+      },
+      {
+        "test": "Dilated retinal exam or retinal photography",
+        "why": "Screens for retinopathy at diagnosis"
+      },
+      {
+        "test": "Ankle-brachial index",
+        "why": "Screens for peripheral arterial disease",
+        "only_if": "claudication, non-healing foot ulcer, or absent pedal pulses"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "tsh",
+        "why": "Thyroid disease is common and can affect glucose control"
+      },
+      {
+        "test": "crp",
+        "why": "Markers of inflammation track with insulin resistance",
+        "only_if": "features suggest an inflammatory or infectious process"
+      },
+      {
+        "test": "wbc",
+        "why": "Looks for infection",
+        "only_if": "fever, foot ulcer, or urinary symptoms"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "d_dimer",
+        "why": "No role in the evaluation of hyperglycemia"
+      },
+      {
+        "test": "lactate",
+        "why": "Not needed unless there is acidosis or hypoperfusion"
+      },
+      {
+        "test": "csf",
+        "why": "Not part of the diabetes workup"
+      },
+      {
+        "test": "Coronary CT angiography",
+        "why": "Not routine; reserve for selected patients with chest symptoms",
+        "only_if": "atypical chest symptoms in an intermediate-risk patient"
+      }
+    ],
+    "decision_points": [
+      "Confirm an abnormal screening result with a second test unless the patient has unequivocal symptoms with a glucose of 200 mg/dL or higher",
+      "Check for ketones and acidosis if the patient is vomiting, breathing deeply, or has severe hyperglycemia",
+      "Screen for retinopathy, kidney disease and neuropathy at diagnosis and then at recommended intervals",
+      "Treat cardiovascular risk factors, not just glucose"
+    ],
+    "criteria": [
+      {
+        "name": "American Diabetes Association diagnostic thresholds",
+        "summary": "Diabetes is diagnosed when any one of the following is met and confirmed: A1C of 6.5% or higher, fasting plasma glucose of 126 mg/dL or higher after at least 8 hours of fasting, a 2-hour plasma glucose of 200 mg/dL or higher during an oral glucose tolerance test, or a random plasma glucose of 200 mg/dL or higher in a patient with classic symptoms of hyperglycemia or a hyperglycemic crisis. In the absence of unequivocal symptoms, the same test should be repeated to confirm the result.",
+        "items": [
+          "A1C 6.5% or higher",
+          "Fasting plasma glucose 126 mg/dL or higher",
+          "2-hour plasma glucose 200 mg/dL or higher on oral glucose tolerance testing",
+          "Random plasma glucose 200 mg/dL or higher with classic symptoms or hyperglycemic crisis"
+        ]
+      },
+      {
+        "name": "Prediabetes thresholds",
+        "summary": "Prediabetes is present when glucose is above normal but below the diabetes cutoffs: A1C 5.7 to 6.4%, fasting plasma glucose 100 to 125 mg/dL, or a 2-hour plasma glucose of 140 to 199 mg/dL on oral glucose tolerance testing.",
+        "items": [
+          "A1C 5.7 to 6.4%",
+          "Fasting plasma glucose 100 to 125 mg/dL",
+          "2-hour plasma glucose 140 to 199 mg/dL"
+        ]
+      }
+    ],
+    "scores": [
+      "framingham_risk",
+      "ascvd_risk"
+    ]
+  },
+  "differential": [
+    {
+      "name": "Type 1 diabetes",
+      "slug": "type-1-diabetes",
+      "why_considered": "Both cause hyperglycemia with thirst, urination and weight loss, and the distinction changes treatment completely.",
+      "must_not_miss": true,
+      "trigger": "Younger or lean patient, rapid symptom onset over weeks, or ketones and acidosis at presentation",
+      "discriminators": {
+        "history": [
+          "Symptoms develop over weeks rather than months to years",
+          "Weight loss is prominent despite normal or increased appetite",
+          "Personal or family history of autoimmune disease such as thyroid disease or celiac disease"
+        ],
+        "exam": [
+          "Often lean or normal weight rather than overweight",
+          "May appear ill or dehydrated if presenting in ketoacidosis"
+        ],
+        "labs": [
+          "Positive glutamic acid decarboxylase or islet antigen 2 antibodies",
+          "Low or undetectable C-peptide",
+          "Large urine ketones with a low bicarbonate and high anion gap"
+        ]
+      }
+    },
+    {
+      "name": "Diabetic ketoacidosis",
+      "slug": "diabetic-ketoacidosis",
+      "why_considered": "Severe hyperglycemia with dehydration, vomiting and altered mental status can be the first presentation of type 2 diabetes, especially in Black and Hispanic adults.",
+      "must_not_miss": true,
+      "trigger": "Vomiting, deep rapid breathing, fruity breath, abdominal pain or drowsiness in a patient with very high glucose",
+      "discriminators": {
+        "history": [
+          "Nausea and vomiting with abdominal pain",
+          "Symptoms worsening over days rather than months",
+          "Recent infection, missed medication or new steroid use"
+        ],
+        "exam": [
+          "Kussmaul respirations",
+          "Dry mucous membranes and poor skin turgor",
+          "Drowsiness or confusion"
+        ],
+        "labs": [
+          "Glucose usually above 250 mg/dL",
+          "Bicarbonate below 18 mmol/L with an elevated anion gap",
+          "Moderate to large urine or serum ketones",
+          "pH below 7.30 on arterial or venous blood gas"
+        ]
+      }
+    },
+    {
+      "name": "Hyperosmolar hyperglycemic state",
+      "slug": "hyperosmolar-hyperglycemic-state",
+      "why_considered": "Older patients with type 2 diabetes can present with extreme hyperglycemia, profound dehydration and altered mental status without significant ketosis.",
+      "must_not_miss": true,
+      "trigger": "Glucose often above 600 mg/dL with marked dehydration, confusion or focal neurologic deficits and minimal ketones",
+      "discriminators": {
+        "history": [
+          "Days to weeks of worsening thirst and urination",
+          "Often triggered by infection, myocardial infarction or stroke",
+          "Lives in a nursing facility or has limited access to water"
+        ],
+        "exam": [
+          "Severe dehydration with dry mucous membranes and hypotension",
+          "Altered mental status ranging from confusion to coma",
+          "Focal neurologic deficits that resolve with fluid and insulin"
+        ],
+        "labs": [
+          "Serum osmolality above 320 mOsm/kg",
+          "Glucose often above 600 mg/dL",
+          "Bicarbonate usually above 18 mmol/L with minimal ketones",
+          "Marked prerenal azotemia with elevated BUN and creatinine"
+        ]
+      }
+    },
+    {
+      "name": "Medication-induced hyperglycemia",
+      "slug": "medication-induced-hyperglycemia",
+      "why_considered": "Glucocorticoids, atypical antipsychotics, thiazides and calcineurin inhibitors can raise glucose and mimic new type 2 diabetes.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Recent start or dose increase of prednisone, olanzapine, quetiapine, hydrochlorothiazide or tacrolimus",
+          "Glucose rises after meals and in the afternoon, especially with steroids",
+          "No classic osmotic symptoms before the medication was started"
+        ],
+        "labs": [
+          "Hyperglycemia that improves when the offending drug is reduced or stopped",
+          "A1C may be normal if the exposure is recent"
+        ]
+      }
+    },
+    {
+      "name": "Stress hyperglycemia",
+      "slug": "stress-hyperglycemia",
+      "why_considered": "Acute illness, surgery, trauma or infection can raise glucose in patients without underlying diabetes.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Glucose elevated during a hospital admission for another reason",
+          "No prior history of diabetes or prediabetes",
+          "No thirst, urination or weight loss before the illness"
+        ],
+        "labs": [
+          "A1C in the normal range",
+          "Glucose normalizes as the acute illness resolves",
+          "Catecholamine and cortisol surge pattern with elevated glucose only during stress"
+        ]
+      }
+    },
+    {
+      "name": "Cushing syndrome",
+      "slug": "cushing-syndrome",
+      "why_considered": "Excess cortisol causes insulin resistance, central weight gain and hyperglycemia that can look like type 2 diabetes.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Progressive central weight gain with thinning arms and legs",
+          "Easy bruising, purple abdominal striae and proximal muscle weakness",
+          "Chronic glucocorticoid use is the most common cause"
+        ],
+        "exam": [
+          "Moon facies, buffalo hump and supraclavicular fat pads",
+          "Proximal muscle weakness on rising from a chair"
+        ],
+        "labs": [
+          "Elevated late-night salivary cortisol or 24-hour urine free cortisol",
+          "Failure to suppress cortisol on a low-dose dexamethasone suppression test"
+        ]
+      }
+    },
+    {
+      "name": "Hypothyroidism",
+      "slug": "hypothyroidism",
+      "why_considered": "Fatigue, weight gain, dry skin and mild hyperglycemia overlap with type 2 diabetes and thyroid disease clusters with it.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Cold intolerance, constipation and heavy menstrual periods",
+          "Weight gain rather than weight loss",
+          "Slow speech and slowed thinking"
+        ],
+        "exam": [
+          "Dry coarse skin, bradycardia and delayed relaxation of deep tendon reflexes",
+          "Diffuse goiter or thyroidectomy scar"
+        ],
+        "labs": [
+          "Elevated TSH with low free T4",
+          "Positive thyroid peroxidase antibodies if autoimmune"
+        ]
+      }
+    },
+    {
+      "name": "Pancreatic diabetes",
+      "slug": "pancreatic-diabetes",
+      "why_considered": "Chronic pancreatitis, pancreatic cancer or cystic fibrosis can destroy islet cells and cause hyperglycemia.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Chronic heavy alcohol use or recurrent pancreatitis",
+          "Steatorrhea with greasy, floating stools",
+          "Weight loss out of proportion to glucose elevation"
+        ],
+        "exam": [
+          "Epigastric tenderness or a palpable mass",
+          "Signs of fat-soluble vitamin deficiency"
+        ],
+        "labs": [
+          "Low fecal elastase",
+          "Elevated lipase or amylase during flares",
+          "Low C-peptide with absent diabetes autoantibodies"
+        ],
+        "imaging": [
+          "Pancreatic calcifications on CT",
+          "Pancreatic duct dilation on MRCP"
+        ]
+      }
+    },
+    {
+      "name": "Monogenic diabetes",
+      "slug": "monogenic-diabetes",
+      "why_considered": "Maturity-onset diabetes of the young and neonatal diabetes can present with mild hyperglycemia in young, non-obese patients with a strong family history.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Diabetes in multiple generations with an autosomal dominant pattern",
+          "Diagnosis before age 25 in a lean patient",
+          "Mild fasting hyperglycemia that is stable for years"
+        ],
+        "labs": [
+          "Negative diabetes autoantibodies",
+          "Preserved C-peptide",
+          "Genetic panel identifies a specific mutation such as HNF1A or GCK"
+        ]
+      }
+    },
+    {
+      "name": "Gestational diabetes",
+      "slug": "gestational-diabetes",
+      "why_considered": "Hyperglycemia first recognized during pregnancy is usually gestational diabetes and is often silent.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Diagnosis during the second or third trimester",
+          "Prior baby weighing 9 pounds or more",
+          "Prior gestational diabetes"
+        ],
+        "labs": [
+          "Abnormal 50 g glucose challenge followed by an abnormal 100 g oral glucose tolerance test",
+          "A1C usually below 6.5%"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "A1C 6.5 to 7.0% on no medication or a single agent, no symptoms, no complications, normal kidney function and no albuminuria",
+      "moderate": "A1C 7.0 to 8.5% despite lifestyle and one or two agents, early complications such as mild retinopathy, microalbuminuria or early neuropathy, and mild hypertension",
+      "severe": "A1C 8.5 to 11.0% with osmotic symptoms, weight loss, established complications such as proliferative retinopathy, diabetic kidney disease or a non-healing foot ulcer, and often needs insulin",
+      "critical": "A1C above 11.0% or a hyperglycemic emergency with dehydration, acidosis or altered mental status, or a life-threatening complication such as myocardial infarction, stroke or sepsis from an infected foot"
+    },
+    "red_flags": [
+      {
+        "finding": "Vomiting, deep rapid breathing or fruity breath",
+        "meaning": "Diabetic ketoacidosis; needs urgent fluids, insulin and electrolyte monitoring"
+      },
+      {
+        "finding": "Glucose above 600 mg/dL with confusion or focal neurologic deficits",
+        "meaning": "Hyperosmolar hyperglycemic state; high mortality without prompt treatment"
+      },
+      {
+        "finding": "Chest pain, pressure or unexplained shortness of breath",
+        "meaning": "Silent myocardial infarction is common in diabetes and may present without classic pain"
+      },
+      {
+        "finding": "Sudden one-sided weakness, facial droop or trouble speaking",
+        "meaning": "Acute stroke; time-critical evaluation and treatment"
+      },
+      {
+        "finding": "A foot ulcer with spreading redness, foul drainage, crepitus or black tissue",
+        "meaning": "Deep infection or necrotizing fasciitis; surgical emergency"
+      },
+      {
+        "finding": "Sudden painless vision loss or new floaters",
+        "meaning": "Vitreous hemorrhage or retinal detachment from proliferative retinopathy"
+      },
+      {
+        "finding": "Hypotension, tachycardia or altered mental status",
+        "meaning": "Sepsis, hypovolemia or adrenal insufficiency; needs immediate resuscitation"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Diabetic ketoacidosis",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Vomiting and abdominal pain",
+          "Kussmaul respirations",
+          "Large urine ketones with low bicarbonate",
+          "Often triggered by infection or missed insulin"
+        ]
+      },
+      {
+        "name": "Hyperosmolar hyperglycemic state",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Glucose often above 600 mg/dL",
+          "Serum osmolality above 320 mOsm/kg",
+          "Profound dehydration and altered mental status",
+          "Minimal ketones"
+        ]
+      },
+      {
+        "name": "Hypoglycemia",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Sweating, tremor, palpitations and hunger",
+          "Confusion or seizure with severe lows",
+          "Often from insulin or sulfonylureas, missed meals or exercise"
+        ]
+      },
+      {
+        "name": "Diabetic retinopathy",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Microaneurysms and dot-blot hemorrhages on dilated exam",
+          "Blurred vision or floaters",
+          "Long duration of diabetes and poor control"
+        ]
+      },
+      {
+        "name": "Diabetic kidney disease",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Persistent albuminuria on urine albumin-to-creatinine ratio",
+          "Rising creatinine and falling eGFR",
+          "Coexisting hypertension and retinopathy"
+        ]
+      },
+      {
+        "name": "Peripheral neuropathy",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Symmetric stocking-distribution numbness, tingling or burning",
+          "Loss of vibration sense and ankle reflexes",
+          "Loss of protective sensation on monofilament testing"
+        ]
+      },
+      {
+        "name": "Diabetic foot ulcer and infection",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Non-healing ulcer at a pressure point",
+          "Callus, deformity and dry fissured skin",
+          "Diminished pedal pulses or loss of sensation"
+        ]
+      },
+      {
+        "name": "Peripheral arterial disease",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Claudication or rest pain",
+          "Absent pedal pulses",
+          "Reduced ankle-brachial index"
+        ]
+      },
+      {
+        "name": "Coronary artery disease and myocardial infarction",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "common",
+        "clues": [
+          "May be silent or present with atypical symptoms",
+          "ST depression or T-wave changes on ECG",
+          "Coexisting hypertension and hyperlipidemia"
+        ]
+      },
+      {
+        "name": "Stroke",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "common",
+        "clues": [
+          "Sudden focal neurologic deficit",
+          "Carotid bruit",
+          "Prior transient ischemic attack"
+        ]
+      },
+      {
+        "name": "Autonomic neuropathy",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Orthostatic hypotension",
+          "Gastroparesis with early satiety and vomiting",
+          "Erectile dysfunction and bladder dysfunction"
+        ]
+      },
+      {
+        "name": "Nonalcoholic fatty liver disease",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "common",
+        "clues": [
+          "Mildly elevated ALT and AST",
+          "Increased hepatic echogenicity on ultrasound",
+          "Central obesity and metabolic syndrome"
+        ]
+      },
+      {
+        "name": "Infections",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Recurrent urinary tract infections",
+          "Candidal infections of skin and genitals",
+          "Poor wound healing"
+        ]
+      },
+      {
+        "name": "Cataracts and glaucoma",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Progressive blurry vision",
+          "Lens opacity on exam",
+          "Elevated intraocular pressure"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Type 2 diabetes in children and teens usually comes with obesity and a strong family history; they may have no symptoms and be found on screening, or present with acanthosis nigricans and high blood pressure. Metformin and lifestyle change are first-line, and the disease progresses faster than in adults."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Symptoms are often blamed on aging; thirst may be blunted, and they may present with confusion, falls, poor wound healing or a hyperglycemic emergency. A1C targets are often relaxed to avoid hypoglycemia, and sulfonylureas and insulin are used cautiously."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "High blood sugar first found in pregnancy is usually gestational diabetes; it is often silent and picked up on routine screening, and it raises the risk of later type 2 diabetes. Tight control reduces macrosomia and shoulder dystocia, and insulin is preferred when medication is needed."
+      },
+      {
+        "population": "obesity",
+        "differences": "Patients with obesity may have insulin resistance and acanthosis nigricans for years before glucose rises; symptoms stay mild and the diagnosis is often made on screening labs. Weight loss of 5 to 10% can improve glucose substantially, and GLP-1 receptor agonists and bariatric surgery are options."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "Metformin is avoided when eGFR is below 30 mL/min/1.73 m2 and dose-reduced at 30 to 45; many other agents need dose adjustment, and insulin requirements fall as kidney function declines."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Glucocorticoids and calcineurin inhibitors used for immunosuppression raise glucose; infections are more severe and atypical, and glucose control is harder during treatment."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "Have you been more thirsty than usual?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Constant, hard-to-satisfy thirst, often worse at night"
+      },
+      {
+        "question": "How often are you urinating, including at night?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Frequent urination, especially waking at night to urinate"
+      },
+      {
+        "question": "How have your energy levels been?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Persistent tiredness or low energy, often attributed to aging"
+      },
+      {
+        "question": "Have you lost weight without trying?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Unintentional weight loss over months"
+      },
+      {
+        "question": "How long have these symptoms been going on, and did they come on slowly or suddenly?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Gradual onset over months to years; sudden onset over days suggests type 1 diabetes or ketoacidosis"
+      },
+      {
+        "question": "Has your vision been blurry or changing?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Blurred vision that fluctuates with glucose levels"
+      },
+      {
+        "question": "Any numbness, tingling or burning in your feet or hands?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Symmetric stocking-distribution sensory symptoms suggesting neuropathy"
+      },
+      {
+        "question": "Have you had any sores or cuts that are slow to heal?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Poor wound healing, especially on the feet"
+      },
+      {
+        "question": "Have you had frequent yeast infections or urinary tract infections?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Recurrent candidal or urinary infections"
+      },
+      {
+        "question": "Any vomiting, deep rapid breathing, fruity-smelling breath or severe abdominal pain?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Features of diabetic ketoacidosis or a hyperglycemic emergency"
+      },
+      {
+        "question": "Any chest pain, pressure or unexplained shortness of breath?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Silent myocardial infarction, which is common in diabetes"
+      },
+      {
+        "question": "Any sudden weakness on one side, facial droop or trouble speaking?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Acute stroke"
+      },
+      {
+        "question": "Do you have high blood pressure, high cholesterol, heart disease or a prior stroke?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Cardiovascular risk factors and metabolic syndrome"
+      },
+      {
+        "question": "Have you ever been told your blood sugar was high, or that you had prediabetes or gestational diabetes?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Prior prediabetes, gestational diabetes or a baby weighing 9 pounds or more"
+      },
+      {
+        "question": "Do you take any steroids, antipsychotics, thiazide diuretics or transplant medicines?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Medications that can raise glucose such as prednisone, olanzapine, quetiapine, hydrochlorothiazide or tacrolimus"
+      },
+      {
+        "question": "Does anyone in your family have diabetes?",
+        "category": "family",
+        "importance": "important",
+        "looking_for": "Type 2 diabetes in a parent or sibling"
+      },
+      {
+        "question": "How much do you exercise, and what does a typical day of eating look like?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Sedentary lifestyle, high intake of refined carbohydrates and sugar-sweetened drinks"
+      },
+      {
+        "question": "Have you had any trouble getting or keeping an erection?",
+        "category": "sexual",
+        "importance": "optional",
+        "looking_for": "Erectile dysfunction as a sign of vascular or neuropathic complications"
+      }
+    ],
+    "accepted_names": [
+      "Type 2 diabetes",
+      "Type 2 diabetes mellitus",
+      "T2DM",
+      "Diabetes mellitus type 2",
+      "Adult-onset diabetes",
+      "Non-insulin-dependent diabetes mellitus",
+      "NIDDM"
+    ],
+    "reasoning_points": [
+      "Gradual onset over months to years of thirst, frequent urination and fatigue in an adult with risk factors",
+      "Overweight or obesity with central adiposity, and sometimes acanthosis nigricans",
+      "A1C of 6.5% or higher, or fasting plasma glucose of 126 mg/dL or higher, or a random glucose of 200 mg/dL or higher with classic symptoms",
+      "An abnormal screening result is confirmed with a repeat test unless the patient has unequivocal symptoms with a glucose of 200 mg/dL or higher",
+      "Type 1 diabetes is considered and excluded when the patient is young, lean, or has ketones and acidosis",
+      "Complications are assessed at diagnosis, including retinopathy, kidney disease, neuropathy and cardiovascular risk"
+    ],
+    "difficulty": {
+      "easy": [
+        "Middle-aged adult with obesity and a family history of diabetes",
+        "Classic thirst, frequent urination and fatigue over months",
+        "A1C well above 6.5% with a fasting glucose above 126 mg/dL",
+        "Acanthosis nigricans on exam"
+      ],
+      "medium": [
+        "No symptoms, diagnosis made on routine screening labs",
+        "Older adult whose thirst and fatigue are blamed on aging",
+        "Recurrent yeast infections or a non-healing foot sore as the presenting complaint",
+        "Mild hyperglycemia with a normal A1C due to anemia or recent transfusion"
+      ],
+      "hard": [
+        "Young, lean patient who could have type 1 diabetes or monogenic diabetes",
+        "Glucose above 600 mg/dL with confusion and profound dehydration suggesting hyperosmolar hyperglycemic state",
+        "Vomiting and deep rapid breathing suggesting ketoacidosis as the first presentation",
+        "Hyperglycemia that appears only after starting prednisone or an atypical antipsychotic",
+        "Pregnant patient with silent hyperglycemia found on routine screening"
+      ]
+    }
+  }
+}

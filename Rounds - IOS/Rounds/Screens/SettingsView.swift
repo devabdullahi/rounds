@@ -18,6 +18,7 @@ private enum SETTINGS {
 
 /// Settings. UI only for now: values are placeholders held in view state until the backend exists.
 struct SettingsView: View {
+    @Environment(AppState.self) private var app
     @Environment(\.dismiss) private var dismiss
 
     // Shared with the door note so both show the same default.
@@ -50,7 +51,8 @@ struct SettingsView: View {
                 VStack(alignment: .leading, spacing: 24) {
                     // Identity lives on Profile; Settings only holds account mechanics.
                     section("Account") {
-                        navRow(.mail, "Email", value: SampleUser.email)
+                        // MOCK (disabled): navRow(.mail, "Email", value: SampleUser.email)
+                        navRow(.mail, "Email", value: "Not set")
                         Hairline()
                         navRow(.keyRound, "Signed in with", value: "Apple")
                     }
@@ -153,7 +155,7 @@ struct SettingsView: View {
         }
         .background(Theme.bg)
         .toolbar(.hidden, for: .navigationBar)
-        .sheet(isPresented: $editingFocus) { FocusSheet() }
+        .sheet(isPresented: $editingFocus) { FocusSheet(counts: app.topicCounts) }
         .confirmationDialog("Sign out of Rounds?", isPresented: $confirmSignOut, titleVisibility: .visible) {
             Button("Sign out", role: .destructive) { signedIn = false }
             Button("Cancel", role: .cancel) {}

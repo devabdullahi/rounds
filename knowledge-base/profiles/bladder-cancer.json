@@ -1,0 +1,1457 @@
+{
+  "schema_version": "0.2",
+  "slug": "bladder-cancer",
+  "triage": {
+    "name": "Bladder Cancer",
+    "case_suitable": true,
+    "reason": "Painless hematuria with smoking history; diagnosis reachable by history, urinalysis and cystoscopy workup.",
+    "kind": "disease",
+    "category": "urologic malignancy",
+    "organ_systems": [
+      "renal"
+    ],
+    "primary_clerkship": "surgery",
+    "secondary_clerkships": [
+      "internalMedicine",
+      "familyMedicine"
+    ],
+    "commonness": "common",
+    "settings": [
+      "clinic",
+      "inpatient"
+    ],
+    "is_cancer": true
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:16:03Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:30:36Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:30:43Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:30:52Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:31:07Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:31:14Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'psa' to 'PSA'",
+        "differential urinary-tract-infection: no profile yet",
+        "differential benign-prostatic-hyperplasia: no profile yet",
+        "differential kidney-cancer: no profile yet",
+        "differential interstitial-cystitis: no profile yet",
+        "differential glomerulonephritis: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 55,
+      "typical_max": 85,
+      "peak": "60–80",
+      "possible_min": 20,
+      "possible_max": 100
+    },
+    "sex": "male_predominant",
+    "demographics": [
+      "About 3–4 times more common in men than women",
+      "More common in White individuals than in Black, Hispanic or Asian individuals in US data",
+      "Incidence rises steadily with age; it is uncommon before age 40",
+      "More common in developed countries and in regions with a history of industrial chemical exposure"
+    ],
+    "risk_factors": [
+      {
+        "text": "Cigarette smoking (current or former); the single largest modifiable risk factor",
+        "strength": "strong"
+      },
+      {
+        "text": "Occupational exposure to aromatic amines (dyes, rubber, leather, printing, textiles, paint, truck driving)",
+        "strength": "strong"
+      },
+      {
+        "text": "Age over 60",
+        "strength": "strong"
+      },
+      {
+        "text": "Male sex",
+        "strength": "moderate"
+      },
+      {
+        "text": "Family history of bladder cancer",
+        "strength": "moderate"
+      },
+      {
+        "text": "Chronic bladder irritation: long-term indwelling catheter, recurrent urinary tract infections, chronic cystitis",
+        "strength": "moderate"
+      },
+      {
+        "text": "Prior pelvic radiation or cyclophosphamide chemotherapy",
+        "strength": "moderate"
+      },
+      {
+        "text": "Chronic Schistosoma haematobium infection (squamous cell histology)",
+        "strength": "moderate"
+      },
+      {
+        "text": "Lynch syndrome or other inherited cancer predisposition",
+        "strength": "weak"
+      },
+      {
+        "text": "Arsenic in drinking water",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Chronic kidney disease",
+      "Diabetes mellitus",
+      "Obesity",
+      "Recurrent urinary tract infections",
+      "Chronic indwelling urinary catheter or neurogenic bladder",
+      "Prior pelvic malignancy treated with radiation"
+    ],
+    "family_history": [
+      "Bladder cancer in a first-degree relative",
+      "Lynch syndrome or other hereditary cancer syndrome"
+    ],
+    "social_history": [
+      "Current or former cigarette smoker",
+      "Pipe, cigar or smokeless tobacco use",
+      "Occupational history in dye, rubber, leather, textile, printing, paint or trucking industries"
+    ],
+    "exposures": [
+      "Aromatic amines and benzidine dyes",
+      "Rubber and tire manufacturing chemicals",
+      "Combustion products and diesel exhaust",
+      "Pelvic ionizing radiation",
+      "Cyclophosphamide or ifosfamide",
+      "Arsenic-contaminated drinking water",
+      "Schistosoma haematobium (endemic areas)"
+    ],
+    "risk_medications": [
+      "Cyclophosphamide",
+      "Ifosfamide",
+      "Pioglitazone"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "There's blood in my urine",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "I have to pee all the time and it burns",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "My urine looks like tea or cola",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "I've been having lower back pain",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual and often unnoticed; blood is frequently first seen on a routine urinalysis or noticed as a change in urine color",
+      "duration": "Weeks to months of intermittent symptoms before presentation",
+      "progression": "Hematuria is typically intermittent and painless, so it may come and go; over time episodes become more frequent or heavier, and irritative voiding symptoms may develop or worsen",
+      "location": "Blood originates in the bladder; discomfort, when present, is suprapubic or in the lower back/flank",
+      "radiation": "Usually none; if a tumor obstructs a ureter, flank pain may radiate to the groin",
+      "quality": "Gross hematuria described as pink, red, tea- or cola-colored urine; voiding symptoms described as burning, urgency and frequency",
+      "severity": "Often mild and intermittent; can become heavy with clots causing urinary retention",
+      "timing": "Hematuria is classically intermittent and painless; irritative symptoms may be constant or worse with voiding",
+      "aggravating": [
+        "Nothing reliably aggravates the bleeding",
+        "Voiding may worsen burning or urgency"
+      ],
+      "relieving": [
+        "Symptoms may resolve on their own between episodes, which can falsely reassure"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Painless gross hematuria",
+          "frequency": "common"
+        },
+        {
+          "text": "Microscopic hematuria found on urinalysis without visible blood",
+          "frequency": "common"
+        },
+        {
+          "text": "Urinary frequency",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Urgency",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Dysuria or burning with urination",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Passing blood clots",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Lower back or flank pain",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Fatigue or pallor from chronic blood loss",
+          "frequency": "rare"
+        },
+        {
+          "text": "Weight loss, bone pain or leg swelling suggesting advanced disease",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Fever and chills",
+        "Severe colicky flank pain radiating to the groin",
+        "Known kidney stones",
+        "Recent trauma to the back or abdomen",
+        "Recent vigorous exercise before the blood appeared",
+        "Menstrual bleeding as the source",
+        "New anticoagulant started just before the bleeding",
+        "Painless hematuria that resolves completely and never recurs"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Tiredness",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Unintentional weight loss",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Fever",
+          "Chills",
+          "Night sweats"
+        ],
+        "argues_against": [
+          "High fever with flank pain suggesting pyelonephritis"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [
+          {
+            "text": "Blood in urine",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Going to the bathroom often",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Burning when I pee",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Getting up at night to urinate",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Difficulty starting the stream",
+          "Dribbling after urination",
+          "Inability to urinate",
+          "Flank mass"
+        ],
+        "argues_against": [
+          "Colicky flank pain radiating to the groin suggesting a stone",
+          "Fever with dysuria suggesting urinary tract infection"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [],
+        "negatives": [
+          "Blood in stool",
+          "Jaundice",
+          "Persistent nausea or vomiting"
+        ],
+        "argues_against": [
+          "Gastrointestinal bleeding as the source of blood"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Lower back pain",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Bone pain at rest",
+          "Pathologic fracture"
+        ],
+        "argues_against": [
+          "Mechanical back pain worsened by movement"
+        ]
+      },
+      {
+        "system": "hematologic",
+        "positives": [
+          {
+            "text": "Pale skin",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Easy bruising",
+          "Bleeding gums",
+          "Known bleeding disorder"
+        ],
+        "argues_against": [
+          "A systemic bleeding disorder as the cause of hematuria"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "older_adults",
+        "how_it_differs": "May present with nonspecific fatigue, anemia or recurrent urinary tract infections rather than visible blood; irritative symptoms are more often attributed to benign prostatic hyperplasia or aging.",
+        "missing_classic_features": [
+          "Painless gross hematuria",
+          "Clear episode of visible blood"
+        ]
+      },
+      {
+        "population": "renal_impairment",
+        "how_it_differs": "Hematuria may be attributed to chronic kidney disease or glomerular disease, delaying recognition of a bladder tumor; imaging and cystoscopy are still needed.",
+        "missing_classic_features": [
+          "Isolated painless hematuria with normal renal function"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "Irritative voiding symptoms and hematuria are more likely to be treated as infection first, and malignancy may be missed if symptoms improve with antibiotics.",
+        "missing_classic_features": [
+          "Painless hematuria without infectious symptoms"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Hematuria is often attributed to urinary tract infection or pregnancy-related changes; gross hematuria in pregnancy still requires urologic evaluation.",
+        "missing_classic_features": [
+          "Painless hematuria outside of pregnancy"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Well-appearing, comfortable, no distress; may look well despite visible blood in the urine",
+      "moderate": "Mildly fatigued or pale; comfortable at rest, no acute distress",
+      "severe": "Ill-appearing, pale, fatigued; may have suprapubic discomfort or visible hematuria with clots",
+      "critical": "Toxic or cachectic-appearing, pale and diaphoretic; may be in distress from clot retention, obstruction or metastatic disease"
+    },
+    "findings": [
+      {
+        "id": "gross-hematuria-voided",
+        "region": "genitourinary",
+        "maneuver": "Inspect the urine in the collection container or ask about the color of the stream",
+        "finding": "Pink, red, tea- or cola-colored urine; blood may be visible throughout the stream",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "suprapubic-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate the suprapubic region",
+        "finding": "Mild suprapubic tenderness without guarding or rebound",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "palpable-bladder",
+        "region": "abdomen",
+        "maneuver": "Palpate and percuss the suprapubic area",
+        "finding": "A distended, palpable bladder suggesting clot retention or outlet obstruction",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "flank-tenderness",
+        "region": "abdomen",
+        "maneuver": "Percuss the costovertebral angles",
+        "finding": "Unilateral costovertebral angle tenderness from ureteral obstruction by tumor",
+        "frequency": "rare",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "palpable-abdominal-mass",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen and suprapubic region deeply",
+        "finding": "A firm suprapubic or pelvic mass suggesting a large or locally advanced tumor",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "inguinal-lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the inguinal lymph node basins",
+        "finding": "Enlarged, firm inguinal lymph nodes",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "pallor-conjunctival",
+        "region": "heent",
+        "maneuver": "Inspect the conjunctivae and oral mucosa",
+        "finding": "Pallor suggesting anemia from chronic blood loss",
+        "frequency": "rare",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "digital-rectal-exam",
+        "region": "rectal",
+        "maneuver": "Perform a digital rectal exam",
+        "finding": "Prostate may be enlarged or nodular from coexisting benign prostatic hyperplasia or prostate cancer; a firm bladder mass may be palpable anteriorly in advanced disease",
+        "frequency": "sometimes",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-abdomen-no-guarding",
+        "region": "abdomen",
+        "maneuver": "Palpate all four quadrants",
+        "finding": "No guarding, rebound or rigidity",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-fever",
+        "region": "general",
+        "maneuver": "Measure temperature and assess for systemic signs of infection",
+        "finding": "No fever or chills",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-flank-colicky-pain",
+        "region": "abdomen",
+        "maneuver": "Ask about and assess for colicky flank pain radiating to the groin",
+        "finding": "Absence of severe colicky flank pain",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "moderate": {
+        "min": 97.8,
+        "max": 99.5
+      },
+      "severe": {
+        "min": 98.0,
+        "max": 100.0
+      },
+      "critical": {
+        "min": 97.5,
+        "max": 101.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 90
+      },
+      "moderate": {
+        "min": 70,
+        "max": 100
+      },
+      "severe": {
+        "min": 80,
+        "max": 110
+      },
+      "critical": {
+        "min": 90,
+        "max": 130
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 12,
+        "max": 18
+      },
+      "moderate": {
+        "min": 14,
+        "max": 20
+      },
+      "severe": {
+        "min": 16,
+        "max": 24
+      },
+      "critical": {
+        "min": 18,
+        "max": 28
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 110,
+        "max": 140
+      },
+      "moderate": {
+        "min": 105,
+        "max": 140
+      },
+      "severe": {
+        "min": 100,
+        "max": 140
+      },
+      "critical": {
+        "min": 85,
+        "max": 130
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 65,
+        "max": 85
+      },
+      "moderate": {
+        "min": 65,
+        "max": 88
+      },
+      "severe": {
+        "min": 60,
+        "max": 90
+      },
+      "critical": {
+        "min": 50,
+        "max": 85
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 95,
+        "max": 100
+      },
+      "moderate": {
+        "min": 94,
+        "max": 100
+      },
+      "severe": {
+        "min": 92,
+        "max": 99
+      },
+      "critical": {
+        "min": 88,
+        "max": 98
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "ua_blood",
+      "qualitative": {
+        "mild": "Trace",
+        "moderate": "1+",
+        "severe": "2+",
+        "critical": "3+"
+      },
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Hematuria is the key finding; it may be intermittent, so a single negative dipstick does not exclude bladder cancer."
+    },
+    {
+      "test_id": "ua_rbc",
+      "ranges": {
+        "mild": {
+          "min": 3,
+          "max": 10
+        },
+        "moderate": {
+          "min": 10,
+          "max": 50
+        },
+        "severe": {
+          "min": 50,
+          "max": 200
+        },
+        "critical": {
+          "min": 100,
+          "max": 500
+        }
+      },
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Microscopy confirms true hematuria and helps exclude myoglobinuria or hemoglobinuria."
+    },
+    {
+      "test_id": "hgb",
+      "ranges": {
+        "mild": {
+          "min": 11.0,
+          "max": 13.0
+        },
+        "moderate": {
+          "min": 9.5,
+          "max": 12.0
+        },
+        "severe": {
+          "min": 7.5,
+          "max": 10.0
+        },
+        "critical": {
+          "min": 6.0,
+          "max": 8.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Anemia is usually from chronic blood loss; a normal hemoglobin does not exclude cancer."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "mild": {
+          "min": 1.2,
+          "max": 1.6
+        },
+        "moderate": {
+          "min": 1.5,
+          "max": 2.5
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 4.0
+        },
+        "critical": {
+          "min": 3.0,
+          "max": 8.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevated when a tumor obstructs a ureter or in coexisting chronic kidney disease; needed before contrast imaging and chemotherapy."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "mild": {
+          "min": 20,
+          "max": 30
+        },
+        "moderate": {
+          "min": 25,
+          "max": 45
+        },
+        "severe": {
+          "min": 35,
+          "max": 70
+        },
+        "critical": {
+          "min": 50,
+          "max": 100
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Rises with obstruction or dehydration."
+    },
+    {
+      "test_id": "ua_le",
+      "qualitative": {
+        "mild": "Trace",
+        "moderate": "1+",
+        "severe": "2+"
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Sterile pyuria can occur with bladder cancer and may be mistaken for urinary tract infection."
+    },
+    {
+      "test_id": "ua_wbc",
+      "ranges": {
+        "mild": {
+          "min": 5,
+          "max": 15
+        },
+        "moderate": {
+          "min": 10,
+          "max": 30
+        },
+        "severe": {
+          "min": 20,
+          "max": 60
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Pyuria without a positive culture should raise concern for tumor."
+    },
+    {
+      "test_id": "alp",
+      "ranges": {
+        "moderate": {
+          "min": 150,
+          "max": 300
+        },
+        "severe": {
+          "min": 250,
+          "max": 600
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Elevated with bone metastases or biliary obstruction."
+    },
+    {
+      "test_id": "ca",
+      "ranges": {
+        "moderate": {
+          "min": 10.5,
+          "max": 12.0
+        },
+        "severe": {
+          "min": 11.5,
+          "max": 14.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Hypercalcemia suggests bone metastases."
+    }
+  ],
+  "imaging": [
+    {
+      "study": "CT urography (CT abdomen and pelvis with and without IV contrast)",
+      "modality": "ct",
+      "preferred_when": "Adults with hematuria and risk factors for urothelial cancer; evaluates the upper tracts and bladder",
+      "findings": [
+        {
+          "text": "Focal bladder wall mass or thickening that enhances",
+          "frequency": "common"
+        },
+        {
+          "text": "Filling defect within the bladder lumen",
+          "frequency": "common"
+        },
+        {
+          "text": "Hydronephrosis from ureteral obstruction",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Enlarged pelvic or retroperitoneal lymph nodes",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Upper tract urothelial lesion or synchronous tumor",
+          "frequency": "rare"
+        },
+        {
+          "text": "No bladder abnormality seen (small or flat tumors can be missed)",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Renal and bladder ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "First-line in some patients, pregnancy, or when contrast cannot be given",
+      "findings": [
+        {
+          "text": "Bladder mass or focal wall thickening",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Hydronephrosis from obstruction",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Normal study (small or flat tumors are easily missed)",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "MRI abdomen and pelvis with IV contrast",
+      "modality": "mri",
+      "preferred_when": "Contraindication to CT contrast or staging of muscle-invasive disease",
+      "findings": [
+        {
+          "text": "Bladder mass with depth of invasion into the muscularis propria",
+          "frequency": "common"
+        },
+        {
+          "text": "Extravascular extension or adjacent organ involvement",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Chest x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Pulmonary nodules or masses suggesting metastasis",
+          "frequency": "rare"
+        },
+        {
+          "text": "Normal chest",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "CT chest without contrast",
+      "modality": "ct",
+      "preferred_when": "Staging of muscle-invasive or high-grade disease",
+      "findings": [
+        {
+          "text": "Pulmonary metastases",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Mediastinal lymphadenopathy",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Bone scan",
+      "modality": "nuclear",
+      "preferred_when": "Bone pain or elevated alkaline phosphatase in muscle-invasive disease",
+      "findings": [
+        {
+          "text": "Focal uptake suggesting bone metastasis",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "ua",
+        "why": "Confirms hematuria and looks for infection or other causes"
+      },
+      {
+        "test": "cbc",
+        "why": "Assesses anemia from chronic blood loss and baseline counts"
+      },
+      {
+        "test": "bmp",
+        "why": "Baseline renal function before contrast imaging and treatment"
+      },
+      {
+        "test": "Renal and bladder ultrasound",
+        "why": "Noninvasive first look at the urinary tract",
+        "only_if": "CT urography is not immediately available or contrast is contraindicated"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Cystoscopy with biopsy or transurethral resection of bladder tumor (TURBT)",
+        "why": "Direct visualization and tissue diagnosis; the definitive test for bladder cancer"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "CT urography (CT abdomen and pelvis with and without IV contrast)",
+        "why": "Evaluates the upper tracts and stages the bladder tumor"
+      },
+      {
+        "test": "Urine cytology",
+        "why": "Helps detect high-grade urothelial carcinoma; a positive result supports the diagnosis but a negative result does not exclude it"
+      },
+      {
+        "test": "CT chest without contrast",
+        "why": "Staging for distant metastasis",
+        "only_if": "muscle-invasive or high-grade disease is confirmed"
+      },
+      {
+        "test": "MRI abdomen and pelvis with IV contrast",
+        "why": "Local staging when CT contrast cannot be given",
+        "only_if": "contrast-enhanced CT is contraindicated"
+      },
+      {
+        "test": "Bone scan",
+        "why": "Looks for bone metastasis",
+        "only_if": "bone pain or elevated alkaline phosphatase"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Urine culture",
+        "why": "Not routinely needed unless infection is suspected; a positive culture does not exclude cancer"
+      },
+      {
+        "test": "Chest x-ray",
+        "why": "Not a substitute for CT staging; low yield for small metastases"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in hematuria or suspected bladder cancer"
+      },
+      {
+        "test": "PSA",
+        "why": "Not part of bladder cancer workup; prostate cancer is a separate evaluation"
+      }
+    ],
+    "decision_points": [
+      "Any adult with gross hematuria or persistent microscopic hematuria should be referred for cystoscopy and upper tract imaging",
+      "Do not attribute hematuria to urinary tract infection until infection is treated and hematuria is rechecked",
+      "Check renal function before contrast-enhanced CT",
+      "Cystoscopy with biopsy is required for tissue diagnosis even when imaging is abnormal"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Urinary tract infection",
+      "slug": "urinary-tract-infection",
+      "why_considered": "Hematuria with dysuria, frequency and urgency is the most common reason bladder cancer is initially missed",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Acute onset over hours to a few days rather than weeks to months",
+          "Fever, chills or flank pain",
+          "Symptoms resolve completely with antibiotics",
+          "No history of smoking or occupational chemical exposure"
+        ],
+        "exam": [
+          "Suprapubic or costovertebral angle tenderness",
+          "Fever"
+        ],
+        "labs": [
+          "Positive urine culture with a single organism",
+          "Pyuria and bacteriuria on urinalysis",
+          "Hematuria clears after treatment"
+        ],
+        "imaging": [
+          "No bladder mass on ultrasound or CT"
+        ]
+      }
+    },
+    {
+      "name": "Kidney stones",
+      "slug": "kidney-stones",
+      "why_considered": "Hematuria with flank or lower abdominal pain is a classic presentation of urolithiasis",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Sudden, severe colicky flank pain radiating to the groin",
+          "Patient writhes and cannot get comfortable",
+          "Prior stone episodes",
+          "Nausea and vomiting with the pain"
+        ],
+        "exam": [
+          "Severe costovertebral angle tenderness",
+          "No palpable bladder mass"
+        ],
+        "labs": [
+          "Hematuria on urinalysis",
+          "Normal urine cytology"
+        ],
+        "imaging": [
+          "Radio-opaque stone in the ureter or kidney on non-contrast CT",
+          "Hydronephrosis on the affected side without a bladder mass"
+        ]
+      }
+    },
+    {
+      "name": "Benign prostatic hyperplasia",
+      "slug": "benign-prostatic-hyperplasia",
+      "why_considered": "Older men with frequency, urgency, nocturia and occasional hematuria often have BPH rather than cancer",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Gradual onset of hesitancy, weak stream, dribbling and nocturia over years",
+          "No gross hematuria or only trace hematuria",
+          "No weight loss or bone pain"
+        ],
+        "exam": [
+          "Enlarged, smooth, non-nodular prostate on digital rectal exam",
+          "No suprapubic mass"
+        ],
+        "labs": [
+          "Normal urine cytology",
+          "Normal hemoglobin"
+        ],
+        "imaging": [
+          "Enlarged prostate with post-void residual urine",
+          "No bladder mass on ultrasound or CT"
+        ]
+      }
+    },
+    {
+      "name": "Prostate cancer",
+      "slug": "prostate-cancer",
+      "why_considered": "Older men with hematuria, urinary symptoms and an abnormal prostate exam may have prostate cancer rather than bladder cancer",
+      "must_not_miss": true,
+      "trigger": "Hard or nodular prostate on digital rectal exam, or elevated PSA",
+      "discriminators": {
+        "history": [
+          "Urinary symptoms with bone pain, especially back or hip pain",
+          "Family history of prostate cancer",
+          "No gross hematuria early in the course"
+        ],
+        "exam": [
+          "Hard, nodular or asymmetrical prostate on digital rectal exam",
+          "Palpable prostate mass"
+        ],
+        "labs": [
+          "Elevated PSA",
+          "Elevated alkaline phosphatase with bone metastases"
+        ],
+        "imaging": [
+          "Prostate mass on MRI",
+          "Sclerotic bone lesions on bone scan",
+          "Bladder involvement by direct extension rather than a primary bladder mass"
+        ]
+      }
+    },
+    {
+      "name": "Kidney cancer",
+      "slug": "kidney-cancer",
+      "why_considered": "Renal cell carcinoma can present with hematuria and flank pain, and is a common upper tract malignancy in older adults",
+      "must_not_miss": true,
+      "trigger": "Flank mass, hematuria and a renal mass on imaging",
+      "discriminators": {
+        "history": [
+          "Flank pain and a palpable abdominal mass",
+          "Weight loss, fever or night sweats",
+          "Paraneoplastic symptoms such as hypercalcemia or polycythemia"
+        ],
+        "exam": [
+          "Palpable flank or abdominal mass",
+          "Varicocele, especially on the right side"
+        ],
+        "labs": [
+          "Anemia or polycythemia",
+          "Hypercalcemia",
+          "Elevated liver enzymes"
+        ],
+        "imaging": [
+          "Enhancing renal cortical mass on CT or MRI",
+          "No bladder mass on cystoscopy"
+        ]
+      }
+    },
+    {
+      "name": "Overactive bladder",
+      "slug": "overactive-bladder",
+      "why_considered": "Frequency, urgency and nocturia overlap with the irritative symptoms of bladder cancer",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Chronic urgency and frequency without hematuria",
+          "No smoking or occupational exposure history",
+          "Symptoms fluctuate with fluid intake, caffeine and stress"
+        ],
+        "exam": [
+          "Normal abdominal and pelvic exam",
+          "No hematuria on urinalysis"
+        ],
+        "labs": [
+          "Normal urinalysis without blood",
+          "Normal urine cytology"
+        ],
+        "imaging": [
+          "Normal bladder on ultrasound or CT"
+        ]
+      }
+    },
+    {
+      "name": "Interstitial cystitis",
+      "slug": "interstitial-cystitis",
+      "why_considered": "Chronic suprapubic pain, urgency and frequency can mimic bladder cancer, especially in women",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Chronic pelvic pain relieved by voiding",
+          "Symptoms for months to years without gross hematuria",
+          "No smoking history"
+        ],
+        "exam": [
+          "Suprapubic tenderness",
+          "Normal bimanual pelvic exam"
+        ],
+        "labs": [
+          "Sterile urine with no hematuria or only trace blood",
+          "Negative urine cytology"
+        ],
+        "imaging": [
+          "Normal bladder mucosa on cystoscopy except for glomerulations or Hunner lesions",
+          "No mass on CT or ultrasound"
+        ]
+      }
+    },
+    {
+      "name": "Glomerulonephritis",
+      "slug": "glomerulonephritis",
+      "why_considered": "Hematuria with red blood cell casts and proteinuria can be mistaken for a urologic source of bleeding",
+      "must_not_miss": true,
+      "trigger": "Red blood cell casts, proteinuria or rising creatinine with hematuria",
+      "discriminators": {
+        "history": [
+          "Recent upper respiratory or skin infection",
+          "Dark, cola-colored urine with edema",
+          "No smoking history"
+        ],
+        "exam": [
+          "Periorbital or peripheral edema",
+          "Hypertension"
+        ],
+        "labs": [
+          "Red blood cell casts on urine microscopy",
+          "Proteinuria",
+          "Elevated creatinine",
+          "Low complement levels in post-infectious glomerulonephritis"
+        ],
+        "imaging": [
+          "Normal bladder and upper tracts on ultrasound or CT"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Non-muscle-invasive disease (Ta, T1, carcinoma in situ): painless hematuria or microscopic hematuria only, normal renal function, no anemia, no obstruction, well-appearing",
+      "moderate": "Larger or recurrent non-muscle-invasive tumor or early muscle-invasive disease: visible hematuria with clots, mild anemia, irritative voiding symptoms, no distant metastasis",
+      "severe": "Muscle-invasive or locally advanced disease: heavy hematuria with clot retention, hydronephrosis from ureteral obstruction, anemia, weight loss, pelvic pain",
+      "critical": "Metastatic or obstructing disease with life-threatening complications: clot retention with bladder tamponade, acute kidney injury from bilateral obstruction, sepsis from urinary infection, spinal cord compression or hypercalcemia from bone metastases"
+    },
+    "red_flags": [
+      {
+        "finding": "Gross hematuria with clots causing inability to urinate",
+        "meaning": "Clot retention or bladder tamponade; needs urgent bladder irrigation and urology evaluation"
+      },
+      {
+        "finding": "Flank pain with rising creatinine and hydronephrosis",
+        "meaning": "Ureteral obstruction by tumor; may require urgent decompression"
+      },
+      {
+        "finding": "Fever, chills and hypotension with hematuria",
+        "meaning": "Urosepsis; needs cultures, antibiotics and urgent urology involvement"
+      },
+      {
+        "finding": "New severe back pain with leg weakness or incontinence",
+        "meaning": "Spinal cord compression from bone metastasis; a neurologic emergency"
+      },
+      {
+        "finding": "Confusion, polyuria or constipation with elevated calcium",
+        "meaning": "Hypercalcemia of malignancy; requires urgent correction"
+      },
+      {
+        "finding": "Weight loss, bone pain or night sweats",
+        "meaning": "Suggests metastatic disease and warrants staging imaging"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Acute urinary retention from clot retention",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Heavy gross hematuria with clots",
+          "Palpable distended bladder",
+          "Inability to void with suprapubic pain"
+        ]
+      },
+      {
+        "name": "Obstructive acute kidney injury",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Flank pain",
+          "Rising creatinine",
+          "Hydronephrosis on imaging"
+        ]
+      },
+      {
+        "name": "Urinary tract infection and urosepsis",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Fever and chills",
+          "Hypotension",
+          "Positive urine culture"
+        ]
+      },
+      {
+        "name": "Anemia from chronic blood loss",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "common",
+        "clues": [
+          "Fatigue and pallor",
+          "Low hemoglobin",
+          "Long-standing intermittent hematuria"
+        ]
+      },
+      {
+        "name": "Local recurrence after transurethral resection",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "New hematuria on surveillance",
+          "Recurrent tumor on cystoscopy"
+        ]
+      },
+      {
+        "name": "Progression to muscle-invasive disease",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Increasing tumor stage on repeat resection",
+          "Hydronephrosis",
+          "Persistent hematuria"
+        ]
+      },
+      {
+        "name": "Distant metastasis",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Bone pain",
+          "Weight loss",
+          "Pulmonary nodules on chest imaging",
+          "Elevated alkaline phosphatase or calcium"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "older_adults",
+        "differences": "More likely to present with nonspecific fatigue, anemia or recurrent urinary tract infections rather than visible blood; more comorbidity limits treatment options and increases perioperative risk."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "Hematuria may be attributed to chronic kidney disease; renal function must be checked before contrast imaging and chemotherapy, and nephroureterectomy may be contraindicated if the other kidney is impaired."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Irritative symptoms and hematuria are more often treated as infection first, delaying diagnosis; cyclophosphamide and ifosfamide exposure increases risk."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Gross hematuria in pregnancy still requires urologic evaluation; ultrasound is preferred over CT to avoid fetal radiation, and cystoscopy can be performed safely when needed."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Higher risk of urinary tract infection and poorer wound healing after surgery; glucose control should be optimized before radical cystectomy."
+      },
+      {
+        "population": "obesity",
+        "differences": "Higher surgical risk and technically more difficult radical cystectomy; smoking-related comorbidities are common."
+      }
+    ]
+  },
+  "cancer": {
+    "screening": "There is no recommended screening test for bladder cancer in the general population. The USPSTF recommends against screening for bladder cancer in asymptomatic adults. Evaluation is triggered by symptoms, especially gross hematuria or persistent microscopic hematuria, or by high-risk occupational exposure.",
+    "pathology": "More than 90% of bladder cancers in the United States are urothelial (transitional cell) carcinoma. Other types include squamous cell carcinoma (associated with chronic irritation or Schistosoma haematobium), adenocarcinoma, and rare small cell or sarcomatoid variants. Tumors are classified as non-muscle-invasive (Ta, T1, carcinoma in situ) or muscle-invasive (T2 or higher). Grade is reported as low or high grade, with high grade carrying a much higher risk of progression.",
+    "staging_concepts": "Staging uses the TNM system. Ta is non-invasive papillary, T1 invades the lamina propria, T2 invades the muscularis propria, T3 invades perivesical fat, and T4 invades adjacent organs such as the prostate, uterus, vagina, pelvic wall or abdominal wall. Nodal stage reflects pelvic lymph node involvement and M stage reflects distant metastasis. Muscle invasion is the key dividing line because it determines whether treatment is bladder-preserving or radical cystectomy. Cystoscopy with transurethral resection provides the tissue diagnosis and depth of invasion; CT or MRI of the abdomen and pelvis and CT of the chest complete staging.",
+    "metastatic_sites": [
+      "Pelvic and retroperitoneal lymph nodes",
+      "Bone",
+      "Lung",
+      "Liver",
+      "Peritoneum"
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "Have you noticed blood in your urine, and if so, what did it look like?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Painless gross hematuria described as pink, red, tea- or cola-colored; the cardinal presenting symptom"
+      },
+      {
+        "question": "Is the blood there all the time or does it come and go?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Intermittent bleeding that resolves between episodes, which can falsely reassure the patient"
+      },
+      {
+        "question": "Does it hurt when you urinate, or is the blood painless?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Painless hematuria strongly suggests malignancy; dysuria alone points toward infection or stones"
+      },
+      {
+        "question": "How long has this been going on?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Weeks to months of intermittent symptoms rather than an acute onset over hours to days"
+      },
+      {
+        "question": "Do you have to urinate more often, urgently, or get up at night to urinate?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Irritative voiding symptoms that may accompany or precede the hematuria"
+      },
+      {
+        "question": "Have you passed any clots, or had trouble urinating?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Clots causing inability to void suggests clot retention or bladder tamponade and needs urgent urology evaluation"
+      },
+      {
+        "question": "Have you had any fever, chills or flank pain?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Fever and chills suggest infection or urosepsis; severe colicky flank pain suggests a stone"
+      },
+      {
+        "question": "Have you ever smoked cigarettes, or do you still smoke?",
+        "category": "social",
+        "importance": "essential",
+        "looking_for": "Current or former smoking, the single largest modifiable risk factor"
+      },
+      {
+        "question": "What kind of work have you done? Any exposure to dyes, rubber, leather, printing, paint or trucking chemicals?",
+        "category": "social",
+        "importance": "essential",
+        "looking_for": "Occupational exposure to aromatic amines and related industrial chemicals"
+      },
+      {
+        "question": "Have you had urinary tract infections, kidney stones, or a long-term urinary catheter?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Chronic bladder irritation, recurrent infections or indwelling catheter increasing risk"
+      },
+      {
+        "question": "Have you ever had radiation to the pelvis or chemotherapy such as cyclophosphamide?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Prior pelvic radiation or cyclophosphamide/ifosfamide exposure as risk factors"
+      },
+      {
+        "question": "Has anyone in your family had bladder cancer or another cancer syndrome?",
+        "category": "family",
+        "importance": "important",
+        "looking_for": "Family history of bladder cancer or an inherited cancer predisposition such as Lynch syndrome"
+      },
+      {
+        "question": "Have you had any weight loss, bone pain or night sweats?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Constitutional symptoms suggesting advanced or metastatic disease"
+      },
+      {
+        "question": "Could you be pregnant? When was your last period?",
+        "category": "obstetric",
+        "importance": "optional",
+        "looking_for": "Excludes menstrual bleeding as the source and guides imaging choice in women of reproductive age"
+      }
+    ],
+    "accepted_names": [
+      "Bladder cancer",
+      "Urothelial carcinoma of the bladder",
+      "Transitional cell carcinoma of the bladder",
+      "Bladder urothelial carcinoma",
+      "Urothelial bladder cancer"
+    ],
+    "reasoning_points": [
+      "Painless gross or microscopic hematuria in an older adult, especially a smoker or someone with occupational chemical exposure",
+      "Hematuria is typically intermittent, so a single negative urinalysis does not exclude the diagnosis",
+      "Irritative voiding symptoms such as frequency, urgency and dysuria may accompany the hematuria and can be mistaken for urinary tract infection",
+      "Urinalysis confirms blood without infection; sterile pyuria can occur and should raise concern for tumor",
+      "Risk factors include cigarette smoking, aromatic amine exposure, age over 60, male sex, chronic bladder irritation, prior pelvic radiation or cyclophosphamide, and family history",
+      "Cystoscopy with biopsy or transurethral resection is the definitive test for tissue diagnosis",
+      "CT urography evaluates the upper tracts and stages the tumor; ultrasound is an alternative when contrast cannot be given",
+      "Urine cytology supports but does not exclude the diagnosis; a negative result does not rule out cancer",
+      "Muscle invasion on pathology is the key dividing line that determines bladder-preserving therapy versus radical cystectomy",
+      "Look-alikes such as urinary tract infection, kidney stones, benign prostatic hyperplasia, prostate cancer, kidney cancer, overactive bladder, interstitial cystitis and glomerulonephritis must be considered and excluded"
+    ],
+    "difficulty": {
+      "easy": [
+        "Older man with a long smoking history",
+        "Painless gross hematuria described as tea- or cola-colored urine",
+        "Hematuria found on urinalysis with no signs of infection",
+        "Bladder mass seen on ultrasound or CT urography",
+        "Cystoscopy confirms a papillary bladder tumor"
+      ],
+      "medium": [
+        "Microscopic hematuria found incidentally on routine urinalysis without visible blood",
+        "Irritative voiding symptoms treated as urinary tract infection that do not fully resolve",
+        "Sterile pyuria on urinalysis with a negative urine culture",
+        "Older adult presenting with fatigue and anemia rather than visible blood",
+        "Occupational aromatic amine exposure without a smoking history"
+      ],
+      "hard": [
+        "Hematuria attributed to benign prostatic hyperplasia or chronic kidney disease, delaying recognition of a tumor",
+        "Small or flat carcinoma in situ missed on ultrasound and CT, requiring cystoscopy for diagnosis",
+        "Patient with a coexisting urinary tract infection whose hematuria persists after antibiotics",
+        "Gross hematuria in pregnancy attributed to pregnancy-related changes or infection",
+        "Presentation with clot retention, hydronephrosis or metastatic bone pain rather than isolated hematuria",
+        "Immunocompromised patient whose irritative symptoms improve with antibiotics but whose hematuria recurs"
+      ]
+    }
+  }
+}

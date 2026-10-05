@@ -1,0 +1,1422 @@
+{
+  "schema_version": "0.2",
+  "slug": "gallstones",
+  "triage": {
+    "name": "Gallstones",
+    "case_suitable": true,
+    "reason": "Very common biliary colic presentation with classic postprandial right upper quadrant pain, exam, labs and ultrasound leading to diagnosis.",
+    "kind": "disease",
+    "category": "biliary disease",
+    "organ_systems": [
+      "gastrointestinal"
+    ],
+    "primary_clerkship": "surgery",
+    "secondary_clerkships": [
+      "internalMedicine",
+      "emergency",
+      "familyMedicine"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "clinic",
+      "emergency",
+      "inpatient"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:17:35Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:07:26Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:07:31Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:07:41Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:07:52Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:18:00Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'right upper quadrant ultrasound' was in ['initial', 'confirmatory'], kept ['initial']",
+        "differential acute-cholecystitis: no profile yet",
+        "differential cholangitis: no profile yet",
+        "differential acute-pancreatitis: no profile yet",
+        "differential peptic-ulcer-disease: no profile yet",
+        "differential gastroesophageal-reflux-disease: no profile yet",
+        "differential acute-coronary-syndrome: no profile yet",
+        "differential pneumonia: no profile yet",
+        "differential kidney-stones: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 30,
+      "typical_max": 70,
+      "peak": "40–60",
+      "possible_min": 10,
+      "possible_max": 100
+    },
+    "sex": "female_predominant",
+    "demographics": [
+      "More common in women than men, especially before age 60",
+      "Higher prevalence in Native American and Mexican American populations",
+      "Prevalence increases with age in both sexes",
+      "Often discovered incidentally on imaging done for other reasons"
+    ],
+    "risk_factors": [
+      {
+        "text": "Female sex",
+        "strength": "strong"
+      },
+      {
+        "text": "Obesity",
+        "strength": "strong"
+      },
+      {
+        "text": "Age over 40",
+        "strength": "strong"
+      },
+      {
+        "text": "Rapid weight loss or fasting",
+        "strength": "moderate"
+      },
+      {
+        "text": "Pregnancy",
+        "strength": "moderate"
+      },
+      {
+        "text": "Family history of gallstones",
+        "strength": "moderate"
+      },
+      {
+        "text": "Native American or Mexican American ancestry",
+        "strength": "moderate"
+      },
+      {
+        "text": "Estrogen therapy or oral contraceptives",
+        "strength": "moderate"
+      },
+      {
+        "text": "Diabetes mellitus",
+        "strength": "moderate"
+      },
+      {
+        "text": "Crohn disease or ileal resection",
+        "strength": "weak"
+      },
+      {
+        "text": "Cirrhosis",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Obesity",
+      "Diabetes mellitus",
+      "Metabolic syndrome",
+      "Crohn disease or prior ileal resection",
+      "Cirrhosis",
+      "Hemolytic disorders (e.g., sickle cell disease, hereditary spherocytosis)"
+    ],
+    "family_history": [
+      "Gallstones in a first-degree relative"
+    ],
+    "social_history": [
+      "Sedentary lifestyle",
+      "Diets high in fat and refined carbohydrates"
+    ],
+    "exposures": [],
+    "risk_medications": [
+      "Estrogen-containing contraceptives",
+      "Hormone replacement therapy",
+      "Ceftriaxone",
+      "Octreotide",
+      "Fibrates"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My stomach hurts under my right ribs",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "The pain comes in waves after I eat",
+        "frequency": "common"
+      },
+      {
+        "text": "I feel sick to my stomach",
+        "frequency": "common"
+      }
+    ],
+    "hpi": {
+      "onset": "Sudden, often awakening the patient from sleep or starting within an hour after a meal",
+      "duration": "Episodes last 30 minutes to several hours; symptoms may have been recurring for weeks to months",
+      "progression": "Steady intense pain that plateaus rather than building continuously; resolves spontaneously or with pain medication, but recurs with subsequent fatty meals",
+      "location": "Right upper quadrant or epigastrium",
+      "radiation": "May radiate to the right shoulder, right scapula, or mid-back",
+      "quality": "Constant, aching, or pressure-like; sometimes described as gripping",
+      "severity": "Moderate to severe, often 6–9/10 at peak",
+      "timing": "Postprandial, typically 30–60 minutes after eating, especially after fatty or fried foods; may occur at night",
+      "aggravating": [
+        "Eating fatty or greasy meals",
+        "Large meals",
+        "Lying flat or bending over"
+      ],
+      "relieving": [
+        "Nothing consistently; sometimes sitting upright or walking helps slightly",
+        "Pain medication may partially relieve it"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Nausea",
+          "frequency": "common"
+        },
+        {
+          "text": "Vomiting",
+          "frequency": "common"
+        },
+        {
+          "text": "Belching or bloating",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Low-grade fever (if cholecystitis develops)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Dark urine or light-colored stools (if bile duct obstruction)",
+          "frequency": "rare"
+        },
+        {
+          "text": "Itching (if bile duct obstruction)",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Pain that starts in the epigastrium and migrates to the right lower quadrant",
+        "Pain that is clearly pleuritic or positional",
+        "Burning epigastric pain relieved by food or antacids",
+        "Pain radiating to the left arm or jaw",
+        "Dysuria, frequency, or hematuria",
+        "Vaginal bleeding or discharge",
+        "Weight loss or loss of appetite",
+        "Hematemesis or melena"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Feeling tired during attacks",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "High fever",
+          "Chills",
+          "Night sweats",
+          "Weight loss"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Nausea",
+            "frequency": "common"
+          },
+          {
+            "text": "Vomiting",
+            "frequency": "common"
+          },
+          {
+            "text": "Bloating or belching",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Jaundice",
+          "Dark urine",
+          "Light-colored stools",
+          "Blood in vomit or stool",
+          "Chronic diarrhea"
+        ],
+        "argues_against": [
+          "Pain that migrates to the right lower quadrant",
+          "Pain relieved by bowel movement or antacids"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [],
+        "negatives": [
+          "Chest pain",
+          "Shortness of breath",
+          "Palpitations"
+        ],
+        "argues_against": [
+          "Pain radiating to the left arm or jaw",
+          "Exertional chest pressure"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [],
+        "negatives": [
+          "Dysuria",
+          "Frequency",
+          "Hematuria",
+          "Flank pain"
+        ],
+        "argues_against": [
+          "Colicky flank pain radiating to the groin"
+        ]
+      },
+      {
+        "system": "reproductive",
+        "positives": [],
+        "negatives": [
+          "Vaginal bleeding",
+          "Vaginal discharge",
+          "Missed period"
+        ],
+        "argues_against": [
+          "Sudden one-sided pelvic pain",
+          "Missed period"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "older_adults",
+        "how_it_differs": "May present with vague abdominal discomfort, anorexia, or confusion rather than classic colicky pain; pain may be less severe.",
+        "missing_classic_features": [
+          "Severe postprandial right upper quadrant pain",
+          "Nausea and vomiting"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Symptoms may be attributed to normal pregnancy discomfort; right upper quadrant pain can be mistaken for preeclampsia or HELLP syndrome.",
+        "missing_classic_features": [
+          "Clear postprandial pattern"
+        ]
+      },
+      {
+        "population": "diabetes",
+        "how_it_differs": "May have atypical or blunted pain due to autonomic neuropathy; higher risk of severe complications like emphysematous cholecystitis.",
+        "missing_classic_features": [
+          "Typical severe pain"
+        ]
+      },
+      {
+        "population": "obesity",
+        "how_it_differs": "Symptoms may be similar but physical exam is more difficult; higher risk of complications and technical difficulty with surgery.",
+        "missing_classic_features": []
+      },
+      {
+        "population": "children",
+        "how_it_differs": "Gallstones are uncommon in children; when present, they are often associated with hemolytic disease or obesity and may present with vague abdominal pain.",
+        "missing_classic_features": [
+          "Classic postprandial pattern"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Comfortable between episodes; mild distress only during an attack",
+      "moderate": "Uncomfortable, prefers to lie still, may be nauseated",
+      "severe": "Ill-appearing, diaphoretic, guarding the right upper quadrant",
+      "critical": "Toxic-appearing, pale, diaphoretic, may be confused or hypotensive"
+    },
+    "findings": [
+      {
+        "id": "ruq-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate the right upper quadrant and epigastrium",
+        "finding": "Right upper quadrant tenderness",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "murphy-sign",
+        "region": "abdomen",
+        "maneuver": "Hook the fingers under the right costal margin and ask the patient to take a deep breath",
+        "finding": "Inspiratory arrest or marked pain on deep palpation of the right upper quadrant (Murphy sign)",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "guarding",
+        "region": "abdomen",
+        "maneuver": "Palpate the right upper quadrant",
+        "finding": "Voluntary or involuntary guarding",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "rebound",
+        "region": "abdomen",
+        "maneuver": "Ask the patient to cough, or gently release deep pressure",
+        "finding": "Pain with jarring, suggesting peritoneal irritation",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "palpable-gallbladder",
+        "region": "abdomen",
+        "maneuver": "Palpate the right upper quadrant and right costal margin",
+        "finding": "Palpable, tender gallbladder (or mass)",
+        "frequency": "rare",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "no-jaundice",
+        "region": "skin",
+        "maneuver": "Inspect the sclera and skin in natural light",
+        "finding": "No scleral icterus or jaundice",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-fever",
+        "region": "general",
+        "maneuver": "Measure temperature and assess for rigors",
+        "finding": "No fever or chills",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-bowel-sounds",
+        "region": "abdomen",
+        "maneuver": "Auscultate bowel sounds in all four quadrants",
+        "finding": "Normal bowel sounds",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-cva-tenderness",
+        "region": "abdomen",
+        "maneuver": "Percuss the costovertebral angles",
+        "finding": "No costovertebral angle tenderness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-pelvic-tenderness",
+        "region": "pelvic",
+        "maneuver": "Pelvic exam when a gynecologic cause is possible",
+        "finding": "No cervical motion tenderness or adnexal mass",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 98.0,
+        "max": 99.5
+      },
+      "moderate": {
+        "min": 99.0,
+        "max": 100.4
+      },
+      "severe": {
+        "min": 100.4,
+        "max": 102.0
+      },
+      "critical": {
+        "min": 101.0,
+        "max": 103.5
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 90
+      },
+      "moderate": {
+        "min": 80,
+        "max": 100
+      },
+      "severe": {
+        "min": 95,
+        "max": 120
+      },
+      "critical": {
+        "min": 110,
+        "max": 140
+      }
+    },
+    "rr": {
+      "severe": {
+        "min": 18,
+        "max": 24
+      },
+      "critical": {
+        "min": 22,
+        "max": 30
+      }
+    },
+    "sbp": {
+      "critical": {
+        "min": 80,
+        "max": 100
+      }
+    },
+    "dbp": {
+      "critical": {
+        "min": 45,
+        "max": 65
+      }
+    },
+    "spo2": {
+      "critical": {
+        "min": 90,
+        "max": 95
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "mild": {
+          "min": 10.5,
+          "max": 14.0
+        },
+        "moderate": {
+          "min": 12.0,
+          "max": 17.0
+        },
+        "severe": {
+          "min": 15.0,
+          "max": 22.0
+        },
+        "critical": {
+          "min": 18.0,
+          "max": 28.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Normal in uncomplicated biliary colic; a rising white count with fever suggests acute cholecystitis, cholangitis, or another complication."
+    },
+    {
+      "test_id": "neut_pct",
+      "ranges": {
+        "mild": {
+          "min": 70,
+          "max": 80
+        },
+        "moderate": {
+          "min": 75,
+          "max": 86
+        },
+        "severe": {
+          "min": 80,
+          "max": 90
+        },
+        "critical": {
+          "min": 82,
+          "max": 92
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "tbili",
+      "ranges": {
+        "mild": {
+          "min": 1.3,
+          "max": 2.0
+        },
+        "moderate": {
+          "min": 1.8,
+          "max": 3.5
+        },
+        "severe": {
+          "min": 3.0,
+          "max": 8.0
+        },
+        "critical": {
+          "min": 6.0,
+          "max": 15.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Normal in simple cholelithiasis; elevation suggests a stone in the common bile duct or another cause of obstruction."
+    },
+    {
+      "test_id": "dbili",
+      "ranges": {
+        "mild": {
+          "min": 0.4,
+          "max": 0.8
+        },
+        "moderate": {
+          "min": 0.7,
+          "max": 1.8
+        },
+        "severe": {
+          "min": 1.5,
+          "max": 4.5
+        },
+        "critical": {
+          "min": 3.0,
+          "max": 8.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "A direct (conjugated) predominance points to obstruction of the bile duct rather than hemolysis."
+    },
+    {
+      "test_id": "alp",
+      "ranges": {
+        "mild": {
+          "min": 150,
+          "max": 250
+        },
+        "moderate": {
+          "min": 220,
+          "max": 450
+        },
+        "severe": {
+          "min": 400,
+          "max": 800
+        },
+        "critical": {
+          "min": 600,
+          "max": 1200
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Rises with bile duct obstruction; a cholestatic pattern with a high alkaline phosphatase and bilirubin suggests a common bile duct stone."
+    },
+    {
+      "test_id": "ggt",
+      "ranges": {
+        "mild": {
+          "min": 50,
+          "max": 120
+        },
+        "moderate": {
+          "min": 100,
+          "max": 250
+        },
+        "severe": {
+          "min": 200,
+          "max": 500
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Confirms that an elevated alkaline phosphatase is hepatobiliary in origin."
+    },
+    {
+      "test_id": "ast",
+      "ranges": {
+        "mild": {
+          "min": 45,
+          "max": 90
+        },
+        "moderate": {
+          "min": 80,
+          "max": 200
+        },
+        "severe": {
+          "min": 180,
+          "max": 500
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Transaminases are usually normal or only mildly elevated unless a stone is passing through the common bile duct."
+    },
+    {
+      "test_id": "alt",
+      "ranges": {
+        "mild": {
+          "min": 60,
+          "max": 120
+        },
+        "moderate": {
+          "min": 100,
+          "max": 250
+        },
+        "severe": {
+          "min": 220,
+          "max": 600
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "lipase",
+      "ranges": {
+        "mild": {
+          "min": 150,
+          "max": 300
+        },
+        "moderate": {
+          "min": 250,
+          "max": 600
+        },
+        "severe": {
+          "min": 500,
+          "max": 1200
+        },
+        "critical": {
+          "min": 900,
+          "max": 2000
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Order when pain is epigastric or radiates to the back; a stone impacted at the ampulla can cause gallstone pancreatitis."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Negative. Required in anyone who could be pregnant before imaging and surgery; rules out ectopic pregnancy."
+    }
+  ],
+  "imaging": [
+    {
+      "study": "Right upper quadrant ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "First-line study for suspected gallstones in all patients",
+      "findings": [
+        {
+          "text": "Echogenic foci within the gallbladder with posterior acoustic shadowing (gallstones)",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Gallbladder wall thickening over 3 mm",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Pericholecystic fluid",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Sonographic Murphy sign (focal tenderness over the gallbladder with the probe)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Dilated common bile duct over 6 mm (suggests a common bile duct stone)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Sludge or biliary microlithiasis without discrete stones",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Gallbladder not visualized or obscured by bowel gas (nondiagnostic study)",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Magnetic resonance cholangiopancreatography (MRCP)",
+      "modality": "mri",
+      "preferred_when": "Suspected common bile duct stone when ultrasound is nondiagnostic and before ERCP",
+      "findings": [
+        {
+          "text": "Filling defect within the common bile duct (choledocholithiasis)",
+          "frequency": "common"
+        },
+        {
+          "text": "Dilated intrahepatic or extrahepatic bile ducts",
+          "frequency": "common"
+        },
+        {
+          "text": "Gallstones within the gallbladder",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "Endoscopic retrograde cholangiopancreatography (ERCP)",
+      "modality": "endoscopy",
+      "preferred_when": "High likelihood of a common bile duct stone, especially with cholangitis or worsening obstruction",
+      "findings": [
+        {
+          "text": "Stone or filling defect in the common bile duct, with or without ductal dilation",
+          "frequency": "common"
+        },
+        {
+          "text": "Bile duct stones can be removed at the same procedure (sphincterotomy and extraction)",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "CT abdomen and pelvis with IV contrast",
+      "modality": "ct",
+      "preferred_when": "When another cause of abdominal pain is suspected or complications are being assessed",
+      "findings": [
+        {
+          "text": "Gallstones may be seen, but many are isodense and missed on CT",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Gallbladder wall thickening, pericholecystic fluid, or fat stranding (cholecystitis)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Dilated bile ducts suggesting obstruction",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Pancreatic enlargement or peripancreatic fluid (gallstone pancreatitis)",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Abdominal x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Usually normal; only about 10–15% of gallstones are calcified enough to be seen",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Hepatobiliary iminodiacetic acid (HIDA) scan",
+      "modality": "nuclear",
+      "preferred_when": "Suspected acute cholecystitis when ultrasound is equivocal",
+      "findings": [
+        {
+          "text": "Nonvisualization of the gallbladder with tracer uptake in the liver and bile ducts (cystic duct obstruction)",
+          "frequency": "common"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Looks for leukocytosis suggesting cholecystitis or another complication"
+      },
+      {
+        "test": "cmp_extra",
+        "why": "Assesses bilirubin, alkaline phosphatase, and transaminases for bile duct obstruction"
+      },
+      {
+        "test": "lipase",
+        "why": "Rules out gallstone pancreatitis when pain is epigastric or radiates to the back"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy and ectopic pregnancy before imaging and any intervention"
+      },
+      {
+        "test": "Right upper quadrant ultrasound",
+        "why": "First-line test to confirm gallstones and assess the gallbladder wall and bile ducts"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "MRCP",
+        "why": "Detects common bile duct stones noninvasively",
+        "only_if": "suspected common bile duct stone with a dilated duct or abnormal liver tests"
+      },
+      {
+        "test": "ERCP",
+        "why": "Both diagnoses and treats common bile duct stones",
+        "only_if": "high likelihood of a common bile duct stone, cholangitis, or worsening obstruction"
+      },
+      {
+        "test": "HIDA scan",
+        "why": "Confirms cystic duct obstruction",
+        "only_if": "suspected acute cholecystitis with an equivocal ultrasound"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Not needed for uncomplicated gallstones; misses many stones and adds radiation",
+        "only_if": "another cause of abdominal pain is suspected or complications are being assessed"
+      },
+      {
+        "test": "Abdominal x-ray",
+        "why": "Rarely shows gallstones and does not change management"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in right upper quadrant pain"
+      },
+      {
+        "test": "ua",
+        "why": "Not routinely needed unless a urinary cause is suspected"
+      },
+      {
+        "test": "hs_tnt",
+        "why": "Not needed unless cardiac pain is suspected"
+      },
+      {
+        "test": "lipids",
+        "why": "Not part of the acute evaluation of gallstones"
+      }
+    ],
+    "decision_points": [
+      "Pregnancy test before imaging or surgery in anyone who could be pregnant",
+      "Ultrasound first; if it shows gallstones without duct dilation or abnormal liver tests, no further imaging is needed",
+      "Dilated common bile duct or abnormal liver tests raise concern for a common bile duct stone and prompt MRCP or ERCP",
+      "Fever, jaundice, and right upper quadrant pain suggest cholangitis and need urgent biliary drainage",
+      "Peritonitis or hemodynamic instability goes to surgery without waiting for further imaging"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Acute cholecystitis",
+      "slug": "acute-cholecystitis",
+      "why_considered": "Gallstones are the cause of most acute cholecystitis; the pain is in the same location and follows the same postprandial pattern.",
+      "must_not_miss": true,
+      "trigger": "Pain lasting more than 6 hours with fever, leukocytosis, or a positive Murphy sign",
+      "discriminators": {
+        "history": [
+          "Pain is constant and lasts more than 6 hours rather than resolving between episodes",
+          "Fever and chills",
+          "Pain is not relieved by medication or position change"
+        ],
+        "exam": [
+          "Marked right upper quadrant tenderness with inspiratory arrest (Murphy sign)",
+          "Low-grade fever",
+          "Guarding or a palpable tender gallbladder"
+        ],
+        "labs": [
+          "Leukocytosis with neutrophilia",
+          "Mild bilirubin or alkaline phosphatase elevation"
+        ],
+        "imaging": [
+          "Gallbladder wall thickening over 3 mm",
+          "Pericholecystic fluid",
+          "Sonographic Murphy sign",
+          "Nonvisualization of the gallbladder on HIDA scan"
+        ]
+      }
+    },
+    {
+      "name": "Choledocholithiasis with cholangitis",
+      "slug": "cholangitis",
+      "why_considered": "A stone that migrates into the common bile duct causes the same right upper quadrant pain and can obstruct bile flow.",
+      "must_not_miss": true,
+      "trigger": "Fever with jaundice and right upper quadrant pain (Charcot triad), or hypotension and confusion (Reynolds pentad)",
+      "discriminators": {
+        "history": [
+          "Jaundice with dark urine and light-colored stools",
+          "Fever with rigors",
+          "Pruritus"
+        ],
+        "exam": [
+          "Scleral icterus or jaundice",
+          "Fever and tachycardia",
+          "Hypotension or altered mental status in severe cases"
+        ],
+        "labs": [
+          "Elevated total and direct bilirubin",
+          "Markedly elevated alkaline phosphatase and GGT",
+          "Leukocytosis",
+          "Blood cultures may be positive"
+        ],
+        "imaging": [
+          "Dilated common bile duct over 6 mm on ultrasound",
+          "Filling defect in the common bile duct on MRCP",
+          "Stone seen and removable at ERCP"
+        ]
+      }
+    },
+    {
+      "name": "Gallstone pancreatitis",
+      "slug": "acute-pancreatitis",
+      "why_considered": "A stone impacted at the ampulla can trigger pancreatitis, which shares epigastric pain, nausea, and vomiting.",
+      "must_not_miss": true,
+      "trigger": "Epigastric pain radiating to the back with vomiting and a lipase more than three times the upper limit of normal",
+      "discriminators": {
+        "history": [
+          "Pain radiates to the back and is relieved by leaning forward",
+          "Persistent vomiting",
+          "Pain is more epigastric than right upper quadrant"
+        ],
+        "exam": [
+          "Epigastric tenderness with guarding",
+          "Tachycardia and low-grade fever",
+          "Decreased bowel sounds"
+        ],
+        "labs": [
+          "Lipase elevated more than three times the upper limit of normal",
+          "Elevated amylase",
+          "Leukocytosis and elevated transaminases"
+        ],
+        "imaging": [
+          "Pancreatic enlargement and peripancreatic fluid on CT",
+          "Gallstones on ultrasound",
+          "Dilated common bile duct suggesting an impacted stone"
+        ]
+      }
+    },
+    {
+      "name": "Peptic ulcer disease",
+      "slug": "peptic-ulcer-disease",
+      "why_considered": "Epigastric pain is a common complaint that overlaps with biliary colic.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Burning epigastric pain relieved by food or antacids",
+          "Nocturnal pain",
+          "NSAID use or Helicobacter pylori history"
+        ],
+        "exam": [
+          "Epigastric tenderness without right upper quadrant localization",
+          "No Murphy sign"
+        ],
+        "labs": [
+          "Normal liver tests and lipase",
+          "Positive H. pylori stool antigen or breath test"
+        ],
+        "imaging": [
+          "Ulcer seen on upper endoscopy",
+          "No gallstones on ultrasound"
+        ]
+      }
+    },
+    {
+      "name": "Gastroesophageal reflux disease",
+      "slug": "gastroesophageal-reflux-disease",
+      "why_considered": "Postprandial epigastric burning and nausea can mimic biliary colic.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Heartburn and regurgitation after meals",
+          "Symptoms worse when lying flat",
+          "Relief with antacids or proton pump inhibitors"
+        ],
+        "exam": [
+          "Epigastric tenderness without right upper quadrant findings",
+          "No fever or jaundice"
+        ],
+        "labs": [
+          "Normal liver tests and lipase"
+        ],
+        "imaging": [
+          "No gallstones on ultrasound",
+          "Normal gallbladder wall"
+        ]
+      }
+    },
+    {
+      "name": "Acute coronary syndrome",
+      "slug": "acute-coronary-syndrome",
+      "why_considered": "Inferior myocardial infarction can present with epigastric pain, nausea, and vomiting.",
+      "must_not_miss": true,
+      "trigger": "Epigastric pain with diaphoresis, dyspnea, or cardiac risk factors",
+      "discriminators": {
+        "history": [
+          "Chest pressure or pain radiating to the left arm or jaw",
+          "Exertional onset or dyspnea",
+          "Cardiac risk factors such as diabetes, hypertension, or smoking"
+        ],
+        "exam": [
+          "Diaphoresis, pallor, or hypotension",
+          "No right upper quadrant tenderness"
+        ],
+        "labs": [
+          "Elevated troponin",
+          "Normal liver tests and lipase"
+        ],
+        "imaging": [
+          "No gallstones on ultrasound",
+          "Coronary angiography shows culprit lesion"
+        ],
+        "ecg": [
+          "ST elevation or depression in inferior leads",
+          "T-wave inversions"
+        ]
+      }
+    },
+    {
+      "name": "Right lower lobe pneumonia",
+      "slug": "pneumonia",
+      "why_considered": "Pleuritic right-sided pain can be referred to the right upper quadrant and epigastrium.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Cough, fever, and sputum production",
+          "Pleuritic pain worse with deep breathing"
+        ],
+        "exam": [
+          "Crackles or decreased breath sounds at the right base",
+          "No right upper quadrant tenderness"
+        ],
+        "labs": [
+          "Leukocytosis",
+          "Normal liver tests and lipase"
+        ],
+        "imaging": [
+          "Right lower lobe infiltrate on chest x-ray or CT",
+          "No gallstones on ultrasound"
+        ]
+      }
+    },
+    {
+      "name": "Kidney stone",
+      "slug": "kidney-stones",
+      "why_considered": "Right-sided flank and abdominal pain with nausea and vomiting can be confused with biliary colic.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Colicky flank pain radiating to the groin",
+          "Patient writhes and cannot get comfortable",
+          "Dysuria or hematuria"
+        ],
+        "exam": [
+          "Costovertebral angle tenderness",
+          "No right upper quadrant tenderness"
+        ],
+        "labs": [
+          "Hematuria on urinalysis",
+          "Normal liver tests and lipase"
+        ],
+        "imaging": [
+          "Stone and hydronephrosis on CT",
+          "No gallstones on ultrasound"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Biliary colic: episodes of right upper quadrant pain lasting 30 minutes to several hours, resolving spontaneously, with no fever, normal white count, and normal liver tests",
+      "moderate": "Acute cholecystitis: constant pain over 6 hours, fever, leukocytosis, and gallbladder wall thickening or pericholecystic fluid on ultrasound",
+      "severe": "Cholangitis or gallstone pancreatitis: jaundice, fever, hypotension, or a lipase more than three times the upper limit of normal, requiring urgent drainage or intensive care",
+      "critical": "Septic shock from cholangitis or severe necrotizing pancreatitis with organ failure"
+    },
+    "red_flags": [
+      {
+        "finding": "Fever with jaundice and right upper quadrant pain",
+        "meaning": "Cholangitis; needs urgent biliary drainage"
+      },
+      {
+        "finding": "Hypotension or altered mental status",
+        "meaning": "Septic shock from cholangitis or severe pancreatitis"
+      },
+      {
+        "finding": "Diffuse rigidity or rebound tenderness",
+        "meaning": "Generalized peritonitis from gallbladder perforation"
+      },
+      {
+        "finding": "Lipase more than three times the upper limit of normal",
+        "meaning": "Gallstone pancreatitis"
+      },
+      {
+        "finding": "Persistent pain over 6 hours with fever and leukocytosis",
+        "meaning": "Acute cholecystitis rather than simple biliary colic"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Acute cholecystitis",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Pain lasting more than 6 hours",
+          "Fever and leukocytosis",
+          "Positive Murphy sign",
+          "Gallbladder wall thickening on ultrasound"
+        ]
+      },
+      {
+        "name": "Choledocholithiasis",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Jaundice",
+          "Dilated common bile duct on ultrasound",
+          "Elevated bilirubin and alkaline phosphatase"
+        ]
+      },
+      {
+        "name": "Ascending cholangitis",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Fever with rigors",
+          "Jaundice",
+          "Hypotension or confusion"
+        ]
+      },
+      {
+        "name": "Gallstone pancreatitis",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Epigastric pain radiating to the back",
+          "Vomiting",
+          "Lipase more than three times the upper limit of normal"
+        ]
+      },
+      {
+        "name": "Gallbladder perforation",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Sudden worsening pain",
+          "Diffuse peritonitis",
+          "Hemodynamic instability"
+        ]
+      },
+      {
+        "name": "Gallstone ileus",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Bowel obstruction in an older adult",
+          "Pneumobilia on imaging",
+          "History of recurrent cholecystitis"
+        ]
+      },
+      {
+        "name": "Gallbladder cancer",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Chronic gallstones with weight loss",
+          "Palpable gallbladder mass",
+          "Irregular gallbladder wall on imaging"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "older_adults",
+        "differences": "May present with vague abdominal discomfort, anorexia, or confusion rather than classic colicky pain; higher risk of severe complications such as emphysematous cholecystitis."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Symptoms may be attributed to normal pregnancy discomfort; right upper quadrant pain can be mistaken for preeclampsia or HELLP syndrome; ultrasound is safe and surgery is preferred in the second trimester if needed."
+      },
+      {
+        "population": "diabetes",
+        "differences": "May have atypical or blunted pain due to autonomic neuropathy; higher risk of severe complications like emphysematous cholecystitis."
+      },
+      {
+        "population": "obesity",
+        "differences": "Symptoms may be similar but physical exam is more difficult; higher risk of complications and technical difficulty with surgery."
+      },
+      {
+        "population": "children",
+        "differences": "Gallstones are uncommon; when present, they are often associated with hemolytic disease or obesity and may present with vague abdominal pain."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "Where exactly is the pain, and does it move anywhere?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Right upper quadrant or epigastric pain, sometimes radiating to the right shoulder, right scapula, or mid-back"
+      },
+      {
+        "question": "When did the pain start, and how long does an episode last?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Episodes lasting 30 minutes to several hours that resolve; pain lasting more than 6 hours suggests cholecystitis"
+      },
+      {
+        "question": "What were you doing when the pain started? Does it come on after eating?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Onset 30–60 minutes after a meal, especially a fatty or fried meal, or waking the patient at night"
+      },
+      {
+        "question": "Does the pain come in waves, or is it constant?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Steady, intense pain that plateaus rather than building continuously; recurring episodes over weeks to months"
+      },
+      {
+        "question": "Does anything make the pain better or worse?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Worse with fatty meals, large meals, lying flat, or bending over; nothing consistently relieves it"
+      },
+      {
+        "question": "Have you had nausea or vomiting with the pain?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Nausea and vomiting accompanying the pain"
+      },
+      {
+        "question": "Have you had a fever or chills?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Fever and chills suggest acute cholecystitis or cholangitis rather than simple biliary colic"
+      },
+      {
+        "question": "Have you noticed yellowing of your eyes or skin, dark urine, or pale stools?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Jaundice, dark urine, or light-colored stools suggest a common bile duct stone or obstruction"
+      },
+      {
+        "question": "Have you had any itching?",
+        "category": "associated",
+        "importance": "optional",
+        "looking_for": "Pruritus from cholestasis when the bile duct is obstructed"
+      },
+      {
+        "question": "Have you had gallstones or gallbladder problems before, or any abdominal surgery?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Prior episodes of biliary colic, prior cholecystitis, or prior cholecystectomy"
+      },
+      {
+        "question": "Do you take any estrogen-containing medications, such as birth control pills or hormone replacement therapy?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Estrogen exposure increases gallstone risk"
+      },
+      {
+        "question": "Has anyone in your family had gallstones or gallbladder surgery?",
+        "category": "family",
+        "importance": "important",
+        "looking_for": "Gallstones in a first-degree relative"
+      },
+      {
+        "question": "Could you be pregnant? When was your last menstrual period?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Pregnancy increases gallstone risk and must be excluded before imaging and any intervention"
+      },
+      {
+        "question": "What is your typical diet and activity level? Have you lost weight recently?",
+        "category": "social",
+        "importance": "optional",
+        "looking_for": "High-fat diet, sedentary lifestyle, or rapid weight loss"
+      },
+      {
+        "question": "Any burning with urination, blood in the urine, or flank pain?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Absent; present suggests a urinary cause such as a kidney stone"
+      },
+      {
+        "question": "Any chest pain, shortness of breath, or pain radiating to the left arm or jaw?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Absent; present raises concern for acute coronary syndrome"
+      }
+    ],
+    "accepted_names": [
+      "Gallstones",
+      "Cholelithiasis",
+      "Biliary colic",
+      "Gallstone disease",
+      "Gallbladder stones"
+    ],
+    "reasoning_points": [
+      "Recurrent episodes of right upper quadrant or epigastric pain lasting 30 minutes to several hours, coming on 30–60 minutes after fatty meals",
+      "Pain may radiate to the right shoulder, right scapula, or mid-back",
+      "Nausea and vomiting accompany the pain",
+      "Risk factors such as female sex, age over 40, obesity, pregnancy, estrogen use, and family history",
+      "Right upper quadrant tenderness on exam without fever or jaundice in uncomplicated disease",
+      "Normal or only mildly abnormal white count, bilirubin, alkaline phosphatase, and lipase in simple biliary colic",
+      "Right upper quadrant ultrasound showing echogenic foci in the gallbladder with posterior acoustic shadowing",
+      "Pregnancy excluded before imaging and any intervention",
+      "Red flags such as fever, jaundice, or pain lasting more than 6 hours prompt evaluation for cholecystitis, choledocholithiasis, cholangitis, or pancreatitis"
+    ],
+    "difficulty": {
+      "easy": [
+        "Middle-aged woman with obesity and classic postprandial right upper quadrant pain",
+        "Pain radiating to the right shoulder after a fatty meal",
+        "Right upper quadrant tenderness on exam",
+        "Ultrasound showing gallstones with acoustic shadowing"
+      ],
+      "medium": [
+        "Epigastric pain radiating to the back with a mildly elevated lipase, raising concern for gallstone pancreatitis",
+        "Older adult with vague abdominal discomfort and anorexia rather than classic colicky pain",
+        "Patient with a dilated common bile duct or abnormal liver tests suggesting a common bile duct stone",
+        "Pregnant patient with right upper quadrant pain that could be mistaken for preeclampsia or HELLP syndrome"
+      ],
+      "hard": [
+        "Patient with diabetes and blunted pain from autonomic neuropathy presenting with atypical symptoms",
+        "Gallstones found incidentally on imaging done for another reason, with no biliary symptoms",
+        "Older adult with bowel obstruction from gallstone ileus and pneumobilia on imaging",
+        "Patient with right lower lobe pneumonia or acute coronary syndrome presenting with epigastric or right upper quadrant pain"
+      ]
+    }
+  }
+}

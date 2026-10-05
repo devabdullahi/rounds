@@ -25,7 +25,7 @@ struct DiagnosisView: View {
                 VStack(alignment: .leading, spacing: 16) {
                     VStack(alignment: .leading, spacing: 6) {
                         FieldLabel("Working diagnosis")
-                        TextField("", text: $session.diagnosis, prompt: Text("e.g. Inferior STEMI").foregroundStyle(Theme.faint))
+                        TextField("", text: $session.diagnosis, prompt: Text("Your working diagnosis").foregroundStyle(Theme.faint))
                             .font(.system(size: 18, weight: .semibold))
                             .focused($focus, equals: .dx)
                             .submitLabel(.next)

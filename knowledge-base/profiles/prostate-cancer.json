@@ -1,0 +1,1363 @@
+{
+  "schema_version": "0.2",
+  "slug": "prostate-cancer",
+  "triage": {
+    "name": "Prostate Cancer",
+    "case_suitable": true,
+    "reason": "Common malignancy presenting with urinary symptoms or abnormal screening; diagnosis reachable via history, exam, PSA and biopsy.",
+    "kind": "disease",
+    "category": "malignancy",
+    "organ_systems": [
+      "reproductive"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "surgery",
+      "familyMedicine"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "clinic",
+      "inpatient"
+    ],
+    "is_cancer": true
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:19:43Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:06:27Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:06:34Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:06:44Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:06:56Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:07:02Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'psa' to 'PSA'",
+        "auto-repaired: labs: dropped 'psa' (not in the reference table)",
+        "differential benign-prostatic-hyperplasia: no profile yet",
+        "differential acute-bacterial-prostatitis: no profile yet",
+        "differential urinary-tract-infection: no profile yet",
+        "differential nephrolithiasis: no profile yet",
+        "differential metastatic-bone-disease: no profile yet",
+        "differential testicular-cancer: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 55,
+      "typical_max": 85,
+      "peak": "65–74",
+      "possible_min": 40,
+      "possible_max": 100
+    },
+    "sex": "male_only",
+    "demographics": [
+      "Most common non-skin cancer in men in the US",
+      "Incidence rises steeply after age 50",
+      "Black men have higher incidence and are more likely to present at a younger age and with more advanced disease",
+      "Men with a first-degree relative with prostate cancer are at higher risk"
+    ],
+    "risk_factors": [
+      {
+        "text": "Age over 50",
+        "strength": "strong"
+      },
+      {
+        "text": "Black race",
+        "strength": "strong"
+      },
+      {
+        "text": "Family history of prostate cancer in a father or brother",
+        "strength": "strong"
+      },
+      {
+        "text": "Inherited mutations such as BRCA1/BRCA2 or Lynch syndrome",
+        "strength": "moderate"
+      },
+      {
+        "text": "Obesity",
+        "strength": "weak"
+      },
+      {
+        "text": "Smoking",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Benign prostatic hyperplasia"
+    ],
+    "family_history": [
+      "Prostate cancer in a father or brother",
+      "Breast or ovarian cancer in a female relative suggesting BRCA mutation",
+      "Colorectal or other Lynch syndrome-associated cancers"
+    ],
+    "social_history": [
+      "Smoking history",
+      "Sedentary lifestyle"
+    ],
+    "exposures": [],
+    "risk_medications": []
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I have to get up several times a night to pee",
+        "frequency": "common"
+      },
+      {
+        "text": "My urine stream is weak and it takes a while to start",
+        "frequency": "common"
+      },
+      {
+        "text": "My doctor said my PSA blood test was high",
+        "frequency": "common"
+      },
+      {
+        "text": "I have a dull ache in my lower back and hips that won't go away",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "I saw blood in my urine",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Insidious; often no symptoms at all and detected only by an abnormal PSA or digital rectal exam",
+      "duration": "Weeks to months of urinary symptoms; screening-detected cases are asymptomatic",
+      "progression": "Slowly progressive urinary symptoms; locally advanced or metastatic disease may add bone pain, weight loss or blood in urine or semen",
+      "location": "Pelvis, with urinary symptoms referred to the bladder outlet; metastatic pain in lower back, hips or pelvis",
+      "radiation": "Bone pain may radiate to the back, hips or thighs when there is metastatic spread",
+      "quality": "Obstructive and irritative urinary symptoms; bone pain is dull and constant",
+      "severity": "Mild to moderate for early disease; severe when there is urinary retention or metastatic bone pain",
+      "timing": "Nocturia and hesitancy are worse at night and with a full bladder; bone pain is constant and worse at night",
+      "aggravating": [
+        "Cold weather",
+        "Alcohol or caffeine",
+        "Full bladder"
+      ],
+      "relieving": [
+        "Urinating",
+        "Analgesics for bone pain"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Nocturia",
+          "frequency": "common"
+        },
+        {
+          "text": "Weak or interrupted urine stream",
+          "frequency": "common"
+        },
+        {
+          "text": "Urgency and frequency",
+          "frequency": "common"
+        },
+        {
+          "text": "Hesitancy and straining to start urination",
+          "frequency": "common"
+        },
+        {
+          "text": "Incomplete emptying sensation",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Blood in urine or semen",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Painful ejaculation",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Persistent lower back, hip or pelvic pain",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Unintentional weight loss and fatigue",
+          "frequency": "rare"
+        },
+        {
+          "text": "Bone fracture with minimal trauma",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Fever or chills",
+        "Dysuria with purulent urethral discharge",
+        "Gross hematuria with clots throughout the stream",
+        "Acute urinary retention",
+        "Flank pain or renal colic",
+        "Recent urinary catheterization or instrumentation",
+        "Testicular mass or swelling"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fatigue",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Unintentional weight loss",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Fever",
+          "Night sweats",
+          "Chills"
+        ],
+        "argues_against": [
+          "Acute prostatitis"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [
+          {
+            "text": "Nocturia",
+            "frequency": "common"
+          },
+          {
+            "text": "Weak urinary stream",
+            "frequency": "common"
+          },
+          {
+            "text": "Urgency",
+            "frequency": "common"
+          },
+          {
+            "text": "Hesitancy",
+            "frequency": "common"
+          },
+          {
+            "text": "Hematuria",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Hematospermia",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Dysuria",
+          "Urethral discharge",
+          "Flank pain",
+          "Anuria"
+        ],
+        "argues_against": [
+          "Urinary tract infection",
+          "Nephrolithiasis"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Lower back pain",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Hip or pelvic pain",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Joint swelling",
+          "Morning stiffness"
+        ],
+        "argues_against": [
+          "Inflammatory arthritis"
+        ]
+      },
+      {
+        "system": "reproductive",
+        "positives": [
+          {
+            "text": "Painful ejaculation",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Testicular mass",
+          "Scrotal swelling",
+          "Erectile dysfunction as an isolated complaint"
+        ],
+        "argues_against": [
+          "Testicular cancer"
+        ]
+      },
+      {
+        "system": "hematologic",
+        "positives": [],
+        "negatives": [
+          "Easy bruising",
+          "Bleeding gums",
+          "Lymph node swelling"
+        ],
+        "argues_against": [
+          "Hematologic malignancy"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "older_adults",
+        "how_it_differs": "May present with metastatic disease such as bone pain, pathologic fracture or spinal cord compression, or may have no urinary symptoms at all.",
+        "missing_classic_features": [
+          "Obstructive urinary symptoms",
+          "Abnormal digital rectal exam"
+        ]
+      },
+      {
+        "population": "obesity",
+        "how_it_differs": "Obesity is associated with more aggressive disease and higher risk of biochemical recurrence; digital rectal exam may be less reliable.",
+        "missing_classic_features": [
+          "Palpable prostate nodule"
+        ]
+      },
+      {
+        "population": "diabetes",
+        "how_it_differs": "Lower urinary tract symptoms may be attributed to diabetic neuropathy or medications rather than prostate disease, delaying diagnosis.",
+        "missing_classic_features": [
+          "Clear temporal relationship of symptoms to prostate enlargement"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Well-appearing, comfortable, no distress",
+      "moderate": "Well-appearing but uncomfortable; may shift in the chair due to pelvic or back discomfort",
+      "severe": "Ill-appearing, fatigued, may have visible weight loss or use a cane for bone pain",
+      "critical": "Toxic-appearing, pale, diaphoretic, in severe pain or with neurologic deficits from cord compression"
+    },
+    "findings": [
+      {
+        "id": "prostate-nodule",
+        "region": "rectal",
+        "maneuver": "Perform a digital rectal exam with a lubricated gloved finger, palpating the posterior surface of the prostate for nodules, asymmetry, or induration",
+        "finding": "Hard, irregular, or asymmetric nodule or area of induration on the prostate",
+        "frequency": "sometimes",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "prostate-enlargement",
+        "region": "rectal",
+        "maneuver": "Assess prostate size and consistency on digital rectal exam",
+        "finding": "Enlarged, smooth, rubbery prostate without nodules (consistent with BPH rather than cancer)",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "prostate-normal-dre",
+        "region": "rectal",
+        "maneuver": "Perform a digital rectal exam",
+        "finding": "Normal-sized, smooth, non-tender prostate without nodules or induration",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "prostate-tenderness",
+        "region": "rectal",
+        "maneuver": "Palpate the prostate on digital rectal exam",
+        "finding": "Firm, tender, boggy prostate (suggests prostatitis rather than cancer)",
+        "frequency": "rare",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "suprapubic-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate the suprapubic region",
+        "finding": "Suprapubic tenderness or palpable bladder (suggests urinary retention)",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "bone-pain-pelvis",
+        "region": "musculoskeletal",
+        "maneuver": "Palpate the pelvis, hips, and lower back; apply gentle pressure over the sacrum and iliac crests",
+        "finding": "Focal bony tenderness over the pelvis, hips, or lower back (suggests metastatic bone involvement)",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "bone-pain-ribs",
+        "region": "musculoskeletal",
+        "maneuver": "Palpate the ribs and long bones",
+        "finding": "Focal bony tenderness over the ribs or long bones (suggests metastatic bone involvement)",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "lower-extremity-edema",
+        "region": "extremities",
+        "maneuver": "Press over the pretibial area and dorsum of the foot",
+        "finding": "Pitting edema of the lower extremities (may suggest pelvic lymph node obstruction or venous stasis)",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the inguinal, supraclavicular, and cervical lymph node chains",
+        "finding": "Enlarged, firm lymph nodes (suggests metastatic spread)",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "neurologic-deficit",
+        "region": "neuro",
+        "maneuver": "Test lower extremity strength, sensation, and deep tendon reflexes; assess gait",
+        "finding": "Weakness, sensory loss, or hyperreflexia in the lower extremities (suggests spinal cord compression from metastasis)",
+        "frequency": "rare",
+        "min_severity": "critical",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "testicular-normal",
+        "region": "genitourinary",
+        "maneuver": "Palpate both testes and scrotal contents",
+        "finding": "No testicular mass or swelling",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-cva-tenderness",
+        "region": "abdomen",
+        "maneuver": "Percuss the costovertebral angles",
+        "finding": "No costovertebral angle tenderness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 98.6,
+        "max": 99.5
+      },
+      "moderate": {
+        "min": 98.6,
+        "max": 100.0
+      },
+      "severe": {
+        "min": 98.6,
+        "max": 100.4
+      },
+      "critical": {
+        "min": 98.6,
+        "max": 101.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 90
+      },
+      "moderate": {
+        "min": 65,
+        "max": 100
+      },
+      "severe": {
+        "min": 70,
+        "max": 110
+      },
+      "critical": {
+        "min": 80,
+        "max": 130
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 12,
+        "max": 18
+      },
+      "moderate": {
+        "min": 14,
+        "max": 20
+      },
+      "severe": {
+        "min": 16,
+        "max": 24
+      },
+      "critical": {
+        "min": 18,
+        "max": 30
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 110,
+        "max": 140
+      },
+      "moderate": {
+        "min": 105,
+        "max": 145
+      },
+      "severe": {
+        "min": 100,
+        "max": 150
+      },
+      "critical": {
+        "min": 90,
+        "max": 160
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 65,
+        "max": 85
+      },
+      "moderate": {
+        "min": 65,
+        "max": 90
+      },
+      "severe": {
+        "min": 60,
+        "max": 95
+      },
+      "critical": {
+        "min": 55,
+        "max": 100
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 95,
+        "max": 100
+      },
+      "moderate": {
+        "min": 94,
+        "max": 100
+      },
+      "severe": {
+        "min": 92,
+        "max": 100
+      },
+      "critical": {
+        "min": 90,
+        "max": 100
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "alp",
+      "ranges": {
+        "moderate": {
+          "min": 150,
+          "max": 300
+        },
+        "severe": {
+          "min": 250,
+          "max": 600
+        },
+        "critical": {
+          "min": 400,
+          "max": 1200
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevated alkaline phosphatase suggests bone metastases or liver involvement; confirm the source with fractionation or imaging."
+    },
+    {
+      "test_id": "ca",
+      "ranges": {
+        "moderate": {
+          "min": 10.3,
+          "max": 11.5
+        },
+        "severe": {
+          "min": 11.0,
+          "max": 13.0
+        },
+        "critical": {
+          "min": 12.0,
+          "max": 15.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hypercalcemia suggests osteolytic bone metastases; correct for albumin."
+    },
+    {
+      "test_id": "hgb",
+      "ranges": {
+        "mild": {
+          "min": 11.0,
+          "max": 13.4
+        },
+        "moderate": {
+          "min": 9.0,
+          "max": 12.0
+        },
+        "severe": {
+          "min": 7.0,
+          "max": 10.0
+        },
+        "critical": {
+          "min": 5.0,
+          "max": 8.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Anemia of chronic disease or bone marrow involvement; may also reflect hematuria."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "mild": {
+          "min": 1.4,
+          "max": 2.0
+        },
+        "moderate": {
+          "min": 1.8,
+          "max": 3.0
+        },
+        "severe": {
+          "min": 2.5,
+          "max": 5.0
+        },
+        "critical": {
+          "min": 4.0,
+          "max": 10.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevated creatinine suggests obstructive uropathy from locally advanced disease or dehydration; check for hydronephrosis."
+    },
+    {
+      "test_id": "ua_blood",
+      "qualitative": {
+        "mild": "Trace",
+        "moderate": "1+",
+        "severe": "2+"
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Microscopic hematuria may be the only urinary finding; also seen in BPH, infection, and stones."
+    },
+    {
+      "test_id": "ua_wbc",
+      "ranges": {
+        "mild": {
+          "min": 6,
+          "max": 15
+        },
+        "moderate": {
+          "min": 10,
+          "max": 30
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Mild sterile pyuria can accompany prostate cancer or obstruction; marked pyuria with positive nitrite suggests infection instead."
+    }
+  ],
+  "imaging": [
+    {
+      "study": "Transrectal ultrasound of the prostate",
+      "modality": "ultrasound",
+      "preferred_when": "Guidance for prostate biopsy",
+      "findings": [
+        {
+          "text": "Hypoechoic lesion in the peripheral zone",
+          "frequency": "common"
+        },
+        {
+          "text": "Enlarged prostate with heterogeneous echotexture",
+          "frequency": "common"
+        },
+        {
+          "text": "No discrete lesion seen (isoechoic tumor)",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Multiparametric MRI of the prostate",
+      "modality": "mri",
+      "preferred_when": "Before biopsy to target lesions and assess extraprostatic extension",
+      "findings": [
+        {
+          "text": "Focal lesion in the peripheral zone with restricted diffusion and early enhancement (PI-RADS 4–5)",
+          "frequency": "common"
+        },
+        {
+          "text": "Extraprostatic extension or seminal vesicle invasion",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "No suspicious lesion (PI-RADS 1–2)",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Bone scan (technetium-99m)",
+      "modality": "nuclear",
+      "preferred_when": "High-risk disease or bone pain",
+      "findings": [
+        {
+          "text": "Multiple focal areas of increased uptake in the axial skeleton (osteoblastic metastases)",
+          "frequency": "common"
+        },
+        {
+          "text": "Diffuse or superscan pattern",
+          "frequency": "rare"
+        },
+        {
+          "text": "No abnormal uptake",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "CT abdomen and pelvis with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Staging for nodal or visceral metastases",
+      "findings": [
+        {
+          "text": "Enlarged pelvic or retroperitoneal lymph nodes",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Heterogeneous prostate enlargement",
+          "frequency": "common"
+        },
+        {
+          "text": "Liver or lung metastases",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "PSMA PET/CT",
+      "modality": "nuclear",
+      "preferred_when": "Biochemical recurrence or high-risk staging",
+      "findings": [
+        {
+          "text": "Focal uptake in the prostate bed or lymph nodes",
+          "frequency": "common"
+        },
+        {
+          "text": "Skeletal uptake corresponding to bone metastases",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "No abnormal uptake",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "MRI spine without contrast",
+      "modality": "mri",
+      "preferred_when": "Suspected spinal cord compression",
+      "findings": [
+        {
+          "text": "Epidural mass with cord compression",
+          "frequency": "common"
+        },
+        {
+          "text": "Vertebral body metastatic replacement",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "Chest x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Usually normal",
+          "frequency": "common"
+        },
+        {
+          "text": "Pulmonary nodules or pleural effusion (metastases)",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "PSA",
+        "why": "Primary screening and diagnostic blood test; also used for risk stratification"
+      },
+      {
+        "test": "cbc",
+        "why": "Baseline before biopsy or treatment; may show anemia"
+      },
+      {
+        "test": "bmp",
+        "why": "Assesses renal function and calcium before imaging or treatment"
+      },
+      {
+        "test": "ua",
+        "why": "Evaluates hematuria and excludes urinary infection"
+      },
+      {
+        "test": "Transrectal ultrasound of the prostate",
+        "why": "Guides systematic prostate biopsy",
+        "only_if": "PSA is elevated or DRE is abnormal and biopsy is planned"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Prostate biopsy (transrectal ultrasound-guided or MRI-targeted)",
+        "why": "Tissue diagnosis and Gleason grade; the only way to confirm prostate cancer"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "Multiparametric MRI of the prostate",
+        "why": "Targets biopsy and assesses local extent",
+        "only_if": "prior biopsy is negative but suspicion remains, or to target lesions before first biopsy"
+      },
+      {
+        "test": "Bone scan (technetium-99m)",
+        "why": "Detects bone metastases",
+        "only_if": "high-risk disease (PSA >20 ng/mL, high Gleason grade) or bone pain"
+      },
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Stages nodal and visceral disease",
+        "only_if": "high-risk disease or suspected metastases"
+      },
+      {
+        "test": "PSMA PET/CT",
+        "why": "More sensitive staging and recurrence localization",
+        "only_if": "biochemical recurrence or high-risk staging"
+      },
+      {
+        "test": "MRI spine without contrast",
+        "why": "Evaluates cord compression",
+        "only_if": "neurologic deficits or severe back pain suggest spinal cord compression"
+      },
+      {
+        "test": "alp",
+        "why": "Suggests bone metastases",
+        "only_if": "bone pain or high-risk disease"
+      },
+      {
+        "test": "ca",
+        "why": "Suggests osteolytic metastases",
+        "only_if": "bone pain, fatigue, or high-risk disease"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Chest x-ray",
+        "why": "Not a routine staging study; CT or PSMA PET is preferred when staging is needed"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in prostate cancer evaluation"
+      },
+      {
+        "test": "lipase",
+        "why": "Not indicated unless abdominal pain suggests pancreatitis"
+      },
+      {
+        "test": "hcg",
+        "why": "Not applicable in male patients"
+      }
+    ],
+    "decision_points": [
+      "Discuss benefits and harms of PSA screening; do not screen without shared decision-making",
+      "Confirm abnormal PSA with a repeat test before biopsy, and treat any urinary infection first",
+      "Use risk calculators and MRI to decide whether to biopsy",
+      "Stage with bone scan or PSMA PET only in high-risk disease or when symptoms suggest metastases",
+      "Suspect spinal cord compression in any patient with prostate cancer and new back pain or neurologic deficits; image urgently"
+    ],
+    "criteria": [
+      {
+        "name": "Gleason grading / Grade Group",
+        "summary": "Prostate biopsy tissue is assigned a Gleason score based on the two most common patterns (1–5 each); the sum ranges from 6 to 10. Grade Group 1 = Gleason 6, Group 2 = 3+4=7, Group 3 = 4+3=7, Group 4 = 8, Group 5 = 9–10. Higher groups indicate more aggressive cancer."
+      },
+      {
+        "name": "D'Amico risk stratification",
+        "summary": "Localized prostate cancer is classified as low, intermediate, or high risk using PSA level, Gleason score, and clinical T stage. Low risk: PSA <10 ng/mL, Gleason ≤6, T1–T2a. Intermediate: PSA 10–20, Gleason 7, or T2b. High: PSA >20, Gleason 8–10, or T2c–T3."
+      }
+    ],
+    "scores": [
+      "gleason",
+      "d_amico_risk"
+    ]
+  },
+  "differential": [
+    {
+      "name": "Benign prostatic hyperplasia",
+      "slug": "benign-prostatic-hyperplasia",
+      "why_considered": "The most common cause of lower urinary tract symptoms in older men and the main reason for an elevated PSA that is not cancer",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Gradual onset of nocturia, hesitancy and weak stream over years",
+          "No bone pain, weight loss or hematuria",
+          "Symptoms fluctuate with fluid intake and medications"
+        ],
+        "exam": [
+          "Smooth, rubbery, symmetrically enlarged prostate without nodules or induration",
+          "No focal bony tenderness"
+        ],
+        "labs": [
+          "PSA usually mildly elevated and stable over time",
+          "Normal hemoglobin and calcium"
+        ],
+        "imaging": [
+          "Enlarged prostate with uniform echotexture and no suspicious peripheral-zone lesion",
+          "No uptake on bone scan or PSMA PET"
+        ]
+      }
+    },
+    {
+      "name": "Acute bacterial prostatitis",
+      "slug": "acute-bacterial-prostatitis",
+      "why_considered": "Causes urinary symptoms, an elevated PSA and a tender prostate, and can mimic cancer on presentation",
+      "must_not_miss": true,
+      "trigger": "Fever, chills, dysuria and a tender boggy prostate",
+      "discriminators": {
+        "history": [
+          "Acute onset over hours to days",
+          "Fever, chills and perineal pain",
+          "Recent urinary catheterization or instrumentation"
+        ],
+        "exam": [
+          "Firm, tender, boggy prostate",
+          "Suprapubic tenderness; may have systemic toxicity"
+        ],
+        "labs": [
+          "Marked pyuria and positive urine culture",
+          "Leukocytosis",
+          "PSA elevated acutely and falls after treatment"
+        ],
+        "imaging": [
+          "No focal peripheral-zone lesion on MRI",
+          "Ultrasound may show heterogeneous prostate or abscess"
+        ]
+      }
+    },
+    {
+      "name": "Urinary tract infection",
+      "slug": "urinary-tract-infection",
+      "why_considered": "Shares dysuria, frequency, urgency and hematuria with prostate cancer and can raise PSA",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Dysuria and urgency over days",
+          "Nocturia less prominent than in prostate enlargement",
+          "No bone pain or weight loss"
+        ],
+        "exam": [
+          "Suprapubic tenderness",
+          "Prostate non-tender and without nodules"
+        ],
+        "labs": [
+          "Positive nitrite and leukocyte esterase with positive culture",
+          "PSA normal or only transiently elevated"
+        ],
+        "imaging": [
+          "No suspicious prostate lesion",
+          "No hydronephrosis or metastases"
+        ]
+      }
+    },
+    {
+      "name": "Nephrolithiasis",
+      "slug": "nephrolithiasis",
+      "why_considered": "Can cause hematuria and flank or pelvic pain that may be mistaken for metastatic bone pain",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Colicky flank pain radiating to the groin",
+          "Nausea and vomiting with the pain",
+          "Nocturia and hesitancy not prominent"
+        ],
+        "exam": [
+          "Costovertebral angle tenderness",
+          "Prostate normal on digital rectal exam"
+        ],
+        "labs": [
+          "Hematuria on urinalysis",
+          "PSA normal"
+        ],
+        "imaging": [
+          "Stone with hydronephrosis on CT",
+          "No prostate lesion or bone metastases"
+        ]
+      }
+    },
+    {
+      "name": "Metastatic bone disease from another primary",
+      "slug": "metastatic-bone-disease",
+      "why_considered": "Osteoblastic bone lesions and bone pain in an older man can be mistaken for metastatic prostate cancer",
+      "must_not_miss": true,
+      "trigger": "Bone pain with lytic or mixed lesions and a normal or only mildly elevated PSA",
+      "discriminators": {
+        "history": [
+          "Known lung, breast, kidney or thyroid cancer",
+          "Weight loss, fatigue and night sweats",
+          "No urinary symptoms"
+        ],
+        "exam": [
+          "Focal bony tenderness",
+          "Prostate smooth and non-nodular"
+        ],
+        "labs": [
+          "PSA normal or low",
+          "Hypercalcemia and elevated alkaline phosphatase",
+          "Tumor markers may point to another primary"
+        ],
+        "imaging": [
+          "Lytic or mixed lesions rather than purely osteoblastic",
+          "Biopsy of bone lesion shows the other primary"
+        ]
+      }
+    },
+    {
+      "name": "Testicular cancer",
+      "slug": "testicular-cancer",
+      "why_considered": "A young man with a testicular mass and elevated tumor markers can be confused with prostate disease, and both are genitourinary malignancies",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Painless testicular swelling or heaviness",
+          "Age usually under 40",
+          "No lower urinary tract symptoms"
+        ],
+        "exam": [
+          "Firm testicular mass",
+          "Prostate normal"
+        ],
+        "labs": [
+          "Elevated AFP, beta-hCG or LDH",
+          "PSA normal"
+        ],
+        "imaging": [
+          "Testicular mass on ultrasound",
+          "Retroperitoneal lymphadenopathy on CT"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Localized, low-risk disease: PSA <10 ng/mL, Gleason 6, clinical stage T1–T2a; often asymptomatic and detected by screening",
+      "moderate": "Localized intermediate-risk disease: PSA 10–20 ng/mL, Gleason 7, or T2b; lower urinary tract symptoms may be present but no metastases",
+      "severe": "Locally advanced or high-risk disease: PSA >20 ng/mL, Gleason 8–10, T2c–T3, or regional lymph node involvement; may have obstructive urinary symptoms or bone pain",
+      "critical": "Metastatic castration-resistant disease with spinal cord compression, pathologic fracture, hypercalcemia or visceral crisis"
+    },
+    "red_flags": [
+      {
+        "finding": "New back pain with lower extremity weakness, sensory loss or bowel/bladder dysfunction",
+        "meaning": "Spinal cord compression from vertebral metastasis; needs urgent MRI and steroids"
+      },
+      {
+        "finding": "Pathologic fracture after minimal trauma",
+        "meaning": "Bone metastasis with cortical destruction; needs orthopedic evaluation"
+      },
+      {
+        "finding": "Acute urinary retention",
+        "meaning": "Bladder outlet obstruction from locally advanced disease; needs catheterization and urology evaluation"
+      },
+      {
+        "finding": "Gross hematuria with clots or falling hemoglobin",
+        "meaning": "Significant bleeding from prostate or bladder involvement; needs urology evaluation"
+      },
+      {
+        "finding": "Confusion, polyuria, constipation or lethargy",
+        "meaning": "Hypercalcemia of malignancy; check calcium and treat urgently"
+      },
+      {
+        "finding": "PSA doubling time under 6 months or rapidly rising PSA on androgen deprivation",
+        "meaning": "Castration-resistant progression; needs systemic therapy change"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Urinary retention and obstructive uropathy",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Inability to void",
+          "Palpable bladder",
+          "Rising creatinine with hydronephrosis"
+        ]
+      },
+      {
+        "name": "Bone metastases with pathologic fracture",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Focal bone pain",
+          "Osteoblastic lesions on bone scan",
+          "Fracture after minimal trauma"
+        ]
+      },
+      {
+        "name": "Spinal cord compression",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Back pain worse at night",
+          "Lower extremity weakness",
+          "Sensory level",
+          "Bowel or bladder dysfunction"
+        ]
+      },
+      {
+        "name": "Hypercalcemia of malignancy",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Confusion",
+          "Polyuria and polydipsia",
+          "Constipation",
+          "Elevated calcium with low PTH"
+        ]
+      },
+      {
+        "name": "Venous thromboembolism",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Unilateral leg swelling",
+          "Pleuritic chest pain and dyspnea",
+          "Hypoxia"
+        ]
+      },
+      {
+        "name": "Treatment-related erectile dysfunction and urinary incontinence",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "common",
+        "clues": [
+          "Onset after radical prostatectomy or radiation",
+          "Use of phosphodiesterase-5 inhibitors",
+          "Pad use for leakage"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "older_adults",
+        "differences": "More likely to present with metastatic disease or with symptoms attributed to BPH; competing comorbidities make active surveillance and less aggressive treatment more appropriate."
+      },
+      {
+        "population": "obesity",
+        "differences": "Associated with more aggressive disease and higher risk of biochemical recurrence; digital rectal exam may be less reliable."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Lower urinary tract symptoms may be attributed to diabetic neuropathy or medications, delaying diagnosis; glycemic control affects treatment tolerance."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "Obstructive uropathy from locally advanced disease can cause renal failure; adjust imaging contrast and systemic therapy dosing accordingly."
+      }
+    ]
+  },
+  "cancer": {
+    "screening": "The USPSTF recommends against routine PSA-based screening without shared decision-making. For men aged 55 to 69, screening should be an individual decision after discussing benefits and harms. For men 70 and older, screening is not recommended. Black men and men with a family history are at higher risk and may reasonably start the discussion earlier.",
+    "pathology": "Adenocarcinoma accounts for the vast majority of prostate cancers and arises in the peripheral zone. Less common types include ductal, mucinous, neuroendocrine and small cell variants, and transitional cell carcinoma. Gleason grading assigns the two most common architectural patterns (1–5 each) and sums them to a score of 6 to 10; Grade Group 1 = Gleason 6, Group 2 = 3+4=7, Group 3 = 4+3=7, Group 4 = 8, Group 5 = 9–10.",
+    "staging_concepts": "Staging uses the TNM system. T stage describes local extent from T1 (not palpable) through T2 (confined to prostate), T3 (extraprostatic extension or seminal vesicle invasion) and T4 (invasion of bladder, rectum or pelvic wall). N stage describes regional lymph nodes and M stage describes distant metastases. Risk groups combine PSA, Gleason score and clinical T stage: low risk is PSA <10 ng/mL, Gleason ≤6 and T1–T2a; intermediate is PSA 10–20, Gleason 7 or T2b; high is PSA >20, Gleason 8–10 or T2c–T3.",
+    "metastatic_sites": [
+      "Bones, especially the axial skeleton (vertebrae, pelvis, ribs, femur)",
+      "Pelvic and retroperitoneal lymph nodes",
+      "Liver",
+      "Lungs",
+      "Adrenal glands",
+      "Brain (rare)"
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "What urinary symptoms have you noticed, and when did they start?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Gradual onset of nocturia, weak stream, hesitancy, urgency and frequency over weeks to months; symptoms of bladder outlet obstruction"
+      },
+      {
+        "question": "Have you had any blood in your urine or semen?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Hematuria or hematospermia, which raises concern for prostate or bladder involvement"
+      },
+      {
+        "question": "Do you have any pain in your lower back, hips or pelvis that does not go away?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Persistent dull bone pain suggesting metastatic spread to the axial skeleton"
+      },
+      {
+        "question": "Have you had any unintentional weight loss, fatigue or loss of appetite?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Constitutional symptoms suggesting advanced or metastatic disease"
+      },
+      {
+        "question": "Have you had any fever, chills or burning with urination?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Absent in prostate cancer; present suggests prostatitis or urinary tract infection"
+      },
+      {
+        "question": "Have you had a PSA test or a digital rectal exam, and what were the results?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Elevated PSA or an abnormal prostate exam that prompted the visit; prior values and trend over time"
+      },
+      {
+        "question": "Have you been diagnosed with an enlarged prostate or taken medication for it?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "History of benign prostatic hyperplasia, which is the main look-alike and can also coexist"
+      },
+      {
+        "question": "Has a parent, sibling or child had prostate cancer?",
+        "category": "family",
+        "importance": "essential",
+        "looking_for": "First-degree relative with prostate cancer, which substantially increases risk"
+      },
+      {
+        "question": "Is there any history of breast, ovarian or colorectal cancer in your family?",
+        "category": "family",
+        "importance": "important",
+        "looking_for": "BRCA mutation or Lynch syndrome, which raise prostate cancer risk"
+      },
+      {
+        "question": "Do you smoke, and how much alcohol or caffeine do you drink?",
+        "category": "social",
+        "importance": "optional",
+        "looking_for": "Smoking and caffeine or alcohol intake that worsen urinary symptoms and affect overall risk"
+      },
+      {
+        "question": "Have you had any trouble getting or keeping an erection, or pain with ejaculation?",
+        "category": "sexual",
+        "importance": "important",
+        "looking_for": "Painful ejaculation or erectile dysfunction; baseline sexual function matters for treatment decisions"
+      },
+      {
+        "question": "Have you ever had a urinary catheter, prostate biopsy or other urinary procedure?",
+        "category": "pmh",
+        "importance": "optional",
+        "looking_for": "Recent instrumentation, which raises concern for infection rather than cancer"
+      },
+      {
+        "question": "Have you had any weakness, numbness or trouble controlling your bladder or bowels?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Neurologic deficits suggesting spinal cord compression from vertebral metastasis; requires urgent imaging"
+      }
+    ],
+    "accepted_names": [
+      "Prostate cancer",
+      "Carcinoma of the prostate",
+      "Prostatic adenocarcinoma",
+      "Prostatic carcinoma",
+      "Prostate adenocarcinoma",
+      "Prostate CA"
+    ],
+    "reasoning_points": [
+      "Older man with gradual lower urinary tract symptoms or an asymptomatic elevated PSA",
+      "Risk factors including age over 50, Black race, and a first-degree relative with prostate cancer",
+      "Digital rectal exam showing a hard, irregular or asymmetric nodule or area of induration",
+      "Elevated PSA that is confirmed on repeat testing after treating any urinary infection",
+      "Persistent lower back, hip or pelvic pain suggesting bone metastases",
+      "Prostate biopsy showing adenocarcinoma with Gleason grading and Grade Group",
+      "Benign prostatic hyperplasia, prostatitis and urinary tract infection considered and excluded",
+      "Spinal cord compression and hypercalcemia of malignancy screened for when symptoms suggest advanced disease"
+    ],
+    "difficulty": {
+      "easy": [
+        "Man over 60 with nocturia, weak stream and hesitancy",
+        "Hard, nodular prostate on digital rectal exam",
+        "Markedly elevated PSA",
+        "Biopsy confirms adenocarcinoma"
+      ],
+      "medium": [
+        "Asymptomatic man with an isolated elevated PSA and a normal digital rectal exam",
+        "Symptoms attributed to benign prostatic hyperplasia with a mildly elevated PSA",
+        "Man with lower back pain and a normal urinary history",
+        "Black man presenting at a younger age with more advanced disease"
+      ],
+      "hard": [
+        "Man with acute prostatitis and a transiently elevated PSA that normalizes after treatment",
+        "Older adult with bone pain and lytic lesions from another primary cancer",
+        "Patient with a negative biopsy but persistently rising PSA requiring MRI-targeted rebiopsy",
+        "Man presenting with spinal cord compression or pathologic fracture as the first sign",
+        "Lower urinary tract symptoms explained by diabetic neuropathy or medications rather than prostate disease"
+      ]
+    }
+  }
+}

@@ -2,7 +2,7 @@ import SwiftUI
 import Observation
 
 struct ChatMessage: Identifiable, Equatable {
-    enum Kind: Equatable { case doctor, patient, reveal }
+    enum Kind: Equatable { case doctor, patient, reveal, problem }
     let id = UUID()
     let kind: Kind
     let text: String
@@ -22,38 +22,65 @@ struct Feedback: Identifiable {
     var coversMiss: String? = nil   // a Miss flag this note already explains
 }
 
+/// One thing the student did, for the handoff timeline.
+struct TimelineEvent: Identifiable {
+    enum Kind { case question, exam, test }
+    let id = UUID()
+    let at: Date
+    let kind: Kind
+    let text: String
+}
+
+/// The server's verdict on a submitted attempt.
 struct Grade {
     let score: Int
     let diagnosisCorrect: Bool
+    /// The case's actual diagnosis, revealed only now.
+    let diagnosis: String
     let verdict: String
     let ratingDelta: Int
+    /// The student's rating after this case.
+    let rating: Int
     let feedback: [Feedback]
     let missedRedFlags: [Miss]
 }
 
 /// One run through a case: brief → interview → workup → diagnosis → debrief.
+/// Every action goes through `CaseService`; the attempt starts on the first action, after the
+/// student has chosen exam mode and the clock on the door note.
+@MainActor
 @Observable
 final class CaseSession {
     let clinical: ClinicalCase
+    private let service: any CaseService
     var examMode = false
 
+    private(set) var attemptID: String?
     private(set) var startedAt: Date?
     private(set) var messages: [ChatMessage] = []
     private(set) var revealed: Set<String> = []
     private(set) var examined: [String] = []
+    /// Findings returned by the server, by maneuver id.
+    private(set) var findings: [String: String] = [:]
     private(set) var tests: [String: TestState] = [:]
     private(set) var testOrder: [String] = []
+    /// Results returned by the server, by test id. Shown once the in-app turnaround has passed.
+    private(set) var results: [String: TestResult] = [:]
+    private(set) var coverage: (got: Int, total: Int) = (0, 0)
+    /// Questions, exams and tests in the order they happened.
+    private(set) var timeline: [TimelineEvent] = []
     var isPatientTyping = false
 
     var diagnosis = ""
-    var differential: [String]
+    var differential: [String] = []
     var plan = ""
     private(set) var grade: Grade?
 
-    init(clinical: ClinicalCase = .chestPain) {
+    init(clinical: ClinicalCase, service: any CaseService) {
         self.clinical = clinical
-        self.differential = clinical.startingDifferential
+        self.service = service
         self.timeLimitMinutes = clinical.minutes
+        self.coverage = (0, clinical.keyHistoryTotal)
     }
 
     // MARK: Clock
@@ -82,6 +109,14 @@ final class CaseSession {
         return String(format: "%02d:%02d", s / 60, s % 60)
     }
 
+    /// Creates the attempt on the server the first time the student does anything.
+    private func attempt() async throws -> String {
+        if let attemptID { return attemptID }
+        let id = try await service.start(bed: clinical.bed, examMode: examMode, timeLimitMinutes: timeLimitMinutes)
+        attemptID = id
+        return id
+    }
+
     // MARK: Interview
 
     func ask(_ raw: String) {
@@ -92,34 +127,30 @@ final class CaseSession {
             messages.append(ChatMessage(kind: .doctor, text: question))
             isPatientTyping = true
         }
-
-        let q = question.lowercased()
-        let hits = clinical.facts.filter { fact in fact.keywords.contains { q.contains($0) } }
-        let delay = 0.7 + Double.random(in: 0...0.5)
-
-        Task { @MainActor in
-            try? await Task.sleep(for: .seconds(delay))
-            withAnimation(Springs.slide) {
-                isPatientTyping = false
-                if hits.isEmpty {
-                    messages.append(ChatMessage(kind: .patient, text: clinical.fallbackReply))
-                } else {
-                    messages.append(ChatMessage(kind: .patient, text: hits.map(\.reply).joined(separator: " ")))
-                    let fresh = hits.filter { !revealed.contains($0.id) }
-                    fresh.forEach { revealed.insert($0.id) }
-                    if !fresh.isEmpty && !examMode {
-                        messages.append(ChatMessage(kind: .reveal, text: "Revealed: " + fresh.map(\.label).joined(separator: ", ")))
+        timeline.append(TimelineEvent(at: .now, kind: .question, text: question))
+        Task {
+            do {
+                let answer = try await service.ask(attempt: attempt(), question: question)
+                withAnimation(Springs.slide) {
+                    isPatientTyping = false
+                    messages.append(ChatMessage(kind: .patient, text: answer.reply))
+                    revealed = Set(answer.revealedIDs)
+                    coverage = answer.coverage
+                    if !answer.revealed.isEmpty && !examMode {
+                        messages.append(ChatMessage(kind: .reveal, text: "Revealed: " + answer.revealed.map(\.label).joined(separator: ", ")))
                     }
+                }
+            } catch {
+                withAnimation(Springs.slide) {
+                    isPatientTyping = false
+                    messages.append(ChatMessage(kind: .problem, text: error.localizedDescription))
                 }
             }
         }
     }
 
     /// Key history areas uncovered so far (onset, character, radiation…), without saying which remain.
-    var historyCoverage: (got: Int, total: Int) {
-        let key = clinical.facts.filter(\.isKeyHistory)
-        return (key.filter { revealed.contains($0.id) }.count, key.count)
-    }
+    var historyCoverage: (got: Int, total: Int) { coverage }
 
     // MARK: Examination
 
@@ -127,6 +158,18 @@ final class CaseSession {
         guard !examined.contains(id) else { return }
         startClockIfNeeded()
         withAnimation(Springs.slide) { examined.append(id) }
+        if let m = clinical.exam.first(where: { $0.id == id }) {
+            timeline.append(TimelineEvent(at: .now, kind: .exam, text: m.title))
+        }
+        Task {
+            do {
+                let finding = try await service.examine(attempt: attempt(), maneuver: id)
+                withAnimation(Springs.slide) { findings[id] = finding }
+            } catch {
+                withAnimation(Springs.slide) { examined.removeAll { $0 == id } }
+                messages.append(ChatMessage(kind: .problem, text: error.localizedDescription))
+            }
+        }
     }
 
     // MARK: Investigations
@@ -142,105 +185,34 @@ final class CaseSession {
             tests[test.id] = .ordered(.now)
             testOrder.append(test.id)
         }
-        Task { @MainActor in
-            try? await Task.sleep(for: .seconds(test.turnaround))
-            withAnimation(Springs.card) { tests[test.id] = .ready }
+        timeline.append(TimelineEvent(at: .now, kind: .test, text: "Ordered \(test.name)"))
+        Task {
+            do {
+                let id = try await attempt()
+                async let result = service.order(attempt: id, test: test.id)
+                try await Task.sleep(for: .seconds(test.turnaround))
+                let r = try await result
+                withAnimation(Springs.card) {
+                    results[test.id] = r
+                    tests[test.id] = .ready
+                }
+            } catch {
+                withAnimation(Springs.card) {
+                    tests[test.id] = nil
+                    testOrder.removeAll { $0 == test.id }
+                }
+                messages.append(ChatMessage(kind: .problem, text: error.localizedDescription))
+            }
         }
     }
 
     // MARK: Grading
 
-    func submit() -> Grade {
+    /// Sends the diagnosis and plan; the server grades from everything logged on the attempt.
+    func submit() async throws -> Grade {
         if let grade { return grade }
-        let c = clinical
-        let dx = diagnosis.lowercased()
-        let dxCorrect = c.acceptedDiagnoses.contains { dx.contains($0) }
-
-        var score = 0
-        var feedback: [Feedback] = []
-        var missed: [Miss] = []
-
-        // Diagnosis — 35
-        if dxCorrect { score += 35 }
-        else {
-            feedback.append(Feedback(tone: .miss, title: "The diagnosis was \(c.canonicalDiagnosis)",
-                                     detail: "Heavy central pain radiating to the arm with inferior ST elevation and a raised troponin."))
-        }
-
-        // History coverage — 25
-        let key = c.facts.filter(\.isKeyHistory)
-        let gotKey = key.filter { revealed.contains($0.id) }
-        score += Int((Double(gotKey.count) / Double(key.count) * 25).rounded())
-        if let gap = key.first(where: { !revealed.contains($0.id) }) {
-            feedback.append(Feedback(tone: .miss, title: "History gap: \(gap.label)",
-                                     detail: "You never asked about it. A focused chest pain history covers onset, character, radiation, associated symptoms, risk factors and past history."))
-        }
-
-        // Red flags — 20: rule out dissection before antiplatelets
-        let dissectionScreened = revealed.contains("back") || examined.contains("armbp")
-        if dissectionScreened { score += 12 }
-        else {
-            missed.append(Miss(flag: "Tearing back pain", why: "Dissection mimics MI. Ask, and compare arm pressures, before giving aspirin."))
-            feedback.insert(Feedback(tone: .miss, title: "You never ruled out dissection",
-                                     detail: "Ask about tearing back pain and compare arm pressures before giving aspirin.",
-                                     coversMiss: "Tearing back pain"), at: 0)
-        }
-        if revealed.contains("drugs") { score += 4 } else { missed.append(Miss(flag: "Cocaine use", why: "Cocaine chest pain changes management: no beta-blockers.")) }
-        if examined.contains("pulses") { score += 4 } else { missed.append(Miss(flag: "Pulse deficit", why: "Unequal pulses point to dissection. Check radials and femorals.")) }
-
-        // Tests — 15
-        if tests["ecg"] != nil { score += 8 }
-        if testOrder.first == "ecg" {
-            score += 2
-            feedback.append(Feedback(tone: .good, title: "ECG first. Sharp.", detail: "Fast, cheap, and the right first test."))
-        } else if tests["ecg"] == nil {
-            feedback.append(Feedback(tone: .miss, title: "No ECG", detail: "Every chest pain gets a 12-lead within 10 minutes."))
-        }
-        if tests["trop"] != nil { score += 5 }
-        if tests["ctpa"] != nil {
-            score -= 5
-            feedback.append(Feedback(tone: .miss, title: "CTPA wasn't indicated",
-                                     detail: "Low PE probability and a diagnostic ECG. It cost $900 and 25 minutes of heart muscle."))
-        }
-        if spent > c.budget { score -= 5 }
-
-        // Plan — 5
-        let p = plan.lowercased()
-        if c.planKeywords.contains(where: { p.contains($0) }) { score += 5 }
-        else {
-            feedback.append(Feedback(tone: .miss, title: "Plan missing reperfusion",
-                                     detail: "Aspirin and urgent primary PCI. Time is muscle."))
-        }
-
-        score = min(100, max(0, score))
-        let verdict: String
-        switch (dxCorrect, score) {
-        case (true, 85...): verdict = "Textbook workup"
-        case (true, _):     verdict = "Right diagnosis, incomplete path"
-        case (false, _):    verdict = "Missed diagnosis"
-        }
-        let g = Grade(score: score, diagnosisCorrect: dxCorrect, verdict: verdict,
-                      ratingDelta: (score - 60) / 2, feedback: Array(feedback.prefix(4)), missedRedFlags: missed)
+        let g = try await service.submit(attempt: attempt(), diagnosis: diagnosis, differential: differential, plan: plan)
         grade = g
         return g
     }
-
-    #if DEBUG
-    func debugInject(messages: [ChatMessage], revealed: Set<String>, examined: [String], tests: [String], pending: Set<String>) {
-        startedAt = Date.now.addingTimeInterval(-205)
-        self.messages = messages
-        self.revealed = revealed
-        self.examined = examined
-        for id in tests {
-            self.tests[id] = pending.contains(id) ? .ordered(.now) : .ready
-            testOrder.append(id)
-            if pending.contains(id), let t = clinical.tests.first(where: { $0.id == id }) {
-                Task { @MainActor in
-                    try? await Task.sleep(for: .seconds(t.turnaround))
-                    self.tests[id] = .ready
-                }
-            }
-        }
-    }
-    #endif
 }

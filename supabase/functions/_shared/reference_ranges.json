@@ -1,0 +1,205 @@
+{
+  "about": "Adult reference ranges in US conventional units, for generating fictional lab results in Rounds. Teaching values only, not for clinical use: real ranges vary by laboratory and method. Written for Rounds from widely published adult values; no pediatric or pregnancy ranges yet.",
+  "fields": {
+    "low/high": "Normal interval. null means no bound on that side.",
+    "female/male": "Sex-specific interval that replaces low/high.",
+    "critical_low/critical_high": "Values a lab would phone to the clinician. Useful for severity.",
+    "decimals": "How many decimals a real report shows, so generated values look right.",
+    "derived": "Computed from other results by the lab rules engine, never generated directly.",
+    "normal": "For qualitative tests: the normal result. 'abnormal' lists typical abnormal results."
+  },
+  "panels": [
+    {
+      "id": "vitals",
+      "name": "Vital signs",
+      "tests": [
+        { "id": "temp", "name": "Temperature", "unit": "°F", "low": 97.8, "high": 99.1, "critical_low": 95.0, "critical_high": 104.0, "decimals": 1, "notes": "Fever is ≥100.4 °F." },
+        { "id": "hr", "name": "Heart rate", "unit": "/min", "low": 60, "high": 100, "critical_low": 40, "critical_high": 150, "decimals": 0 },
+        { "id": "rr", "name": "Respiratory rate", "unit": "/min", "low": 12, "high": 20, "critical_low": 8, "critical_high": 30, "decimals": 0 },
+        { "id": "sbp", "name": "Systolic blood pressure", "unit": "mm Hg", "low": 90, "high": 129, "critical_low": 80, "critical_high": 180, "decimals": 0, "notes": "ACC/AHA: <120 normal, 120–129 elevated, ≥130 stage 1 hypertension." },
+        { "id": "dbp", "name": "Diastolic blood pressure", "unit": "mm Hg", "low": 60, "high": 79, "critical_low": 40, "critical_high": 120, "decimals": 0, "notes": "ACC/AHA: ≥80 stage 1 hypertension." },
+        { "id": "spo2", "name": "Oxygen saturation (room air)", "unit": "%", "low": 95, "high": 100, "critical_low": 88, "critical_high": null, "decimals": 0 },
+        { "id": "map", "name": "Mean arterial pressure", "unit": "mm Hg", "low": 70, "high": 100, "critical_low": 65, "critical_high": null, "decimals": 0, "derived": "(sbp + 2 × dbp) / 3" }
+      ]
+    },
+    {
+      "id": "cbc",
+      "name": "Complete blood count (CBC) with differential",
+      "tests": [
+        { "id": "wbc", "name": "White blood cells", "unit": "×10³/µL", "low": 4.5, "high": 11.0, "critical_low": 2.0, "critical_high": 30.0, "decimals": 1 },
+        { "id": "rbc", "name": "Red blood cells", "unit": "×10⁶/µL", "female": [4.0, 5.2], "male": [4.5, 5.9], "decimals": 2 },
+        { "id": "hgb", "name": "Hemoglobin", "unit": "g/dL", "female": [12.0, 15.5], "male": [13.5, 17.5], "critical_low": 7.0, "critical_high": 20.0, "decimals": 1 },
+        { "id": "hct", "name": "Hematocrit", "unit": "%", "female": [36, 46], "male": [41, 53], "critical_low": 20, "critical_high": 60, "decimals": 1, "notes": "About 3 × hemoglobin." },
+        { "id": "mcv", "name": "Mean corpuscular volume (MCV)", "unit": "fL", "low": 80, "high": 100, "decimals": 0 },
+        { "id": "mch", "name": "Mean corpuscular hemoglobin (MCH)", "unit": "pg", "low": 27, "high": 33, "decimals": 1 },
+        { "id": "mchc", "name": "Mean corpuscular hemoglobin concentration (MCHC)", "unit": "g/dL", "low": 32, "high": 36, "decimals": 1 },
+        { "id": "rdw", "name": "Red cell distribution width (RDW)", "unit": "%", "low": 11.5, "high": 14.5, "decimals": 1 },
+        { "id": "plt", "name": "Platelets", "unit": "×10³/µL", "low": 150, "high": 400, "critical_low": 20, "critical_high": 1000, "decimals": 0 },
+        { "id": "neut_pct", "name": "Neutrophils", "unit": "%", "low": 40, "high": 70, "decimals": 0 },
+        { "id": "bands_pct", "name": "Band neutrophils", "unit": "%", "low": 0, "high": 5, "decimals": 0 },
+        { "id": "lymph_pct", "name": "Lymphocytes", "unit": "%", "low": 20, "high": 40, "decimals": 0 },
+        { "id": "mono_pct", "name": "Monocytes", "unit": "%", "low": 2, "high": 8, "decimals": 0 },
+        { "id": "eos_pct", "name": "Eosinophils", "unit": "%", "low": 1, "high": 4, "decimals": 0 },
+        { "id": "baso_pct", "name": "Basophils", "unit": "%", "low": 0, "high": 1, "decimals": 0 },
+        { "id": "anc", "name": "Absolute neutrophil count", "unit": "×10³/µL", "low": 1.5, "high": 8.0, "critical_low": 0.5, "decimals": 1, "derived": "wbc × (neut_pct + bands_pct) / 100" },
+        { "id": "retic", "name": "Reticulocytes", "unit": "%", "low": 0.5, "high": 2.5, "decimals": 1 }
+      ]
+    },
+    {
+      "id": "bmp",
+      "name": "Basic metabolic panel (BMP)",
+      "tests": [
+        { "id": "na", "name": "Sodium", "unit": "mmol/L", "low": 135, "high": 145, "critical_low": 120, "critical_high": 160, "decimals": 0 },
+        { "id": "k", "name": "Potassium", "unit": "mmol/L", "low": 3.5, "high": 5.0, "critical_low": 2.5, "critical_high": 6.5, "decimals": 1 },
+        { "id": "cl", "name": "Chloride", "unit": "mmol/L", "low": 98, "high": 106, "critical_low": 80, "critical_high": 120, "decimals": 0 },
+        { "id": "hco3", "name": "Bicarbonate (total CO₂)", "unit": "mmol/L", "low": 22, "high": 29, "critical_low": 10, "critical_high": 40, "decimals": 0 },
+        { "id": "bun", "name": "Blood urea nitrogen (BUN)", "unit": "mg/dL", "low": 7, "high": 20, "critical_high": 100, "decimals": 0 },
+        { "id": "cr", "name": "Creatinine", "unit": "mg/dL", "female": [0.6, 1.1], "male": [0.7, 1.3], "critical_high": 7.0, "decimals": 2 },
+        { "id": "glucose", "name": "Glucose (fasting)", "unit": "mg/dL", "low": 70, "high": 99, "critical_low": 40, "critical_high": 500, "decimals": 0, "notes": "Random glucose up to 140 is unremarkable; ≥200 with symptoms suggests diabetes." },
+        { "id": "ca", "name": "Calcium (total)", "unit": "mg/dL", "low": 8.5, "high": 10.2, "critical_low": 6.5, "critical_high": 13.0, "decimals": 1 },
+        { "id": "anion_gap", "name": "Anion gap", "unit": "mmol/L", "low": 8, "high": 12, "decimals": 0, "derived": "na − (cl + hco3)", "notes": "Some modern analyzers report 3–11; we use 8–12 consistently." },
+        { "id": "bun_cr", "name": "BUN/creatinine ratio", "unit": "", "low": 10, "high": 20, "decimals": 0, "derived": "bun / cr", "notes": ">20 suggests a prerenal cause or upper GI bleeding." },
+        { "id": "egfr", "name": "Estimated GFR (CKD-EPI 2021)", "unit": "mL/min/1.73 m²", "low": 90, "high": null, "decimals": 0, "derived": "CKD-EPI 2021 from cr, age, sex", "notes": "60–89 mildly decreased; <60 for 3 months defines CKD." }
+      ]
+    },
+    {
+      "id": "cmp_extra",
+      "name": "Comprehensive metabolic panel (CMP), added tests",
+      "tests": [
+        { "id": "protein", "name": "Total protein", "unit": "g/dL", "low": 6.0, "high": 8.3, "decimals": 1 },
+        { "id": "albumin", "name": "Albumin", "unit": "g/dL", "low": 3.5, "high": 5.0, "decimals": 1 },
+        { "id": "tbili", "name": "Bilirubin, total", "unit": "mg/dL", "low": 0.1, "high": 1.2, "critical_high": 15.0, "decimals": 1 },
+        { "id": "dbili", "name": "Bilirubin, direct", "unit": "mg/dL", "low": 0.0, "high": 0.3, "decimals": 1 },
+        { "id": "ast", "name": "AST", "unit": "U/L", "low": 10, "high": 40, "decimals": 0 },
+        { "id": "alt", "name": "ALT", "unit": "U/L", "low": 7, "high": 56, "decimals": 0 },
+        { "id": "alp", "name": "Alkaline phosphatase", "unit": "U/L", "low": 44, "high": 147, "decimals": 0 },
+        { "id": "corrected_ca", "name": "Calcium, corrected for albumin", "unit": "mg/dL", "low": 8.5, "high": 10.2, "decimals": 1, "derived": "ca + 0.8 × (4.0 − albumin)" }
+      ]
+    },
+    {
+      "id": "chem_other",
+      "name": "Other chemistry",
+      "tests": [
+        { "id": "mg", "name": "Magnesium", "unit": "mg/dL", "low": 1.7, "high": 2.2, "critical_low": 1.0, "critical_high": 4.7, "decimals": 1 },
+        { "id": "phos", "name": "Phosphorus", "unit": "mg/dL", "low": 2.5, "high": 4.5, "critical_low": 1.0, "decimals": 1 },
+        { "id": "ica", "name": "Calcium, ionized", "unit": "mg/dL", "low": 4.6, "high": 5.3, "critical_low": 3.2, "critical_high": 6.2, "decimals": 2 },
+        { "id": "uric_acid", "name": "Uric acid", "unit": "mg/dL", "female": [2.4, 6.0], "male": [3.4, 7.0], "decimals": 1 },
+        { "id": "lactate", "name": "Lactate", "unit": "mmol/L", "low": 0.5, "high": 2.0, "critical_high": 4.0, "decimals": 1, "notes": "≥2 with suspected infection raises concern for sepsis; ≥4 is a resuscitation trigger." },
+        { "id": "ammonia", "name": "Ammonia", "unit": "µg/dL", "low": 15, "high": 45, "decimals": 0 },
+        { "id": "osm", "name": "Osmolality, serum (measured)", "unit": "mOsm/kg", "low": 275, "high": 295, "critical_low": 250, "critical_high": 320, "decimals": 0 },
+        { "id": "calc_osm", "name": "Osmolality, calculated", "unit": "mOsm/kg", "low": 275, "high": 295, "decimals": 0, "derived": "2 × na + glucose / 18 + bun / 2.8" },
+        { "id": "osm_gap", "name": "Osmolal gap", "unit": "mOsm/kg", "low": null, "high": 10, "decimals": 0, "derived": "osm − calc_osm", "notes": ">10 suggests an unmeasured osmole such as methanol or ethylene glycol." },
+        { "id": "lipase", "name": "Lipase", "unit": "U/L", "low": 10, "high": 140, "decimals": 0, "notes": ">3 × upper limit supports acute pancreatitis." },
+        { "id": "amylase", "name": "Amylase", "unit": "U/L", "low": 30, "high": 110, "decimals": 0 },
+        { "id": "ck", "name": "Creatine kinase (CK)", "unit": "U/L", "female": [26, 192], "male": [39, 308], "decimals": 0, "notes": ">5 × upper limit suggests rhabdomyolysis." },
+        { "id": "ldh", "name": "Lactate dehydrogenase (LDH)", "unit": "U/L", "low": 140, "high": 280, "decimals": 0 },
+        { "id": "ggt", "name": "Gamma-glutamyl transferase (GGT)", "unit": "U/L", "low": 9, "high": 48, "decimals": 0 }
+      ]
+    },
+    {
+      "id": "cardiac",
+      "name": "Cardiac markers",
+      "tests": [
+        { "id": "hs_tnt", "name": "Troponin T, high-sensitivity", "unit": "ng/L", "low": null, "high": 19, "female": [null, 14], "male": [null, 22], "decimals": 0, "notes": "Upper limit is the 99th percentile. A rise or fall between serial draws (0, 1–3 h) matters more than one value." },
+        { "id": "bnp", "name": "BNP", "unit": "pg/mL", "low": null, "high": 100, "decimals": 0 },
+        { "id": "nt_probnp", "name": "NT-proBNP", "unit": "pg/mL", "low": null, "high": 125, "decimals": 0, "notes": "Use <450 for age ≥75." },
+        { "id": "d_dimer", "name": "D-dimer", "unit": "µg/mL FEU", "low": null, "high": 0.50, "decimals": 2, "notes": "Age-adjusted cutoff over 50: age × 0.01. Only rules out thrombosis when pretest probability is low." }
+      ]
+    },
+    {
+      "id": "coag",
+      "name": "Coagulation",
+      "tests": [
+        { "id": "pt", "name": "Prothrombin time (PT)", "unit": "s", "low": 11.0, "high": 13.5, "decimals": 1 },
+        { "id": "inr", "name": "INR", "unit": "", "low": 0.8, "high": 1.1, "critical_high": 5.0, "decimals": 1, "notes": "Therapeutic on warfarin is usually 2.0–3.0." },
+        { "id": "aptt", "name": "Activated partial thromboplastin time (aPTT)", "unit": "s", "low": 25, "high": 35, "critical_high": 100, "decimals": 0 },
+        { "id": "fibrinogen", "name": "Fibrinogen", "unit": "mg/dL", "low": 200, "high": 400, "critical_low": 100, "decimals": 0 }
+      ]
+    },
+    {
+      "id": "lipids",
+      "name": "Lipid panel (fasting)",
+      "tests": [
+        { "id": "chol", "name": "Total cholesterol", "unit": "mg/dL", "low": null, "high": 199, "decimals": 0, "notes": "Desirable <200." },
+        { "id": "ldl", "name": "LDL cholesterol", "unit": "mg/dL", "low": null, "high": 99, "decimals": 0, "notes": "Optimal <100; ≥190 is severe hypercholesterolemia." },
+        { "id": "hdl", "name": "HDL cholesterol", "unit": "mg/dL", "female": [50, null], "male": [40, null], "decimals": 0 },
+        { "id": "tg", "name": "Triglycerides", "unit": "mg/dL", "low": null, "high": 149, "decimals": 0, "notes": "≥500 raises pancreatitis risk." }
+      ]
+    },
+    {
+      "id": "endocrine",
+      "name": "Endocrine",
+      "tests": [
+        { "id": "tsh", "name": "TSH", "unit": "mIU/L", "low": 0.4, "high": 4.0, "decimals": 2 },
+        { "id": "ft4", "name": "Free T4", "unit": "ng/dL", "low": 0.8, "high": 1.8, "decimals": 1 },
+        { "id": "a1c", "name": "Hemoglobin A1c", "unit": "%", "low": 4.0, "high": 5.6, "decimals": 1, "notes": "5.7–6.4 prediabetes; ≥6.5 diabetes." },
+        { "id": "cortisol_am", "name": "Cortisol, morning", "unit": "µg/dL", "low": 5, "high": 25, "decimals": 1 },
+        { "id": "hcg", "name": "hCG, quantitative (serum)", "unit": "mIU/mL", "low": null, "high": 5, "decimals": 0, "notes": "<5 is negative in a nonpregnant patient." }
+      ]
+    },
+    {
+      "id": "iron_vitamins",
+      "name": "Iron studies and vitamins",
+      "tests": [
+        { "id": "ferritin", "name": "Ferritin", "unit": "ng/mL", "female": [11, 307], "male": [24, 336], "decimals": 0, "notes": "Rises with inflammation, so a normal value doesn't exclude iron deficiency." },
+        { "id": "iron", "name": "Iron", "unit": "µg/dL", "low": 60, "high": 170, "decimals": 0 },
+        { "id": "tibc", "name": "Total iron-binding capacity (TIBC)", "unit": "µg/dL", "low": 240, "high": 450, "decimals": 0 },
+        { "id": "tsat", "name": "Transferrin saturation", "unit": "%", "low": 20, "high": 50, "decimals": 0, "derived": "iron / tibc × 100" },
+        { "id": "b12", "name": "Vitamin B12", "unit": "pg/mL", "low": 200, "high": 900, "decimals": 0 },
+        { "id": "folate", "name": "Folate", "unit": "ng/mL", "low": 3.0, "high": null, "decimals": 1 }
+      ]
+    },
+    {
+      "id": "inflammation",
+      "name": "Inflammatory markers",
+      "tests": [
+        { "id": "crp", "name": "C-reactive protein (CRP)", "unit": "mg/dL", "low": null, "high": 1.0, "decimals": 1 },
+        { "id": "esr", "name": "Erythrocyte sedimentation rate (ESR)", "unit": "mm/h", "female": [0, 20], "male": [0, 15], "decimals": 0, "notes": "Rises with age and anemia." },
+        { "id": "procalcitonin", "name": "Procalcitonin", "unit": "ng/mL", "low": null, "high": 0.10, "decimals": 2, "notes": ">0.5 favors bacterial infection." }
+      ]
+    },
+    {
+      "id": "abg",
+      "name": "Arterial blood gas (room air)",
+      "tests": [
+        { "id": "ph", "name": "pH", "unit": "", "low": 7.35, "high": 7.45, "critical_low": 7.20, "critical_high": 7.60, "decimals": 2 },
+        { "id": "paco2", "name": "PaCO₂", "unit": "mm Hg", "low": 35, "high": 45, "critical_low": 20, "critical_high": 70, "decimals": 0 },
+        { "id": "pao2", "name": "PaO₂", "unit": "mm Hg", "low": 80, "high": 100, "critical_low": 55, "decimals": 0, "notes": "Falls with age; on supplemental oxygen it can be far higher." },
+        { "id": "abg_hco3", "name": "HCO₃⁻ (calculated)", "unit": "mmol/L", "low": 22, "high": 26, "decimals": 0, "derived": "Henderson–Hasselbalch from ph and paco2" },
+        { "id": "base_excess", "name": "Base excess", "unit": "mmol/L", "low": -2, "high": 2, "decimals": 0 },
+        { "id": "sao2", "name": "SaO₂", "unit": "%", "low": 95, "high": 100, "decimals": 0 }
+      ]
+    },
+    {
+      "id": "ua",
+      "name": "Urinalysis",
+      "tests": [
+        { "id": "ua_sg", "name": "Specific gravity", "unit": "", "low": 1.005, "high": 1.030, "decimals": 3 },
+        { "id": "ua_ph", "name": "pH", "unit": "", "low": 4.5, "high": 8.0, "decimals": 1 },
+        { "id": "ua_protein", "name": "Protein", "normal": "Negative", "abnormal": ["Trace", "1+", "2+", "3+"] },
+        { "id": "ua_glucose", "name": "Glucose", "normal": "Negative", "abnormal": ["Trace", "1+", "2+", "3+", "4+"] },
+        { "id": "ua_ketones", "name": "Ketones", "normal": "Negative", "abnormal": ["Trace", "Small", "Moderate", "Large"] },
+        { "id": "ua_blood", "name": "Blood", "normal": "Negative", "abnormal": ["Trace", "1+", "2+", "3+"] },
+        { "id": "ua_nitrite", "name": "Nitrite", "normal": "Negative", "abnormal": ["Positive"] },
+        { "id": "ua_le", "name": "Leukocyte esterase", "normal": "Negative", "abnormal": ["Trace", "1+", "2+", "3+"] },
+        { "id": "ua_bili", "name": "Bilirubin", "normal": "Negative", "abnormal": ["1+", "2+", "3+"] },
+        { "id": "ua_wbc", "name": "WBC", "unit": "/hpf", "low": 0, "high": 5, "decimals": 0 },
+        { "id": "ua_rbc", "name": "RBC", "unit": "/hpf", "low": 0, "high": 2, "decimals": 0 },
+        { "id": "ua_bacteria", "name": "Bacteria", "normal": "None", "abnormal": ["Few", "Moderate", "Many"] },
+        { "id": "ua_casts", "name": "Casts", "normal": "None or few hyaline", "abnormal": ["Granular (muddy brown)", "RBC casts", "WBC casts", "Waxy", "Fatty"] }
+      ]
+    },
+    {
+      "id": "csf",
+      "name": "Cerebrospinal fluid (lumbar puncture)",
+      "tests": [
+        { "id": "csf_opening", "name": "Opening pressure", "unit": "cm H₂O", "low": 10, "high": 20, "decimals": 0, "notes": "Measured lying on the side; up to 25 can be normal in adults with obesity." },
+        { "id": "csf_appearance", "name": "Appearance", "normal": "Clear, colorless", "abnormal": ["Cloudy", "Xanthochromic", "Bloody"] },
+        { "id": "csf_wbc", "name": "WBC", "unit": "/µL", "low": 0, "high": 5, "decimals": 0 },
+        { "id": "csf_rbc", "name": "RBC", "unit": "/µL", "low": 0, "high": 0, "decimals": 0 },
+        { "id": "csf_protein", "name": "Protein", "unit": "mg/dL", "low": 15, "high": 45, "decimals": 0 },
+        { "id": "csf_glucose", "name": "Glucose", "unit": "mg/dL", "low": 40, "high": 70, "decimals": 0, "notes": "Normally about 60% of serum glucose; <40% of serum suggests bacterial, fungal or TB meningitis." }
+      ]
+    }
+  ]
+}

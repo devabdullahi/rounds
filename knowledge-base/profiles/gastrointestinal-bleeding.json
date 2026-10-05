@@ -1,0 +1,1633 @@
+{
+  "schema_version": "0.2",
+  "slug": "gastrointestinal-bleeding",
+  "triage": {
+    "name": "Gastrointestinal Bleeding",
+    "case_suitable": true,
+    "reason": "High-yield undifferentiated bleeding presentation with localization by history, exam, labs and endoscopy; strong clinical reasoning case.",
+    "kind": "symptom",
+    "category": "gastrointestinal hemorrhage",
+    "organ_systems": [
+      "gastrointestinal"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "surgery",
+      "emergency",
+      "familyMedicine"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "emergency",
+      "inpatient",
+      "icu"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:17:35Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:25:15Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:25:21Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:25:33Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:25:45Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:25:51Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'type_and_screen' to 'Type and screen'",
+        "auto-repaired: workup: 'esophagogastroduodenoscopy (egd)' was in ['initial', 'confirmatory'], kept ['initial']",
+        "auto-repaired: workup: 'ct angiography of the abdomen and pelvis' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ct angiography of the abdomen and pelvis' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "differential peptic-ulcer-disease: no profile yet",
+        "differential esophageal-varices: no profile yet",
+        "differential mallory-weiss-tear: no profile yet",
+        "differential diverticular-bleeding: no profile yet",
+        "differential colorectal-cancer: no profile yet",
+        "differential ischemic-colitis: no profile yet",
+        "differential inflammatory-bowel-disease: no profile yet",
+        "differential hemorrhoids: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 30,
+      "typical_max": 85,
+      "peak": "60–80",
+      "possible_min": 0,
+      "possible_max": 110
+    },
+    "sex": "either",
+    "demographics": [
+      "Upper GI bleeding is more common in men",
+      "Lower GI bleeding is more common in older adults",
+      "Incidence rises with age"
+    ],
+    "risk_factors": [
+      {
+        "text": "Peptic ulcer disease or prior GI bleed",
+        "strength": "strong"
+      },
+      {
+        "text": "Use of NSAIDs or aspirin",
+        "strength": "strong"
+      },
+      {
+        "text": "Heavy alcohol use",
+        "strength": "moderate"
+      },
+      {
+        "text": "Cirrhosis or portal hypertension",
+        "strength": "moderate"
+      },
+      {
+        "text": "Anticoagulant or antiplatelet therapy",
+        "strength": "moderate"
+      },
+      {
+        "text": "Diverticulosis",
+        "strength": "moderate"
+      },
+      {
+        "text": "Helicobacter pylori infection",
+        "strength": "moderate"
+      },
+      {
+        "text": "Age over 60",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Peptic ulcer disease",
+      "Cirrhosis",
+      "Chronic kidney disease",
+      "Cardiovascular disease",
+      "Diverticular disease",
+      "Inflammatory bowel disease"
+    ],
+    "family_history": [
+      "Colorectal cancer or polyps",
+      "Inherited bleeding disorders",
+      "Hereditary hemorrhagic telangiectasia"
+    ],
+    "social_history": [
+      "Heavy alcohol use",
+      "Cigarette smoking",
+      "Long-term NSAID use"
+    ],
+    "exposures": [
+      "NSAIDs",
+      "Aspirin",
+      "Anticoagulants",
+      "Anti platelet agents",
+      "Corticosteroids"
+    ],
+    "risk_medications": [
+      "ibuprofen",
+      "naproxen",
+      "aspirin",
+      "warfarin",
+      "apixaban",
+      "rivaroxaban",
+      "clopidogrel",
+      "prednisone"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I vomited blood",
+        "frequency": "common"
+      },
+      {
+        "text": "My stool is black and tarry",
+        "frequency": "common"
+      },
+      {
+        "text": "There is bright red blood in my stool",
+        "frequency": "common"
+      },
+      {
+        "text": "I feel lightheaded and weak",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "I have been having dark, loose stools",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Sudden or gradual depending on the source; upper GI bleeding often presents with vomiting blood or black stools, lower GI bleeding with red blood per rectum",
+      "duration": "Hours to days for acute bleeding; chronic occult bleeding may be present for weeks",
+      "progression": "May stop spontaneously or continue; ongoing bleeding can lead to worsening weakness, dizziness and shock",
+      "location": "Upper GI tract (esophagus, stomach, duodenum) or lower GI tract (colon, rectum, anus)",
+      "radiation": "Pain may radiate to the back or epigastrium if ulcer related; bleeding itself does not radiate",
+      "quality": "Vomiting red blood or coffee-ground material; black tarry stools; red blood mixed with or coating stool",
+      "severity": "Varies from occult blood loss to massive hemorrhage with hemodynamic instability",
+      "timing": "May be intermittent or continuous",
+      "aggravating": [
+        "NSAID use",
+        "Alcohol",
+        "Anticoagulants"
+      ],
+      "relieving": [
+        "Nothing specific; stopping the offending agent may help"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Lightheadedness or dizziness on standing",
+          "frequency": "common"
+        },
+        {
+          "text": "Weakness and fatigue",
+          "frequency": "common"
+        },
+        {
+          "text": "Abdominal pain or discomfort",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Nausea",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Palpitations",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Shortness of breath",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Fainting",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Vomiting without blood",
+        "Bright red blood only from the rectum without black stools",
+        "No prior history of GI bleeding",
+        "No known liver disease",
+        "No recent weight loss",
+        "No change in bowel habits"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fatigue",
+            "frequency": "common"
+          },
+          {
+            "text": "Lightheadedness",
+            "frequency": "common"
+          },
+          {
+            "text": "Feeling cold",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Fever",
+          "Weight loss",
+          "Night sweats"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [
+          {
+            "text": "Palpitations",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Chest pain",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Chest pain",
+          "Orthopnea",
+          "Edema"
+        ],
+        "argues_against": [
+          "Primary cardiac cause of symptoms"
+        ]
+      },
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "Shortness of breath",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Cough",
+          "Hemoptysis",
+          "Pleuritic chest pain"
+        ],
+        "argues_against": [
+          "Respiratory source of bleeding"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Vomiting blood or coffee-ground material",
+            "frequency": "common"
+          },
+          {
+            "text": "Black tarry stools",
+            "frequency": "common"
+          },
+          {
+            "text": "Bright red blood per rectum",
+            "frequency": "common"
+          },
+          {
+            "text": "Abdominal pain",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Nausea",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Diarrhea",
+          "Constipation",
+          "Jaundice",
+          "Difficulty swallowing"
+        ],
+        "argues_against": [
+          "Infectious gastroenteritis",
+          "Bowel obstruction"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [],
+        "negatives": [
+          "Hematuria",
+          "Dysuria",
+          "Flank pain"
+        ],
+        "argues_against": [
+          "Urinary tract bleeding"
+        ]
+      },
+      {
+        "system": "hematologic",
+        "positives": [
+          {
+            "text": "Easy bruising",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Bleeding gums",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Known bleeding disorder",
+          "Recent blood transfusion"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "older_adults",
+        "how_it_differs": "May present with confusion, falls, or weakness without obvious bleeding signs; less tachycardia and pain.",
+        "missing_classic_features": [
+          "Hematemesis",
+          "Melena",
+          "Abdominal pain"
+        ]
+      },
+      {
+        "population": "children",
+        "how_it_differs": "Often presents with vomiting blood or blood in stool due to swallowed maternal blood, esophagitis, or intussusception; may have irritability and poor feeding.",
+        "missing_classic_features": [
+          "Chronic NSAID use",
+          "Cirrhosis"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "May present with hyperemesis causing Mallory-Weiss tear or with bleeding from esophageal varices due to pregnancy-related liver changes; symptoms may be attributed to morning sickness.",
+        "missing_classic_features": [
+          "Heavy alcohol use",
+          "Long-standing cirrhosis"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "May have bleeding from CMV or other opportunistic infections, or from medication-related ulcers; fever and systemic symptoms may be present.",
+        "missing_classic_features": [
+          "Typical ulcer pain"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Alert, comfortable, no distress; normal color",
+      "moderate": "Mildly pale, mild anxiety, able to converse",
+      "severe": "Pale, diaphoretic, anxious, restless, appears unwell",
+      "critical": "Markedly pale or mottled, lethargic or confused, cold clammy extremities, near-syncopal"
+    },
+    "findings": [
+      {
+        "id": "conjunctival-pallor",
+        "region": "heent",
+        "maneuver": "Inspect the conjunctivae and oral mucosa",
+        "finding": "Conjunctival and mucosal pallor",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "epigastric-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate the epigastrium",
+        "finding": "Epigastric tenderness suggesting peptic ulcer disease",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "guarding-rigidity",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen and assess for peritoneal signs",
+        "finding": "Guarding or rigidity suggesting perforation or peritonitis",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "hepatomegaly",
+        "region": "abdomen",
+        "maneuver": "Percuss and palpate the liver",
+        "finding": "Hepatomegaly suggesting chronic liver disease or portal hypertension",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "splenomegaly",
+        "region": "abdomen",
+        "maneuver": "Palpate the spleen",
+        "finding": "Splenomegaly suggesting portal hypertension",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "ascites",
+        "region": "abdomen",
+        "maneuver": "Assess for shifting dullness or fluid wave",
+        "finding": "Ascites suggesting cirrhosis and portal hypertension",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "caput-medusae",
+        "region": "abdomen",
+        "maneuver": "Inspect the abdominal wall",
+        "finding": "Dilated superficial veins (caput medusae) suggesting portal hypertension",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "digital-rectal-exam",
+        "region": "rectal",
+        "maneuver": "Perform a digital rectal exam",
+        "finding": "Melena or bright red blood on the glove; mass or hemorrhoids",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "normal-abdominal-exam",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen",
+        "finding": "No tenderness, guarding, or organomegaly",
+        "frequency": "sometimes",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-hematuria",
+        "region": "genitourinary",
+        "maneuver": "Inspect urine or perform urinalysis",
+        "finding": "No blood in urine",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-vaginal-bleeding",
+        "region": "pelvic",
+        "maneuver": "Inspect the external genitalia and, if indicated, perform a pelvic exam",
+        "finding": "No vaginal bleeding",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "skin-stigmata",
+        "region": "skin",
+        "maneuver": "Inspect the skin for signs of chronic liver disease",
+        "finding": "Spider angiomata, palmar erythema, jaundice, or ecchymoses",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "cool-extremities",
+        "region": "extremities",
+        "maneuver": "Assess skin temperature and capillary refill",
+        "finding": "Cool extremities and delayed capillary refill",
+        "frequency": "common",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 98.6,
+        "max": 99.5
+      },
+      "moderate": {
+        "min": 98.6,
+        "max": 100.0
+      },
+      "severe": {
+        "min": 98.0,
+        "max": 100.4
+      },
+      "critical": {
+        "min": 97.0,
+        "max": 100.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 100
+      },
+      "moderate": {
+        "min": 90,
+        "max": 110
+      },
+      "severe": {
+        "min": 100,
+        "max": 130
+      },
+      "critical": {
+        "min": 110,
+        "max": 150
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 12,
+        "max": 20
+      },
+      "moderate": {
+        "min": 16,
+        "max": 22
+      },
+      "severe": {
+        "min": 18,
+        "max": 28
+      },
+      "critical": {
+        "min": 22,
+        "max": 32
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 110,
+        "max": 140
+      },
+      "moderate": {
+        "min": 100,
+        "max": 120
+      },
+      "severe": {
+        "min": 80,
+        "max": 100
+      },
+      "critical": {
+        "min": 60,
+        "max": 90
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 60,
+        "max": 90
+      },
+      "moderate": {
+        "min": 60,
+        "max": 80
+      },
+      "severe": {
+        "min": 40,
+        "max": 60
+      },
+      "critical": {
+        "min": 30,
+        "max": 60
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 95,
+        "max": 100
+      },
+      "moderate": {
+        "min": 94,
+        "max": 100
+      },
+      "severe": {
+        "min": 90,
+        "max": 98
+      },
+      "critical": {
+        "min": 85,
+        "max": 95
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "hgb",
+      "ranges": {
+        "mild": {
+          "min": 10.5,
+          "max": 12.0
+        },
+        "moderate": {
+          "min": 8.0,
+          "max": 10.5
+        },
+        "severe": {
+          "min": 6.0,
+          "max": 8.0
+        },
+        "critical": {
+          "min": 4.0,
+          "max": 6.0
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "May be normal early in acute bleeding before hemodilution; a normal hemoglobin does not exclude significant blood loss."
+    },
+    {
+      "test_id": "hct",
+      "ranges": {
+        "mild": {
+          "min": 32,
+          "max": 36
+        },
+        "moderate": {
+          "min": 24,
+          "max": 32
+        },
+        "severe": {
+          "min": 18,
+          "max": 24
+        },
+        "critical": {
+          "min": 12,
+          "max": 18
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Falls with resuscitation and hemodilution; trend is more useful than a single value."
+    },
+    {
+      "test_id": "plt",
+      "ranges": {
+        "moderate": {
+          "min": 100,
+          "max": 150
+        },
+        "severe": {
+          "min": 50,
+          "max": 100
+        },
+        "critical": {
+          "min": 10,
+          "max": 50
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Thrombocytopenia suggests cirrhosis with portal hypertension or a primary hematologic problem."
+    },
+    {
+      "test_id": "inr",
+      "ranges": {
+        "moderate": {
+          "min": 1.2,
+          "max": 1.8
+        },
+        "severe": {
+          "min": 1.8,
+          "max": 3.0
+        },
+        "critical": {
+          "min": 3.0,
+          "max": 6.0
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "Elevated by warfarin, liver disease, or vitamin K deficiency; guides reversal."
+    },
+    {
+      "test_id": "aptt",
+      "ranges": {
+        "moderate": {
+          "min": 36,
+          "max": 50
+        },
+        "severe": {
+          "min": 50,
+          "max": 80
+        },
+        "critical": {
+          "min": 80,
+          "max": 120
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Prolonged by heparin or a coagulopathy."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "mild": {
+          "min": 20,
+          "max": 30
+        },
+        "moderate": {
+          "min": 30,
+          "max": 45
+        },
+        "severe": {
+          "min": 45,
+          "max": 70
+        },
+        "critical": {
+          "min": 60,
+          "max": 100
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "A BUN/creatinine ratio above 30 suggests an upper GI source from absorbed blood."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "mild": {
+          "min": 1.2,
+          "max": 1.5
+        },
+        "moderate": {
+          "min": 1.5,
+          "max": 2.0
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 3.5
+        },
+        "critical": {
+          "min": 3.0,
+          "max": 6.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Rises with hypovolemia and prerenal injury; affects contrast and medication dosing."
+    },
+    {
+      "test_id": "mcv",
+      "ranges": {
+        "mild": {
+          "min": 72,
+          "max": 80
+        },
+        "moderate": {
+          "min": 65,
+          "max": 72
+        },
+        "severe": {
+          "min": 60,
+          "max": 65
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Low MCV suggests chronic iron deficiency from occult blood loss."
+    },
+    {
+      "test_id": "ferritin",
+      "ranges": {
+        "mild": {
+          "min": 8,
+          "max": 11
+        },
+        "moderate": {
+          "min": 4,
+          "max": 8
+        },
+        "severe": {
+          "min": 1,
+          "max": 4
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Low ferritin supports chronic blood loss; may be normal or high in acute inflammation."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "moderate": {
+          "min": 2.2,
+          "max": 4.0
+        },
+        "severe": {
+          "min": 4.0,
+          "max": 8.0
+        },
+        "critical": {
+          "min": 6.0,
+          "max": 12.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevated lactate marks hypoperfusion and risk of decompensation."
+    },
+    {
+      "test_id": "ast",
+      "ranges": {
+        "mild": {
+          "min": 40,
+          "max": 80
+        },
+        "moderate": {
+          "min": 80,
+          "max": 200
+        },
+        "severe": {
+          "min": 200,
+          "max": 500
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Elevated in alcohol-related liver disease or ischemic hepatitis."
+    },
+    {
+      "test_id": "alt",
+      "ranges": {
+        "mild": {
+          "min": 56,
+          "max": 100
+        },
+        "moderate": {
+          "min": 100,
+          "max": 250
+        },
+        "severe": {
+          "min": 250,
+          "max": 600
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "tbili",
+      "ranges": {
+        "mild": {
+          "min": 1.2,
+          "max": 2.0
+        },
+        "moderate": {
+          "min": 2.0,
+          "max": 4.0
+        },
+        "severe": {
+          "min": 4.0,
+          "max": 10.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Elevated bilirubin suggests cirrhosis or hemolysis."
+    },
+    {
+      "test_id": "albumin",
+      "ranges": {
+        "mild": {
+          "min": 3.0,
+          "max": 3.5
+        },
+        "moderate": {
+          "min": 2.5,
+          "max": 3.0
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 2.5
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Low albumin supports chronic liver disease."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Negative. Required in anyone who could be pregnant before imaging or endoscopy; rules out pregnancy-related bleeding."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rate",
+        "finding": "Sinus tachycardia",
+        "frequency": "common",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Sinus rhythm",
+        "frequency": "common",
+        "min_severity": "mild"
+      },
+      {
+        "feature": "st",
+        "finding": "Diffuse ST depression or T-wave flattening from demand ischemia in severe anemia",
+        "frequency": "sometimes",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "conduction",
+        "finding": "Nonspecific ST-T changes in the setting of anemia or electrolyte disturbance",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Esophagogastroduodenoscopy (EGD)",
+      "modality": "endoscopy",
+      "preferred_when": "Suspected upper GI bleeding (hematemesis, melena, or a high BUN/creatinine ratio)",
+      "findings": [
+        {
+          "text": "Gastric or duodenal ulcer with active bleeding or a visible vessel",
+          "frequency": "common"
+        },
+        {
+          "text": "Erosive gastritis or esophagitis",
+          "frequency": "common"
+        },
+        {
+          "text": "Esophageal or gastric varices",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Mallory-Weiss tear at the gastroesophageal junction",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "No source identified (nondiagnostic study)",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Colonoscopy",
+      "modality": "endoscopy",
+      "preferred_when": "Suspected lower GI bleeding (hematochezia) in a stable patient",
+      "findings": [
+        {
+          "text": "Diverticula with stigmata of recent bleeding",
+          "frequency": "common"
+        },
+        {
+          "text": "Colonic angioectasia",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Colonic polyp or mass",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Inflammatory colitis or ulceration",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Blood throughout the colon without a clear source",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "CT angiography of the abdomen and pelvis",
+      "modality": "ct",
+      "preferred_when": "Active bleeding with hemodynamic instability or when endoscopy is nondiagnostic",
+      "findings": [
+        {
+          "text": "Active contrast extravasation into the bowel lumen",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Bowel wall thickening or mass",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Diverticular disease",
+          "frequency": "common"
+        },
+        {
+          "text": "No active bleeding identified",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Tagged red blood cell scan",
+      "modality": "nuclear",
+      "preferred_when": "Intermittent lower GI bleeding when endoscopy and CT angiography are nondiagnostic",
+      "findings": [
+        {
+          "text": "Focus of radiotracer accumulation in the bowel suggesting active bleeding",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "No bleeding focus identified",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Abdominal x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Usually nonspecific; may show dilated bowel or free air if perforation is present",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Assesses the degree of blood loss, thrombocytopenia, and leukocytosis"
+      },
+      {
+        "test": "bmp",
+        "why": "Evaluates renal function, electrolytes, and the BUN/creatinine ratio that suggests an upper source"
+      },
+      {
+        "test": "coag",
+        "why": "Detects coagulopathy or anticoagulant effect that must be corrected"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before imaging and endoscopy"
+      },
+      {
+        "test": "Type and screen",
+        "why": "Prepares for possible transfusion in significant bleeding"
+      },
+      {
+        "test": "Esophagogastroduodenoscopy (EGD)",
+        "why": "Localizes and treats an upper GI source",
+        "only_if": "suspected upper GI bleeding (hematemesis, melena, or high BUN/creatinine ratio)"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Colonoscopy",
+        "why": "Definitive diagnosis and therapy for lower GI bleeding"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "lactate",
+        "why": "Marks hypoperfusion and severity"
+      },
+      {
+        "test": "ferritin",
+        "why": "Supports chronic occult blood loss when anemia is present"
+      },
+      {
+        "test": "CT angiography of the abdomen and pelvis",
+        "why": "Localizes active bleeding when endoscopy is nondiagnostic or the patient is unstable",
+        "only_if": "Localizes active bleeding when endoscopy is nondiagnostic or the patient is unstable"
+      },
+      {
+        "test": "Tagged red blood cell scan",
+        "why": "Detects intermittent lower GI bleeding",
+        "only_if": "endoscopy and CT angiography are nondiagnostic"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Abdominal x-ray",
+        "why": "Rarely identifies the bleeding source"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in GI bleeding"
+      },
+      {
+        "test": "lipase",
+        "why": "Not needed unless pancreatitis is suspected"
+      },
+      {
+        "test": "ua",
+        "why": "Does not evaluate GI bleeding; used only to exclude a urinary source"
+      },
+      {
+        "test": "CT angiography of the abdomen and pelvis",
+        "why": "Not first-line when endoscopy is available and the patient is stable",
+        "only_if": "endoscopy is nondiagnostic or the patient is unstable"
+      }
+    ],
+    "decision_points": [
+      "Pregnancy test before CT or endoscopy in anyone who could be pregnant",
+      "Resuscitate and stabilize before endoscopy in massive bleeding",
+      "Upper endoscopy first for hematemesis or melena; colonoscopy first for hematochezia in a stable patient",
+      "Reverse anticoagulation or coagulopathy before or during endoscopy when bleeding is severe"
+    ],
+    "criteria": [],
+    "scores": [
+      "glasgow_blatchford",
+      "rockall",
+      "aims65"
+    ]
+  },
+  "differential": [
+    {
+      "name": "Peptic ulcer disease",
+      "slug": "peptic-ulcer-disease",
+      "why_considered": "The most common cause of upper GI bleeding; presents with hematemesis, melena, or both, often with epigastric pain.",
+      "must_not_miss": true,
+      "trigger": "Epigastric pain with NSAID use or prior ulcer history, plus hematemesis or melena",
+      "discriminators": {
+        "history": [
+          "Epigastric burning pain relieved or worsened by food",
+          "NSAID, aspirin, or steroid use",
+          "Prior ulcer or H. pylori infection"
+        ],
+        "exam": [
+          "Epigastric tenderness",
+          "No stigmata of chronic liver disease"
+        ],
+        "labs": [
+          "Elevated BUN/creatinine ratio suggesting an upper source",
+          "Anemia with acute or chronic blood loss"
+        ],
+        "imaging": [
+          "Gastric or duodenal ulcer with active bleeding or a visible vessel on EGD"
+        ]
+      }
+    },
+    {
+      "name": "Esophageal or gastric varices",
+      "slug": "esophageal-varices",
+      "why_considered": "Portal hypertension from cirrhosis can cause sudden, massive upper GI bleeding that looks like a severe ulcer bleed.",
+      "must_not_miss": true,
+      "trigger": "Known cirrhosis, heavy alcohol use, or signs of chronic liver disease with hematemesis",
+      "discriminators": {
+        "history": [
+          "Known cirrhosis or hepatitis",
+          "Heavy alcohol use",
+          "Prior variceal bleed"
+        ],
+        "exam": [
+          "Ascites, splenomegaly, caput medusae",
+          "Spider angiomata, palmar erythema, jaundice"
+        ],
+        "labs": [
+          "Thrombocytopenia",
+          "Elevated INR",
+          "Low albumin and elevated bilirubin"
+        ],
+        "imaging": [
+          "Esophageal or gastric varices on EGD",
+          "Signs of portal hypertension on ultrasound or CT"
+        ]
+      }
+    },
+    {
+      "name": "Mallory-Weiss tear",
+      "slug": "mallory-weiss-tear",
+      "why_considered": "Vomiting blood after forceful retching or vomiting, often after alcohol use, mimics other upper GI bleeding sources.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Forceful vomiting or retching before hematemesis",
+          "Heavy alcohol use or bulimia"
+        ],
+        "exam": [
+          "Usually no epigastric tenderness or chronic liver stigmata"
+        ],
+        "labs": [
+          "Anemia proportional to blood loss",
+          "No thrombocytopenia or coagulopathy"
+        ],
+        "imaging": [
+          "Linear mucosal tear at the gastroesophageal junction on EGD"
+        ]
+      }
+    },
+    {
+      "name": "Diverticular bleeding",
+      "slug": "diverticular-bleeding",
+      "why_considered": "The most common cause of lower GI bleeding in older adults; presents with sudden, painless hematochezia.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Sudden, painless passage of large amounts of red or maroon blood",
+          "Age over 60",
+          "Known diverticulosis"
+        ],
+        "exam": [
+          "Usually benign abdomen without tenderness",
+          "Bright red blood on digital rectal exam"
+        ],
+        "labs": [
+          "Anemia from acute blood loss",
+          "No coagulopathy unless on anticoagulants"
+        ],
+        "imaging": [
+          "Diverticula with stigmata of recent bleeding on colonoscopy",
+          "Active contrast extravasation on CT angiography if bleeding is ongoing"
+        ]
+      }
+    },
+    {
+      "name": "Colorectal cancer",
+      "slug": "colorectal-cancer",
+      "why_considered": "Can present with occult or overt lower GI bleeding, especially in older adults with iron deficiency anemia or changed bowel habits.",
+      "must_not_miss": true,
+      "trigger": "Iron deficiency anemia, weight loss, or a change in bowel habits in an older adult",
+      "discriminators": {
+        "history": [
+          "Change in bowel habits",
+          "Unintentional weight loss",
+          "Family history of colorectal cancer or polyps"
+        ],
+        "exam": [
+          "Palpable abdominal mass",
+          "Occult or visible blood on digital rectal exam"
+        ],
+        "labs": [
+          "Iron deficiency anemia with low MCV and ferritin",
+          "Positive fecal occult blood test"
+        ],
+        "imaging": [
+          "Colonic mass or stricture on colonoscopy",
+          "Mass or lymphadenopathy on CT"
+        ]
+      }
+    },
+    {
+      "name": "Ischemic colitis",
+      "slug": "ischemic-colitis",
+      "why_considered": "Presents with lower abdominal pain and hematochezia in older adults, often with vascular risk factors.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Abrupt crampy lower abdominal pain followed by urgency to defecate",
+          "Older age with atherosclerosis, atrial fibrillation, or hypotension"
+        ],
+        "exam": [
+          "Mild to moderate abdominal tenderness",
+          "Blood on rectal exam"
+        ],
+        "labs": [
+          "Leukocytosis",
+          "Elevated lactate in severe cases"
+        ],
+        "imaging": [
+          "Segmental colonic wall thickening on CT",
+          "Mucosal edema, erythema, or ulceration on colonoscopy"
+        ]
+      }
+    },
+    {
+      "name": "Inflammatory bowel disease",
+      "slug": "inflammatory-bowel-disease",
+      "why_considered": "Ulcerative colitis and Crohn disease can cause chronic or acute lower GI bleeding with diarrhea and abdominal pain.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Chronic diarrhea, often bloody",
+          "Weight loss",
+          "Younger age at onset"
+        ],
+        "exam": [
+          "Abdominal tenderness",
+          "Perianal disease or fistulas in Crohn disease"
+        ],
+        "labs": [
+          "Anemia and leukocytosis",
+          "Elevated inflammatory markers"
+        ],
+        "imaging": [
+          "Continuous mucosal inflammation from the rectum in ulcerative colitis",
+          "Skip lesions and transmural inflammation in Crohn disease"
+        ]
+      }
+    },
+    {
+      "name": "Hemorrhoidal bleeding",
+      "slug": "hemorrhoids",
+      "why_considered": "Bright red blood per rectum, often after defecation, is a common benign cause of lower GI bleeding.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Bright red blood on toilet paper or coating the stool",
+          "Painless bleeding after bowel movements",
+          "Constipation or straining"
+        ],
+        "exam": [
+          "Visible or palpable hemorrhoids on rectal exam",
+          "No abdominal tenderness or mass"
+        ],
+        "labs": [
+          "Usually normal hemoglobin unless chronic bleeding"
+        ],
+        "imaging": [
+          "Hemorrhoids on anoscopy or colonoscopy",
+          "No proximal source of bleeding"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Occult or small-volume bleeding with normal vital signs and minimal or no anemia; patient is alert and comfortable.",
+      "moderate": "Visible bleeding with mild tachycardia or orthostatic changes, mild pallor, and moderate anemia; patient is hemodynamically stable but symptomatic.",
+      "severe": "Ongoing or large-volume bleeding with resting tachycardia, hypotension, marked pallor, and significant anemia; patient may be anxious or restless.",
+      "critical": "Massive hemorrhage with shock, altered mental status, cool clammy extremities, and severe anemia; requires immediate resuscitation and urgent intervention."
+    },
+    "red_flags": [
+      {
+        "finding": "Hematemesis or coffee-ground emesis",
+        "meaning": "Upper GI bleeding; requires urgent endoscopy and resuscitation"
+      },
+      {
+        "finding": "Melena or hematochezia with hemodynamic instability",
+        "meaning": "Significant ongoing blood loss; resuscitate and localize source urgently"
+      },
+      {
+        "finding": "Systolic blood pressure below 90 mmHg or heart rate above 120",
+        "meaning": "Shock from blood loss; immediate fluid and blood resuscitation"
+      },
+      {
+        "finding": "Altered mental status or syncope",
+        "meaning": "Severe hypoperfusion; indicates critical bleeding"
+      },
+      {
+        "finding": "Rigid abdomen or rebound tenderness",
+        "meaning": "Perforation with peritonitis; surgical emergency"
+      },
+      {
+        "finding": "Known cirrhosis with hematemesis",
+        "meaning": "Possible variceal bleed; high mortality, needs urgent endoscopic therapy"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Hemorrhagic shock",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Hypotension",
+          "Tachycardia",
+          "Cool extremities",
+          "Altered mental status"
+        ]
+      },
+      {
+        "name": "Severe anemia requiring transfusion",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Pallor",
+          "Fatigue",
+          "Shortness of breath",
+          "Low hemoglobin"
+        ]
+      },
+      {
+        "name": "Acute kidney injury from hypovolemia",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Rising creatinine",
+          "Oliguria",
+          "Elevated BUN/creatinine ratio"
+        ]
+      },
+      {
+        "name": "Recurrent or rebleeding",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Return of hematemesis or melena",
+          "Falling hemoglobin",
+          "Hemodynamic changes"
+        ]
+      },
+      {
+        "name": "Aspiration pneumonia",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Vomiting with altered consciousness",
+          "Cough, fever, hypoxia after endoscopy"
+        ]
+      },
+      {
+        "name": "Death",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Massive uncontrolled bleeding",
+          "Multi-organ failure",
+          "Failure to respond to resuscitation"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "older_adults",
+        "differences": "May present with confusion, falls, or weakness without obvious bleeding signs; less tachycardia and pain; higher mortality and more comorbid conditions."
+      },
+      {
+        "population": "children",
+        "differences": "Often presents with vomiting blood or blood in stool due to swallowed maternal blood, esophagitis, or intussusception; may have irritability and poor feeding; NSAID use and cirrhosis are uncommon."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "May present with hyperemesis causing Mallory-Weiss tear or with bleeding from esophageal varices due to pregnancy-related liver changes; symptoms may be attributed to morning sickness; pregnancy test required before imaging."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "May have bleeding from CMV or other opportunistic infections, or from medication-related ulcers; fever and systemic symptoms may be present; consider infectious causes."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "Uremia can cause platelet dysfunction and bleeding; also at higher risk from anticoagulants and NSAIDs; careful medication dosing and reversal."
+      },
+      {
+        "population": "hepatic_impairment",
+        "differences": "Cirrhosis with portal hypertension increases risk of variceal bleeding and coagulopathy; requires aggressive reversal and specific therapy."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "What did the blood look like — did you vomit red blood or coffee-ground material?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Hematemesis or coffee-ground emesis localizes the source to the upper GI tract"
+      },
+      {
+        "question": "What color are your stools — black and tarry, maroon, or bright red?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Melena suggests an upper source; hematochezia suggests a lower source (or a brisk upper bleed)"
+      },
+      {
+        "question": "When did the bleeding start, and is it still going on?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Ongoing bleeding with instability requires urgent resuscitation and endoscopy"
+      },
+      {
+        "question": "How much blood have you seen — a few drops, a cupful, or more?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Estimates volume lost and guides triage and transfusion needs"
+      },
+      {
+        "question": "Do you have abdominal pain, and where is it?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Epigastric pain suggests ulcer; painless bleeding suggests diverticular or variceal source"
+      },
+      {
+        "question": "Have you felt lightheaded, dizzy on standing, or fainted?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Hypoperfusion from significant blood loss"
+      },
+      {
+        "question": "Have you had any forceful vomiting or retching before the blood appeared?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Suggests a Mallory-Weiss tear at the gastroesophageal junction"
+      },
+      {
+        "question": "Have you had black stools or a positive stool test before?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Prior GI bleeding or chronic occult blood loss"
+      },
+      {
+        "question": "Do you have a history of ulcers, liver disease, or diverticulosis?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Peptic ulcer disease, cirrhosis with varices, or diverticular disease as the source"
+      },
+      {
+        "question": "Do you take NSAIDs, aspirin, or blood thinners?",
+        "category": "medications",
+        "importance": "essential",
+        "looking_for": "NSAIDs and antithrombotics cause ulcers and worsen bleeding; anticoagulants require reversal"
+      },
+      {
+        "question": "How much alcohol do you drink?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Heavy use raises risk of varices, gastritis, and Mallory-Weiss tear"
+      },
+      {
+        "question": "Have you had unintentional weight loss or a change in bowel habits?",
+        "category": "red_flag",
+        "importance": "important",
+        "looking_for": "Suggests colorectal cancer as the bleeding source"
+      },
+      {
+        "question": "Could you be pregnant? When was your last menstrual period?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Excludes pregnancy-related bleeding and is required before imaging or endoscopy"
+      },
+      {
+        "question": "Any blood in your urine or vaginal bleeding?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Excludes a urinary or gynecologic source of the blood"
+      }
+    ],
+    "accepted_names": [
+      "Gastrointestinal bleeding",
+      "GI bleeding",
+      "Gastrointestinal hemorrhage",
+      "GI hemorrhage",
+      "Upper GI bleed",
+      "Lower GI bleed"
+    ],
+    "reasoning_points": [
+      "Localizes the source as upper or lower GI based on hematemesis, melena, or hematochezia",
+      "Identifies risk factors such as NSAID use, alcohol, cirrhosis, or anticoagulation",
+      "Assesses hemodynamic stability and severity of blood loss",
+      "Recognizes an elevated BUN/creatinine ratio as suggesting an upper GI source",
+      "Excludes pregnancy before imaging or endoscopy",
+      "Selects EGD for suspected upper bleeding and colonoscopy for suspected lower bleeding",
+      "Considers must-not-miss causes: peptic ulcer, varices, and colorectal cancer",
+      "Plans resuscitation, transfusion, and reversal of coagulopathy when indicated"
+    ],
+    "difficulty": {
+      "easy": [
+        "Classic hematemesis or coffee-ground emesis with melena",
+        "Known peptic ulcer disease or NSAID use",
+        "Epigastric tenderness on exam",
+        "Anemia with an elevated BUN/creatinine ratio"
+      ],
+      "medium": [
+        "Melena without overt hematemesis",
+        "Older adult with painless hematochezia from diverticular bleeding",
+        "Patient on warfarin or a direct oral anticoagulant",
+        "Normal hemoglobin early in acute bleeding"
+      ],
+      "hard": [
+        "Older adult presenting with confusion, falls, or weakness without obvious bleeding",
+        "Occult bleeding with iron deficiency anemia and no visible blood",
+        "Brisk upper GI bleed presenting as hematochezia",
+        "Cirrhotic patient with variceal bleeding and coagulopathy",
+        "Pregnant patient with bleeding attributed to morning sickness"
+      ]
+    }
+  }
+}

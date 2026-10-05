@@ -1,9 +1,13 @@
 import SwiftUI
 import Observation
 
-/// Career-level progress that outlives a single case.
+/// Career-level progress that outlives a single case, plus the student's ward of generated patients.
+@MainActor
 @Observable
 final class AppState {
+    let cases: (any CaseService)?
+
+    // Sample stats until the profile screen reads them from the server.
     var rating = 1482
     var streak = 12
     var patientsSeen = 216
@@ -12,12 +16,31 @@ final class AppState {
     var redFlagRate = 0.72
     var rotationDone = 9
     let rotationTotal = 20
-    /// Per-patient: what you missed last time you saw them. Empty → nothing to revisit.
-    var misses: [String: [Miss]] = Ward.seededMisses
-    var lastScores: [String: Int] = Ward.seededScores
 
-    var totalMisses: Int { misses.values.reduce(0) { $0 + $1.count } }
-    var revisitPatients: [WardPatient] { Ward.revisit.filter { !(misses[$0.id] ?? []).isEmpty } }
+    /// The student's generated patients, newest first.
+    private(set) var ward: [WardPatient] = []
+    /// Conditions available per topic, keyed by `StudyFocus.stored`.
+    private(set) var topicCounts: [String: Int] = [:]
+    private(set) var isLoadingWard = false
+    /// A new patient is being generated (takes 10–30 s).
+    private(set) var isAdmitting = false
+    /// A patient's case is being fetched to open.
+    private(set) var openingBed: String?
+    var problem: String?
+
+    var misses: [String: [Miss]] { Dictionary(uniqueKeysWithValues: ward.map { ($0.id, $0.misses) }) }
+    var lastScores: [String: Int] { ward.reduce(into: [:]) { $0[$1.id] = $1.lastScore } }
+    var totalMisses: Int { ward.reduce(0) { $0 + $1.misses.count } }
+    var revisitPatients: [WardPatient] { ward.filter { $0.status == .revisit } }
+    /// Patients still to see on the deck: new or half-done, and not skipped.
+    var waiting: [WardPatient] { ward.filter { ($0.status == .new || $0.status == .resume) && !skipped.contains($0.id) } }
+
+    /// Beds the student swiped away on the deck. Kept on this device so they don't come back;
+    /// the patients stay on the Patients tab.
+    private(set) var skipped: Set<String> = Set(UserDefaults.standard.stringArray(forKey: AppState.skippedStorageKey) ?? [])
+    static let skippedStorageKey = "skippedBeds"
+    /// Organ systems that have patients on the ward, for filter chips.
+    var wardSystems: [OrganSystem] { OrganSystem.allCases.filter { s in ward.contains { $0.system == s } } }
 
     var lastGrade: Grade?
     var activeCase: CaseSession?
@@ -26,21 +49,81 @@ final class AppState {
     static let fellowThreshold = 1600
     static let residentFloor = 1200
 
+    init(cases: (any CaseService)?) {
+        self.cases = cases
+    }
+
     var tierProgress: Double {
         Double(rating - Self.residentFloor) / Double(Self.fellowThreshold - Self.residentFloor)
     }
     var toNextTier: Int { max(0, Self.fellowThreshold - rating) }
 
-    func startCase() {
-        activeCase = CaseSession()
+    /// Conditions a focus can draw from; nil before the counts load.
+    func conditionCount(for focus: StudyFocus) -> Int? {
+        focus == .mix ? topicCounts.values.reduce(0, +) : (topicCounts.isEmpty ? nil : topicCounts[focus.stored] ?? 0)
+    }
+
+    // MARK: Loading
+
+    func refresh() async {
+        guard let cases else { problem = "Supabase isn't configured. Fill in Config/Secrets.xcconfig."; return }
+        isLoadingWard = true
+        defer { isLoadingWard = false }
+        do {
+            try await cases.ensureSignedIn()
+            async let ward = cases.ward()
+            async let counts = cases.topicCounts()
+            self.ward = try await ward
+            self.topicCounts = try await counts
+            problem = nil
+        } catch {
+            problem = error.localizedDescription
+        }
+    }
+
+    /// Generates a new patient for the focus (a random pick when several are chosen) and opens it.
+    func admit(focus: FocusSelection) async {
+        guard let cases, !isAdmitting else { return }
+        isAdmitting = true
+        defer { isAdmitting = false }
+        do {
+            try await cases.ensureSignedIn()
+            // Topics with no conditions yet would fail, so draw from the ones that have some.
+            let available = focus.items.filter { (conditionCount(for: $0) ?? 1) > 0 }
+            let bed = try await cases.admit(focus: available.randomElement() ?? .mix)
+            await refresh()
+            await open(bed: bed)
+        } catch {
+            problem = error.localizedDescription
+        }
+    }
+
+    func open(bed: String) async {
+        guard let cases, openingBed == nil else { return }
+        openingBed = bed
+        defer { openingBed = nil }
+        do {
+            let clinical = try await cases.loadCase(bed: bed)
+            activeCase = CaseSession(clinical: clinical, service: cases)
+        } catch {
+            problem = error.localizedDescription
+        }
+    }
+
+    func skip(bed: String) {
+        skipped.insert(bed)
+        UserDefaults.standard.set(Array(skipped), forKey: Self.skippedStorageKey)
     }
 
     func record(_ grade: Grade, patient: String) {
         lastGrade = grade
-        misses[patient] = grade.missedRedFlags
-        lastScores[patient] = grade.score
-        rating += grade.ratingDelta
+        rating = grade.rating
         patientsSeen += 1
         rotationDone = min(rotationTotal, rotationDone + 1)
+        if let i = ward.firstIndex(where: { $0.id == patient }) {
+            ward[i].misses = grade.missedRedFlags
+            ward[i].lastScore = grade.score
+            ward[i].status = grade.missedRedFlags.isEmpty ? .done : .revisit
+        }
     }
 }

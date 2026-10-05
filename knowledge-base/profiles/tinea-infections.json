@@ -1,0 +1,966 @@
+{
+  "schema_version": "0.2",
+  "slug": "tinea-infections",
+  "triage": {
+    "name": "Tinea Infections",
+    "case_suitable": true,
+    "reason": "Common dermatophyte infection with classic rash patterns; diagnosis is made by history and exam with KOH confirmation, and mimics eczema and psoriasis.",
+    "kind": "disease",
+    "category": "superficial fungal infection",
+    "organ_systems": [
+      "musculoskeletal"
+    ],
+    "primary_clerkship": "familyMedicine",
+    "secondary_clerkships": [
+      "pediatrics",
+      "internalMedicine"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "clinic",
+      "pediatric_clinic"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:20:40Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:16:56Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:17:02Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:17:05Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:17:17Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:17:24Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'fungal culture of skin, hair, or nail' was in ['confirmatory', 'supporting'], kept ['confirmatory']",
+        "differential nummular-eczema: no profile yet",
+        "differential psoriasis: no profile yet",
+        "differential contact-dermatitis: no profile yet",
+        "differential pityriasis-rosea: no profile yet",
+        "differential erythrasma: no profile yet",
+        "differential lyme-disease: no profile yet",
+        "differential seborrheic-dermatitis: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 2,
+      "typical_max": 70,
+      "peak": "bimodal: children 2–10 and adults 20–60",
+      "possible_min": 0,
+      "possible_max": 100
+    },
+    "sex": "either",
+    "demographics": [
+      "Tinea capitis is most common in children, especially those of African descent",
+      "Tinea pedis and tinea cruris are more common in adolescent and adult males",
+      "Tinea corporis occurs at any age",
+      "Onychomycosis is more common in older adults"
+    ],
+    "risk_factors": [
+      {
+        "text": "Close contact with an infected person or animal (especially kittens, puppies, rodents)",
+        "strength": "strong"
+      },
+      {
+        "text": "Walking barefoot on damp communal surfaces (shower floors, locker rooms, pool decks)",
+        "strength": "strong"
+      },
+      {
+        "text": "Sharing combs, hats, towels, or clothing",
+        "strength": "moderate"
+      },
+      {
+        "text": "Warm, humid climate or excessive sweating",
+        "strength": "moderate"
+      },
+      {
+        "text": "Tight, non-breathable clothing or occlusive footwear",
+        "strength": "moderate"
+      },
+      {
+        "text": "Participation in contact sports (wrestling, judo)",
+        "strength": "moderate"
+      },
+      {
+        "text": "Household member with a dermatophyte infection",
+        "strength": "moderate"
+      },
+      {
+        "text": "Diabetes mellitus",
+        "strength": "weak"
+      },
+      {
+        "text": "Immunosuppression (HIV, transplant, chemotherapy)",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Diabetes mellitus",
+      "Peripheral vascular disease",
+      "Immunosuppression",
+      "Obesity",
+      "Atopic dermatitis (predisposes to skin barrier disruption)"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Participation in contact sports",
+      "Use of communal showers or locker rooms",
+      "Living in crowded conditions",
+      "Pet ownership (especially young cats or dogs)"
+    ],
+    "exposures": [
+      "Infected household member or close contact",
+      "Infected pet (kitten, puppy, rodent)",
+      "Damp floors (showers, locker rooms, pools)",
+      "Shared personal items (combs, hats, towels)",
+      "Farm animals or soil"
+    ],
+    "risk_medications": [
+      "Topical corticosteroids (can mask or worsen tinea)",
+      "Systemic corticosteroids",
+      "Immunosuppressants",
+      "TNF inhibitors"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I have an itchy rash",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "There's a red ring on my skin",
+        "frequency": "common"
+      },
+      {
+        "text": "The skin between my toes is itchy and peeling",
+        "frequency": "common"
+      },
+      {
+        "text": "My groin is itchy and burning",
+        "frequency": "common"
+      },
+      {
+        "text": "I have a bald spot on my head",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "My toenails are thick and discolored",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual, over days to weeks",
+      "duration": "Weeks to months if untreated",
+      "progression": "Slowly enlarges; may spread to other body sites or to close contacts",
+      "location": "Depends on type: tinea corporis on trunk or limbs; tinea pedis between toes or on soles; tinea cruris in groin; tinea capitis on scalp; onychomycosis on nails",
+      "radiation": "Not applicable",
+      "quality": "Itchy, sometimes burning; rash may be scaly or ring-shaped",
+      "severity": "Mild to moderate; usually not severe but can be very uncomfortable",
+      "timing": "Constant; itching may be worse at night or after sweating",
+      "aggravating": [
+        "Heat",
+        "Sweating",
+        "Tight clothing",
+        "Occlusive footwear",
+        "Scratching"
+      ],
+      "relieving": [
+        "Cooling",
+        "Drying the area",
+        "Loose clothing",
+        "Over-the-counter antifungal creams (partial relief)"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Itching",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Scaling or flaking skin",
+          "frequency": "common"
+        },
+        {
+          "text": "Redness",
+          "frequency": "common"
+        },
+        {
+          "text": "Burning or stinging",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Cracked or peeling skin between toes",
+          "frequency": "common"
+        },
+        {
+          "text": "Hair loss or broken hairs (scalp)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Thickened, discolored nails",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Secondary bacterial infection with pus or pain",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Fever",
+        "Weight loss",
+        "Night sweats",
+        "Joint pain",
+        "Mouth sores",
+        "Recent antibiotic use",
+        "New medication before rash",
+        "History of psoriasis or eczema",
+        "Travel to areas with endemic fungal disease"
+      ]
+    },
+    "ros": [
+      {
+        "system": "skin",
+        "positives": [
+          {
+            "text": "Itchy rash",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Ring-shaped lesion with central clearing",
+            "frequency": "common"
+          },
+          {
+            "text": "Scaling",
+            "frequency": "common"
+          },
+          {
+            "text": "Hair loss on scalp",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Nail thickening or discoloration",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Blisters",
+          "Pustules",
+          "Skin pain out of proportion",
+          "Mucosal involvement"
+        ],
+        "argues_against": [
+          "Well-demarcated silvery plaques on extensor surfaces (psoriasis)",
+          "Vesicles in a dermatomal distribution (herpes zoster)"
+        ]
+      },
+      {
+        "system": "constitutional",
+        "positives": [],
+        "negatives": [
+          "Fever",
+          "Chills",
+          "Weight loss",
+          "Fatigue"
+        ],
+        "argues_against": [
+          "Systemic infection"
+        ]
+      },
+      {
+        "system": "allergic_immunologic",
+        "positives": [],
+        "negatives": [
+          "New medication",
+          "Recent antibiotic use",
+          "Known allergies"
+        ],
+        "argues_against": [
+          "Drug eruption",
+          "Contact dermatitis"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Tinea capitis is common and presents with scaly patches and broken hairs rather than a classic ring; may have little itching.",
+        "missing_classic_features": [
+          "Ring-shaped lesion with central clearing",
+          "Prominent itching"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "Onychomycosis and tinea pedis are more common; skin may be dry and fissured rather than inflamed.",
+        "missing_classic_features": [
+          "Active border",
+          "Significant erythema"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "Lesions can be extensive, atypical, and deeper, sometimes with nodules or abscesses.",
+        "missing_classic_features": [
+          "Typical annular pattern",
+          "Superficial only"
+        ]
+      },
+      {
+        "population": "diabetes",
+        "how_it_differs": "Tinea pedis is more severe and often complicated by bacterial infection; nails frequently involved.",
+        "missing_classic_features": [
+          "Mild symptoms"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Well-appearing, comfortable, no distress",
+      "moderate": "Well-appearing but scratching or visibly uncomfortable",
+      "severe": "Ill-appearing with extensive or inflamed lesions; may be uncomfortable but not toxic",
+      "critical": "Not applicable; tinea is not a critical illness"
+    },
+    "findings": [
+      {
+        "id": "annular-plaque-active-border",
+        "region": "skin",
+        "maneuver": "Inspect the trunk and limbs in good lighting",
+        "finding": "Annular, erythematous, scaly plaque with an active raised border and central clearing",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "scaly-patches",
+        "region": "skin",
+        "maneuver": "Inspect and palpate the affected skin",
+        "finding": "Scaly, flaky patches with a rough surface",
+        "frequency": "almost_always",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "interdigital-maceration",
+        "region": "extremities",
+        "maneuver": "Inspect the web spaces between the toes",
+        "finding": "Maceration, scaling, fissuring, or peeling between the toes, especially the fourth and fifth web spaces",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "plantar-scaling",
+        "region": "extremities",
+        "maneuver": "Inspect the soles and plantar surfaces",
+        "finding": "Diffuse dry scaling, erythema, or a moccasin-like distribution on the sole",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "groin-plaque",
+        "region": "genitourinary",
+        "maneuver": "Inspect the inguinal folds and upper inner thighs",
+        "finding": "Erythematous, scaly plaque with an active advancing border in the groin, often with central clearing; scrotum usually spared",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "scalp-patches",
+        "region": "heent",
+        "maneuver": "Inspect the scalp with a bright light and part the hair",
+        "finding": "Scaly, erythematous patches on the scalp with broken hairs or black dots at the follicular openings",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "alopecia-patches",
+        "region": "heent",
+        "maneuver": "Inspect the scalp for areas of hair loss",
+        "finding": "Patchy hair loss with broken hairs, not completely smooth bald skin",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "nail-changes",
+        "region": "extremities",
+        "maneuver": "Inspect the fingernails and toenails",
+        "finding": "Thickened, discolored (yellow-brown), crumbling nails with subungual debris; may have onycholysis",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the cervical, occipital, and inguinal lymph nodes",
+        "finding": "Regional lymphadenopathy, especially with tinea capitis or secondary bacterial infection",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "no-mucosal-involvement",
+        "region": "heent",
+        "maneuver": "Inspect the oral mucosa and lips",
+        "finding": "No mucosal lesions or erosions",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-vesicles",
+        "region": "skin",
+        "maneuver": "Inspect the rash for vesicles or bullae",
+        "finding": "No vesicles or bullae",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-pustules",
+        "region": "skin",
+        "maneuver": "Inspect the rash for pustules or purulent drainage",
+        "finding": "No pustules or purulent drainage",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-silvery-scale",
+        "region": "skin",
+        "maneuver": "Inspect the elbows, knees, and extensor surfaces",
+        "finding": "No well-demarcated silvery plaques on extensor surfaces",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "no-dermatomal-distribution",
+        "region": "neuro",
+        "maneuver": "Inspect the rash distribution and ask about pain",
+        "finding": "No vesicular rash in a single dermatomal distribution",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      }
+    ]
+  },
+  "vitals": {},
+  "labs": [],
+  "imaging": [],
+  "workup": {
+    "initial": [
+      {
+        "test": "KOH microscopy of skin scrapings",
+        "why": "First-line bedside test: scrapings from the active border show branching septate hyphae, confirming a dermatophyte"
+      },
+      {
+        "test": "Wood lamp examination",
+        "why": "Helps screen tinea capitis; some dermatophytes fluoresce blue-green",
+        "only_if": "scalp involvement is suspected"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Fungal culture of skin, hair, or nail",
+        "why": "Definitive identification of the dermatophyte species when KOH is negative or treatment has failed"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "Dermoscopy",
+        "why": "Shows characteristic features such as comma hairs and corkscrew hairs in tinea capitis"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "cbc",
+        "why": "Tinea is a superficial infection; blood counts are normal and do not change management"
+      },
+      {
+        "test": "crp",
+        "why": "Inflammatory markers are not useful for a superficial dermatophyte infection"
+      },
+      {
+        "test": "esr",
+        "why": "Not useful for diagnosing or managing tinea"
+      },
+      {
+        "test": "Skin biopsy for histopathology",
+        "why": "Reserved for atypical or refractory lesions where the diagnosis is unclear; not routine"
+      }
+    ],
+    "decision_points": [
+      "Confirm the diagnosis with KOH before starting systemic therapy",
+      "Scalp or nail involvement requires oral therapy because topical agents do not penetrate hair follicles or nail plate",
+      "Consider bacterial superinfection if there is pain, purulence, or marked erythema"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Nummular eczema",
+      "slug": "nummular-eczema",
+      "why_considered": "Coin-shaped, scaly, itchy patches on the limbs that can look like tinea corporis",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Personal or family history of atopic dermatitis, asthma, or allergic rhinitis",
+          "Dry skin, worse in winter",
+          "No known contact with infected person or animal"
+        ],
+        "exam": [
+          "Multiple symmetric round patches without central clearing",
+          "No active raised advancing border",
+          "Lesions often on extensor surfaces and trunk"
+        ],
+        "labs": [
+          "KOH microscopy negative for hyphae"
+        ]
+      }
+    },
+    {
+      "name": "Psoriasis",
+      "slug": "psoriasis",
+      "why_considered": "Well-demarcated, scaly, erythematous plaques that can be mistaken for tinea corporis",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Chronic, recurring plaques that may wax and wane",
+          "Family history of psoriasis",
+          "Nail pitting or joint pain"
+        ],
+        "exam": [
+          "Silvery scale on well-demarcated plaques, often on extensor surfaces (elbows, knees) and scalp",
+          "Auspitz sign (pinpoint bleeding when scale is removed)",
+          "No central clearing"
+        ],
+        "labs": [
+          "KOH microscopy negative for hyphae"
+        ],
+        "imaging": [
+          "Skin biopsy shows epidermal hyperplasia with parakeratosis and Munro microabscesses if performed"
+        ]
+      }
+    },
+    {
+      "name": "Contact dermatitis",
+      "slug": "contact-dermatitis",
+      "why_considered": "Itchy, red, scaly rash that can appear on exposed skin and mimic tinea",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Onset after contact with a new soap, cosmetic, metal, or plant",
+          "Burning or itching at the site of contact",
+          "Improves when the offending agent is avoided"
+        ],
+        "exam": [
+          "Erythema, edema, vesicles, or weeping in the acute phase; lichenification in chronic phase",
+          "Distribution matches the area of contact, often with sharp borders",
+          "No central clearing or active border"
+        ],
+        "labs": [
+          "KOH microscopy negative for hyphae",
+          "Patch testing may identify the allergen"
+        ]
+      }
+    },
+    {
+      "name": "Pityriasis rosea",
+      "slug": "pityriasis-rosea",
+      "why_considered": "Scaly, oval, pink patches on the trunk that can resemble tinea corporis",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Often begins with a single larger herald patch followed by a generalized eruption",
+          "Mild itching, sometimes preceding viral-like symptoms",
+          "Self-limited, resolves in 6–8 weeks"
+        ],
+        "exam": [
+          "Oval patches with a collarette of scale, distributed along skin cleavage lines (Christmas tree pattern) on the trunk",
+          "No active advancing border or central clearing"
+        ],
+        "labs": [
+          "KOH microscopy negative for hyphae"
+        ]
+      }
+    },
+    {
+      "name": "Erythrasma",
+      "slug": "erythrasma",
+      "why_considered": "Brown, scaly patches in the groin or between toes that can be mistaken for tinea cruris or tinea pedis",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Often asymptomatic or mildly itchy",
+          "More common in warm, humid climates and in people with diabetes",
+          "No response to antifungal therapy"
+        ],
+        "exam": [
+          "Well-demarcated, brown, slightly scaly patches in intertriginous areas",
+          "Wood lamp examination shows coral-red fluorescence"
+        ],
+        "labs": [
+          "KOH microscopy negative for hyphae",
+          "Bacterial culture may grow Corynebacterium minutissimum"
+        ]
+      }
+    },
+    {
+      "name": "Cellulitis",
+      "slug": "cellulitis",
+      "why_considered": "Tinea pedis can be complicated by bacterial cellulitis, and both cause leg redness and swelling",
+      "must_not_miss": true,
+      "trigger": "Pain, warmth, swelling, fever, or rapidly spreading erythema in a patient with tinea pedis",
+      "discriminators": {
+        "history": [
+          "Acute onset of pain, warmth, and swelling",
+          "Fever and chills",
+          "Often follows a break in the skin such as tinea pedis or a wound"
+        ],
+        "exam": [
+          "Unilateral, ill-defined, warm, tender erythema",
+          "Lymphangitic streaking or regional lymphadenopathy",
+          "Systemic signs such as fever and tachycardia"
+        ],
+        "labs": [
+          "Leukocytosis and elevated inflammatory markers (CRP, ESR)",
+          "Blood cultures may be positive in severe cases"
+        ],
+        "imaging": [
+          "Ultrasound or MRI if abscess or deep infection is suspected"
+        ]
+      }
+    },
+    {
+      "name": "Lyme disease (erythema migrans)",
+      "slug": "lyme-disease",
+      "why_considered": "Expanding annular rash that can be mistaken for tinea corporis",
+      "must_not_miss": true,
+      "trigger": "Recent tick bite or exposure in an endemic area, with an expanding ring-like rash",
+      "discriminators": {
+        "history": [
+          "Recent tick bite or travel to an endemic area",
+          "Rash expands over days to weeks",
+          "May have fever, headache, myalgias, or arthralgias"
+        ],
+        "exam": [
+          "Single expanding erythematous ring with central clearing (targetoid) at the site of the bite",
+          "No scale or active scaly border",
+          "May have facial palsy or joint swelling in later stages"
+        ],
+        "labs": [
+          "Serology for Borrelia burgdorferi (ELISA with Western blot confirmation) may be positive",
+          "KOH microscopy negative for hyphae"
+        ]
+      }
+    },
+    {
+      "name": "Seborrheic dermatitis",
+      "slug": "seborrheic-dermatitis",
+      "why_considered": "Scaly, itchy scalp and facial rash that can resemble tinea capitis or tinea faciei",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Chronic, recurring rash with flaking",
+          "Often worse in winter or with stress",
+          "No hair loss or broken hairs"
+        ],
+        "exam": [
+          "Greasy, yellowish scales on erythematous skin, often on scalp, eyebrows, nasolabial folds, and chest",
+          "No annular lesions or active border",
+          "Hair remains intact"
+        ],
+        "labs": [
+          "KOH microscopy negative for hyphae"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Localized, small area of involvement; mild itching; no secondary infection; responds to topical antifungals",
+      "moderate": "More extensive or multiple sites; significant itching or discomfort; may require oral therapy for scalp or nail involvement",
+      "severe": "Widespread, inflamed, or secondarily infected lesions; marked discomfort; requires systemic therapy and possibly antibiotics for bacterial superinfection",
+      "critical": "Not applicable; tinea is not a life-threatening condition"
+    },
+    "red_flags": [
+      {
+        "finding": "Rapidly spreading erythema, warmth, pain, fever, or purulent drainage",
+        "meaning": "Suggests bacterial cellulitis or superinfection, which requires prompt antibiotic treatment"
+      },
+      {
+        "finding": "Pain out of proportion to exam or systemic toxicity",
+        "meaning": "May indicate deeper infection such as abscess or necrotizing fasciitis, especially in immunocompromised patients"
+      },
+      {
+        "finding": "Scalp involvement with broken hairs, black dots, or significant alopecia",
+        "meaning": "Tinea capitis requires oral therapy and can be contagious; topical therapy alone is ineffective"
+      },
+      {
+        "finding": "Nail involvement with thickening, discoloration, or crumbling",
+        "meaning": "Onychomycosis requires prolonged oral therapy and can be a source of reinfection"
+      },
+      {
+        "finding": "Immunocompromised state with extensive or atypical lesions",
+        "meaning": "Higher risk of deeper invasion and atypical presentation; may need systemic therapy and specialist referral"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Secondary bacterial infection (cellulitis, impetigo)",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Increasing pain, warmth, swelling, or purulent drainage",
+          "Fever or systemic symptoms",
+          "Lymphangitic streaking"
+        ]
+      },
+      {
+        "name": "Kerion (inflammatory tinea capitis)",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Boggy, tender, pus-filled mass on the scalp",
+          "Fever and lymphadenopathy",
+          "May lead to scarring alopecia if untreated"
+        ]
+      },
+      {
+        "name": "Scarring alopecia",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Permanent hair loss after severe or untreated tinea capitis",
+          "Loss of follicular openings"
+        ]
+      },
+      {
+        "name": "Onychomycosis with nail destruction",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Thickened, crumbling nails",
+          "Subungual debris",
+          "May cause pain or difficulty walking"
+        ]
+      },
+      {
+        "name": "Dermatophytid (id) reaction",
+        "timing": "any",
+        "seriousness": "minor",
+        "frequency": "rare",
+        "clues": [
+          "Vesicular or eczematous eruption on hands or other distant sites",
+          "Occurs in response to a dermatophyte infection elsewhere",
+          "Resolves with treatment of the primary infection"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Tinea capitis is common and often presents with scaly patches, broken hairs, and little itching; requires oral therapy. Kerion may occur."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Onychomycosis and tinea pedis are more common; skin may be dry and fissured; increased risk of bacterial superinfection and lower extremity cellulitis."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Lesions can be extensive, atypical, and deeper; may require systemic therapy and have a higher risk of complications."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Tinea pedis is more severe and often complicated by bacterial infection; nails frequently involved; increased risk of foot ulcers and cellulitis."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Topical antifungals are generally safe; oral azoles should be avoided in the first trimester and used with caution thereafter; consult with obstetric provider."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "Where on your body did the rash start, and where is it now?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Site determines the type: trunk or limbs (corporis), between toes or soles (pedis), groin (cruris), scalp (capitis), nails (onychomycosis)"
+      },
+      {
+        "question": "What does the rash look like — is it a ring with clear skin in the middle, or a solid scaly patch?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Annular lesion with an active raised border and central clearing suggests tinea corporis"
+      },
+      {
+        "question": "How long has it been there, and is it getting bigger or spreading?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Gradual onset over days to weeks with slow enlargement; helps distinguish from acute eruptions"
+      },
+      {
+        "question": "Does it itch or burn? What makes it worse?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Itching worse with heat, sweating, tight clothing, or occlusive footwear"
+      },
+      {
+        "question": "Have you been around anyone else with a similar rash, or a pet with patches of hair loss?",
+        "category": "social",
+        "importance": "essential",
+        "looking_for": "Contact with an infected person or animal (especially kittens, puppies, rodents) supports dermatophyte transmission"
+      },
+      {
+        "question": "Do you walk barefoot in shared showers, locker rooms, or around a pool?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Exposure to damp communal surfaces, a classic risk factor for tinea pedis"
+      },
+      {
+        "question": "Do you share combs, hats, towels, or clothing with anyone?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Shared personal items, especially relevant for tinea capitis in children"
+      },
+      {
+        "question": "Have you tried any creams on it, especially steroid creams?",
+        "category": "medications",
+        "importance": "essential",
+        "looking_for": "Topical corticosteroids can mask or worsen tinea (tinea incognito); prior antifungal use may partially suppress it"
+      },
+      {
+        "question": "Do you have diabetes, HIV, or take any medicines that suppress your immune system?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Immunosuppression or diabetes predisposes to more extensive, atypical, or complicated infection"
+      },
+      {
+        "question": "Have you had a fever, chills, or increasing pain, warmth, or swelling in the area?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Suggests bacterial cellulitis or superinfection requiring prompt antibiotic treatment"
+      },
+      {
+        "question": "Is there any pus, drainage, or a boggy tender lump on your scalp?",
+        "category": "red_flag",
+        "importance": "important",
+        "looking_for": "Purulence suggests secondary bacterial infection; a boggy scalp mass suggests kerion"
+      },
+      {
+        "question": "Have you noticed any hair loss, broken hairs, or bald spots?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Patchy alopecia with broken hairs suggests tinea capitis, which requires oral therapy"
+      },
+      {
+        "question": "Are your nails thick, discolored, or crumbling?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Onychomycosis, which requires prolonged oral therapy and can be a source of reinfection"
+      },
+      {
+        "question": "Do you have a personal or family history of eczema, asthma, or psoriasis?",
+        "category": "family",
+        "importance": "optional",
+        "looking_for": "Atopic or psoriatic history raises alternative diagnoses such as nummular eczema or psoriasis"
+      }
+    ],
+    "accepted_names": [
+      "Tinea",
+      "Tinea infection",
+      "Tinea infections",
+      "Dermatophytosis",
+      "Dermatophyte infection",
+      "Ringworm",
+      "Tinea corporis",
+      "Tinea pedis",
+      "Tinea cruris",
+      "Tinea capitis",
+      "Onychomycosis",
+      "Athlete's foot",
+      "Jock itch"
+    ],
+    "reasoning_points": [
+      "Itchy, scaly rash with an annular active border and central clearing, or maceration between the toes, or an inguinal plaque with scrotal sparing",
+      "Gradual onset over days to weeks with slow enlargement, rather than an acute eruption",
+      "Risk exposure: contact with an infected person or pet, damp communal surfaces, or shared personal items",
+      "Absence of systemic symptoms such as fever, weight loss, or night sweats",
+      "No new medication or recent antibiotic exposure to suggest a drug eruption",
+      "KOH microscopy of scrapings from the active border showing branching septate hyphae confirms the diagnosis",
+      "Scalp or nail involvement requires oral therapy because topical agents do not penetrate hair follicles or the nail plate",
+      "Consider bacterial superinfection when there is pain, warmth, purulence, or fever"
+    ],
+    "difficulty": {
+      "easy": [
+        "Classic annular plaque with an active raised border and central clearing on the trunk or limb",
+        "Itchy rash in a patient who walks barefoot in locker rooms or shares a home with an infected pet",
+        "KOH microscopy positive for hyphae",
+        "No systemic symptoms and no new medications"
+      ],
+      "medium": [
+        "Tinea pedis presenting as dry, fissured skin between the toes without a classic ring",
+        "Tinea cruris with an inguinal plaque and scrotal sparing, mimicking erythrasma or candidal intertrigo",
+        "Tinea capitis in a child with scaly patches and broken hairs but little itching",
+        "Partial improvement from an over-the-counter antifungal cream, obscuring the classic appearance"
+      ],
+      "hard": [
+        "Tinea incognito: atypical, poorly demarcated rash after topical corticosteroid use",
+        "Onychomycosis with thickened, crumbling nails and no skin findings",
+        "Immunocompromised patient with extensive or deeper lesions, nodules, or abscesses",
+        "Tinea pedis complicated by bacterial cellulitis with fever, warmth, and spreading erythema",
+        "Annular rash that is actually erythema migrans from Lyme disease or nummular eczema"
+      ]
+    }
+  }
+}

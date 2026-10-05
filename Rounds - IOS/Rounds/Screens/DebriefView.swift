@@ -36,6 +36,7 @@ struct DebriefView: View {
 
     @State private var stage = -1
     @State private var grade: Grade?
+    @State private var gradingProblem: String?
     @State private var startRating = 0
     @State private var showMisses = false
     @Environment(\.reference) private var reference
@@ -75,7 +76,20 @@ struct DebriefView: View {
                         .allowsHitTesting(false)
                 }
             } else {
-                Spacer()
+                VStack(spacing: 14) {
+                    Spacer()
+                    if let gradingProblem {
+                        Text(gradingProblem).font(.system(size: 15)).foregroundStyle(Theme.warnText).multilineTextAlignment(.center)
+                        Button("Try again") { Task { await play() } }
+                            .buttonStyle(SoftButtonStyle(height: 44, fontSize: 16))
+                    } else {
+                        ProgressView()
+                        Text("Your attending is reviewing the case…").font(.system(size: 15)).foregroundStyle(Theme.muted)
+                    }
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 20)
             }
 
             HStack(spacing: 10) {
@@ -92,10 +106,7 @@ struct DebriefView: View {
         .navigationBarBackButtonHidden()
         .lockSwipeBack()
         .task { await play() }
-        .task {
-            assist.reference = reference
-            await assist.loadTopics(for: session.clinical.canonicalDiagnosis)
-        }
+        .task { assist.reference = reference }
     }
 
     /// Plain-language reading for the case's diagnosis (MedlinePlus), after the score settles.
@@ -136,8 +147,17 @@ struct DebriefView: View {
     private func play() async {
         guard grade == nil else { return }
         startRating = app.rating
-        let g = session.submit()
+        gradingProblem = nil
+        let g: Grade
+        do {
+            g = try await session.submit()
+        } catch {
+            gradingProblem = error.localizedDescription
+            return
+        }
         grade = g
+        // The diagnosis is only known once graded, so reading links load now.
+        Task { await assist.loadTopics(for: g.diagnosis) }
         let marks = [TIMING.card, TIMING.verdict, TIMING.rating, TIMING.feedback, TIMING.summary]
         var elapsed = 0.0
         for (i, at) in marks.enumerated() {
@@ -148,11 +168,13 @@ struct DebriefView: View {
         }
     }
 
+    /// Closes this debrief and opens the same patient again as a fresh attempt.
     private func restart() {
+        let bed = session.clinical.bed
         app.activeCase = nil
         Task { @MainActor in
             try? await Task.sleep(for: .seconds(0.45))
-            app.startCase()
+            await app.open(bed: bed)
         }
     }
 
@@ -212,10 +234,11 @@ struct DebriefView: View {
     private func attendingCard(_ g: Grade) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: 12) {
-                Avatar(initials: "AO")
+                // MOCK (disabled): named attending "Dr. Okafor" (AO) from the screens phase.
+                Avatar(initials: "MD")
                 VStack(alignment: .leading, spacing: 0) {
-                    Text("Dr. Okafor").font(.system(size: 16, weight: .semibold))
-                    Text("Your attending").font(.system(size: 13)).foregroundStyle(Theme.muted)
+                    Text("Your attending").font(.system(size: 16, weight: .semibold))
+                    Text("Feedback on this case").font(.system(size: 13)).foregroundStyle(Theme.muted)
                 }
             }
             .padding(.horizontal, 16)
@@ -301,7 +324,7 @@ struct DebriefView: View {
                     let rest = misses.filter { !covered.contains($0.flag) }
                     VStack(alignment: .leading, spacing: 12) {
                         if !covered.isEmpty {
-                            Text("\(covered.sorted().joined(separator: ", ")): see Dr. Okafor above.")
+                            Text("\(covered.sorted().joined(separator: ", ")): see your attending above.")
                                 .font(.system(size: 13))
                                 .foregroundStyle(Theme.muted)
                                 .disclosureItem(0)

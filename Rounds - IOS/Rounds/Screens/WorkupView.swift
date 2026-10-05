@@ -142,16 +142,13 @@ struct WorkupView: View {
                     .foregroundStyle(Theme.muted)
                 }
             }
-            if t.id == "ecg" && ready {
-                ECGMonitor(bpm: 104, stElevation: true, height: 90)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .background(Theme.bg.opacity(0.6), in: RoundedRectangle(cornerRadius: 10))
-                    .overlay(RoundedRectangle(cornerRadius: 10).strokeBorder(Theme.ring))
-            }
-            Text(ready ? t.result : "Waiting on \(t.detail.lowercased())…")
+            // MOCK (disabled): ECG strip fixed at 104 bpm with ST elevation, from the chest-pain case.
+            // if t.id == "ecg" && ready { ECGMonitor(bpm: 104, stElevation: true, height: 90) … }
+            let result = session.results[t.id]
+            Text(ready ? (result?.text ?? "") : "Waiting on \(t.detail.lowercased())…")
                 .font(.system(size: 15))
                 .lineSpacing(3)
-                .foregroundStyle(ready ? (t.resultIsAbnormal ? Theme.warnText : Theme.text) : Theme.muted)
+                .foregroundStyle(ready ? (result?.isAbnormal == true ? Theme.warnText : Theme.text) : Theme.muted)
                 .contentTransition(.opacity)
         }
         .card()

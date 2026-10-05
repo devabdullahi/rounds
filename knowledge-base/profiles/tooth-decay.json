@@ -1,0 +1,1128 @@
+{
+  "schema_version": "0.2",
+  "slug": "tooth-decay",
+  "triage": {
+    "name": "Tooth Decay",
+    "case_suitable": true,
+    "reason": "Patients present with dental pain or sensitivity; diagnosis is reachable by history and exam, though definitive management is dental rather than medical.",
+    "kind": "disease",
+    "category": "dental infection / caries",
+    "organ_systems": [
+      "gastrointestinal"
+    ],
+    "primary_clerkship": "familyMedicine",
+    "secondary_clerkships": [
+      "emergency",
+      "pediatrics"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "clinic",
+      "emergency"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:20:40Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:18:17Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:18:24Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:18:31Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:18:42Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:18:49Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'periapical dental radiograph' was in ['initial', 'confirmatory'], kept ['initial']",
+        "differential pulpitis: no profile yet",
+        "differential periapical-abscess: no profile yet",
+        "differential periodontal-disease: no profile yet",
+        "differential dental-erosion: no profile yet",
+        "differential trigeminal-neuralgia: no profile yet",
+        "differential temporomandibular-disorder: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 6,
+      "typical_max": 64,
+      "peak": "bimodal: children and adolescents, and older adults",
+      "possible_min": 1,
+      "possible_max": 110
+    },
+    "sex": "either",
+    "demographics": [
+      "One of the most common chronic conditions worldwide, affecting people of all ages",
+      "Higher prevalence in children and adolescents, and again in older adults with receding gums and exposed root surfaces",
+      "More common in lower-income and rural populations with less access to dental care and fluoridated water"
+    ],
+    "risk_factors": [
+      {
+        "text": "Poor oral hygiene (infrequent brushing or flossing)",
+        "strength": "strong"
+      },
+      {
+        "text": "Frequent intake of sugary or starchy foods and drinks, especially between meals",
+        "strength": "strong"
+      },
+      {
+        "text": "Inadequate fluoride exposure (no fluoridated water or fluoride toothpaste)",
+        "strength": "strong"
+      },
+      {
+        "text": "Dry mouth from medications, disease, or cancer treatment",
+        "strength": "moderate"
+      },
+      {
+        "text": "Bottle feeding with juice or at bedtime in infants and toddlers",
+        "strength": "moderate"
+      },
+      {
+        "text": "Receding gums and exposed root surfaces in older adults",
+        "strength": "moderate"
+      },
+      {
+        "text": "Tobacco use, including smokeless tobacco",
+        "strength": "moderate"
+      },
+      {
+        "text": "Family history of dental caries",
+        "strength": "weak"
+      },
+      {
+        "text": "Crowded or deeply grooved teeth that are hard to clean",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Diabetes mellitus",
+      "Sjögren syndrome",
+      "Gastroesophageal reflux disease",
+      "Eating disorders with frequent vomiting"
+    ],
+    "family_history": [
+      "Dental caries in a parent or sibling"
+    ],
+    "social_history": [
+      "Limited access to dental care or no regular dental check-ups",
+      "Living in an area without community water fluoridation",
+      "Frequent snacking or sipping sugary drinks throughout the day"
+    ],
+    "exposures": [
+      "Head and neck radiation therapy",
+      "Medications or conditions that reduce saliva"
+    ],
+    "risk_medications": [
+      "Anticholinergics",
+      "Antihistamines",
+      "Tricyclic antidepressants",
+      "Selective serotonin reuptake inhibitors",
+      "Diuretics",
+      "Opioids"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My tooth hurts",
+        "frequency": "common"
+      },
+      {
+        "text": "My tooth is sensitive to sweets, hot, or cold",
+        "frequency": "common"
+      },
+      {
+        "text": "I see a dark spot or hole in my tooth",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "My gums or face are swollen and it hurts",
+        "frequency": "rare"
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual; early decay causes no symptoms, and pain or sensitivity appears only as the decay progresses",
+      "duration": "Weeks to months of intermittent sensitivity before pain becomes persistent; an abscess can develop over days",
+      "progression": "Starts as a white or brown spot on the tooth surface with no symptoms, then causes sensitivity to sweets, hot, or cold, then a constant toothache, and finally infection with an abscess, facial swelling, and fever if untreated",
+      "location": "A single tooth or a few teeth, most often the chewing surfaces of back teeth or between teeth; older adults may have decay at the gum line",
+      "radiation": "Pain may radiate to the ear, jaw, or side of the face when the pulp is involved",
+      "quality": "Sharp and brief with hot, cold, or sweet foods early on; later a dull, throbbing, constant ache",
+      "severity": "Mild and intermittent early; moderate to severe and constant once the pulp is involved",
+      "timing": "Initially only with eating or drinking; later constant and worse at night",
+      "aggravating": [
+        "Sweets",
+        "Hot drinks",
+        "Cold drinks",
+        "Chewing on that side",
+        "Lying down"
+      ],
+      "relieving": [
+        "Avoiding the trigger foods and drinks",
+        "Chewing on the other side",
+        "Over-the-counter pain relievers such as acetaminophen or ibuprofen"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Tooth sensitivity to sweets, hot, or cold",
+          "frequency": "common"
+        },
+        {
+          "text": "Visible white or brown spot or hole in the tooth",
+          "frequency": "common"
+        },
+        {
+          "text": "Bad breath or a bad taste in the mouth",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Pain when biting down",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Food getting stuck in the tooth",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Facial or gum swelling",
+          "frequency": "rare"
+        },
+        {
+          "text": "Fever",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Facial swelling or fever",
+        "Difficulty swallowing or opening the mouth",
+        "Severe pain that wakes the patient from sleep",
+        "Recent trauma to the tooth",
+        "Pain that started suddenly after a dental procedure",
+        "History of head and neck radiation"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Feeling tired",
+            "frequency": "rare"
+          },
+          {
+            "text": "Fever",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Weight loss",
+          "Night sweats"
+        ],
+        "argues_against": [
+          "Fever with facial swelling suggests spread of infection beyond the tooth"
+        ]
+      },
+      {
+        "system": "ent",
+        "positives": [
+          {
+            "text": "Toothache",
+            "frequency": "common"
+          },
+          {
+            "text": "Sensitivity to hot or cold",
+            "frequency": "common"
+          },
+          {
+            "text": "Bad breath",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Pain radiating to the ear or jaw",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Sore throat",
+          "Ear discharge",
+          "Hearing loss",
+          "Difficulty swallowing",
+          "Trismus"
+        ],
+        "argues_against": [
+          "Difficulty swallowing or trismus suggests a deep neck space infection rather than simple caries"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Pain when chewing",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Heartburn",
+          "Vomiting",
+          "Abdominal pain"
+        ],
+        "argues_against": [
+          "Frequent vomiting or reflux suggests dental erosion rather than decay"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [
+          {
+            "text": "Facial swelling",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Rash",
+          "Skin lesions"
+        ],
+        "argues_against": [
+          "Facial swelling with fever suggests an abscess or cellulitis"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Young children may not report pain and instead show irritability, poor feeding, or refusal to chew; decay in baby teeth can progress quickly.",
+        "missing_classic_features": [
+          "Localized toothache",
+          "Sensitivity to hot or cold"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "Decay often occurs on exposed root surfaces at the gum line and may cause little pain because of receding gums and reduced pulp sensitivity.",
+        "missing_classic_features": [
+          "Severe toothache",
+          "Visible cavity on the chewing surface"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Changes in saliva, diet, and oral hygiene can increase decay; nausea and vomiting may cause erosion, and dental care is often delayed.",
+        "missing_classic_features": [
+          "Typical gradual sensitivity pattern"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "Decay can progress faster and infection can spread more readily, with less obvious pain or swelling.",
+        "missing_classic_features": [
+          "Marked pain",
+          "Fever"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Comfortable, well-appearing, no distress",
+      "moderate": "Mild discomfort when speaking or chewing, otherwise well-appearing",
+      "severe": "Uncomfortable, holds the jaw or cheek, avoids chewing on the affected side",
+      "critical": "Ill-appearing, febrile, with facial swelling or drooling, reluctant to open the mouth"
+    },
+    "findings": [
+      {
+        "id": "visible-cavity",
+        "region": "heent",
+        "maneuver": "Inspect the teeth with a light and tongue blade, examining all surfaces including between teeth and along the gum line",
+        "finding": "A dark brown or black hole or pit in the tooth surface",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "white-spot-lesion",
+        "region": "heent",
+        "maneuver": "Inspect the teeth after drying the surface with gauze",
+        "finding": "A chalky white spot on the enamel, indicating early mineral loss",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "brown-stain",
+        "region": "heent",
+        "maneuver": "Inspect the tooth surface",
+        "finding": "Brown discoloration or staining of the tooth",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "probe-tenderness",
+        "region": "heent",
+        "maneuver": "Gently probe the suspicious tooth surface with a dental explorer or tongue blade",
+        "finding": "The probe catches or sticks in a softened, cavitated area, and the patient reports tenderness",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "percussion-tenderness",
+        "region": "heent",
+        "maneuver": "Tap the affected tooth lightly with the handle of a dental mirror or a tongue blade",
+        "finding": "Pain on percussion, suggesting involvement of the pulp or periapical tissues",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "cold-sensitivity",
+        "region": "heent",
+        "maneuver": "Apply a cold stimulus (ice or cold spray) to the affected tooth and compare with an adjacent normal tooth",
+        "finding": "Sharp, brief pain that resolves quickly after the stimulus is removed",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "lingering-cold-pain",
+        "region": "heent",
+        "maneuver": "Apply a cold stimulus to the affected tooth",
+        "finding": "Pain that lingers for more than a few seconds after the stimulus is removed, suggesting irreversible pulpitis",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "facial-swelling",
+        "region": "heent",
+        "maneuver": "Inspect and palpate the face and jaw for asymmetry, swelling, or warmth",
+        "finding": "Unilateral facial or jaw swelling, warm and tender to palpation",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "intraoral-swelling",
+        "region": "heent",
+        "maneuver": "Inspect the buccal mucosa and gingiva adjacent to the affected tooth",
+        "finding": "Localized swelling or a fluctuant, pus-filled swelling (abscess) near the tooth root",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "trismus",
+        "region": "heent",
+        "maneuver": "Ask the patient to open the mouth fully and measure the interincisal distance",
+        "finding": "Limited mouth opening (trismus), suggesting spread of infection to the masticator space",
+        "frequency": "rare",
+        "min_severity": "critical",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "submandibular-tenderness",
+        "region": "neck",
+        "maneuver": "Palpate the submandibular and submental areas and the cervical lymph nodes",
+        "finding": "Tender, enlarged submandibular lymph nodes or diffuse neck tenderness",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "normal-airway",
+        "region": "neck",
+        "maneuver": "Assess the airway by listening to the voice, observing for drooling, and checking for stridor",
+        "finding": "Normal voice, no drooling, no stridor, and no difficulty breathing",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "normal-oral-hygiene",
+        "region": "heent",
+        "maneuver": "Inspect the teeth and gums for plaque, tartar, and gingival inflammation",
+        "finding": "Good oral hygiene with minimal plaque and healthy-appearing gums",
+        "frequency": "sometimes",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-sinus-tenderness",
+        "region": "heent",
+        "maneuver": "Palpate or percuss the maxillary and frontal sinuses",
+        "finding": "No sinus tenderness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-tmj-tenderness",
+        "region": "musculoskeletal",
+        "maneuver": "Palpate the temporomandibular joints and ask the patient to open and close the mouth",
+        "finding": "No temporomandibular joint tenderness or clicking",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "severe": {
+        "min": 99.5,
+        "max": 101.0
+      },
+      "critical": {
+        "min": 100.4,
+        "max": 103.5
+      }
+    },
+    "hr": {
+      "severe": {
+        "min": 90,
+        "max": 110
+      },
+      "critical": {
+        "min": 100,
+        "max": 130
+      }
+    },
+    "rr": {
+      "critical": {
+        "min": 18,
+        "max": 26
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "severe": {
+          "min": 11.5,
+          "max": 18.0
+        },
+        "critical": {
+          "min": 15.0,
+          "max": 25.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Only rises when decay has progressed to an odontogenic abscess or spreading infection; a normal white count is expected in simple caries."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "severe": {
+          "min": 1.5,
+          "max": 8.0
+        },
+        "critical": {
+          "min": 5.0,
+          "max": 20.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Nonspecific; supports an inflammatory or infectious complication rather than the caries itself."
+    },
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "moderate": {
+          "min": 100,
+          "max": 160
+        },
+        "severe": {
+          "min": 140,
+          "max": 250
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Undiagnosed or poorly controlled diabetes raises caries risk and worsens infection; check when the presentation is severe or recurrent."
+    }
+  ],
+  "imaging": [
+    {
+      "study": "Periapical dental radiograph",
+      "modality": "xray",
+      "preferred_when": "A single tooth is symptomatic and the question is pulp or periapical involvement",
+      "findings": [
+        {
+          "text": "Radiolucent defect in the enamel and dentin of the affected tooth",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Loss of the normal periodontal ligament space or a periapical radiolucency suggesting apical periodontitis or abscess",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "No periapical lucency (early or superficial decay)",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Bitewing dental radiographs",
+      "modality": "xray",
+      "preferred_when": "Routine caries detection and surveillance, especially between teeth and in children",
+      "findings": [
+        {
+          "text": "Radiolucent lesions in the interproximal enamel or dentin",
+          "frequency": "common"
+        },
+        {
+          "text": "Multiple teeth involved",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "No cavitated lesions (early or arrested caries)",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Panoramic dental radiograph",
+      "modality": "xray",
+      "preferred_when": "Widespread disease, suspected impacted teeth, or when a full-mouth survey is needed",
+      "findings": [
+        {
+          "text": "Multiple carious lesions across several teeth",
+          "frequency": "common"
+        },
+        {
+          "text": "Impacted or unerupted teeth",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Periradicular or follicular cysts",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "CT of the maxillofacial region with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Suspected deep space infection, facial cellulitis, or airway compromise",
+      "findings": [
+        {
+          "text": "Periosteal reaction or cortical breach at the apex of the offending tooth",
+          "frequency": "common"
+        },
+        {
+          "text": "Abscess cavity with rim enhancement in the buccal, submandibular, or masticator space",
+          "frequency": "common"
+        },
+        {
+          "text": "Soft tissue swelling and fat stranding of the face or neck",
+          "frequency": "common"
+        },
+        {
+          "text": "Airway narrowing or deviation from a deep neck space collection",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "Periapical dental radiograph",
+        "why": "Confirms the depth of the carious lesion and shows periapical involvement in a symptomatic tooth"
+      },
+      {
+        "test": "Bitewing dental radiographs",
+        "why": "Detects interproximal caries and screens the other teeth"
+      },
+      {
+        "test": "cbc",
+        "why": "Looks for leukocytosis when an abscess or spreading infection is suspected",
+        "only_if": "fever, facial swelling, or systemic symptoms are present"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "Panoramic dental radiograph",
+        "why": "Shows the full dentition when disease is widespread or an impacted tooth is suspected",
+        "only_if": "multiple teeth are involved or a full-mouth survey is needed"
+      },
+      {
+        "test": "crp",
+        "why": "Supports an inflammatory or infectious complication when the diagnosis is unclear",
+        "only_if": "an odontogenic infection is suspected"
+      },
+      {
+        "test": "glucose",
+        "why": "Identifies diabetes that raises caries risk and worsens infection",
+        "only_if": "severe, recurrent, or nonhealing dental disease is present"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "CT of the maxillofacial region with IV contrast",
+        "why": "Not needed for simple caries; reserved for suspected deep space infection or airway compromise",
+        "only_if": "a deep space infection, facial cellulitis, or airway compromise is suspected"
+      },
+      {
+        "test": "bmp",
+        "why": "Routine chemistry is not needed for uncomplicated dental caries"
+      },
+      {
+        "test": "esr",
+        "why": "Nonspecific and adds nothing to the dental examination and radiographs"
+      },
+      {
+        "test": "procalcitonin",
+        "why": "No role in the evaluation of dental caries or a localized odontogenic abscess"
+      },
+      {
+        "test": "lactate",
+        "why": "Only useful if sepsis from a spreading odontogenic infection is suspected"
+      }
+    ],
+    "decision_points": [
+      "Dental radiographs are the key test; medical labs are only for suspected systemic infection",
+      "Facial swelling, trismus, drooling, or difficulty swallowing requires urgent CT and dental or surgical drainage",
+      "Pregnancy: dental radiographs are safe with shielding; defer only nonurgent imaging"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Pulpitis (reversible or irreversible)",
+      "slug": "pulpitis",
+      "why_considered": "Dental pain and sensitivity to hot or cold are the hallmark of both caries and pulp inflammation",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Pain triggered by thermal stimuli; in irreversible pulpitis the pain lingers after the stimulus is removed and may wake the patient at night",
+          "No visible hole or only a deep restoration may be present"
+        ],
+        "exam": [
+          "A deep carious lesion or restoration may be seen, but the pulp is the source of pain",
+          "Percussion may be tender if the periapical tissues are involved"
+        ],
+        "imaging": [
+          "Deep caries approaching or involving the pulp on periapical radiograph",
+          "No periapical radiolucency in reversible pulpitis; may be present in irreversible pulpitis"
+        ]
+      }
+    },
+    {
+      "name": "Periapical abscess",
+      "slug": "periapical-abscess",
+      "why_considered": "A toothache that becomes constant and severe with swelling suggests infection extending beyond the tooth",
+      "must_not_miss": true,
+      "trigger": "Facial or gum swelling, fever, or severe constant pain",
+      "discriminators": {
+        "history": [
+          "Constant, throbbing pain that may be relieved by cold in early abscess but worsens with heat",
+          "Swelling of the gum or face, bad taste, fever"
+        ],
+        "exam": [
+          "Tender, swollen gum or fluctuant swelling near the tooth apex",
+          "Facial swelling, tender regional lymph nodes, fever"
+        ],
+        "labs": [
+          "Leukocytosis and elevated CRP when systemic infection is present"
+        ],
+        "imaging": [
+          "Periapical radiolucency or widened periodontal ligament space on dental radiograph",
+          "CT shows abscess cavity with rim enhancement if deep space involvement is suspected"
+        ]
+      }
+    },
+    {
+      "name": "Periodontal disease (gingivitis or periodontitis)",
+      "slug": "periodontal-disease",
+      "why_considered": "Gum inflammation, bleeding, and bad breath can be mistaken for caries-related problems",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Gums that bleed when brushing, persistent bad breath, loose teeth",
+          "Pain is less common than with caries; discomfort is often diffuse"
+        ],
+        "exam": [
+          "Gingival redness, swelling, and bleeding on probing",
+          "Periodontal pockets, gum recession, and tooth mobility"
+        ],
+        "imaging": [
+          "Alveolar bone loss on dental radiographs",
+          "No cavitated carious lesion in the symptomatic area"
+        ]
+      }
+    },
+    {
+      "name": "Dental erosion",
+      "slug": "dental-erosion",
+      "why_considered": "Loss of tooth structure from acid can cause sensitivity and visible changes that resemble decay",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Frequent vomiting, reflux, or high intake of acidic foods and drinks",
+          "Sensitivity is often widespread rather than localized to one tooth"
+        ],
+        "exam": [
+          "Smooth, glossy, or cupped-out tooth surfaces, often on the palatal surfaces of upper front teeth",
+          "No soft, catchable cavity on probing"
+        ],
+        "imaging": [
+          "Generalized loss of enamel thickness without a localized radiolucent defect"
+        ]
+      }
+    },
+    {
+      "name": "Sinusitis",
+      "slug": "sinusitis",
+      "why_considered": "Maxillary sinus pain can radiate to the upper teeth and mimic a toothache",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Recent upper respiratory infection, nasal congestion, facial pressure",
+          "Pain is worse when bending forward; multiple upper teeth may ache"
+        ],
+        "exam": [
+          "Tenderness over the maxillary sinuses, purulent nasal discharge",
+          "Teeth appear normal on inspection and probing"
+        ],
+        "imaging": [
+          "Sinus opacification or air-fluid level on CT or plain radiograph",
+          "No carious lesion on dental radiographs"
+        ]
+      }
+    },
+    {
+      "name": "Trigeminal neuralgia",
+      "slug": "trigeminal-neuralgia",
+      "why_considered": "Sharp, electric shock-like facial pain can be mistaken for dental pain",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Brief, lancinating pain triggered by touch, chewing, or cold air",
+          "Pain follows a trigeminal distribution and is not provoked by sweet foods"
+        ],
+        "exam": [
+          "Teeth and gums are normal; no cavity or tenderness on probing",
+          "Neurologic exam may show a trigger zone"
+        ],
+        "imaging": [
+          "Dental radiographs are normal; MRI may show neurovascular compression"
+        ]
+      }
+    },
+    {
+      "name": "Temporomandibular disorder",
+      "slug": "temporomandibular-disorder",
+      "why_considered": "Jaw pain and pain with chewing can be attributed to a tooth",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Jaw clicking, locking, or pain that is worse with chewing and in the morning",
+          "Pain is often diffuse and not triggered by sweets or temperature"
+        ],
+        "exam": [
+          "Tenderness of the masticatory muscles or temporomandibular joint, limited or asymmetric opening",
+          "Teeth are normal on inspection and probing"
+        ],
+        "imaging": [
+          "Dental radiographs are normal; MRI or CT may show joint changes"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Early, non-cavitated decay: a white spot or shallow enamel lesion with no or only mild sensitivity to sweets or cold; no pain at rest",
+      "moderate": "Cavitated decay limited to enamel or outer dentin: a visible hole, sensitivity to hot, cold, or sweets, and mild discomfort with chewing",
+      "severe": "Deep decay involving the pulp: constant toothache, lingering pain after hot or cold, pain on percussion, and possible early periapical infection without systemic signs",
+      "critical": "Odontogenic infection with facial or neck swelling, fever, trismus, drooling, or difficulty swallowing, suggesting a deep space infection or airway compromise"
+    },
+    "red_flags": [
+      {
+        "finding": "Facial or neck swelling with fever",
+        "meaning": "Spread of infection beyond the tooth; needs urgent dental or surgical evaluation"
+      },
+      {
+        "finding": "Trismus or difficulty opening the mouth",
+        "meaning": "Infection involving the masticator space; risk of deep neck space spread"
+      },
+      {
+        "finding": "Drooling, difficulty swallowing, or voice change",
+        "meaning": "Possible airway compromise from a deep space infection; emergency"
+      },
+      {
+        "finding": "Severe pain that wakes the patient from sleep or is not relieved by over-the-counter analgesics",
+        "meaning": "Irreversible pulpitis or periapical infection requiring prompt dental care"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Pulpitis and periapical abscess",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Constant throbbing pain",
+          "Lingering pain after hot or cold",
+          "Tenderness on percussion",
+          "Periapical radiolucency"
+        ]
+      },
+      {
+        "name": "Facial cellulitis or deep space infection",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Facial swelling with fever",
+          "Trismus",
+          "Drooling or difficulty swallowing",
+          "CT showing abscess in buccal, submandibular, or masticator space"
+        ]
+      },
+      {
+        "name": "Tooth loss",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Extensive decay destroying the crown",
+          "Mobility of the tooth",
+          "Inability to restore the tooth"
+        ]
+      },
+      {
+        "name": "Osteomyelitis of the jaw",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Persistent jaw pain and swelling",
+          "Fever",
+          "Radiographic bone destruction"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Young children may not report pain and instead show irritability, poor feeding, or refusal to chew; decay in baby teeth can progress quickly and affect permanent teeth."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Decay often occurs on exposed root surfaces at the gum line and may cause little pain because of receding gums and reduced pulp sensitivity; more likely to have dry mouth from medications."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Changes in saliva, diet, and oral hygiene can increase decay; nausea and vomiting may cause erosion, and dental care is often delayed. Dental radiographs are safe with shielding."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Decay can progress faster and infection can spread more readily, with less obvious pain or swelling; a lower threshold for imaging and antibiotics is warranted."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Poorly controlled diabetes raises caries risk and worsens infection; check glucose when the presentation is severe or recurrent."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "Where is the pain, and can you point to the exact tooth?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Localized to one tooth or a few teeth, often a back tooth or between teeth"
+      },
+      {
+        "question": "What brings the pain on?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Triggered by sweets, hot, or cold foods and drinks; later pain at rest"
+      },
+      {
+        "question": "Does the pain go away quickly after the trigger is removed, or does it linger?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Brief pain suggests reversible disease; lingering pain suggests pulp involvement"
+      },
+      {
+        "question": "How long has this been going on, and is it getting worse?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Weeks to months of intermittent sensitivity progressing to constant pain"
+      },
+      {
+        "question": "Does it hurt when you bite down or chew on that side?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Pain on biting suggests periapical involvement"
+      },
+      {
+        "question": "Have you noticed a dark spot, hole, or food getting stuck in the tooth?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Visible cavity or retained food, supporting cavitated decay"
+      },
+      {
+        "question": "Is the pain worse at night or when you lie down?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Nocturnal or positional pain suggests irreversible pulpitis"
+      },
+      {
+        "question": "Any swelling of the gum, face, or jaw, or any fever?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Swelling or fever suggests an abscess or spreading infection"
+      },
+      {
+        "question": "Any trouble opening your mouth, swallowing, or drooling?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Trismus, dysphagia, or drooling suggests deep space infection or airway risk"
+      },
+      {
+        "question": "How often do you brush and floss, and do you use fluoride toothpaste?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Infrequent brushing or flossing and no fluoride exposure"
+      },
+      {
+        "question": "How often do you eat or drink sugary or starchy things between meals?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Frequent snacking or sipping sugary drinks throughout the day"
+      },
+      {
+        "question": "When did you last see a dentist, and do you have access to dental care?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "No regular dental check-ups or limited access to care"
+      },
+      {
+        "question": "Does your mouth feel dry, and are you taking any medicines that dry it out?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Anticholinergics, antihistamines, antidepressants, diuretics, or opioids reducing saliva"
+      },
+      {
+        "question": "Do you have diabetes, Sjögren syndrome, reflux, or an eating disorder with vomiting?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Conditions that raise caries risk or cause erosion"
+      },
+      {
+        "question": "Have you had radiation to the head or neck, or chemotherapy?",
+        "category": "pmh",
+        "importance": "optional",
+        "looking_for": "Dry mouth from cancer treatment raising caries risk"
+      },
+      {
+        "question": "Does anyone in your family have a lot of cavities?",
+        "category": "family",
+        "importance": "optional",
+        "looking_for": "Family history of dental caries"
+      },
+      {
+        "question": "Do you use tobacco, including smokeless tobacco?",
+        "category": "social",
+        "importance": "optional",
+        "looking_for": "Tobacco use raising caries and gum disease risk"
+      },
+      {
+        "question": "Has there been any recent injury to the tooth or a recent dental procedure?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Trauma or recent dental work as an alternative cause of pain"
+      }
+    ],
+    "accepted_names": [
+      "Tooth decay",
+      "Dental caries",
+      "Caries",
+      "Cavities",
+      "Cavity",
+      "Dental cavity"
+    ],
+    "reasoning_points": [
+      "Tooth pain or sensitivity triggered by sweets, hot, or cold, often localized to one tooth",
+      "Risk factors such as poor oral hygiene, frequent sugary or starchy intake, and inadequate fluoride",
+      "Visible white spot, brown stain, or cavitated hole on the tooth surface",
+      "Tenderness or a catch when probing the softened tooth surface",
+      "Pain on percussion or lingering pain after cold suggesting pulp or periapical involvement",
+      "Dental radiograph showing a radiolucent defect in enamel or dentin, with periapical changes if the pulp is involved",
+      "No facial swelling, fever, trismus, or airway symptoms unless the infection has spread",
+      "Alternative causes such as pulpitis, periodontal disease, sinusitis, trigeminal neuralgia, or temporomandibular disorder considered and excluded"
+    ],
+    "difficulty": {
+      "easy": [
+        "Young or middle-aged adult with a classic story of sensitivity to sweets and cold in one tooth",
+        "Visible dark cavity on a back tooth",
+        "Probe catches in a softened area and the patient winces",
+        "No fever, swelling, or systemic symptoms"
+      ],
+      "medium": [
+        "Pain that lingers after cold or wakes the patient at night, suggesting pulp involvement",
+        "Decay between teeth with no visible cavity on the chewing surface",
+        "Older adult with decay at the gum line on an exposed root surface and little pain",
+        "Patient with dry mouth from medications and multiple affected teeth"
+      ],
+      "hard": [
+        "Young child who cannot localize pain and instead is irritable or refuses to chew",
+        "Upper molar pain that turns out to be maxillary sinusitis",
+        "Sharp, electric facial pain from trigeminal neuralgia mistaken for a toothache",
+        "Jaw pain from temporomandibular disorder with normal teeth",
+        "Severe decay presenting with facial swelling, fever, or trismus suggesting a deep space infection"
+      ]
+    }
+  }
+}

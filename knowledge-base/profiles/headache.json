@@ -1,0 +1,1709 @@
+{
+  "schema_version": "0.2",
+  "slug": "headache",
+  "triage": {
+    "name": "Headache",
+    "case_suitable": true,
+    "reason": "Extremely common symptom with a critical differential from tension and migraine to subarachnoid hemorrhage; reachable by history and exam.",
+    "kind": "symptom",
+    "category": "neurologic symptom",
+    "organ_systems": [
+      "nervous"
+    ],
+    "primary_clerkship": "neurology",
+    "secondary_clerkships": [
+      "emergency",
+      "familyMedicine",
+      "internalMedicine"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "clinic",
+      "emergency"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:17:44Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:47:45Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:47:54Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:48:06Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:48:21Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:48:29Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'ct head without iv contrast' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'lumbar puncture' was in ['confirmatory', 'not_indicated'], kept ['not_indicated', 'confirmatory']",
+        "auto-repaired: workup: 'mri brain with and without iv contrast' was in ['confirmatory', 'not_indicated'], kept ['not_indicated', 'confirmatory']",
+        "auto-repaired: workup: 'ct head without iv contrast' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'lumbar puncture' was in ['confirmatory', 'not_indicated'], kept ['not_indicated', 'confirmatory']",
+        "auto-repaired: workup: 'mri brain with and without iv contrast' was in ['confirmatory', 'not_indicated'], kept ['not_indicated', 'confirmatory']",
+        "labs tsh: both high and low across severities",
+        "differential subarachnoid-hemorrhage: no profile yet",
+        "differential bacterial-meningitis: no profile yet",
+        "differential migraine: no profile yet",
+        "differential tension-type-headache: no profile yet",
+        "differential cluster-headache: no profile yet",
+        "differential giant-cell-arteritis: no profile yet",
+        "differential idiopathic-intracranial-hypertension: no profile yet",
+        "differential acute-angle-closure-glaucoma: no profile yet",
+        "differential acute-sinusitis: no profile yet",
+        "differential medication-overuse-headache: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 18,
+      "typical_max": 65,
+      "peak": "25–55",
+      "possible_min": 3,
+      "possible_max": 100
+    },
+    "sex": "female_predominant",
+    "demographics": [
+      "Tension-type headache is the most common primary headache and affects both sexes fairly equally",
+      "Migraine is about three times more common in women than men",
+      "Cluster headache is more common in men",
+      "Primary headache disorders often begin before age 40"
+    ],
+    "risk_factors": [
+      {
+        "text": "Female sex (for migraine)",
+        "strength": "strong"
+      },
+      {
+        "text": "Family history of migraine or other primary headache",
+        "strength": "strong"
+      },
+      {
+        "text": "Stress, anxiety or depression",
+        "strength": "moderate"
+      },
+      {
+        "text": "Poor sleep, skipped meals, dehydration",
+        "strength": "moderate"
+      },
+      {
+        "text": "Caffeine use or withdrawal",
+        "strength": "moderate"
+      },
+      {
+        "text": "Alcohol use",
+        "strength": "weak"
+      },
+      {
+        "text": "Sustained neck or jaw strain (screen work, clenching)",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Anxiety or depression",
+      "Sleep disorders",
+      "Obesity",
+      "Chronic pain syndromes"
+    ],
+    "family_history": [
+      "Migraine in a first-degree relative",
+      "Tension-type headache in a first-degree relative"
+    ],
+    "social_history": [
+      "High work or school stress",
+      "Irregular sleep schedule",
+      "Skipping meals",
+      "Heavy caffeine use"
+    ],
+    "exposures": [
+      "Screen or computer work",
+      "Poor ergonomics",
+      "Secondhand smoke or strong odors (migraine triggers)"
+    ],
+    "risk_medications": [
+      "acetaminophen",
+      "ibuprofen",
+      "sumatriptan",
+      "oral contraceptive pills",
+      "nitroglycerin"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My head hurts",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "I get these headaches again and again",
+        "frequency": "common"
+      },
+      {
+        "text": "The pain is on one side and makes me sick to my stomach",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Usually gradual over 30 minutes to a few hours; migraine may build up, tension headache is often gradual, and a thunderclap onset is not typical of primary headache",
+      "duration": "Episodes last 30 minutes to several hours for tension-type and 4–72 hours for migraine; cluster attacks last 15–180 minutes",
+      "progression": "Recurrent episodes with a stable pattern over months to years; individual attacks build, plateau and then resolve",
+      "location": "Tension-type: bilateral, band-like across the forehead, temples or back of the head; migraine: often unilateral, frontotemporal; cluster: strictly one-sided around the eye or temple",
+      "radiation": "May spread from the neck and shoulders up into the head; migraine pain can spread across the whole head",
+      "quality": "Tension-type: pressing or tightening, non-pulsating; migraine: throbbing or pulsating; cluster: sharp, boring, stabbing",
+      "severity": "Mild to moderate for tension-type; moderate to severe for migraine; severe for cluster",
+      "timing": "Tension-type is often constant through the day; migraine attacks are episodic; cluster attacks occur in bouts, often at the same time each day and at night",
+      "aggravating": [
+        "Stress",
+        "Lack of sleep",
+        "Skipping meals",
+        "Bright lights or loud noise (migraine)",
+        "Physical activity (migraine)",
+        "Alcohol (cluster and migraine)"
+      ],
+      "relieving": [
+        "Resting in a dark, quiet room",
+        "Over-the-counter pain relievers",
+        "Sleep",
+        "Relaxation or massage",
+        "Caffeine (sometimes helps migraine)"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Neck or shoulder tightness",
+          "frequency": "common"
+        },
+        {
+          "text": "Nausea",
+          "frequency": "common"
+        },
+        {
+          "text": "Light sensitivity",
+          "frequency": "common"
+        },
+        {
+          "text": "Sound sensitivity",
+          "frequency": "common"
+        },
+        {
+          "text": "Vomiting",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Visual aura (flashing lights, zigzag lines, blind spots)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Tearing, red eye, runny nose or eyelid droop on one side (cluster)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Restlessness or pacing during the attack (cluster)",
+          "frequency": "sometimes"
+        }
+      ],
+      "pertinent_negatives": [
+        "Sudden severe headache reaching maximum in under a minute (thunderclap)",
+        "Fever or stiff neck",
+        "Headache after a head injury",
+        "New confusion, weakness, numbness or trouble speaking",
+        "New headache after age 50",
+        "Headache that is worse when lying down or wakes from sleep",
+        "Painful red eye or vision loss",
+        "Weight loss, night sweats or known cancer",
+        "Progressive worsening over weeks"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Feeling tired during attacks",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Fever",
+          "Weight loss",
+          "Night sweats"
+        ],
+        "argues_against": [
+          "Infection or malignancy as the cause"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Light or sound sensitivity",
+            "frequency": "common"
+          },
+          {
+            "text": "Visual aura",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Weakness",
+          "Numbness",
+          "Trouble speaking",
+          "Loss of consciousness",
+          "Seizure",
+          "Gait imbalance"
+        ],
+        "argues_against": [
+          "Stroke, mass lesion or seizure"
+        ]
+      },
+      {
+        "system": "eyes",
+        "positives": [
+          {
+            "text": "Tearing or redness of one eye (cluster)",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Vision loss",
+          "Double vision",
+          "Painful red eye"
+        ],
+        "argues_against": [
+          "Acute glaucoma or optic neuritis"
+        ]
+      },
+      {
+        "system": "ent",
+        "positives": [
+          {
+            "text": "Runny or stuffy nose on one side (cluster)",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Facial pressure worse when bending forward",
+          "Purulent nasal discharge",
+          "Ear pain"
+        ],
+        "argues_against": [
+          "Sinusitis"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Neck and shoulder tightness",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Neck stiffness",
+          "Jaw claudication"
+        ],
+        "argues_against": [
+          "Meningitis or giant cell arteritis"
+        ]
+      },
+      {
+        "system": "psychiatric",
+        "positives": [
+          {
+            "text": "Feeling stressed or anxious",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Suicidal thoughts",
+          "New confusion"
+        ],
+        "argues_against": [
+          "Acute psychiatric emergency"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Young children may not describe pain well and instead show irritability, crying, head-holding, vomiting or refusal to play; migraine attacks are often shorter than in adults.",
+        "missing_classic_features": [
+          "Clear unilateral throbbing pain",
+          "Detailed aura description"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "New headache after age 50 is more concerning for secondary causes such as giant cell arteritis, mass lesion or medication overuse; migraine often becomes less severe with age.",
+        "missing_classic_features": [
+          "Typical migraine pattern",
+          "Prominent nausea and light sensitivity"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "New or worsening headache in pregnancy can signal preeclampsia or cerebral venous thrombosis, so blood pressure and neurologic red flags are checked carefully.",
+        "missing_classic_features": [
+          "Benign recurrent pattern"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "Headache may be the first sign of an opportunistic CNS infection or mass lesion, so fever, neck stiffness and focal deficits are weighed more heavily.",
+        "missing_classic_features": [
+          "Typical primary headache triggers"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Comfortable, alert, no distress; able to converse normally",
+      "moderate": "Mild distress, prefers a dim quiet room, may squint or hold the head",
+      "severe": "Marked distress, photophobic, nauseated, may be pacing or lying still depending on headache type",
+      "critical": "Toxic or altered mental status, meningismus, focal deficit, or unable to cooperate with the exam"
+    },
+    "findings": [
+      {
+        "id": "normal-mental-status",
+        "region": "mental_status",
+        "maneuver": "Assess orientation to person, place, time and situation; check attention and recall",
+        "finding": "Alert and fully oriented with normal cognition",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "no-fever",
+        "region": "general",
+        "maneuver": "Measure temperature and inspect for systemic signs of infection",
+        "finding": "Afebrile, no rash or systemic toxicity",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "normal-cranial-nerves",
+        "region": "neuro",
+        "maneuver": "Test cranial nerves II through XII, including visual fields, pupils, extraocular movements, facial strength and symmetry",
+        "finding": "Intact cranial nerve function with no ptosis, anisocoria, ophthalmoplegia or visual field cut",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "normal-motor-sensory",
+        "region": "neuro",
+        "maneuver": "Test strength in all four limbs and light touch, pinprick and proprioception",
+        "finding": "Normal strength and sensation without focal deficit",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "normal-reflexes-gait",
+        "region": "neuro",
+        "maneuver": "Check deep tendon reflexes, finger-to-nose and heel-to-shin coordination, and gait including tandem walk",
+        "finding": "Symmetric reflexes, normal coordination and steady gait",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "supple-neck",
+        "region": "neck",
+        "maneuver": "Passively flex and rotate the neck, and perform Brudzinski and Kernig maneuvers",
+        "finding": "Full, painless neck range of motion without meningismus",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "normal-fundoscopy",
+        "region": "heent",
+        "maneuver": "Perform fundoscopy to assess the optic discs and venous pulsations",
+        "finding": "Sharp disc margins without papilledema and spontaneous venous pulsations present",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "periorbital-tenderness",
+        "region": "heent",
+        "maneuver": "Palpate the frontal and maxillary sinuses and transilluminate them",
+        "finding": "Facial tenderness or dullness over the sinuses",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "temporal-artery-tenderness",
+        "region": "heent",
+        "maneuver": "Palpate the temporal arteries for tenderness, nodularity and diminished pulsation",
+        "finding": "Tender, thickened or pulseless temporal artery",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "temporalis-masseter-tenderness",
+        "region": "musculoskeletal",
+        "maneuver": "Palpate the temporalis and masseter muscles and ask the patient to clench the jaw",
+        "finding": "Tenderness or hypertrophy of the masticatory muscles",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "pericranial-tenderness",
+        "region": "musculoskeletal",
+        "maneuver": "Palpate the pericranial muscles of the scalp, neck and shoulders",
+        "finding": "Tenderness or tightness of the pericranial and cervical muscles",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "limited-cervical-rom",
+        "region": "neck",
+        "maneuver": "Assess active and passive cervical range of motion",
+        "finding": "Reduced or painful cervical range of motion",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "conjunctival-injection",
+        "region": "heent",
+        "maneuver": "Inspect the conjunctiva and eyelids for redness, tearing or ptosis",
+        "finding": "Unilateral conjunctival injection, lacrimation or eyelid edema",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "nasal-congestion",
+        "region": "heent",
+        "maneuver": "Inspect the nasal mucosa and turbinates",
+        "finding": "Unilateral nasal congestion or rhinorrhea",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-heart-lungs",
+        "region": "cardiac",
+        "maneuver": "Auscultate the heart and lungs and check for carotid bruits",
+        "finding": "Regular rate and rhythm without murmur, rub or bruit; clear lungs",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-abdomen",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen for tenderness, masses or organomegaly",
+        "finding": "Soft, non-tender abdomen without mass",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-skin-lesions",
+        "region": "skin",
+        "maneuver": "Inspect the skin for rash, petechiae or lesions suggestive of systemic disease",
+        "finding": "No rash, petechiae or suspicious lesions",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "moderate": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "severe": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "critical": {
+        "min": 97.8,
+        "max": 99.1
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 90
+      },
+      "moderate": {
+        "min": 65,
+        "max": 100
+      },
+      "severe": {
+        "min": 75,
+        "max": 110
+      },
+      "critical": {
+        "min": 90,
+        "max": 130
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 12,
+        "max": 18
+      },
+      "moderate": {
+        "min": 12,
+        "max": 20
+      },
+      "severe": {
+        "min": 14,
+        "max": 22
+      },
+      "critical": {
+        "min": 16,
+        "max": 26
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 100,
+        "max": 130
+      },
+      "moderate": {
+        "min": 100,
+        "max": 140
+      },
+      "severe": {
+        "min": 100,
+        "max": 160
+      },
+      "critical": {
+        "min": 90,
+        "max": 180
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 60,
+        "max": 85
+      },
+      "moderate": {
+        "min": 60,
+        "max": 90
+      },
+      "severe": {
+        "min": 60,
+        "max": 100
+      },
+      "critical": {
+        "min": 55,
+        "max": 110
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 95,
+        "max": 100
+      },
+      "moderate": {
+        "min": 95,
+        "max": 100
+      },
+      "severe": {
+        "min": 94,
+        "max": 100
+      },
+      "critical": {
+        "min": 90,
+        "max": 100
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "esr",
+      "ranges": {
+        "moderate": {
+          "min": 30,
+          "max": 60
+        },
+        "severe": {
+          "min": 50,
+          "max": 100
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Markedly elevated ESR (often over 50 mm/h) supports giant cell arteritis in a patient over 50 with new headache; a normal value does not fully exclude it."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "moderate": {
+          "min": 1.5,
+          "max": 6.0
+        },
+        "severe": {
+          "min": 4.0,
+          "max": 15.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Rises with giant cell arteritis and with infection; nonspecific on its own."
+    },
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "moderate": {
+          "min": 11.5,
+          "max": 18.0
+        },
+        "severe": {
+          "min": 15.0,
+          "max": 25.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Leukocytosis with fever and meningismus points to meningitis or encephalitis rather than a primary headache."
+    },
+    {
+      "test_id": "neut_pct",
+      "ranges": {
+        "moderate": {
+          "min": 72,
+          "max": 85
+        },
+        "severe": {
+          "min": 80,
+          "max": 92
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "plt",
+      "ranges": {
+        "mild": {
+          "min": 130,
+          "max": 149
+        },
+        "moderate": {
+          "min": 90,
+          "max": 130
+        },
+        "severe": {
+          "min": 50,
+          "max": 90
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Thrombocytopenia with headache and fever raises concern for a systemic infection or a hematologic process."
+    },
+    {
+      "test_id": "na",
+      "ranges": {
+        "moderate": {
+          "min": 126,
+          "max": 134
+        },
+        "severe": {
+          "min": 115,
+          "max": 125
+        },
+        "critical": {
+          "min": 105,
+          "max": 114
+        }
+      },
+      "frequency": "rare",
+      "importance": "important",
+      "caveat": "Hyponatremia can itself cause headache and altered mental status; also seen with SIADH from CNS infection or mass."
+    },
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "moderate": {
+          "min": 50,
+          "max": 69
+        },
+        "severe": {
+          "min": 30,
+          "max": 49
+        },
+        "critical": {
+          "min": 20,
+          "max": 29
+        }
+      },
+      "frequency": "rare",
+      "importance": "important",
+      "caveat": "Hypoglycemia is a reversible cause of headache and confusion; check a bedside glucose in any patient with altered mental status."
+    },
+    {
+      "test_id": "csf_opening",
+      "ranges": {
+        "moderate": {
+          "min": 21,
+          "max": 30
+        },
+        "severe": {
+          "min": 28,
+          "max": 45
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevated opening pressure supports idiopathic intracranial hypertension, meningitis or a mass effect; measure before draining fluid."
+    },
+    {
+      "test_id": "csf_wbc",
+      "ranges": {
+        "mild": {
+          "min": 6,
+          "max": 20
+        },
+        "moderate": {
+          "min": 15,
+          "max": 200
+        },
+        "severe": {
+          "min": 100,
+          "max": 2000
+        },
+        "critical": {
+          "min": 500,
+          "max": 10000
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "essential",
+      "caveat": "Pleocytosis with fever and meningismus indicates meningitis; neutrophil predominance favors bacterial, lymphocyte predominance favors viral or other causes."
+    },
+    {
+      "test_id": "csf_protein",
+      "ranges": {
+        "mild": {
+          "min": 46,
+          "max": 80
+        },
+        "moderate": {
+          "min": 70,
+          "max": 150
+        },
+        "severe": {
+          "min": 120,
+          "max": 400
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevated protein supports CNS infection or inflammation; very high values suggest bacterial meningitis or a block."
+    },
+    {
+      "test_id": "csf_glucose",
+      "ranges": {
+        "moderate": {
+          "min": 30,
+          "max": 39
+        },
+        "severe": {
+          "min": 15,
+          "max": 29
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Low CSF glucose relative to serum favors bacterial or fungal meningitis; compare with a simultaneous serum glucose."
+    },
+    {
+      "test_id": "csf_appearance",
+      "qualitative": {
+        "moderate": "Cloudy",
+        "severe": "Xanthochromic"
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Xanthochromia suggests subarachnoid hemorrhage; cloudy fluid suggests infection."
+    },
+    {
+      "test_id": "csf_rbc",
+      "ranges": {
+        "moderate": {
+          "min": 100,
+          "max": 5000
+        },
+        "severe": {
+          "min": 2000,
+          "max": 100000
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Red cells that do not clear between tubes, or xanthochromia, point to subarachnoid hemorrhage rather than a traumatic tap."
+    },
+    {
+      "test_id": "tsh",
+      "ranges": {
+        "mild": {
+          "min": 0.1,
+          "max": 0.39
+        },
+        "moderate": {
+          "min": 4.1,
+          "max": 10.0
+        },
+        "severe": {
+          "min": 10.1,
+          "max": 30.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Thyroid dysfunction can cause or worsen headache; check when the history suggests it."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "sometimes",
+      "importance": "essential",
+      "caveat": "Negative. Required in anyone who could be pregnant before imaging or lumbar puncture; pregnancy also raises concern for preeclampsia and cerebral venous thrombosis."
+    }
+  ],
+  "imaging": [
+    {
+      "study": "CT head without IV contrast",
+      "modality": "ct",
+      "preferred_when": "First-line emergency imaging for red flags, trauma or suspected hemorrhage",
+      "findings": [
+        {
+          "text": "No acute intracranial abnormality (normal study)",
+          "frequency": "common"
+        },
+        {
+          "text": "Subarachnoid blood in the basal cisterns or sulci",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Intraparenchymal, subdural or epidural hematoma",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Hydrocephalus with enlarged ventricles",
+          "frequency": "rare"
+        },
+        {
+          "text": "Mass lesion with surrounding edema and midline shift",
+          "frequency": "rare"
+        },
+        {
+          "text": "Hyperdense dural venous sinus (suggesting venous thrombosis)",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "CT angiography of the head and neck",
+      "modality": "ct",
+      "preferred_when": "Suspected aneurysm, vascular malformation or dissection after a thunderclap headache",
+      "findings": [
+        {
+          "text": "No aneurysm or vascular malformation",
+          "frequency": "common"
+        },
+        {
+          "text": "Saccular aneurysm, most often at a branch point of the circle of Willis",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Arteriovenous malformation",
+          "frequency": "rare"
+        },
+        {
+          "text": "Carotid or vertebral artery dissection with a narrowed lumen or intramural hematoma",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "MRI brain with and without IV contrast",
+      "modality": "mri",
+      "preferred_when": "Subacute or progressive headache, suspected mass, infection or demyelination",
+      "findings": [
+        {
+          "text": "No abnormal enhancement or mass",
+          "frequency": "common"
+        },
+        {
+          "text": "Enhancing mass with surrounding edema",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Leptomeningeal or dural enhancement",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "White matter lesions consistent with demyelination",
+          "frequency": "rare"
+        },
+        {
+          "text": "Empty sella, optic nerve sheath distension and transverse sinus narrowing (idiopathic intracranial hypertension)",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "MR venography of the brain",
+      "modality": "mri",
+      "preferred_when": "Suspected cerebral venous sinus thrombosis, especially in pregnancy or the postpartum period",
+      "findings": [
+        {
+          "text": "Patent dural venous sinuses",
+          "frequency": "common"
+        },
+        {
+          "text": "Filling defect in a dural venous sinus or cortical vein",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "CT head without contrast (repeat)",
+      "modality": "ct",
+      "preferred_when": "Persistent concern for subarachnoid hemorrhage when the first CT was done more than 6 hours after onset",
+      "findings": [
+        {
+          "text": "No subarachnoid blood",
+          "frequency": "common"
+        },
+        {
+          "text": "Subarachnoid blood not seen on the earlier study",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Looks for infection, anemia or a hematologic process behind a secondary headache"
+      },
+      {
+        "test": "bmp",
+        "why": "Checks sodium, glucose and kidney function as reversible causes of headache and altered mental status"
+      },
+      {
+        "test": "esr",
+        "why": "Screens for giant cell arteritis",
+        "only_if": "new headache after age 50, especially with jaw claudication, scalp tenderness or visual symptoms"
+      },
+      {
+        "test": "crp",
+        "why": "Supports the ESR in suspected giant cell arteritis or infection",
+        "only_if": "new headache after age 50 or fever is present"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before imaging or lumbar puncture",
+        "only_if": "the patient could be pregnant"
+      },
+      {
+        "test": "CT head without IV contrast",
+        "why": "First-line emergency study for red flags, trauma or suspected hemorrhage",
+        "only_if": "any red flag is present: thunderclap onset, fever or meningismus, focal deficit, altered mental status, new headache after 50, head trauma, cancer or anticoagulation"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Lumbar puncture",
+        "why": "Definitive test for subarachnoid hemorrhage when CT is negative or delayed, and for meningitis or encephalitis",
+        "only_if": "suspected subarachnoid hemorrhage with a negative or late CT, or suspected CNS infection after imaging excludes a mass"
+      },
+      {
+        "test": "CT angiography of the head and neck",
+        "why": "Identifies an aneurysm, vascular malformation or dissection after a thunderclap headache",
+        "only_if": "thunderclap headache with a negative CT and lumbar puncture, or focal vascular symptoms"
+      },
+      {
+        "test": "MRI brain with and without IV contrast",
+        "why": "Best study for a mass, infection, demyelination or idiopathic intracranial hypertension",
+        "only_if": "progressive or subacute headache, focal findings, or a normal CT that does not explain the presentation"
+      },
+      {
+        "test": "MR venography of the brain",
+        "why": "Confirms cerebral venous sinus thrombosis",
+        "only_if": "suspected venous thrombosis, especially in pregnancy or the postpartum period"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "tsh",
+        "why": "Thyroid dysfunction can cause or worsen headache",
+        "only_if": "symptoms suggest thyroid disease"
+      },
+      {
+        "test": "csf_opening",
+        "why": "Elevated opening pressure supports idiopathic intracranial hypertension or meningitis",
+        "only_if": "lumbar puncture is performed"
+      },
+      {
+        "test": "csf_appearance",
+        "why": "Xanthochromia suggests subarachnoid hemorrhage and cloudiness suggests infection",
+        "only_if": "lumbar puncture is performed"
+      },
+      {
+        "test": "csf_wbc",
+        "why": "Pleocytosis indicates CNS infection or inflammation",
+        "only_if": "lumbar puncture is performed"
+      },
+      {
+        "test": "csf_protein",
+        "why": "Elevated protein supports CNS infection or inflammation",
+        "only_if": "lumbar puncture is performed"
+      },
+      {
+        "test": "csf_glucose",
+        "why": "Low CSF glucose favors bacterial or fungal meningitis",
+        "only_if": "lumbar puncture is performed"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "CT head without IV contrast",
+        "why": "Not needed for a stable, recurrent primary headache with a normal neurologic exam and no red flags"
+      },
+      {
+        "test": "MRI brain with and without IV contrast",
+        "why": "Not a routine test for typical migraine or tension-type headache"
+      },
+      {
+        "test": "Lumbar puncture",
+        "why": "Not indicated without suspicion of hemorrhage or CNS infection"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in headache unless cerebral venous thrombosis is suspected"
+      },
+      {
+        "test": "lipase",
+        "why": "Not needed unless abdominal pain is present"
+      },
+      {
+        "test": "ua",
+        "why": "Not part of the headache workup unless urinary symptoms are present"
+      }
+    ],
+    "decision_points": [
+      "Any red flag (thunderclap onset, fever or meningismus, focal deficit, altered mental status, new headache after 50, head trauma, cancer, anticoagulation, papilledema) moves the patient from a primary headache pathway to urgent imaging",
+      "Pregnancy test before CT or lumbar puncture in anyone who could be pregnant",
+      "CT first for suspected hemorrhage; lumbar puncture if CT is negative or was done more than 6 hours after onset",
+      "Start empiric antibiotics and antivirals before lumbar puncture when bacterial meningitis is suspected and imaging must come first",
+      "Check a bedside glucose in any patient with headache and altered mental status"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Subarachnoid hemorrhage",
+      "slug": "subarachnoid-hemorrhage",
+      "why_considered": "Headache is the cardinal symptom, and a benign-appearing headache can be the only warning before a catastrophic rebleed.",
+      "must_not_miss": true,
+      "trigger": "Thunderclap onset reaching maximum intensity within seconds to a minute, or headache with meningismus, vomiting or transient loss of consciousness",
+      "discriminators": {
+        "history": [
+          "Sudden severe headache that peaks in under a minute",
+          "Vomiting at onset",
+          "Brief loss of consciousness or a sentinel headache days earlier",
+          "No prior identical headache pattern"
+        ],
+        "exam": [
+          "Neck stiffness or meningismus",
+          "Photophobia",
+          "Altered mental status or focal deficit",
+          "Papilledema or retinal hemorrhage on fundoscopy"
+        ],
+        "labs": [
+          "Xanthochromic CSF that does not clear between tubes",
+          "Elevated CSF red cell count",
+          "Elevated CSF opening pressure"
+        ],
+        "imaging": [
+          "Subarachnoid blood in the basal cisterns or sulci on non-contrast CT",
+          "Aneurysm at a circle of Willis branch point on CT angiography",
+          "Blood not seen on a CT done more than 6 hours after onset, requiring lumbar puncture"
+        ]
+      }
+    },
+    {
+      "name": "Bacterial meningitis",
+      "slug": "bacterial-meningitis",
+      "why_considered": "Headache with fever and neck stiffness is the classic triad and can progress to sepsis and death within hours.",
+      "must_not_miss": true,
+      "trigger": "Fever with headache and neck stiffness, especially with altered mental status, rash or recent infection",
+      "discriminators": {
+        "history": [
+          "Fever and chills",
+          "Rapid progression over hours",
+          "Recent ear, sinus or bloodstream infection",
+          "Unvaccinated or immunocompromised state"
+        ],
+        "exam": [
+          "Nuchal rigidity with positive Brudzinski or Kernig sign",
+          "Altered mental status",
+          "Petechial or purpuric rash",
+          "Focal neurologic deficit or cranial nerve palsy"
+        ],
+        "labs": [
+          "Leukocytosis with neutrophil predominance",
+          "Elevated CSF white cell count with neutrophil predominance",
+          "Elevated CSF protein and low CSF glucose",
+          "Cloudy CSF"
+        ],
+        "imaging": [
+          "CT head first only to exclude a mass before lumbar puncture when focal deficits or altered mental status are present",
+          "Leptomeningeal enhancement on MRI"
+        ]
+      }
+    },
+    {
+      "name": "Migraine",
+      "slug": "migraine",
+      "why_considered": "The most common cause of recurrent moderate to severe headache with nausea and light sensitivity.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Recurrent attacks with an identical pattern over months to years",
+          "Unilateral throbbing pain lasting 4 to 72 hours",
+          "Nausea with light and sound sensitivity",
+          "Visual aura before the pain",
+          "Aggravated by routine physical activity"
+        ],
+        "exam": [
+          "Normal neurologic exam between attacks",
+          "Patient prefers a dark, quiet room during the attack",
+          "No fever, meningismus or focal deficit"
+        ],
+        "labs": [
+          "No diagnostic laboratory abnormality"
+        ],
+        "imaging": [
+          "Normal CT or MRI; imaging not required for typical migraine"
+        ]
+      }
+    },
+    {
+      "name": "Tension-type headache",
+      "slug": "tension-type-headache",
+      "why_considered": "The most common primary headache, with bilateral pressing pain and neck or shoulder tightness.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Bilateral, band-like pressing or tightening pain",
+          "Mild to moderate severity without vomiting",
+          "No aura and no aggravation by routine activity",
+          "Often related to stress, poor sleep or skipped meals"
+        ],
+        "exam": [
+          "Tenderness of pericranial, neck and shoulder muscles",
+          "Normal neurologic exam",
+          "No fever or meningismus"
+        ],
+        "labs": [
+          "No diagnostic laboratory abnormality"
+        ],
+        "imaging": [
+          "Normal CT or MRI; imaging not required"
+        ]
+      }
+    },
+    {
+      "name": "Cluster headache",
+      "slug": "cluster-headache",
+      "why_considered": "Severe strictly unilateral periorbital pain with autonomic features, often mistaken for a sinus or eye problem.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Severe one-sided pain around the eye or temple lasting 15 to 180 minutes",
+          "Attacks in bouts, often at the same time each day and waking the patient at night",
+          "Restlessness or pacing during the attack",
+          "More common in men and associated with alcohol triggers"
+        ],
+        "exam": [
+          "Unilateral conjunctival injection, tearing or eyelid edema",
+          "Unilateral nasal congestion or rhinorrhea",
+          "Ptosis or miosis on the affected side",
+          "Normal neurologic exam otherwise"
+        ],
+        "labs": [
+          "No diagnostic laboratory abnormality"
+        ],
+        "imaging": [
+          "Normal brain MRI; imaging is used to exclude a secondary cause of a cluster-like headache"
+        ]
+      }
+    },
+    {
+      "name": "Giant cell arteritis",
+      "slug": "giant-cell-arteritis",
+      "why_considered": "New headache in an older adult that can cause irreversible vision loss if not treated promptly.",
+      "must_not_miss": true,
+      "trigger": "New headache after age 50, especially with jaw claudication, scalp tenderness or visual symptoms",
+      "discriminators": {
+        "history": [
+          "New headache after age 50",
+          "Jaw claudication with chewing",
+          "Scalp tenderness when brushing hair",
+          "Transient or permanent visual loss",
+          "Constitutional symptoms such as fever, weight loss and malaise"
+        ],
+        "exam": [
+          "Tender, thickened or pulseless temporal artery",
+          "Visual field defect or decreased visual acuity",
+          "Normal neurologic exam otherwise"
+        ],
+        "labs": [
+          "Markedly elevated ESR, often over 50 mm/h",
+          "Elevated CRP"
+        ],
+        "imaging": [
+          "Temporal artery biopsy showing vasculitis is the confirmatory test",
+          "Vascular ultrasound or MRI showing temporal artery wall thickening or halo sign"
+        ]
+      }
+    },
+    {
+      "name": "Idiopathic intracranial hypertension",
+      "slug": "idiopathic-intracranial-hypertension",
+      "why_considered": "Headache with papilledema in a young woman with obesity, without a mass lesion.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Daily or positional headache worse lying down or on waking",
+          "Transient visual obscurations",
+          "Pulsatile tinnitus",
+          "Young woman with obesity or recent weight gain"
+        ],
+        "exam": [
+          "Papilledema on fundoscopy",
+          "Enlarged blind spot or visual field defect",
+          "Normal mental status and no focal deficit"
+        ],
+        "labs": [
+          "Elevated CSF opening pressure with normal CSF cell count, protein and glucose"
+        ],
+        "imaging": [
+          "Empty sella, optic nerve sheath distension and transverse sinus narrowing on MRI",
+          "No mass lesion or hydrocephalus on imaging"
+        ]
+      }
+    },
+    {
+      "name": "Acute angle-closure glaucoma",
+      "slug": "acute-angle-closure-glaucoma",
+      "why_considered": "Severe headache with eye pain and visual change that can cause permanent vision loss if missed.",
+      "must_not_miss": true,
+      "trigger": "Painful red eye with headache, blurred vision or halos around lights",
+      "discriminators": {
+        "history": [
+          "Severe eye pain with headache",
+          "Blurred vision or halos around lights",
+          "Nausea and vomiting",
+          "Recent dim light exposure or anticholinergic medication"
+        ],
+        "exam": [
+          "Red eye with a fixed mid-dilated pupil",
+          "Corneal haze or cloudiness",
+          "Decreased visual acuity",
+          "Hard globe on palpation"
+        ],
+        "labs": [
+          "No diagnostic laboratory abnormality"
+        ],
+        "imaging": [
+          "Elevated intraocular pressure on tonometry is the key finding",
+          "Shallow anterior chamber on slit-lamp examination"
+        ]
+      }
+    },
+    {
+      "name": "Acute sinusitis",
+      "slug": "acute-sinusitis",
+      "why_considered": "Facial pain and pressure with headache, often mistaken for migraine or tension-type headache.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Facial pressure or pain worse when bending forward",
+          "Purulent nasal discharge",
+          "Recent upper respiratory infection",
+          "Fever and malaise"
+        ],
+        "exam": [
+          "Tenderness over the frontal or maxillary sinuses",
+          "Purulent nasal discharge or mucosal edema",
+          "Transillumination dullness"
+        ],
+        "labs": [
+          "No routine laboratory testing needed"
+        ],
+        "imaging": [
+          "Sinus opacification or air-fluid level on CT, reserved for complicated or atypical cases"
+        ]
+      }
+    },
+    {
+      "name": "Medication overuse headache",
+      "slug": "medication-overuse-headache",
+      "why_considered": "Daily or near-daily headache in a patient taking pain relievers frequently, often mistaken for worsening primary headache.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Headache on 15 or more days per month",
+          "Regular use of acetaminophen, NSAIDs, triptans or opioids for headache",
+          "Headache improves briefly after each dose then returns",
+          "History of migraine or tension-type headache"
+        ],
+        "exam": [
+          "Normal neurologic exam",
+          "No red flags"
+        ],
+        "labs": [
+          "No diagnostic laboratory abnormality"
+        ],
+        "imaging": [
+          "Normal CT or MRI; imaging not required"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Intermittent, mild to moderate headache that does not limit activity; normal neurologic exam; no red flags; responds to rest or over-the-counter pain relievers",
+      "moderate": "Moderate to severe headache with nausea, light or sound sensitivity, or functional limitation; normal neurologic exam; no red flags; may need prescription therapy",
+      "severe": "Severe disabling headache with vomiting, marked photophobia or phonophobia, or inability to function; normal neurologic exam; no red flags; requires urgent evaluation and parenteral therapy",
+      "critical": "Headache with any red flag: thunderclap onset, fever or meningismus, focal deficit, altered mental status, papilledema, new headache after age 50, head trauma, cancer or anticoagulation; requires immediate imaging and possible lumbar puncture"
+    },
+    "red_flags": [
+      {
+        "finding": "Thunderclap onset reaching maximum intensity within seconds to a minute",
+        "meaning": "Subarachnoid hemorrhage until proven otherwise; obtain urgent non-contrast CT head and lumbar puncture or CT angiography"
+      },
+      {
+        "finding": "Fever with neck stiffness or meningismus",
+        "meaning": "Meningitis or encephalitis; start empiric antibiotics and antivirals after blood cultures and before lumbar puncture when imaging must come first"
+      },
+      {
+        "finding": "New focal neurologic deficit, weakness, numbness or trouble speaking",
+        "meaning": "Stroke, mass lesion or CNS infection; obtain urgent imaging"
+      },
+      {
+        "finding": "Altered mental status or new confusion",
+        "meaning": "CNS infection, hemorrhage, mass lesion or metabolic cause; check bedside glucose and obtain urgent imaging"
+      },
+      {
+        "finding": "Papilledema on fundoscopy",
+        "meaning": "Raised intracranial pressure from a mass, venous thrombosis or idiopathic intracranial hypertension; obtain urgent imaging before lumbar puncture"
+      },
+      {
+        "finding": "New headache after age 50",
+        "meaning": "Giant cell arteritis, mass lesion or medication overuse; check ESR and CRP and consider temporal artery biopsy"
+      },
+      {
+        "finding": "Headache after head trauma",
+        "meaning": "Intracranial hemorrhage; obtain urgent non-contrast CT head"
+      },
+      {
+        "finding": "Known cancer or anticoagulation with new headache",
+        "meaning": "Metastatic disease or intracranial hemorrhage; obtain urgent imaging"
+      },
+      {
+        "finding": "Painful red eye with visual change",
+        "meaning": "Acute angle-closure glaucoma; check intraocular pressure urgently"
+      },
+      {
+        "finding": "Headache worse when lying down or waking the patient from sleep",
+        "meaning": "Raised intracranial pressure or mass lesion; obtain imaging"
+      },
+      {
+        "finding": "Progressive worsening over weeks with weight loss or night sweats",
+        "meaning": "Malignancy or chronic infection; obtain imaging and systemic workup"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Disability and lost productivity from chronic headache",
+        "timing": "any",
+        "seriousness": "minor",
+        "frequency": "common",
+        "clues": [
+          "Frequent missed work or school",
+          "Reduced activity during attacks",
+          "Escalating analgesic use"
+        ]
+      },
+      {
+        "name": "Medication overuse headache",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Headache on 15 or more days per month",
+          "Regular use of acute pain relievers",
+          "Brief improvement after each dose"
+        ]
+      },
+      {
+        "name": "Progression to chronic migraine",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Increasing attack frequency over months",
+          "Headache on 15 or more days per month for more than 3 months"
+        ]
+      },
+      {
+        "name": "Rebleeding from a ruptured aneurysm",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Thunderclap headache with meningismus",
+          "Sudden deterioration after initial stabilization",
+          "New focal deficit or loss of consciousness"
+        ]
+      },
+      {
+        "name": "Cerebral edema, herniation or death from raised intracranial pressure",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Declining level of consciousness",
+          "Papilledema",
+          "New focal deficit or pupillary asymmetry"
+        ]
+      },
+      {
+        "name": "Permanent vision loss from giant cell arteritis or acute angle-closure glaucoma",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Transient visual obscurations or amaurosis",
+          "Painful red eye with halos",
+          "Jaw claudication or scalp tenderness"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Young children may not describe pain well and instead show irritability, crying, head-holding, vomiting or refusal to play; migraine attacks are often shorter than in adults and may be accompanied by abdominal symptoms."
+      },
+      {
+        "population": "older_adults",
+        "differences": "New headache after age 50 is more concerning for giant cell arteritis, mass lesion or medication overuse; migraine often becomes less severe with age and may lose its aura."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "New or worsening headache in pregnancy or the postpartum period can signal preeclampsia or cerebral venous sinus thrombosis; check blood pressure, urine protein and consider MR venography."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Headache may be the first sign of an opportunistic CNS infection or mass lesion; fever, neck stiffness and focal deficits are weighed more heavily and imaging is obtained earlier."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "How did the headache start — suddenly or gradually?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Thunderclap onset reaching maximum intensity within seconds to a minute suggests subarachnoid hemorrhage; gradual onset over 30 minutes to hours fits a primary headache"
+      },
+      {
+        "question": "When did it start, and how long does each episode last?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Tension-type 30 minutes to several hours; migraine 4 to 72 hours; cluster 15 to 180 minutes; a new pattern over days to weeks suggests a secondary cause"
+      },
+      {
+        "question": "Where is the pain, and what does it feel like?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Bilateral band-like pressing pain favors tension-type; unilateral throbbing favors migraine; strictly one-sided periorbital sharp pain favors cluster"
+      },
+      {
+        "question": "How severe is it, and does it limit what you can do?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Mild to moderate without activity limitation favors tension-type; moderate to severe with disability favors migraine; severe with restlessness favors cluster"
+      },
+      {
+        "question": "What makes it worse or better?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Aggravation by routine physical activity, light or noise favors migraine; relief with rest in a dark quiet room favors migraine; no clear triggers favors tension-type"
+      },
+      {
+        "question": "Do you have nausea, vomiting, or sensitivity to light or sound?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Nausea with photophobia and phonophobia supports migraine; vomiting at onset with meningismus raises concern for subarachnoid hemorrhage or meningitis"
+      },
+      {
+        "question": "Do you get any warning before the pain, such as flashing lights or zigzag lines?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Visual aura before the pain supports migraine with aura"
+      },
+      {
+        "question": "Do you have tearing, redness of one eye, runny nose, or a droopy eyelid with the attacks?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Unilateral cranial autonomic features support cluster headache"
+      },
+      {
+        "question": "Do you have fever, neck stiffness, confusion, weakness, numbness, or trouble speaking?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Any of these moves the patient to an urgent secondary-headache pathway for meningitis, encephalitis, hemorrhage or stroke"
+      },
+      {
+        "question": "Have you had a head injury, or are you on blood thinners?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Head trauma or anticoagulation raises concern for intracranial hemorrhage and warrants urgent imaging"
+      },
+      {
+        "question": "Is this a new headache pattern for you, or the same as your usual headaches?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "A new or changed pattern, especially after age 50, raises concern for a secondary cause such as giant cell arteritis or a mass lesion"
+      },
+      {
+        "question": "How often do you take pain relievers for your headaches?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Frequent use of acetaminophen, NSAIDs, triptans or opioids on 15 or more days per month suggests medication overuse headache"
+      },
+      {
+        "question": "Have you had headaches like this before, and does anyone in your family get migraines?",
+        "category": "family",
+        "importance": "important",
+        "looking_for": "A long-standing recurrent pattern with a family history of migraine supports a primary headache disorder"
+      },
+      {
+        "question": "How much sleep are you getting, and are you skipping meals or under a lot of stress?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Poor sleep, skipped meals, dehydration and stress are common triggers for tension-type headache and migraine"
+      },
+      {
+        "question": "Do you have jaw pain when chewing, scalp tenderness, or any change in vision?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Jaw claudication, scalp tenderness or visual symptoms in a patient over 50 suggest giant cell arteritis and risk of permanent vision loss"
+      },
+      {
+        "question": "Could you be pregnant? When was your last period?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Pregnancy raises concern for preeclampsia and cerebral venous sinus thrombosis and must be excluded before imaging or lumbar puncture"
+      }
+    ],
+    "accepted_names": [
+      "Headache",
+      "Cephalalgia",
+      "Head pain",
+      "Primary headache disorder",
+      "Tension-type headache",
+      "Migraine",
+      "Cluster headache"
+    ],
+    "reasoning_points": [
+      "Characterizes the headache by onset, duration, location, quality, severity, timing, aggravating and relieving factors",
+      "Distinguishes a primary headache disorder from a secondary cause using the presence or absence of red flags",
+      "Identifies thunderclap onset, fever with meningismus, focal deficit, altered mental status, papilledema, new headache after age 50, head trauma, cancer or anticoagulation as red flags requiring urgent imaging",
+      "Recognizes the pattern of migraine: recurrent unilateral throbbing pain lasting 4 to 72 hours with nausea, photophobia and phonophobia, aggravated by routine activity",
+      "Recognizes the pattern of tension-type headache: bilateral pressing pain, mild to moderate, without vomiting or activity aggravation",
+      "Recognizes the pattern of cluster headache: severe strictly unilateral periorbital pain lasting 15 to 180 minutes with ipsilateral autonomic features and restlessness",
+      "Considers medication overuse headache when headaches occur on 15 or more days per month with frequent analgesic use",
+      "Considers giant cell arteritis in a patient over 50 with new headache, jaw claudication, scalp tenderness or visual symptoms and checks ESR and CRP",
+      "Considers acute angle-closure glaucoma when headache is accompanied by a painful red eye and visual change",
+      "Documents a complete neurologic exam including mental status, cranial nerves, motor, sensory, coordination, gait and fundoscopy",
+      "Orders a pregnancy test before imaging or lumbar puncture in anyone who could be pregnant",
+      "Avoids routine imaging in a stable, recurrent primary headache with a normal neurologic exam and no red flags"
+    ],
+    "difficulty": {
+      "easy": [
+        "Young woman with recurrent unilateral throbbing headache, nausea and light sensitivity consistent with migraine",
+        "Bilateral band-like pressing headache with neck and shoulder tightness and no red flags consistent with tension-type headache",
+        "Long-standing stable pattern with a normal neurologic exam"
+      ],
+      "medium": [
+        "Severe one-sided periorbital pain with tearing and nasal congestion consistent with cluster headache",
+        "Daily headache with frequent analgesic use consistent with medication overuse headache",
+        "Facial pressure and purulent nasal discharge consistent with acute sinusitis",
+        "Headache with visual aura that must be distinguished from transient ischemic attack"
+      ],
+      "hard": [
+        "Thunderclap headache with a normal neurologic exam that requires CT and lumbar puncture to exclude subarachnoid hemorrhage",
+        "New headache after age 50 with jaw claudication and elevated ESR consistent with giant cell arteritis",
+        "Headache with papilledema in a young woman with obesity consistent with idiopathic intracranial hypertension",
+        "Headache with a painful red eye and halos consistent with acute angle-closure glaucoma",
+        "Headache in pregnancy or the postpartum period raising concern for preeclampsia or cerebral venous sinus thrombosis",
+        "Child with irritability, vomiting and head-holding who cannot describe the pain"
+      ]
+    }
+  }
+}

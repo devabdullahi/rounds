@@ -205,6 +205,11 @@ struct InterviewView: View {
             Pill(text: m.text, glyph: .check)
                 .frame(maxWidth: .infinity)
                 .transition(.scale(scale: REVEAL.initialScale).combined(with: .opacity).animation(Springs.pop))
+        case .problem:
+            // A failed request: say what went wrong so the student can resend.
+            Pill(text: m.text, fg: Theme.warnText, bg: Theme.warn.opacity(0.12), glyph: .circleX)
+                .frame(maxWidth: .infinity)
+                .transition(.opacity)
         }
     }
 
@@ -400,7 +405,7 @@ struct InterviewView: View {
                     .animation(Springs.pop, value: done)
                 }
                 if done {
-                    Text(m.finding)
+                    Text(session.findings[m.id] ?? "Examining…")
                         .font(.system(size: 14))
                         .foregroundStyle(Theme.dim)
                         .lineSpacing(2)
@@ -415,7 +420,7 @@ struct InterviewView: View {
         }
         .buttonStyle(PressableStyle())
         .disabled(done)
-        .accessibilityLabel(done ? "\(m.title), examined. \(m.finding)" : "Examine: \(m.title)")
+        .accessibilityLabel(done ? "\(m.title), examined. \(session.findings[m.id] ?? "Examining")" : "Examine: \(m.title)")
     }
 }
 

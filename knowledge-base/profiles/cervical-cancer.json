@@ -1,0 +1,1472 @@
+{
+  "schema_version": "0.2",
+  "slug": "cervical-cancer",
+  "triage": {
+    "name": "Cervical Cancer",
+    "case_suitable": true,
+    "reason": "Abnormal bleeding or postcoital spotting with an abnormal Pap and cervical lesion; screening, staging, and prevention make it a core ob/gyn case.",
+    "kind": "disease",
+    "category": "gynecologic malignancy",
+    "organ_systems": [
+      "reproductive"
+    ],
+    "primary_clerkship": "obgyn",
+    "secondary_clerkships": [
+      "internalMedicine",
+      "familyMedicine",
+      "surgery"
+    ],
+    "commonness": "common",
+    "settings": [
+      "clinic",
+      "inpatient"
+    ],
+    "is_cancer": true
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:16:21Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:37:56Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:38:02Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:38:12Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:38:26Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:38:33Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'cervical_cytology' to 'Cervical cytology'",
+        "auto-repaired: workup: renamed 'hpv_test' to 'Hpv test'",
+        "auto-repaired: workup: 'chest x-ray' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'intravenous pyelogram' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'chest x-ray' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'intravenous pyelogram' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "differential cervical-intraepithelial-neoplasia: no profile yet",
+        "differential cervicitis: no profile yet",
+        "differential endometrial-cancer: no profile yet",
+        "differential uterine-leiomyoma: no profile yet",
+        "differential atrophic-vaginitis: no profile yet",
+        "differential cervical-polyp: no profile yet",
+        "differential vaginal-cancer: no profile yet",
+        "differential metastatic-disease-to-cervix: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 30,
+      "typical_max": 65,
+      "peak": "35–55",
+      "possible_min": 15,
+      "possible_max": 90
+    },
+    "sex": "female_only",
+    "demographics": [
+      "Most common in women over age 30; median age at diagnosis is around 50",
+      "Incidence and mortality are higher in Black, Hispanic, and American Indian/Alaska Native women and in women in rural areas, largely reflecting differences in screening access",
+      "More common in countries and communities with limited access to HPV vaccination and cervical cancer screening",
+      "Rare before age 21; invasive cancer in this age group is uncommon"
+    ],
+    "risk_factors": [
+      {
+        "text": "Persistent infection with high-risk human papillomavirus (HPV), especially types 16 and 18",
+        "strength": "strong"
+      },
+      {
+        "text": "No or infrequent cervical cancer screening, or no follow-up after an abnormal screening result",
+        "strength": "strong"
+      },
+      {
+        "text": "Immunosuppression, including HIV infection, solid organ transplant, or long-term immunosuppressive therapy",
+        "strength": "strong"
+      },
+      {
+        "text": "Cigarette smoking or regular secondhand smoke exposure",
+        "strength": "moderate"
+      },
+      {
+        "text": "Early age at first sexual intercourse and multiple lifetime sexual partners",
+        "strength": "moderate"
+      },
+      {
+        "text": "Long-term use of combined oral contraceptive pills (5 or more years)",
+        "strength": "moderate"
+      },
+      {
+        "text": "Grand multiparity (three or more full-term pregnancies)",
+        "strength": "moderate"
+      },
+      {
+        "text": "Obesity",
+        "strength": "weak"
+      },
+      {
+        "text": "In utero exposure to diethylstilbestrol (DES)",
+        "strength": "weak"
+      },
+      {
+        "text": "History of other sexually transmitted infections, such as chlamydia",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "HIV infection or other immunocompromising condition",
+      "Prior cervical precancer (CIN 2 or CIN 3) treated or untreated",
+      "Chronic immunosuppressive therapy"
+    ],
+    "family_history": [
+      "Cervical cancer or cervical precancer in a first-degree relative"
+    ],
+    "social_history": [
+      "Current or former tobacco use",
+      "Limited access to routine gynecologic care or screening",
+      "Multiple sexual partners or a partner with other partners"
+    ],
+    "exposures": [
+      "HPV infection through sexual contact",
+      "Secondhand tobacco smoke",
+      "In utero DES exposure"
+    ],
+    "risk_medications": [
+      "combined oral contraceptive pills",
+      "prednisone",
+      "tacrolimus",
+      "cyclosporine",
+      "azathioprine",
+      "mycophenolate"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I noticed bleeding after sex",
+        "frequency": "common"
+      },
+      {
+        "text": "I've been spotting between my periods",
+        "frequency": "common"
+      },
+      {
+        "text": "My discharge has changed and smells bad",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "I have pain down there during sex",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "My Pap test came back abnormal and I was sent here",
+        "frequency": "common"
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual and often silent; bleeding or discharge may appear months after an abnormal screening result, and many women have no symptoms at diagnosis",
+      "duration": "Weeks to months of intermittent symptoms before presentation",
+      "progression": "Symptoms start as light postcoital or intermenstrual spotting, then become more frequent and heavier; discharge becomes watery, blood-tinged, and foul-smelling as the tumor enlarges",
+      "location": "Vagina, cervix, and lower pelvis",
+      "radiation": "Pelvic or lower back discomfort may radiate to the thighs or sacrum when the tumor extends beyond the cervix",
+      "quality": "Bleeding is painless and often noticed only after intercourse or douching; discharge is watery and may be blood-streaked; pain is a dull pelvic ache or sharp with intercourse",
+      "severity": "Bleeding is usually light at first; pain is mild to moderate early and becomes more severe with advanced disease",
+      "timing": "Bleeding most often after intercourse, between periods, or after menopause; discharge is continuous",
+      "aggravating": [
+        "Sexual intercourse",
+        "Douching or inserting a tampon",
+        "Pelvic straining"
+      ],
+      "relieving": [
+        "Nothing reliably relieves the bleeding",
+        "Rest or over-the-counter acetaminophen may ease pelvic discomfort"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Watery, blood-tinged, or foul-smelling vaginal discharge",
+          "frequency": "common"
+        },
+        {
+          "text": "Pelvic pain or cramping",
+          "frequency": "common"
+        },
+        {
+          "text": "Pain during intercourse",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Fatigue",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Dull lower backache",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Painful or difficult urination",
+          "frequency": "rare"
+        },
+        {
+          "text": "Blood in the urine",
+          "frequency": "rare"
+        },
+        {
+          "text": "Painful or difficult bowel movements, or rectal bleeding",
+          "frequency": "rare"
+        },
+        {
+          "text": "Swelling of one or both legs",
+          "frequency": "rare"
+        },
+        {
+          "text": "Unintentional weight loss",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Fever or chills",
+        "Severe one-sided pelvic pain with a missed period",
+        "Heavy bleeding with clots and passage of tissue in early pregnancy",
+        "Profuse frothy or cottage-cheese discharge with intense itching",
+        "Known pregnancy",
+        "Postmenopausal bleeding while on hormone therapy",
+        "Recent cervical procedure or biopsy",
+        "Bleeding disorder or current anticoagulant use"
+      ]
+    },
+    "ros": [
+      {
+        "system": "reproductive",
+        "positives": [
+          {
+            "text": "Postcoital vaginal bleeding",
+            "frequency": "common"
+          },
+          {
+            "text": "Intermenstrual or postmenopausal spotting",
+            "frequency": "common"
+          },
+          {
+            "text": "Abnormal vaginal discharge",
+            "frequency": "common"
+          },
+          {
+            "text": "Dyspareunia",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Vaginal itching or burning",
+          "Known pregnancy",
+          "Missed period",
+          "Passage of tissue",
+          "Prior abnormal Pap or HPV result that was never followed up"
+        ],
+        "argues_against": [
+          "Profuse frothy discharge with itching (trichomoniasis)",
+          "Curd-like discharge with vulvar itching (candidiasis)",
+          "Heavy bleeding with clots and a missed period (miscarriage or ectopic pregnancy)"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Pelvic or lower abdominal discomfort",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Rectal bleeding",
+          "Painful bowel movements",
+          "Constipation",
+          "Jaundice"
+        ],
+        "argues_against": [
+          "Bloody diarrhea with tenesmus (colorectal or anal cancer)"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [
+          {
+            "text": "Dysuria",
+            "frequency": "rare"
+          },
+          {
+            "text": "Hematuria",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Flank pain",
+          "Urinary frequency or urgency",
+          "Fever"
+        ],
+        "argues_against": [
+          "Dysuria with frequency and urgency (urinary tract infection)"
+        ]
+      },
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fatigue",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Unintentional weight loss",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Fever",
+          "Night sweats",
+          "Loss of appetite"
+        ],
+        "argues_against": [
+          "Fever and night sweats (pelvic inflammatory disease or lymphoma)"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Dull lower backache",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Radiating leg weakness",
+          "Bowel or bladder incontinence"
+        ],
+        "argues_against": [
+          "Sciatica with radicular leg pain"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "older_adults",
+        "how_it_differs": "Women over 65 may present with postmenopausal bleeding after years of normal screening, and the cancer is often more advanced because symptoms are attributed to atrophy or not evaluated.",
+        "missing_classic_features": [
+          "Postcoital bleeding as the first sign",
+          "Recent abnormal Pap test"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "Women with HIV or on immunosuppressive therapy can develop cervical cancer at a younger age, progress faster from precancer to cancer, and are more likely to have persistent HPV with multifocal disease.",
+        "missing_classic_features": [
+          "Long latency from HPV exposure to cancer",
+          "Normal screening history"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Bleeding in pregnancy may be attributed to pregnancy itself, delaying diagnosis; the cancer is usually found on a routine Pap or after a cervical lesion is seen at the first prenatal exam.",
+        "missing_classic_features": [
+          "Postmenopausal bleeding",
+          "Intermenstrual bleeding"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Well-appearing, no distress; may have light spotting on the pad",
+      "moderate": "Mildly uncomfortable, pale if bleeding has been ongoing; not toxic-appearing",
+      "severe": "Ill-appearing, pale, may have visible weight loss or leg swelling",
+      "critical": "Cachectic or toxic-appearing, pale, diaphoretic, in pain, may have brisk vaginal bleeding"
+    },
+    "findings": [
+      {
+        "id": "cervical-lesion",
+        "region": "pelvic",
+        "maneuver": "Perform a speculum exam and inspect the cervix",
+        "finding": "Visible exophytic, friable, or ulcerated cervical lesion that bleeds on contact",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "postcoital-bleeding",
+        "region": "pelvic",
+        "maneuver": "Ask about bleeding after intercourse and inspect the cervix after gentle contact",
+        "finding": "Bleeding from the cervical lesion with minimal manipulation",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "abnormal-discharge",
+        "region": "pelvic",
+        "maneuver": "Inspect the vaginal vault and cervix for discharge",
+        "finding": "Watery, blood-tinged, or foul-smelling vaginal discharge",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "cervical-motion-tenderness",
+        "region": "pelvic",
+        "maneuver": "Perform a bimanual exam and move the cervix",
+        "finding": "Cervical motion tenderness",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "adnexal-mass",
+        "region": "pelvic",
+        "maneuver": "Palpate the adnexa bimanually",
+        "finding": "Adnexal mass or fullness suggesting extension beyond the cervix",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "parametrial-thickening",
+        "region": "pelvic",
+        "maneuver": "Perform a rectovaginal exam to assess the parametria and uterosacral ligaments",
+        "finding": "Thickening, nodularity, or fixation of the parametrium or pelvic sidewall",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "vaginal-extension",
+        "region": "pelvic",
+        "maneuver": "Inspect the vaginal fornices and upper vagina with a speculum",
+        "finding": "Tumor extending onto the vaginal mucosa",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "rectal-mass",
+        "region": "rectal",
+        "maneuver": "Perform a digital rectal exam",
+        "finding": "Anterior rectal mass or mucosal involvement",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "inguinal-lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the inguinal lymph nodes",
+        "finding": "Enlarged, firm inguinal lymph nodes",
+        "frequency": "rare",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "supraclavicular-lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the supraclavicular fossae",
+        "finding": "Enlarged supraclavicular lymph node (suggests distant spread)",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "leg-edema",
+        "region": "extremities",
+        "maneuver": "Inspect and palpate both legs for swelling",
+        "finding": "Unilateral or bilateral lower extremity edema from lymphatic or venous obstruction",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-vulva-vagina",
+        "region": "pelvic",
+        "maneuver": "Inspect the vulva and vagina",
+        "finding": "No vulvar or vaginal ulceration, no frothy or curd-like discharge",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-uterus",
+        "region": "pelvic",
+        "maneuver": "Palpate the uterus bimanually",
+        "finding": "Normal-sized, mobile uterus without fundal tenderness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-cva-tenderness",
+        "region": "abdomen",
+        "maneuver": "Percuss the costovertebral angles",
+        "finding": "No costovertebral angle tenderness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "severe": {
+        "min": 99.5,
+        "max": 101.0
+      }
+    },
+    "hr": {
+      "moderate": {
+        "min": 90,
+        "max": 110
+      },
+      "severe": {
+        "min": 100,
+        "max": 125
+      },
+      "critical": {
+        "min": 115,
+        "max": 140
+      }
+    },
+    "sbp": {
+      "severe": {
+        "min": 90,
+        "max": 105
+      },
+      "critical": {
+        "min": 75,
+        "max": 95
+      }
+    },
+    "dbp": {
+      "severe": {
+        "min": 55,
+        "max": 68
+      },
+      "critical": {
+        "min": 40,
+        "max": 60
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "hgb",
+      "ranges": {
+        "mild": {
+          "min": 10.5,
+          "max": 12.0
+        },
+        "moderate": {
+          "min": 9.0,
+          "max": 11.0
+        },
+        "severe": {
+          "min": 7.0,
+          "max": 9.5
+        },
+        "critical": {
+          "min": 5.5,
+          "max": 8.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Anemia from chronic blood loss; a normal hemoglobin does not exclude cervical cancer."
+    },
+    {
+      "test_id": "ferritin",
+      "ranges": {
+        "mild": {
+          "min": 8,
+          "max": 20
+        },
+        "moderate": {
+          "min": 5,
+          "max": 15
+        },
+        "severe": {
+          "min": 2,
+          "max": 10
+        }
+      },
+      "frequency": "common",
+      "importance": "optional",
+      "caveat": "Low ferritin supports iron deficiency from chronic tumor bleeding."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "moderate": {
+          "min": 1.2,
+          "max": 1.8
+        },
+        "severe": {
+          "min": 1.6,
+          "max": 3.0
+        },
+        "critical": {
+          "min": 2.5,
+          "max": 6.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Rises with ureteral obstruction from advanced pelvic disease; also needed before contrast imaging."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "moderate": {
+          "min": 20,
+          "max": 35
+        },
+        "severe": {
+          "min": 30,
+          "max": 60
+        },
+        "critical": {
+          "min": 45,
+          "max": 90
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Follows creatinine in obstructive uropathy."
+    },
+    {
+      "test_id": "ua_blood",
+      "qualitative": {
+        "moderate": "1+",
+        "severe": "2+"
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Microscopic hematuria from bladder or ureteral involvement; can be confused with a urinary tract infection."
+    },
+    {
+      "test_id": "ua_rbc",
+      "ranges": {
+        "moderate": {
+          "min": 3,
+          "max": 10
+        },
+        "severe": {
+          "min": 8,
+          "max": 30
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "ca",
+      "ranges": {
+        "severe": {
+          "min": 10.5,
+          "max": 12.0
+        },
+        "critical": {
+          "min": 11.5,
+          "max": 13.5
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Hypercalcemia of malignancy suggests distant spread."
+    },
+    {
+      "test_id": "ldh",
+      "ranges": {
+        "moderate": {
+          "min": 280,
+          "max": 450
+        },
+        "severe": {
+          "min": 400,
+          "max": 700
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "albumin",
+      "ranges": {
+        "severe": {
+          "min": 2.5,
+          "max": 3.4
+        },
+        "critical": {
+          "min": 1.8,
+          "max": 2.8
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Low with advanced disease and poor nutritional status."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Negative. Must be checked in any woman of childbearing age with abnormal bleeding before imaging and biopsy."
+    }
+  ],
+  "imaging": [
+    {
+      "study": "Pelvic MRI with and without IV contrast",
+      "modality": "mri",
+      "preferred_when": "Preferred for local staging and treatment planning",
+      "findings": [
+        {
+          "text": "Cervical mass with intermediate signal on T2-weighted images and enhancement after contrast",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Tumor size and depth of cervical stromal invasion",
+          "frequency": "common"
+        },
+        {
+          "text": "Parametrial extension",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Vaginal or uterine corpus extension",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Pelvic lymphadenopathy",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Bladder or rectal wall involvement",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "CT abdomen and pelvis with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Assessment of distant spread and lymph nodes",
+      "findings": [
+        {
+          "text": "Cervical mass, often with heterogeneous enhancement",
+          "frequency": "common"
+        },
+        {
+          "text": "Enlarged pelvic or retroperitoneal lymph nodes",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Hydronephrosis from ureteral obstruction",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Liver, lung base, or peritoneal metastases",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Chest x-ray",
+      "modality": "xray",
+      "preferred_when": "Initial staging when chest CT is not available",
+      "findings": [
+        {
+          "text": "Normal chest",
+          "frequency": "common"
+        },
+        {
+          "text": "Pulmonary nodule or mass suggesting metastasis",
+          "frequency": "rare"
+        },
+        {
+          "text": "Pleural effusion",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "PET-CT whole body with FDG",
+      "modality": "nuclear",
+      "preferred_when": "Advanced disease or when distant spread is suspected",
+      "findings": [
+        {
+          "text": "FDG-avid cervical mass",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "FDG-avid pelvic or para-aortic lymph nodes",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Distant FDG-avid metastases (lung, liver, bone, supraclavicular nodes)",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Transvaginal pelvic ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "First-line evaluation of abnormal uterine bleeding",
+      "findings": [
+        {
+          "text": "Cervical or lower uterine mass",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Thickened or irregular cervix",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Nonspecific findings; a normal ultrasound does not exclude cervical cancer",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "Intravenous pyelogram",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Ureteral obstruction or hydronephrosis",
+          "frequency": "sometimes"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Anemia from chronic bleeding and baseline blood counts before biopsy or surgery"
+      },
+      {
+        "test": "bmp",
+        "why": "Renal function before contrast imaging and to detect obstructive uropathy"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy in any woman of childbearing age with abnormal bleeding"
+      },
+      {
+        "test": "Cervical cytology",
+        "why": "Pap test if not recently done; identifies abnormal squamous or glandular cells"
+      },
+      {
+        "test": "Hpv test",
+        "why": "High-risk HPV testing supports the diagnosis and risk stratification"
+      },
+      {
+        "test": "Colposcopy with directed cervical biopsy",
+        "why": "Direct visualization and tissue sampling of the visible cervical lesion"
+      },
+      {
+        "test": "Pelvic MRI with and without IV contrast",
+        "why": "Local staging and treatment planning"
+      },
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Assesses nodal and distant spread",
+        "only_if": "advanced disease or distant metastasis is suspected"
+      },
+      {
+        "test": "Chest x-ray",
+        "why": "Baseline staging for lung metastasis",
+        "only_if": "chest CT is not planned"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Cervical biopsy",
+        "why": "Histologic confirmation of invasive cervical carcinoma and tumor type"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "ferritin",
+        "why": "Confirms iron deficiency from chronic blood loss"
+      },
+      {
+        "test": "ldh",
+        "why": "Nonspecific marker of tumor burden"
+      },
+      {
+        "test": "ca",
+        "why": "Detects hypercalcemia of malignancy",
+        "only_if": "advanced or metastatic disease is suspected"
+      },
+      {
+        "test": "PET-CT whole body with FDG",
+        "why": "Detects occult nodal and distant metastases",
+        "only_if": "advanced disease or equivocal conventional imaging"
+      },
+      {
+        "test": "Transvaginal pelvic ultrasound",
+        "why": "Evaluates abnormal uterine bleeding and pelvic mass",
+        "only_if": "the cervix cannot be adequately assessed or another pelvic source is suspected"
+      },
+      {
+        "test": "Intravenous pyelogram",
+        "why": "Assesses ureteral obstruction",
+        "only_if": "hydronephrosis is suspected and cross-sectional imaging is unavailable"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Chest x-ray",
+        "why": "Not needed when chest CT or PET-CT is already planned"
+      },
+      {
+        "test": "Intravenous pyelogram",
+        "why": "Replaced by CT or MRI in current practice"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in the evaluation of abnormal vaginal bleeding or pelvic mass"
+      },
+      {
+        "test": "lipase",
+        "why": "Not indicated unless epigastric pain suggests pancreatitis"
+      },
+      {
+        "test": "ua",
+        "why": "Not routinely needed; urinalysis is only for urinary symptoms or suspected obstruction"
+      }
+    ],
+    "decision_points": [
+      "Pregnancy test before imaging and biopsy in anyone who could be pregnant",
+      "Confirm the diagnosis with cervical biopsy before staging or treatment",
+      "Use MRI for local staging and CT or PET-CT for distant spread",
+      "Refer to gynecologic oncology for staging and treatment planning"
+    ],
+    "criteria": [
+      {
+        "name": "FIGO staging of cervical cancer",
+        "summary": "Stage I is confined to the cervix; stage II extends beyond the cervix but not to the pelvic wall or lower vagina; stage III involves the lower vagina, pelvic wall, hydronephrosis, or pelvic/para-aortic nodes; stage IV involves the bladder or rectal mucosa or distant organs. Staging is clinical with imaging and examination, and lymph node status is now included.",
+        "items": [
+          "Stage I: confined to the cervix",
+          "Stage II: beyond the cervix, not to the pelvic wall or lower third of the vagina",
+          "Stage III: lower third of the vagina, pelvic wall, hydronephrosis, or pelvic/para-aortic nodes",
+          "Stage IV: bladder or rectal mucosa, or distant metastasis"
+        ]
+      }
+    ],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Cervical intraepithelial neoplasia (high-grade precancer)",
+      "slug": "cervical-intraepithelial-neoplasia",
+      "why_considered": "Abnormal Pap or HPV result with postcoital spotting in a woman of screening age",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Abnormal Pap or positive high-risk HPV test without systemic symptoms",
+          "Spotting after intercourse but no heavy or continuous bleeding",
+          "No weight loss, no leg swelling, no bowel or bladder symptoms"
+        ],
+        "exam": [
+          "Cervix may look normal or show a small acetowhite area on colposcopy",
+          "No friable exophytic mass, no parametrial thickening on rectovaginal exam"
+        ],
+        "labs": [
+          "High-risk HPV positive",
+          "Normal hemoglobin"
+        ],
+        "imaging": [
+          "No cervical mass or parametrial extension on MRI",
+          "No lymphadenopathy or hydronephrosis"
+        ]
+      }
+    },
+    {
+      "name": "Cervicitis (chlamydia, gonorrhea, trichomonas, or herpes)",
+      "slug": "cervicitis",
+      "why_considered": "Postcoital bleeding, abnormal discharge, and dyspareunia in a sexually active woman",
+      "must_not_miss": true,
+      "trigger": "Mucopurulent discharge, cervical motion tenderness, or fever in a sexually active patient",
+      "discriminators": {
+        "history": [
+          "New or multiple sexual partners",
+          "Purulent or frothy discharge with odor",
+          "Fever or lower abdominal pain suggesting pelvic inflammatory disease"
+        ],
+        "exam": [
+          "Mucopurulent endocervical discharge",
+          "Cervical motion tenderness and adnexal tenderness",
+          "Cervix bleeds easily but has no discrete tumor"
+        ],
+        "labs": [
+          "Positive NAAT for chlamydia or gonorrhea",
+          "Wet mount showing trichomonads or clue cells",
+          "Leukocytosis"
+        ],
+        "imaging": [
+          "No cervical mass on ultrasound or MRI",
+          "Tubo-ovarian complex or fluid-filled tube if PID"
+        ]
+      }
+    },
+    {
+      "name": "Endometrial cancer",
+      "slug": "endometrial-cancer",
+      "why_considered": "Postmenopausal or abnormal uterine bleeding in an older woman",
+      "must_not_miss": true,
+      "trigger": "Postmenopausal bleeding with a thickened endometrium on ultrasound",
+      "discriminators": {
+        "history": [
+          "Postmenopausal bleeding rather than postcoital spotting",
+          "Obesity, diabetes, or unopposed estrogen exposure",
+          "No history of abnormal Pap or high-risk HPV"
+        ],
+        "exam": [
+          "Normal-appearing cervix",
+          "Uterus may be enlarged or tender",
+          "No cervical lesion or parametrial fixation"
+        ],
+        "labs": [
+          "High-risk HPV often negative",
+          "Pap may be normal or show glandular cells of endometrial origin"
+        ],
+        "imaging": [
+          "Thickened endometrium on transvaginal ultrasound",
+          "Endometrial mass on MRI or biopsy-proven adenocarcinoma of the endometrium"
+        ]
+      }
+    },
+    {
+      "name": "Uterine leiomyoma (fibroid) with abnormal bleeding",
+      "slug": "uterine-leiomyoma",
+      "why_considered": "Heavy or irregular vaginal bleeding with pelvic pressure in a reproductive-age woman",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Heavy menstrual bleeding with clots rather than postcoital spotting",
+          "Pelvic pressure, urinary frequency, or constipation",
+          "No abnormal Pap or high-risk HPV"
+        ],
+        "exam": [
+          "Enlarged, irregular, firm uterus",
+          "Normal cervix without a friable lesion"
+        ],
+        "labs": [
+          "Anemia from menorrhagia",
+          "Normal Pap and HPV testing"
+        ],
+        "imaging": [
+          "Well-circumscribed myometrial masses on ultrasound or MRI",
+          "No cervical mass or parametrial extension"
+        ]
+      }
+    },
+    {
+      "name": "Atrophic vaginitis",
+      "slug": "atrophic-vaginitis",
+      "why_considered": "Postmenopausal spotting, dryness, and dyspareunia",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Gradual onset of vaginal dryness and burning",
+          "Light spotting after intercourse or wiping",
+          "No foul-smelling discharge or weight loss"
+        ],
+        "exam": [
+          "Pale, thin, dry vaginal mucosa with loss of rugae",
+          "Cervix appears atrophic without a discrete mass",
+          "No parametrial thickening"
+        ],
+        "labs": [
+          "Normal Pap and negative high-risk HPV",
+          "Normal hemoglobin"
+        ],
+        "imaging": [
+          "Thin endometrium and no cervical mass on ultrasound"
+        ]
+      }
+    },
+    {
+      "name": "Cervical polyp",
+      "slug": "cervical-polyp",
+      "why_considered": "Postcoital spotting with a visible cervical lesion",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Intermittent light spotting after intercourse or douching",
+          "No systemic symptoms"
+        ],
+        "exam": [
+          "Smooth, soft, pedunculated lesion protruding from the external os",
+          "Does not feel friable or fixed",
+          "No parametrial thickening"
+        ],
+        "labs": [
+          "Normal Pap and HPV testing"
+        ],
+        "imaging": [
+          "No cervical mass or invasion on MRI",
+          "Polyp seen on ultrasound as a small echogenic lesion at the cervix"
+        ]
+      }
+    },
+    {
+      "name": "Vaginal cancer",
+      "slug": "vaginal-cancer",
+      "why_considered": "Abnormal vaginal bleeding or discharge with a vaginal lesion",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Bleeding or discharge not clearly related to the cervix",
+          "May have prior HPV-related disease"
+        ],
+        "exam": [
+          "Ulcerated or exophytic lesion on the vaginal wall, not the cervix",
+          "Cervix itself appears normal"
+        ],
+        "labs": [
+          "High-risk HPV may be positive",
+          "Biopsy of the vaginal lesion shows carcinoma"
+        ],
+        "imaging": [
+          "MRI shows a vaginal mass separate from the cervix",
+          "Cervix is uninvolved"
+        ]
+      }
+    },
+    {
+      "name": "Metastatic disease to the cervix (e.g., from breast or colon)",
+      "slug": "metastatic-disease-to-cervix",
+      "why_considered": "Cervical mass in a woman with a known or prior malignancy",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Known breast, colon, or other primary cancer",
+          "Symptoms may be systemic rather than vaginal bleeding"
+        ],
+        "exam": [
+          "Cervical mass that may be firm or nodular",
+          "Findings of the primary tumor elsewhere"
+        ],
+        "labs": [
+          "Tumor markers or pathology consistent with the primary cancer",
+          "High-risk HPV often negative"
+        ],
+        "imaging": [
+          "Widespread metastatic disease on CT or PET-CT",
+          "Biopsy shows histology matching the primary tumor, not primary cervical carcinoma"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Early, screen-detected or minimally symptomatic disease confined to the cervix; light postcoital spotting, no anemia, normal renal function",
+      "moderate": "Locally advanced disease with visible cervical tumor, persistent bleeding or discharge, mild anemia, and pelvic pain; no hydronephrosis or distant spread",
+      "severe": "Advanced local disease with parametrial or pelvic sidewall involvement, hydronephrosis, significant anemia, or pelvic pain requiring opioids",
+      "critical": "Metastatic or bulky disease with ureteral obstruction and renal failure, brisk vaginal hemorrhage, sepsis from necrotic tumor, or venous thromboembolism"
+    },
+    "red_flags": [
+      {
+        "finding": "Heavy vaginal bleeding with hemodynamic instability",
+        "meaning": "Tumor erosion into a vessel; needs urgent packing, embolization, or radiation"
+      },
+      {
+        "finding": "Flank pain, oliguria, or rising creatinine",
+        "meaning": "Ureteral obstruction from advanced pelvic disease; may require stenting or nephrostomy"
+      },
+      {
+        "finding": "Fever with foul-smelling necrotic discharge",
+        "meaning": "Infected necrotic tumor or pyometra; risk of sepsis"
+      },
+      {
+        "finding": "Unilateral leg swelling with pain",
+        "meaning": "Deep vein thrombosis or lymphatic obstruction from pelvic disease"
+      },
+      {
+        "finding": "Rectal bleeding or painful bowel movements",
+        "meaning": "Rectal or parametrial involvement suggesting stage IVA disease"
+      },
+      {
+        "finding": "Rapidly enlarging cervical mass or new supraclavicular node",
+        "meaning": "Progressive or metastatic disease requiring restaging"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Acute vaginal hemorrhage",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Brisk bleeding from a friable cervical tumor",
+          "Tachycardia and hypotension",
+          "Falling hemoglobin"
+        ]
+      },
+      {
+        "name": "Obstructive uropathy and renal failure",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Flank pain",
+          "Rising creatinine",
+          "Hydronephrosis on CT or ultrasound"
+        ]
+      },
+      {
+        "name": "Infected necrotic tumor or pyometra",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Fever",
+          "Foul-smelling discharge",
+          "Leukocytosis"
+        ]
+      },
+      {
+        "name": "Venous thromboembolism",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Unilateral leg swelling",
+          "Pleuritic chest pain or dyspnea",
+          "Hypoxia"
+        ]
+      },
+      {
+        "name": "Vesicovaginal or rectovaginal fistula",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Continuous urine or stool leakage from the vagina",
+          "Prior pelvic radiation"
+        ]
+      },
+      {
+        "name": "Lymphedema of the legs",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Persistent leg swelling after treatment",
+          "History of pelvic lymph node dissection or radiation"
+        ]
+      },
+      {
+        "name": "Radiation proctitis or cystitis",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Rectal bleeding or hematuria after pelvic radiation",
+          "Tenesmus or urinary urgency"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "pregnancy",
+        "differences": "Cervical cancer is the most common gynecologic malignancy in pregnancy; abnormal bleeding may be attributed to pregnancy, delaying diagnosis. Staging is limited to avoid fetal radiation, and treatment is timed by gestational age and stage."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Women with HIV or on immunosuppressive therapy develop cervical cancer at a younger age, progress faster from precancer to cancer, and have higher rates of persistent HPV and multifocal disease."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Women over 65 may present with postmenopausal bleeding after years of normal screening; disease is often more advanced because symptoms are attributed to atrophy and screening may have stopped."
+      },
+      {
+        "population": "obesity",
+        "differences": "Obesity is a risk factor and can make pelvic examination and imaging more difficult, potentially delaying detection of a cervical mass."
+      }
+    ]
+  },
+  "cancer": {
+    "screening": "Screening for cervical cancer is recommended starting at age 21. Options include cervical cytology alone every 3 years, high-risk HPV testing alone every 5 years, or co-testing with cytology and HPV every 5 years for women aged 30 to 65. Screening may stop after age 65 in women with adequate prior normal results and no history of high-grade precancer. HPV vaccination is recommended for preteens and for everyone through age 26 who is not already vaccinated.",
+    "pathology": "Most cervical cancers are squamous cell carcinomas arising from the transformation zone. Adenocarcinoma and adenosquamous carcinoma arise from glandular epithelium and are increasingly common. Rare types include small cell, neuroendocrine, and clear cell carcinoma (the latter associated with in utero DES exposure).",
+    "staging_concepts": "Staging is clinical and uses pelvic examination, imaging, and sometimes examination under anesthesia. Stage I is confined to the cervix; stage II extends beyond the cervix but not to the pelvic wall or lower third of the vagina; stage III involves the lower third of the vagina, pelvic wall, hydronephrosis, or pelvic or para-aortic lymph nodes; stage IV involves the bladder or rectal mucosa or distant metastasis. Lymph node status is now included in staging.",
+    "metastatic_sites": [
+      "Pelvic and para-aortic lymph nodes",
+      "Lung",
+      "Liver",
+      "Bone",
+      "Supraclavicular lymph nodes",
+      "Peritoneum"
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "When was your last Pap test or HPV test, and what did it show?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "No screening, overdue screening, or an abnormal result that was never followed up; supports a cervical origin"
+      },
+      {
+        "question": "Have you had any bleeding after sex or between your periods?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Postcoital or intermenstrual spotting, the classic early symptom of a cervical lesion"
+      },
+      {
+        "question": "Have you gone through menopause, and have you had any bleeding since then?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Postmenopausal bleeding; in an older woman this raises concern for cervical or endometrial cancer"
+      },
+      {
+        "question": "Has your vaginal discharge changed in color, amount, or smell?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Watery, blood-tinged, or foul-smelling discharge from a necrotic or enlarging tumor"
+      },
+      {
+        "question": "Do you have pelvic pain or pain during sex?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Dull pelvic ache or dyspareunia suggesting tumor extension beyond the cervix"
+      },
+      {
+        "question": "Any pain or difficulty with urination, blood in your urine, or trouble with bowel movements?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Urinary or rectal symptoms suggesting bladder or rectal involvement (stage IVA)"
+      },
+      {
+        "question": "Have you noticed swelling in your legs or a dull backache?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Lymphedema or lumbosacral pain from pelvic sidewall or nodal disease"
+      },
+      {
+        "question": "Have you had unprotected sex, multiple partners, or a partner with other partners?",
+        "category": "sexual",
+        "importance": "important",
+        "looking_for": "Exposure risk for high-risk HPV, the cause of nearly all cervical cancers"
+      },
+      {
+        "question": "Have you ever been diagnosed with HIV or another condition, or taken medicine, that weakens your immune system?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Immunosuppression, which speeds progression from HPV infection to cancer"
+      },
+      {
+        "question": "Do you smoke, or are you regularly around secondhand smoke?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Tobacco exposure, a cofactor for cervical carcinogenesis"
+      },
+      {
+        "question": "Have you been vaccinated against HPV?",
+        "category": "pmh",
+        "importance": "optional",
+        "looking_for": "HPV vaccination status; vaccination lowers but does not eliminate risk"
+      },
+      {
+        "question": "How many full-term pregnancies have you had, and have you used birth control pills for several years?",
+        "category": "obstetric",
+        "importance": "optional",
+        "looking_for": "Grand multiparity or long-term oral contraceptive use, both moderate risk factors"
+      },
+      {
+        "question": "Has anyone in your family had cervical cancer or a cervical precancer?",
+        "category": "family",
+        "importance": "optional",
+        "looking_for": "Family history that may reflect shared risk or screening patterns"
+      },
+      {
+        "question": "Could you be pregnant? When was your last period?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Excludes pregnancy-related bleeding and must be known before imaging and biopsy"
+      },
+      {
+        "question": "Have you had heavy bleeding with clots, passage of tissue, or severe one-sided pelvic pain?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Absent; these point to miscarriage, ectopic pregnancy, or another acute cause rather than cancer"
+      }
+    ],
+    "accepted_names": [
+      "Cervical cancer",
+      "Carcinoma of the cervix",
+      "Invasive cervical carcinoma",
+      "Cervical carcinoma",
+      "Cancer of the cervix"
+    ],
+    "reasoning_points": [
+      "Postcoital or intermenstrual vaginal bleeding in a woman of screening age, often with an abnormal or overdue Pap or HPV test",
+      "Watery, blood-tinged, or foul-smelling vaginal discharge and pelvic pain or dyspareunia",
+      "A visible friable, exophytic, or ulcerated cervical lesion that bleeds on contact at speculum exam",
+      "Parametrial thickening or fixation on rectovaginal exam suggesting extension beyond the cervix",
+      "Persistent high-risk HPV infection as the underlying cause, with smoking or immunosuppression as cofactors",
+      "Pregnancy excluded with a negative hCG before imaging and biopsy",
+      "Histologic confirmation of invasive carcinoma on cervical biopsy",
+      "Staging with pelvic MRI for local extent and CT or PET-CT for nodal and distant spread"
+    ],
+    "difficulty": {
+      "easy": [
+        "Woman in her 40s with postcoital spotting and a visibly friable, bleeding cervical mass",
+        "Long overdue for screening with a remote abnormal Pap that was never followed up",
+        "Classic watery, foul-smelling discharge with intermenstrual bleeding",
+        "Biopsy confirms squamous cell carcinoma of the cervix"
+      ],
+      "medium": [
+        "Postmenopausal woman with light spotting attributed to atrophy",
+        "Woman with HIV and rapid progression from HPV to invasive disease",
+        "Bleeding in pregnancy attributed to pregnancy itself, delaying diagnosis",
+        "Normal-appearing cervix with an abnormal Pap and high-risk HPV, requiring colposcopy"
+      ],
+      "hard": [
+        "Older woman with postmenopausal bleeding and a thickened endometrium, mimicking endometrial cancer",
+        "Cervical mass in a woman with a prior breast or colon cancer, raising concern for metastasis to the cervix",
+        "Advanced disease presenting with flank pain and rising creatinine from ureteral obstruction",
+        "Sexually active woman with discharge and cervical motion tenderness, mimicking cervicitis or pelvic inflammatory disease"
+      ]
+    }
+  }
+}

@@ -65,7 +65,7 @@ struct HomeView: View {
             GlowBackdrop()   // Metal shader paints the background colour plus the glows
         }
         .task { await play() }
-        .sheet(isPresented: $editingFocus) { FocusSheet() }
+        .sheet(isPresented: $editingFocus) { FocusSheet(counts: app.topicCounts) }
         #if DEBUG
         .onAppear { if DebugLaunch.screen == "focus-sheet" { editingFocus = true } }
         #endif
@@ -132,7 +132,7 @@ struct HomeView: View {
                 // An empty focus says so beside the chip, on the same line, so the deck doesn't move.
                 HStack(spacing: 10) {
                     focusChip
-                    if !focus.isMix, Ward.count(for: focus) == 0 {
+                    if !focus.isMix, focus.items.allSatisfy({ app.conditionCount(for: $0) == 0 }) {
                         Text("None yet · showing a mix")
                             .font(.system(size: 13))
                             .foregroundStyle(Theme.muted)

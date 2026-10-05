@@ -1,0 +1,1701 @@
+{
+  "schema_version": "0.2",
+  "slug": "chest-pain",
+  "triage": {
+    "name": "Chest Pain",
+    "case_suitable": true,
+    "reason": "Classic undifferentiated symptom with a broad, high-stakes differential (ACS, PE, dissection, GERD, musculoskeletal) reachable by history, exam, ECG and labs.",
+    "kind": "symptom",
+    "category": "undifferentiated cardiopulmonary symptom",
+    "organ_systems": [
+      "cardiovascular"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "emergency",
+      "familyMedicine"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "emergency",
+      "clinic",
+      "inpatient"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:16:30Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:53:18Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:53:25Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:53:48Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:54:00Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:54:09Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'ecg' to 'ECG'",
+        "auto-repaired: workup: 'hs_tnt' was in ['initial', 'confirmatory'], kept ['initial']",
+        "auto-repaired: workup: 'ct angiography of the chest with iv contrast' was in ['confirmatory', 'not_indicated'], kept ['not_indicated', 'confirmatory']",
+        "auto-repaired: workup: 'coronary angiography' was in ['confirmatory', 'not_indicated'], kept ['not_indicated', 'confirmatory']",
+        "auto-repaired: workup: 'd_dimer' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'lipase' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ct angiography of the chest with iv contrast' was in ['confirmatory', 'not_indicated'], kept ['not_indicated', 'confirmatory']",
+        "auto-repaired: workup: 'coronary angiography' was in ['confirmatory', 'not_indicated'], kept ['not_indicated', 'confirmatory']",
+        "auto-repaired: workup: 'd_dimer' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'lipase' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "differential acute-coronary-syndrome: no profile yet",
+        "differential pulmonary-embolism: no profile yet",
+        "differential aortic-dissection: no profile yet",
+        "differential pericarditis: no profile yet",
+        "differential pneumothorax: no profile yet",
+        "differential community-acquired-pneumonia: no profile yet",
+        "differential gastroesophageal-reflux-disease: no profile yet",
+        "differential costochondritis: no profile yet",
+        "differential panic-attack: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 25,
+      "typical_max": 85,
+      "peak": "50–75",
+      "possible_min": 12,
+      "possible_max": 100
+    },
+    "sex": "either",
+    "demographics": [
+      "Chest pain is one of the most common reasons for emergency department visits in the US",
+      "The mix of causes shifts with age: younger patients more often have musculoskeletal, gastrointestinal, or anxiety-related causes, while older patients more often have coronary or other cardiopulmonary causes",
+      "Men tend to present with chest pain from coronary causes at younger ages than women"
+    ],
+    "risk_factors": [
+      {
+        "text": "Coronary artery disease or prior myocardial infarction",
+        "strength": "strong"
+      },
+      {
+        "text": "Diabetes mellitus",
+        "strength": "strong"
+      },
+      {
+        "text": "Hypertension",
+        "strength": "strong"
+      },
+      {
+        "text": "Hyperlipidemia",
+        "strength": "strong"
+      },
+      {
+        "text": "Current or recent tobacco smoking",
+        "strength": "strong"
+      },
+      {
+        "text": "Family history of premature coronary artery disease",
+        "strength": "moderate"
+      },
+      {
+        "text": "Recent immobilization, surgery, or long travel (venous thromboembolism risk)",
+        "strength": "moderate"
+      },
+      {
+        "text": "Known gastroesophageal reflux disease",
+        "strength": "moderate"
+      },
+      {
+        "text": "Recent heavy lifting or new strenuous exercise",
+        "strength": "weak"
+      },
+      {
+        "text": "Recent viral illness with coughing",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Coronary artery disease",
+      "Heart failure",
+      "Atrial fibrillation",
+      "Diabetes mellitus",
+      "Chronic obstructive pulmonary disease",
+      "Gastroesophageal reflux disease",
+      "Anxiety or panic disorder",
+      "Prior venous thromboembolism"
+    ],
+    "family_history": [
+      "Premature coronary artery disease in a first-degree relative",
+      "Sudden cardiac death in a first-degree relative",
+      "Venous thromboembolism in a first-degree relative"
+    ],
+    "social_history": [
+      "Tobacco use",
+      "Alcohol use",
+      "Cocaine or stimulant use",
+      "Sedentary lifestyle",
+      "Occupational or recreational heavy lifting"
+    ],
+    "exposures": [
+      "Recent long-distance travel",
+      "Recent surgery or hospitalization",
+      "Recent immobilization or cast",
+      "Sick contacts with respiratory illness"
+    ],
+    "risk_medications": [
+      "estrogen-containing contraceptives",
+      "hormone replacement therapy",
+      "cocaine",
+      "amphetamines",
+      "triptans",
+      "nonsteroidal anti-inflammatory drugs",
+      "chemotherapy agents"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I have pain in my chest",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "It feels like pressure or tightness in the middle of my chest",
+        "frequency": "common"
+      },
+      {
+        "text": "The pain gets worse when I breathe in or lie down",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "I feel like I can't catch my breath",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Varies by cause: sudden and maximal at onset suggests a vascular or pulmonary event, while gradual onset over minutes to hours is more typical of coronary or gastrointestinal causes",
+      "duration": "From minutes to weeks depending on cause; cardiac pain often lasts minutes to tens of minutes, while musculoskeletal and gastrointestinal pain can persist for days",
+      "progression": "May be constant, intermittent, or crescendo; pain that is worsening or occurring at rest is concerning for an acute coronary syndrome",
+      "location": "Often substernal or left-sided, but can be anywhere in the chest, epigastrium, back, or shoulders",
+      "radiation": "May radiate to the left arm, both arms, jaw, neck, back, or epigastrium",
+      "quality": "Described as pressure, tightness, squeezing, heaviness, burning, sharp, or tearing depending on the cause",
+      "severity": "Ranges from mild discomfort to severe; severity alone does not distinguish dangerous from benign causes",
+      "timing": "May be exertional, postprandial, positional, pleuritic, or constant",
+      "aggravating": [
+        "Exertion",
+        "Emotional stress",
+        "Deep breathing",
+        "Coughing",
+        "Lying flat",
+        "Pressing on the chest wall",
+        "Eating a large meal"
+      ],
+      "relieving": [
+        "Rest",
+        "Nitroglycerin",
+        "Sitting upright or leaning forward",
+        "Antacids",
+        "Analgesics"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Shortness of breath",
+          "frequency": "common"
+        },
+        {
+          "text": "Sweating",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Nausea or vomiting",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Lightheadedness or dizziness",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Palpitations",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Heartburn or sour taste in the mouth",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Cough",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Pain worsened by movement or breathing",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Fever",
+          "frequency": "rare"
+        },
+        {
+          "text": "Coughing up blood",
+          "frequency": "rare"
+        },
+        {
+          "text": "Fainting",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Tearing pain radiating to the back",
+        "Pain that is maximal at the very first instant",
+        "Coughing up blood",
+        "Unilateral leg swelling or calf pain",
+        "Recent long travel or immobilization",
+        "Fever with productive cough",
+        "Pain reproduced only by pressing on the chest wall",
+        "Symptoms that resolve completely with antacids"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Feeling sweaty or clammy",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Fatigue",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Feeling feverish",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Unintentional weight loss",
+          "Night sweats"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [
+          {
+            "text": "Palpitations",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Pain brought on by exertion",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Leg swelling",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Fainting",
+          "Known heart murmur",
+          "Prior heart attack"
+        ],
+        "argues_against": [
+          "Pain that is purely positional and reproducible on chest wall palpation"
+        ]
+      },
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "Shortness of breath",
+            "frequency": "common"
+          },
+          {
+            "text": "Cough",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Pain worse with deep breath",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Coughing up blood",
+          "Wheezing",
+          "Recent pneumonia"
+        ],
+        "argues_against": [
+          "Pleuritic pain with clear lungs and no dyspnea"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Heartburn or acid regurgitation",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Nausea",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Pain after meals or when lying down",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Vomiting blood",
+          "Black or bloody stools",
+          "Difficulty swallowing"
+        ],
+        "argues_against": [
+          "Pain clearly related to meals and relieved by antacids"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Pain reproduced by pressing on the chest",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Pain with twisting or reaching",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Recent trauma",
+          "Back pain",
+          "Joint swelling"
+        ],
+        "argues_against": [
+          "Pain that is constant and not reproducible with movement or palpation"
+        ]
+      },
+      {
+        "system": "psychiatric",
+        "positives": [
+          {
+            "text": "Feeling anxious or panicky",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Racing thoughts",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Suicidal ideation",
+          "Recent major life stressor"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Comfortable, no distress, speaking in full sentences",
+      "moderate": "Mild distress, diaphoretic, prefers to sit upright",
+      "severe": "Marked distress, pale and diaphoretic, speaking in short sentences",
+      "critical": "Toxic or moribund, altered mental status, unable to speak, may be hypotensive or unresponsive"
+    },
+    "findings": [
+      {
+        "id": "chest-wall-reproducibility",
+        "region": "musculoskeletal",
+        "maneuver": "Palpate the anterior chest wall, including the sternum, costochondral junctions, and pectoral muscles",
+        "finding": "Reproducible tenderness that recreates the patient's pain",
+        "frequency": "common",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "normal-lung-exam",
+        "region": "lung",
+        "maneuver": "Auscultate all lung fields and percuss the chest",
+        "finding": "Clear breath sounds without crackles, wheezes, or dullness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-cardiac-exam",
+        "region": "cardiac",
+        "maneuver": "Auscultate the heart, palpate the precordium, and assess jugular venous pressure",
+        "finding": "Regular rate and rhythm, no murmurs, rubs, or gallops, normal JVP",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-abdominal-exam",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen and auscultate bowel sounds",
+        "finding": "Soft, non-tender, no organomegaly or masses",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-extremities",
+        "region": "extremities",
+        "maneuver": "Inspect and palpate the lower extremities for edema, calf tenderness, and asymmetry",
+        "finding": "No unilateral swelling, calf tenderness, or edema",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-skin",
+        "region": "skin",
+        "maneuver": "Inspect the skin for pallor, diaphoresis, rash, or ecchymoses",
+        "finding": "Warm, dry, normal color, no rash",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-mental-status",
+        "region": "mental_status",
+        "maneuver": "Assess orientation, attention, and level of consciousness",
+        "finding": "Alert and oriented, normal attention",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-neuro-exam",
+        "region": "neuro",
+        "maneuver": "Perform a focused neurologic exam including cranial nerves, strength, and sensation",
+        "finding": "No focal deficits",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-heent",
+        "region": "heent",
+        "maneuver": "Inspect the oropharynx and neck for swelling or lymphadenopathy",
+        "finding": "No swelling, erythema, or lymphadenopathy",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-neck",
+        "region": "neck",
+        "maneuver": "Palpate the neck for tracheal deviation, subcutaneous emphysema, and lymphadenopathy",
+        "finding": "Trachea midline, no crepitus or masses",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-lymph",
+        "region": "lymph",
+        "maneuver": "Palpate cervical, supraclavicular, and axillary lymph nodes",
+        "finding": "No lymphadenopathy",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-genitourinary",
+        "region": "genitourinary",
+        "maneuver": "Inspect and palpate the genitalia if indicated by history",
+        "finding": "No abnormalities",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-rectal",
+        "region": "rectal",
+        "maneuver": "Perform a digital rectal exam if gastrointestinal bleeding is suspected",
+        "finding": "No masses, normal tone, no blood",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-breast",
+        "region": "breast",
+        "maneuver": "Inspect and palpate the breasts if breast pathology is suspected",
+        "finding": "No masses, skin changes, or nipple discharge",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-pelvic",
+        "region": "pelvic",
+        "maneuver": "Perform a pelvic exam if a gynecologic cause is suspected",
+        "finding": "No cervical motion tenderness, adnexal masses, or discharge",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 98.6,
+        "max": 99.5
+      },
+      "moderate": {
+        "min": 99.0,
+        "max": 100.4
+      },
+      "severe": {
+        "min": 100.0,
+        "max": 102.0
+      },
+      "critical": {
+        "min": 101.0,
+        "max": 103.5
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 100
+      },
+      "moderate": {
+        "min": 80,
+        "max": 110
+      },
+      "severe": {
+        "min": 100,
+        "max": 130
+      },
+      "critical": {
+        "min": 120,
+        "max": 160
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 12,
+        "max": 20
+      },
+      "moderate": {
+        "min": 16,
+        "max": 24
+      },
+      "severe": {
+        "min": 20,
+        "max": 30
+      },
+      "critical": {
+        "min": 28,
+        "max": 40
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 100,
+        "max": 140
+      },
+      "moderate": {
+        "min": 90,
+        "max": 130
+      },
+      "severe": {
+        "min": 80,
+        "max": 120
+      },
+      "critical": {
+        "min": 60,
+        "max": 90
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 60,
+        "max": 90
+      },
+      "moderate": {
+        "min": 60,
+        "max": 85
+      },
+      "severe": {
+        "min": 50,
+        "max": 80
+      },
+      "critical": {
+        "min": 40,
+        "max": 60
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 95,
+        "max": 100
+      },
+      "moderate": {
+        "min": 92,
+        "max": 97
+      },
+      "severe": {
+        "min": 88,
+        "max": 94
+      },
+      "critical": {
+        "min": 80,
+        "max": 90
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "hs_tnt",
+      "ranges": {
+        "mild": {
+          "min": 15,
+          "max": 30
+        },
+        "moderate": {
+          "min": 25,
+          "max": 80
+        },
+        "severe": {
+          "min": 60,
+          "max": 300
+        },
+        "critical": {
+          "min": 200,
+          "max": 2000
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "essential",
+      "caveat": "Normal or mildly elevated in non-cardiac chest pain; a rise or fall on serial sampling defines acute myocardial injury. Values are assay-dependent."
+    },
+    {
+      "test_id": "d_dimer",
+      "ranges": {
+        "mild": {
+          "min": 0.6,
+          "max": 1.5
+        },
+        "moderate": {
+          "min": 1.0,
+          "max": 3.0
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 8.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Normal in most non-PE chest pain; a negative result in a low-risk patient helps exclude pulmonary embolism. Nonspecific and rises with age, inflammation, pregnancy, and recent surgery."
+    },
+    {
+      "test_id": "bnp",
+      "ranges": {
+        "moderate": {
+          "min": 150,
+          "max": 500
+        },
+        "severe": {
+          "min": 400,
+          "max": 1500
+        },
+        "critical": {
+          "min": 1000,
+          "max": 5000
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Elevated when chest pain is from decompensated heart failure; normal in most other causes."
+    },
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "mild": {
+          "min": 11.5,
+          "max": 14.0
+        },
+        "moderate": {
+          "min": 13.0,
+          "max": 18.0
+        },
+        "severe": {
+          "min": 16.0,
+          "max": 25.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Leukocytosis suggests pneumonia, pericarditis, or another inflammatory cause rather than ischemia."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "mild": {
+          "min": 1.5,
+          "max": 5.0
+        },
+        "moderate": {
+          "min": 4.0,
+          "max": 12.0
+        },
+        "severe": {
+          "min": 10.0,
+          "max": 25.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Supports an inflammatory cause such as pericarditis; not useful for ruling in or out acute coronary syndrome."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "moderate": {
+          "min": 2.2,
+          "max": 4.0
+        },
+        "severe": {
+          "min": 3.5,
+          "max": 8.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Elevated with shock, severe sepsis, or mesenteric ischemia; normal in most chest pain."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "sometimes",
+      "importance": "essential",
+      "caveat": "Negative. Required in anyone who could be pregnant before imaging or medications that are contraindicated in pregnancy."
+    },
+    {
+      "test_id": "lipase",
+      "ranges": {
+        "moderate": {
+          "min": 200,
+          "max": 600
+        },
+        "severe": {
+          "min": 500,
+          "max": 1500
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Ordered only when the pain is epigastric or radiates to the back and pancreatitis is a consideration."
+    },
+    {
+      "test_id": "ck",
+      "ranges": {
+        "moderate": {
+          "min": 350,
+          "max": 1000
+        },
+        "severe": {
+          "min": 800,
+          "max": 5000
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Elevated with rhabdomyolysis or severe muscle injury; not a cardiac marker when troponin is available."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rhythm",
+        "finding": "Sinus rhythm",
+        "frequency": "almost_always"
+      },
+      {
+        "feature": "rate",
+        "finding": "Tachycardia",
+        "frequency": "sometimes"
+      },
+      {
+        "feature": "st",
+        "finding": "ST-segment elevation in a coronary distribution with reciprocal depression",
+        "frequency": "sometimes",
+        "leads": [
+          "II",
+          "III",
+          "aVF",
+          "V1",
+          "V2",
+          "V3",
+          "V4",
+          "V5",
+          "V6"
+        ],
+        "min_severity": "severe"
+      },
+      {
+        "feature": "st",
+        "finding": "ST-segment depression or dynamic T-wave inversion",
+        "frequency": "sometimes",
+        "leads": [
+          "I",
+          "II",
+          "V4",
+          "V5",
+          "V6"
+        ],
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "t_wave",
+        "finding": "Hyperacute peaked T waves early in infarction",
+        "frequency": "rare",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "st",
+        "finding": "Diffuse PR-segment depression and diffuse concave ST elevation",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "other",
+        "finding": "Electrical alternans with low-voltage QRS",
+        "frequency": "rare",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "conduction",
+        "finding": "New left bundle branch block",
+        "frequency": "rare",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Atrial fibrillation with rapid ventricular response",
+        "frequency": "rare",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "other",
+        "finding": "Nonspecific ST-T changes",
+        "frequency": "common"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Chest x-ray, posteroanterior and lateral",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Clear lungs with normal heart size and no mediastinal widening",
+          "frequency": "common"
+        },
+        {
+          "text": "Focal consolidation consistent with pneumonia",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Widened mediastinum suggesting aortic dissection",
+          "frequency": "rare"
+        },
+        {
+          "text": "Pneumothorax with visible pleural line",
+          "frequency": "rare"
+        },
+        {
+          "text": "Small pleural effusion",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "CT angiography of the chest with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Suspected pulmonary embolism or aortic dissection",
+      "findings": [
+        {
+          "text": "Filling defect in a pulmonary artery",
+          "frequency": "common"
+        },
+        {
+          "text": "Intimal flap dividing the aortic lumen",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "No pulmonary embolism or aortic abnormality",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "Transthoracic echocardiogram",
+      "modality": "echo",
+      "findings": [
+        {
+          "text": "Regional wall motion abnormality",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Pericardial effusion",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Reduced left ventricular ejection fraction",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Normal chamber size and function",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "Coronary angiography",
+      "modality": "other",
+      "preferred_when": "High-risk acute coronary syndrome or positive stress testing",
+      "findings": [
+        {
+          "text": "Critical stenosis or occlusion of a coronary artery",
+          "frequency": "common"
+        },
+        {
+          "text": "No obstructive coronary disease",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "CT pulmonary angiography",
+      "modality": "ct",
+      "preferred_when": "Suspected pulmonary embolism with contraindication to standard CTA",
+      "findings": [
+        {
+          "text": "Filling defect in the pulmonary arterial tree",
+          "frequency": "common"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "ECG",
+        "why": "First test in any chest pain; identifies ST elevation, ischemia, or arrhythmia"
+      },
+      {
+        "test": "hs_tnt",
+        "why": "Detects myocardial injury; serial sampling distinguishes acute from chronic elevation"
+      },
+      {
+        "test": "cbc",
+        "why": "Looks for anemia or leukocytosis suggesting infection"
+      },
+      {
+        "test": "bmp",
+        "why": "Assesses electrolytes, renal function, and glucose"
+      },
+      {
+        "test": "Chest x-ray, posteroanterior and lateral",
+        "why": "Screens for pneumonia, pneumothorax, effusion, and mediastinal widening"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before imaging and medications",
+        "only_if": "patient could be pregnant"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "CT angiography of the chest with IV contrast",
+        "why": "Confirms pulmonary embolism or aortic dissection",
+        "only_if": "pulmonary embolism or dissection is suspected"
+      },
+      {
+        "test": "Coronary angiography",
+        "why": "Defines coronary anatomy and allows intervention",
+        "only_if": "high-risk acute coronary syndrome or positive stress testing"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "d_dimer",
+        "why": "Negative result helps exclude pulmonary embolism in low-risk patients",
+        "only_if": "pulmonary embolism is suspected and pretest probability is low"
+      },
+      {
+        "test": "bnp",
+        "why": "Supports heart failure as the cause",
+        "only_if": "heart failure is suspected"
+      },
+      {
+        "test": "crp",
+        "why": "Supports an inflammatory cause such as pericarditis",
+        "only_if": "pericarditis is suspected"
+      },
+      {
+        "test": "lipase",
+        "why": "Evaluates for pancreatitis",
+        "only_if": "pain is epigastric or radiates to the back"
+      },
+      {
+        "test": "Transthoracic echocardiogram",
+        "why": "Assesses wall motion, valves, and pericardial effusion",
+        "only_if": "murmur, heart failure, or pericardial effusion is suspected"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "d_dimer",
+        "why": "Not useful when pretest probability is high or when another diagnosis is clear"
+      },
+      {
+        "test": "lipase",
+        "why": "Not needed for typical substernal pressure"
+      },
+      {
+        "test": "ck",
+        "why": "Troponin is the preferred cardiac marker"
+      },
+      {
+        "test": "CT angiography of the chest with IV contrast",
+        "why": "Not routine; reserved for suspected pulmonary embolism or dissection"
+      },
+      {
+        "test": "Coronary angiography",
+        "why": "Not routine; reserved for high-risk acute coronary syndrome"
+      }
+    ],
+    "decision_points": [
+      "Obtain an ECG within 10 minutes of arrival for suspected acute coronary syndrome",
+      "Serial troponin testing rather than a single value to detect acute myocardial injury",
+      "Pregnancy test before CT in anyone who could be pregnant",
+      "Do not delay reperfusion for a patient with ST elevation on ECG"
+    ],
+    "criteria": [],
+    "scores": [
+      "heart_score",
+      "timi_risk",
+      "wells_pe",
+      "grace"
+    ]
+  },
+  "differential": [
+    {
+      "name": "Acute coronary syndrome",
+      "slug": "acute-coronary-syndrome",
+      "why_considered": "Substernal pressure with exertion, radiation to the arm or jaw, and diaphoresis is the classic presentation and the most dangerous common cause",
+      "must_not_miss": true,
+      "trigger": "Pressure-like pain with exertion, radiation, diaphoresis, or any patient with coronary risk factors",
+      "discriminators": {
+        "history": [
+          "Exertional or emotional trigger",
+          "Pressure or squeezing quality",
+          "Radiation to left arm, jaw, or back",
+          "Relief with rest or nitroglycerin",
+          "Prior coronary disease"
+        ],
+        "exam": [
+          "Diaphoresis",
+          "New murmur of mitral regurgitation",
+          "Signs of heart failure such as crackles or elevated jugular venous pressure"
+        ],
+        "labs": [
+          "Rising and falling high-sensitivity troponin",
+          "Leukocytosis"
+        ],
+        "ecg": [
+          "ST-segment elevation with reciprocal depression",
+          "ST-segment depression or dynamic T-wave inversion",
+          "New left bundle branch block",
+          "Hyperacute T waves"
+        ],
+        "imaging": [
+          "Regional wall motion abnormality on echocardiography",
+          "Critical coronary stenosis on angiography"
+        ]
+      }
+    },
+    {
+      "name": "Pulmonary embolism",
+      "slug": "pulmonary-embolism",
+      "why_considered": "Pleuritic chest pain with dyspnea and tachycardia in a patient with venous thromboembolism risk factors",
+      "must_not_miss": true,
+      "trigger": "Pleuritic pain with dyspnea, tachycardia, or hypoxemia in a patient with immobilization, surgery, travel, or prior venous thromboembolism",
+      "discriminators": {
+        "history": [
+          "Sudden onset of dyspnea",
+          "Recent surgery, immobilization, or long travel",
+          "Prior venous thromboembolism or active cancer",
+          "Coughing up blood"
+        ],
+        "exam": [
+          "Tachycardia out of proportion to the pain",
+          "Unilateral calf swelling or tenderness",
+          "Hypoxemia with clear lungs",
+          "Signs of right heart strain"
+        ],
+        "labs": [
+          "Elevated D-dimer in low-risk patients",
+          "Elevated troponin or BNP with right ventricular strain",
+          "Respiratory alkalosis"
+        ],
+        "ecg": [
+          "Sinus tachycardia",
+          "S1Q3T3 pattern",
+          "Right axis deviation or right bundle branch block"
+        ],
+        "imaging": [
+          "Filling defect in a pulmonary artery on CT angiography",
+          "Right ventricular enlargement on echocardiography"
+        ]
+      }
+    },
+    {
+      "name": "Aortic dissection",
+      "slug": "aortic-dissection",
+      "why_considered": "Sudden severe chest or back pain, often in a patient with hypertension or connective tissue disease",
+      "must_not_miss": true,
+      "trigger": "Abrupt, maximal-at-onset tearing pain radiating to the back, or a pulse or blood pressure differential between arms",
+      "discriminators": {
+        "history": [
+          "Sudden onset, maximal at the first instant",
+          "Tearing or ripping quality",
+          "Radiation to the back or between the shoulder blades",
+          "Known hypertension or connective tissue disorder"
+        ],
+        "exam": [
+          "Blood pressure or pulse differential between arms",
+          "New aortic regurgitation murmur",
+          "Focal neurologic deficit",
+          "Hypotension with a normal or high heart rate"
+        ],
+        "labs": [
+          "No single lab excludes dissection; troponin may be mildly elevated if the coronary ostium is involved"
+        ],
+        "ecg": [
+          "Often normal or nonspecific",
+          "ST elevation if the dissection involves a coronary ostium"
+        ],
+        "imaging": [
+          "Intimal flap on CT angiography",
+          "Widened mediastinum on chest x-ray",
+          "Pericardial effusion on echocardiography"
+        ]
+      }
+    },
+    {
+      "name": "Pericarditis",
+      "slug": "pericarditis",
+      "why_considered": "Sharp, positional chest pain that improves when sitting forward, often after a viral illness",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Sharp or pleuritic pain",
+          "Worse when lying flat, better when sitting forward",
+          "Recent viral upper respiratory infection"
+        ],
+        "exam": [
+          "Pericardial friction rub",
+          "Muffled heart sounds if effusion is large"
+        ],
+        "labs": [
+          "Elevated C-reactive protein and erythrocyte sedimentation rate",
+          "Mild troponin elevation from myopericarditis"
+        ],
+        "ecg": [
+          "Diffuse PR-segment depression",
+          "Diffuse concave ST elevation",
+          "Electrical alternans with low-voltage QRS if tamponade"
+        ],
+        "imaging": [
+          "Pericardial effusion on echocardiography"
+        ]
+      }
+    },
+    {
+      "name": "Pneumothorax",
+      "slug": "pneumothorax",
+      "why_considered": "Sudden one-sided pleuritic pain with dyspnea, especially in a tall thin young person or after trauma",
+      "must_not_miss": true,
+      "trigger": "Sudden unilateral pleuritic pain with dyspnea and decreased breath sounds on one side",
+      "discriminators": {
+        "history": [
+          "Sudden onset",
+          "Recent trauma or chest procedure",
+          "Tall, thin body habitus",
+          "Tobacco smoking"
+        ],
+        "exam": [
+          "Decreased breath sounds on the affected side",
+          "Hyperresonance to percussion",
+          "Tracheal deviation away from the affected side if tension",
+          "Hypotension and distended neck veins if tension"
+        ],
+        "labs": [
+          "Hypoxemia"
+        ],
+        "ecg": [
+          "Sinus tachycardia",
+          "Nonspecific ST-T changes"
+        ],
+        "imaging": [
+          "Visible pleural line with no lung markings beyond it on chest x-ray",
+          "Large pneumothorax with mediastinal shift on CT"
+        ]
+      }
+    },
+    {
+      "name": "Pneumonia",
+      "slug": "community-acquired-pneumonia",
+      "why_considered": "Pleuritic chest pain with fever, cough, and sputum production",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Fever and chills",
+          "Productive cough",
+          "Recent upper respiratory infection"
+        ],
+        "exam": [
+          "Fever",
+          "Crackles or egophony over a focal area",
+          "Dullness to percussion"
+        ],
+        "labs": [
+          "Leukocytosis",
+          "Elevated C-reactive protein",
+          "Hypoxemia"
+        ],
+        "imaging": [
+          "Focal consolidation on chest x-ray",
+          "Air bronchograms on CT"
+        ]
+      }
+    },
+    {
+      "name": "Gastroesophageal reflux disease",
+      "slug": "gastroesophageal-reflux-disease",
+      "why_considered": "Burning substernal pain after meals or when lying down, common in younger patients without coronary risk factors",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Burning quality",
+          "Postprandial onset",
+          "Worse when lying flat",
+          "Relief with antacids",
+          "Known reflux disease"
+        ],
+        "exam": [
+          "Epigastric tenderness",
+          "No chest wall tenderness"
+        ],
+        "labs": [
+          "Normal troponin",
+          "Normal white blood cell count"
+        ],
+        "imaging": [
+          "Normal chest x-ray",
+          "Normal ECG"
+        ]
+      }
+    },
+    {
+      "name": "Costochondritis",
+      "slug": "costochondritis",
+      "why_considered": "Sharp chest pain reproduced by pressing on the chest wall, common in younger patients",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Pain with movement, twisting, or reaching",
+          "Recent heavy lifting or coughing",
+          "Sharp and well localized"
+        ],
+        "exam": [
+          "Reproducible tenderness at the costochondral junctions or sternum",
+          "No systemic symptoms"
+        ],
+        "labs": [
+          "Normal troponin and inflammatory markers"
+        ],
+        "imaging": [
+          "Normal chest x-ray and ECG"
+        ]
+      }
+    },
+    {
+      "name": "Panic attack",
+      "slug": "panic-attack",
+      "why_considered": "Chest tightness with palpitations, dyspnea, and a sense of doom, often in younger patients with anxiety",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Rapid onset with peak within minutes",
+          "Palpitations, trembling, and fear of dying",
+          "Prior similar episodes",
+          "Recent major life stressor"
+        ],
+        "exam": [
+          "Tachycardia",
+          "Hyperventilation",
+          "No focal cardiopulmonary findings"
+        ],
+        "labs": [
+          "Normal troponin",
+          "Normal D-dimer"
+        ],
+        "ecg": [
+          "Sinus tachycardia",
+          "Normal ST segments"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Intermittent discomfort, no distress, normal vital signs, able to speak in full sentences, no red-flag features",
+      "moderate": "Persistent pain with mild distress, tachycardia or mild hypoxemia, but hemodynamically stable",
+      "severe": "Marked distress, diaphoresis, hypoxemia, hypotension, or ECG changes suggesting acute coronary syndrome or another high-risk cause",
+      "critical": "Hemodynamic instability, altered mental status, respiratory failure, or cardiac arrest from a life-threatening cause such as dissection, massive pulmonary embolism, or tension pneumothorax"
+    },
+    "red_flags": [
+      {
+        "finding": "Pressure-like pain with diaphoresis, nausea, or radiation to the arm or jaw",
+        "meaning": "Acute coronary syndrome until proven otherwise; obtain ECG within 10 minutes"
+      },
+      {
+        "finding": "Sudden tearing pain maximal at onset radiating to the back, or a blood pressure differential between arms",
+        "meaning": "Aortic dissection; needs immediate imaging and surgical consultation"
+      },
+      {
+        "finding": "Pleuritic pain with dyspnea, tachycardia, and hypoxemia in a patient with venous thromboembolism risk factors",
+        "meaning": "Pulmonary embolism; obtain CT angiography"
+      },
+      {
+        "finding": "Hypotension with distended neck veins and unilateral absent breath sounds",
+        "meaning": "Tension pneumothorax; needs immediate needle decompression"
+      },
+      {
+        "finding": "ST-segment elevation on ECG",
+        "meaning": "Acute ST-elevation myocardial infarction; do not delay reperfusion"
+      },
+      {
+        "finding": "New murmur of aortic regurgitation or a focal neurologic deficit",
+        "meaning": "Complicated aortic dissection"
+      },
+      {
+        "finding": "Syncope or near-syncope with chest pain",
+        "meaning": "High-risk cause such as arrhythmia, massive pulmonary embolism, or dissection"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Myocardial infarction and cardiogenic shock",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Persistent pressure pain",
+          "Rising troponin",
+          "ST-segment changes",
+          "Hypotension and pulmonary edema"
+        ]
+      },
+      {
+        "name": "Cardiac arrest",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Ventricular arrhythmia",
+          "Loss of consciousness",
+          "Absent pulses"
+        ]
+      },
+      {
+        "name": "Pericardial tamponade",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Hypotension",
+          "Distended neck veins",
+          "Muffled heart sounds",
+          "Electrical alternans on ECG"
+        ]
+      },
+      {
+        "name": "Aortic rupture",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Severe back pain",
+          "Hypotension",
+          "Widened mediastinum",
+          "Pericardial or pleural effusion"
+        ]
+      },
+      {
+        "name": "Respiratory failure",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Increasing oxygen requirement",
+          "Tachypnea",
+          "Hypoxemia despite supplemental oxygen"
+        ]
+      },
+      {
+        "name": "Anxiety and functional limitation after a benign cause",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Persistent worry about heart disease",
+          "Repeated emergency visits",
+          "Normal cardiac workup"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "older_adults",
+        "differences": "May present without classic chest pain, instead with dyspnea, weakness, syncope, or confusion; coronary causes are more likely and atypical presentations are common."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Autonomic neuropathy can blunt or eliminate anginal pain, so myocardial ischemia may present silently or with dyspnea alone."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Pregnancy increases venous thromboembolism risk, so pulmonary embolism and peripartum cardiomyopathy should be considered; imaging decisions must account for fetal safety, and a pregnancy test is required before CT."
+      },
+      {
+        "population": "children",
+        "differences": "Chest pain in children is usually musculoskeletal, respiratory, or anxiety-related; cardiac causes are rare but include myocarditis, pericarditis, and congenital coronary anomalies."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Infection risk is higher and presentations may be blunted; pneumonia and other opportunistic infections should be considered earlier."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "Higher risk of coronary disease and pericarditis; contrast imaging requires careful consideration of kidney function."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "When did the pain start, and was it sudden or gradual?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Sudden and maximal at the first instant suggests aortic dissection or pulmonary embolism; gradual onset over minutes is more typical of coronary or gastrointestinal causes"
+      },
+      {
+        "question": "What does the pain feel like — pressure, tightness, squeezing, burning, sharp, or tearing?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Pressure or squeezing suggests ischemia; tearing suggests dissection; burning suggests reflux; sharp and pleuritic suggests pericarditis, pneumothorax, or pulmonary embolism"
+      },
+      {
+        "question": "Where is the pain, and does it go anywhere else?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Substernal pain radiating to the left arm, jaw, or back suggests acute coronary syndrome; radiation to the back between the shoulder blades suggests dissection"
+      },
+      {
+        "question": "What brings it on and what makes it better?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Exertional onset relieved by rest or nitroglycerin suggests ischemia; relief with antacids suggests reflux; improvement leaning forward suggests pericarditis"
+      },
+      {
+        "question": "Is the pain worse when you breathe in, cough, or lie flat?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Pleuritic pain suggests pulmonary embolism, pneumothorax, pneumonia, or pericarditis; worse lying flat and better sitting forward suggests pericarditis"
+      },
+      {
+        "question": "Does pressing on your chest wall reproduce the pain?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Reproducible chest wall tenderness suggests costochondritis or musculoskeletal pain, though it does not fully exclude a cardiac cause"
+      },
+      {
+        "question": "How long does each episode last?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Minutes to tens of minutes suggests angina; seconds suggests a non-cardiac cause; hours to days suggests musculoskeletal or gastrointestinal pain"
+      },
+      {
+        "question": "Are you short of breath, sweaty, nauseated, or lightheaded with the pain?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Diaphoresis, nausea, and dyspnea raise concern for acute coronary syndrome; dyspnea with pleuritic pain raises concern for pulmonary embolism"
+      },
+      {
+        "question": "Have you coughed up any blood?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Hemoptysis suggests pulmonary embolism or pneumonia"
+      },
+      {
+        "question": "Have you fainted or felt like you might pass out?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Syncope or near-syncope suggests a high-risk cause such as arrhythmia, massive pulmonary embolism, or dissection"
+      },
+      {
+        "question": "Do you have any leg swelling or calf pain?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Unilateral leg swelling or calf tenderness suggests deep vein thrombosis with pulmonary embolism"
+      },
+      {
+        "question": "Have you had any recent surgery, hospitalization, long travel, or immobilization?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Recent surgery, hospitalization, long travel, or immobilization raises venous thromboembolism risk and points toward pulmonary embolism"
+      },
+      {
+        "question": "Do you have a history of heart disease, heart attack, diabetes, high blood pressure, or high cholesterol?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Coronary risk factors raise the pretest probability of acute coronary syndrome"
+      },
+      {
+        "question": "Have you had a blood clot in your leg or lung before, or do you have cancer?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Prior venous thromboembolism or active cancer raises pulmonary embolism risk"
+      },
+      {
+        "question": "Do you have reflux or heartburn, and does food or lying down bring on the pain?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Known reflux with postprandial or positional burning pain suggests a gastrointestinal cause"
+      },
+      {
+        "question": "Do you take birth control pills, hormone replacement, or any stimulants such as cocaine or amphetamines?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Estrogen-containing contraceptives and hormone therapy raise venous thromboembolism risk; cocaine and amphetamines can cause coronary vasospasm and ischemia"
+      },
+      {
+        "question": "Does anyone in your family have early heart disease, a heart attack before age 55 in a man or 65 in a woman, or sudden cardiac death?",
+        "category": "family",
+        "importance": "important",
+        "looking_for": "Premature coronary artery disease or sudden cardiac death in a first-degree relative raises coronary risk"
+      },
+      {
+        "question": "Do you smoke or use tobacco?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Current or recent tobacco smoking is a strong coronary and venous thromboembolism risk factor"
+      },
+      {
+        "question": "Could you be pregnant? When was your last period?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Pregnancy raises venous thromboembolism risk and must be known before imaging or medications that are contraindicated in pregnancy"
+      },
+      {
+        "question": "Have you had any recent trauma, heavy lifting, or a new strenuous exercise routine?",
+        "category": "ros",
+        "importance": "optional",
+        "looking_for": "Recent trauma or heavy lifting suggests musculoskeletal or chest wall pain"
+      }
+    ],
+    "accepted_names": [
+      "Chest pain",
+      "Chest pain, unspecified",
+      "Non-cardiac chest pain",
+      "Angina",
+      "Angina pectoris",
+      "Acute coronary syndrome",
+      "Myocardial infarction",
+      "Unstable angina",
+      "Pulmonary embolism",
+      "Aortic dissection",
+      "Pericarditis",
+      "Pneumothorax",
+      "Pneumonia",
+      "Gastroesophageal reflux disease",
+      "GERD",
+      "Costochondritis",
+      "Panic attack"
+    ],
+    "reasoning_points": [
+      "Characterizes the pain by onset, location, quality, radiation, duration, and provoking and relieving factors",
+      "Identifies red-flag features: pressure-like pain with diaphoresis, tearing pain maximal at onset radiating to the back, pleuritic pain with dyspnea and tachycardia, or syncope",
+      "Assesses coronary risk factors including prior coronary disease, diabetes, hypertension, hyperlipidemia, tobacco use, and family history of premature coronary disease",
+      "Assesses venous thromboembolism risk factors including recent surgery, immobilization, long travel, active cancer, and prior venous thromboembolism",
+      "Considers the broad differential including acute coronary syndrome, pulmonary embolism, aortic dissection, pericarditis, pneumothorax, pneumonia, reflux, costochondritis, and panic attack",
+      "Recognizes that reproducible chest wall tenderness does not fully exclude a cardiac cause",
+      "Orders an ECG within 10 minutes of arrival when acute coronary syndrome is suspected",
+      "Uses serial high-sensitivity troponin testing rather than a single value to detect acute myocardial injury",
+      "Confirms pregnancy status before imaging or medications that are contraindicated in pregnancy",
+      "Does not delay reperfusion for a patient with ST-segment elevation on ECG"
+    ],
+    "difficulty": {
+      "easy": [
+        "Classic substernal pressure with exertion, radiation to the left arm or jaw, and diaphoresis in a patient with coronary risk factors",
+        "Sudden pleuritic pain with dyspnea and tachycardia after recent surgery or long travel",
+        "Sharp positional pain that improves leaning forward with a pericardial friction rub after a viral illness",
+        "Burning postprandial pain relieved by antacids in a younger patient without coronary risk factors"
+      ],
+      "medium": [
+        "Older adult with dyspnea and weakness but no classic chest pain",
+        "Patient with diabetes and blunted anginal pain presenting with dyspnea alone",
+        "Reproducible chest wall tenderness in a patient who also has coronary risk factors",
+        "Pleuritic pain with clear lungs and no dyspnea where pulmonary embolism and musculoskeletal causes compete",
+        "Young woman with chest tightness, palpitations, and anxiety where panic attack and coronary causes compete"
+      ],
+      "hard": [
+        "Sudden tearing pain maximal at onset radiating to the back with a blood pressure differential between arms",
+        "Hypotension with distended neck veins and unilateral absent breath sounds",
+        "Chest pain with syncope or near-syncope suggesting arrhythmia, massive pulmonary embolism, or dissection",
+        "Pregnant patient with pleuritic chest pain and dyspnea where pulmonary embolism must be considered",
+        "Immunocompromised patient with blunted symptoms and possible pneumonia",
+        "Patient with renal impairment and chest pain where contrast imaging requires careful consideration"
+      ]
+    }
+  }
+}

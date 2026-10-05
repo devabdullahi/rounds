@@ -1,0 +1,932 @@
+{
+  "schema_version": "0.2",
+  "slug": "corns-and-calluses",
+  "triage": {
+    "name": "Corns and Calluses",
+    "case_suitable": true,
+    "reason": "Common foot complaint with a clear diagnosis from history and focused skin exam; important in diabetes and footwear-related pressure.",
+    "kind": "disease",
+    "category": "skin and soft tissue",
+    "organ_systems": [
+      "musculoskeletal"
+    ],
+    "primary_clerkship": "familyMedicine",
+    "secondary_clerkships": [
+      "internalMedicine"
+    ],
+    "commonness": "common",
+    "settings": [
+      "clinic"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:16:50Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:43:58Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:44:03Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:44:09Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:44:20Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:44:27Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'foot x-ray' was in ['initial', 'supporting', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'mri foot without contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ultrasound of the foot' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'foot x-ray' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'mri foot without contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ultrasound of the foot' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "differential plantar-wart: no profile yet",
+        "differential diabetic-foot-ulcer: no profile yet",
+        "differential verruca-vulgaris: no profile yet",
+        "differential foreign-body-granuloma: no profile yet",
+        "differential squamous-cell-carcinoma-skin: no profile yet",
+        "differential tinea-pedis: no profile yet",
+        "differential psoriasis: no profile yet",
+        "differential osteomyelitis: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 15,
+      "typical_max": 75,
+      "peak": "40–65",
+      "possible_min": 2,
+      "possible_max": 95
+    },
+    "sex": "either",
+    "demographics": [
+      "Adults who stand or walk for long periods at work",
+      "More common in people who wear tight or poorly fitting shoes",
+      "Common in older adults as foot shape and fat pads change with age"
+    ],
+    "risk_factors": [
+      {
+        "text": "Ill-fitting, tight, or high-heeled shoes",
+        "strength": "strong"
+      },
+      {
+        "text": "Prolonged standing or walking (occupational or recreational)",
+        "strength": "strong"
+      },
+      {
+        "text": "Foot deformity such as bunions, hammertoes, or prominent metatarsal heads",
+        "strength": "moderate"
+      },
+      {
+        "text": "Repetitive manual work or use of tools that rub the hands",
+        "strength": "moderate"
+      },
+      {
+        "text": "Going barefoot or wearing thin-soled shoes on hard surfaces",
+        "strength": "weak"
+      },
+      {
+        "text": "Older age with thinning of the protective fat pads on the sole",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Diabetes mellitus",
+      "Peripheral arterial disease",
+      "Peripheral neuropathy",
+      "Rheumatoid arthritis",
+      "Obesity"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Occupations requiring prolonged standing or walking",
+      "Frequent use of tight or high-heeled footwear",
+      "Sports or activities with repetitive friction on the hands or feet"
+    ],
+    "exposures": [
+      "Repeated friction or pressure from shoes, tools, or equipment"
+    ],
+    "risk_medications": []
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I have a hard, thick patch of skin on my foot that hurts when I walk",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "There's a rough bump on my toe that rubs against my shoe",
+        "frequency": "common"
+      },
+      {
+        "text": "The skin on my hands has gotten thick and tough from my work",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual over weeks to months of repeated pressure or friction",
+      "duration": "Usually present for weeks to months before the patient seeks care",
+      "progression": "Slowly thickens and enlarges with continued pressure; may become painful as it presses on deeper tissue",
+      "location": "Corns on the tops or sides of toes and between toes; calluses on the soles, especially under the ball of the foot and heel; also on the palms and fingers",
+      "radiation": "No radiation; discomfort stays at the site",
+      "quality": "Hard, thickened, rough skin; pain is dull and pressure-like or sharp when pressed",
+      "severity": "Mild to moderate; often 2–5/10, worse with walking or standing",
+      "timing": "Pain occurs mainly with weight-bearing or when shoes press on the area; may be constant if inflamed",
+      "aggravating": [
+        "Walking or standing for long periods",
+        "Tight or poorly fitting shoes",
+        "Pressing directly on the area",
+        "Repetitive manual work"
+      ],
+      "relieving": [
+        "Taking shoes off",
+        "Soaking the foot in warm water",
+        "Gently rubbing with a pumice stone",
+        "Cushions or non-medicated pads"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Thickened, hardened skin at the site",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Pain or tenderness when pressure is applied",
+          "frequency": "common"
+        },
+        {
+          "text": "A small hard core in the center of a corn",
+          "frequency": "common"
+        },
+        {
+          "text": "Dry, scaly skin around the area",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Redness or mild swelling if the area is irritated",
+          "frequency": "sometimes"
+        }
+      ],
+      "pertinent_negatives": [
+        "Fever",
+        "Draining pus or open sore",
+        "Spreading redness or red streaks",
+        "Numbness or tingling in the feet",
+        "Pain at rest or night pain",
+        "Recent trauma to the foot",
+        "New or changing mole or growth"
+      ]
+    },
+    "ros": [
+      {
+        "system": "skin",
+        "positives": [
+          {
+            "text": "Hard, thickened patch of skin",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Rough or scaly surface",
+            "frequency": "common"
+          },
+          {
+            "text": "Tenderness when pressed",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Open wound or ulcer",
+          "Drainage or pus",
+          "Spreading redness",
+          "Bleeding",
+          "Changing mole"
+        ],
+        "argues_against": [
+          "Infection or ulceration",
+          "Skin cancer"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Pain with walking or standing",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Joint swelling",
+          "Joint stiffness lasting more than an hour in the morning",
+          "Limited range of motion"
+        ],
+        "argues_against": [
+          "Inflammatory arthritis",
+          "Stress fracture"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [],
+        "negatives": [
+          "Numbness or tingling in the feet",
+          "Weakness",
+          "Loss of balance"
+        ],
+        "argues_against": [
+          "Peripheral neuropathy"
+        ]
+      },
+      {
+        "system": "constitutional",
+        "positives": [],
+        "negatives": [
+          "Fever",
+          "Chills",
+          "Weight loss",
+          "Night sweats"
+        ],
+        "argues_against": [
+          "Systemic infection",
+          "Malignancy"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "diabetes",
+        "how_it_differs": "Neuropathy may blunt pain, so a corn or callus can go unnoticed until it ulcerates or becomes infected; any break in the skin needs urgent attention.",
+        "missing_classic_features": [
+          "Pain at the site"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "Thinning fat pads and foot deformities make calluses more likely and more painful; skin is thinner and more prone to breakdown.",
+        "missing_classic_features": []
+      },
+      {
+        "population": "children",
+        "how_it_differs": "Often related to sports, new shoes, or going barefoot; lesions are usually less thick and less painful than in adults.",
+        "missing_classic_features": [
+          "Long-standing thickened skin"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Well-appearing, ambulates without a limp, no distress",
+      "moderate": "Well-appearing but favors the affected foot or hand when using it; mild discomfort with weight-bearing",
+      "severe": "Well-appearing but limps or avoids weight-bearing on the affected area; visible discomfort when shoes press the lesion",
+      "critical": "Not applicable; corns and calluses are not a critical illness"
+    },
+    "findings": [
+      {
+        "id": "focal-hyperkeratosis",
+        "region": "skin",
+        "maneuver": "Inspect the skin over pressure points (tops and sides of toes, between toes, soles, palms, fingers)",
+        "finding": "A well-circumscribed area of thickened, hardened, rough skin with preserved skin markings",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "callus-diffuse-plaque",
+        "region": "skin",
+        "maneuver": "Inspect and palpate the sole under the ball of the foot or heel",
+        "finding": "A broad, flat, diffusely thickened plaque without a central core",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "corn-central-core",
+        "region": "skin",
+        "maneuver": "Inspect the lesion on a toe and gently pare or probe the surface",
+        "finding": "A small, discrete, hard lesion with a central keratin core and a surrounding rim of thickened skin",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "important"
+      },
+      {
+        "id": "tenderness-on-pressure",
+        "region": "skin",
+        "maneuver": "Press directly on the lesion",
+        "finding": "Focal tenderness over the thickened skin",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "pain-with-lateral-compression",
+        "region": "extremities",
+        "maneuver": "Squeeze the toe or forefoot from side to side",
+        "finding": "Pain reproduced by lateral compression of the affected toe or metatarsal area",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "intact-skin-no-ulcer",
+        "region": "skin",
+        "maneuver": "Inspect the surface of the lesion for breaks in the skin",
+        "finding": "Skin is intact with no ulceration, fissure, or drainage",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "no-erythema-or-warmth",
+        "region": "skin",
+        "maneuver": "Inspect and palpate the surrounding skin",
+        "finding": "No surrounding erythema, warmth, or induration",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-dermatomal-sensory-loss",
+        "region": "neuro",
+        "maneuver": "Test light touch and pinprick sensation in the feet, and check vibration or monofilament testing if neuropathy is suspected",
+        "finding": "Sensation is intact; no stocking-distribution sensory loss",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "distal-pulses-palpable",
+        "region": "extremities",
+        "maneuver": "Palpate the dorsalis pedis and posterior tibial pulses",
+        "finding": "Pulses are palpable and symmetric",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the inguinal and epitrochlear lymph nodes",
+        "finding": "No enlarged or tender lymph nodes",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-deformity-or-effusion",
+        "region": "musculoskeletal",
+        "maneuver": "Inspect and palpate the joints of the foot and hand",
+        "finding": "No joint swelling, effusion, or deformity beyond the pressure-related lesion",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {},
+  "labs": [],
+  "imaging": [
+    {
+      "study": "Foot x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "No bony abnormality; thickened soft tissue over the pressure point",
+          "frequency": "common"
+        },
+        {
+          "text": "Underlying bony prominence, such as a prominent metatarsal head, bunion, or hammertoe, that explains the pressure point",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "No fracture, dislocation, or bone destruction",
+          "frequency": "almost_always"
+        }
+      ]
+    },
+    {
+      "study": "MRI foot without contrast",
+      "modality": "mri",
+      "findings": [
+        {
+          "text": "Focal thickening of the epidermis and dermis over the pressure point with no soft tissue mass",
+          "frequency": "common"
+        },
+        {
+          "text": "No bone marrow edema, abscess, or soft tissue mass",
+          "frequency": "almost_always"
+        }
+      ]
+    },
+    {
+      "study": "Ultrasound of the foot",
+      "modality": "ultrasound",
+      "findings": [
+        {
+          "text": "Thickened hyperechoic epidermis over the lesion with no discrete mass or fluid collection",
+          "frequency": "common"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "Focused skin and foot examination",
+        "why": "Confirms the diagnosis by showing a well-circumscribed area of hyperkeratosis with preserved skin markings and no ulceration, drainage, or surrounding cellulitis"
+      },
+      {
+        "test": "Footwear and activity history",
+        "why": "Identifies the pressure or friction source that must be removed for the lesion to resolve"
+      },
+      {
+        "test": "Foot x-ray",
+        "why": "Looks for an underlying bony prominence or deformity that explains the pressure point",
+        "only_if": "the lesion is atypical, recurrent, or a bony deformity is suspected"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "MRI foot without contrast",
+        "why": "Distinguishes a corn or callus from a soft tissue mass, abscess, or bone infection",
+        "only_if": "a deep mass, abscess, or osteomyelitis is suspected"
+      },
+      {
+        "test": "Ultrasound of the foot",
+        "why": "Can confirm a thickened epidermis and exclude a fluid collection or mass when the diagnosis is uncertain",
+        "only_if": "the diagnosis is uncertain or a fluid collection is suspected"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "cbc",
+        "why": "No role in an uninfected pressure lesion; a normal white count does not change management"
+      },
+      {
+        "test": "crp",
+        "why": "Not needed unless infection or osteomyelitis is suspected"
+      },
+      {
+        "test": "esr",
+        "why": "Not needed unless infection or osteomyelitis is suspected"
+      },
+      {
+        "test": "bmp",
+        "why": "Routine chemistry is not relevant to a mechanical skin lesion"
+      },
+      {
+        "test": "a1c",
+        "why": "Not part of the workup for the lesion itself; screen for diabetes only if there is a separate clinical reason"
+      },
+      {
+        "test": "Foot x-ray",
+        "why": "Not routine for a typical corn or callus; reserve for atypical, recurrent, or deformity-associated lesions"
+      },
+      {
+        "test": "MRI foot without contrast",
+        "why": "Not routine; reserve for suspected mass, abscess, or osteomyelitis"
+      },
+      {
+        "test": "Ultrasound of the foot",
+        "why": "Not routine; reserve for diagnostic uncertainty"
+      }
+    ],
+    "decision_points": [
+      "Check for diabetes and peripheral arterial disease before any debridement or self-treatment, because these patients are at high risk of ulceration and infection",
+      "Look for an underlying bony deformity or biomechanical problem when the lesion recurs despite proper footwear",
+      "Refer to podiatry or orthopedics when the lesion is painful, recurrent, or associated with a deformity that needs correction",
+      "Do not shave or cut off a corn or callus at home; this can cause infection"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Plantar wart",
+      "slug": "plantar-wart",
+      "why_considered": "A painful, thickened lesion on the sole or toe that can look like a callus or corn",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Onset may be more rapid than a callus",
+          "May have appeared without a clear change in footwear or activity",
+          "Often painful with direct pressure, sometimes with squeezing"
+        ],
+        "exam": [
+          "Loss of normal skin markings over the lesion",
+          "Thrombosed capillaries (small black dots) visible after gentle paring",
+          "Pain with lateral (side-to-side) squeezing of the lesion",
+          "Discrete, well-demarcated lesion rather than a broad diffuse plaque"
+        ],
+        "labs": [],
+        "imaging": []
+      }
+    },
+    {
+      "name": "Diabetic foot ulcer",
+      "slug": "diabetic-foot-ulcer",
+      "why_considered": "A foot lesion in a patient with diabetes or neuropathy, where a callus can break down into an ulcer",
+      "must_not_miss": true,
+      "trigger": "Any break in the skin, drainage, or a non-healing foot lesion in a patient with diabetes or peripheral neuropathy",
+      "discriminators": {
+        "history": [
+          "Diabetes mellitus, often with peripheral neuropathy",
+          "May be painless because of sensory loss",
+          "Non-healing or worsening despite offloading"
+        ],
+        "exam": [
+          "Open wound, ulceration, or fissure with a break in the skin",
+          "Surrounding callus with a punched-out ulcer beneath it",
+          "Reduced sensation on monofilament or vibration testing",
+          "Possible drainage, foul odor, or surrounding cellulitis"
+        ],
+        "labs": [
+          "Elevated white blood cell count, CRP, or ESR if infected",
+          "Elevated blood glucose or HbA1c"
+        ],
+        "imaging": [
+          "Foot x-ray showing soft tissue defect, gas, or bone changes if osteomyelitis is present",
+          "MRI showing marrow edema or abscess if deep infection is suspected"
+        ]
+      }
+    },
+    {
+      "name": "Verruca vulgaris (common wart)",
+      "slug": "verruca-vulgaris",
+      "why_considered": "A rough, thickened skin growth on the hands or feet that can resemble a callus",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "May appear without repetitive friction or pressure",
+          "Often asymptomatic or mildly tender",
+          "May spread to other sites"
+        ],
+        "exam": [
+          "Loss of skin markings",
+          "Thrombosed capillaries (black dots) after paring",
+          "Discrete, exophytic, or cauliflower-like surface",
+          "Pain with lateral compression rather than direct pressure"
+        ],
+        "labs": [],
+        "imaging": []
+      }
+    },
+    {
+      "name": "Foreign body granuloma",
+      "slug": "foreign-body-granuloma",
+      "why_considered": "A focal, tender, thickened area on the sole or hand after a puncture or embedded material",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "History of a puncture wound or stepping on something",
+          "Persistent focal pain or a feeling of something in the skin",
+          "May have had a minor injury weeks earlier"
+        ],
+        "exam": [
+          "Focal induration or a visible or palpable foreign body",
+          "Surrounding hyperkeratosis may be present but is not the primary lesion",
+          "Tenderness localized to a small point"
+        ],
+        "labs": [],
+        "imaging": [
+          "Foot x-ray or ultrasound may show a radiopaque or echogenic foreign body"
+        ]
+      }
+    },
+    {
+      "name": "Squamous cell carcinoma of the skin",
+      "slug": "squamous-cell-carcinoma-skin",
+      "why_considered": "A persistent, thickened, or non-healing skin lesion on the foot or hand that can be mistaken for a callus",
+      "must_not_miss": true,
+      "trigger": "A lesion that is growing, bleeding, ulcerated, or not healing despite removal of pressure",
+      "discriminators": {
+        "history": [
+          "Lesion is growing or changing over weeks to months",
+          "May bleed or crust",
+          "Not explained by friction or pressure",
+          "May have a history of sun exposure or prior skin cancer"
+        ],
+        "exam": [
+          "Indurated, firm, or friable lesion",
+          "Ulceration, crusting, or bleeding",
+          "Irregular borders or a raised rolled edge",
+          "May be fixed to underlying tissue"
+        ],
+        "labs": [],
+        "imaging": [
+          "Biopsy is required for diagnosis; imaging is not diagnostic"
+        ]
+      }
+    },
+    {
+      "name": "Tinea pedis (with hyperkeratotic changes)",
+      "slug": "tinea-pedis",
+      "why_considered": "Thickened, scaly skin on the sole that can resemble a callus",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Itching is common",
+          "May have a history of athlete's foot or nail fungus",
+          "Often bilateral and diffuse rather than focal"
+        ],
+        "exam": [
+          "Scaling, fissuring, or maceration, especially between the toes",
+          "Diffuse involvement of the sole rather than a focal pressure point",
+          "Possible nail changes (thickening, discoloration)"
+        ],
+        "labs": [
+          "KOH preparation or fungal culture positive for dermatophytes"
+        ],
+        "imaging": []
+      }
+    },
+    {
+      "name": "Psoriasis (palmoplantar)",
+      "slug": "psoriasis",
+      "why_considered": "Thickened, scaly plaques on the palms or soles that can look like calluses",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "History of psoriasis elsewhere on the body",
+          "May be bilateral and symmetric",
+          "Often not limited to pressure points"
+        ],
+        "exam": [
+          "Well-demarcated erythematous plaques with silvery scale",
+          "Involvement of palms and soles in a symmetric pattern",
+          "Nail pitting or onycholysis",
+          "Auspitz sign (pinpoint bleeding when scale is removed)"
+        ],
+        "labs": [],
+        "imaging": []
+      }
+    },
+    {
+      "name": "Osteomyelitis",
+      "slug": "osteomyelitis",
+      "why_considered": "Deep foot pain and swelling in a patient with a foot lesion, especially with diabetes",
+      "must_not_miss": true,
+      "trigger": "Fever, deep pain, or a non-healing ulcer over a bony prominence in a patient with diabetes or vascular disease",
+      "discriminators": {
+        "history": [
+          "Fever, chills, or malaise",
+          "Deep, constant pain that may be worse at night",
+          "Non-healing ulcer or recent foot infection"
+        ],
+        "exam": [
+          "Fever",
+          "Focal bone tenderness",
+          "Overlying ulcer or sinus tract",
+          "Surrounding cellulitis"
+        ],
+        "labs": [
+          "Elevated white blood cell count, CRP, and ESR",
+          "Blood cultures may be positive"
+        ],
+        "imaging": [
+          "Foot x-ray showing bone destruction, periosteal reaction, or lucency",
+          "MRI showing bone marrow edema and enhancement"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Small, painless or minimally tender area of thickened skin that does not limit activity",
+      "moderate": "Thicker, painful lesion that causes discomfort with walking or manual work but no skin breakdown",
+      "severe": "Large or multiple painful lesions that limit weight-bearing or hand use, or are associated with significant disability",
+      "critical": "Not applicable; corns and calluses are not life-threatening"
+    },
+    "red_flags": [
+      {
+        "finding": "Open wound, ulceration, or drainage",
+        "meaning": "Suggests ulceration or infection; urgent evaluation and treatment are needed, especially in diabetes"
+      },
+      {
+        "finding": "Spreading redness, warmth, or fever",
+        "meaning": "Suggests cellulitis or deeper infection; requires prompt medical evaluation"
+      },
+      {
+        "finding": "Loss of sensation in the feet",
+        "meaning": "Suggests peripheral neuropathy; the patient may not feel the lesion and is at high risk for ulceration"
+      },
+      {
+        "finding": "Absent or diminished pedal pulses",
+        "meaning": "Suggests peripheral arterial disease; poor healing and higher risk of infection"
+      },
+      {
+        "finding": "Rapidly growing, bleeding, or non-healing lesion",
+        "meaning": "Raises concern for malignancy or infection; biopsy or further workup may be needed"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Ulceration",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Break in the skin over the lesion",
+          "Pain or drainage",
+          "Diabetes or neuropathy"
+        ]
+      },
+      {
+        "name": "Cellulitis",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Spreading redness",
+          "Warmth",
+          "Fever"
+        ]
+      },
+      {
+        "name": "Osteomyelitis",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Deep pain",
+          "Non-healing ulcer over a bony prominence",
+          "Fever and elevated inflammatory markers"
+        ]
+      },
+      {
+        "name": "Chronic pain and gait changes",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Long-standing lesion",
+          "Limping",
+          "Avoidance of weight-bearing"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "diabetes",
+        "differences": "Neuropathy may mask pain, so lesions can go unnoticed until they ulcerate or become infected; any break in the skin needs urgent attention and offloading."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Thinning fat pads and foot deformities make calluses more likely and more painful; skin is thinner and more prone to breakdown."
+      },
+      {
+        "population": "children",
+        "differences": "Often related to sports, new shoes, or going barefoot; lesions are usually less thick and less painful than in adults."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "Where exactly is the thickened skin, and how long has it been there?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "A focal area over a pressure point (tops or sides of toes, between toes, ball of the foot, heel, palms or fingers) present for weeks to months"
+      },
+      {
+        "question": "What kind of shoes do you wear, and have you changed footwear recently?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Tight, narrow, high-heeled, or poorly fitting shoes; new shoes or boots; identifies the friction source"
+      },
+      {
+        "question": "Do you stand or walk for long periods at work or during activities?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Occupational or recreational prolonged standing, walking, running, or repetitive manual work"
+      },
+      {
+        "question": "Does it hurt when you press directly on it, or when you squeeze it from the sides?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Pain with direct pressure favors a corn or callus; pain with side-to-side squeezing favors a plantar wart"
+      },
+      {
+        "question": "Have you noticed any break in the skin, drainage, or an open sore?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Any ulceration, fissure, or drainage, which suggests breakdown or infection rather than a simple pressure lesion"
+      },
+      {
+        "question": "Do you have diabetes, poor circulation, or numbness or tingling in your feet?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Diabetes, peripheral arterial disease, or peripheral neuropathy, which raise the risk of ulceration and infection"
+      },
+      {
+        "question": "Have you tried to cut, shave, or use medicated pads or acids on it?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Self-treatment that may have caused injury or infection; medicated corn plasters can damage skin"
+      },
+      {
+        "question": "Is the area red, warm, swollen, or spreading?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Signs of cellulitis or deeper infection"
+      },
+      {
+        "question": "Have you had a puncture wound, stepped on something, or had a foreign body in the foot or hand?",
+        "category": "associated",
+        "importance": "optional",
+        "looking_for": "A retained foreign body or granuloma that can mimic a focal callus"
+      },
+      {
+        "question": "Do you have any other skin conditions, such as psoriasis or athlete's foot?",
+        "category": "pmh",
+        "importance": "optional",
+        "looking_for": "Palmoplantar psoriasis or tinea pedis that can cause thickened, scaly skin"
+      },
+      {
+        "question": "Any fever, chills, or feeling unwell?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Systemic symptoms suggesting infection; usually absent in uncomplicated corns and calluses"
+      },
+      {
+        "question": "Is the lesion growing, bleeding, or failing to heal despite removing pressure?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Features concerning for malignancy or a non-healing ulcer, which require biopsy or urgent evaluation"
+      }
+    ],
+    "accepted_names": [
+      "Corns and calluses",
+      "Corn",
+      "Callus",
+      "Calluses",
+      "Clavus",
+      "Tyloma",
+      "Heloma",
+      "Hyperkeratosis due to pressure or friction"
+    ],
+    "reasoning_points": [
+      "A focal area of thickened, hardened skin at a site of repeated pressure or friction",
+      "Location over a pressure point: tops or sides of toes and between toes for corns, soles and palms for calluses",
+      "Gradual onset over weeks to months, worse with walking, standing, or manual work",
+      "Preserved skin markings and no black dots, favoring a corn or callus over a wart",
+      "Skin is intact with no ulceration, drainage, or surrounding cellulitis",
+      "Sensation and pedal pulses are intact, making neuropathy and peripheral arterial disease less likely",
+      "Symptoms improve with removal of pressure, better-fitting shoes, and non-medicated padding",
+      "Diabetes, neuropathy, or poor circulation are checked for because they change management and raise the risk of ulceration"
+    ],
+    "difficulty": {
+      "easy": [
+        "Adult with a hard, thickened patch on the sole or a toe that hurts when walking",
+        "Clear history of tight or poorly fitting shoes or prolonged standing",
+        "Well-circumscribed hyperkeratosis with preserved skin markings and no ulceration",
+        "Symptoms improve with offloading and better footwear"
+      ],
+      "medium": [
+        "Lesion between the toes that is hard to see and mimics tinea pedis",
+        "Painful lesion on the ball of the foot with an underlying bony prominence or hammertoe",
+        "Patient with diabetes and a callus that needs careful skin and sensation checks",
+        "Lesion on the hands from repetitive manual work rather than the feet"
+      ],
+      "hard": [
+        "Callus over a bony prominence in a patient with neuropathy that is painless and could hide an ulcer",
+        "Lesion that does not heal after pressure is removed, raising concern for malignancy or infection",
+        "Plantar wart mistaken for a callus because of similar location and thickening",
+        "Older adult with thin fat pads, foot deformity, and multiple painful calluses",
+        "Chronic plaque on the sole that is actually palmoplantar psoriasis"
+      ]
+    }
+  }
+}

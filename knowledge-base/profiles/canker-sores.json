@@ -1,0 +1,1024 @@
+{
+  "schema_version": "0.2",
+  "slug": "canker-sores",
+  "triage": {
+    "name": "Canker Sores",
+    "case_suitable": true,
+    "reason": "Recurrent painful oral ulcers with a recognizable history and exam; differential includes herpes, Behçet, and drug causes, so it works as a clinic case.",
+    "kind": "disease",
+    "category": "oral mucosal disease",
+    "organ_systems": [
+      "gastrointestinal"
+    ],
+    "primary_clerkship": "familyMedicine",
+    "secondary_clerkships": [
+      "internalMedicine",
+      "pediatrics"
+    ],
+    "commonness": "common",
+    "settings": [
+      "clinic"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:16:21Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:35:42Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:35:48Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:35:53Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:36:05Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:36:12Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'hsv_pcr' to 'Hsv pcr'",
+        "auto-repaired: workup: renamed 'hiv_test' to 'Hiv test'",
+        "auto-repaired: labs: dropped 'cbc' (not in the reference table)",
+        "auto-repaired: workup: 'esr' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'crp' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'esr' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'crp' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "differential herpes-simplex-virus-infection: no profile yet",
+        "differential behcet-syndrome: no profile yet",
+        "differential crohns-disease: no profile yet",
+        "differential celiac-disease: no profile yet",
+        "differential nutritional-deficiency: no profile yet",
+        "differential medication-induced-oral-ulceration: no profile yet",
+        "differential oral-squamous-cell-carcinoma: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 10,
+      "typical_max": 40,
+      "peak": "10–30",
+      "possible_min": 2,
+      "possible_max": 90
+    },
+    "sex": "female_predominant",
+    "demographics": [
+      "Slightly more common in females",
+      "Often begins in childhood or adolescence and recurs for years",
+      "More common in higher socioeconomic groups and in non-smokers"
+    ],
+    "risk_factors": [
+      {
+        "text": "Family history of recurrent aphthous ulcers",
+        "strength": "strong"
+      },
+      {
+        "text": "Local trauma to the mouth (biting the lip or cheek, dental work, hard brushing)",
+        "strength": "moderate"
+      },
+      {
+        "text": "Stress or sleep deprivation",
+        "strength": "moderate"
+      },
+      {
+        "text": "Sodium lauryl sulfate in toothpaste",
+        "strength": "weak"
+      },
+      {
+        "text": "Foods that trigger attacks (chocolate, nuts, citrus, acidic or spicy foods)",
+        "strength": "weak"
+      },
+      {
+        "text": "Smoking cessation",
+        "strength": "weak"
+      },
+      {
+        "text": "Female sex",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Celiac disease",
+      "Inflammatory bowel disease (Crohn disease, ulcerative colitis)",
+      "Behçet syndrome",
+      "HIV infection",
+      "Nutritional deficiency (iron, folate, vitamin B12, zinc)"
+    ],
+    "family_history": [
+      "Recurrent canker sores in a parent or sibling"
+    ],
+    "social_history": [
+      "Often worse around exams, deadlines or other stressful periods"
+    ],
+    "exposures": [
+      "Recent dental work or braces",
+      "New toothpaste or mouthwash"
+    ],
+    "risk_medications": [
+      "ibuprofen",
+      "naproxen",
+      "methotrexate",
+      "nicorandil"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I have a sore in my mouth that really hurts",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "It hurts when I eat or drink",
+        "frequency": "common"
+      },
+      {
+        "text": "I keep getting these sores over and over",
+        "frequency": "common"
+      }
+    ],
+    "hpi": {
+      "onset": "Sudden; many patients feel a burning or tingling spot a day or two before the sore appears",
+      "duration": "Sores last about 7–14 days and heal without scarring; crops recur a few times a year",
+      "progression": "Starts as a small red tender spot, then becomes a shallow ulcer with a gray-white center and a red rim; pain peaks in the first few days and then slowly fades as it heals",
+      "location": "Inside the lips, inside the cheeks, on the tongue, floor of the mouth, soft palate or back of the throat; movable lining of the mouth rather than the gums or hard palate",
+      "radiation": "Pain can spread to the jaw or ear on the same side with larger sores",
+      "quality": "Burning, raw, stinging pain; the sore itself is a shallow, round or oval ulcer",
+      "severity": "Mild to moderate; often 5–8/10 at its worst, enough to make eating and talking uncomfortable",
+      "timing": "Constant pain that is worst with eating, drinking, talking or brushing teeth",
+      "aggravating": [
+        "Hot foods and drinks",
+        "Spicy, salty or acidic foods",
+        "Citrus fruits and tomatoes",
+        "Chewing and talking",
+        "Brushing teeth",
+        "Touching the sore with the tongue"
+      ],
+      "relieving": [
+        "Avoiding hot and spicy foods",
+        "Cold foods and drinks",
+        "Topical gels, creams or rinses",
+        "Pain relievers such as acetaminophen or ibuprofen"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Tingling or burning at the spot before the sore appears",
+          "frequency": "common"
+        },
+        {
+          "text": "Pain that makes it hard to eat or drink",
+          "frequency": "common"
+        },
+        {
+          "text": "Drooling or avoiding food in children",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Mild swelling or tenderness of the nearby lymph nodes",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Low-grade fever in children with many sores",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Fever and feeling generally unwell",
+        "Sores on the outside of the lips or around the mouth",
+        "Blisters that break and crust over",
+        "Sores on the gums, hard palate or top of the tongue",
+        "Eye redness, pain or discharge",
+        "Genital sores",
+        "Skin rash, joint pain or diarrhea",
+        "Weight loss",
+        "New medicines started before the sores appeared",
+        "Sores that leave scars"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [],
+        "negatives": [
+          "Fever",
+          "Chills",
+          "Night sweats",
+          "Weight loss",
+          "Feeling generally unwell"
+        ],
+        "argues_against": [
+          "Systemic illness such as Behçet syndrome or an infection"
+        ]
+      },
+      {
+        "system": "ent",
+        "positives": [
+          {
+            "text": "Painful sore inside the mouth",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Pain with eating, drinking or talking",
+            "frequency": "common"
+          },
+          {
+            "text": "Tender neck lymph nodes",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Sores on the outside of the lips",
+          "Crusted blisters around the mouth",
+          "Sore throat with fever",
+          "Bad breath",
+          "Loose teeth",
+          "Bleeding gums"
+        ],
+        "argues_against": [
+          "Herpes simplex infection",
+          "Streptococcal pharyngitis",
+          "Gum or dental infection"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [],
+        "negatives": [
+          "Diarrhea",
+          "Blood in stool",
+          "Abdominal pain",
+          "Heartburn",
+          "Difficulty swallowing"
+        ],
+        "argues_against": [
+          "Inflammatory bowel disease",
+          "Celiac disease"
+        ]
+      },
+      {
+        "system": "eyes",
+        "positives": [],
+        "negatives": [
+          "Eye redness",
+          "Eye pain",
+          "Blurred vision",
+          "Light sensitivity"
+        ],
+        "argues_against": [
+          "Behçet syndrome"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [],
+        "negatives": [
+          "Rash",
+          "Skin sores",
+          "Blisters"
+        ],
+        "argues_against": [
+          "Behçet syndrome",
+          "Pemphigus or other blistering disease"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [],
+        "negatives": [
+          "Joint pain",
+          "Joint swelling"
+        ],
+        "argues_against": [
+          "Behçet syndrome",
+          "Inflammatory bowel disease"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [],
+        "negatives": [
+          "Genital sores",
+          "Genital pain or discharge"
+        ],
+        "argues_against": [
+          "Behçet syndrome",
+          "Herpes simplex infection"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Young children can't describe the sore; they present with crying, refusing to eat or drink, drooling and irritability, and may have a low-grade fever with several sores at once.",
+        "missing_classic_features": [
+          "Clear description of the sore",
+          "Localized pain with eating"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "Sores are larger, more numerous, slower to heal and more likely to be caused by something other than ordinary recurrent aphthous ulcers.",
+        "missing_classic_features": [
+          "Small size",
+          "Healing within two weeks"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "A new mouth ulcer in an older adult is less likely to be simple recurrent aphthous ulcers and more often needs a search for medication, nutritional or malignant causes.",
+        "missing_classic_features": [
+          "Long history of recurrent crops since youth"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Well-appearing, comfortable between episodes of eating or talking",
+      "moderate": "Well-appearing but visibly uncomfortable when speaking or swallowing; may avoid talking",
+      "severe": "Ill-appearing, hesitant to speak or swallow, may drool or refuse food",
+      "critical": "Toxic-appearing, dehydrated, lethargic, unable to swallow"
+    },
+    "findings": [
+      {
+        "id": "oral-ulcer-visualized",
+        "region": "heent",
+        "maneuver": "Inspect the entire oral cavity with a light and tongue blade, including the inside of the lips, buccal mucosa, tongue, floor of the mouth, soft palate and posterior pharynx",
+        "finding": "One or more shallow, round or oval ulcers with a gray-white or yellow fibrinous center and an erythematous halo on the movable oral mucosa",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "ulcer-size",
+        "region": "heent",
+        "maneuver": "Estimate the diameter of the ulcer relative to a known reference (e.g., millimeters on a tongue blade)",
+        "finding": "Most ulcers are small (under 1 cm); larger ulcers over 1 cm suggest major aphthous ulcers or another cause",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "ulcer-tenderness",
+        "region": "heent",
+        "maneuver": "Gently palpate the ulcer and surrounding mucosa with a gloved finger or cotton swab",
+        "finding": "Marked tenderness of the ulcer and surrounding mucosa; the ulcer is soft and not indurated",
+        "frequency": "almost_always",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "no-vesicles",
+        "region": "heent",
+        "maneuver": "Inspect the oral mucosa for vesicles, bullae or intact blisters",
+        "finding": "No vesicles or intact blisters; lesions are ulcers from the start",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "no-gingival-involvement",
+        "region": "heent",
+        "maneuver": "Inspect the gingiva and hard palate",
+        "finding": "Gingiva and hard palate are spared; lesions are on movable mucosa",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "no-perioral-lesions",
+        "region": "skin",
+        "maneuver": "Inspect the lips, perioral skin and vermilion border",
+        "finding": "No crusted vesicles or erosions on the outer lips or around the mouth",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "cervical-lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the cervical lymph node chains bilaterally",
+        "finding": "Mildly tender, mobile cervical lymphadenopathy",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "no-fever",
+        "region": "general",
+        "maneuver": "Measure temperature and assess for systemic signs",
+        "finding": "Afebrile and systemically well",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "no-ocular-signs",
+        "region": "heent",
+        "maneuver": "Inspect the eyes for redness, discharge or photophobia",
+        "finding": "No conjunctival injection, uveitis or ocular discharge",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "no-genital-ulcers",
+        "region": "genitourinary",
+        "maneuver": "Ask about and, when indicated, inspect the genitalia for ulcers",
+        "finding": "No genital ulcers or scarring",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "no-skin-rash",
+        "region": "skin",
+        "maneuver": "Inspect the skin for rash, pustules or nodules",
+        "finding": "No rash, erythema nodosum or folliculitis",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "optional"
+      },
+      {
+        "id": "hydration-status",
+        "region": "general",
+        "maneuver": "Assess mucous membranes, skin turgor and capillary refill",
+        "finding": "Dry mucous membranes and delayed capillary refill in patients who cannot drink because of pain",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      }
+    ]
+  },
+  "vitals": {},
+  "labs": [
+    {
+      "test_id": "ferritin",
+      "ranges": {
+        "mild": {
+          "min": 8,
+          "max": 11
+        },
+        "moderate": {
+          "min": 5,
+          "max": 10
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Low ferritin supports iron deficiency, a recognized contributor to recurrent aphthous ulcers."
+    },
+    {
+      "test_id": "b12",
+      "ranges": {
+        "mild": {
+          "min": 150,
+          "max": 199
+        },
+        "moderate": {
+          "min": 100,
+          "max": 160
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Low B12 is a treatable cause of recurrent mouth ulcers."
+    },
+    {
+      "test_id": "folate",
+      "ranges": {
+        "mild": {
+          "min": 2.0,
+          "max": 2.9
+        },
+        "moderate": {
+          "min": 1.0,
+          "max": 2.2
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Low folate is another treatable nutritional cause."
+    },
+    {
+      "test_id": "esr",
+      "ranges": {
+        "mild": {
+          "min": 21,
+          "max": 35
+        },
+        "moderate": {
+          "min": 30,
+          "max": 60
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Mildly elevated only when a systemic inflammatory condition such as Behçet syndrome or inflammatory bowel disease is present; normal in simple recurrent aphthous ulcers."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "mild": {
+          "min": 1.1,
+          "max": 3.0
+        },
+        "moderate": {
+          "min": 2.0,
+          "max": 8.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Usually normal; elevation suggests an underlying systemic inflammatory disorder."
+    }
+  ],
+  "imaging": [],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Looks for anemia or a hematologic abnormality that would suggest a systemic cause"
+      },
+      {
+        "test": "ferritin",
+        "why": "Screens for iron deficiency, a common and treatable trigger"
+      },
+      {
+        "test": "b12",
+        "why": "Screens for vitamin B12 deficiency"
+      },
+      {
+        "test": "folate",
+        "why": "Screens for folate deficiency"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "esr",
+        "why": "Supports a systemic inflammatory cause",
+        "only_if": "systemic symptoms such as fever, weight loss, genital or eye involvement, or diarrhea are present"
+      },
+      {
+        "test": "crp",
+        "why": "Supports a systemic inflammatory cause",
+        "only_if": "systemic symptoms such as fever, weight loss, genital or eye involvement, or diarrhea are present"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "esr",
+        "why": "Not needed in typical recurrent aphthous ulcers without systemic features"
+      },
+      {
+        "test": "crp",
+        "why": "Not needed in typical recurrent aphthous ulcers without systemic features"
+      },
+      {
+        "test": "Hsv pcr",
+        "why": "No role unless vesicles, perioral crusting or gingival involvement suggest herpes simplex"
+      },
+      {
+        "test": "Hiv test",
+        "why": "Not routine; consider only with atypical, severe or nonhealing ulcers or other risk factors"
+      },
+      {
+        "test": "Biopsy of the oral ulcer",
+        "why": "Not indicated for typical small recurrent ulcers; reserve for persistent, indurated or nonhealing lesions concerning for malignancy or a blistering disease"
+      }
+    ],
+    "decision_points": [
+      "Typical small recurrent ulcers on movable mucosa with a gray-white center and red halo need no testing beyond a nutritional screen",
+      "Order ESR/CRP and consider Behçet syndrome or inflammatory bowel disease when genital ulcers, eye inflammation, skin lesions or GI symptoms are present",
+      "Biopsy any ulcer that persists beyond 3 weeks, is indurated, or fails to heal, to exclude malignancy",
+      "Review new medications (NSAIDs, methotrexate, nicorandil) as a possible trigger"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Herpes simplex virus infection (primary gingivostomatitis or recurrent herpes labialis)",
+      "slug": "herpes-simplex-virus-infection",
+      "why_considered": "Painful oral lesions are the most common reason patients present, and herpes is the classic mimic of aphthous ulcers.",
+      "must_not_miss": true,
+      "trigger": "Vesicles or blisters that rupture and crust, involvement of the gingiva, hard palate or outer lips, or a febrile prodrome",
+      "discriminators": {
+        "history": [
+          "Prodrome of tingling or burning followed by a cluster of blisters",
+          "Fever, malaise and refusal to eat in primary infection",
+          "Sores on the outside of the lips or around the mouth",
+          "Recurrences at the same site"
+        ],
+        "exam": [
+          "Vesicles or intact blisters that break and crust",
+          "Gingival swelling, redness and bleeding",
+          "Lesions on the hard palate or attached gingiva",
+          "Perioral crusted erosions"
+        ],
+        "labs": [
+          "Positive HSV PCR from an unroofed vesicle",
+          "Positive HSV type-specific serology"
+        ],
+        "imaging": []
+      }
+    },
+    {
+      "name": "Behçet syndrome",
+      "slug": "behcet-syndrome",
+      "why_considered": "Recurrent oral ulcers are the cardinal feature, and missing the systemic disease delays treatment of a potentially sight-threatening and life-threatening condition.",
+      "must_not_miss": true,
+      "trigger": "Recurrent oral ulcers plus genital ulcers, eye inflammation, skin lesions or a positive pathergy test",
+      "discriminators": {
+        "history": [
+          "Recurrent genital ulcers",
+          "Eye redness, pain or blurred vision",
+          "Skin sores or acne-like lesions",
+          "Joint pain or swelling",
+          "Family history or origin in an endemic region"
+        ],
+        "exam": [
+          "Genital ulcers or scarring",
+          "Conjunctival injection, uveitis or hypopyon",
+          "Erythema nodosum or folliculitis-like skin lesions",
+          "Positive pathergy test"
+        ],
+        "labs": [
+          "Elevated ESR and CRP during flares",
+          "Negative infectious workup"
+        ],
+        "imaging": [
+          "Ophthalmologic slit-lamp examination showing uveitis",
+          "MR or CT angiography if vascular involvement is suspected"
+        ]
+      }
+    },
+    {
+      "name": "Inflammatory bowel disease (Crohn disease and ulcerative colitis)",
+      "slug": "crohns-disease",
+      "why_considered": "Oral aphthous ulcers are a common extraintestinal manifestation and can precede GI symptoms.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Chronic diarrhea, abdominal pain or blood in stool",
+          "Weight loss and fatigue",
+          "Perianal fistulas or abscesses"
+        ],
+        "exam": [
+          "Abdominal tenderness or mass",
+          "Perianal skin tags, fistulas or fissures",
+          "Cobblestone mucosa or linear ulcers on oral exam"
+        ],
+        "labs": [
+          "Elevated ESR and CRP",
+          "Anemia and low ferritin",
+          "Fecal calprotectin elevation"
+        ],
+        "imaging": [
+          "Terminal ileum thickening or skip lesions on CT or MR enterography",
+          "Colonoscopy with biopsy showing transmural inflammation"
+        ]
+      }
+    },
+    {
+      "name": "Celiac disease",
+      "slug": "celiac-disease",
+      "why_considered": "Recurrent aphthous ulcers are a recognized presentation of celiac disease, often with subtle GI symptoms.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Chronic diarrhea, bloating or weight loss",
+          "Iron-deficiency anemia",
+          "Family history of celiac disease"
+        ],
+        "exam": [
+          "Pallor",
+          "Abdominal distension",
+          "Dermatitis herpetiformis"
+        ],
+        "labs": [
+          "Positive tissue transglutaminase IgA",
+          "Low ferritin, folate or B12",
+          "Iron-deficiency anemia"
+        ],
+        "imaging": [
+          "Small bowel biopsy showing villous atrophy"
+        ]
+      }
+    },
+    {
+      "name": "Nutritional deficiency (iron, folate, vitamin B12, zinc)",
+      "slug": "nutritional-deficiency",
+      "why_considered": "Deficiencies are common, treatable causes of recurrent mouth ulcers and are part of the standard workup.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Restricted or unusual diet",
+          "Heavy menstrual bleeding",
+          "Bariatric surgery or malabsorption",
+          "Paresthesias or glossitis"
+        ],
+        "exam": [
+          "Pallor",
+          "Atrophic glossitis",
+          "Decreased vibration or position sense with B12 deficiency"
+        ],
+        "labs": [
+          "Low ferritin",
+          "Low B12 or folate",
+          "Low zinc",
+          "Macrocytic or microcytic anemia"
+        ],
+        "imaging": []
+      }
+    },
+    {
+      "name": "Medication-induced oral ulceration",
+      "slug": "medication-induced-oral-ulceration",
+      "why_considered": "NSAIDs, methotrexate, nicorandil and some chemotherapies can cause oral ulcers that mimic aphthous ulcers.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "New medication started before the sores appeared",
+          "Dose escalation of a known culprit drug",
+          "Ulcers resolve when the drug is stopped"
+        ],
+        "exam": [
+          "Ulcers may be larger or atypical in location",
+          "Signs of mucositis elsewhere"
+        ],
+        "labs": [
+          "Drug levels when available (e.g., methotrexate)",
+          "Cytopenias with methotrexate toxicity"
+        ],
+        "imaging": []
+      }
+    },
+    {
+      "name": "Squamous cell carcinoma of the oral cavity",
+      "slug": "oral-squamous-cell-carcinoma",
+      "why_considered": "A nonhealing oral ulcer can be malignant, and delay in diagnosis worsens outcomes.",
+      "must_not_miss": true,
+      "trigger": "An ulcer that persists beyond 3 weeks, is indurated, or is associated with tobacco or alcohol use",
+      "discriminators": {
+        "history": [
+          "Tobacco or heavy alcohol use",
+          "Ulcer present for more than 3 weeks",
+          "Progressive pain, dysphagia or weight loss",
+          "History of head and neck cancer"
+        ],
+        "exam": [
+          "Indurated, rolled or everted edges",
+          "Fixed, hard lymph node in the neck",
+          "Lesion on the lateral tongue, floor of mouth or soft palate"
+        ],
+        "labs": [],
+        "imaging": [
+          "Biopsy showing invasive squamous cell carcinoma",
+          "CT or MRI for staging"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "One or two small ulcers under 1 cm on movable mucosa; mild pain that does not limit eating or drinking; no systemic symptoms; heals in 7–14 days without scarring",
+      "moderate": "Several ulcers or a larger ulcer causing significant pain that limits eating, drinking or talking; may have tender cervical lymph nodes; no dehydration or systemic illness",
+      "severe": "Numerous or large (over 1 cm) ulcers, or continuous crops that interfere with oral intake; dehydration or weight loss may develop; consider major aphthous ulcers or an underlying systemic cause",
+      "critical": "Not applicable; canker sores are not life-threatening, but severe cases can cause dehydration, especially in children, which requires urgent supportive care"
+    },
+    "red_flags": [
+      {
+        "finding": "Ulcer persisting beyond 3 weeks or failing to heal",
+        "meaning": "Needs biopsy to exclude malignancy or a blistering disease"
+      },
+      {
+        "finding": "Indurated, rolled or everted ulcer edges",
+        "meaning": "Concerning for squamous cell carcinoma"
+      },
+      {
+        "finding": "Genital ulcers, eye redness or pain, or skin lesions",
+        "meaning": "Suggests Behçet syndrome or another systemic inflammatory disease"
+      },
+      {
+        "finding": "Fever, weight loss, diarrhea or blood in stool",
+        "meaning": "Suggests inflammatory bowel disease, celiac disease or infection"
+      },
+      {
+        "finding": "Inability to eat or drink, drooling, or signs of dehydration",
+        "meaning": "Requires urgent supportive care, especially in children"
+      },
+      {
+        "finding": "New medication started before the ulcers appeared",
+        "meaning": "Consider drug-induced ulceration and review the medication list"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Dehydration and poor oral intake",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Refusal to eat or drink",
+          "Drooling in children",
+          "Dry mucous membranes",
+          "Weight loss"
+        ]
+      },
+      {
+        "name": "Secondary bacterial infection of the ulcer",
+        "timing": "any",
+        "seriousness": "minor",
+        "frequency": "rare",
+        "clues": [
+          "Increasing pain, swelling or purulent discharge",
+          "Fever",
+          "Enlarging erythema"
+        ]
+      },
+      {
+        "name": "Scarring from major aphthous ulcers",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "rare",
+        "clues": [
+          "Ulcers larger than 1 cm",
+          "Healing with a visible scar"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Young children cannot describe the sore and present with crying, refusing to eat or drink, drooling and irritability; dehydration is the main concern and may require urgent care."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Ulcers are larger, more numerous and slower to heal; consider herpes simplex, cytomegalovirus, fungal infection or drug-induced mucositis rather than simple recurrent aphthous ulcers."
+      },
+      {
+        "population": "older_adults",
+        "differences": "A new oral ulcer is less likely to be simple recurrent aphthous ulcers; evaluate for medication effects, nutritional deficiency and malignancy, and biopsy nonhealing lesions."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Hormonal changes can trigger or worsen recurrent aphthous ulcers; treatment is limited to topical agents and acetaminophen, avoiding systemic agents that are unsafe in pregnancy."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "Where in your mouth is the sore, and what does it look like?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Inside the lips, cheeks, tongue, floor of mouth or soft palate; a shallow round or oval ulcer with a gray-white center and a red rim on movable mucosa"
+      },
+      {
+        "question": "How long has this sore been there, and have you had sores like this before?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Recurrent crops over months to years, each lasting about 7–14 days and healing without scarring; a first or nonhealing ulcer raises concern for another cause"
+      },
+      {
+        "question": "Did you notice any tingling or burning before the sore appeared?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "A brief burning or tingling spot a day or two before the ulcer, typical of aphthous ulcers"
+      },
+      {
+        "question": "What makes the pain worse, and what helps?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Worse with hot, spicy, salty or acidic foods, chewing, talking and brushing; better with cold foods and topical gels or rinses"
+      },
+      {
+        "question": "How much is this affecting your eating and drinking?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Pain that limits oral intake; refusal to eat or drink, drooling or weight loss suggests dehydration, especially in children"
+      },
+      {
+        "question": "Have you had a fever, felt unwell, or lost weight?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Absent in simple aphthous ulcers; present suggests a systemic illness or infection"
+      },
+      {
+        "question": "Have you had sores on your genitals, or any eye redness, pain or blurred vision?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Absent; genital ulcers or eye inflammation suggest Behçet syndrome"
+      },
+      {
+        "question": "Any diarrhea, blood in the stool, or abdominal pain?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Absent; present suggests inflammatory bowel disease or celiac disease"
+      },
+      {
+        "question": "Have you had any skin rash, joint pain or swelling?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Absent; present suggests a systemic inflammatory condition such as Behçet syndrome or inflammatory bowel disease"
+      },
+      {
+        "question": "Have you started any new medicines recently?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "NSAIDs, methotrexate, nicorandil or chemotherapy started before the sores appeared, suggesting drug-induced ulceration"
+      },
+      {
+        "question": "Does anyone else in your family get sores like these?",
+        "category": "family",
+        "importance": "optional",
+        "looking_for": "A parent or sibling with recurrent canker sores, supporting a familial tendency"
+      },
+      {
+        "question": "Do you smoke or use tobacco, and how much alcohol do you drink?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Tobacco or heavy alcohol use raises concern for oral squamous cell carcinoma, especially with a nonhealing ulcer"
+      },
+      {
+        "question": "Has this ulcer lasted more than three weeks, or does it feel hard or raised?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "An ulcer persisting beyond 3 weeks or with indurated, rolled edges needs biopsy to exclude malignancy"
+      }
+    ],
+    "accepted_names": [
+      "Canker sores",
+      "Canker sore",
+      "Aphthous ulcers",
+      "Aphthous ulcer",
+      "Recurrent aphthous stomatitis",
+      "Recurrent aphthous ulcers",
+      "Aphthous stomatitis",
+      "RAS"
+    ],
+    "reasoning_points": [
+      "Recurrent crops of painful shallow oral ulcers on movable mucosa, each lasting about 7–14 days and healing without scarring",
+      "A gray-white or yellow fibrinous center with an erythematous halo, without vesicles or blisters",
+      "Sparing of the gingiva, hard palate and outer lips, which argues against herpes simplex",
+      "No fever, systemic symptoms, genital ulcers, eye inflammation, skin rash or GI symptoms to suggest Behçet syndrome, inflammatory bowel disease or infection",
+      "No new culprit medication such as an NSAID, methotrexate or nicorandil",
+      "Nutritional screen for iron, folate and vitamin B12 deficiency as treatable contributors",
+      "An ulcer persisting beyond 3 weeks, indurated, or nonhealing requires biopsy to exclude malignancy"
+    ],
+    "difficulty": {
+      "easy": [
+        "Young adult with a long history of recurrent small painful mouth ulcers",
+        "Classic shallow ulcer with a gray-white center and red halo on the buccal mucosa or inside the lip",
+        "No fever, no systemic symptoms, no genital or eye involvement",
+        "Heals without scarring in under two weeks"
+      ],
+      "medium": [
+        "Child who cannot describe the sore and presents with crying, drooling and refusal to eat",
+        "Patient with several ulcers at once and tender cervical lymph nodes",
+        "Patient with a history of iron-deficiency anemia or heavy menstrual bleeding",
+        "Ulcer triggered by recent dental work, braces or a new toothpaste"
+      ],
+      "hard": [
+        "Older adult with a new, nonhealing oral ulcer concerning for malignancy",
+        "Immunocompromised patient with large, numerous or slow-healing ulcers suggesting herpes, CMV or drug-induced mucositis",
+        "Patient with recurrent oral ulcers plus genital ulcers or eye inflammation suggesting Behçet syndrome",
+        "Patient with oral ulcers and diarrhea or weight loss suggesting inflammatory bowel disease or celiac disease",
+        "Patient on methotrexate or nicorandil with new oral ulcers suggesting drug-induced ulceration"
+      ]
+    }
+  }
+}

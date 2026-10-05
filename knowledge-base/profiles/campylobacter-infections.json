@@ -1,0 +1,1391 @@
+{
+  "schema_version": "0.2",
+  "slug": "campylobacter-infections",
+  "triage": {
+    "name": "Campylobacter Infections",
+    "case_suitable": true,
+    "reason": "Acute diarrheal illness with food/exposure history; students work through the infectious diarrhea differential and stool testing.",
+    "kind": "disease",
+    "category": "infection",
+    "organ_systems": [
+      "gastrointestinal",
+      "blood"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "familyMedicine",
+      "pediatrics",
+      "emergency"
+    ],
+    "commonness": "common",
+    "settings": [
+      "clinic",
+      "emergency"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:16:11Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:35:00Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:35:04Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:35:16Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:35:27Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:35:33Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'stool culture' was in ['initial', 'confirmatory'], kept ['initial']",
+        "differential salmonellosis: no profile yet",
+        "differential shigellosis: no profile yet",
+        "differential e-coli-o157: no profile yet",
+        "differential viral-gastroenteritis: no profile yet",
+        "differential c-difficile-colitis: no profile yet",
+        "differential inflammatory-bowel-disease: no profile yet",
+        "differential yersiniosis: no profile yet",
+        "differential giardiasis: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 5,
+      "typical_max": 60,
+      "peak": "children under 5 and young adults",
+      "possible_min": 0,
+      "possible_max": 95
+    },
+    "sex": "either",
+    "demographics": [
+      "One of the most common causes of bacterial diarrhea worldwide",
+      "Sporadic cases rather than large outbreaks are typical",
+      "More common in children under 5 and in young adults"
+    ],
+    "risk_factors": [
+      {
+        "text": "Eating undercooked or raw poultry",
+        "strength": "strong"
+      },
+      {
+        "text": "Drinking raw (unpasteurized) milk",
+        "strength": "strong"
+      },
+      {
+        "text": "Drinking untreated or contaminated water",
+        "strength": "moderate"
+      },
+      {
+        "text": "Handling raw poultry or infected animal feces without handwashing",
+        "strength": "moderate"
+      },
+      {
+        "text": "Contact with puppies or kittens with diarrhea",
+        "strength": "moderate"
+      },
+      {
+        "text": "Travel to areas with poor sanitation",
+        "strength": "weak"
+      },
+      {
+        "text": "Men who have sex with men",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Immunocompromising conditions (HIV, transplant, immunosuppressive therapy)"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Food preparation at home involving raw poultry",
+      "Occupational or recreational animal contact (farm, pet store, veterinary work)"
+    ],
+    "exposures": [
+      "Undercooked chicken or turkey",
+      "Unpasteurized milk or cheese",
+      "Untreated well or stream water",
+      "Puppies or kittens with diarrhea",
+      "Recent international travel"
+    ],
+    "risk_medications": [
+      "Proton pump inhibitors",
+      "Immunosuppressants"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I've had watery diarrhea for a few days",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "My stomach is cramping",
+        "frequency": "common"
+      },
+      {
+        "text": "There's blood in my stool",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "I feel feverish and wiped out",
+        "frequency": "common"
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual, starting 2–5 days after the contaminated meal or exposure",
+      "duration": "Usually about one week; diarrhea can linger up to 2 weeks",
+      "progression": "Begins with fever, headache and muscle aches, then crampy abdominal pain followed by diarrhea that may become bloody; symptoms peak over 1–3 days and then slowly improve",
+      "location": "Diffuse abdominal cramping, often periumbilical or lower abdomen",
+      "radiation": "Usually none",
+      "quality": "Crampy, colicky abdominal pain with frequent loose stools",
+      "severity": "Moderate; cramps come in waves and are uncomfortable but usually tolerable",
+      "timing": "Cramps come and go and often precede each bowel movement",
+      "aggravating": [
+        "Eating",
+        "Drinking milk or dairy"
+      ],
+      "relieving": [
+        "Passing stool",
+        "Resting",
+        "Drinking fluids"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Watery diarrhea, sometimes with mucus",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Abdominal cramping",
+          "frequency": "common"
+        },
+        {
+          "text": "Fever",
+          "frequency": "common"
+        },
+        {
+          "text": "Fatigue and feeling run down",
+          "frequency": "common"
+        },
+        {
+          "text": "Nausea",
+          "frequency": "common"
+        },
+        {
+          "text": "Headache and muscle aches",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Vomiting",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Bloody stools",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Tenesmus (feeling of incomplete emptying)",
+          "frequency": "sometimes"
+        }
+      ],
+      "pertinent_negatives": [
+        "Vomiting that started before the diarrhea",
+        "Illness lasting more than 2 weeks",
+        "Recent antibiotic use",
+        "Hospitalization or long-term care stay",
+        "Bloody diarrhea with no fever or cramps",
+        "Weight loss over weeks to months",
+        "Chronic waxing and waning diarrhea"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fever",
+            "frequency": "common"
+          },
+          {
+            "text": "Fatigue",
+            "frequency": "common"
+          },
+          {
+            "text": "Chills",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Weight loss",
+          "Night sweats"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Watery diarrhea",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Abdominal cramping",
+            "frequency": "common"
+          },
+          {
+            "text": "Nausea",
+            "frequency": "common"
+          },
+          {
+            "text": "Blood or mucus in stool",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Vomiting",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Jaundice",
+          "Hematemesis",
+          "Melena"
+        ],
+        "argues_against": [
+          "Chronic relapsing diarrhea",
+          "Diarrhea lasting more than 2 weeks"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Muscle aches",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Joint swelling",
+          "Morning stiffness lasting hours"
+        ],
+        "argues_against": [
+          "Migratory joint pain weeks after the diarrhea"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Headache",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Weakness in the legs",
+          "Tingling in the feet",
+          "Difficulty walking"
+        ],
+        "argues_against": [
+          "Ascending symmetric weakness weeks after the diarrhea"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "Diarrhea can be prolonged, relapsing or severe, and bacteremia with systemic illness occurs; symptoms may last weeks and require antibiotics.",
+        "missing_classic_features": [
+          "Self-limited one-week course"
+        ]
+      },
+      {
+        "population": "children",
+        "how_it_differs": "Infants and young children present with irritability, poor feeding and dehydration rather than describing cramps; bloody stools are more common.",
+        "missing_classic_features": [
+          "Localized crampy pain description"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "May present with dehydration, confusion or generalized weakness rather than prominent diarrhea, and illness can be more severe.",
+        "missing_classic_features": [
+          "Prominent diarrhea",
+          "High fever"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Alert, well-appearing, comfortable between cramps; no dehydration",
+      "moderate": "Uncomfortable, flushed, mild dehydration (dry mucous membranes, slightly reduced skin turgor)",
+      "severe": "Ill-appearing, restless or lethargic, moderate dehydration (sunken eyes, delayed capillary refill, tachycardia)",
+      "critical": "Toxic-appearing, lethargic, severe dehydration or shock (hypotension, mottled skin, minimal urine output)"
+    },
+    "findings": [
+      {
+        "id": "diffuse-abdominal-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate all four quadrants",
+        "finding": "Diffuse or periumbilical tenderness without focal guarding or rebound",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "hyperactive-bowel-sounds",
+        "region": "abdomen",
+        "maneuver": "Auscultate bowel sounds in all quadrants",
+        "finding": "Hyperactive bowel sounds",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "no-guarding-rigidity",
+        "region": "abdomen",
+        "maneuver": "Palpate deeply and ask the patient to cough",
+        "finding": "No involuntary guarding, rigidity or rebound tenderness",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "dry-mucous-membranes",
+        "region": "heent",
+        "maneuver": "Inspect the oral mucosa and tongue",
+        "finding": "Dry mucous membranes",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "reduced-skin-turgor",
+        "region": "skin",
+        "maneuver": "Pinch the skin over the forearm or abdomen",
+        "finding": "Reduced skin turgor with slow recoil",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "capillary-refill-delay",
+        "region": "extremities",
+        "maneuver": "Press the fingertip and time capillary refill",
+        "finding": "Capillary refill longer than 2 seconds",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "no-hepatosplenomegaly",
+        "region": "abdomen",
+        "maneuver": "Palpate the liver and spleen",
+        "finding": "No hepatomegaly or splenomegaly",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-joint-swelling",
+        "region": "musculoskeletal",
+        "maneuver": "Inspect and palpate the knees, ankles and wrists",
+        "finding": "No joint swelling, warmth or effusion",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-neurologic-deficit",
+        "region": "neuro",
+        "maneuver": "Test lower extremity strength, deep tendon reflexes and sensation",
+        "finding": "Normal strength, reflexes and sensation",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 98.6,
+        "max": 100.2
+      },
+      "moderate": {
+        "min": 99.5,
+        "max": 101.5
+      },
+      "severe": {
+        "min": 100.4,
+        "max": 103.0
+      },
+      "critical": {
+        "min": 101.0,
+        "max": 104.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 70,
+        "max": 100
+      },
+      "moderate": {
+        "min": 90,
+        "max": 115
+      },
+      "severe": {
+        "min": 105,
+        "max": 130
+      },
+      "critical": {
+        "min": 120,
+        "max": 150
+      }
+    },
+    "rr": {
+      "moderate": {
+        "min": 16,
+        "max": 22
+      },
+      "severe": {
+        "min": 20,
+        "max": 26
+      },
+      "critical": {
+        "min": 24,
+        "max": 32
+      }
+    },
+    "sbp": {
+      "severe": {
+        "min": 90,
+        "max": 105
+      },
+      "critical": {
+        "min": 70,
+        "max": 90
+      }
+    },
+    "dbp": {
+      "severe": {
+        "min": 55,
+        "max": 70
+      },
+      "critical": {
+        "min": 40,
+        "max": 60
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "mild": {
+          "min": 10.5,
+          "max": 14.0
+        },
+        "moderate": {
+          "min": 12.0,
+          "max": 17.0
+        },
+        "severe": {
+          "min": 15.0,
+          "max": 22.0
+        },
+        "critical": {
+          "min": 18.0,
+          "max": 28.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "A normal white count does not rule out Campylobacter; leukocytosis with a left shift is more typical of invasive, bloody diarrhea."
+    },
+    {
+      "test_id": "neut_pct",
+      "ranges": {
+        "mild": {
+          "min": 68,
+          "max": 80
+        },
+        "moderate": {
+          "min": 74,
+          "max": 86
+        },
+        "severe": {
+          "min": 80,
+          "max": 90
+        },
+        "critical": {
+          "min": 82,
+          "max": 92
+        }
+      },
+      "frequency": "common",
+      "importance": "optional"
+    },
+    {
+      "test_id": "bands_pct",
+      "ranges": {
+        "moderate": {
+          "min": 4,
+          "max": 10
+        },
+        "severe": {
+          "min": 6,
+          "max": 15
+        },
+        "critical": {
+          "min": 10,
+          "max": 22
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "hgb",
+      "ranges": {
+        "severe": {
+          "min": 10.0,
+          "max": 12.0
+        },
+        "critical": {
+          "min": 8.0,
+          "max": 10.5
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Falls only with heavy or prolonged bloody diarrhea; anemia is not typical of uncomplicated disease."
+    },
+    {
+      "test_id": "na",
+      "ranges": {
+        "moderate": {
+          "min": 130,
+          "max": 134
+        },
+        "severe": {
+          "min": 125,
+          "max": 130
+        },
+        "critical": {
+          "min": 120,
+          "max": 126
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hyponatremia from gastrointestinal losses and replacement with free water."
+    },
+    {
+      "test_id": "k",
+      "ranges": {
+        "moderate": {
+          "min": 3.0,
+          "max": 3.4
+        },
+        "severe": {
+          "min": 2.5,
+          "max": 3.0
+        },
+        "critical": {
+          "min": 2.0,
+          "max": 2.6
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hypokalemia from diarrheal losses; can be marked in severe or prolonged diarrhea."
+    },
+    {
+      "test_id": "hco3",
+      "ranges": {
+        "moderate": {
+          "min": 18,
+          "max": 21
+        },
+        "severe": {
+          "min": 14,
+          "max": 18
+        },
+        "critical": {
+          "min": 8,
+          "max": 14
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Low bicarbonate reflects a non-gap metabolic acidosis from stool bicarbonate losses."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "moderate": {
+          "min": 20,
+          "max": 30
+        },
+        "severe": {
+          "min": 28,
+          "max": 45
+        },
+        "critical": {
+          "min": 35,
+          "max": 60
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Prerenal elevation from dehydration and poor intake; falls with rehydration."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "moderate": {
+          "min": 1.2,
+          "max": 1.6
+        },
+        "severe": {
+          "min": 1.5,
+          "max": 2.2
+        },
+        "critical": {
+          "min": 2.0,
+          "max": 3.5
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Acute kidney injury from hypovolemia; usually improves with fluids."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "mild": {
+          "min": 1.0,
+          "max": 3.0
+        },
+        "moderate": {
+          "min": 2.0,
+          "max": 8.0
+        },
+        "severe": {
+          "min": 5.0,
+          "max": 20.0
+        },
+        "critical": {
+          "min": 10.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "procalcitonin",
+      "ranges": {
+        "moderate": {
+          "min": 0.25,
+          "max": 1.0
+        },
+        "severe": {
+          "min": 0.5,
+          "max": 2.0
+        },
+        "critical": {
+          "min": 1.0,
+          "max": 5.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "May be only mildly elevated; a low value does not exclude bacterial enteritis."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "severe": {
+          "min": 2.1,
+          "max": 3.5
+        },
+        "critical": {
+          "min": 2.5,
+          "max": 6.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Elevated only with hypoperfusion from severe dehydration or sepsis."
+    },
+    {
+      "test_id": "albumin",
+      "ranges": {
+        "severe": {
+          "min": 2.8,
+          "max": 3.4
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional"
+    },
+    {
+      "test_id": "ua_blood",
+      "qualitative": {
+        "moderate": "Trace",
+        "severe": "1+"
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Can be positive from dehydration or hematuria in hemolytic uremic syndrome; not a routine test for diarrhea."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rate",
+        "finding": "Sinus tachycardia from fever and dehydration",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Sinus rhythm; no arrhythmia expected from the infection itself",
+        "frequency": "almost_always"
+      },
+      {
+        "feature": "other",
+        "finding": "Nonspecific ST-T flattening with hypokalemia from diarrheal losses",
+        "frequency": "rare",
+        "min_severity": "severe"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Abdominal x-ray (supine and upright)",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Nonspecific bowel gas pattern; no obstruction or free air",
+          "frequency": "common"
+        },
+        {
+          "text": "Dilated loops of bowel with air-fluid levels suggesting ileus",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Free intraperitoneal air (perforation) — not expected in Campylobacter enteritis",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "CT abdomen and pelvis with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Severe pain, suspected colitis, toxic megacolon, abscess or perforation",
+      "findings": [
+        {
+          "text": "Diffuse colonic wall thickening with mucosal enhancement",
+          "frequency": "common"
+        },
+        {
+          "text": "Pericolonic fat stranding",
+          "frequency": "common"
+        },
+        {
+          "text": "Mesenteric lymphadenopathy",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Ascites or pericolic fluid",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Toxic megacolon with colonic dilation",
+          "frequency": "rare"
+        },
+        {
+          "text": "Free air or abscess indicating perforation",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Ultrasound of the abdomen",
+      "modality": "ultrasound",
+      "preferred_when": "Children or pregnancy when another diagnosis such as appendicitis or intussusception is considered",
+      "findings": [
+        {
+          "text": "Thickened, hyperemic bowel wall",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Mesenteric lymph nodes",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Normal appendix and no intussusception",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "MRI abdomen and pelvis without contrast",
+      "modality": "mri",
+      "preferred_when": "Pregnancy when CT is needed but radiation should be avoided",
+      "findings": [
+        {
+          "text": "Colonic wall thickening and pericolonic edema",
+          "frequency": "sometimes"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Leukocytosis with a left shift supports bacterial enteritis; anemia suggests heavy blood loss"
+      },
+      {
+        "test": "bmp",
+        "why": "Assesses dehydration, electrolyte losses and acute kidney injury"
+      },
+      {
+        "test": "stool culture",
+        "why": "Identifies Campylobacter and guides antibiotic choice in moderate to severe or bloody diarrhea"
+      },
+      {
+        "test": "stool leukocytes",
+        "why": "Supports an inflammatory bacterial cause when culture is not immediately available"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before antibiotics or imaging in anyone who could be pregnant"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Campylobacter stool PCR (multiplex GI pathogen panel)",
+        "why": "Rapid and sensitive molecular detection when available; may not report susceptibility"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "crp",
+        "why": "Supports an inflammatory process but is nonspecific"
+      },
+      {
+        "test": "procalcitonin",
+        "why": "May help distinguish bacterial from viral diarrhea, though it is often only mildly elevated"
+      },
+      {
+        "test": "blood culture",
+        "why": "Detects bacteremia in severe or immunocompromised patients",
+        "only_if": "severe illness, high fever, or immunocompromised"
+      },
+      {
+        "test": "stool ova and parasites",
+        "why": "Evaluates for parasitic causes when diarrhea is prolonged or travel-related",
+        "only_if": "prolonged diarrhea, travel history, or exposure to untreated water"
+      },
+      {
+        "test": "stool C. difficile toxin/PCR",
+        "why": "Rules out antibiotic-associated colitis",
+        "only_if": "recent antibiotic use or hospitalization"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Abdominal x-ray",
+        "why": "Rarely changes management in uncomplicated diarrhea",
+        "only_if": "suspected obstruction, toxic megacolon or perforation"
+      },
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Not needed for typical self-limited enteritis",
+        "only_if": "severe pain, suspected colitis, abscess or perforation"
+      },
+      {
+        "test": "lipase",
+        "why": "No role unless the pain is epigastric or pancreatitis is suspected"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in the evaluation of diarrhea"
+      },
+      {
+        "test": "tsh",
+        "why": "Not part of the acute workup; consider only for chronic diarrhea"
+      }
+    ],
+    "decision_points": [
+      "Stool culture is most useful in bloody, severe, prolonged or immunocompromised cases; most mild cases need no testing",
+      "Pregnancy test before antibiotics or imaging in anyone who could be pregnant",
+      "Bloody diarrhea with fever and cramps suggests an invasive bacterial cause and warrants stool testing",
+      "Persistent diarrhea beyond 2 weeks should prompt evaluation for parasites or other chronic causes"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Salmonella gastroenteritis",
+      "slug": "salmonellosis",
+      "why_considered": "Acute inflammatory diarrhea with fever and cramps after a foodborne exposure",
+      "must_not_miss": true,
+      "trigger": "Bloody diarrhea with fever after eating undercooked poultry or eggs, or after contact with reptiles or chicks",
+      "discriminators": {
+        "history": [
+          "Exposure to eggs, poultry, reptiles or chicks",
+          "Symptoms often begin 6–48 hours after exposure",
+          "Bloody diarrhea with high fever"
+        ],
+        "exam": [
+          "Diffuse abdominal tenderness",
+          "Rose spots or splenomegaly suggest enteric fever rather than simple gastroenteritis"
+        ],
+        "labs": [
+          "Stool culture grows Salmonella",
+          "Blood culture positive in bacteremia"
+        ],
+        "imaging": [
+          "Usually normal; CT may show ileocolitis"
+        ]
+      }
+    },
+    {
+      "name": "Shigella infection",
+      "slug": "shigellosis",
+      "why_considered": "Bloody diarrhea with fever, cramps and tenesmus",
+      "must_not_miss": true,
+      "trigger": "Very low-volume bloody stools with severe tenesmus and fever",
+      "discriminators": {
+        "history": [
+          "Symptoms begin 1–3 days after exposure",
+          "Tenesmus and small-volume bloody stools",
+          "Person-to-person spread in daycare or crowded settings"
+        ],
+        "exam": [
+          "Lower abdominal tenderness",
+          "Signs of dehydration"
+        ],
+        "labs": [
+          "Stool culture grows Shigella",
+          "Fecal leukocytes present"
+        ],
+        "imaging": [
+          "Not routinely needed; CT may show colitis"
+        ]
+      }
+    },
+    {
+      "name": "Escherichia coli O157:H7 infection",
+      "slug": "e-coli-o157",
+      "why_considered": "Bloody diarrhea after eating undercooked ground beef or contaminated produce",
+      "must_not_miss": true,
+      "trigger": "Bloody diarrhea without high fever, especially after ground beef, with pallor or decreasing urine output",
+      "discriminators": {
+        "history": [
+          "Exposure to undercooked ground beef, unpasteurized milk or contaminated produce",
+          "Bloody diarrhea with minimal or no fever",
+          "May progress to hemolytic uremic syndrome"
+        ],
+        "exam": [
+          "Abdominal tenderness",
+          "Pallor, petechiae or edema suggest hemolytic uremic syndrome"
+        ],
+        "labs": [
+          "Stool culture on sorbitol-MacConkey agar or Shiga toxin testing",
+          "Anemia, thrombocytopenia and elevated creatinine suggest hemolytic uremic syndrome"
+        ],
+        "imaging": [
+          "Not routinely needed"
+        ]
+      }
+    },
+    {
+      "name": "Viral gastroenteritis",
+      "slug": "viral-gastroenteritis",
+      "why_considered": "Acute watery diarrhea, nausea, vomiting and cramps",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Vomiting often precedes diarrhea",
+          "Symptoms begin 12–48 hours after exposure",
+          "Sick contacts with similar illness",
+          "Bloody stools are uncommon"
+        ],
+        "exam": [
+          "Diffuse mild abdominal tenderness",
+          "Signs of dehydration"
+        ],
+        "labs": [
+          "Stool studies negative for bacterial pathogens",
+          "Fecal leukocytes absent"
+        ],
+        "imaging": [
+          "Not indicated"
+        ]
+      }
+    },
+    {
+      "name": "Clostridioides difficile colitis",
+      "slug": "c-difficile-colitis",
+      "why_considered": "Diarrhea with abdominal pain and fever, sometimes bloody",
+      "must_not_miss": true,
+      "trigger": "Recent antibiotic use, hospitalization or long-term care stay",
+      "discriminators": {
+        "history": [
+          "Recent antibiotic use within the past 2 months",
+          "Hospitalization or long-term care stay",
+          "Diarrhea often after antibiotics"
+        ],
+        "exam": [
+          "Abdominal tenderness",
+          "Fever and leukocytosis"
+        ],
+        "labs": [
+          "Stool C. difficile toxin or PCR positive",
+          "Leukocytosis, sometimes marked"
+        ],
+        "imaging": [
+          "CT may show colonic wall thickening and pericolonic stranding"
+        ]
+      }
+    },
+    {
+      "name": "Inflammatory bowel disease (Crohn disease or ulcerative colitis)",
+      "slug": "inflammatory-bowel-disease",
+      "why_considered": "Chronic or recurrent diarrhea with abdominal pain, sometimes bloody",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Diarrhea lasting weeks to months",
+          "Weight loss",
+          "Extraintestinal symptoms such as joint pain or rash",
+          "No acute foodborne exposure"
+        ],
+        "exam": [
+          "Abdominal tenderness",
+          "Perianal fistulas or skin tags in Crohn disease"
+        ],
+        "labs": [
+          "Elevated inflammatory markers",
+          "Stool studies negative for acute bacterial pathogens"
+        ],
+        "imaging": [
+          "Colonic or terminal ileal wall thickening on CT or MRI",
+          "Mucosal inflammation on colonoscopy"
+        ]
+      }
+    },
+    {
+      "name": "Yersinia enterocolitica infection",
+      "slug": "yersiniosis",
+      "why_considered": "Diarrhea with abdominal pain that can mimic appendicitis",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Exposure to undercooked pork or contaminated milk",
+          "Right lower quadrant pain"
+        ],
+        "exam": [
+          "Right lower quadrant tenderness",
+          "May have erythema nodosum or reactive arthritis"
+        ],
+        "labs": [
+          "Stool culture grows Yersinia",
+          "Leukocytosis"
+        ],
+        "imaging": [
+          "CT may show terminal ileitis and mesenteric lymphadenopathy"
+        ]
+      }
+    },
+    {
+      "name": "Giardiasis",
+      "slug": "giardiasis",
+      "why_considered": "Prolonged watery diarrhea and bloating after travel or untreated water exposure",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Gradual onset over 1–2 weeks",
+          "Prolonged diarrhea with bloating and foul-smelling stools",
+          "Travel to areas with poor sanitation or drinking untreated water"
+        ],
+        "exam": [
+          "Mild abdominal tenderness",
+          "Weight loss"
+        ],
+        "labs": [
+          "Stool ova and parasites positive for Giardia",
+          "Stool antigen test positive"
+        ],
+        "imaging": [
+          "Not routinely needed"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Watery diarrhea without blood, mild cramps, low-grade or no fever, no dehydration; self-limited over about a week",
+      "moderate": "Frequent diarrhea, sometimes bloody, with fever, significant cramps and mild dehydration; may require antibiotics",
+      "severe": "Bloody diarrhea, high fever, severe abdominal pain, moderate dehydration, electrolyte abnormalities or acute kidney injury; requires antibiotics and possibly hospitalization",
+      "critical": "Bacteremia with sepsis, toxic megacolon, perforation or severe dehydration with shock; life-threatening"
+    },
+    "red_flags": [
+      {
+        "finding": "Bloody diarrhea with high fever",
+        "meaning": "Invasive bacterial infection; warrants stool testing and consideration of antibiotics"
+      },
+      {
+        "finding": "Signs of severe dehydration (sunken eyes, delayed capillary refill, hypotension, minimal urine output)",
+        "meaning": "Requires immediate fluid resuscitation and possible hospitalization"
+      },
+      {
+        "finding": "Severe abdominal pain with distension and absent bowel sounds",
+        "meaning": "Possible toxic megacolon or ileus; urgent imaging and surgical consultation"
+      },
+      {
+        "finding": "Immunocompromised state with prolonged or severe diarrhea",
+        "meaning": "Higher risk of bacteremia and prolonged illness; lower threshold for antibiotics and blood cultures"
+      },
+      {
+        "finding": "Neurologic symptoms weeks after diarrhea (weakness, tingling, difficulty walking)",
+        "meaning": "Possible Guillain-Barré syndrome; urgent neurologic evaluation"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Dehydration and electrolyte imbalance",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Dry mucous membranes",
+          "Reduced skin turgor",
+          "Tachycardia",
+          "Low urine output"
+        ]
+      },
+      {
+        "name": "Bacteremia",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "High fever",
+          "Chills",
+          "Immunocompromised state",
+          "Positive blood cultures"
+        ]
+      },
+      {
+        "name": "Toxic megacolon",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Abdominal distension",
+          "Absent bowel sounds",
+          "Systemic toxicity",
+          "Colonic dilation on imaging"
+        ]
+      },
+      {
+        "name": "Reactive arthritis",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Joint pain and swelling weeks after diarrhea",
+          "Often knees and ankles",
+          "May have conjunctivitis or urethritis"
+        ]
+      },
+      {
+        "name": "Guillain-Barré syndrome",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Ascending symmetric weakness",
+          "Reduced reflexes",
+          "Tingling in feet or hands",
+          "Difficulty walking"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Infants and young children present with irritability, poor feeding and dehydration rather than describing cramps; bloody stools are more common. Fluid management is critical."
+      },
+      {
+        "population": "older_adults",
+        "differences": "May present with dehydration, confusion or generalized weakness rather than prominent diarrhea; illness can be more severe and complications more likely."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Diarrhea can be prolonged, relapsing or severe, and bacteremia with systemic illness occurs; symptoms may last weeks and require antibiotics."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Dehydration and electrolyte imbalance can affect both mother and fetus; antibiotics should be chosen with fetal safety in mind, and fluid resuscitation is important."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "When did the diarrhea start, and how has it changed since then?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Onset 2–5 days after a contaminated meal or exposure; watery diarrhea that may become bloody, peaking over 1–3 days then slowly improving"
+      },
+      {
+        "question": "Is there blood or mucus in your stool?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Bloody or mucoid stools suggest an invasive bacterial cause such as Campylobacter and warrant stool testing"
+      },
+      {
+        "question": "How many stools a day, and how would you describe them?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Frequent loose or watery stools; small-volume bloody stools with tenesmus point more toward Shigella"
+      },
+      {
+        "question": "What have you eaten in the past week — especially chicken, turkey, or other poultry?",
+        "category": "social",
+        "importance": "essential",
+        "looking_for": "Undercooked or raw poultry, the strongest exposure for Campylobacter"
+      },
+      {
+        "question": "Have you had unpasteurized milk or cheese, or untreated water from a well or stream?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Raw milk or untreated water exposure, both classic Campylobacter sources"
+      },
+      {
+        "question": "Have you been around puppies, kittens, or farm animals with diarrhea?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Contact with young pets or livestock, a recognized source of Campylobacter"
+      },
+      {
+        "question": "Have you taken antibiotics in the past 2 months, or been in a hospital or long-term care facility?",
+        "category": "medications",
+        "importance": "essential",
+        "looking_for": "Recent antibiotics or hospitalization raises concern for C. difficile colitis rather than Campylobacter"
+      },
+      {
+        "question": "Do you have a condition or take a medication that weakens your immune system?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "HIV, transplant, or immunosuppressive therapy — higher risk of prolonged illness and bacteremia, lowering the threshold for antibiotics and blood cultures"
+      },
+      {
+        "question": "Any fever, chills, or feeling wiped out?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Fever and fatigue are common; high fever with chills raises concern for bacteremia"
+      },
+      {
+        "question": "Any nausea or vomiting, and did the vomiting start before or after the diarrhea?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Vomiting after the diarrhea fits Campylobacter; vomiting first suggests viral gastroenteritis"
+      },
+      {
+        "question": "How much are you drinking, and how often are you urinating?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Poor intake or reduced urine output signals dehydration and need for fluids"
+      },
+      {
+        "question": "Have you noticed weakness, tingling, or trouble walking?",
+        "category": "red_flag",
+        "importance": "important",
+        "looking_for": "Ascending symmetric weakness or tingling weeks after diarrhea suggests Guillain-Barré syndrome and needs urgent neurologic evaluation"
+      }
+    ],
+    "accepted_names": [
+      "Campylobacter infection",
+      "Campylobacter infections",
+      "Campylobacteriosis",
+      "Campylobacter enteritis",
+      "Campylobacter gastroenteritis",
+      "Campylobacter jejuni infection",
+      "Campylobacter coli infection"
+    ],
+    "reasoning_points": [
+      "Acute diarrheal illness beginning 2–5 days after a contaminated food or water exposure",
+      "Exposure to undercooked poultry, unpasteurized milk, untreated water, or young pets with diarrhea",
+      "Crampy abdominal pain with fever and watery diarrhea that may become bloody",
+      "Diffuse or periumbilical abdominal tenderness without focal peritoneal signs",
+      "Leukocytosis with a left shift supporting an invasive bacterial cause",
+      "Stool culture or multiplex GI pathogen PCR identifies Campylobacter",
+      "Pregnancy excluded before antibiotics or imaging when relevant",
+      "Alternative causes such as C. difficile, Salmonella, Shigella, E. coli O157:H7, and viral gastroenteritis considered and addressed"
+    ],
+    "difficulty": {
+      "easy": [
+        "Young adult with classic watery then bloody diarrhea 3 days after undercooked chicken",
+        "Crampy periumbilical pain with fever and diffuse abdominal tenderness",
+        "Leukocytosis with a left shift and a positive stool culture for Campylobacter"
+      ],
+      "medium": [
+        "Patient with bloody diarrhea and fever where Shigella or Salmonella must be distinguished",
+        "Recent antibiotic use raising concern for C. difficile colitis",
+        "Mild watery diarrhea without blood where viral gastroenteritis is the main alternative",
+        "Dehydration with electrolyte abnormalities and acute kidney injury"
+      ],
+      "hard": [
+        "Immunocompromised patient with prolonged or relapsing diarrhea and possible bacteremia",
+        "Older adult presenting with confusion or generalized weakness rather than prominent diarrhea",
+        "Child with irritability, poor feeding, and bloody stools where intussusception or appendicitis is considered",
+        "Diarrhea followed weeks later by reactive arthritis or ascending weakness suggesting Guillain-Barré syndrome"
+      ]
+    }
+  }
+}

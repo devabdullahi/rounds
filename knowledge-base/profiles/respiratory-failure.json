@@ -1,0 +1,1951 @@
+{
+  "schema_version": "0.2",
+  "slug": "respiratory-failure",
+  "triage": {
+    "name": "Respiratory Failure",
+    "case_suitable": true,
+    "reason": "Common undifferentiated dyspnea/hypoxemia presentation with a clear diagnosis reachable by history, exam, blood gas and imaging, plus important look-alikes.",
+    "kind": "disease",
+    "category": "respiratory insufficiency",
+    "organ_systems": [
+      "respiratory"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "emergency",
+      "familyMedicine"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "inpatient",
+      "emergency",
+      "icu"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:19:53Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:09:02Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:09:11Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:09:28Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:09:43Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:09:52Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'ecg' to 'ECG'",
+        "auto-repaired: workup: 'abg' was in ['initial', 'confirmatory'], kept ['initial']",
+        "auto-repaired: workup: 'procalcitonin' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'd_dimer' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'ct chest with iv contrast' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'ct head without contrast' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'transthoracic echocardiogram' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ventilation-perfusion (v/q) scan' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'procalcitonin' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'd_dimer' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'ct chest with iv contrast' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'ct head without contrast' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'transthoracic echocardiogram' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ventilation-perfusion (v/q) scan' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "differential acute-decompensated-heart-failure: no profile yet",
+        "differential pulmonary-embolism: no profile yet",
+        "differential copd-exacerbation: no profile yet",
+        "differential ards: no profile yet",
+        "differential neuromuscular-respiratory-failure: no profile yet",
+        "differential opioid-overdose: no profile yet",
+        "differential pneumothorax: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 40,
+      "typical_max": 85,
+      "peak": "60–80",
+      "possible_min": 0,
+      "possible_max": 110
+    },
+    "sex": "either",
+    "demographics": [
+      "More common with increasing age as cardiopulmonary disease accumulates",
+      "Occurs at any age when there is severe lung, neuromuscular or chest wall disease"
+    ],
+    "risk_factors": [
+      {
+        "text": "COPD or other chronic obstructive lung disease",
+        "strength": "strong"
+      },
+      {
+        "text": "Pneumonia or other acute severe lung infection",
+        "strength": "strong"
+      },
+      {
+        "text": "Congestive heart failure or acute pulmonary edema",
+        "strength": "strong"
+      },
+      {
+        "text": "Neuromuscular weakness (ALS, muscular dystrophy, spinal cord injury, stroke)",
+        "strength": "strong"
+      },
+      {
+        "text": "Chest wall deformity or chest trauma",
+        "strength": "moderate"
+      },
+      {
+        "text": "Pulmonary embolism",
+        "strength": "moderate"
+      },
+      {
+        "text": "Drug or alcohol overdose with depressed breathing",
+        "strength": "moderate"
+      },
+      {
+        "text": "Smoke inhalation or exposure to harmful fumes",
+        "strength": "moderate"
+      },
+      {
+        "text": "Obesity with obstructive sleep apnea or obesity hypoventilation",
+        "strength": "moderate"
+      },
+      {
+        "text": "Recent abdominal or thoracic surgery",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "COPD",
+      "Asthma",
+      "Congestive heart failure",
+      "Pneumonia",
+      "Neuromuscular disease",
+      "Obstructive sleep apnea",
+      "Obesity",
+      "Diabetes mellitus",
+      "Chronic kidney disease"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Current or former smoking",
+      "Alcohol or drug use",
+      "Occupational exposure to dusts or fumes"
+    ],
+    "exposures": [
+      "Smoke from fires",
+      "Harmful fumes or industrial chemicals",
+      "Sedating drugs or alcohol"
+    ],
+    "risk_medications": [
+      "morphine",
+      "oxycodone",
+      "hydromorphone",
+      "fentanyl",
+      "diazepam",
+      "lorazepam",
+      "alprazolam"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I can't catch my breath",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "I feel like I'm not getting enough air",
+        "frequency": "common"
+      },
+      {
+        "text": "My lips and fingertips look blue",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "I'm so sleepy I can't stay awake",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Often sudden over minutes to hours when acute; gradual over days to weeks when chronic",
+      "duration": "Minutes to hours in acute respiratory failure; weeks to months in chronic respiratory failure",
+      "progression": "Breathlessness worsens steadily; confusion, drowsiness or loss of consciousness may develop as oxygen falls and carbon dioxide rises",
+      "location": "Chest, with a sense of air hunger",
+      "radiation": "Usually none",
+      "quality": "Air hunger and inability to take a satisfying breath",
+      "severity": "Moderate to severe; can become critical with inability to speak in full sentences",
+      "timing": "Continuous, worse with any exertion",
+      "aggravating": [
+        "Walking or any exertion",
+        "Lying flat",
+        "Talking"
+      ],
+      "relieving": [
+        "Sitting upright",
+        "Oxygen",
+        "Rest"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Rapid breathing",
+          "frequency": "common"
+        },
+        {
+          "text": "Confusion or trouble concentrating",
+          "frequency": "common"
+        },
+        {
+          "text": "Bluish color of lips, skin or fingernails",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Cough",
+          "frequency": "common"
+        },
+        {
+          "text": "Chest tightness",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Palpitations or irregular heartbeat",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Excessive sleepiness or difficulty staying awake",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Headache, worse in the morning",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Sweating",
+          "frequency": "sometimes"
+        }
+      ],
+      "pertinent_negatives": [
+        "Sudden sharp chest pain with breathlessness suggesting pulmonary embolism",
+        "Fever with productive cough suggesting pneumonia",
+        "Crushing chest pain radiating to the arm or jaw suggesting myocardial infarction",
+        "Wheezing that improves with an inhaler suggesting simple asthma exacerbation",
+        "Recent long bone fracture or immobilization suggesting fat embolism",
+        "New focal weakness or slurred speech suggesting stroke"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fatigue",
+            "frequency": "common"
+          },
+          {
+            "text": "Feeling very sleepy",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Weight loss",
+          "Night sweats"
+        ]
+      },
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "Shortness of breath",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Rapid breathing",
+            "frequency": "common"
+          },
+          {
+            "text": "Cough",
+            "frequency": "common"
+          },
+          {
+            "text": "Chest tightness",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Coughing up blood",
+          "Pleuritic chest pain"
+        ],
+        "argues_against": [
+          "Isolated wheeze that resolves with bronchodilator"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [
+          {
+            "text": "Palpitations",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Swelling of the legs",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Chest pain radiating to the arm or jaw",
+          "Fainting"
+        ],
+        "argues_against": [
+          "Acute coronary syndrome"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Confusion",
+            "frequency": "common"
+          },
+          {
+            "text": "Drowsiness",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Morning headache",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Focal weakness",
+          "Slurred speech",
+          "Seizure"
+        ],
+        "argues_against": [
+          "Stroke"
+        ]
+      },
+      {
+        "system": "psychiatric",
+        "positives": [
+          {
+            "text": "Anxiety",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Suicidal thoughts"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "older_adults",
+        "how_it_differs": "May present with confusion, drowsiness or falls rather than breathlessness; bluish discoloration and air hunger may be absent.",
+        "missing_classic_features": [
+          "Shortness of breath",
+          "Air hunger"
+        ]
+      },
+      {
+        "population": "children",
+        "how_it_differs": "Infants and young children show grunting, nasal flaring, chest retractions and irritability or lethargy instead of describing breathlessness.",
+        "missing_classic_features": [
+          "Verbal report of air hunger"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "Hypoxemia and rapid breathing may be the only findings; fever and cough are often blunted.",
+        "missing_classic_features": [
+          "Fever",
+          "Productive cough"
+        ]
+      },
+      {
+        "population": "obesity",
+        "how_it_differs": "Chronic daytime sleepiness, morning headache and hypoxemia from hypoventilation may dominate without obvious lung disease.",
+        "missing_classic_features": [
+          "Prominent dyspnea at rest"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Alert, speaking in full sentences, mildly breathless with exertion, no cyanosis",
+      "moderate": "Breathless at rest, speaking in short sentences, using accessory muscles, may be anxious",
+      "severe": "Speaking in words only, sitting upright and tripoding, marked accessory muscle use, dusky or cyanotic lips and fingertips, may be confused or drowsy",
+      "critical": "Exhausted or obtunded, unable to speak, paradoxical breathing or agonal respirations, deeply cyanotic, may be unresponsive"
+    },
+    "findings": [
+      {
+        "id": "tachypnea",
+        "region": "general",
+        "maneuver": "Observe the respiratory rate and pattern for a full minute",
+        "finding": "Rapid, shallow breathing",
+        "frequency": "almost_always",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "accessory-muscle-use",
+        "region": "general",
+        "maneuver": "Observe the neck and chest wall during quiet breathing",
+        "finding": "Use of sternocleidomastoid, scalene and intercostal muscles; supraclavicular or intercostal retractions",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "tripoding",
+        "region": "general",
+        "maneuver": "Observe the patient's posture",
+        "finding": "Sitting upright, leaning forward with arms braced on knees or bed",
+        "frequency": "common",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "central-cyanosis",
+        "region": "skin",
+        "maneuver": "Inspect the lips, oral mucosa and tongue in good light",
+        "finding": "Bluish discoloration of the lips and oral mucosa",
+        "frequency": "common",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "peripheral-cyanosis",
+        "region": "extremities",
+        "maneuver": "Inspect the fingertips and nail beds",
+        "finding": "Bluish discoloration of the fingertips and nail beds",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "inability-to-speak-full-sentences",
+        "region": "general",
+        "maneuver": "Ask the patient an open question and listen to how many words they can say per breath",
+        "finding": "Speaks in short phrases or single words only",
+        "frequency": "common",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "altered-mental-status",
+        "region": "mental_status",
+        "maneuver": "Assess orientation to person, place and time and level of arousal",
+        "finding": "Confusion, agitation, drowsiness or reduced level of consciousness",
+        "frequency": "common",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "diaphoresis",
+        "region": "skin",
+        "maneuver": "Inspect and palpate the skin",
+        "finding": "Cool, clammy, sweaty skin",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "nasal-flaring",
+        "region": "heent",
+        "maneuver": "Observe the nares during breathing",
+        "finding": "Flaring of the nostrils with each breath",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "grunting",
+        "region": "general",
+        "maneuver": "Auscultate over the trachea or listen at the mouth during expiration",
+        "finding": "Audible expiratory grunting",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "prolonged-expiration",
+        "region": "lung",
+        "maneuver": "Auscultate over the lung fields and time the expiratory phase",
+        "finding": "Prolonged expiration with wheezing, suggesting obstructive lung disease",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "crackles",
+        "region": "lung",
+        "maneuver": "Auscultate the posterior and anterior lung fields with the diaphragm of the stethoscope",
+        "finding": "Fine or coarse crackles, often at the bases, suggesting fluid or infection",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "diminished-breath-sounds",
+        "region": "lung",
+        "maneuver": "Auscultate and compare breath sounds in all lung fields",
+        "finding": "Focally or diffusely diminished breath sounds",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "dullness-to-percussion",
+        "region": "lung",
+        "maneuver": "Percuss the posterior lung fields from apex to base",
+        "finding": "Focal dullness suggesting consolidation, effusion or atelectasis",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "stridor",
+        "region": "neck",
+        "maneuver": "Auscultate over the trachea and listen for inspiratory noise",
+        "finding": "High-pitched inspiratory stridor suggesting upper airway obstruction",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "jugular-venous-distention",
+        "region": "neck",
+        "maneuver": "Inspect the internal jugular vein with the patient at 30–45 degrees",
+        "finding": "Elevated jugular venous pressure, suggesting right heart failure or fluid overload",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "s3-gallop",
+        "region": "cardiac",
+        "maneuver": "Auscultate the apex with the bell of the stethoscope",
+        "finding": "Third heart sound, suggesting volume overload or heart failure",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "irregular-heart-rhythm",
+        "region": "cardiac",
+        "maneuver": "Palpate the radial pulse and auscultate the heart",
+        "finding": "Irregularly irregular rhythm or other arrhythmia",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "peripheral-edema",
+        "region": "extremities",
+        "maneuver": "Press over the dorsum of the foot and the pretibial area",
+        "finding": "Pitting edema of the lower extremities",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "asterixis",
+        "region": "neuro",
+        "maneuver": "Ask the patient to extend both arms with wrists dorsiflexed and observe for 30 seconds",
+        "finding": "Flapping tremor of the outstretched hands, suggesting carbon dioxide retention",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "no-focal-neurologic-deficit",
+        "region": "neuro",
+        "maneuver": "Test strength, sensation and cranial nerves briefly",
+        "finding": "No focal weakness, sensory loss or cranial nerve deficit",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-fever",
+        "region": "general",
+        "maneuver": "Measure the temperature and review the trend",
+        "finding": "No fever",
+        "frequency": "sometimes",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "moderate": {
+        "min": 98.0,
+        "max": 100.0
+      },
+      "severe": {
+        "min": 98.0,
+        "max": 101.0
+      },
+      "critical": {
+        "min": 96.0,
+        "max": 102.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 80,
+        "max": 100
+      },
+      "moderate": {
+        "min": 95,
+        "max": 115
+      },
+      "severe": {
+        "min": 110,
+        "max": 135
+      },
+      "critical": {
+        "min": 120,
+        "max": 160
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 20,
+        "max": 24
+      },
+      "moderate": {
+        "min": 24,
+        "max": 30
+      },
+      "severe": {
+        "min": 30,
+        "max": 38
+      },
+      "critical": {
+        "min": 8,
+        "max": 40
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 110,
+        "max": 140
+      },
+      "moderate": {
+        "min": 100,
+        "max": 130
+      },
+      "severe": {
+        "min": 90,
+        "max": 120
+      },
+      "critical": {
+        "min": 70,
+        "max": 100
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 60,
+        "max": 85
+      },
+      "moderate": {
+        "min": 55,
+        "max": 80
+      },
+      "severe": {
+        "min": 50,
+        "max": 75
+      },
+      "critical": {
+        "min": 40,
+        "max": 65
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 90,
+        "max": 94
+      },
+      "moderate": {
+        "min": 85,
+        "max": 90
+      },
+      "severe": {
+        "min": 75,
+        "max": 85
+      },
+      "critical": {
+        "min": 50,
+        "max": 75
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "pao2",
+      "ranges": {
+        "mild": {
+          "min": 60,
+          "max": 79
+        },
+        "moderate": {
+          "min": 50,
+          "max": 60
+        },
+        "severe": {
+          "min": 40,
+          "max": 50
+        },
+        "critical": {
+          "min": 25,
+          "max": 40
+        }
+      },
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Measured on room air when possible; a PaO2 under 60 mm Hg on room air defines hypoxemic respiratory failure."
+    },
+    {
+      "test_id": "paco2",
+      "ranges": {
+        "mild": {
+          "min": 45,
+          "max": 50
+        },
+        "moderate": {
+          "min": 50,
+          "max": 60
+        },
+        "severe": {
+          "min": 60,
+          "max": 75
+        },
+        "critical": {
+          "min": 75,
+          "max": 100
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "A PaCO2 over 45 mm Hg with respiratory acidosis defines hypercapnic respiratory failure; a normal or low PaCO2 does not exclude it in chronic compensation."
+    },
+    {
+      "test_id": "ph",
+      "ranges": {
+        "mild": {
+          "min": 7.3,
+          "max": 7.35
+        },
+        "moderate": {
+          "min": 7.2,
+          "max": 7.3
+        },
+        "severe": {
+          "min": 7.1,
+          "max": 7.2
+        },
+        "critical": {
+          "min": 6.9,
+          "max": 7.1
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "Acidemia indicates acute or acute-on-chronic failure; a near-normal pH with high PaCO2 suggests chronic compensated retention."
+    },
+    {
+      "test_id": "sao2",
+      "ranges": {
+        "mild": {
+          "min": 90,
+          "max": 94
+        },
+        "moderate": {
+          "min": 85,
+          "max": 90
+        },
+        "severe": {
+          "min": 75,
+          "max": 85
+        },
+        "critical": {
+          "min": 50,
+          "max": 75
+        }
+      },
+      "frequency": "almost_always",
+      "importance": "important"
+    },
+    {
+      "test_id": "base_excess",
+      "ranges": {
+        "moderate": {
+          "min": -6,
+          "max": -2
+        },
+        "severe": {
+          "min": -12,
+          "max": -6
+        },
+        "critical": {
+          "min": -20,
+          "max": -12
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "A negative base excess reflects a metabolic component, often lactic acidosis from hypoperfusion."
+    },
+    {
+      "test_id": "hco3",
+      "ranges": {
+        "mild": {
+          "min": 26,
+          "max": 30
+        },
+        "moderate": {
+          "min": 30,
+          "max": 36
+        },
+        "severe": {
+          "min": 36,
+          "max": 44
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Elevated bicarbonate indicates chronic respiratory acidosis with renal compensation; a low value suggests a coexisting metabolic acidosis."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "moderate": {
+          "min": 2.0,
+          "max": 4.0
+        },
+        "severe": {
+          "min": 4.0,
+          "max": 8.0
+        },
+        "critical": {
+          "min": 8.0,
+          "max": 15.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevated lactate suggests tissue hypoperfusion or anaerobic metabolism and marks a sicker patient."
+    },
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "mild": {
+          "min": 11.0,
+          "max": 14.0
+        },
+        "moderate": {
+          "min": 14.0,
+          "max": 18.0
+        },
+        "severe": {
+          "min": 18.0,
+          "max": 25.0
+        },
+        "critical": {
+          "min": 2.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Leukocytosis supports infection as the cause; leukopenia can occur in severe sepsis and is a poor prognostic sign."
+    },
+    {
+      "test_id": "hgb",
+      "ranges": {
+        "moderate": {
+          "min": 8.0,
+          "max": 12.0
+        },
+        "severe": {
+          "min": 6.0,
+          "max": 8.0
+        },
+        "critical": {
+          "min": 4.0,
+          "max": 6.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Anemia reduces oxygen-carrying capacity and worsens tissue hypoxia."
+    },
+    {
+      "test_id": "bnp",
+      "ranges": {
+        "moderate": {
+          "min": 100,
+          "max": 500
+        },
+        "severe": {
+          "min": 500,
+          "max": 2000
+        },
+        "critical": {
+          "min": 2000,
+          "max": 10000
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevated BNP supports heart failure or fluid overload as the cause of respiratory failure."
+    },
+    {
+      "test_id": "hs_tnt",
+      "ranges": {
+        "moderate": {
+          "min": 22,
+          "max": 100
+        },
+        "severe": {
+          "min": 100,
+          "max": 500
+        },
+        "critical": {
+          "min": 500,
+          "max": 2000
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevated troponin suggests myocardial injury, demand ischemia or acute coronary syndrome as a contributor."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "mild": {
+          "min": 1.2,
+          "max": 1.6
+        },
+        "moderate": {
+          "min": 1.6,
+          "max": 2.5
+        },
+        "severe": {
+          "min": 2.5,
+          "max": 4.0
+        },
+        "critical": {
+          "min": 4.0,
+          "max": 8.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Rising creatinine suggests hypoperfusion, dehydration or a cardiorenal process."
+    },
+    {
+      "test_id": "k",
+      "ranges": {
+        "mild": {
+          "min": 5.0,
+          "max": 5.5
+        },
+        "moderate": {
+          "min": 5.5,
+          "max": 6.0
+        },
+        "severe": {
+          "min": 6.0,
+          "max": 6.5
+        },
+        "critical": {
+          "min": 6.5,
+          "max": 8.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hyperkalemia can accompany acidosis and renal failure and increases arrhythmia risk."
+    },
+    {
+      "test_id": "procalcitonin",
+      "ranges": {
+        "moderate": {
+          "min": 0.5,
+          "max": 2.0
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 10.0
+        },
+        "critical": {
+          "min": 10.0,
+          "max": 50.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Supports bacterial infection as the cause and can guide antibiotic decisions."
+    },
+    {
+      "test_id": "d_dimer",
+      "ranges": {
+        "moderate": {
+          "min": 0.5,
+          "max": 2.0
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 5.0
+        },
+        "critical": {
+          "min": 5.0,
+          "max": 20.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Elevated in pulmonary embolism but nonspecific; use with pretest probability, not as a stand-alone rule-out in a hypoxemic inpatient."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rhythm",
+        "finding": "Sinus tachycardia",
+        "frequency": "common",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Atrial fibrillation or other atrial arrhythmia",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "rate",
+        "finding": "Tachycardia",
+        "frequency": "common",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Premature ventricular complexes or ventricular arrhythmia",
+        "frequency": "rare",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "st",
+        "finding": "ST depression or T-wave inversion suggesting demand ischemia or myocardial injury",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "leads": [
+          "I",
+          "II",
+          "V4",
+          "V5",
+          "V6"
+        ]
+      },
+      {
+        "feature": "conduction",
+        "finding": "Nonspecific intraventricular conduction delay or bundle branch block",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "other",
+        "finding": "Signs of right heart strain (S1Q3T3, right axis deviation, T-wave inversion in V1–V3) suggesting pulmonary embolism",
+        "frequency": "rare",
+        "leads": [
+          "I",
+          "III",
+          "V1",
+          "V2",
+          "V3"
+        ]
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Chest x-ray, portable anteroposterior",
+      "modality": "xray",
+      "preferred_when": "First-line in almost every patient with suspected respiratory failure",
+      "findings": [
+        {
+          "text": "Bilateral alveolar or interstitial opacities suggesting pulmonary edema or pneumonia",
+          "frequency": "common"
+        },
+        {
+          "text": "Focal consolidation suggesting pneumonia",
+          "frequency": "common"
+        },
+        {
+          "text": "Hyperinflation with flattened diaphragms and increased retrosternal air space suggesting COPD",
+          "frequency": "common"
+        },
+        {
+          "text": "Enlarged cardiac silhouette and pleural effusions suggesting heart failure",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Normal chest x-ray (for example in pulmonary embolism, neuromuscular weakness or early ARDS)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Pneumothorax with visible pleural line and absent lung markings",
+          "frequency": "rare"
+        },
+        {
+          "text": "Diffuse bilateral opacities without cardiomegaly suggesting ARDS",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "CT pulmonary angiography",
+      "modality": "ct",
+      "preferred_when": "Suspected pulmonary embolism when pretest probability is not low",
+      "findings": [
+        {
+          "text": "Filling defect in the pulmonary arteries confirming pulmonary embolism",
+          "frequency": "common"
+        },
+        {
+          "text": "Right ventricular enlargement suggesting right heart strain",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Pulmonary infarction with peripheral wedge-shaped opacity",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "CT chest with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Unclear cause after chest x-ray, or suspected parenchymal or pleural disease",
+      "findings": [
+        {
+          "text": "Consolidation, ground-glass opacities or tree-in-bud nodularity suggesting infection",
+          "frequency": "common"
+        },
+        {
+          "text": "Bilateral dependent ground-glass and consolidation suggesting ARDS",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Pleural effusion or empyema",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Interstitial fibrosis or emphysema suggesting chronic lung disease",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "CT head without contrast",
+      "modality": "ct",
+      "preferred_when": "Suspected stroke or depressed consciousness of unclear cause",
+      "findings": [
+        {
+          "text": "Acute infarct or hemorrhage explaining central hypoventilation or aspiration",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "No acute intracranial abnormality",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "Ultrasound of the chest and pleural space",
+      "modality": "ultrasound",
+      "preferred_when": "Bedside assessment of pleural effusion, consolidation or pneumothorax",
+      "findings": [
+        {
+          "text": "Pleural effusion with anechoic fluid and lung compression",
+          "frequency": "common"
+        },
+        {
+          "text": "Consolidated lung with hepatization and air bronchograms",
+          "frequency": "common"
+        },
+        {
+          "text": "Absent lung sliding suggesting pneumothorax",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Ventilation-perfusion (V/Q) scan",
+      "modality": "nuclear",
+      "preferred_when": "Pulmonary embolism suspected when CT contrast is contraindicated (renal failure, severe contrast allergy, pregnancy)",
+      "findings": [
+        {
+          "text": "Mismatched segmental perfusion defect with normal ventilation suggesting pulmonary embolism",
+          "frequency": "common"
+        },
+        {
+          "text": "Normal or low-probability study",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Transthoracic echocardiogram",
+      "modality": "echo",
+      "preferred_when": "Suspected cardiogenic cause or hemodynamic instability",
+      "findings": [
+        {
+          "text": "Reduced left ventricular ejection fraction with regional or global wall motion abnormality",
+          "frequency": "common"
+        },
+        {
+          "text": "Left atrial enlargement, diastolic dysfunction or valvular disease",
+          "frequency": "common"
+        },
+        {
+          "text": "Right ventricular dilation and dysfunction suggesting acute pulmonary embolism or cor pulmonale",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Pericardial effusion with or without tamponade physiology",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "abg",
+        "why": "Confirms hypoxemia and hypercapnia and defines the type and severity of respiratory failure"
+      },
+      {
+        "test": "cbc",
+        "why": "Looks for infection, anemia and leukocytosis"
+      },
+      {
+        "test": "bmp",
+        "why": "Assesses bicarbonate, electrolytes, renal function and acid-base status"
+      },
+      {
+        "test": "Chest x-ray, portable anteroposterior",
+        "why": "First-line imaging to identify pneumonia, pulmonary edema, effusion, pneumothorax or hyperinflation"
+      },
+      {
+        "test": "ECG",
+        "why": "Screens for arrhythmia, ischemia and right heart strain"
+      },
+      {
+        "test": "hs_tnt",
+        "why": "Detects myocardial injury or acute coronary syndrome as a contributor"
+      },
+      {
+        "test": "bnp",
+        "why": "Supports heart failure or fluid overload as the cause"
+      },
+      {
+        "test": "lactate",
+        "why": "Assesses tissue perfusion and severity"
+      },
+      {
+        "test": "procalcitonin",
+        "why": "Supports bacterial infection and guides antibiotics",
+        "only_if": "infection is suspected"
+      },
+      {
+        "test": "d_dimer",
+        "why": "Screens for pulmonary embolism when pretest probability is low or intermediate",
+        "only_if": "pulmonary embolism is suspected and pretest probability is not high"
+      },
+      {
+        "test": "CT pulmonary angiography",
+        "why": "Confirms pulmonary embolism",
+        "only_if": "pulmonary embolism is suspected with intermediate or high pretest probability"
+      },
+      {
+        "test": "CT chest with IV contrast",
+        "why": "Identifies parenchymal or pleural disease when the chest x-ray is nondiagnostic",
+        "only_if": "cause remains unclear after chest x-ray"
+      },
+      {
+        "test": "CT head without contrast",
+        "why": "Looks for stroke or intracranial cause of hypoventilation",
+        "only_if": "altered mental status or focal neurologic findings are present"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "Ultrasound of the chest and pleural space",
+        "why": "Bedside confirmation of effusion, consolidation or pneumothorax"
+      },
+      {
+        "test": "Transthoracic echocardiogram",
+        "why": "Defines cardiac function and right heart strain",
+        "only_if": "cardiogenic cause or hemodynamic instability is suspected"
+      },
+      {
+        "test": "Ventilation-perfusion (V/Q) scan",
+        "why": "Alternative to CT pulmonary angiography",
+        "only_if": "pulmonary embolism is suspected and CT contrast is contraindicated"
+      },
+      {
+        "test": "crp",
+        "why": "Adds to the inflammatory picture in infection"
+      },
+      {
+        "test": "esr",
+        "why": "Nonspecific marker of inflammation"
+      },
+      {
+        "test": "coag",
+        "why": "Baseline coagulation studies before procedures or when bleeding is suspected"
+      },
+      {
+        "test": "mg",
+        "why": "Electrolyte assessment in critically ill patients"
+      },
+      {
+        "test": "phos",
+        "why": "Electrolyte assessment in critically ill patients"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Ventilation-perfusion (V/Q) scan",
+        "why": "Not first-line when CT pulmonary angiography is available and safe",
+        "only_if": "pulmonary embolism is suspected and CT contrast is contraindicated"
+      },
+      {
+        "test": "CT head without contrast",
+        "why": "Not routine in respiratory failure without neurologic findings",
+        "only_if": "altered mental status or focal neurologic findings are present"
+      },
+      {
+        "test": "CT chest with IV contrast",
+        "why": "Not routine before a chest x-ray",
+        "only_if": "cause remains unclear after chest x-ray"
+      },
+      {
+        "test": "Transthoracic echocardiogram",
+        "why": "Not routine in every patient with respiratory failure",
+        "only_if": "cardiogenic cause or hemodynamic instability is suspected"
+      },
+      {
+        "test": "procalcitonin",
+        "why": "Not routine when infection is not suspected",
+        "only_if": "infection is suspected"
+      },
+      {
+        "test": "d_dimer",
+        "why": "Not useful when pulmonary embolism pretest probability is high; go straight to CT pulmonary angiography",
+        "only_if": "pulmonary embolism is suspected and pretest probability is not high"
+      },
+      {
+        "test": "lipase",
+        "why": "No role in respiratory failure unless abdominal pain suggests pancreatitis"
+      },
+      {
+        "test": "ua",
+        "why": "Not part of the routine respiratory failure workup"
+      }
+    ],
+    "decision_points": [
+      "Arterial blood gas on room air when possible to classify hypoxemic versus hypercapnic failure and assess acid-base status",
+      "Chest x-ray first in almost every patient; CT pulmonary angiography if pulmonary embolism is suspected and pretest probability is not low",
+      "Do not delay oxygen and ventilatory support for diagnostic testing in a patient with severe hypoxemia or altered mental status",
+      "Consider noninvasive ventilation for hypercapnic respiratory failure from COPD exacerbation or pulmonary edema; intubate if it fails or the patient cannot protect the airway",
+      "Pregnancy test before CT in anyone who could be pregnant"
+    ],
+    "criteria": [
+      {
+        "name": "Respiratory failure (arterial blood gas definition)",
+        "summary": "Respiratory failure is present when the arterial blood gas shows a PaO2 below 60 mm Hg on room air (hypoxemic) or a PaCO2 above 45 mm Hg with respiratory acidosis (hypercapnic); both may coexist.",
+        "items": [
+          "PaO2 under 60 mm Hg on room air",
+          "PaCO2 over 45 mm Hg with pH under 7.35"
+        ]
+      }
+    ],
+    "scores": [
+      "curb_65",
+      "wells_pe",
+      "apache_ii",
+      "sofa"
+    ]
+  },
+  "differential": [
+    {
+      "name": "Acute decompensated heart failure with pulmonary edema",
+      "slug": "acute-decompensated-heart-failure",
+      "why_considered": "Dyspnea, hypoxemia, crackles and orthopnea are shared with respiratory failure from any cause; cardiogenic pulmonary edema is one of the most common causes of acute hypoxemic respiratory failure.",
+      "must_not_miss": true,
+      "trigger": "Orthopnea, paroxysmal nocturnal dyspnea, elevated jugular venous pressure, an S3 gallop, or bilateral basal crackles with a third heart sound",
+      "discriminators": {
+        "history": [
+          "Progressive orthopnea and paroxysmal nocturnal dyspnea",
+          "Known heart failure, coronary disease or valvular disease",
+          "Leg swelling and rapid weight gain",
+          "Improves with sitting upright and diuresis"
+        ],
+        "exam": [
+          "Elevated jugular venous pressure",
+          "S3 gallop",
+          "Bilateral basilar crackles",
+          "Pitting peripheral edema"
+        ],
+        "labs": [
+          "Elevated BNP or NT-proBNP",
+          "Elevated troponin suggesting demand ischemia or acute coronary syndrome",
+          "Normal or mildly elevated white count"
+        ],
+        "imaging": [
+          "Chest x-ray with cardiomegaly, pulmonary vascular congestion, Kerley B lines and pleural effusions",
+          "Echocardiogram showing reduced ejection fraction or diastolic dysfunction"
+        ]
+      }
+    },
+    {
+      "name": "Pneumonia with sepsis",
+      "slug": "pneumonia",
+      "why_considered": "Fever, productive cough, hypoxemia and tachypnea are shared; severe pneumonia is a leading cause of acute hypoxemic respiratory failure.",
+      "must_not_miss": true,
+      "trigger": "Fever with productive cough, focal crackles, and leukocytosis or leukopenia",
+      "discriminators": {
+        "history": [
+          "Fever and chills",
+          "Productive cough with purulent sputum",
+          "Pleuritic chest pain",
+          "Recent upper respiratory infection or aspiration event"
+        ],
+        "exam": [
+          "Focal crackles or bronchial breath sounds",
+          "Dullness to percussion over the affected lobe",
+          "Fever"
+        ],
+        "labs": [
+          "Leukocytosis or leukopenia",
+          "Elevated procalcitonin",
+          "Elevated lactate in sepsis"
+        ],
+        "imaging": [
+          "Focal lobar or segmental consolidation on chest x-ray",
+          "CT showing consolidation, air bronchograms or tree-in-bud nodularity"
+        ]
+      }
+    },
+    {
+      "name": "Pulmonary embolism",
+      "slug": "pulmonary-embolism",
+      "why_considered": "Sudden dyspnea, hypoxemia and tachypnea without obvious lung disease; a classic must-not-miss cause of acute respiratory failure.",
+      "must_not_miss": true,
+      "trigger": "Sudden dyspnea with clear lungs, pleuritic chest pain, or risk factors such as immobility, recent surgery or active cancer",
+      "discriminators": {
+        "history": [
+          "Sudden onset of dyspnea",
+          "Pleuritic chest pain or hemoptysis",
+          "Recent surgery, immobility, long travel or active cancer",
+          "Prior venous thromboembolism"
+        ],
+        "exam": [
+          "Tachycardia and tachypnea with clear lungs",
+          "Signs of deep vein thrombosis (unilateral leg swelling and tenderness)",
+          "Hypotension or syncope in massive embolism"
+        ],
+        "labs": [
+          "Elevated D-dimer (nonspecific)",
+          "Elevated troponin or BNP suggesting right heart strain",
+          "Respiratory alkalosis on blood gas"
+        ],
+        "imaging": [
+          "Filling defect in pulmonary arteries on CT pulmonary angiography",
+          "Right ventricular enlargement on CT or echocardiogram",
+          "Mismatched segmental perfusion defect on V/Q scan when CT contrast is contraindicated"
+        ],
+        "ecg": [
+          "Sinus tachycardia",
+          "S1Q3T3 pattern, right axis deviation, or T-wave inversion in V1–V3 suggesting right heart strain"
+        ]
+      }
+    },
+    {
+      "name": "COPD exacerbation",
+      "slug": "copd-exacerbation",
+      "why_considered": "Worsening dyspnea, wheezing and hypercapnia are shared; COPD exacerbation is a common cause of hypercapnic respiratory failure.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Known COPD with chronic productive cough and exercise limitation",
+          "Gradual worsening over days",
+          "Increased sputum volume or purulence",
+          "Long smoking history"
+        ],
+        "exam": [
+          "Prolonged expiration with diffuse wheezing",
+          "Barrel chest and diminished breath sounds",
+          "Pursed-lip breathing"
+        ],
+        "labs": [
+          "Elevated bicarbonate suggesting chronic CO2 retention",
+          "Polycythemia from chronic hypoxemia"
+        ],
+        "imaging": [
+          "Hyperinflation with flattened diaphragms and increased retrosternal air space on chest x-ray"
+        ]
+      }
+    },
+    {
+      "name": "Acute respiratory distress syndrome (ARDS)",
+      "slug": "ards",
+      "why_considered": "Severe hypoxemia with diffuse bilateral opacities and no cardiogenic cause; ARDS is a common final pathway of many causes of respiratory failure.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Recent sepsis, aspiration, severe pneumonia, pancreatitis or major trauma",
+          "Rapid onset within one week of the inciting event"
+        ],
+        "exam": [
+          "Severe hypoxemia out of proportion to exam findings",
+          "Diffuse crackles without focal consolidation"
+        ],
+        "labs": [
+          "PaO2/FiO2 ratio below 300 despite high oxygen",
+          "No evidence of elevated left atrial pressure"
+        ],
+        "imaging": [
+          "Bilateral diffuse alveolar and interstitial opacities without cardiomegaly or pleural effusion",
+          "CT showing dependent ground-glass and consolidation"
+        ]
+      }
+    },
+    {
+      "name": "Neuromuscular respiratory failure",
+      "slug": "neuromuscular-respiratory-failure",
+      "why_considered": "Hypoventilation with hypercapnia and preserved lung parenchyma; causes include ALS, muscular dystrophy, spinal cord injury and stroke.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Progressive limb weakness, difficulty swallowing or slurred speech",
+          "Known neuromuscular disease",
+          "Recent spinal cord injury or stroke"
+        ],
+        "exam": [
+          "Weak cough and weak voice",
+          "Focal or diffuse weakness",
+          "Paradoxical abdominal movement with inspiration"
+        ],
+        "labs": [
+          "Hypercapnia with a relatively normal PaO2 early",
+          "Normal white count and procalcitonin"
+        ],
+        "imaging": [
+          "Normal chest x-ray or only basal atelectasis",
+          "CT head showing infarct or hemorrhage when central cause is suspected"
+        ]
+      }
+    },
+    {
+      "name": "Opioid or sedative overdose with hypoventilation",
+      "slug": "opioid-overdose",
+      "why_considered": "Depressed respiratory drive causing hypercapnia and hypoxemia; a reversible and time-critical cause of respiratory failure.",
+      "must_not_miss": true,
+      "trigger": "Pinpoint pupils, depressed consciousness and slow shallow breathing in a patient with access to opioids or sedatives",
+      "discriminators": {
+        "history": [
+          "Known opioid or benzodiazepine use",
+          "Recent dose escalation or intentional overdose",
+          "Bystanders report the patient was difficult to wake"
+        ],
+        "exam": [
+          "Pinpoint pupils",
+          "Depressed level of consciousness",
+          "Slow, shallow respirations"
+        ],
+        "labs": [
+          "Hypercapnia with respiratory acidosis",
+          "Toxicology screen positive for opioids or sedatives"
+        ],
+        "imaging": [
+          "Normal chest x-ray",
+          "No acute intracranial abnormality on CT head"
+        ]
+      }
+    },
+    {
+      "name": "Pneumothorax",
+      "slug": "pneumothorax",
+      "why_considered": "Sudden dyspnea and hypoxemia with unilateral absent breath sounds; tension pneumothorax is immediately life-threatening.",
+      "must_not_miss": true,
+      "trigger": "Sudden dyspnea with unilateral absent breath sounds, hyperresonance and hemodynamic instability",
+      "discriminators": {
+        "history": [
+          "Sudden sharp chest pain and dyspnea",
+          "Recent chest trauma, central line placement or mechanical ventilation",
+          "Known lung disease such as COPD or Marfan syndrome"
+        ],
+        "exam": [
+          "Absent breath sounds on one side",
+          "Hyperresonance to percussion",
+          "Tracheal deviation away from the affected side in tension pneumothorax",
+          "Hypotension and distended neck veins in tension pneumothorax"
+        ],
+        "labs": [
+          "Hypoxemia on blood gas",
+          "No specific laboratory finding"
+        ],
+        "imaging": [
+          "Visible pleural line with absent lung markings on chest x-ray",
+          "Absent lung sliding on bedside ultrasound",
+          "Deep sulcus sign on supine film"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Mild hypoxemia (SpO2 90–94% or PaO2 60–79 mm Hg) with normal or near-normal pH, alert patient speaking in full sentences, no accessory muscle use, responds to low-flow oxygen",
+      "moderate": "Moderate hypoxemia (SpO2 85–90% or PaO2 50–60 mm Hg) with mild respiratory acidosis, breathless at rest, using accessory muscles, may need noninvasive ventilation or higher-flow oxygen",
+      "severe": "Severe hypoxemia (SpO2 75–85% or PaO2 40–50 mm Hg) with significant hypercapnia and acidemia, speaking in words only, tripoding, cyanosis, confusion or drowsiness, often needs intubation and mechanical ventilation",
+      "critical": "Life-threatening failure with SpO2 below 75% or PaO2 below 40 mm Hg, severe acidemia (pH below 7.1), exhaustion, obtundation, paradoxical or agonal respirations, or hemodynamic collapse; immediate intubation and ICU care"
+    },
+    "red_flags": [
+      {
+        "finding": "Altered mental status, confusion or drowsiness",
+        "meaning": "Cerebral hypoxemia or CO2 narcosis; indicates severe respiratory failure and impending respiratory arrest"
+      },
+      {
+        "finding": "Inability to speak in full sentences or single-word speech",
+        "meaning": "Severe respiratory distress with limited reserve; prepare for ventilatory support"
+      },
+      {
+        "finding": "Central cyanosis of lips or oral mucosa",
+        "meaning": "Severe hypoxemia; immediate oxygen and escalation of support"
+      },
+      {
+        "finding": "Exhaustion, paradoxical abdominal movement or agonal respirations",
+        "meaning": "Impending respiratory arrest; intubate without delay"
+      },
+      {
+        "finding": "Hypotension or heart rate over 130",
+        "meaning": "Shock or severe acidosis; consider sepsis, tension pneumothorax or massive pulmonary embolism"
+      },
+      {
+        "finding": "Silent chest in a previously wheezing patient",
+        "meaning": "Airflow too low to generate sound; imminent respiratory failure"
+      },
+      {
+        "finding": "Unilateral absent breath sounds with tracheal deviation",
+        "meaning": "Tension pneumothorax; needle decompression before imaging"
+      },
+      {
+        "finding": "Pinpoint pupils with depressed consciousness and slow breathing",
+        "meaning": "Opioid toxicity; give naloxone and support ventilation"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Hypoxic-ischemic encephalopathy",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Prolonged severe hypoxemia",
+          "Persistent altered mental status after oxygenation improves",
+          "Seizures or coma"
+        ]
+      },
+      {
+        "name": "Cardiac arrhythmia and cardiac arrest",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Severe acidemia",
+          "Hyperkalemia",
+          "Ventricular ectopy on ECG"
+        ]
+      },
+      {
+        "name": "Ventilator-associated pneumonia",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "New fever and purulent secretions after 48 hours of mechanical ventilation",
+          "New infiltrate on chest x-ray",
+          "Increasing oxygen requirements"
+        ]
+      },
+      {
+        "name": "Barotrauma and pneumothorax",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Sudden deterioration on positive pressure ventilation",
+          "Unilateral absent breath sounds",
+          "Subcutaneous emphysema"
+        ]
+      },
+      {
+        "name": "Critical illness myopathy and neuropathy",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Prolonged ventilation with difficulty weaning",
+          "Diffuse weakness after sedation is stopped",
+          "Reduced deep tendon reflexes"
+        ]
+      },
+      {
+        "name": "Acute kidney injury",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Rising creatinine",
+          "Oliguria",
+          "Hypoperfusion or fluid overload"
+        ]
+      },
+      {
+        "name": "Venous thromboembolism",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Immobility and critical illness",
+          "Unilateral leg swelling",
+          "Sudden worsening dyspnea"
+        ]
+      },
+      {
+        "name": "Post-intensive care syndrome",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Cognitive impairment, anxiety, depression or post-traumatic stress after ICU discharge",
+          "Persistent weakness and reduced exercise tolerance"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "older_adults",
+        "differences": "May present with confusion, drowsiness or falls rather than breathlessness; bluish discoloration and air hunger may be absent, so pulse oximetry and blood gas are essential."
+      },
+      {
+        "population": "children",
+        "differences": "Infants and young children show grunting, nasal flaring, chest retractions and irritability or lethargy instead of describing breathlessness; respiratory rate norms are age-dependent."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Physiologic changes reduce functional residual capacity and increase oxygen consumption, so hypoxemia develops faster; left lateral tilt improves venous return; pregnancy test before CT and consider V/Q scan if CT contrast is contraindicated."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Hypoxemia and rapid breathing may be the only findings; fever and cough are often blunted, and opportunistic infections such as Pneumocystis jirovecii pneumonia should be considered."
+      },
+      {
+        "population": "obesity",
+        "differences": "Chronic daytime sleepiness, morning headache and hypoxemia from hypoventilation may dominate without obvious lung disease; noninvasive ventilation is often effective."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "Avoid iodinated contrast for CT pulmonary angiography when possible; use V/Q scan instead; watch for hyperkalemia and acidosis worsening respiratory drive."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "When did the breathing trouble start, and how fast has it gotten worse?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Sudden onset over minutes to hours suggests pulmonary embolism, pneumothorax, pulmonary edema or opioid overdose; gradual worsening over days suggests pneumonia, COPD exacerbation or neuromuscular weakness"
+      },
+      {
+        "question": "Can you say a whole sentence, or do you have to stop for breath?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Speaking in short phrases or single words marks severe distress and limited respiratory reserve"
+      },
+      {
+        "question": "Does it get worse when you lie flat, and do you wake up at night short of breath?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Orthopnea and paroxysmal nocturnal dyspnea point to cardiogenic pulmonary edema"
+      },
+      {
+        "question": "Do you have a cough, and are you bringing anything up? What color is it?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Purulent or blood-tinged sputum suggests pneumonia; hemoptysis raises pulmonary embolism"
+      },
+      {
+        "question": "Have you had any chest pain, and is it sharp or does it hurt more when you breathe in?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Pleuritic pain suggests pulmonary embolism, pneumonia or pneumothorax; pressure-like pain suggests cardiac ischemia"
+      },
+      {
+        "question": "Have you felt confused, unusually sleepy, or had trouble staying awake?",
+        "category": "ros",
+        "importance": "essential",
+        "looking_for": "Confusion or drowsiness from hypoxemia or CO2 retention indicates severe respiratory failure and impending arrest"
+      },
+      {
+        "question": "Have you had a fever, chills or night sweats?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Fever and chills suggest pneumonia or sepsis as the cause"
+      },
+      {
+        "question": "Do you have any known lung or heart problems, like COPD, asthma or heart failure?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Known COPD or heart failure makes exacerbation or decompensation the likely cause"
+      },
+      {
+        "question": "Have you had any weakness, trouble swallowing, slurred speech or a recent stroke or spinal injury?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Neuromuscular disease or central injury causing hypoventilation with clear lungs"
+      },
+      {
+        "question": "What medicines do you take, especially pain pills, sleeping pills or anything for anxiety?",
+        "category": "medications",
+        "importance": "essential",
+        "looking_for": "Opioids, benzodiazepines or other sedatives can depress respiratory drive and cause hypercapnic failure"
+      },
+      {
+        "question": "Have you been around smoke, fumes or chemicals, or had a recent injury to your chest?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Smoke inhalation, toxic fumes or chest trauma causing respiratory failure"
+      },
+      {
+        "question": "Have you been immobile, had recent surgery, a long trip or been treated for a blood clot before?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Risk factors for pulmonary embolism as the cause of sudden hypoxemia"
+      },
+      {
+        "question": "Do you smoke, and for how many years?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Long smoking history supports COPD as the underlying cause"
+      },
+      {
+        "question": "Have you had any swelling in your legs or sudden weight gain?",
+        "category": "ros",
+        "importance": "optional",
+        "looking_for": "Peripheral edema and rapid weight gain suggest heart failure or fluid overload"
+      }
+    ],
+    "accepted_names": [
+      "Respiratory failure",
+      "Acute respiratory failure",
+      "Chronic respiratory failure",
+      "Acute-on-chronic respiratory failure",
+      "Respiratory insufficiency",
+      "Hypoxemic respiratory failure",
+      "Hypercapnic respiratory failure",
+      "Type 1 respiratory failure",
+      "Type 2 respiratory failure"
+    ],
+    "reasoning_points": [
+      "Recognizes that respiratory failure is defined by arterial blood gas, not by symptoms alone: PaO2 below 60 mm Hg on room air (hypoxemic) or PaCO2 above 45 mm Hg with respiratory acidosis (hypercapnic), and that both can coexist",
+      "Classifies the failure as hypoxemic, hypercapnic or mixed and notes whether it is acute, chronic or acute-on-chronic using pH and bicarbonate",
+      "Identifies the underlying cause from history, exam and initial tests rather than treating the number alone",
+      "Names the common causes to consider: COPD exacerbation, pneumonia, heart failure with pulmonary edema, pulmonary embolism, pneumothorax, ARDS, neuromuscular weakness, opioid or sedative overdose and chest wall problems",
+      "Uses pulse oximetry and arterial blood gas to quantify severity and guide oxygen and ventilatory support",
+      "Orders a chest x-ray first in almost every patient and escalates to CT pulmonary angiography or CT chest when the cause remains unclear",
+      "Recognizes red flags for impending respiratory arrest: altered mental status, single-word speech, central cyanosis, exhaustion, paradoxical breathing and silent chest",
+      "Does not delay oxygen and ventilatory support for diagnostic testing in a severely hypoxemic or obtunded patient",
+      "Considers noninvasive ventilation for hypercapnic failure from COPD exacerbation or pulmonary edema and knows when to intubate",
+      "Reviews medications for opioids, benzodiazepines and other sedatives that depress respiratory drive",
+      "Considers pregnancy before CT imaging and chooses V/Q scan when CT contrast is contraindicated"
+    ],
+    "difficulty": {
+      "easy": [
+        "Older adult with known COPD presenting with worsening dyspnea, wheezing and prolonged expiration",
+        "Arterial blood gas shows hypercapnia with respiratory acidosis and elevated bicarbonate",
+        "Chest x-ray shows hyperinflation with flattened diaphragms",
+        "Responds to bronchodilators and noninvasive ventilation"
+      ],
+      "medium": [
+        "Patient with fever, productive cough and focal crackles; blood gas shows hypoxemia and chest x-ray shows lobar consolidation",
+        "Patient with orthopnea, elevated jugular venous pressure and an S3 gallop; chest x-ray shows cardiomegaly and pulmonary vascular congestion",
+        "Sudden dyspnea with clear lungs and tachycardia after recent surgery or immobility, raising pulmonary embolism",
+        "Older adult presenting with confusion and drowsiness rather than breathlessness"
+      ],
+      "hard": [
+        "Neuromuscular weakness with hypercapnia and a normal chest x-ray, where the lungs themselves are not the problem",
+        "Opioid or sedative overdose with pinpoint pupils, depressed consciousness and slow shallow breathing",
+        "Tension pneumothorax with unilateral absent breath sounds, tracheal deviation and hypotension requiring decompression before imaging",
+        "ARDS with severe hypoxemia and diffuse bilateral opacities without cardiomegaly, where the trigger is sepsis or aspiration",
+        "Pregnant patient with hypoxemia where imaging must be chosen carefully and hypoxemia develops faster",
+        "Immunocompromised patient with hypoxemia but blunted fever and cough, suggesting an opportunistic infection"
+      ]
+    }
+  }
+}

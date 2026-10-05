@@ -4,6 +4,7 @@ import SwiftUI
 /// Topics, not training year: anyone can pick rotations, systems, or both (the tabs only
 /// switch the list; picks on both tabs are kept), or mix it up.
 struct FocusOnboardingView: View {
+    @Environment(AppState.self) private var app
     @AppStorage("signedIn") private var signedIn = false
     @AppStorage(StudyFocus.storageKey) private var focusStored = ""
     @Environment(AuthRouter.self) private var router
@@ -34,7 +35,7 @@ struct FocusOnboardingView: View {
                 .padding(.top, 18)
 
             ScrollView {
-                FocusGrid(byRotation: !bySystem, selection: $pick, mixChosen: $mixChosen)
+                FocusGrid(byRotation: !bySystem, counts: app.topicCounts, selection: $pick, mixChosen: $mixChosen)
                     .padding(.vertical, 16)
             }
             .scrollIndicators(.hidden)

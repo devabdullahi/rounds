@@ -5,14 +5,13 @@ struct PatientsView: View {
     @State private var query = ""
     @State private var system: OrganSystem? = nil   // nil = all topics
     @AppStorage(StudyFocus.storageKey) private var focusStored = ""
-    @State private var unavailable: WardPatient?
     @State private var expanded: String?
 
     init(initialExpanded: String? = nil) {
         _expanded = State(initialValue: initialExpanded)
     }
 
-    private var rotation: [WardPatient] { filter(Ward.rotation) }
+    private var rotation: [WardPatient] { filter(app.ward.filter { $0.status != .revisit }) }
     private var revisit: [WardPatient] { filter(app.revisitPatients) }
 
     var body: some View {
@@ -37,7 +36,7 @@ struct PatientsView: View {
                 }
 
                 if !rotation.isEmpty {
-                    sectionHeader(system?.label ?? "New patients", trailing: "\(rotation.count)", color: Theme.muted)
+                    sectionHeader(system?.label ?? "Your patients", trailing: "\(rotation.count)", color: Theme.muted)
                     VStack(spacing: 0) {
                         ForEach(Array(rotation.enumerated()), id: \.element.id) { i, p in
                             if i > 0 { Hairline() }
@@ -47,7 +46,9 @@ struct PatientsView: View {
                     .listSurface()
                 }
 
-                if rotation.isEmpty && revisit.isEmpty {
+                if app.ward.isEmpty {
+                    emptyWard
+                } else if rotation.isEmpty && revisit.isEmpty {
                     Text("No patients match \u{201C}\(query)\u{201D}.")
                         .font(.system(size: 15))
                         .foregroundStyle(Theme.muted)
@@ -64,18 +65,30 @@ struct PatientsView: View {
         .scrollIndicators(.hidden)
         .scrollDismissesKeyboard(.interactively)
         .background(Theme.bg)
-        .alert("Case in preparation", isPresented: Binding(get: { unavailable != nil }, set: { if !$0 { unavailable = nil } })) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text("Bed \(unavailable?.id ?? "") isn't scripted yet. Try Bed B4.")
+        .refreshable { await app.refresh() }
+    }
+
+    private var emptyWard: some View {
+        VStack(spacing: 14) {
+            Text("No patients yet. Each one is written fresh for your focus.")
+                .font(.system(size: 15))
+                .foregroundStyle(Theme.muted)
+                .multilineTextAlignment(.center)
+            Button(app.isAdmitting ? "Preparing patient…" : "Admit a new patient") {
+                Task { await app.admit(focus: FocusSelection(stored: focusStored)) }
+            }
+            .buttonStyle(SoftButtonStyle(height: 44, fontSize: 16))
+            .disabled(app.isAdmitting)
         }
+        .frame(maxWidth: .infinity)
+        .padding(.top, 40)
     }
 
     private func filter(_ list: [WardPatient]) -> [WardPatient] {
         let q = query.lowercased().trimmingCharacters(in: .whitespaces)
         return list.filter { p in
             (system == nil || p.system == system) &&
-            (q.isEmpty || [p.quote, p.meta, p.system.label, p.id].contains { $0.lowercased().contains(q) })
+            (q.isEmpty || [p.quote, p.meta, p.system?.label ?? "", p.id].contains { $0.lowercased().contains(q) })
         }
     }
 
@@ -101,7 +114,7 @@ struct PatientsView: View {
     private var chips: some View {
         ScrollView(.horizontal) {
             HStack(spacing: 8) {
-                ForEach([nil] + Ward.systems.map(Optional.some), id: \.self) { s in
+                ForEach([nil] + app.wardSystems.map(Optional.some), id: \.self) { s in
                     let on = s == system
                     Button(s?.label ?? "All") { system = s }
                         .font(.system(size: 15, weight: on ? .semibold : .regular))
@@ -134,7 +147,7 @@ struct PatientsView: View {
 
     private func row(_ p: WardPatient) -> some View {
         Button {
-            if p.hasCase { app.startCase() } else { unavailable = p }
+            Task { await app.open(bed: p.id) }
         } label: {
             HStack(spacing: 12) {
                 Text(p.id).font(.mono(13)).foregroundStyle(Theme.muted).frame(width: 28, alignment: .leading)
@@ -143,14 +156,19 @@ struct PatientsView: View {
                     Text(p.meta).font(.system(size: 13)).foregroundStyle(Theme.muted)
                 }
                 Spacer()
-                switch p.status {
-                case .new:
-                    EmptyView()   // new is the default; only exceptions get a badge
-                case .resume:
-                    HStack(spacing: 6) { Circle().fill(Theme.info).frame(width: 8, height: 8); Text("Resume") }
-                        .font(.system(size: 13)).foregroundStyle(Theme.info)
-                case .revisit:
-                    EmptyView()
+                if app.openingBed == p.id {
+                    ProgressView()
+                } else {
+                    switch p.status {
+                    case .new, .revisit:
+                        EmptyView()   // new is the default; only exceptions get a badge
+                    case .resume:
+                        HStack(spacing: 6) { Circle().fill(Theme.info).frame(width: 8, height: 8); Text("Resume") }
+                            .font(.system(size: 13)).foregroundStyle(Theme.info)
+                    case .done:
+                        Text(p.lastScore.map { "Scored \($0)" } ?? "Seen")
+                            .font(.system(size: 13)).foregroundStyle(Theme.muted)
+                    }
                 }
             }
             .foregroundStyle(Theme.text)
@@ -166,7 +184,7 @@ struct PatientsView: View {
 
     private func revisitRow(_ p: WardPatient) -> some View {
         let isOpen = expanded == p.id
-        let misses = app.misses[p.id] ?? []
+        let misses = p.misses
         return VStack(alignment: .leading, spacing: 0) {
             Button {
                 withAnimation(DISCLOSURE.open) { expanded = isOpen ? nil : p.id }
@@ -178,7 +196,7 @@ struct PatientsView: View {
                         HStack(spacing: 0) {
                             Text(misses.count == 1 ? "Missed: \(misses[0].flag.lowercased())" : "Missed \(misses.count) red flags")
                                 .foregroundStyle(Theme.warn)
-                            if let score = app.lastScores[p.id] {
+                            if let score = p.lastScore {
                                 Text(", scored \(score)").foregroundStyle(Theme.muted)
                             }
                         }
@@ -203,13 +221,10 @@ struct PatientsView: View {
                     ForEach(Array(misses.enumerated()), id: \.element.id) { i, m in
                         MissItem(miss: m).disclosureItem(i + 1)
                     }
-                    // Only patients with a playable case get an action; no "coming soon" buttons.
-                    if p.hasCase {
-                        Button("Revisit \(p.id)") { app.startCase() }
-                            .buttonStyle(SoftButtonStyle(height: 44, fontSize: 16))
-                            .padding(.top, 2)
-                            .disclosureItem(misses.count + 1)
-                    }
+                    Button("Revisit \(p.id)") { Task { await app.open(bed: p.id) } }
+                        .buttonStyle(SoftButtonStyle(height: 44, fontSize: 16))
+                        .padding(.top, 2)
+                        .disclosureItem(misses.count + 1)
                 }
                 .padding(.horizontal, 16)
                 .padding(.leading, 40)

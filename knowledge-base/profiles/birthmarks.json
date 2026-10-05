@@ -1,0 +1,961 @@
+{
+  "schema_version": "0.2",
+  "slug": "birthmarks",
+  "triage": {
+    "name": "Birthmarks",
+    "case_suitable": true,
+    "reason": "Visible skin lesion with a differential (hemangioma, nevus, Mongolian spot) reachable by history and exam; good MSK & skin case.",
+    "kind": "disease",
+    "category": "cutaneous vascular and pigmented lesions",
+    "organ_systems": [
+      "musculoskeletal"
+    ],
+    "primary_clerkship": "pediatrics",
+    "secondary_clerkships": [
+      "familyMedicine",
+      "surgery"
+    ],
+    "commonness": "common",
+    "settings": [
+      "pediatric_clinic",
+      "clinic"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:16:03Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:29:55Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:30:01Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:30:08Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:30:19Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:30:26Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "differential melanoma: no profile yet",
+        "differential kaposi-sarcoma: no profile yet",
+        "differential congenital-melanocytic-nevus: no profile yet",
+        "differential cafe-au-lait-macule: no profile yet",
+        "differential mongolian-spot: no profile yet",
+        "differential port-wine-stain: no profile yet",
+        "differential infantile-hemangioma: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 0,
+      "typical_max": 1,
+      "peak": "newborn to 6 months",
+      "possible_min": 0,
+      "possible_max": 110
+    },
+    "sex": "either",
+    "demographics": [
+      "Present at birth or appear in the first weeks of life in most cases",
+      "Certain pigmented birthmarks are more common in infants with darker skin (Mongolian spots, café-au-lait macules)",
+      "Congenital melanocytic nevi are present in about 1% of newborns",
+      "Infantile hemangiomas are more common in premature and low-birth-weight infants"
+    ],
+    "risk_factors": [
+      {
+        "text": "Premature birth or low birth weight (infantile hemangioma)",
+        "strength": "moderate"
+      },
+      {
+        "text": "Family history of a similar birthmark",
+        "strength": "weak"
+      },
+      {
+        "text": "Female sex (infantile hemangioma)",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [],
+    "family_history": [
+      "Similar birthmark in a parent or sibling"
+    ],
+    "social_history": [],
+    "exposures": [],
+    "risk_medications": []
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My baby has a mark on the skin that was there when she was born",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "There is a red spot that seems to be getting bigger",
+        "frequency": "common"
+      },
+      {
+        "text": "There is a brown or blue patch on the skin",
+        "frequency": "common"
+      }
+    ],
+    "hpi": {
+      "onset": "Present at birth, or noticed by the parents in the first days to weeks of life",
+      "duration": "Since birth; some lesions appear or enlarge over the first months",
+      "progression": "Pigmented birthmarks are usually stable or grow with the child; infantile hemangiomas may grow for several months and then slowly fade; port-wine stains stay the same or darken with age",
+      "location": "Anywhere on the skin; commonly the face, scalp, trunk, buttocks or lower back",
+      "radiation": "Does not radiate",
+      "quality": "A flat or raised colored patch or bump; may be red, pink, tan, brown, gray, blue or black",
+      "severity": "Usually painless and not bothersome; some hemangiomas can ulcerate or bleed",
+      "timing": "Constant; present all the time",
+      "aggravating": [
+        "Rubbing or trauma can make a vascular birthmark bleed"
+      ],
+      "relieving": [
+        "Nothing specific; most need no treatment"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "The mark grows or changes color over weeks to months",
+          "frequency": "common"
+        },
+        {
+          "text": "The mark is raised and warm",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "The mark bleeds or crusts",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "The mark itches or is tender",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Fever",
+        "Weight loss or poor feeding",
+        "Bleeding that will not stop",
+        "Rapidly spreading redness or swelling",
+        "A new mole that changes shape, color or size after childhood",
+        "Family history of melanoma"
+      ]
+    },
+    "ros": [
+      {
+        "system": "skin",
+        "positives": [
+          {
+            "text": "A colored patch or bump on the skin",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "The mark changes size or color over time",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Ulceration",
+          "Bleeding",
+          "Itching",
+          "Pain"
+        ],
+        "argues_against": [
+          "A rapidly growing, irregular, multicolored lesion with bleeding (melanoma)"
+        ]
+      },
+      {
+        "system": "constitutional",
+        "positives": [],
+        "negatives": [
+          "Fever",
+          "Weight loss",
+          "Poor feeding",
+          "Lethargy"
+        ],
+        "argues_against": [
+          "Systemic illness or malignancy"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [],
+        "negatives": [
+          "Seizures",
+          "Weakness",
+          "Developmental delay"
+        ],
+        "argues_against": [
+          "A birthmark associated with a syndrome involving the nervous system"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "infants",
+        "how_it_differs": "Infantile hemangiomas may not be visible at birth and appear in the first weeks, then grow rapidly before fading; some are deep and look bluish rather than red.",
+        "missing_classic_features": [
+          "Present at birth",
+          "Stable appearance"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "A birthmark that has been present for years may be noticed only when it changes; any new change in a long-standing mole needs evaluation for melanoma.",
+        "missing_classic_features": [
+          "Recent onset",
+          "Pediatric presentation"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Well-appearing infant, alert, feeding normally, no distress",
+      "moderate": "Well-appearing but the lesion is raised, warm or crusted; infant may be fussy when it is touched",
+      "severe": "Ill-appearing with an ulcerated or bleeding lesion; may be uncomfortable or feeding poorly",
+      "critical": "Toxic-appearing, pale, lethargic, with an actively bleeding or infected lesion"
+    },
+    "findings": [
+      {
+        "id": "skin-lesion-inspection",
+        "region": "skin",
+        "maneuver": "Inspect the entire skin surface in good light, undressing the infant, and note the size, color, shape, border and surface of the mark",
+        "finding": "A circumscribed colored patch or raised lesion present since birth or the first weeks of life",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "vascular-red-lesion",
+        "region": "skin",
+        "maneuver": "Inspect and gently palpate the lesion",
+        "finding": "A red or pink vascular lesion; a port-wine stain is flat and blanchable, an infantile hemangioma is raised, warm and may be lobulated",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "pigmented-macule",
+        "region": "skin",
+        "maneuver": "Inspect the lesion with a bright light and compare with surrounding skin",
+        "finding": "A flat tan, brown, gray, blue or black macule or patch (café-au-lait macule, Mongolian spot, congenital melanocytic nevus)",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "blanching",
+        "region": "skin",
+        "maneuver": "Press the lesion with a finger or glass slide",
+        "finding": "The lesion blanches with pressure, favoring a vascular birthmark over a pigmented one",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "diascopy-pigmented",
+        "region": "skin",
+        "maneuver": "Press a clear glass slide or finger over the lesion",
+        "finding": "The color does not blanch, favoring a pigmented birthmark such as a nevus or Mongolian spot",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "lesion-size-documentation",
+        "region": "skin",
+        "maneuver": "Measure the longest diameter and record the location and number of lesions",
+        "finding": "A single or few lesions with stable size; multiple or large lesions may suggest a syndrome",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "ulceration-crusting",
+        "region": "skin",
+        "maneuver": "Inspect the surface of the lesion for breakdown",
+        "finding": "Ulceration, crusting or bleeding, most often in a rapidly growing infantile hemangioma",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "secondary-infection",
+        "region": "skin",
+        "maneuver": "Inspect and palpate for warmth, spreading erythema or purulent drainage",
+        "finding": "Warmth, spreading redness, purulent discharge or foul odor suggesting secondary infection",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "no-tenderness",
+        "region": "skin",
+        "maneuver": "Gently palpate the lesion and surrounding skin",
+        "finding": "No tenderness, no induration and no fluctuance",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the cervical, axillary and inguinal lymph node basins",
+        "finding": "No enlarged or tender lymph nodes",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-organomegaly",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen for liver and spleen size",
+        "finding": "No hepatosplenomegaly",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-neuro-exam",
+        "region": "neuro",
+        "maneuver": "Assess tone, spontaneous movement, reflexes and alertness",
+        "finding": "Normal tone, movement and neurologic exam for age",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-growth-feeding",
+        "region": "general",
+        "maneuver": "Review weight, length and head circumference on the growth chart and ask about feeding",
+        "finding": "Normal growth parameters and feeding for age",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-mucosal-lesions",
+        "region": "heent",
+        "maneuver": "Inspect the oral mucosa, lips and conjunctivae",
+        "finding": "No mucosal or conjunctival lesions",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {},
+  "labs": [],
+  "imaging": [
+    {
+      "study": "MRI brain and orbits with and without contrast",
+      "modality": "mri",
+      "preferred_when": "Large facial segmental hemangioma in a beard, periorbital or frontonasal distribution, or any concern for PHACE syndrome",
+      "findings": [
+        {
+          "text": "Normal brain and orbits",
+          "frequency": "common"
+        },
+        {
+          "text": "Intracranial vascular anomaly (arterial anomalies, coarctation, aberrant carotid) suggesting PHACE syndrome",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Posterior fossa malformation (Dandy-Walker spectrum)",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "MRI spine with and without contrast",
+      "modality": "mri",
+      "preferred_when": "Large or multiple lumbosacral lesions, or a lesion with a dimple, hair tuft or other marker of occult spinal dysraphism",
+      "findings": [
+        {
+          "text": "Normal spinal cord and canal",
+          "frequency": "common"
+        },
+        {
+          "text": "Tethered cord or intraspinal extension of the lesion",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Spinal dysraphism or lipomeningocele",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Ultrasound of the lesion",
+      "modality": "ultrasound",
+      "preferred_when": "Soft tissue or deep vascular lesion when the diagnosis is uncertain",
+      "findings": [
+        {
+          "text": "Well-defined soft tissue mass with internal vascular flow",
+          "frequency": "common"
+        },
+        {
+          "text": "High-flow vascular channels consistent with hemangioma",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Abdominal ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "Six or more café-au-lait macules, or other features suggesting neurofibromatosis type 1",
+      "findings": [
+        {
+          "text": "Normal abdominal organs",
+          "frequency": "common"
+        },
+        {
+          "text": "Neurofibromas or other intra-abdominal lesions",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Skin biopsy",
+      "modality": "other",
+      "preferred_when": "A lesion that is changing, bleeding or has features concerning for melanoma or another malignancy",
+      "findings": [
+        {
+          "text": "Benign nevus or vascular malformation",
+          "frequency": "common"
+        },
+        {
+          "text": "Atypical melanocytes or melanoma",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "Clinical skin examination",
+        "why": "Inspect the entire skin surface in good light, measure and document the lesion, and look for features that suggest a syndrome"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Skin biopsy",
+        "why": "Confirms the diagnosis when a lesion is changing, bleeding or has features concerning for melanoma or another malignancy",
+        "only_if": "the lesion is changing, bleeding, or has features concerning for melanoma or another malignancy"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "MRI brain and orbits with and without contrast",
+        "why": "Evaluates for PHACE syndrome",
+        "only_if": "large facial segmental hemangioma in a beard, periorbital or frontonasal distribution, or concern for PHACE syndrome"
+      },
+      {
+        "test": "MRI spine with and without contrast",
+        "why": "Evaluates for occult spinal dysraphism",
+        "only_if": "large or multiple lumbosacral lesions, or a lesion with a dimple, hair tuft or other marker of occult spinal dysraphism"
+      },
+      {
+        "test": "Ultrasound of the lesion",
+        "why": "Characterizes a soft tissue or deep vascular lesion when the diagnosis is uncertain",
+        "only_if": "the diagnosis is uncertain"
+      },
+      {
+        "test": "Abdominal ultrasound",
+        "why": "Screens for intra-abdominal lesions in suspected neurofibromatosis type 1",
+        "only_if": "six or more café-au-lait macules or other features suggesting neurofibromatosis type 1"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "cbc",
+        "why": "Not needed for an uncomplicated birthmark"
+      },
+      {
+        "test": "bmp",
+        "why": "Not needed for an uncomplicated birthmark"
+      },
+      {
+        "test": "crp",
+        "why": "Not needed unless there is concern for secondary infection"
+      },
+      {
+        "test": "esr",
+        "why": "Not needed unless there is concern for secondary infection"
+      },
+      {
+        "test": "lactate",
+        "why": "Not needed for an uncomplicated birthmark"
+      },
+      {
+        "test": "ldh",
+        "why": "Not needed unless a malignancy is suspected"
+      },
+      {
+        "test": "uric_acid",
+        "why": "Not needed for an uncomplicated birthmark"
+      },
+      {
+        "test": "Abdominal x-ray",
+        "why": "Not useful for evaluating a skin birthmark"
+      },
+      {
+        "test": "CT of the lesion",
+        "why": "Exposes the child to radiation and is rarely needed for a birthmark"
+      }
+    ],
+    "decision_points": [
+      "Any changing, bleeding or irregular lesion in an older child or adult should be evaluated for melanoma",
+      "Large facial segmental hemangiomas warrant evaluation for PHACE syndrome",
+      "Lumbosacral lesions with a dimple, hair tuft or other marker warrant imaging for occult spinal dysraphism",
+      "Six or more café-au-lait macules should prompt evaluation for neurofibromatosis type 1"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Melanoma",
+      "slug": "melanoma",
+      "why_considered": "A pigmented lesion that is changing, bleeding or irregular can be a melanoma rather than a benign birthmark",
+      "must_not_miss": true,
+      "trigger": "Any pigmented lesion that changes in size, shape or color, bleeds, itches or becomes tender",
+      "discriminators": {
+        "history": [
+          "New or changing lesion rather than one stable since birth",
+          "Bleeding, itching or pain in the lesion",
+          "Family history of melanoma",
+          "History of sunburn or intense sun exposure"
+        ],
+        "exam": [
+          "Asymmetry, irregular border, multiple colors, diameter over 6 mm",
+          "Elevation or surface change in a previously flat lesion",
+          "Satellite lesions or surrounding erythema"
+        ],
+        "labs": [
+          "No routine lab confirms melanoma; LDH may be elevated with advanced disease"
+        ],
+        "imaging": [
+          "Dermoscopy showing atypical pigment network, irregular streaks or blue-white veil",
+          "Excisional biopsy showing atypical melanocytes"
+        ]
+      }
+    },
+    {
+      "name": "Kaposi sarcoma",
+      "slug": "kaposi-sarcoma",
+      "why_considered": "Violaceous or red-purple vascular-appearing lesions can mimic a vascular birthmark",
+      "must_not_miss": true,
+      "trigger": "Multiple violaceous lesions in an immunocompromised patient or an older adult, especially with lymphadenopathy",
+      "discriminators": {
+        "history": [
+          "HIV infection, transplant immunosuppression or older age",
+          "Lesions appearing in adulthood rather than at birth",
+          "Weight loss, fever or night sweats"
+        ],
+        "exam": [
+          "Violaceous macules, plaques or nodules on skin or mucosa",
+          "Lymphadenopathy",
+          "Oral or conjunctival lesions"
+        ],
+        "labs": [
+          "Positive HIV test",
+          "Low CD4 count"
+        ],
+        "imaging": [
+          "Biopsy showing spindle cells with slit-like vascular spaces and HHV-8 positivity"
+        ]
+      }
+    },
+    {
+      "name": "Congenital melanocytic nevus",
+      "slug": "congenital-melanocytic-nevus",
+      "why_considered": "A pigmented birthmark present at birth that can be mistaken for other pigmented lesions",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Present at birth and grows proportionally with the child",
+          "Usually stable color and shape over time"
+        ],
+        "exam": [
+          "Well-circumscribed brown to black macule, papule or plaque",
+          "May have hair growth or a cobblestone surface",
+          "No ulceration or bleeding"
+        ],
+        "labs": [
+          "Not routinely indicated"
+        ],
+        "imaging": [
+          "Biopsy only if atypical features develop"
+        ]
+      }
+    },
+    {
+      "name": "Café-au-lait macule",
+      "slug": "cafe-au-lait-macule",
+      "why_considered": "A flat tan-brown birthmark that can be confused with other pigmented lesions",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Present at birth or early infancy",
+          "Stable, uniform color",
+          "Family history of neurofibromatosis type 1 if multiple"
+        ],
+        "exam": [
+          "Uniform light brown macule with smooth borders",
+          "Six or more lesions over 5 mm in prepubertal children suggests neurofibromatosis type 1",
+          "Look for axillary freckling, neurofibromas or Lisch nodules"
+        ],
+        "labs": [
+          "Not routinely indicated"
+        ],
+        "imaging": [
+          "MRI brain or spine only if features of neurofibromatosis type 1 are present"
+        ]
+      }
+    },
+    {
+      "name": "Mongolian spot (dermal melanocytosis)",
+      "slug": "mongolian-spot",
+      "why_considered": "A blue-gray pigmented birthmark often mistaken for a bruise or other lesion",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Present at birth",
+          "More common in infants with darker skin",
+          "Does not change or fade quickly"
+        ],
+        "exam": [
+          "Blue-gray macule or patch on the buttocks or lower back",
+          "Does not blanch",
+          "No tenderness or swelling"
+        ],
+        "labs": [
+          "Not indicated"
+        ],
+        "imaging": [
+          "Not indicated unless lumbosacral lesion has a dimple, hair tuft or other marker of occult spinal dysraphism"
+        ]
+      }
+    },
+    {
+      "name": "Port-wine stain (capillary malformation)",
+      "slug": "port-wine-stain",
+      "why_considered": "A red vascular birthmark that can be confused with an infantile hemangioma",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Present at birth",
+          "Grows proportionally with the child",
+          "Does not involute"
+        ],
+        "exam": [
+          "Flat, pink to red patch that blanches with pressure",
+          "Sharp midline demarcation possible",
+          "May darken and thicken with age"
+        ],
+        "labs": [
+          "Not indicated"
+        ],
+        "imaging": [
+          "MRI brain if Sturge-Weber syndrome is suspected (facial port-wine stain in V1 distribution with seizures or developmental delay)"
+        ]
+      }
+    },
+    {
+      "name": "Infantile hemangioma",
+      "slug": "infantile-hemangioma",
+      "why_considered": "A red raised vascular birthmark that can be confused with other vascular lesions",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "May not be visible at birth; appears in first weeks",
+          "Rapid growth over months then slow involution",
+          "More common in premature or low-birth-weight infants"
+        ],
+        "exam": [
+          "Raised, warm, lobulated red lesion",
+          "Blanches with pressure",
+          "May ulcerate or bleed during rapid growth"
+        ],
+        "labs": [
+          "Not routinely indicated"
+        ],
+        "imaging": [
+          "Ultrasound showing high-flow vascular channels if diagnosis uncertain",
+          "MRI brain and orbits if large facial segmental hemangioma suggests PHACE syndrome"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "A small, stable, uncomplicated birthmark that is not changing and does not bother the patient",
+      "moderate": "A birthmark that is growing, raised, or has surface changes such as crusting or mild ulceration, but without bleeding or infection",
+      "severe": "An ulcerated or bleeding birthmark, or one associated with a syndrome requiring further evaluation",
+      "critical": "A birthmark with active hemorrhage, secondary infection with systemic signs, or airway compromise from a large facial or neck lesion"
+    },
+    "red_flags": [
+      {
+        "finding": "A pigmented lesion that changes in size, shape or color, or becomes symptomatic",
+        "meaning": "Possible melanoma; needs urgent dermatologic evaluation and biopsy"
+      },
+      {
+        "finding": "Bleeding, itching or pain in a long-standing mole",
+        "meaning": "Concerning for malignant transformation"
+      },
+      {
+        "finding": "Large facial segmental hemangioma in a beard, periorbital or frontonasal distribution",
+        "meaning": "Evaluate for PHACE syndrome and possible airway or visual compromise"
+      },
+      {
+        "finding": "Lumbosacral lesion with a dimple, hair tuft or other marker",
+        "meaning": "Possible occult spinal dysraphism; needs MRI spine"
+      },
+      {
+        "finding": "Six or more café-au-lait macules",
+        "meaning": "Evaluate for neurofibromatosis type 1"
+      },
+      {
+        "finding": "Ulceration with spreading erythema, warmth or purulent drainage",
+        "meaning": "Secondary infection; may need antibiotics"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Ulceration and bleeding",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Rapidly growing hemangioma",
+          "Crusting or breakdown of the surface",
+          "Pain or fussiness when touched"
+        ]
+      },
+      {
+        "name": "Secondary infection",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Spreading erythema",
+          "Warmth",
+          "Purulent drainage",
+          "Fever"
+        ]
+      },
+      {
+        "name": "Airway obstruction",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Large beard-distribution hemangioma",
+          "Stridor",
+          "Feeding difficulty"
+        ]
+      },
+      {
+        "name": "Visual impairment",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Periorbital hemangioma",
+          "Ptosis",
+          "Astigmatism or amblyopia"
+        ]
+      },
+      {
+        "name": "Malignant transformation of a congenital melanocytic nevus",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Change in size, color or shape",
+          "Bleeding or itching",
+          "New nodule within the lesion"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Most birthmarks are benign and require only observation; infantile hemangiomas may grow rapidly in the first months and then involute; large lesions may need treatment to prevent complications."
+      },
+      {
+        "population": "infants",
+        "differences": "Premature and low-birth-weight infants have a higher risk of infantile hemangiomas; lesions may not be visible at birth and appear in the first weeks."
+      },
+      {
+        "population": "older_adults",
+        "differences": "A long-standing birthmark that changes should raise concern for melanoma; new lesions in adulthood are less likely to be birthmarks."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Hormonal changes can cause darkening or enlargement of pigmented lesions; any changing lesion should be evaluated for melanoma."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "When did you first notice the mark — was it there at birth, or did it appear later?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Present at birth or in the first weeks of life; a lesion appearing later in childhood or adulthood is less likely a birthmark"
+      },
+      {
+        "question": "Has the mark changed in size, shape, or color since you first noticed it?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Stable or growing proportionally with the child; rapid change, darkening, or new irregularity raises concern for melanoma"
+      },
+      {
+        "question": "Does the mark bleed, itch, hurt, or crust over?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Absent in a simple birthmark; bleeding, itching, or pain in a pigmented lesion suggests malignant transformation"
+      },
+      {
+        "question": "Is the mark raised, warm, or growing quickly?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "A raised, warm, rapidly enlarging red lesion suggests an infantile hemangioma in its growth phase"
+      },
+      {
+        "question": "Where is the mark located, and is it flat or raised?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Facial, lumbosacral, or segmental distribution; lumbosacral lesions with a dimple or hair tuft raise concern for occult spinal dysraphism"
+      },
+      {
+        "question": "How many similar marks does the child have?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Six or more café-au-lait macules suggests neurofibromatosis type 1"
+      },
+      {
+        "question": "Has the child had any seizures, developmental delay, or vision problems?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Seizures or developmental delay with a facial port-wine stain suggests Sturge-Weber syndrome"
+      },
+      {
+        "question": "Does anyone else in the family have a similar birthmark or a history of skin cancer?",
+        "category": "family",
+        "importance": "important",
+        "looking_for": "Family history of neurofibromatosis type 1, melanoma, or similar lesions"
+      },
+      {
+        "question": "Was the baby born prematurely or with a low birth weight?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Prematurity and low birth weight increase the risk of infantile hemangioma"
+      },
+      {
+        "question": "Is the child feeding well, gaining weight, and acting normally?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Normal feeding and growth; poor feeding or lethargy suggests systemic illness or a syndrome"
+      },
+      {
+        "question": "Has the mark ever been infected, ulcerated, or needed treatment?",
+        "category": "pmh",
+        "importance": "optional",
+        "looking_for": "Prior ulceration, bleeding, or infection, especially in a hemangioma"
+      },
+      {
+        "question": "Is there any history of immunosuppression, HIV, or transplant in the patient?",
+        "category": "pmh",
+        "importance": "optional",
+        "looking_for": "Immunosuppression raises concern for Kaposi sarcoma in violaceous lesions"
+      }
+    ],
+    "accepted_names": [
+      "Birthmark",
+      "Birthmarks",
+      "Congenital nevus",
+      "Congenital melanocytic nevus",
+      "Infantile hemangioma",
+      "Strawberry hemangioma",
+      "Port-wine stain",
+      "Capillary malformation",
+      "Café-au-lait macule",
+      "Café au lait spot",
+      "Mongolian spot",
+      "Dermal melanocytosis",
+      "Nevus",
+      "Nevus simplex",
+      "Salmon patch",
+      "Stork bite"
+    ],
+    "reasoning_points": [
+      "The lesion was present at birth or appeared in the first weeks of life, consistent with a congenital malformation rather than an acquired lesion",
+      "The mark is stable or grows proportionally with the child, without rapid change, bleeding, or itching",
+      "The lesion is well-circumscribed and has a characteristic color and surface for its type (red vascular vs. tan, brown, blue, or black pigmented)",
+      "Blanching with pressure favors a vascular birthmark; failure to blanch favors a pigmented lesion",
+      "No systemic symptoms such as fever, weight loss, poor feeding, or lethargy",
+      "No features suggesting a syndrome: no large facial segmental hemangioma, no lumbosacral dimple or hair tuft, fewer than six café-au-lait macules",
+      "No features concerning for malignancy: no irregular borders, multiple colors, recent growth, or bleeding in a pigmented lesion",
+      "The clinical appearance is sufficient for diagnosis in most cases; biopsy is reserved for lesions with atypical or concerning features"
+    ],
+    "difficulty": {
+      "easy": [
+        "Newborn with a classic flat salmon patch or Mongolian spot noted on routine exam",
+        "Infant with a typical strawberry hemangioma that appeared in the first weeks and is growing",
+        "Well-appearing child with a single stable brown macule present since birth",
+        "No red flags on history or exam"
+      ],
+      "medium": [
+        "Infant with a raised red lesion that is enlarging and beginning to crust",
+        "Child with several café-au-lait macules requiring evaluation for neurofibromatosis type 1",
+        "Lumbosacral lesion with a small dimple requiring imaging for occult spinal dysraphism",
+        "Lesion whose color is difficult to classify as vascular versus pigmented"
+      ],
+      "hard": [
+        "Older child or adult with a long-standing pigmented lesion that is now changing, raising concern for melanoma",
+        "Immunocompromised patient with multiple violaceous lesions mimicking a vascular birthmark (Kaposi sarcoma)",
+        "Large facial segmental hemangioma with concern for PHACE syndrome or airway compromise",
+        "Facial port-wine stain with seizures or developmental delay suggesting Sturge-Weber syndrome",
+        "Lesion with secondary infection or active bleeding requiring urgent management"
+      ]
+    }
+  }
+}

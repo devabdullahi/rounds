@@ -1,0 +1,1191 @@
+{
+  "schema_version": "0.2",
+  "slug": "sciatica",
+  "triage": {
+    "name": "Sciatica",
+    "case_suitable": true,
+    "reason": "Common radicular pain syndrome with a clear history, exam maneuvers and imaging; mimics include spinal stenosis and vascular claudication.",
+    "kind": "symptom",
+    "category": "radiculopathy",
+    "organ_systems": [
+      "nervous",
+      "musculoskeletal"
+    ],
+    "primary_clerkship": "familyMedicine",
+    "secondary_clerkships": [
+      "neurology",
+      "emergency"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "clinic",
+      "emergency"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:20:02Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:11:24Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:11:31Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:11:38Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:11:51Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:11:57Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'mri lumbar spine without contrast' was in ['initial', 'confirmatory', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'lumbar spine x-ray' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'mri lumbar spine without contrast' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'lumbar spine x-ray' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "differential cauda-equina-syndrome: no profile yet",
+        "differential lumbar-spinal-stenosis: no profile yet",
+        "differential peripheral-arterial-disease: no profile yet",
+        "differential hip-osteoarthritis: no profile yet",
+        "differential piriformis-syndrome: no profile yet",
+        "differential herpes-zoster: no profile yet",
+        "differential diabetic-peripheral-neuropathy: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 30,
+      "typical_max": 65,
+      "peak": "40–50",
+      "possible_min": 16,
+      "possible_max": 90
+    },
+    "sex": "either",
+    "demographics": [
+      "Slightly more common in men",
+      "Most common in working-age adults",
+      "Peak incidence in the 40s and 50s"
+    ],
+    "risk_factors": [
+      {
+        "text": "Heavy lifting or repetitive bending and twisting",
+        "strength": "strong"
+      },
+      {
+        "text": "Prolonged sitting or driving",
+        "strength": "moderate"
+      },
+      {
+        "text": "Obesity",
+        "strength": "moderate"
+      },
+      {
+        "text": "Smoking",
+        "strength": "moderate"
+      },
+      {
+        "text": "Increasing age",
+        "strength": "weak"
+      },
+      {
+        "text": "Tall stature",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Obesity",
+      "Diabetes mellitus",
+      "Lumbar spinal stenosis",
+      "Degenerative disc disease"
+    ],
+    "family_history": [
+      "Lumbar disc herniation in a first-degree relative"
+    ],
+    "social_history": [
+      "Occupations requiring heavy lifting or prolonged sitting",
+      "Sedentary lifestyle"
+    ],
+    "exposures": [],
+    "risk_medications": []
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My lower back hurts and the pain shoots down my leg",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "My leg feels numb and tingly",
+        "frequency": "common"
+      },
+      {
+        "text": "My leg feels weak",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Usually gradual over days to weeks, sometimes sudden after lifting or bending",
+      "duration": "Days to weeks at presentation; often improves within 4–6 weeks",
+      "progression": "Starts as low back pain, then radiates down the buttock and leg; may worsen with activity before gradually improving",
+      "location": "Lower back, buttock, and posterior or lateral thigh, radiating down the leg",
+      "radiation": "Down the back of the thigh and leg, often to the calf, foot, or toes; usually one side only",
+      "quality": "Sharp, shooting, burning, or electric shock-like",
+      "severity": "Moderate to severe; 5–8/10 at worst",
+      "timing": "Intermittent or constant; often worse with activity and at night",
+      "aggravating": [
+        "Sitting for long periods",
+        "Standing or walking",
+        "Coughing or sneezing",
+        "Straining on the toilet",
+        "Bending forward or lifting"
+      ],
+      "relieving": [
+        "Lying down",
+        "Changing position",
+        "Walking with a slight stoop",
+        "Over-the-counter pain relievers"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Numbness or tingling in the leg or foot",
+          "frequency": "common"
+        },
+        {
+          "text": "Weakness in the leg or foot",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Muscle spasms in the back or leg",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Feeling of heaviness in the leg",
+          "frequency": "sometimes"
+        }
+      ],
+      "pertinent_negatives": [
+        "Loss of bladder or bowel control",
+        "Numbness in the groin or inner thighs (saddle anesthesia)",
+        "Severe weakness in both legs",
+        "Fever or chills",
+        "Unexplained weight loss",
+        "History of cancer",
+        "Recent significant trauma",
+        "Pain that is worse at rest or at night and relieved by sitting"
+      ]
+    },
+    "ros": [
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Low back pain",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Pain radiating down the leg",
+            "frequency": "almost_always"
+          }
+        ],
+        "negatives": [
+          "Morning stiffness lasting more than an hour",
+          "Multiple joint pain or swelling"
+        ],
+        "argues_against": [
+          "Inflammatory back pain",
+          "Systemic arthritis"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Numbness or tingling in the leg or foot",
+            "frequency": "common"
+          },
+          {
+            "text": "Leg weakness",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Loss of bowel or bladder control",
+          "Saddle anesthesia",
+          "Confusion",
+          "Severe headache"
+        ],
+        "argues_against": [
+          "Cauda equina syndrome",
+          "Spinal cord compression"
+        ]
+      },
+      {
+        "system": "constitutional",
+        "positives": [],
+        "negatives": [
+          "Fever",
+          "Chills",
+          "Night sweats",
+          "Unintentional weight loss"
+        ],
+        "argues_against": [
+          "Infection",
+          "Malignancy"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [],
+        "negatives": [
+          "Abdominal pain",
+          "Change in bowel habits"
+        ],
+        "argues_against": [
+          "Intra-abdominal pathology"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [],
+        "negatives": [
+          "Difficulty urinating",
+          "Incontinence",
+          "Blood in urine"
+        ],
+        "argues_against": [
+          "Cauda equina syndrome",
+          "Urologic cause"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "older_adults",
+        "how_it_differs": "More likely due to spinal stenosis than a disc herniation; pain is often bilateral, worse with walking and standing, and relieved by sitting or bending forward. Classic unilateral radiating pain may be absent.",
+        "missing_classic_features": [
+          "Unilateral leg pain",
+          "Pain worsened by sitting"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Leg pain may be from pelvic girdle relaxation or the weight of the uterus pressing on the sciatic nerve; symptoms are often bilateral and fluctuate with position.",
+        "missing_classic_features": [
+          "Unilateral radicular pattern",
+          "Clear dermatomal distribution"
+        ]
+      },
+      {
+        "population": "diabetes",
+        "how_it_differs": "Underlying diabetic peripheral neuropathy can cause burning or numbness in the feet that is not radicular; symptoms may be bilateral and length-dependent.",
+        "missing_classic_features": [
+          "Unilateral radiating pain",
+          "Dermatomal pattern"
+        ]
+      },
+      {
+        "population": "obesity",
+        "how_it_differs": "Increased mechanical load on the lumbar spine can cause more diffuse low back pain with less clear radicular features; exam may be limited by body habitus.",
+        "missing_classic_features": [
+          "Sharp shooting leg pain",
+          "Positive straight leg raise"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Comfortable at rest, moves without guarding, no distress",
+      "moderate": "Antalgic posture, shifts weight off the affected leg, winces when rising from a chair",
+      "severe": "Markedly antalgic, stands with a lateral lean or forward stoop, reluctant to bend or sit",
+      "critical": "Distressed, unable to bear weight, may have saddle anesthesia or leg weakness; requires urgent evaluation"
+    },
+    "findings": [
+      {
+        "id": "straight-leg-raise",
+        "region": "musculoskeletal",
+        "maneuver": "With the patient supine, lift the affected leg by the heel with the knee extended",
+        "finding": "Reproduction of radiating pain down the leg at 30–70 degrees of hip flexion",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "contralateral-straight-leg-raise",
+        "region": "musculoskeletal",
+        "maneuver": "Lift the unaffected leg with the knee extended",
+        "finding": "Radiating pain in the affected leg",
+        "frequency": "sometimes",
+        "significance": "strongly_supports",
+        "importance": "important"
+      },
+      {
+        "id": "lasegue-sign",
+        "region": "musculoskeletal",
+        "maneuver": "Dorsiflex the ankle while the leg is raised (or lower the leg until pain resolves, then dorsiflex)",
+        "finding": "Recurrence of radiating leg pain with ankle dorsiflexion",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "dermatomal-sensory-loss",
+        "region": "neuro",
+        "maneuver": "Test light touch and pinprick in the L4, L5 and S1 dermatomes bilaterally",
+        "finding": "Decreased sensation in a dermatomal distribution (L5 or S1 most often)",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "ankle-dorsiflexion-weakness",
+        "region": "neuro",
+        "maneuver": "Test ankle dorsiflexion against resistance (L4/L5)",
+        "finding": "Weakness of foot dorsiflexion or great toe extension",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "ankle-plantarflexion-weakness",
+        "region": "neuro",
+        "maneuver": "Test ankle plantarflexion against resistance (S1)",
+        "finding": "Weakness of ankle plantarflexion or difficulty with heel raises",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "diminished-achilles-reflex",
+        "region": "neuro",
+        "maneuver": "Tap the Achilles tendon with a reflex hammer",
+        "finding": "Reduced or absent Achilles reflex (S1)",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "diminished-patellar-reflex",
+        "region": "neuro",
+        "maneuver": "Tap the patellar tendon with a reflex hammer",
+        "finding": "Reduced or absent patellar reflex (L4)",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "paraspinal-tenderness",
+        "region": "musculoskeletal",
+        "maneuver": "Palpate the lumbar paraspinal muscles and spinous processes",
+        "finding": "Paraspinal muscle tenderness or spasm",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "reduced-lumbar-flexion",
+        "region": "musculoskeletal",
+        "maneuver": "Ask the patient to bend forward at the waist",
+        "finding": "Limited lumbar flexion due to pain or muscle spasm",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-gait",
+        "region": "musculoskeletal",
+        "maneuver": "Observe the patient walking and on heel and toe walking",
+        "finding": "Normal gait without foot drop or wide-based unsteadiness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-saddle-sensation",
+        "region": "neuro",
+        "maneuver": "Test sensation in the perineal and saddle area",
+        "finding": "Intact saddle sensation",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "normal-anal-sphincter-tone",
+        "region": "rectal",
+        "maneuver": "Perform a digital rectal exam when cauda equina syndrome is suspected",
+        "finding": "Normal anal sphincter tone and no saddle anesthesia",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-femoral-nerve-tension",
+        "region": "musculoskeletal",
+        "maneuver": "Perform the femoral stretch test (prone, flex the knee and extend the hip)",
+        "finding": "No anterior thigh pain, arguing against upper lumbar radiculopathy",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-pedal-pulses",
+        "region": "extremities",
+        "maneuver": "Palpate the dorsalis pedis and posterior tibial pulses",
+        "finding": "Palpable symmetric pulses, arguing against vascular claudication",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-hip-exam",
+        "region": "musculoskeletal",
+        "maneuver": "Test hip internal and external rotation and perform FABER test",
+        "finding": "No hip pain or restriction, arguing against hip arthritis or bursitis",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "moderate": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "severe": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "critical": {
+        "min": 97.8,
+        "max": 99.1
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 90
+      },
+      "moderate": {
+        "min": 65,
+        "max": 100
+      },
+      "severe": {
+        "min": 70,
+        "max": 110
+      },
+      "critical": {
+        "min": 75,
+        "max": 120
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 12,
+        "max": 18
+      },
+      "moderate": {
+        "min": 12,
+        "max": 20
+      },
+      "severe": {
+        "min": 14,
+        "max": 22
+      },
+      "critical": {
+        "min": 16,
+        "max": 24
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 100,
+        "max": 130
+      },
+      "moderate": {
+        "min": 100,
+        "max": 135
+      },
+      "severe": {
+        "min": 100,
+        "max": 140
+      },
+      "critical": {
+        "min": 100,
+        "max": 145
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 60,
+        "max": 85
+      },
+      "moderate": {
+        "min": 60,
+        "max": 88
+      },
+      "severe": {
+        "min": 60,
+        "max": 90
+      },
+      "critical": {
+        "min": 60,
+        "max": 92
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 95,
+        "max": 100
+      },
+      "moderate": {
+        "min": 95,
+        "max": 100
+      },
+      "severe": {
+        "min": 95,
+        "max": 100
+      },
+      "critical": {
+        "min": 95,
+        "max": 100
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "esr",
+      "ranges": {
+        "moderate": {
+          "min": 20,
+          "max": 45
+        },
+        "severe": {
+          "min": 40,
+          "max": 80
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Only useful when an inflammatory or infectious cause (discitis, osteomyelitis, malignancy) is suspected; normal in simple disc herniation."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "moderate": {
+          "min": 1.0,
+          "max": 5.0
+        },
+        "severe": {
+          "min": 4.0,
+          "max": 15.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Elevated values raise concern for infection or malignancy rather than mechanical radiculopathy."
+    },
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "moderate": {
+          "min": 11.0,
+          "max": 15.0
+        },
+        "severe": {
+          "min": 14.0,
+          "max": 20.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Leukocytosis is not expected in uncomplicated sciatica; consider epidural abscess, discitis or osteomyelitis."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Negative. Obtain in anyone who could be pregnant before imaging or medications."
+    }
+  ],
+  "imaging": [
+    {
+      "study": "MRI lumbar spine without contrast",
+      "modality": "mri",
+      "preferred_when": "Persistent or progressive symptoms, red flags, or surgical planning",
+      "findings": [
+        {
+          "text": "Disc herniation at L4-L5 or L5-S1 with nerve root compression",
+          "frequency": "common"
+        },
+        {
+          "text": "Nerve root impingement corresponding to the dermatomal level of symptoms",
+          "frequency": "common"
+        },
+        {
+          "text": "Central or foraminal spinal stenosis",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Degenerative disc disease or facet hypertrophy",
+          "frequency": "common"
+        },
+        {
+          "text": "No compressive lesion identified (nonspecific or normal study)",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "CT lumbar spine without contrast",
+      "modality": "ct",
+      "preferred_when": "When MRI is contraindicated or unavailable",
+      "findings": [
+        {
+          "text": "Disc bulge or herniation with nerve root compression",
+          "frequency": "common"
+        },
+        {
+          "text": "Spinal canal or foraminal narrowing",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Degenerative changes of the facet joints and endplates",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "Lumbar spine x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Usually normal or shows only nonspecific degenerative changes",
+          "frequency": "common"
+        },
+        {
+          "text": "Disc space narrowing or osteophytes",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Cannot show disc herniation or nerve root compression",
+          "frequency": "almost_always"
+        }
+      ]
+    },
+    {
+      "study": "Electromyography and nerve conduction studies",
+      "modality": "other",
+      "preferred_when": "Diagnosis is uncertain or peripheral neuropathy is suspected",
+      "findings": [
+        {
+          "text": "Active denervation in muscles of the affected myotome",
+          "frequency": "common"
+        },
+        {
+          "text": "Normal study in mild or purely sensory radiculopathy",
+          "frequency": "sometimes"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "MRI lumbar spine without contrast",
+        "why": "Defines the level and cause of nerve root compression",
+        "only_if": "red flags, progressive neurologic deficit, or symptoms persisting beyond 4–6 weeks of conservative care"
+      },
+      {
+        "test": "Lumbar spine x-ray",
+        "why": "Screens for fracture, alignment or structural change",
+        "only_if": "significant trauma, osteoporosis, or concern for fracture"
+      },
+      {
+        "test": "esr",
+        "why": "Screens for infection or malignancy when red flags are present",
+        "only_if": "fever, weight loss, cancer history, or pain worse at rest"
+      },
+      {
+        "test": "crp",
+        "why": "Adds to ESR when infection or malignancy is suspected",
+        "only_if": "fever, weight loss, cancer history, or pain worse at rest"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before imaging or medication",
+        "only_if": "patient could be pregnant"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "CT lumbar spine without contrast",
+        "why": "Alternative when MRI is contraindicated or unavailable",
+        "only_if": "MRI cannot be performed"
+      },
+      {
+        "test": "Electromyography and nerve conduction studies",
+        "why": "Confirms radiculopathy and distinguishes it from peripheral neuropathy",
+        "only_if": "diagnosis remains uncertain or another neuropathy is suspected"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Lumbar spine x-ray",
+        "why": "Does not show disc herniation or nerve compression and rarely changes management in uncomplicated sciatica"
+      },
+      {
+        "test": "MRI lumbar spine without contrast",
+        "why": "Not needed for typical symptoms without red flags in the first 4–6 weeks, since most cases improve with conservative care"
+      },
+      {
+        "test": "cbc",
+        "why": "Routine blood count is not helpful in uncomplicated mechanical sciatica"
+      },
+      {
+        "test": "bmp",
+        "why": "Not routinely needed unless surgery or significant comorbidity is present"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in radicular leg pain"
+      }
+    ],
+    "decision_points": [
+      "Check for red flags (saddle anesthesia, bowel or bladder dysfunction, progressive weakness, fever, cancer history, trauma) before deciding on urgent imaging",
+      "Urgent MRI and surgical consultation for suspected cauda equina syndrome or progressive motor deficit",
+      "Pregnancy test before imaging or medication in anyone who could be pregnant",
+      "Most patients without red flags can be managed conservatively for 4–6 weeks before imaging"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Cauda equina syndrome",
+      "slug": "cauda-equina-syndrome",
+      "why_considered": "Lumbar disc herniation is the most common cause of sciatica and can compress the cauda equina, producing bilateral leg pain with bladder, bowel and saddle symptoms.",
+      "must_not_miss": true,
+      "trigger": "Saddle anesthesia, urinary retention or incontinence, fecal incontinence, or rapidly progressive bilateral leg weakness",
+      "discriminators": {
+        "history": [
+          "Urinary retention or overflow incontinence",
+          "Loss of bowel control",
+          "Numbness in the groin, perineum or inner thighs",
+          "Bilateral or rapidly progressive leg weakness",
+          "Severe low back pain with sudden onset"
+        ],
+        "exam": [
+          "Reduced or absent perineal and saddle sensation",
+          "Reduced anal sphincter tone on digital rectal exam",
+          "Bilateral leg weakness or asymmetric severe deficits",
+          "Absent ankle reflexes bilaterally"
+        ],
+        "labs": [
+          "No specific blood test confirms it; urinalysis and post-void residual help assess retention"
+        ],
+        "imaging": [
+          "Urgent MRI showing a large central disc herniation or mass compressing multiple nerve roots of the cauda equina",
+          "Loss of normal nerve root definition and crowding of the thecal sac"
+        ]
+      }
+    },
+    {
+      "name": "Lumbar spinal stenosis",
+      "slug": "lumbar-spinal-stenosis",
+      "why_considered": "Narrowing of the spinal canal compresses nerve roots and causes radiating leg pain, especially in older adults.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Older age, typically over 60",
+          "Bilateral or alternating leg pain and heaviness",
+          "Pain worse with walking and standing, relieved by sitting or bending forward",
+          "Symptoms improve when leaning on a shopping cart"
+        ],
+        "exam": [
+          "Symptoms provoked by lumbar extension",
+          "Relatively preserved straight leg raise",
+          "Often normal or mildly reduced reflexes",
+          "Wide-based gait or unsteadiness in advanced cases"
+        ],
+        "imaging": [
+          "MRI or CT showing central canal or foraminal narrowing, ligamentum flavum hypertrophy and facet arthropathy",
+          "Multilevel degenerative changes"
+        ]
+      }
+    },
+    {
+      "name": "Vascular claudication",
+      "slug": "peripheral-arterial-disease",
+      "why_considered": "Exertional leg pain that limits walking can be mistaken for neurogenic claudication from sciatica.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Cramping calf or thigh pain brought on by walking a predictable distance",
+          "Relieved within minutes of standing still, not by sitting or bending forward",
+          "History of smoking, diabetes, hypertension or hyperlipidemia",
+          "No back pain"
+        ],
+        "exam": [
+          "Diminished or absent dorsalis pedis and posterior tibial pulses",
+          "Cool, shiny, hairless skin with dependent rubor",
+          "Femoral bruit",
+          "Symptoms not reproduced by straight leg raise"
+        ],
+        "labs": [
+          "Elevated fasting glucose or HbA1c",
+          "Dyslipidemia on lipid panel"
+        ],
+        "imaging": [
+          "Ankle-brachial index below 0.9",
+          "Arterial duplex or CT angiography showing stenosis or occlusion"
+        ]
+      }
+    },
+    {
+      "name": "Hip osteoarthritis",
+      "slug": "hip-osteoarthritis",
+      "why_considered": "Pain referred from the hip can radiate to the buttock, groin and thigh and be confused with sciatica.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Pain in the groin and anterior thigh rather than below the knee",
+          "Worse with weight bearing and at the end of the day",
+          "Stiffness after inactivity",
+          "No numbness or tingling"
+        ],
+        "exam": [
+          "Reduced and painful hip internal and external rotation",
+          "Positive FABER test",
+          "No dermatomal sensory loss",
+          "Straight leg raise does not reproduce radiating leg pain"
+        ],
+        "imaging": [
+          "Hip x-ray showing joint space narrowing, osteophytes and subchondral sclerosis"
+        ]
+      }
+    },
+    {
+      "name": "Piriformis syndrome",
+      "slug": "piriformis-syndrome",
+      "why_considered": "The sciatic nerve can be compressed by the piriformis muscle, causing buttock and posterior thigh pain that mimics radiculopathy.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Pain centered in the buttock, worse with sitting or climbing stairs",
+          "No back pain",
+          "Often after prolonged sitting or a fall on the buttock"
+        ],
+        "exam": [
+          "Tenderness over the piriformis and greater sciatic notch",
+          "Pain reproduced by internal rotation and adduction of the flexed hip (FAIR test)",
+          "Normal neurologic exam including reflexes and dermatomal sensation",
+          "Straight leg raise may be positive but no dermatomal deficit"
+        ],
+        "imaging": [
+          "MRI of the lumbar spine is normal",
+          "MRI of the pelvis may show piriformis enlargement or sciatic nerve signal change"
+        ]
+      }
+    },
+    {
+      "name": "Herpes zoster (shingles)",
+      "slug": "herpes-zoster",
+      "why_considered": "Reactivation of varicella-zoster virus in a lumbar dermatome causes burning, shooting pain in a radicular pattern.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Burning or lancinating pain preceding a rash by days",
+          "Pain confined to a single dermatome",
+          "No relation to activity or position",
+          "May have had chickenpox or be immunocompromised"
+        ],
+        "exam": [
+          "Vesicular rash in a dermatomal distribution",
+          "Allodynia and hyperesthesia in the affected dermatome",
+          "No weakness or reflex changes unless motor involvement"
+        ],
+        "labs": [
+          "Varicella-zoster virus PCR from vesicle fluid if diagnosis is uncertain"
+        ]
+      }
+    },
+    {
+      "name": "Diabetic peripheral neuropathy",
+      "slug": "diabetic-peripheral-neuropathy",
+      "why_considered": "Diabetes can cause burning, tingling and numbness in the legs that may be mistaken for radicular pain.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Long-standing diabetes",
+          "Symptoms begin in the toes and feet and ascend symmetrically",
+          "No back pain",
+          "No positional or activity-related pattern"
+        ],
+        "exam": [
+          "Stocking-distribution sensory loss",
+          "Reduced vibration and pinprick sensation in the feet",
+          "Absent ankle reflexes bilaterally",
+          "Normal straight leg raise"
+        ],
+        "labs": [
+          "Elevated HbA1c",
+          "Electromyography and nerve conduction studies showing a symmetric, length-dependent sensorimotor polyneuropathy"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Intermittent shooting leg pain with no or minimal functional limitation; normal strength, reflexes and sensation; able to work and perform activities of daily living.",
+      "moderate": "Constant or frequent leg pain limiting walking and sitting tolerance; mild dermatomal sensory loss or subjective weakness; positive straight leg raise; requires regular analgesics.",
+      "severe": "Disabling pain with marked antalgic posture; objective weakness in a myotome, reduced reflex, or significant functional impairment; unable to work or walk more than a short distance.",
+      "critical": "Cauda equina syndrome or rapidly progressive motor deficit: saddle anesthesia, urinary retention or incontinence, fecal incontinence, or bilateral severe leg weakness requiring emergency decompression."
+    },
+    "red_flags": [
+      {
+        "finding": "Saddle anesthesia or numbness in the groin and inner thighs",
+        "meaning": "Suggests cauda equina syndrome; requires emergency MRI and surgical consultation"
+      },
+      {
+        "finding": "Urinary retention, overflow incontinence or loss of bowel control",
+        "meaning": "Cauda equina syndrome until proven otherwise; emergency evaluation"
+      },
+      {
+        "finding": "Rapidly progressive or severe bilateral leg weakness",
+        "meaning": "Significant nerve root or cord compression; urgent imaging and neurosurgical referral"
+      },
+      {
+        "finding": "Fever, chills or night sweats with back pain",
+        "meaning": "Possible spinal infection such as discitis, osteomyelitis or epidural abscess"
+      },
+      {
+        "finding": "History of cancer with new back and leg pain, or pain worse at rest and at night",
+        "meaning": "Possible metastatic spinal disease or pathologic fracture"
+      },
+      {
+        "finding": "Significant trauma or minor trauma in an osteoporotic patient",
+        "meaning": "Possible vertebral fracture causing nerve root compression"
+      },
+      {
+        "finding": "Unexplained weight loss or constitutional symptoms",
+        "meaning": "Concern for malignancy or systemic infection"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Persistent radicular pain and functional limitation",
+        "timing": "any",
+        "seriousness": "minor",
+        "frequency": "common",
+        "clues": [
+          "Pain lasting beyond 6 weeks",
+          "Difficulty sitting or walking",
+          "Ongoing need for analgesics"
+        ]
+      },
+      {
+        "name": "Motor weakness and foot drop",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Weakness of ankle dorsiflexion or great toe extension",
+          "Tripping or slapping gait",
+          "L5 radiculopathy"
+        ]
+      },
+      {
+        "name": "Cauda equina syndrome",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Saddle anesthesia",
+          "Urinary retention or incontinence",
+          "Bilateral leg weakness",
+          "Large central disc herniation on MRI"
+        ]
+      },
+      {
+        "name": "Chronic pain syndrome and deconditioning",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Pain persisting beyond 3 months",
+          "Reduced activity and muscle atrophy",
+          "Sleep disturbance and depressed mood"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "older_adults",
+        "differences": "More likely due to lumbar spinal stenosis than a disc herniation; symptoms are often bilateral, worse with walking and standing, and relieved by sitting or bending forward. Osteoporosis increases the risk of vertebral fracture, and imaging should include assessment for fracture and malignancy."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Leg pain may arise from pelvic girdle relaxation or the gravid uterus pressing on the sciatic nerve; symptoms are often bilateral and fluctuate with position. MRI without contrast can be used when needed, and management avoids medications that are unsafe in pregnancy."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Underlying diabetic peripheral neuropathy can cause burning or numbness in the feet that is not radicular; symptoms may be bilateral and length-dependent. Glycemic control and foot care are important, and electromyography helps distinguish the two."
+      },
+      {
+        "population": "obesity",
+        "differences": "Increased mechanical load on the lumbar spine can cause more diffuse low back pain with less clear radicular features; exam may be limited by body habitus. Weight reduction is part of long-term management."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "Where does the pain go, and how far down the leg does it reach?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Pain radiating from the lower back or buttock down the posterior or lateral thigh, often past the knee to the calf, foot or toes, usually one side only"
+      },
+      {
+        "question": "What does the pain feel like?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Sharp, shooting, burning or electric shock-like quality rather than a dull ache"
+      },
+      {
+        "question": "What makes the pain worse or better?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Worse with sitting, bending, lifting, coughing or straining; relieved by lying down or changing position"
+      },
+      {
+        "question": "When and how did it start?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Gradual onset over days to weeks, or sudden after lifting or bending; duration helps decide on imaging"
+      },
+      {
+        "question": "Do you have numbness, tingling or weakness in the leg or foot?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Numbness or tingling in a dermatomal pattern, or weakness such as tripping or foot drop"
+      },
+      {
+        "question": "Have you had any trouble controlling your bladder or bowels, or numbness in the groin or inner thighs?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Urinary retention or incontinence, fecal incontinence, or saddle anesthesia suggesting cauda equina syndrome"
+      },
+      {
+        "question": "Have you had any fever, chills, night sweats or unexplained weight loss?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Constitutional symptoms raising concern for spinal infection or malignancy"
+      },
+      {
+        "question": "Have you ever been diagnosed with cancer?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "History of cancer, which raises concern for metastatic spinal disease"
+      },
+      {
+        "question": "Was there any recent trauma or fall?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Significant trauma or minor trauma in an osteoporotic patient suggesting vertebral fracture"
+      },
+      {
+        "question": "What do you do for work, and does it involve heavy lifting or long periods of sitting or driving?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Occupational risk factors such as heavy lifting, repetitive bending or prolonged sitting"
+      },
+      {
+        "question": "Does the pain in your leg come on after walking a certain distance and go away when you stop and stand still?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Predictable exertional pain relieved by standing still, suggesting vascular claudication rather than radiculopathy"
+      },
+      {
+        "question": "Is the pain worse at rest or at night, and is it relieved by sitting?",
+        "category": "red_flag",
+        "importance": "important",
+        "looking_for": "Pain worse at rest or at night raises concern for infection or malignancy"
+      }
+    ],
+    "accepted_names": [
+      "Sciatica",
+      "Lumbar radiculopathy",
+      "Lumbosacral radiculopathy",
+      "Lumbar nerve root compression",
+      "Sciatic nerve pain"
+    ],
+    "reasoning_points": [
+      "Pain radiates from the lower back or buttock down the posterior or lateral leg in a dermatomal pattern, usually unilateral",
+      "Sharp, shooting or burning quality worsened by sitting, bending, lifting, coughing or straining and relieved by lying down",
+      "Associated numbness, tingling or weakness in the leg or foot",
+      "Straight leg raise reproduces radiating leg pain, and dermatomal sensory loss, weakness or a reduced reflex supports nerve root involvement",
+      "Red flags for cauda equina syndrome, infection, malignancy or fracture are absent",
+      "Vascular claudication, hip arthritis, piriformis syndrome and diabetic peripheral neuropathy are considered and excluded",
+      "Imaging is reserved for red flags, progressive deficits or symptoms persisting beyond 4 to 6 weeks of conservative care"
+    ],
+    "difficulty": {
+      "easy": [
+        "Working-age adult with classic unilateral shooting pain from the back down the leg past the knee",
+        "Pain worse with sitting, coughing or straining and relieved by lying down",
+        "Positive straight leg raise reproducing the radiating pain",
+        "Dermatomal sensory loss or a reduced reflex matching the affected nerve root"
+      ],
+      "medium": [
+        "Older adult with bilateral leg pain worse with walking and standing, relieved by sitting or bending forward, suggesting spinal stenosis",
+        "Pain radiating to the groin or anterior thigh rather than below the knee, suggesting hip pathology",
+        "Buttock-centered pain with normal neurologic exam, suggesting piriformis syndrome",
+        "Long-standing diabetes with symmetric burning feet, suggesting diabetic peripheral neuropathy"
+      ],
+      "hard": [
+        "Older adult with mild back and leg pain and a normal neurologic exam",
+        "Pregnant patient with bilateral fluctuating leg pain from pelvic girdle relaxation or the gravid uterus",
+        "Patient with exertional calf cramping and diminished pedal pulses, suggesting vascular claudication",
+        "Patient presenting with saddle anesthesia, urinary retention or bilateral leg weakness from cauda equina syndrome",
+        "Patient with fever, weight loss or cancer history and pain worse at rest, suggesting infection or malignancy"
+      ]
+    }
+  }
+}

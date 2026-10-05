@@ -1,0 +1,1597 @@
+{
+  "schema_version": "0.2",
+  "slug": "vaginal-bleeding",
+  "triage": {
+    "name": "Vaginal Bleeding",
+    "case_suitable": true,
+    "reason": "Common symptom presentation with broad differential (pregnancy, fibroids, malignancy, anovulatory bleeding) that requires structured history, exam and testing.",
+    "kind": "symptom",
+    "category": "gynecologic bleeding",
+    "organ_systems": [
+      "reproductive"
+    ],
+    "primary_clerkship": "obgyn",
+    "secondary_clerkships": [
+      "emergency",
+      "familyMedicine",
+      "internalMedicine"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "clinic",
+      "emergency",
+      "inpatient"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:20:50Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:21:06Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:21:14Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:21:25Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:21:34Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:21:41Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "differential ectopic-pregnancy: no profile yet",
+        "differential endometrial-cancer: no profile yet",
+        "differential cervical-cancer: no profile yet",
+        "differential endometrial-polyps: no profile yet",
+        "differential anovulatory-uterine-bleeding: no profile yet",
+        "differential von-willebrand-disease: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 15,
+      "typical_max": 75,
+      "peak": "reproductive years and perimenopause",
+      "possible_min": 2,
+      "possible_max": 100
+    },
+    "sex": "female_only",
+    "demographics": [
+      "Affects women across the lifespan; premenopausal women most often present with heavy, prolonged or intermenstrual bleeding, while postmenopausal women present with any bleeding after menopause",
+      "More common in the perimenopausal years as cycles become anovulatory",
+      "Obesity, nulliparity and chronic anovulation are associated with endometrial pathology"
+    ],
+    "risk_factors": [
+      {
+        "text": "Perimenopause or postmenopause",
+        "strength": "strong"
+      },
+      {
+        "text": "Obesity",
+        "strength": "strong"
+      },
+      {
+        "text": "Polycystic ovary syndrome or chronic anovulation",
+        "strength": "strong"
+      },
+      {
+        "text": "Uterine fibroids or endometrial polyps",
+        "strength": "moderate"
+      },
+      {
+        "text": "Use of hormonal contraception or hormone therapy",
+        "strength": "moderate"
+      },
+      {
+        "text": "Thyroid disease",
+        "strength": "moderate"
+      },
+      {
+        "text": "Coagulopathy or bleeding disorder",
+        "strength": "moderate"
+      },
+      {
+        "text": "Tamoxifen use",
+        "strength": "moderate"
+      },
+      {
+        "text": "Prior pelvic radiation",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Obesity",
+      "Polycystic ovary syndrome",
+      "Hypothyroidism or hyperthyroidism",
+      "Type 2 diabetes mellitus",
+      "Von Willebrand disease or other bleeding disorder",
+      "Chronic liver disease",
+      "Chronic kidney disease"
+    ],
+    "family_history": [
+      "Uterine fibroids",
+      "Endometrial or ovarian cancer",
+      "Bleeding disorders"
+    ],
+    "social_history": [
+      "Tobacco use",
+      "Alcohol use"
+    ],
+    "exposures": [
+      "Hormonal contraception",
+      "Menopausal hormone therapy",
+      "Tamoxifen"
+    ],
+    "risk_medications": [
+      "warfarin",
+      "apixaban",
+      "rivaroxaban",
+      "aspirin",
+      "clopidogrel",
+      "tamoxifen",
+      "medroxyprogesterone",
+      "ethinyl estradiol",
+      "levonorgestrel"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I'm bleeding between my periods",
+        "frequency": "common"
+      },
+      {
+        "text": "My periods have gotten much heavier",
+        "frequency": "common"
+      },
+      {
+        "text": "I'm bleeding again after menopause",
+        "frequency": "common"
+      },
+      {
+        "text": "My bleeding won't stop",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Variable; may be gradual over several cycles or sudden, depending on the cause",
+      "duration": "From a single episode to months of abnormal bleeding",
+      "progression": "Often persistent or recurrent; may worsen over time with structural causes such as fibroids or polyps, or fluctuate with hormonal causes",
+      "location": "Vaginal bleeding; pelvic cramping or pressure may accompany it",
+      "radiation": "Pelvic pain may radiate to the lower back or thighs",
+      "quality": "Bleeding may be light spotting, heavy flow with clots, or continuous",
+      "severity": "Ranges from spotting to heavy bleeding causing anemia, dizziness or fatigue",
+      "timing": "May occur between periods, after intercourse, or after menopause; heavy periods may last longer than 7 days",
+      "aggravating": [
+        "Physical activity",
+        "Intercourse"
+      ],
+      "relieving": [
+        "Rest",
+        "Hormonal treatment"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Pelvic pain or cramping",
+          "frequency": "common"
+        },
+        {
+          "text": "Passing blood clots",
+          "frequency": "common"
+        },
+        {
+          "text": "Fatigue or lightheadedness from anemia",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Feeling of pelvic pressure or fullness",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Pain during intercourse",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Hot flashes or night sweats if perimenopausal",
+          "frequency": "sometimes"
+        }
+      ],
+      "pertinent_negatives": [
+        "Fever",
+        "Severe one-sided pelvic pain",
+        "Positive pregnancy test",
+        "Unintentional weight loss",
+        "Bleeding from other sites such as gums or easy bruising",
+        "Recent dilation and curettage or uterine procedure"
+      ]
+    },
+    "ros": [
+      {
+        "system": "reproductive",
+        "positives": [
+          {
+            "text": "Abnormal vaginal bleeding",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Pelvic pain or cramping",
+            "frequency": "common"
+          },
+          {
+            "text": "Passing clots",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Vaginal discharge with odor",
+          "Genital sores",
+          "Missed period"
+        ],
+        "argues_against": [
+          "Pelvic inflammatory disease",
+          "Ectopic pregnancy"
+        ]
+      },
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fatigue",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Dizziness",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Fever",
+          "Unintentional weight loss",
+          "Night sweats"
+        ],
+        "argues_against": [
+          "Malignancy",
+          "Systemic infection"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [],
+        "negatives": [
+          "Blood in stool",
+          "Black stools",
+          "Vomiting blood"
+        ],
+        "argues_against": [
+          "Gastrointestinal bleeding"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [],
+        "negatives": [
+          "Dysuria",
+          "Hematuria",
+          "Flank pain"
+        ],
+        "argues_against": [
+          "Urinary tract infection",
+          "Kidney stones"
+        ]
+      },
+      {
+        "system": "hematologic",
+        "positives": [],
+        "negatives": [
+          "Easy bruising",
+          "Bleeding gums",
+          "Prolonged bleeding from minor cuts"
+        ],
+        "argues_against": [
+          "Coagulopathy"
+        ]
+      },
+      {
+        "system": "endocrine",
+        "positives": [
+          {
+            "text": "Hot flashes",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Heat or cold intolerance",
+          "Unexplained weight change"
+        ],
+        "argues_against": [
+          "Thyroid dysfunction"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Bleeding before puberty is abnormal and may indicate precocious puberty, foreign body, trauma or infection; the child may not describe bleeding and it is noticed on underwear or toilet paper.",
+        "missing_classic_features": [
+          "Cyclical bleeding pattern",
+          "Pelvic pain description"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "Postmenopausal bleeding is often painless and may be minimal; malignancy must be excluded even with a single episode.",
+        "missing_classic_features": [
+          "Cyclical pattern",
+          "Pelvic cramping"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Bleeding in pregnancy may signal miscarriage, ectopic pregnancy, placenta previa or abruption; it requires urgent evaluation and the presentation may include abdominal pain, passage of tissue or hemodynamic instability.",
+        "missing_classic_features": [
+          "Normal menstrual history",
+          "Absence of pregnancy-related symptoms"
+        ]
+      },
+      {
+        "population": "obesity",
+        "how_it_differs": "Chronic anovulation and excess estrogen increase risk of endometrial hyperplasia and cancer; bleeding may be chronic and heavy without cyclical pattern.",
+        "missing_classic_features": [
+          "Regular cycles"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Comfortable, well-appearing, no distress",
+      "moderate": "Mildly pale, fatigued but not distressed",
+      "severe": "Pale, tachycardic, lightheaded on standing, visibly fatigued",
+      "critical": "Ill-appearing, pale and diaphoretic, lethargic or confused, may be hypotensive"
+    },
+    "findings": [
+      {
+        "id": "pallor-conjunctival",
+        "region": "heent",
+        "maneuver": "Inspect the conjunctivae and oral mucosa",
+        "finding": "Conjunctival or mucosal pallor suggesting anemia from blood loss",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "tachycardia",
+        "region": "cardiac",
+        "maneuver": "Palpate the radial pulse or auscultate the heart rate",
+        "finding": "Tachycardia at rest",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "orthostatic-vitals",
+        "region": "general",
+        "maneuver": "Measure blood pressure and pulse supine and after standing",
+        "finding": "Orthostatic drop in blood pressure or rise in pulse, indicating significant volume loss",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "abdominal-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate all four quadrants of the abdomen",
+        "finding": "Suprapubic or diffuse lower abdominal tenderness",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "palpable-pelvic-mass",
+        "region": "abdomen",
+        "maneuver": "Palpate the lower abdomen and suprapubic region",
+        "finding": "Palpable suprapubic mass, suggesting an enlarged uterus or pelvic mass",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "speculum-blood",
+        "region": "pelvic",
+        "maneuver": "Perform a speculum examination and inspect the vaginal vault and cervix",
+        "finding": "Blood in the vaginal vault or visible bleeding from the cervical os",
+        "frequency": "almost_always",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "cervical-lesion",
+        "region": "pelvic",
+        "maneuver": "Inspect the cervix with a speculum",
+        "finding": "Visible cervical lesion, polyp, erosion or friable mass",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "uterine-enlargement",
+        "region": "pelvic",
+        "maneuver": "Perform a bimanual examination to assess uterine size, shape and mobility",
+        "finding": "Enlarged, irregular or boggy uterus suggesting fibroids or other uterine pathology",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "adnexal-mass",
+        "region": "pelvic",
+        "maneuver": "Palpate the adnexa bimanually",
+        "finding": "Adnexal mass or tenderness",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "cervical-motion-tenderness",
+        "region": "pelvic",
+        "maneuver": "Move the cervix gently during bimanual examination",
+        "finding": "Cervical motion tenderness",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "no-cervical-motion-tenderness",
+        "region": "pelvic",
+        "maneuver": "Move the cervix gently during bimanual examination",
+        "finding": "No cervical motion tenderness",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-adnexal-mass",
+        "region": "pelvic",
+        "maneuver": "Palpate the adnexa bimanually",
+        "finding": "No adnexal mass or tenderness",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-rectal-exam",
+        "region": "rectal",
+        "maneuver": "Perform a digital rectal examination when gastrointestinal bleeding is a consideration",
+        "finding": "No gross blood on the examining glove, normal rectal tone",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-petechiae-bruising",
+        "region": "skin",
+        "maneuver": "Inspect the skin for petechiae, ecchymoses or other bleeding signs",
+        "finding": "No petechiae or unexplained bruising",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-thyroid-enlargement",
+        "region": "neck",
+        "maneuver": "Palpate the thyroid gland",
+        "finding": "No goiter or thyroid nodule",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "moderate": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "severe": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "critical": {
+        "min": 97.8,
+        "max": 99.1
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 100
+      },
+      "moderate": {
+        "min": 90,
+        "max": 110
+      },
+      "severe": {
+        "min": 100,
+        "max": 130
+      },
+      "critical": {
+        "min": 120,
+        "max": 150
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 12,
+        "max": 20
+      },
+      "moderate": {
+        "min": 12,
+        "max": 20
+      },
+      "severe": {
+        "min": 16,
+        "max": 24
+      },
+      "critical": {
+        "min": 20,
+        "max": 30
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 100,
+        "max": 130
+      },
+      "moderate": {
+        "min": 90,
+        "max": 120
+      },
+      "severe": {
+        "min": 80,
+        "max": 100
+      },
+      "critical": {
+        "min": 60,
+        "max": 90
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 60,
+        "max": 80
+      },
+      "moderate": {
+        "min": 55,
+        "max": 75
+      },
+      "severe": {
+        "min": 50,
+        "max": 70
+      },
+      "critical": {
+        "min": 40,
+        "max": 60
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 95,
+        "max": 100
+      },
+      "moderate": {
+        "min": 95,
+        "max": 100
+      },
+      "severe": {
+        "min": 92,
+        "max": 98
+      },
+      "critical": {
+        "min": 88,
+        "max": 95
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "hcg",
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Must be checked in any woman of reproductive age before imaging or procedures; a positive result redirects the workup toward pregnancy-related causes such as ectopic pregnancy, miscarriage, placenta previa or abruption."
+    },
+    {
+      "test_id": "hgb",
+      "ranges": {
+        "mild": {
+          "min": 11.0,
+          "max": 11.9
+        },
+        "moderate": {
+          "min": 9.0,
+          "max": 11.0
+        },
+        "severe": {
+          "min": 6.5,
+          "max": 9.0
+        },
+        "critical": {
+          "min": 4.0,
+          "max": 6.5
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "Anemia reflects the severity and chronicity of blood loss; a normal hemoglobin does not exclude significant acute bleeding early on."
+    },
+    {
+      "test_id": "hct",
+      "ranges": {
+        "mild": {
+          "min": 33,
+          "max": 36
+        },
+        "moderate": {
+          "min": 27,
+          "max": 33
+        },
+        "severe": {
+          "min": 20,
+          "max": 27
+        },
+        "critical": {
+          "min": 12,
+          "max": 20
+        }
+      },
+      "frequency": "common",
+      "importance": "important"
+    },
+    {
+      "test_id": "plt",
+      "ranges": {
+        "moderate": {
+          "min": 100,
+          "max": 149
+        },
+        "severe": {
+          "min": 50,
+          "max": 100
+        },
+        "critical": {
+          "min": 10,
+          "max": 50
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Thrombocytopenia suggests a bleeding disorder or systemic illness rather than a purely structural cause."
+    },
+    {
+      "test_id": "mcv",
+      "ranges": {
+        "mild": {
+          "min": 70,
+          "max": 80
+        },
+        "moderate": {
+          "min": 65,
+          "max": 80
+        },
+        "severe": {
+          "min": 60,
+          "max": 80
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Low MCV suggests iron deficiency from chronic blood loss."
+    },
+    {
+      "test_id": "ferritin",
+      "ranges": {
+        "mild": {
+          "min": 8,
+          "max": 11
+        },
+        "moderate": {
+          "min": 5,
+          "max": 11
+        },
+        "severe": {
+          "min": 1,
+          "max": 11
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Low ferritin confirms iron deficiency from chronic blood loss; ferritin is an acute phase reactant and may be falsely normal in inflammation."
+    },
+    {
+      "test_id": "tsh",
+      "ranges": {
+        "mild": {
+          "min": 4.0,
+          "max": 10.0
+        },
+        "moderate": {
+          "min": 0.01,
+          "max": 0.4
+        },
+        "severe": {
+          "min": 10.0,
+          "max": 50.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Both hypothyroidism and hyperthyroidism can cause abnormal uterine bleeding."
+    },
+    {
+      "test_id": "pt",
+      "ranges": {
+        "moderate": {
+          "min": 13.5,
+          "max": 18.0
+        },
+        "severe": {
+          "min": 18.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Prolonged in coagulopathy, liver disease or with warfarin use."
+    },
+    {
+      "test_id": "inr",
+      "ranges": {
+        "moderate": {
+          "min": 1.1,
+          "max": 2.0
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 4.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "aptt",
+      "ranges": {
+        "moderate": {
+          "min": 35,
+          "max": 50
+        },
+        "severe": {
+          "min": 50,
+          "max": 90
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Prolonged in von Willebrand disease, factor deficiencies or heparin use."
+    },
+    {
+      "test_id": "fibrinogen",
+      "ranges": {
+        "moderate": {
+          "min": 150,
+          "max": 200
+        },
+        "severe": {
+          "min": 50,
+          "max": 150
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Low in disseminated intravascular coagulation or severe hemorrhage."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "mild": {
+          "min": 1.1,
+          "max": 1.4
+        },
+        "moderate": {
+          "min": 1.4,
+          "max": 2.0
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 4.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Elevated from prerenal azotemia due to volume loss."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "mild": {
+          "min": 20,
+          "max": 30
+        },
+        "moderate": {
+          "min": 30,
+          "max": 50
+        },
+        "severe": {
+          "min": 50,
+          "max": 80
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Rises with hypovolemia from heavy bleeding."
+    },
+    {
+      "test_id": "ua_blood",
+      "qualitative": {
+        "moderate": "1+",
+        "severe": "2+"
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Blood in the urine may reflect contamination from vaginal bleeding or a separate urinary source."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rate",
+        "finding": "Sinus tachycardia from anemia, hypovolemia or pain",
+        "frequency": "common",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "other",
+        "finding": "Diffuse ST depression or T-wave flattening from severe anemia and demand ischemia",
+        "frequency": "rare",
+        "min_severity": "severe"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Transvaginal ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "First-line for most premenopausal and postmenopausal women with abnormal uterine bleeding",
+      "findings": [
+        {
+          "text": "Endometrial thickness measured; thin and uniform in normal postmenopausal women",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Uterine fibroids (well-defined hypoechoic myometrial masses)",
+          "frequency": "common"
+        },
+        {
+          "text": "Endometrial polyp (focal echogenic endometrial lesion)",
+          "frequency": "common"
+        },
+        {
+          "text": "Thickened or irregular endometrium suggesting hyperplasia or malignancy",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Ovarian cyst or adnexal mass",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Normal study with no structural cause identified",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "Saline infusion sonohysterography",
+      "modality": "ultrasound",
+      "preferred_when": "When transvaginal ultrasound is nondiagnostic and focal intrauterine lesions are suspected",
+      "findings": [
+        {
+          "text": "Focal intracavitary filling defect consistent with endometrial polyp",
+          "frequency": "common"
+        },
+        {
+          "text": "Submucosal fibroid distorting the endometrial cavity",
+          "frequency": "common"
+        },
+        {
+          "text": "Smooth endometrial lining without focal lesion",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Endometrial biopsy",
+      "modality": "other",
+      "preferred_when": "Postmenopausal bleeding, or premenopausal bleeding with risk factors for endometrial cancer",
+      "findings": [
+        {
+          "text": "Proliferative or secretory endometrium consistent with benign hormonal bleeding",
+          "frequency": "common"
+        },
+        {
+          "text": "Endometrial hyperplasia without atypia",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Endometrial hyperplasia with atypia or endometrial carcinoma",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Insufficient tissue for diagnosis",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Hysteroscopy",
+      "modality": "endoscopy",
+      "preferred_when": "Direct visualization and biopsy of focal intrauterine lesions",
+      "findings": [
+        {
+          "text": "Endometrial polyp seen and resected",
+          "frequency": "common"
+        },
+        {
+          "text": "Submucosal fibroid visualized",
+          "frequency": "common"
+        },
+        {
+          "text": "Suspicious endometrial lesion biopsied",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Atrophic endometrium",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "CT abdomen and pelvis with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Not first-line for vaginal bleeding; used when a pelvic mass, malignancy or extrauterine source is suspected",
+      "findings": [
+        {
+          "text": "Uterine enlargement or fibroids",
+          "frequency": "common"
+        },
+        {
+          "text": "Pelvic mass or lymphadenopathy suggesting malignancy",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "No acute abnormality",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "Pelvic MRI without and with contrast",
+      "modality": "mri",
+      "preferred_when": "Problem solving for fibroid mapping, adenomyosis or suspected malignancy",
+      "findings": [
+        {
+          "text": "Leiomyomas characterized by location and size",
+          "frequency": "common"
+        },
+        {
+          "text": "Adenomyosis with junctional zone thickening",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Endometrial or cervical mass",
+          "frequency": "sometimes"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy and pregnancy-related bleeding before any imaging or procedure"
+      },
+      {
+        "test": "cbc",
+        "why": "Assesses severity of blood loss and anemia"
+      },
+      {
+        "test": "bmp",
+        "why": "Evaluates volume status and renal function"
+      },
+      {
+        "test": "tsh",
+        "why": "Thyroid dysfunction is a reversible cause of abnormal uterine bleeding"
+      },
+      {
+        "test": "pt",
+        "why": "Screens for coagulopathy, especially with heavy bleeding since menarche",
+        "only_if": "bleeding disorder is suspected"
+      },
+      {
+        "test": "aptt",
+        "why": "Screens for coagulopathy, especially with heavy bleeding since menarche",
+        "only_if": "bleeding disorder is suspected"
+      },
+      {
+        "test": "ferritin",
+        "why": "Confirms iron deficiency from chronic blood loss",
+        "only_if": "anemia or chronic heavy bleeding is present"
+      },
+      {
+        "test": "Transvaginal ultrasound",
+        "why": "First-line imaging to identify fibroids, polyps, endometrial thickening or adnexal masses"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Endometrial biopsy",
+        "why": "Confirms or excludes endometrial hyperplasia or carcinoma",
+        "only_if": "postmenopausal bleeding, or premenopausal bleeding with risk factors for endometrial cancer"
+      },
+      {
+        "test": "Hysteroscopy",
+        "why": "Directly visualizes and biopsies focal intrauterine lesions",
+        "only_if": "focal lesion is seen on ultrasound or biopsy is nondiagnostic"
+      },
+      {
+        "test": "Saline infusion sonohysterography",
+        "why": "Characterizes focal intracavitary lesions",
+        "only_if": "transvaginal ultrasound is nondiagnostic and a polyp or submucosal fibroid is suspected"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "crp",
+        "why": "Supports an inflammatory or infectious process when pelvic infection is considered"
+      },
+      {
+        "test": "esr",
+        "why": "Nonspecific marker of inflammation or malignancy"
+      },
+      {
+        "test": "Pelvic MRI without and with contrast",
+        "why": "Problem solving for fibroid mapping, adenomyosis or suspected malignancy",
+        "only_if": "ultrasound is inconclusive or malignancy is suspected"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Not first-line for vaginal bleeding; exposes the patient to radiation and is less sensitive for intrauterine pathology"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in the evaluation of vaginal bleeding"
+      },
+      {
+        "test": "lipase",
+        "why": "Not needed unless abdominal pain suggests pancreatitis"
+      },
+      {
+        "test": "ua",
+        "why": "Not routinely needed; may be contaminated by vaginal blood"
+      }
+    ],
+    "decision_points": [
+      "Pregnancy test before any imaging or procedure in a woman of reproductive age",
+      "Postmenopausal bleeding requires endometrial sampling to exclude cancer even if ultrasound is normal",
+      "Hemodynamically unstable patients need resuscitation and urgent gynecology involvement before imaging",
+      "Transvaginal ultrasound is first-line; reserve CT for suspected extrauterine or malignant disease"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Ectopic pregnancy",
+      "slug": "ectopic-pregnancy",
+      "why_considered": "Vaginal bleeding in a woman of reproductive age, especially with pelvic pain or a missed period",
+      "must_not_miss": true,
+      "trigger": "Any woman of reproductive age with vaginal bleeding and pelvic pain, or a positive pregnancy test",
+      "discriminators": {
+        "history": [
+          "Missed period",
+          "Unilateral pelvic pain",
+          "Shoulder tip pain",
+          "History of pelvic inflammatory disease, prior ectopic or tubal surgery"
+        ],
+        "exam": [
+          "Adnexal tenderness or mass",
+          "Peritoneal signs if ruptured",
+          "Orthostatic hypotension or tachycardia"
+        ],
+        "labs": [
+          "Positive hCG",
+          "Suboptimal rise in serial hCG",
+          "Anemia from blood loss"
+        ],
+        "imaging": [
+          "No intrauterine pregnancy on transvaginal ultrasound",
+          "Adnexal mass or free fluid in the pelvis"
+        ]
+      }
+    },
+    {
+      "name": "Endometrial cancer",
+      "slug": "endometrial-cancer",
+      "why_considered": "Postmenopausal bleeding or persistent intermenstrual bleeding, especially with obesity or chronic anovulation",
+      "must_not_miss": true,
+      "trigger": "Any bleeding after menopause, or persistent abnormal bleeding in a woman with risk factors",
+      "discriminators": {
+        "history": [
+          "Postmenopausal bleeding",
+          "Obesity",
+          "Chronic anovulation or polycystic ovary syndrome",
+          "Tamoxifen use",
+          "Family history of endometrial or colon cancer"
+        ],
+        "exam": [
+          "Often normal pelvic exam",
+          "Possible enlarged uterus or visible cervical lesion"
+        ],
+        "labs": [
+          "Anemia from chronic blood loss"
+        ],
+        "imaging": [
+          "Thickened or irregular endometrium on transvaginal ultrasound",
+          "Endometrial biopsy showing hyperplasia with atypia or carcinoma"
+        ]
+      }
+    },
+    {
+      "name": "Cervical cancer",
+      "slug": "cervical-cancer",
+      "why_considered": "Postcoital bleeding, intermenstrual bleeding or a friable cervical lesion",
+      "must_not_miss": true,
+      "trigger": "Bleeding after intercourse or a visible cervical lesion on speculum exam",
+      "discriminators": {
+        "history": [
+          "Postcoital bleeding",
+          "Abnormal vaginal discharge",
+          "History of abnormal cervical screening or no recent screening"
+        ],
+        "exam": [
+          "Visible cervical lesion, erosion or friable mass",
+          "Contact bleeding on speculum exam"
+        ],
+        "labs": [
+          "Anemia from chronic blood loss"
+        ],
+        "imaging": [
+          "Cervical mass on pelvic MRI",
+          "Hydronephrosis or pelvic lymphadenopathy if advanced"
+        ]
+      }
+    },
+    {
+      "name": "Uterine fibroids",
+      "slug": "uterine-fibroids",
+      "why_considered": "Heavy or prolonged menstrual bleeding with pelvic pressure or an enlarged uterus",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Heavy, prolonged periods with clots",
+          "Pelvic pressure or fullness",
+          "Urinary frequency from mass effect"
+        ],
+        "exam": [
+          "Enlarged, irregular or boggy uterus",
+          "Palpable suprapubic mass"
+        ],
+        "labs": [
+          "Anemia or low ferritin from chronic blood loss"
+        ],
+        "imaging": [
+          "Well-defined hypoechoic myometrial masses on transvaginal ultrasound",
+          "Leiomyomas characterized on pelvic MRI"
+        ]
+      }
+    },
+    {
+      "name": "Endometrial polyps",
+      "slug": "endometrial-polyps",
+      "why_considered": "Intermenstrual bleeding or postmenopausal spotting with a focal intracavitary lesion",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Intermenstrual spotting",
+          "Postmenopausal bleeding",
+          "Tamoxifen use"
+        ],
+        "exam": [
+          "Often normal pelvic exam",
+          "Possible cervical polyp visible at the os"
+        ],
+        "labs": [
+          "Usually normal"
+        ],
+        "imaging": [
+          "Focal echogenic endometrial lesion on transvaginal ultrasound",
+          "Intracavitary filling defect on saline infusion sonohysterography"
+        ]
+      }
+    },
+    {
+      "name": "Anovulatory uterine bleeding",
+      "slug": "anovulatory-uterine-bleeding",
+      "why_considered": "Irregular, unpredictable bleeding in perimenopause or with polycystic ovary syndrome",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Irregular cycles",
+          "Perimenopause or polycystic ovary syndrome",
+          "No structural symptoms"
+        ],
+        "exam": [
+          "Normal pelvic exam",
+          "Signs of hyperandrogenism if polycystic ovary syndrome"
+        ],
+        "labs": [
+          "Normal hCG",
+          "Thyroid dysfunction may be present",
+          "Endometrial biopsy shows benign proliferative endometrium"
+        ],
+        "imaging": [
+          "Normal transvaginal ultrasound without structural lesion"
+        ]
+      }
+    },
+    {
+      "name": "Coagulopathy or bleeding disorder",
+      "slug": "von-willebrand-disease",
+      "why_considered": "Heavy bleeding since menarche, bleeding from other sites or a family history of bleeding disorders",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Heavy bleeding since menarche",
+          "Easy bruising",
+          "Bleeding gums",
+          "Prolonged bleeding from minor cuts",
+          "Family history of bleeding disorder"
+        ],
+        "exam": [
+          "Petechiae or unexplained bruising",
+          "No structural pelvic abnormality"
+        ],
+        "labs": [
+          "Prolonged aPTT",
+          "Low platelets",
+          "Abnormal von Willebrand factor testing"
+        ],
+        "imaging": [
+          "Normal transvaginal ultrasound"
+        ]
+      }
+    },
+    {
+      "name": "Thyroid dysfunction",
+      "slug": "hypothyroidism",
+      "why_considered": "Abnormal uterine bleeding with systemic symptoms of thyroid disease",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Heat or cold intolerance",
+          "Unexplained weight change",
+          "Fatigue"
+        ],
+        "exam": [
+          "Goiter or thyroid nodule",
+          "Signs of hypothyroidism or hyperthyroidism"
+        ],
+        "labs": [
+          "Abnormal TSH",
+          "Normal hCG",
+          "Normal pelvic imaging"
+        ],
+        "imaging": [
+          "Normal transvaginal ultrasound"
+        ]
+      }
+    },
+    {
+      "name": "Gastrointestinal bleeding",
+      "slug": "gastrointestinal-bleeding",
+      "why_considered": "Bleeding from the lower gastrointestinal tract may be mistaken for vaginal bleeding",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Blood in stool",
+          "Black stools",
+          "Vomiting blood",
+          "Rectal bleeding separate from menses"
+        ],
+        "exam": [
+          "Gross blood on rectal exam",
+          "No blood in the vaginal vault on speculum exam"
+        ],
+        "labs": [
+          "Anemia from blood loss"
+        ],
+        "imaging": [
+          "Colonoscopy or upper endoscopy identifies the source"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Light spotting or slightly heavy periods without anemia or hemodynamic compromise; patient is comfortable and well-appearing",
+      "moderate": "Heavy or prolonged bleeding with mild anemia, fatigue and tachycardia but stable blood pressure",
+      "severe": "Heavy bleeding with significant anemia, orthostatic hypotension, dizziness and resting tachycardia",
+      "critical": "Exsanguinating hemorrhage with hemodynamic instability, altered mental status or shock requiring immediate resuscitation and transfusion"
+    },
+    "red_flags": [
+      {
+        "finding": "Positive pregnancy test",
+        "meaning": "Ectopic pregnancy or pregnancy-related bleeding until proven otherwise; requires urgent evaluation"
+      },
+      {
+        "finding": "Hemodynamic instability, syncope or heart rate over 120",
+        "meaning": "Significant blood loss or ruptured ectopic pregnancy; needs immediate resuscitation and gynecology involvement"
+      },
+      {
+        "finding": "Postmenopausal bleeding",
+        "meaning": "Endometrial cancer must be excluded even with a single episode"
+      },
+      {
+        "finding": "Visible friable cervical lesion or postcoital bleeding",
+        "meaning": "Cervical cancer or other cervical pathology; requires biopsy"
+      },
+      {
+        "finding": "Severe one-sided pelvic pain with bleeding",
+        "meaning": "Ectopic pregnancy or ovarian torsion; surgical emergency"
+      },
+      {
+        "finding": "Bleeding with fever and purulent discharge",
+        "meaning": "Pelvic inflammatory disease or endometritis; requires antibiotics"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Iron deficiency anemia",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Fatigue",
+          "Pallor",
+          "Low ferritin",
+          "Low MCV"
+        ]
+      },
+      {
+        "name": "Hypovolemic shock",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Hypotension",
+          "Tachycardia",
+          "Altered mental status",
+          "Cool extremities"
+        ]
+      },
+      {
+        "name": "Endometrial hyperplasia or carcinoma",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Postmenopausal bleeding",
+          "Chronic anovulation",
+          "Obesity",
+          "Thickened endometrium on ultrasound"
+        ]
+      },
+      {
+        "name": "Infertility or recurrent pregnancy loss",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Chronic anovulation",
+          "Untreated fibroids or polyps distorting the cavity"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Bleeding before puberty is abnormal and may indicate precocious puberty, foreign body, trauma or infection; the child may not describe bleeding and it is noticed on underwear or toilet paper."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Postmenopausal bleeding is often painless and may be minimal; malignancy must be excluded even with a single episode."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Bleeding in pregnancy may signal miscarriage, ectopic pregnancy, placenta previa or abruption; it requires urgent evaluation and the presentation may include abdominal pain, passage of tissue or hemodynamic instability."
+      },
+      {
+        "population": "obesity",
+        "differences": "Chronic anovulation and excess estrogen increase risk of endometrial hyperplasia and cancer; bleeding may be chronic and heavy without cyclical pattern."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "Could you be pregnant? When was your last menstrual period?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Any possibility of pregnancy; a positive or uncertain pregnancy status redirects the workup toward ectopic pregnancy, miscarriage, placenta previa or abruption"
+      },
+      {
+        "question": "When did the bleeding start, and how has it changed since then?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Sudden onset suggests acute bleeding from a structural or pregnancy-related cause; gradual onset over cycles suggests hormonal or structural causes"
+      },
+      {
+        "question": "How heavy is the bleeding — how many pads or tampons per day, and are you passing clots?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Soaking a pad or tampon every hour, large clots or bleeding lasting more than 7 days indicates heavy menstrual bleeding and risk of anemia"
+      },
+      {
+        "question": "Is the bleeding between periods, after intercourse, or after menopause?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Postmenopausal bleeding requires exclusion of endometrial cancer; postcoital bleeding suggests cervical pathology"
+      },
+      {
+        "question": "Have you had any dizziness, lightheadedness, palpitations or fainting?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Symptoms of significant blood loss or anemia requiring urgent resuscitation"
+      },
+      {
+        "question": "Do you have pelvic pain or cramping, and if so, is it one-sided or diffuse?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Severe one-sided pain suggests ectopic pregnancy or ovarian torsion; cramping suggests fibroids or passage of tissue"
+      },
+      {
+        "question": "Have you ever been told you have fibroids, polyps, endometriosis or a bleeding disorder?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Known structural uterine pathology or coagulopathy explaining recurrent bleeding"
+      },
+      {
+        "question": "Are you using any hormonal contraception, hormone therapy or tamoxifen?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Hormonal pills, depot medroxyprogesterone, hormone therapy and tamoxifen are common causes of abnormal bleeding"
+      },
+      {
+        "question": "Are you taking any blood thinners such as warfarin, apixaban, rivaroxaban or aspirin?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Anticoagulation or antiplatelet therapy increases bleeding severity and may be the primary cause"
+      },
+      {
+        "question": "Have you had heavy periods since you first started menstruating, or easy bruising and bleeding gums?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Bleeding since menarche with other bleeding sites suggests von Willebrand disease or another coagulopathy"
+      },
+      {
+        "question": "Is there any chance you have been exposed to a sexually transmitted infection, or have you had abnormal vaginal discharge?",
+        "category": "sexual",
+        "importance": "important",
+        "looking_for": "Purulent discharge or a new partner suggests pelvic inflammatory disease or cervicitis, which can cause bleeding"
+      },
+      {
+        "question": "Has anyone in your family had uterine fibroids, endometrial or ovarian cancer, or a bleeding disorder?",
+        "category": "family",
+        "importance": "optional",
+        "looking_for": "Family history of fibroids, gynecologic cancer or bleeding disorders raises suspicion for those causes"
+      },
+      {
+        "question": "Have you had any unintentional weight loss, night sweats or fevers?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Constitutional symptoms raise concern for malignancy or systemic infection"
+      },
+      {
+        "question": "Have you had any blood in your stool, black stools or rectal bleeding separate from your periods?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Gastrointestinal bleeding can be mistaken for vaginal bleeding and requires a separate workup"
+      },
+      {
+        "question": "Have you ever had a dilation and curettage, uterine procedure or pelvic radiation?",
+        "category": "pmh",
+        "importance": "optional",
+        "looking_for": "Recent uterine instrumentation or prior pelvic radiation can cause bleeding and alter the differential"
+      }
+    ],
+    "accepted_names": [
+      "Vaginal bleeding",
+      "Abnormal uterine bleeding",
+      "Abnormal vaginal bleeding",
+      "Uterine bleeding",
+      "Dysfunctional uterine bleeding",
+      "AUB"
+    ],
+    "reasoning_points": [
+      "Pregnancy status is established first in any woman of reproductive age before imaging or procedures",
+      "The bleeding pattern is characterized by timing (intermenstrual, postcoital, postmenopausal), heaviness and duration",
+      "Hemodynamic stability and severity of blood loss are assessed with vital signs, orthostatics and hemoglobin",
+      "A pelvic examination with speculum inspection localizes the source and identifies cervical or vaginal lesions",
+      "Transvaginal ultrasound is first-line imaging to identify fibroids, polyps, endometrial thickening or adnexal masses",
+      "Postmenopausal bleeding requires endometrial sampling to exclude endometrial cancer even if ultrasound is normal",
+      "Reversible causes such as thyroid dysfunction, coagulopathy and hormonal medication are considered and tested for",
+      "Life-threatening causes such as ectopic pregnancy and exsanguinating hemorrhage are excluded early"
+    ],
+    "difficulty": {
+      "easy": [
+        "Reproductive-age woman with a positive pregnancy test and pelvic pain",
+        "Postmenopausal woman with a single episode of painless bleeding",
+        "Classic heavy periods with an enlarged, irregular uterus suggesting fibroids",
+        "Bleeding with clear hormonal trigger such as starting or missing birth control pills"
+      ],
+      "medium": [
+        "Perimenopausal woman with irregular, unpredictable bleeding and no structural lesion on ultrasound",
+        "Woman with postcoital spotting and a friable cervical lesion",
+        "Young woman with heavy bleeding since menarche and a family history of bleeding",
+        "Bleeding with mild anemia and fatigue but stable vital signs"
+      ],
+      "hard": [
+        "Hemodynamically unstable patient with heavy bleeding requiring resuscitation before imaging",
+        "Older adult with minimal postmenopausal spotting and a normal-appearing ultrasound",
+        "Bleeding attributed to hemorrhoids that is actually from a gynecologic or gastrointestinal source",
+        "Pregnant patient with painless bleeding and a low-lying placenta on ultrasound",
+        "Patient on anticoagulation with bleeding from multiple sites"
+      ]
+    }
+  }
+}

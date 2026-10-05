@@ -6,19 +6,19 @@ import SwiftUI
  * DRAG
  *   live   top card follows the finger, tilts 1° per 20pt
  *   live   "TAKE" stamp (green) fades in dragging right,
- *          "LATER" stamp (amber) fades in dragging left
+ *          "SKIP" stamp (red) fades in dragging left
  *   live   card behind grows toward full size as the top one leaves
  *   cross  selection haptic when the drag passes the commit point
  *
  * RELEASE
  *   past 110pt or a fast flick → card flies off that side (spring)
  *   right  take the patient (opens the case)
- *   left   card leaves, then slots in at the back of the stack
+ *   left   card leaves the deck for good (skipped); the next one rises
  *   short  springs back to centre
  *
- * BUTTONS  (later ⟵ · random · ⟶ take) — Liquid Glass on iOS 26+,
+ * BUTTONS  (skip ⟵ · random · ⟶ take) — Liquid Glass on iOS 26+,
  *          interactive: they flex and shimmer under the finger
- *   later / take   same fly-off as a swipe
+ *   skip / take    same fly-off as a swipe
  *   random         deck riffles (3 quick shuffles, 90ms apart),
  *                  lands on a random patient, then takes it
  *
@@ -48,47 +48,48 @@ private enum RIFFLE {
     static let settle = 0.35                  // s on the chosen card before it's taken
 }
 
-// MARK: - Model
-
-/// A patient waiting on the ward. Placeholder data for the screens-only phase.
-struct IncomingPatient: Identifiable, Equatable {
-    let id: String              // bed, e.g. "B4"
-    let meta: String            // "M · 54 · chest pain"
-    let quote: String
-    let hr: Int
-    let bp: String
-    let spo2: Int
-    let stElevation: Bool
-    let rotation: Clerkship
-    let system: OrganSystem
-    var hasCase: Bool { id == "B4" }
-}
-
-extension Ward {
-    /// Patients on the ward that fit a focus. Drives the counts in the focus pickers.
-    static func count(for focus: StudyFocus) -> Int {
-        incoming.filter { focus.matches(rotation: $0.rotation, system: $0.system) }.count
-    }
-
-    static func count(for selection: FocusSelection) -> Int {
-        incoming.filter { selection.matches(rotation: $0.rotation, system: $0.system) }.count
-    }
-
-    static let incoming: [IncomingPatient] = [
-        IncomingPatient(id: "B4", meta: "M · 54 · chest pain", quote: "My chest has been hurting since this morning.",
-                        hr: 104, bp: "148/92", spo2: 95, stElevation: true, rotation: .internalMedicine, system: .cardiovascular),
-        IncomingPatient(id: "B7", meta: "F · 31 · palpitations", quote: "My heart keeps racing.",
-                        hr: 148, bp: "118/76", spo2: 98, stElevation: false, rotation: .internalMedicine, system: .cardiovascular),
-        IncomingPatient(id: "B9", meta: "M · 67 · dyspnea", quote: "I get breathless on stairs.",
-                        hr: 96, bp: "152/88", spo2: 91, stElevation: false, rotation: .internalMedicine, system: .respiratory),
-        IncomingPatient(id: "R4", meta: "M · 24 · wheeze", quote: "I can't stop wheezing.",
-                        hr: 118, bp: "128/80", spo2: 93, stElevation: false, rotation: .familyMedicine, system: .respiratory),
-        IncomingPatient(id: "A3", meta: "F · 19 · abdominal pain", quote: "The pain moved to my right side.",
-                        hr: 102, bp: "110/70", spo2: 99, stElevation: false, rotation: .surgery, system: .gastrointestinal),
-        IncomingPatient(id: "N2", meta: "F · 45 · headache", quote: "Worst headache of my life.",
-                        hr: 88, bp: "172/98", spo2: 98, stElevation: false, rotation: .neurology, system: .nervous),
-    ]
-}
+// MOCK (disabled): placeholder incoming patients, replaced by the student's generated ward.
+// // MARK: - Model
+//
+// /// A patient waiting on the ward. Placeholder data for the screens-only phase.
+// struct IncomingPatient: Identifiable, Equatable {
+//     let id: String              // bed, e.g. "B4"
+//     let meta: String            // "M · 54 · chest pain"
+//     let quote: String
+//     let hr: Int
+//     let bp: String
+//     let spo2: Int
+//     let stElevation: Bool
+//     let rotation: Clerkship
+//     let system: OrganSystem
+//     var hasCase: Bool { id == "B4" }
+// }
+//
+// extension Ward {
+//     /// Patients on the ward that fit a focus. Drives the counts in the focus pickers.
+//     static func count(for focus: StudyFocus) -> Int {
+//         incoming.filter { focus.matches(rotation: $0.rotation, system: $0.system) }.count
+//     }
+//
+//     static func count(for selection: FocusSelection) -> Int {
+//         incoming.filter { selection.matches(rotation: $0.rotation, system: $0.system) }.count
+//     }
+//
+//     static let incoming: [IncomingPatient] = [
+//         IncomingPatient(id: "B4", meta: "M · 54 · chest pain", quote: "My chest has been hurting since this morning.",
+//                         hr: 104, bp: "148/92", spo2: 95, stElevation: true, rotation: .internalMedicine, system: .cardiovascular),
+//         IncomingPatient(id: "B7", meta: "F · 31 · palpitations", quote: "My heart keeps racing.",
+//                         hr: 148, bp: "118/76", spo2: 98, stElevation: false, rotation: .internalMedicine, system: .cardiovascular),
+//         IncomingPatient(id: "B9", meta: "M · 67 · dyspnea", quote: "I get breathless on stairs.",
+//                         hr: 96, bp: "152/88", spo2: 91, stElevation: false, rotation: .internalMedicine, system: .respiratory),
+//         IncomingPatient(id: "R4", meta: "M · 24 · wheeze", quote: "I can't stop wheezing.",
+//                         hr: 118, bp: "128/80", spo2: 93, stElevation: false, rotation: .familyMedicine, system: .respiratory),
+//         IncomingPatient(id: "A3", meta: "F · 19 · abdominal pain", quote: "The pain moved to my right side.",
+//                         hr: 102, bp: "110/70", spo2: 99, stElevation: false, rotation: .surgery, system: .gastrointestinal),
+//         IncomingPatient(id: "N2", meta: "F · 45 · headache", quote: "Worst headache of my life.",
+//                         hr: 88, bp: "172/98", spo2: 98, stElevation: false, rotation: .neurology, system: .nervous),
+//     ]
+// }
 
 // MARK: - Deck
 
@@ -98,19 +99,23 @@ struct PatientDeck: View {
     /// Home's entrance stage, so the top card's vitals/quote/button still choreograph in.
     var stage: Int
 
-    @State private var queue: [IncomingPatient] = Ward.incoming
-    @State private var ordered = false
+    @State private var queue: [WardPatient] = []
     @AppStorage(StudyFocus.storageKey) private var focusStored = ""
     @State private var drag: CGSize = .zero
     @State private var pastCommit = false
     @State private var busy = false
-    @State private var unavailable: IncomingPatient?
 
     var body: some View {
         VStack(spacing: 14) {
             ZStack {
-                ForEach(Array(queue.prefix(STACK.visible).enumerated()).reversed(), id: \.element.id) { depth, p in
-                    card(p, depth: depth)
+                // The admit card also covers the deck while a patient is being written, so the
+                // shuffle button's "admit a new patient" shows progress even with others waiting.
+                if queue.isEmpty || app.isAdmitting {
+                    AdmitCard(admitting: app.isAdmitting, loading: app.isLoadingWard && app.ward.isEmpty) { admit() }
+                } else {
+                    ForEach(Array(queue.prefix(STACK.visible).enumerated()).reversed(), id: \.element.id) { depth, p in
+                        card(p, depth: depth)
+                    }
                 }
             }
             .padding(.bottom, STACK.depthOffset * CGFloat(STACK.visible - 1))
@@ -118,19 +123,11 @@ struct PatientDeck: View {
             // The row sits fully above the tab bar's fade, so the red and green buttons aren't
             // darkened at the bottom while the smaller shuffle button escapes it.
             controls
-                .accessibilityHint("\(queue.count) waiting. Swipe right to take, left for later.")
-        }
-        .alert("Case in preparation", isPresented: Binding(get: { unavailable != nil }, set: { if !$0 { unavailable = nil } })) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text("Bed \(unavailable?.id ?? "")'s case isn't scripted yet. Try Bed B4.")
+                .accessibilityHint("\(queue.count) waiting. Swipe right to take, left to skip.")
         }
         .sensoryFeedback(.selection, trigger: pastCommit)
-        .onAppear {
-            guard !ordered else { return }
-            ordered = true
-            putFocusFirst()
-        }
+        .onAppear { syncQueue() }
+        .onChange(of: app.ward) { withAnimation(STACK.restack) { syncQueue() } }
         .onChange(of: focusStored) { withAnimation(STACK.restack) { putFocusFirst() } }
         #if DEBUG
         .task {
@@ -145,14 +142,15 @@ struct PatientDeck: View {
 
     // MARK: Card
 
-    private func card(_ p: IncomingPatient, depth: Int) -> some View {
+    private func card(_ p: WardPatient, depth: Int) -> some View {
         let isTop = depth == 0
         // Cards behind grow toward the front as the top one is dragged away.
         let progress = isTop ? 0 : min(1, abs(drag.width) / SWIPE.commit)
         let effectiveDepth = CGFloat(depth) - (depth == 1 ? progress : 0)
         let dx = isTop ? drag.width : 0
 
-        return PatientCard(patient: p, stage: isTop ? stage : 6, revisit: !(app.misses[p.id] ?? []).isEmpty,
+        return PatientCard(patient: p, stage: isTop ? stage : 6, revisit: p.status == .revisit,
+                           opening: app.openingBed == p.id,
                            dragging: isTop && drag != .zero, onTake: { take() })
             .overlay(alignment: .top) { if isTop { stamps } }
             .scaleEffect(1 - effectiveDepth * STACK.depthScale, anchor: .bottom)
@@ -162,19 +160,20 @@ struct PatientDeck: View {
             .allowsHitTesting(isTop)
             .zIndex(Double(STACK.visible - depth))
             .gesture(isTop ? dragGesture : nil)
+            .transition(.asymmetric(insertion: .opacity, removal: .identity))
             .accessibilityHidden(!isTop)
             .accessibilityAction(named: "Take patient") { take() }
-            .accessibilityAction(named: "Send to the end of the list") { later() }
+            .accessibilityAction(named: "Skip patient") { skip() }
     }
 
-    /// TAKE / LATER stamps that fade in with the drag.
+    /// TAKE / SKIP stamps that fade in with the drag.
     private var stamps: some View {
         let right = max(0, min(1, drag.width / SWIPE.commit))
         let left = max(0, min(1, -drag.width / SWIPE.commit))
         return HStack {
             stamp("TAKE", color: Theme.correct, angle: -12).opacity(right)
             Spacer()
-            stamp("LATER", color: Theme.streak, angle: 12).opacity(left)
+            stamp("SKIP", color: Theme.streak, angle: 12).opacity(left)
         }
         .padding(22)
         .padding(.top, 34)
@@ -205,7 +204,7 @@ struct PatientDeck: View {
                 guard !busy, drag != .zero else { return }
                 let w = v.predictedEndTranslation.width
                 if drag.width > SWIPE.commit || w > SWIPE.flick { take() }
-                else if drag.width < -SWIPE.commit || w < -SWIPE.flick { later() }
+                else if drag.width < -SWIPE.commit || w < -SWIPE.flick { skip() }
                 else { withAnimation(SWIPE.snapBack) { drag = .zero } }
                 pastCommit = false
             }
@@ -215,12 +214,12 @@ struct PatientDeck: View {
 
     private var controls: some View {
         HStack(spacing: 28) {
-            roundButton(.clock, label: "Later", tint: Theme.streak, size: 60) { later() }
-            roundButton(.shuffle, label: "Random patient", tint: Theme.shuffle, size: 50) { random() }
+            roundButton(.x, label: "Skip patient", tint: Theme.streak, size: 60) { skip() }
+            roundButton(.shuffle, label: queue.count > 1 ? "Random patient" : "Admit a new patient", tint: Theme.shuffle, size: 50) { random() }
             roundButton(.check, label: "Take patient", tint: Theme.correct, size: 60) { take() }
         }
         .frame(maxWidth: .infinity)
-        .disabled(busy)
+        .disabled(busy || app.isAdmitting)
     }
 
     private func roundButton(_ glyph: IconGlyph, label: String, tint: Color, size: CGFloat, action: @escaping () -> Void) -> some View {
@@ -236,48 +235,63 @@ struct PatientDeck: View {
 
     // MARK: Actions
 
-    /// Right: the top patient is taken. Unscripted beds snap back with a notice.
+    /// Right: the top patient is taken and their case opens.
     private func take() {
         guard !busy, let p = queue.first else { return }
         busy = true
         withAnimation(SWIPE.fly) { drag = CGSize(width: SWIPE.flyDistance, height: 0) }
         Task { @MainActor in
             try? await Task.sleep(for: .seconds(0.3))
-            if p.hasCase {
-                app.startCase()
-                try? await Task.sleep(for: .seconds(0.4))   // card returns behind the case sheet
-            } else {
-                unavailable = p
-            }
+            await app.open(bed: p.id)
+            try? await Task.sleep(for: .seconds(0.4))   // card returns behind the case sheet
             withAnimation(SWIPE.snapBack) { drag = .zero }
             busy = false
         }
+    }
+
+    /// Generates a new patient in the student's focus; it opens when ready.
+    private func admit() {
+        Task { await app.admit(focus: FocusSelection(stored: focusStored)) }
+    }
+
+    /// Waiting patients, focus first, keeping the student's current order for ones already shown.
+    private func syncQueue() {
+        let waiting = app.waiting
+        let kept = queue.compactMap { q in waiting.first { $0.id == q.id } }
+        queue = waiting.filter { w in !kept.contains { $0.id == w.id } } + kept
+        putFocusFirst()
     }
 
     /// Left: the top patient goes to the back of the list.
     /// Matching patients move to the front, in their current order; the rest follow.
     private func putFocusFirst() {
         let focus = FocusSelection(stored: focusStored)
-        let matching = queue.filter { focus.matches(rotation: $0.rotation, system: $0.system) }
-        queue = matching + queue.filter { !focus.matches(rotation: $0.rotation, system: $0.system) }
+        queue = queue.filter { $0.fits(focus) } + queue.filter { !$0.fits(focus) }
     }
 
-    private func later() {
-        guard !busy, queue.count > 1 else { withAnimation(SWIPE.snapBack) { drag = .zero }; return }
+    /// Left: the top patient leaves the deck for good. They stay on the Patients tab.
+    /// Skipping the last one leaves the admit card.
+    private func skip() {
+        guard !busy, let p = queue.first else { withAnimation(SWIPE.snapBack) { drag = .zero }; return }
         busy = true
         withAnimation(SWIPE.fly) { drag = CGSize(width: -SWIPE.flyDistance, height: 0) }
         Task { @MainActor in
             try? await Task.sleep(for: .seconds(0.28))
             var t = Transaction(); t.disablesAnimations = true
             withTransaction(t) { drag = .zero }
-            withAnimation(STACK.restack) { queue.append(queue.removeFirst()) }
+            // Same render pass: the leaver (already off-screen) vanishes via its .identity removal
+            // while the cards behind spring up a place.
+            withAnimation(STACK.restack) { _ = queue.removeFirst() }
+            app.skip(bed: p.id)
             busy = false
         }
     }
 
     /// Riffle the deck a few times, land on a random patient, then take it.
+    /// With one patient or none waiting, admits a new one instead.
     private func random() {
-        guard !busy, queue.count > 1 else { return }
+        guard queue.count > 1 else { admit(); return }
+        guard !busy else { return }
         busy = true
         Task { @MainActor in
             if !reduceMotion {
@@ -299,9 +313,11 @@ struct PatientDeck: View {
 
 /// The incoming-patient card, for any patient on the ward.
 struct PatientCard: View {
-    let patient: IncomingPatient
+    let patient: WardPatient
     var stage: Int = 6
     var revisit = false
+    /// The case is being fetched after a take.
+    var opening = false
     /// While the card is being swiped, its button ignores touches entirely.
     var dragging = false
     var onTake: () -> Void
@@ -319,11 +335,17 @@ struct PatientCard: View {
         static let beatDecay = 0.14
     }
 
+    /// The tag the focus didn't already cover: the system when the rotation matched, else the rotation.
+    private var otherTag: String? {
+        if let r = patient.rotation, focus.contains(.rotation(r)) { return patient.system?.label }
+        return patient.rotation?.label
+    }
+
     private var heartRate: Int {
         #if DEBUG
-        if patient.id == "B4", let override = DebugLaunch.heartRate { return override }
+        if let override = DebugLaunch.heartRate { return override }
         #endif
-        return patient.hr
+        return patient.hr ?? 80
     }
 
     var body: some View {
@@ -350,14 +372,16 @@ struct PatientCard: View {
             // Where it fits. A patient in the student's focus says so once, instead of
             // repeating the focus name that already sits above the deck.
             HStack(spacing: 6) {
-                if !focus.isMix, focus.matches(rotation: patient.rotation, system: patient.system) {
+                if !focus.isMix, patient.fits(focus) {
                     Pill(text: "Your focus", glyph: .target)
                     // Name whichever tag the focus didn't already cover.
-                    Pill(text: focus.contains(.rotation(patient.rotation)) ? patient.system.label : patient.rotation.label,
-                         fg: Theme.muted, bg: Theme.text.opacity(0.07))
+                    if let other = otherTag {
+                        Pill(text: other, fg: Theme.muted, bg: Theme.text.opacity(0.07))
+                    }
                 } else {
-                    Pill(text: patient.rotation.label, fg: Theme.muted, bg: Theme.text.opacity(0.07))
-                    Pill(text: patient.system.label, fg: Theme.muted, bg: Theme.text.opacity(0.07))
+                    ForEach([patient.rotation?.label, patient.system?.label].compactMap { $0 }, id: \.self) { tag in
+                        Pill(text: tag, fg: Theme.muted, bg: Theme.text.opacity(0.07))
+                    }
                 }
             }
             .padding(.top, 14)
@@ -381,13 +405,13 @@ struct PatientCard: View {
             // Monitor
             VStack(alignment: .leading, spacing: 12) {
                 vitals
-                ECGMonitor(bpm: Double(heartRate), stElevation: patient.stElevation)
+                ECGMonitor(bpm: Double(heartRate), stElevation: false)
                     .opacity(stage >= 2 ? 1 : 0)
             }
 
             Spacer(minLength: 24)
 
-            Button(revisit ? "Retry the patient" : "Take the patient", action: onTake)
+            Button(opening ? "Opening…" : revisit ? "Retry the patient" : "Take the patient", action: onTake)
                 .buttonStyle(PrimaryButtonStyle(height: 54, reactive: false))   // static: never swells, even mid-swipe
                 .allowsHitTesting(!dragging)
                 .opacity(stage >= 4 ? 1 : 0)
@@ -421,8 +445,8 @@ struct PatientCard: View {
                                     .shadow(color: Theme.glow(Theme.accent, 0.45 + 0.35 * Double(pulse)),
                                             radius: 7 + VITALS.beatGlow * pulse)
                             }
-                        case "BP": Text(patient.bp).padding(.top, 8)
-                        default: Text("\(patient.spo2)")
+                        case "BP": Text(patient.bp ?? "–").padding(.top, 8)
+                        default: Text(patient.spo2.map(String.init) ?? "–")
                         }
                     }
                     .font(.mono(item.2))

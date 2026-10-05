@@ -41,7 +41,7 @@ struct HandoffView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let session: CaseSession
 
-    /// Placeholder timeline (screens-only phase), limited to actions the app offers:
+    /// The student's own shift, limited to actions the app offers:
     /// questions (accent), exams and tests (neutral), the submitted diagnosis (bold, no alarm color).
     private struct Event: Identifiable {
         let id = UUID()
@@ -51,15 +51,36 @@ struct HandoffView: View {
         var isConclusion = false
     }
 
-    private let events = [
-        Event(time: "00:12", text: "Asked when the pain started", color: Theme.accent),
-        Event(time: "01:05", text: "Asked where it goes: left arm", color: Theme.accent),
-        Event(time: "02:40", text: "Smoking and family history", color: Theme.accent),
-        Event(time: "03:18", text: "Examined: heart and lungs", color: Theme.faint),
-        Event(time: "05:10", text: "Ordered an ECG", color: Theme.faint),
-        Event(time: "06:02", text: "Ordered troponin", color: Theme.faint),
-        Event(time: "07:29", text: "Diagnosis: inferior STEMI", color: Theme.text, isConclusion: true),
-    ]
+    /// Built once when the screen appears, so row identities stay stable while they animate in.
+    @State private var events: [Event] = []
+
+    private func makeEvents() -> [Event] {
+        let start = session.startedAt ?? .now
+        let stamp = { (d: Date) in CaseSession.format(d.timeIntervalSince(start)) }
+        return session.timeline.map { e in
+            Event(time: stamp(e.at), text: e.kind == .exam ? "Examined: \(e.text.prefix(1).lowercased())\(e.text.dropFirst())" : e.text,
+                  color: e.kind == .question ? Theme.accent : Theme.faint)
+        } + [Event(time: stamp(.now), text: "Diagnosis: \(session.diagnosis)", color: Theme.text, isConclusion: true)]
+    }
+
+    // MOCK (disabled): fixed chest-pain timeline from the screens phase.
+//     private struct Event: Identifiable {
+//         let id = UUID()
+//         let time: String
+//         let text: String
+//         let color: Color
+//         var isConclusion = false
+//     }
+//
+//     private let events = [
+//         Event(time: "00:12", text: "Asked when the pain started", color: Theme.accent),
+//         Event(time: "01:05", text: "Asked where it goes: left arm", color: Theme.accent),
+//         Event(time: "02:40", text: "Smoking and family history", color: Theme.accent),
+//         Event(time: "03:18", text: "Examined: heart and lungs", color: Theme.faint),
+//         Event(time: "05:10", text: "Ordered an ECG", color: Theme.faint),
+//         Event(time: "06:02", text: "Ordered troponin", color: Theme.faint),
+//         Event(time: "07:29", text: "Diagnosis: inferior STEMI", color: Theme.text, isConclusion: true),
+//     ]
 
     @State private var shownCount = 0
     @State private var graded = false
@@ -69,9 +90,9 @@ struct HandoffView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: 12) {
-                Avatar(initials: "AO", size: 44)
+                Avatar(initials: "MD", size: 44)
                 VStack(alignment: .leading, spacing: 1) {
-                    Text("Handing over to Dr. Okafor").font(.system(size: 17, weight: .semibold))
+                    Text("Handing over to your attending").font(.system(size: 17, weight: .semibold))
                     Text("Here's how your shift went.").font(.system(size: 15)).foregroundStyle(Theme.muted)
                 }
             }
@@ -99,12 +120,12 @@ struct HandoffView: View {
 
             ZStack {
                 if graded {
-                    Button("See Dr. Okafor's notes") { router.go(.debrief) }
+                    Button("See your attending's notes") { router.go(.debrief) }
                         .buttonStyle(PrimaryButtonStyle(height: 52))
                         .transition(.asymmetric(insertion: .scale(scale: 0.96).combined(with: .opacity),
                                                 removal: .opacity))
                 } else {
-                    ShimmerText(text: "Dr. Okafor is reading your notes", animate: !reduceMotion)
+                    ShimmerText(text: "Your attending is reading your notes", animate: !reduceMotion)
                         .frame(minHeight: 52)
                         .transition(.opacity)
                 }
@@ -123,13 +144,14 @@ struct HandoffView: View {
     /// Fills the wait with something earned: the shape of the shift at a glance.
     private var shiftSummary: some View {
         HStack(spacing: 0) {
-            stat("3", "Questions")
+            let count = { (k: TimelineEvent.Kind) in session.timeline.filter { $0.kind == k }.count }
+            stat("\(count(.question))", count(.question) == 1 ? "Question" : "Questions")
             Rectangle().fill(Theme.hairline).frame(width: 1, height: 32)
-            stat("1", "Exam")
+            stat("\(count(.exam))", count(.exam) == 1 ? "Exam" : "Exams")
             Rectangle().fill(Theme.hairline).frame(width: 1, height: 32)
-            stat("2", "Tests")
+            stat("\(count(.test))", count(.test) == 1 ? "Test" : "Tests")
             Rectangle().fill(Theme.hairline).frame(width: 1, height: 32)
-            stat("7:29", "Used")
+            stat(CaseSession.format(session.elapsed(at: .now)), "Used")
         }
         .card(padding: 14)
         .accessibilityElement(children: .combine)
@@ -177,6 +199,7 @@ struct HandoffView: View {
     }
 
     private func play() async {
+        events = makeEvents()
         headerShown = true
         if reduceMotion {
             shownCount = events.count

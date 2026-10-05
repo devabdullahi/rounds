@@ -1,0 +1,2218 @@
+{
+  "schema_version": "0.2",
+  "slug": "sepsis",
+  "triage": {
+    "name": "Sepsis",
+    "case_suitable": true,
+    "reason": "Life-threatening syndrome with a clear presentation, source hunt and time-critical management; core emergency and inpatient topic.",
+    "kind": "disease",
+    "category": "systemic infection",
+    "organ_systems": [
+      "blood"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "emergency",
+      "surgery",
+      "pediatrics"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "emergency",
+      "inpatient",
+      "icu"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:20:02Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:12:07Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:12:15Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:12:38Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:12:52Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:13:00Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'blood_cultures' to 'Blood cultures'",
+        "auto-repaired: workup: renamed 'blood_cultures' to 'Blood cultures'",
+        "auto-repaired: workup: 'lactate' was in ['initial', 'confirmatory'], kept ['initial']",
+        "auto-repaired: workup: 'blood cultures' was in ['initial', 'confirmatory'], kept ['initial']",
+        "auto-repaired: workup: 'ct head without contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'transthoracic echocardiogram' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ct head without contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'transthoracic echocardiogram' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "differential cardiogenic-shock: no profile yet",
+        "differential hypovolemic-shock: no profile yet",
+        "differential pulmonary-embolism: no profile yet",
+        "differential acute-pancreatitis: no profile yet",
+        "differential diabetic-ketoacidosis: no profile yet",
+        "differential adrenal-crisis: no profile yet",
+        "differential anaphylaxis: no profile yet",
+        "differential toxic-shock-syndrome: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 18,
+      "typical_max": 90,
+      "peak": "older adults, especially 65+",
+      "possible_min": 0,
+      "possible_max": 110
+    },
+    "sex": "either",
+    "demographics": [
+      "More common in adults 65 and older",
+      "Most people who develop sepsis have at least one underlying chronic condition or a recent hospitalization",
+      "Children younger than 1 year are at higher risk"
+    ],
+    "risk_factors": [
+      {
+        "text": "Age 65 or older",
+        "strength": "strong"
+      },
+      {
+        "text": "Recent hospitalization or surgery",
+        "strength": "strong"
+      },
+      {
+        "text": "Indwelling lines, catheters or other medical devices",
+        "strength": "strong"
+      },
+      {
+        "text": "Weakened immune system (immunosuppression, chemotherapy, steroids)",
+        "strength": "strong"
+      },
+      {
+        "text": "Chronic conditions such as diabetes, lung disease, cancer or kidney disease",
+        "strength": "moderate"
+      },
+      {
+        "text": "Pregnancy",
+        "strength": "moderate"
+      },
+      {
+        "text": "Age younger than 1 year",
+        "strength": "moderate"
+      },
+      {
+        "text": "Known active infection (pneumonia, urinary tract infection, intra-abdominal infection, skin or wound infection)",
+        "strength": "strong"
+      },
+      {
+        "text": "Recent influenza or other severe viral illness",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Diabetes mellitus",
+      "Chronic obstructive pulmonary disease or other chronic lung disease",
+      "Chronic kidney disease",
+      "Cancer",
+      "Heart failure",
+      "Cirrhosis",
+      "Immunosuppression or asplenia"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Residence in a long-term care facility",
+      "Recent hospitalization or intensive care stay",
+      "Intravenous drug use"
+    ],
+    "exposures": [
+      "Recent surgery or invasive procedure",
+      "Indwelling urinary catheter, central line or other device",
+      "Recent antibiotic use"
+    ],
+    "risk_medications": [
+      "prednisone",
+      "dexamethasone",
+      "cyclophosphamide",
+      "methotrexate",
+      "tacrolimus",
+      "infliximab"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I feel terrible all over and I can't stop shaking",
+        "frequency": "common"
+      },
+      {
+        "text": "I'm burning up and then freezing cold",
+        "frequency": "common"
+      },
+      {
+        "text": "I'm short of breath and my heart is racing",
+        "frequency": "common"
+      },
+      {
+        "text": "I feel confused and not myself",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "I hurt everywhere",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Often over hours to a day or two, sometimes faster; may follow a known infection that is getting worse",
+      "duration": "Usually 1–3 days at presentation, but can be less than 24 hours in rapidly progressive cases",
+      "progression": "Worsens steadily; fever and chills give way to weakness, confusion, low blood pressure and difficulty breathing if untreated",
+      "location": "Generalized; may be localized to the source of infection (lungs, abdomen, urinary tract, skin or wound)",
+      "radiation": "Not applicable",
+      "quality": "Feeling of extreme illness with shaking chills, body aches and profound weakness",
+      "severity": "Severe; patients often describe it as the worst they have ever felt",
+      "timing": "Continuous, often worse at night or with any activity",
+      "aggravating": [
+        "Any movement or exertion",
+        "Trying to stand up (lightheadedness)"
+      ],
+      "relieving": [
+        "Lying still",
+        "Acetaminophen or ibuprofen for fever (partial and temporary)"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Fever or feeling very hot",
+          "frequency": "common"
+        },
+        {
+          "text": "Shaking chills",
+          "frequency": "common"
+        },
+        {
+          "text": "Rapid heart rate or pounding heartbeat",
+          "frequency": "common"
+        },
+        {
+          "text": "Rapid breathing or shortness of breath",
+          "frequency": "common"
+        },
+        {
+          "text": "Feeling very weak or tired",
+          "frequency": "common"
+        },
+        {
+          "text": "Confusion or trouble concentrating",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Feeling very cold or clammy",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Nausea, vomiting or diarrhea",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Decreased urination",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Lightheadedness or fainting when standing",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Pain at the site of infection (cough, flank pain, abdominal pain, wound pain)",
+          "frequency": "sometimes"
+        }
+      ],
+      "pertinent_negatives": [
+        "No new focal neurologic deficit or headache that would suggest stroke or meningitis",
+        "No chest pain typical of cardiac ischemia",
+        "No recent tick bite or rash suggesting rickettsial illness",
+        "No known exposure to a contagious contact with the same illness",
+        "No recent travel to an area with endemic malaria or dengue"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fever",
+            "frequency": "common"
+          },
+          {
+            "text": "Shaking chills",
+            "frequency": "common"
+          },
+          {
+            "text": "Severe weakness and fatigue",
+            "frequency": "common"
+          },
+          {
+            "text": "Feeling very cold",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Weight loss",
+          "Night sweats lasting weeks"
+        ],
+        "argues_against": [
+          "Chronic wasting illness rather than acute infection"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [
+          {
+            "text": "Racing or pounding heart",
+            "frequency": "common"
+          },
+          {
+            "text": "Lightheadedness on standing",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Chest pain with exertion",
+          "Swelling of the legs"
+        ],
+        "argues_against": [
+          "Acute coronary syndrome",
+          "Heart failure"
+        ]
+      },
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "Shortness of breath",
+            "frequency": "common"
+          },
+          {
+            "text": "Cough producing sputum",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Pleuritic chest pain",
+          "Coughing up blood"
+        ],
+        "argues_against": [
+          "Pulmonary embolism",
+          "Pneumothorax"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Nausea or vomiting",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Diarrhea",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Abdominal pain",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Blood in stool",
+          "Jaundice"
+        ],
+        "argues_against": [
+          "Acute surgical abdomen requiring immediate operation without infection",
+          "Liver failure"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [
+          {
+            "text": "Burning with urination",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Flank pain",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Decreased urination",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Blood in urine",
+          "Vaginal discharge"
+        ],
+        "argues_against": [
+          "Kidney stone",
+          "Sexually transmitted infection"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [
+          {
+            "text": "Clammy or sweaty skin",
+            "frequency": "common"
+          },
+          {
+            "text": "Redness, warmth or drainage at a wound or line site",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "New rash",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Widespread peeling rash",
+          "Petechiae or purpura"
+        ],
+        "argues_against": [
+          "Toxic shock syndrome",
+          "Meningococcemia"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Confusion or disorientation",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Trouble concentrating",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "New weakness on one side",
+          "Severe headache with stiff neck"
+        ],
+        "argues_against": [
+          "Stroke",
+          "Meningitis"
+        ]
+      },
+      {
+        "system": "hematologic",
+        "positives": [
+          {
+            "text": "Easy bruising or bleeding",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Swollen lymph nodes",
+          "Blood clots in the legs"
+        ],
+        "argues_against": [
+          "Lymphoma",
+          "Deep vein thrombosis"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "older_adults",
+        "how_it_differs": "May have little or no fever and present mainly with confusion, falls, weakness or a decline in function; the infection can be far advanced before it is recognized.",
+        "missing_classic_features": [
+          "Fever",
+          "Shaking chills",
+          "Obvious source of infection"
+        ]
+      },
+      {
+        "population": "infants",
+        "how_it_differs": "Present with poor feeding, irritability, lethargy, temperature instability (low or high), vomiting or difficulty breathing rather than localizing complaints.",
+        "missing_classic_features": [
+          "Fever",
+          "Localizing symptoms",
+          "Clear description of feeling unwell"
+        ]
+      },
+      {
+        "population": "children",
+        "how_it_differs": "May have fever, fast breathing, poor perfusion, lethargy or irritability; younger children cannot describe pain or confusion.",
+        "missing_classic_features": [
+          "Confusion",
+          "Body aches"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "May not mount a fever or a high white count; can present with subtle symptoms and rapid deterioration.",
+        "missing_classic_features": [
+          "Fever",
+          "Marked leukocytosis"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "May present with fever, abdominal pain, uterine tenderness or preterm contractions; normal pregnancy changes in heart rate and blood pressure can mask early sepsis.",
+        "missing_classic_features": [
+          "Marked tachycardia",
+          "Hypotension"
+        ]
+      },
+      {
+        "population": "renal_impairment",
+        "how_it_differs": "May have less fever and more fluid overload or electrolyte disturbance; decreased urine output is harder to interpret against baseline kidney disease.",
+        "missing_classic_features": [
+          "Fever",
+          "Clear change in urine output"
+        ]
+      },
+      {
+        "population": "diabetes",
+        "how_it_differs": "May have blunted fever and present with hyperglycemia, dehydration or a foot or soft tissue infection as the source.",
+        "missing_classic_features": [
+          "Fever",
+          "Shaking chills"
+        ]
+      },
+      {
+        "population": "obesity",
+        "how_it_differs": "May have less reliable temperature elevation and more difficulty with breathing and positioning; skin folds and line sites are common sources.",
+        "missing_classic_features": [
+          "Fever",
+          "Obvious source on routine exam"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Looks unwell but alert and interactive; may be flushed or shivering",
+      "moderate": "Ill-appearing, diaphoretic, tachypneic; prefers to lie still but remains oriented",
+      "severe": "Toxic-appearing, pale or mottled, lethargic or agitated, working hard to breathe",
+      "critical": "Profoundly ill, obtunded or agitated, cold and clammy extremities, barely responsive"
+    },
+    "findings": [
+      {
+        "id": "altered-mental-status",
+        "region": "mental_status",
+        "maneuver": "Assess orientation to person, place and time; ask about the day and recent events",
+        "finding": "Confusion, disorientation, inattention or reduced alertness",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "tachypnea",
+        "region": "lung",
+        "maneuver": "Observe the respiratory rate and pattern at rest",
+        "finding": "Rapid, shallow breathing",
+        "frequency": "common",
+        "min_severity": "mild",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "tachycardia",
+        "region": "cardiac",
+        "maneuver": "Palpate the radial pulse and auscultate the heart rate",
+        "finding": "Tachycardia with a bounding or weak pulse",
+        "frequency": "common",
+        "min_severity": "mild",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "hypotension",
+        "region": "general",
+        "maneuver": "Measure blood pressure supine and after standing if the patient can tolerate it",
+        "finding": "Low blood pressure, or a drop on standing, that does not correct with fluids",
+        "frequency": "common",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "delayed-capillary-refill",
+        "region": "extremities",
+        "maneuver": "Press the fingertip or nail bed for 5 seconds and time the color return",
+        "finding": "Capillary refill longer than 3 seconds",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "mottled-skin",
+        "region": "skin",
+        "maneuver": "Inspect the knees, elbows and extremities for color and temperature",
+        "finding": "Mottled, cool or dusky skin with a demarcation line",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "warm-flushed-skin",
+        "region": "skin",
+        "maneuver": "Feel the skin temperature and inspect for flushing",
+        "finding": "Warm, flushed, dry or clammy skin early in the illness",
+        "frequency": "common",
+        "min_severity": "mild",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "shaking-chills",
+        "region": "general",
+        "maneuver": "Observe the patient during the interview for rigors",
+        "finding": "Shaking chills or rigors",
+        "frequency": "common",
+        "min_severity": "mild",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "dry-mucous-membranes",
+        "region": "heent",
+        "maneuver": "Inspect the oral mucosa and tongue for moisture",
+        "finding": "Dry mucous membranes and reduced skin turgor",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "crackles",
+        "region": "lung",
+        "maneuver": "Auscultate all lung fields during quiet breathing",
+        "finding": "Focal crackles, bronchial breath sounds or dullness suggesting pneumonia",
+        "frequency": "sometimes",
+        "min_severity": "mild",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "abdominal-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate all four quadrants and check for guarding or rebound",
+        "finding": "Focal tenderness, guarding or rebound suggesting an intra-abdominal source",
+        "frequency": "sometimes",
+        "min_severity": "mild",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "costovertebral-tenderness",
+        "region": "abdomen",
+        "maneuver": "Percuss each costovertebral angle",
+        "finding": "Costovertebral angle tenderness suggesting pyelonephritis",
+        "frequency": "sometimes",
+        "min_severity": "mild",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "wound-or-line-infection",
+        "region": "skin",
+        "maneuver": "Inspect all surgical wounds, intravenous sites and indwelling devices",
+        "finding": "Erythema, warmth, purulent drainage or tenderness at a wound, line or device site",
+        "frequency": "sometimes",
+        "min_severity": "mild",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "no-meningismus",
+        "region": "neck",
+        "maneuver": "Check for neck stiffness and perform a brief neurologic screen",
+        "finding": "No neck stiffness, no focal neurologic deficit",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-petechiae-purpura",
+        "region": "skin",
+        "maneuver": "Inspect the entire skin surface, including the trunk and extremities",
+        "finding": "No petechiae, purpura or diffuse erythroderma",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-peritoneal-signs",
+        "region": "abdomen",
+        "maneuver": "Palpate gently and check for rebound tenderness",
+        "finding": "No diffuse rigidity or peritoneal signs",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 100.4,
+        "max": 102.2
+      },
+      "moderate": {
+        "min": 101.0,
+        "max": 103.1
+      },
+      "severe": {
+        "min": 101.5,
+        "max": 104.0
+      },
+      "critical": {
+        "min": 96.0,
+        "max": 104.5
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 90,
+        "max": 110
+      },
+      "moderate": {
+        "min": 100,
+        "max": 120
+      },
+      "severe": {
+        "min": 110,
+        "max": 140
+      },
+      "critical": {
+        "min": 120,
+        "max": 160
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 20,
+        "max": 24
+      },
+      "moderate": {
+        "min": 22,
+        "max": 28
+      },
+      "severe": {
+        "min": 24,
+        "max": 34
+      },
+      "critical": {
+        "min": 28,
+        "max": 40
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 100,
+        "max": 130
+      },
+      "moderate": {
+        "min": 90,
+        "max": 110
+      },
+      "severe": {
+        "min": 80,
+        "max": 100
+      },
+      "critical": {
+        "min": 60,
+        "max": 90
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 60,
+        "max": 80
+      },
+      "moderate": {
+        "min": 50,
+        "max": 70
+      },
+      "severe": {
+        "min": 40,
+        "max": 60
+      },
+      "critical": {
+        "min": 30,
+        "max": 50
+      }
+    },
+    "spo2": {
+      "moderate": {
+        "min": 90,
+        "max": 95
+      },
+      "severe": {
+        "min": 85,
+        "max": 92
+      },
+      "critical": {
+        "min": 75,
+        "max": 88
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "mild": {
+          "min": 11.0,
+          "max": 15.0
+        },
+        "moderate": {
+          "min": 14.0,
+          "max": 20.0
+        },
+        "severe": {
+          "min": 16.0,
+          "max": 26.0
+        },
+        "critical": {
+          "min": 2.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "Leukocytosis with a left shift is typical, but leukopenia or a normal white count can occur, especially in overwhelming sepsis, older adults and immunocompromised patients."
+    },
+    {
+      "test_id": "bands_pct",
+      "ranges": {
+        "mild": {
+          "min": 5,
+          "max": 10
+        },
+        "moderate": {
+          "min": 8,
+          "max": 15
+        },
+        "severe": {
+          "min": 12,
+          "max": 25
+        },
+        "critical": {
+          "min": 15,
+          "max": 35
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "A left shift with immature forms supports bacterial infection and can be present even when the total white count is normal."
+    },
+    {
+      "test_id": "neut_pct",
+      "ranges": {
+        "mild": {
+          "min": 70,
+          "max": 80
+        },
+        "moderate": {
+          "min": 75,
+          "max": 88
+        },
+        "severe": {
+          "min": 80,
+          "max": 92
+        },
+        "critical": {
+          "min": 80,
+          "max": 95
+        }
+      },
+      "frequency": "common",
+      "importance": "important"
+    },
+    {
+      "test_id": "lymph_pct",
+      "ranges": {
+        "moderate": {
+          "min": 5,
+          "max": 15
+        },
+        "severe": {
+          "min": 3,
+          "max": 12
+        },
+        "critical": {
+          "min": 2,
+          "max": 10
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Relative lymphopenia often accompanies the neutrophilia of acute bacterial sepsis."
+    },
+    {
+      "test_id": "plt",
+      "ranges": {
+        "moderate": {
+          "min": 100,
+          "max": 150
+        },
+        "severe": {
+          "min": 50,
+          "max": 100
+        },
+        "critical": {
+          "min": 10,
+          "max": 50
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "Thrombocytopenia is a marker of organ dysfunction and worsening sepsis; a falling platelet count suggests disseminated intravascular coagulation."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "mild": {
+          "min": 2.0,
+          "max": 2.5
+        },
+        "moderate": {
+          "min": 2.5,
+          "max": 4.0
+        },
+        "severe": {
+          "min": 4.0,
+          "max": 8.0
+        },
+        "critical": {
+          "min": 6.0,
+          "max": 15.0
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "A lactate of 2 mmol/L or higher supports sepsis and tissue hypoperfusion; repeat to follow response to fluids. Elevated lactate is not specific and can occur with seizures, liver disease or certain medications."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "mild": {
+          "min": 1.2,
+          "max": 1.6
+        },
+        "moderate": {
+          "min": 1.5,
+          "max": 2.5
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 4.0
+        },
+        "critical": {
+          "min": 3.0,
+          "max": 8.0
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "A rise in creatinine from baseline indicates acute kidney injury from hypoperfusion; interpret against the patient's baseline kidney function."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "mild": {
+          "min": 20,
+          "max": 30
+        },
+        "moderate": {
+          "min": 25,
+          "max": 45
+        },
+        "severe": {
+          "min": 35,
+          "max": 70
+        },
+        "critical": {
+          "min": 50,
+          "max": 120
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Rises with dehydration and poor intake as well as kidney injury."
+    },
+    {
+      "test_id": "hco3",
+      "ranges": {
+        "moderate": {
+          "min": 18,
+          "max": 22
+        },
+        "severe": {
+          "min": 14,
+          "max": 20
+        },
+        "critical": {
+          "min": 8,
+          "max": 16
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Low bicarbonate reflects metabolic acidosis from hypoperfusion and lactic acid."
+    },
+    {
+      "test_id": "ph",
+      "ranges": {
+        "moderate": {
+          "min": 7.3,
+          "max": 7.35
+        },
+        "severe": {
+          "min": 7.2,
+          "max": 7.32
+        },
+        "critical": {
+          "min": 6.9,
+          "max": 7.25
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Acidemia on arterial blood gas reflects severe hypoperfusion; a respiratory alkalosis may be seen earlier."
+    },
+    {
+      "test_id": "paco2",
+      "ranges": {
+        "moderate": {
+          "min": 28,
+          "max": 35
+        },
+        "severe": {
+          "min": 25,
+          "max": 34
+        },
+        "critical": {
+          "min": 30,
+          "max": 60
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Early tachypnea causes a low PaCO2; a rising PaCO2 in a tiring patient signals impending respiratory failure."
+    },
+    {
+      "test_id": "pao2",
+      "ranges": {
+        "moderate": {
+          "min": 60,
+          "max": 80
+        },
+        "severe": {
+          "min": 50,
+          "max": 70
+        },
+        "critical": {
+          "min": 40,
+          "max": 60
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hypoxemia suggests pneumonia, acute respiratory distress syndrome or poor perfusion."
+    },
+    {
+      "test_id": "inr",
+      "ranges": {
+        "moderate": {
+          "min": 1.2,
+          "max": 1.5
+        },
+        "severe": {
+          "min": 1.5,
+          "max": 2.5
+        },
+        "critical": {
+          "min": 2.0,
+          "max": 5.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Prolongation supports coagulopathy of sepsis or disseminated intravascular coagulation."
+    },
+    {
+      "test_id": "aptt",
+      "ranges": {
+        "moderate": {
+          "min": 35,
+          "max": 45
+        },
+        "severe": {
+          "min": 45,
+          "max": 70
+        },
+        "critical": {
+          "min": 60,
+          "max": 120
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important"
+    },
+    {
+      "test_id": "fibrinogen",
+      "ranges": {
+        "moderate": {
+          "min": 150,
+          "max": 200
+        },
+        "severe": {
+          "min": 100,
+          "max": 180
+        },
+        "critical": {
+          "min": 50,
+          "max": 150
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Fibrinogen falls late in disseminated intravascular coagulation; it is often normal or high early as an acute-phase reactant."
+    },
+    {
+      "test_id": "tbili",
+      "ranges": {
+        "moderate": {
+          "min": 1.2,
+          "max": 2.0
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 4.0
+        },
+        "critical": {
+          "min": 3.0,
+          "max": 8.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "A rising bilirubin is part of sepsis-related organ dysfunction, especially with a biliary or intra-abdominal source."
+    },
+    {
+      "test_id": "ast",
+      "ranges": {
+        "moderate": {
+          "min": 40,
+          "max": 100
+        },
+        "severe": {
+          "min": 80,
+          "max": 300
+        },
+        "critical": {
+          "min": 200,
+          "max": 1000
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Transaminitis can reflect hypoperfusion (shock liver) or a hepatobiliary source."
+    },
+    {
+      "test_id": "alt",
+      "ranges": {
+        "moderate": {
+          "min": 56,
+          "max": 120
+        },
+        "severe": {
+          "min": 100,
+          "max": 300
+        },
+        "critical": {
+          "min": 200,
+          "max": 1000
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "albumin",
+      "ranges": {
+        "moderate": {
+          "min": 2.8,
+          "max": 3.5
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 3.0
+        },
+        "critical": {
+          "min": 1.5,
+          "max": 2.5
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Falls with acute illness and capillary leak; a low value worsens fluid shifts."
+    },
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "mild": {
+          "min": 100,
+          "max": 140
+        },
+        "moderate": {
+          "min": 120,
+          "max": 180
+        },
+        "severe": {
+          "min": 140,
+          "max": 250
+        },
+        "critical": {
+          "min": 40,
+          "max": 300
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Stress hyperglycemia is common; hypoglycemia in a septic patient is a poor sign and can occur with liver failure or adrenal insufficiency."
+    },
+    {
+      "test_id": "procalcitonin",
+      "ranges": {
+        "mild": {
+          "min": 0.5,
+          "max": 2.0
+        },
+        "moderate": {
+          "min": 2.0,
+          "max": 10.0
+        },
+        "severe": {
+          "min": 10.0,
+          "max": 30.0
+        },
+        "critical": {
+          "min": 20.0,
+          "max": 100.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Supports a bacterial cause and can guide antibiotic duration, but it is not required to diagnose sepsis and may be normal in early or localized infection."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "mild": {
+          "min": 1.0,
+          "max": 5.0
+        },
+        "moderate": {
+          "min": 5.0,
+          "max": 15.0
+        },
+        "severe": {
+          "min": 10.0,
+          "max": 30.0
+        },
+        "critical": {
+          "min": 20.0,
+          "max": 50.0
+        }
+      },
+      "frequency": "common",
+      "importance": "optional",
+      "caveat": "Nonspecific acute-phase reactant; useful for trending but not for diagnosis."
+    },
+    {
+      "test_id": "ua_le",
+      "qualitative": {
+        "mild": "Trace",
+        "moderate": "1+",
+        "severe": "2+",
+        "critical": "3+"
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Positive leukocyte esterase supports a urinary source; a negative urinalysis does not exclude sepsis from another site."
+    },
+    {
+      "test_id": "ua_nitrite",
+      "qualitative": {
+        "moderate": "Positive",
+        "severe": "Positive",
+        "critical": "Positive"
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Positive nitrite suggests a gram-negative urinary infection."
+    },
+    {
+      "test_id": "ua_wbc",
+      "ranges": {
+        "moderate": {
+          "min": 5,
+          "max": 20
+        },
+        "severe": {
+          "min": 10,
+          "max": 50
+        },
+        "critical": {
+          "min": 20,
+          "max": 100
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important"
+    },
+    {
+      "test_id": "ua_bacteria",
+      "qualitative": {
+        "moderate": "Few",
+        "severe": "Moderate",
+        "critical": "Many"
+      },
+      "frequency": "sometimes",
+      "importance": "important"
+    },
+    {
+      "test_id": "csf_wbc",
+      "ranges": {
+        "moderate": {
+          "min": 10,
+          "max": 100
+        },
+        "severe": {
+          "min": 100,
+          "max": 1000
+        },
+        "critical": {
+          "min": 500,
+          "max": 5000
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Only relevant when meningitis is the suspected source; a normal CSF cell count makes bacterial meningitis unlikely."
+    },
+    {
+      "test_id": "csf_protein",
+      "ranges": {
+        "moderate": {
+          "min": 50,
+          "max": 100
+        },
+        "severe": {
+          "min": 100,
+          "max": 200
+        },
+        "critical": {
+          "min": 150,
+          "max": 400
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional"
+    },
+    {
+      "test_id": "csf_glucose",
+      "ranges": {
+        "moderate": {
+          "min": 30,
+          "max": 40
+        },
+        "severe": {
+          "min": 20,
+          "max": 35
+        },
+        "critical": {
+          "min": 10,
+          "max": 30
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Low CSF glucose relative to serum supports bacterial meningitis."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rate",
+        "finding": "Sinus tachycardia, often marked",
+        "frequency": "common",
+        "min_severity": "mild"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "New atrial fibrillation with rapid ventricular response",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "other",
+        "finding": "Nonspecific ST-T wave changes",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "st",
+        "finding": "ST elevation in a coronary territory suggesting acute myocardial infarction as an alternative or concurrent diagnosis",
+        "frequency": "rare",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "conduction",
+        "finding": "Prolonged QRS or new bundle branch block",
+        "frequency": "rare",
+        "min_severity": "severe"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Chest x-ray, portable anteroposterior",
+      "modality": "xray",
+      "preferred_when": "First-line when a pulmonary source is suspected",
+      "findings": [
+        {
+          "text": "Lobar or patchy consolidation consistent with pneumonia",
+          "frequency": "common"
+        },
+        {
+          "text": "Diffuse bilateral opacities consistent with acute respiratory distress syndrome or pulmonary edema",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Pleural effusion",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "No acute cardiopulmonary process",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "CT chest with IV contrast",
+      "modality": "ct",
+      "preferred_when": "When chest x-ray is nondiagnostic and a pulmonary source or complication is suspected",
+      "findings": [
+        {
+          "text": "Consolidation, ground-glass opacities or a lung abscess",
+          "frequency": "common"
+        },
+        {
+          "text": "Pleural effusion or empyema",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Pulmonary embolism as an alternative diagnosis",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "CT abdomen and pelvis with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Suspected intra-abdominal source such as perforation, abscess or cholangitis",
+      "findings": [
+        {
+          "text": "Bowel wall thickening, free air or free fluid suggesting perforation",
+          "frequency": "common"
+        },
+        {
+          "text": "Abscess or infected fluid collection",
+          "frequency": "common"
+        },
+        {
+          "text": "Biliary duct dilation or gallstones suggesting cholangitis or cholecystitis",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "No intra-abdominal source identified",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Ultrasound of the abdomen, right upper quadrant",
+      "modality": "ultrasound",
+      "preferred_when": "Suspected biliary source, pregnancy or when CT contrast is contraindicated",
+      "findings": [
+        {
+          "text": "Gallstones, gallbladder wall thickening or pericholecystic fluid",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Biliary duct dilation suggesting obstruction or cholangitis",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "CT head without contrast",
+      "modality": "ct",
+      "preferred_when": "Altered mental status without an obvious cause, or before lumbar puncture when raised intracranial pressure is a concern",
+      "findings": [
+        {
+          "text": "No acute intracranial abnormality",
+          "frequency": "common"
+        },
+        {
+          "text": "Cerebral edema or mass lesion",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Transthoracic echocardiogram",
+      "modality": "echo",
+      "preferred_when": "Suspected endocarditis, unexplained shock or a new murmur",
+      "findings": [
+        {
+          "text": "Valvular vegetation suggesting infective endocarditis",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Reduced ejection fraction or global hypokinesis from septic cardiomyopathy",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Normal cardiac function",
+          "frequency": "common"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "White count with differential and platelets; leukocytosis or leukopenia and thrombocytopenia support sepsis and organ dysfunction"
+      },
+      {
+        "test": "bmp",
+        "why": "Assesses kidney function, electrolytes and acid-base status; a rising creatinine indicates organ dysfunction"
+      },
+      {
+        "test": "lactate",
+        "why": "Marker of tissue hypoperfusion; guides fluid resuscitation and reassessment"
+      },
+      {
+        "test": "abg",
+        "why": "Assesses oxygenation, ventilation and acid-base status in a seriously ill or hypoxemic patient"
+      },
+      {
+        "test": "coag",
+        "why": "Baseline PT/INR, aPTT and fibrinogen; abnormal values suggest coagulopathy or disseminated intravascular coagulation"
+      },
+      {
+        "test": "ua",
+        "why": "Screens for a urinary source, a common cause of sepsis"
+      },
+      {
+        "test": "Blood cultures",
+        "why": "Two sets from separate sites before antibiotics to identify the organism and guide therapy"
+      },
+      {
+        "test": "Chest x-ray, portable anteroposterior",
+        "why": "Looks for pneumonia, the most common source"
+      },
+      {
+        "test": "Urine culture",
+        "why": "Confirms a urinary source and guides antibiotic choice",
+        "only_if": "urinary symptoms, pyuria or an indwelling catheter"
+      },
+      {
+        "test": "hcg",
+        "why": "Required in anyone who could be pregnant before imaging and to guide antibiotic and imaging choices",
+        "only_if": "patient is of childbearing potential"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "procalcitonin",
+        "why": "Supports a bacterial cause and can help guide antibiotic duration"
+      },
+      {
+        "test": "crp",
+        "why": "Nonspecific marker of inflammation; useful for trending"
+      },
+      {
+        "test": "cmp_extra",
+        "why": "Liver tests and albumin assess hepatic organ dysfunction and a hepatobiliary source"
+      },
+      {
+        "test": "cardiac",
+        "why": "Troponin and natriuretic peptide assess myocardial injury or strain in shock",
+        "only_if": "chest pain, new murmur, arrhythmia or unexplained shock"
+      },
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Identifies an intra-abdominal source such as perforation, abscess or cholangitis",
+        "only_if": "abdominal pain, tenderness or an unexplained source"
+      },
+      {
+        "test": "CT chest with IV contrast",
+        "why": "Identifies a pulmonary source or complication when chest x-ray is nondiagnostic",
+        "only_if": "chest x-ray is nondiagnostic and a pulmonary source is suspected"
+      },
+      {
+        "test": "Ultrasound of the abdomen, right upper quadrant",
+        "why": "Evaluates a biliary source without radiation",
+        "only_if": "right upper quadrant pain, jaundice or pregnancy"
+      },
+      {
+        "test": "CT head without contrast",
+        "why": "Evaluates altered mental status or precedes lumbar puncture when raised intracranial pressure is a concern",
+        "only_if": "altered mental status without an obvious cause"
+      },
+      {
+        "test": "csf",
+        "why": "Evaluates for meningitis when the source is unclear or meningeal signs are present",
+        "only_if": "suspected meningitis or unexplained altered mental status"
+      },
+      {
+        "test": "Transthoracic echocardiogram",
+        "why": "Looks for endocarditis or septic cardiomyopathy",
+        "only_if": "new murmur, suspected endocarditis or unexplained shock"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "d_dimer",
+        "why": "No role in diagnosing sepsis; nonspecifically elevated in infection and inflammation"
+      },
+      {
+        "test": "lipids",
+        "why": "Does not help diagnose sepsis or identify its source"
+      },
+      {
+        "test": "a1c",
+        "why": "Does not help diagnose or manage acute sepsis"
+      },
+      {
+        "test": "tsh",
+        "why": "Does not help diagnose or manage acute sepsis"
+      },
+      {
+        "test": "iron_vitamins",
+        "why": "No role in the acute evaluation of sepsis"
+      },
+      {
+        "test": "uric_acid",
+        "why": "No role in the acute evaluation of sepsis"
+      },
+      {
+        "test": "Abdominal x-ray",
+        "why": "Rarely identifies the source or changes management"
+      },
+      {
+        "test": "CT head without contrast",
+        "why": "Not routine; reserved for altered mental status or before lumbar puncture",
+        "only_if": "altered mental status without an obvious cause"
+      },
+      {
+        "test": "Transthoracic echocardiogram",
+        "why": "Not routine; reserved for suspected endocarditis or unexplained shock",
+        "only_if": "new murmur, suspected endocarditis or unexplained shock"
+      }
+    ],
+    "decision_points": [
+      "Draw blood cultures before starting antibiotics, but do not delay antibiotics to obtain them",
+      "Start broad-spectrum antibiotics within the first hour once sepsis is suspected",
+      "Measure lactate and repeat it to follow response to fluids",
+      "Give 30 mL/kg of IV crystalloid for hypotension or lactate of 4 mmol/L or higher, then reassess",
+      "Start vasopressors if the mean arterial pressure remains below 65 mm Hg after fluids",
+      "Pregnancy test before CT in anyone who could be pregnant",
+      "Look for and control the source: drain an abscess, remove an infected line or debride infected tissue",
+      "Reassess antibiotic coverage daily and narrow once the organism and sensitivities are known"
+    ],
+    "criteria": [
+      {
+        "name": "Sepsis (Sepsis-3)",
+        "summary": "Suspected or confirmed infection plus an acute increase of 2 points or more on the sequential organ failure assessment score, which reflects new organ dysfunction.",
+        "items": [
+          "Suspected or documented infection",
+          "Acute rise in organ dysfunction score of 2 points or more",
+          "Organ dysfunction assessed by respiration, coagulation, liver, cardiovascular, neurologic and renal parameters"
+        ]
+      },
+      {
+        "name": "Septic shock (Sepsis-3)",
+        "summary": "Sepsis with persistent hypotension requiring vasopressors to keep the mean arterial pressure at 65 mm Hg or higher together with a lactate above 2 mmol/L despite adequate fluid resuscitation.",
+        "items": [
+          "Sepsis with a need for vasopressors to maintain mean arterial pressure at 65 mm Hg or higher",
+          "Serum lactate above 2 mmol/L despite adequate fluid resuscitation"
+        ]
+      },
+      {
+        "name": "Systemic inflammatory response syndrome (SIRS)",
+        "summary": "An older screening framework based on temperature, heart rate, respiratory rate and white count; it is sensitive but not specific and is no longer required to diagnose sepsis.",
+        "items": [
+          "Temperature above 38°C or below 36°C",
+          "Heart rate above 90 beats per minute",
+          "Respiratory rate above 20 breaths per minute or PaCO2 below 32 mm Hg",
+          "White count above 12,000 or below 4,000 cells/µL, or more than 10% band forms"
+        ]
+      }
+    ],
+    "scores": [
+      "qsofa",
+      "sofa",
+      "news2",
+      "apache_ii"
+    ]
+  },
+  "differential": [
+    {
+      "name": "Cardiogenic shock",
+      "slug": "cardiogenic-shock",
+      "why_considered": "Hypotension, tachycardia, tachypnea and altered mental status can look identical to septic shock, and both cause elevated lactate and organ dysfunction.",
+      "must_not_miss": true,
+      "trigger": "Hypotension with elevated jugular venous pressure, pulmonary edema or a new murmur rather than a fever source",
+      "discriminators": {
+        "history": [
+          "Known heart failure, recent myocardial infarction or chest pain before the collapse",
+          "No fever, chills or infectious symptoms at onset",
+          "Orthopnea or paroxysmal nocturnal dyspnea"
+        ],
+        "exam": [
+          "Elevated jugular venous pressure",
+          "Cool extremities with pulmonary crackles and an S3 gallop",
+          "New murmur suggesting valve rupture or endocarditis"
+        ],
+        "labs": [
+          "Markedly elevated troponin and natriuretic peptide",
+          "Lactate elevated from hypoperfusion but no leukocytosis or left shift",
+          "Blood cultures negative"
+        ],
+        "imaging": [
+          "Chest x-ray showing pulmonary edema with a normal or enlarged heart",
+          "Echocardiogram showing reduced ejection fraction, regional wall motion abnormality or valvular disruption"
+        ],
+        "ecg": [
+          "ST elevation or depression in a coronary territory",
+          "New Q waves or bundle branch block"
+        ]
+      }
+    },
+    {
+      "name": "Hypovolemic shock",
+      "slug": "hypovolemic-shock",
+      "why_considered": "Low blood pressure, tachycardia, cool skin and rising lactate occur with blood or fluid loss and can mimic sepsis when infection is also suspected.",
+      "must_not_miss": true,
+      "trigger": "Hypotension that improves rapidly with fluids in a patient with obvious bleeding, vomiting or diarrhea and no fever",
+      "discriminators": {
+        "history": [
+          "Vomiting, diarrhea, poor intake or visible blood loss",
+          "No fever or chills",
+          "Trauma or gastrointestinal bleeding"
+        ],
+        "exam": [
+          "Flat neck veins and dry mucous membranes",
+          "No source of infection on skin, lung, abdomen or urinary tract exam",
+          "Rapid improvement in blood pressure with fluid bolus"
+        ],
+        "labs": [
+          "Normal or low white count without a left shift",
+          "Elevated blood urea nitrogen to creatinine ratio",
+          "Lactate falls quickly after fluids"
+        ],
+        "imaging": [
+          "Collapsed inferior vena cava on ultrasound",
+          "No consolidations, abscess or hydronephrosis"
+        ]
+      }
+    },
+    {
+      "name": "Pulmonary embolism",
+      "slug": "pulmonary-embolism",
+      "why_considered": "Sudden shortness of breath, tachycardia, hypoxemia and hypotension overlap with sepsis, and both can present with a normal chest x-ray.",
+      "must_not_miss": true,
+      "trigger": "Pleuritic chest pain, unilateral leg swelling or hypoxemia out of proportion to the lung exam in a patient without fever",
+      "discriminators": {
+        "history": [
+          "Sudden onset of dyspnea, often with pleuritic chest pain",
+          "Recent immobility, surgery, travel or active cancer",
+          "No fever or infectious symptoms"
+        ],
+        "exam": [
+          "Unilateral leg swelling or calf tenderness",
+          "Clear lungs despite marked hypoxemia",
+          "Loud P2 or signs of right heart strain"
+        ],
+        "labs": [
+          "Elevated D-dimer in low-risk patients",
+          "Normal white count and no left shift",
+          "Elevated troponin or natriuretic peptide from right heart strain"
+        ],
+        "imaging": [
+          "Filling defect in the pulmonary arteries on CT angiography",
+          "Right ventricular dilation on echocardiogram"
+        ],
+        "ecg": [
+          "Sinus tachycardia",
+          "S1Q3T3 pattern or right axis deviation",
+          "Right bundle branch block"
+        ]
+      }
+    },
+    {
+      "name": "Acute pancreatitis",
+      "slug": "acute-pancreatitis",
+      "why_considered": "Severe upper abdominal pain, vomiting, fever, tachycardia and hypotension can resemble an intra-abdominal source of sepsis.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Pain radiating to the back, relieved by leaning forward",
+          "Heavy alcohol use or gallstones",
+          "Nausea and vomiting without diarrhea"
+        ],
+        "exam": [
+          "Epigastric tenderness with guarding",
+          "No focal lung or urinary findings"
+        ],
+        "labs": [
+          "Lipase more than three times the upper limit of normal",
+          "Leukocytosis and elevated liver enzymes if biliary"
+        ],
+        "imaging": [
+          "Pancreatic edema or peripancreatic fluid on CT",
+          "Gallstones on ultrasound"
+        ]
+      }
+    },
+    {
+      "name": "Diabetic ketoacidosis",
+      "slug": "diabetic-ketoacidosis",
+      "why_considered": "Tachycardia, tachypnea, dehydration, altered mental status and elevated lactate can mimic sepsis, and infection often precipitates it.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Polyuria, polydipsia and weight loss",
+          "Known diabetes or missed insulin doses",
+          "Nausea, vomiting and abdominal pain"
+        ],
+        "exam": [
+          "Deep, rapid Kussmaul respirations",
+          "Fruity breath odor",
+          "Profound dehydration without a clear infectious source"
+        ],
+        "labs": [
+          "Glucose above 250 mg/dL with a high anion gap",
+          "Positive serum or urine ketones",
+          "Low bicarbonate with a high anion gap metabolic acidosis"
+        ]
+      }
+    },
+    {
+      "name": "Adrenal crisis",
+      "slug": "adrenal-crisis",
+      "why_considered": "Hypotension unresponsive to fluids, weakness, nausea, abdominal pain and confusion can look like septic shock, especially in patients on chronic steroids.",
+      "must_not_miss": true,
+      "trigger": "Hypotension that does not respond to fluids and vasopressors in a patient with chronic steroid use, known adrenal insufficiency or hyperpigmentation",
+      "discriminators": {
+        "history": [
+          "Chronic prednisone or other steroid use",
+          "Known Addison disease or pituitary disease",
+          "Fatigue, weight loss and salt craving"
+        ],
+        "exam": [
+          "Hyperpigmentation of skin creases or buccal mucosa",
+          "No fever or infectious source",
+          "Marked improvement with stress-dose steroids"
+        ],
+        "labs": [
+          "Hyponatremia and hyperkalemia",
+          "Low cortisol with a high adrenocorticotropic hormone level",
+          "Eosinophilia and hypoglycemia"
+        ]
+      }
+    },
+    {
+      "name": "Anaphylaxis",
+      "slug": "anaphylaxis",
+      "why_considered": "Hypotension, tachycardia, dyspnea, flushing and altered mental status can resemble septic shock, and both can present with shock and respiratory distress.",
+      "must_not_miss": true,
+      "trigger": "Rapid onset of hypotension with urticaria, angioedema or wheezing after a new exposure, medication or food",
+      "discriminators": {
+        "history": [
+          "Exposure to a new medication, food, insect sting or contrast dye",
+          "Rapid onset within minutes",
+          "Prior allergic reactions"
+        ],
+        "exam": [
+          "Urticaria, angioedema or diffuse flushing",
+          "Wheezing and stridor",
+          "Rapid response to epinephrine"
+        ],
+        "labs": [
+          "Normal white count",
+          "Elevated serum tryptase in some cases"
+        ]
+      }
+    },
+    {
+      "name": "Toxic shock syndrome",
+      "slug": "toxic-shock-syndrome",
+      "why_considered": "Fever, hypotension, rash, multi-organ dysfunction and shock overlap closely with sepsis, and both can follow a focal infection or retained foreign body.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Retained tampon, nasal packing or recent surgery",
+          "Rapid onset of fever, vomiting and diarrhea",
+          "No clear bacterial source on routine cultures"
+        ],
+        "exam": [
+          "Diffuse macular erythroderma",
+          "Desquamation of palms and soles later in the illness",
+          "Mucous membrane hyperemia"
+        ],
+        "labs": [
+          "Thrombocytopenia, elevated creatinine and liver enzymes",
+          "Blood cultures often negative",
+          "Positive culture from the colonized site"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Early sepsis: fever, tachycardia and tachypnea with a clear source, normal blood pressure and no more than mild organ dysfunction; lactate near 2 mmol/L and responds quickly to fluids and antibiotics.",
+      "moderate": "Established sepsis with organ dysfunction: hypotension that corrects with fluids, confusion or reduced urine output, lactate 2.5–4 mmol/L, rising creatinine and thrombocytopenia.",
+      "severe": "Severe sepsis with persistent organ dysfunction: hypotension needing vasopressors after fluids, lactate above 4 mmol/L, oliguria, hypoxemia and coagulopathy; requires intensive care.",
+      "critical": "Septic shock with multi-organ failure: vasopressor-dependent hypotension with lactate above 2 mmol/L despite fluids, obtundation, acute respiratory distress syndrome, acute kidney injury and disseminated intravascular coagulation; high mortality."
+    },
+    "red_flags": [
+      {
+        "finding": "Hypotension that does not correct with IV fluids",
+        "meaning": "Septic shock; start vasopressors and move to intensive care"
+      },
+      {
+        "finding": "Lactate of 4 mmol/L or higher",
+        "meaning": "Severe tissue hypoperfusion; give 30 mL/kg of crystalloid and reassess"
+      },
+      {
+        "finding": "New confusion, disorientation or reduced alertness",
+        "meaning": "Sepsis-associated encephalopathy and organ dysfunction; a marker of worse outcome"
+      },
+      {
+        "finding": "Respiratory rate above 30 or oxygen saturation below 90% on room air",
+        "meaning": "Impending respiratory failure; may need high-flow oxygen or mechanical ventilation"
+      },
+      {
+        "finding": "Urine output below 0.5 mL/kg/hour",
+        "meaning": "Acute kidney injury from hypoperfusion; reassess fluids and perfusion"
+      },
+      {
+        "finding": "Mottled skin, cool extremities or capillary refill longer than 3 seconds",
+        "meaning": "Poor peripheral perfusion and worsening shock"
+      },
+      {
+        "finding": "Petechiae, purpura or a rapidly spreading rash",
+        "meaning": "Consider meningococcemia, disseminated intravascular coagulation or toxic shock syndrome"
+      },
+      {
+        "finding": "Rigors with a new heart murmur",
+        "meaning": "Consider infective endocarditis as the source"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Septic shock",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "common",
+        "clues": [
+          "Hypotension despite fluids",
+          "Lactate above 2 mmol/L",
+          "Need for vasopressors"
+        ]
+      },
+      {
+        "name": "Acute respiratory distress syndrome",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Worsening hypoxemia",
+          "Diffuse bilateral opacities on chest x-ray",
+          "Need for mechanical ventilation"
+        ]
+      },
+      {
+        "name": "Acute kidney injury",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Rising creatinine",
+          "Oliguria",
+          "Need for renal replacement therapy"
+        ]
+      },
+      {
+        "name": "Disseminated intravascular coagulation",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Falling platelets",
+          "Prolonged PT and aPTT",
+          "Bleeding from puncture sites or oozing"
+        ]
+      },
+      {
+        "name": "Septic cardiomyopathy",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Persistent shock despite fluids and vasopressors",
+          "Reduced ejection fraction on echocardiogram",
+          "Elevated troponin"
+        ]
+      },
+      {
+        "name": "Critical illness myopathy and neuropathy",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Prolonged weakness after the acute illness",
+          "Difficulty weaning from the ventilator",
+          "Reduced deep tendon reflexes"
+        ]
+      },
+      {
+        "name": "Post-sepsis syndrome",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "common",
+        "clues": [
+          "Persistent fatigue, cognitive difficulty and poor sleep",
+          "Depression or anxiety after recovery",
+          "Symptoms lasting months"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "older_adults",
+        "differences": "May have little or no fever and present with confusion, falls, weakness or a decline in function; the infection can be far advanced before it is recognized, and mortality is higher."
+      },
+      {
+        "population": "infants",
+        "differences": "Present with poor feeding, irritability, lethargy, temperature instability, vomiting or difficulty breathing rather than localizing complaints; a full sepsis workup including lumbar puncture is often needed."
+      },
+      {
+        "population": "children",
+        "differences": "May have fever, fast breathing, poor perfusion, lethargy or irritability; younger children cannot describe pain or confusion, and hypotension is a late finding."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "May present with fever, abdominal pain, uterine tenderness or preterm contractions; normal pregnancy changes in heart rate and blood pressure can mask early sepsis, and the source is often chorioamnionitis or pyelonephritis."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "May not mount a fever or a high white count; can present with subtle symptoms and rapid deterioration, and unusual organisms such as fungi or atypical bacteria must be considered."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "May have less fever and more fluid overload or electrolyte disturbance; decreased urine output is harder to interpret against baseline kidney disease, and antibiotic doses need adjustment."
+      },
+      {
+        "population": "hepatic_impairment",
+        "differences": "May have blunted fever, coagulopathy and altered mental status at baseline, making organ dysfunction harder to detect; antibiotic dosing and fluid balance require close monitoring."
+      },
+      {
+        "population": "diabetes",
+        "differences": "May have blunted fever and present with hyperglycemia, dehydration or a foot or soft tissue infection as the source; stress hyperglycemia is common and worsens outcomes."
+      },
+      {
+        "population": "obesity",
+        "differences": "May have less reliable temperature elevation and more difficulty with breathing and positioning; skin folds and line sites are common sources, and dosing of some antibiotics should be weight-based."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "When did you start feeling this way, and is it getting worse?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Onset over hours to a day or two, with steady worsening rather than a stable or improving course"
+      },
+      {
+        "question": "Have you had fevers, shaking chills, or felt very cold and clammy?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Fever with rigors or temperature instability; rigors strongly suggest a bloodstream infection"
+      },
+      {
+        "question": "Do you have any infection right now that is not getting better, or that is getting worse?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "A known or suspected source such as pneumonia, a urinary infection, an abdominal infection, or a skin or wound infection"
+      },
+      {
+        "question": "Have you been confused, or has anyone said you are not acting like yourself?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "New confusion, disorientation or reduced alertness, which counts as organ dysfunction"
+      },
+      {
+        "question": "Are you short of breath, or breathing faster than usual?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Dyspnea or tachypnea suggesting a pulmonary source or respiratory failure"
+      },
+      {
+        "question": "Have you been able to keep fluids down, and how much have you been urinating?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Poor intake, vomiting or decreasing urine output suggesting hypoperfusion and acute kidney injury"
+      },
+      {
+        "question": "Do you have any pain, and where is it worst?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Localizing pain that points to the source: cough and pleuritic pain, flank pain, abdominal pain, or wound pain"
+      },
+      {
+        "question": "Have you been in the hospital recently, or had surgery or a procedure?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Recent hospitalization, surgery or an invasive procedure, which raises the risk of a healthcare-associated source"
+      },
+      {
+        "question": "Do you have any lines, catheters, drains or other medical devices?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "An indwelling urinary catheter, central line, port or other device that could be the source"
+      },
+      {
+        "question": "Do you have any long-term medical conditions, such as diabetes, lung disease, cancer or kidney disease?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Chronic conditions that increase the risk of sepsis and worsen outcomes"
+      },
+      {
+        "question": "Do you take any medicines that weaken your immune system, such as steroids or chemotherapy?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Immunosuppressive medications that blunt fever and the white count response"
+      },
+      {
+        "question": "Have you had any recent antibiotics, and if so, which ones?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Recent antibiotic exposure that may select for resistant organisms and change empiric coverage"
+      },
+      {
+        "question": "Do you use intravenous drugs?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Injection drug use, which raises the risk of endocarditis and skin and soft tissue infection"
+      },
+      {
+        "question": "Do you live in a nursing home or long-term care facility?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Residence in a long-term care facility, which is associated with resistant organisms and a higher risk of sepsis"
+      },
+      {
+        "question": "Have you had any recent influenza or other severe viral illness?",
+        "category": "associated",
+        "importance": "optional",
+        "looking_for": "A recent viral illness that can precede or predispose to bacterial superinfection and sepsis"
+      }
+    ],
+    "accepted_names": [
+      "Sepsis",
+      "Severe sepsis",
+      "Septic shock",
+      "Sepsis syndrome",
+      "Bloodstream infection with organ dysfunction",
+      "SIRS with infection"
+    ],
+    "reasoning_points": [
+      "Suspected or confirmed infection plus new organ dysfunction, not just fever and tachycardia",
+      "Vital sign abnormalities: fever or hypothermia, tachycardia, tachypnea and hypotension",
+      "Altered mental status or reduced urine output as evidence of organ dysfunction",
+      "Elevated lactate indicating tissue hypoperfusion, with a value of 2 mmol/L or higher supporting sepsis",
+      "Leukocytosis with a left shift, or leukopenia in overwhelming sepsis, along with thrombocytopenia",
+      "Rising creatinine, low bicarbonate or acidemia reflecting organ injury from hypoperfusion",
+      "A search for the source: pneumonia, urinary tract infection, intra-abdominal infection, skin or wound infection, or an infected line or device",
+      "Blood cultures drawn before antibiotics, without delaying antibiotics",
+      "Hypotension that persists after adequate fluids defines septic shock and requires vasopressors",
+      "Look-alikes excluded: cardiogenic shock, hypovolemic shock, pulmonary embolism, adrenal crisis and anaphylaxis"
+    ],
+    "difficulty": {
+      "easy": [
+        "Older adult with a known infection who becomes febrile, tachycardic and hypotensive",
+        "Clear source such as pneumonia or a urinary tract infection with an indwelling catheter",
+        "Leukocytosis, elevated lactate and a rising creatinine",
+        "Rapid improvement in blood pressure with fluids"
+      ],
+      "medium": [
+        "Older adult with confusion and a fall but little or no fever",
+        "Immunocompromised patient with a normal white count and subtle symptoms",
+        "Source not obvious on initial history and exam, requiring imaging",
+        "Patient on chronic steroids with hypotension that responds poorly to fluids"
+      ],
+      "hard": [
+        "Afebrile patient with isolated altered mental status and no localizing symptoms",
+        "Septic shock mimicking cardiogenic or hypovolemic shock",
+        "Pregnant patient with fever and abdominal pain where normal pregnancy changes mask early sepsis",
+        "Patient with cirrhosis or end-stage kidney disease where baseline organ dysfunction makes new dysfunction hard to detect",
+        "Rapid deterioration from a device-related or fungal source with negative initial cultures"
+      ]
+    }
+  }
+}

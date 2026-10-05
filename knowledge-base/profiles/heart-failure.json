@@ -1,0 +1,1995 @@
+{
+  "schema_version": "0.2",
+  "slug": "heart-failure",
+  "triage": {
+    "name": "Heart Failure",
+    "case_suitable": true,
+    "reason": "Common syndrome with classic dyspnea, edema and orthopnea history, exam findings, and a clear workup including BNP and echocardiography; rich differential.",
+    "kind": "disease",
+    "category": "cardiomyopathy / heart failure",
+    "organ_systems": [
+      "cardiovascular"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "familyMedicine",
+      "emergency"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "inpatient",
+      "clinic",
+      "emergency"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:17:53Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:49:32Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:49:41Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:49:56Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:50:09Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:50:16Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'ecg' to 'ECG'",
+        "auto-repaired: workup: 'transthoracic echocardiogram' was in ['initial', 'confirmatory'], kept ['initial']",
+        "auto-repaired: workup: 'ct chest with iv contrast (ct pulmonary angiography)' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ct chest with iv contrast (ct pulmonary angiography)' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "differential copd-exacerbation: no profile yet",
+        "differential pneumonia: no profile yet",
+        "differential pulmonary-embolism: no profile yet",
+        "differential nephrotic-syndrome: no profile yet",
+        "differential cirrhosis: no profile yet",
+        "differential anemia: no profile yet",
+        "differential hypothyroidism: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 60,
+      "typical_max": 85,
+      "peak": "65–80",
+      "possible_min": 20,
+      "possible_max": 110
+    },
+    "sex": "either",
+    "demographics": [
+      "Men tend to develop it at a younger age than women",
+      "More common and more severe at younger ages in African American patients",
+      "Incidence rises steeply after age 65"
+    ],
+    "risk_factors": [
+      {
+        "text": "Coronary artery disease or prior myocardial infarction",
+        "strength": "strong"
+      },
+      {
+        "text": "Long-standing hypertension",
+        "strength": "strong"
+      },
+      {
+        "text": "Age 65 or older",
+        "strength": "strong"
+      },
+      {
+        "text": "Diabetes mellitus",
+        "strength": "moderate"
+      },
+      {
+        "text": "Valvular heart disease",
+        "strength": "moderate"
+      },
+      {
+        "text": "Obesity",
+        "strength": "moderate"
+      },
+      {
+        "text": "Family history of heart failure or cardiomyopathy",
+        "strength": "moderate"
+      },
+      {
+        "text": "Tobacco use",
+        "strength": "moderate"
+      },
+      {
+        "text": "Heavy alcohol use",
+        "strength": "moderate"
+      },
+      {
+        "text": "Chronic kidney disease",
+        "strength": "moderate"
+      },
+      {
+        "text": "Atrial fibrillation or other arrhythmia",
+        "strength": "moderate"
+      },
+      {
+        "text": "Obstructive sleep apnea",
+        "strength": "weak"
+      },
+      {
+        "text": "Anemia",
+        "strength": "weak"
+      },
+      {
+        "text": "Thyroid disease",
+        "strength": "weak"
+      },
+      {
+        "text": "Prior chest radiation or cardiotoxic chemotherapy",
+        "strength": "weak"
+      },
+      {
+        "text": "Illicit stimulant use",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Coronary artery disease",
+      "Hypertension",
+      "Diabetes mellitus",
+      "Atrial fibrillation",
+      "Chronic kidney disease",
+      "Chronic obstructive pulmonary disease",
+      "Obstructive sleep apnea",
+      "Anemia",
+      "Obesity"
+    ],
+    "family_history": [
+      "Heart failure or cardiomyopathy in a first-degree relative",
+      "Sudden cardiac death in a young relative"
+    ],
+    "social_history": [
+      "Sedentary lifestyle",
+      "High-sodium diet",
+      "Tobacco use",
+      "Heavy alcohol use"
+    ],
+    "exposures": [
+      "Cardiotoxic chemotherapy such as anthracyclines",
+      "Chest radiation therapy"
+    ],
+    "risk_medications": [
+      "NSAIDs",
+      "Thiazolidinediones",
+      "Anthracyclines",
+      "Trastuzumab"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I get winded just walking to the mailbox",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "My ankles and feet are swollen",
+        "frequency": "common"
+      },
+      {
+        "text": "I can't lie flat at night — I have to prop myself up with pillows",
+        "frequency": "common"
+      },
+      {
+        "text": "I wake up in the middle of the night gasping for air",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "I'm tired all the time and have no energy",
+        "frequency": "common"
+      },
+      {
+        "text": "I've gained weight and my clothes feel tight",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Usually gradual over weeks to months; can be abrupt over hours to days after a myocardial infarction, arrhythmia, infection or valve rupture",
+      "duration": "Weeks to months for chronic heart failure; hours to days for acute decompensation",
+      "progression": "Exertional breathlessness appears first and slowly limits activity; orthopnea, paroxysmal nocturnal dyspnea, edema and weight gain follow as congestion builds",
+      "location": "Breathlessness is felt in the chest; swelling is in the ankles, lower legs and sometimes the abdomen",
+      "radiation": "Not applicable",
+      "quality": "Air hunger and heaviness in the chest; swelling is pitting and painless",
+      "severity": "Mild at first, then moderate to severe; patients often describe it as 4–8/10 when they finally seek care",
+      "timing": "Worse with activity and when lying flat; better after sitting up or resting",
+      "aggravating": [
+        "Walking or climbing stairs",
+        "Lying flat",
+        "Exertion",
+        "High-sodium meals",
+        "Stopping medications"
+      ],
+      "relieving": [
+        "Sitting upright",
+        "Resting",
+        "Sleeping on extra pillows",
+        "Diuretics"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Shortness of breath with activity",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Fatigue and weakness",
+          "frequency": "common"
+        },
+        {
+          "text": "Swelling of the ankles and lower legs",
+          "frequency": "common"
+        },
+        {
+          "text": "Needing extra pillows to sleep",
+          "frequency": "common"
+        },
+        {
+          "text": "Waking at night short of breath",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Dry cough, worse at night or lying down",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Rapid weight gain over days",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Loss of appetite, early fullness, nausea",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Abdominal bloating or right upper quadrant discomfort",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Nocturia",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Lightheadedness or palpitations",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Coughing up pink frothy sputum",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Fever or chills",
+        "Pleuritic chest pain that worsens with deep breath",
+        "Productive cough with purulent sputum",
+        "Unilateral calf pain or swelling",
+        "Sudden pleuritic chest pain with hemoptysis",
+        "Recent long travel or immobilization",
+        "Known prior heart failure diagnosis",
+        "Current use of NSAIDs or thiazolidinediones"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fatigue",
+            "frequency": "common"
+          },
+          {
+            "text": "Weight gain from fluid",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Fever",
+          "Chills",
+          "Night sweats",
+          "Unintentional weight loss"
+        ],
+        "argues_against": [
+          "Infection as the primary cause"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [
+          {
+            "text": "Swelling of ankles and legs",
+            "frequency": "common"
+          },
+          {
+            "text": "Palpitations",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Chest discomfort with exertion",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Syncope",
+          "Severe tearing chest pain radiating to the back"
+        ],
+        "argues_against": [
+          "Aortic dissection",
+          "Primary arrhythmia as sole cause"
+        ]
+      },
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "Shortness of breath with activity",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Orthopnea",
+            "frequency": "common"
+          },
+          {
+            "text": "Paroxysmal nocturnal dyspnea",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Dry nocturnal cough",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Pleuritic chest pain",
+          "Hemoptysis",
+          "Purulent sputum",
+          "Wheezing that responds to inhalers"
+        ],
+        "argues_against": [
+          "Pneumonia",
+          "Pulmonary embolism",
+          "Asthma or COPD exacerbation"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Early satiety and bloating",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Nausea",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Vomiting blood",
+          "Black stools",
+          "Jaundice",
+          "Severe abdominal pain"
+        ],
+        "argues_against": [
+          "Primary gastrointestinal bleeding or hepatobiliary disease"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [
+          {
+            "text": "Nocturia",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Dysuria",
+          "Hematuria",
+          "Flank pain"
+        ],
+        "argues_against": [
+          "Urinary tract infection or renal colic"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [],
+        "negatives": [
+          "Unilateral calf pain",
+          "Calf swelling",
+          "Joint pain"
+        ],
+        "argues_against": [
+          "Deep vein thrombosis"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Lightheadedness",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Syncope",
+          "Focal weakness",
+          "Slurred speech"
+        ],
+        "argues_against": [
+          "Stroke or transient ischemic attack"
+        ]
+      },
+      {
+        "system": "psychiatric",
+        "positives": [
+          {
+            "text": "Anxiety about breathlessness",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Suicidal ideation",
+          "Panic attacks as the primary problem"
+        ],
+        "argues_against": [
+          "Primary anxiety disorder"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "older_adults",
+        "how_it_differs": "May present with confusion, falls, poor appetite or generalized weakness rather than classic dyspnea; exertional symptoms are often attributed to aging.",
+        "missing_classic_features": [
+          "Exertional dyspnea",
+          "Orthopnea",
+          "Ankle edema"
+        ]
+      },
+      {
+        "population": "obesity",
+        "how_it_differs": "Breathlessness and leg swelling are blamed on weight; edema may be hard to see and BNP can be lower than expected.",
+        "missing_classic_features": [
+          "Visible pitting edema",
+          "Clear orthopnea history"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Normal pregnancy causes mild dyspnea, leg swelling and fatigue, so worsening orthopnea, paroxysmal nocturnal dyspnea and a new murmur are the clues.",
+        "missing_classic_features": [
+          "Distinguishing physiologic from pathologic dyspnea"
+        ]
+      },
+      {
+        "population": "renal_impairment",
+        "how_it_differs": "Volume overload from kidney disease can mimic heart failure; edema and dyspnea overlap and BNP is elevated by reduced clearance.",
+        "missing_classic_features": [
+          "Clear cardiac cause of congestion"
+        ]
+      },
+      {
+        "population": "diabetes",
+        "how_it_differs": "Autonomic neuropathy can blunt exertional symptoms, and patients may present later with silent ischemia or advanced congestion.",
+        "missing_classic_features": [
+          "Angina",
+          "Early exertional dyspnea"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Comfortable at rest, mild dyspnea only with exertion, no distress",
+      "moderate": "Mild respiratory distress at rest, prefers sitting upright, speaks in full sentences",
+      "severe": "Obvious respiratory distress, uses accessory muscles, speaks in short phrases, anxious",
+      "critical": "Acutely dyspneic and diaphoretic, tripod positioning, unable to speak in full sentences, may be confused or agitated"
+    },
+    "findings": [
+      {
+        "id": "jugular-venous-distention",
+        "region": "neck",
+        "maneuver": "Inspect the internal jugular vein with the patient at 45 degrees and measure the vertical height above the sternal angle",
+        "finding": "Jugular venous pressure elevated above 3–4 cm above the sternal angle",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "positive-hepatojugular-reflux",
+        "region": "neck",
+        "maneuver": "Press firmly over the right upper quadrant for 10–15 seconds while watching the jugular venous pulsation",
+        "finding": "Sustained rise in jugular venous pressure that does not fall during abdominal pressure",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "s3-gallop",
+        "region": "cardiac",
+        "maneuver": "Auscultate the apex with the bell while the patient lies in the left lateral position",
+        "finding": "Third heart sound (S3 gallop)",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "displaced-apical-impulse",
+        "region": "cardiac",
+        "maneuver": "Palpate the apical impulse in the left lateral decubitus position",
+        "finding": "Apical impulse displaced laterally and inferiorly, sustained and enlarged",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "systolic-murmur",
+        "region": "cardiac",
+        "maneuver": "Auscultate all valve areas with the diaphragm and bell",
+        "finding": "Systolic murmur of mitral regurgitation at the apex or of aortic stenosis at the right upper sternal border",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "crackles",
+        "region": "lung",
+        "maneuver": "Auscultate the posterior lung bases with the diaphragm",
+        "finding": "Fine inspiratory crackles at the bases that do not clear with coughing",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "dullness-at-bases",
+        "region": "lung",
+        "maneuver": "Percuss the posterior lung bases",
+        "finding": "Dullness at the bases from pleural effusion",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "wheezing",
+        "region": "lung",
+        "maneuver": "Auscultate the chest during quiet and forced expiration",
+        "finding": "Diffuse expiratory wheezing (cardiac asthma)",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "pitting-edema",
+        "region": "extremities",
+        "maneuver": "Press firmly over the dorsum of the foot and the lower shin for several seconds",
+        "finding": "Bilateral pitting edema of the ankles and lower legs, often extending to the thighs when severe",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "cool-extremities",
+        "region": "extremities",
+        "maneuver": "Assess skin temperature and capillary refill at the hands and feet",
+        "finding": "Cool, pale extremities with prolonged capillary refill and mottling",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "hepatomegaly",
+        "region": "abdomen",
+        "maneuver": "Palpate the right upper quadrant below the costal margin",
+        "finding": "Tender, pulsatile hepatomegaly from hepatic congestion",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "ascites",
+        "region": "abdomen",
+        "maneuver": "Percuss the flanks for shifting dullness or perform a fluid wave",
+        "finding": "Ascites",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "altered-mental-status",
+        "region": "mental_status",
+        "maneuver": "Assess orientation, attention and level of consciousness",
+        "finding": "Confusion, somnolence or agitation from hypoperfusion or hypoxemia",
+        "frequency": "sometimes",
+        "min_severity": "critical",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "no-fever",
+        "region": "general",
+        "maneuver": "Measure temperature and inspect for a source of infection",
+        "finding": "No fever and no obvious infectious source",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-unilateral-calf-findings",
+        "region": "extremities",
+        "maneuver": "Palpate both calves and compare circumference",
+        "finding": "No unilateral calf tenderness or swelling",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-pleuritic-chest-pain",
+        "region": "lung",
+        "maneuver": "Ask the patient to take a deep breath and cough while auscultating",
+        "finding": "No pleuritic chest pain or pleural rub",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "moderate": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "severe": {
+        "min": 97.5,
+        "max": 99.5
+      },
+      "critical": {
+        "min": 97.0,
+        "max": 99.5
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 70,
+        "max": 95
+      },
+      "moderate": {
+        "min": 85,
+        "max": 110
+      },
+      "severe": {
+        "min": 100,
+        "max": 130
+      },
+      "critical": {
+        "min": 110,
+        "max": 150
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 14,
+        "max": 20
+      },
+      "moderate": {
+        "min": 18,
+        "max": 24
+      },
+      "severe": {
+        "min": 22,
+        "max": 32
+      },
+      "critical": {
+        "min": 28,
+        "max": 40
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 110,
+        "max": 150
+      },
+      "moderate": {
+        "min": 100,
+        "max": 160
+      },
+      "severe": {
+        "min": 90,
+        "max": 170
+      },
+      "critical": {
+        "min": 70,
+        "max": 100
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 65,
+        "max": 90
+      },
+      "moderate": {
+        "min": 60,
+        "max": 95
+      },
+      "severe": {
+        "min": 55,
+        "max": 100
+      },
+      "critical": {
+        "min": 40,
+        "max": 65
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 94,
+        "max": 99
+      },
+      "moderate": {
+        "min": 90,
+        "max": 95
+      },
+      "severe": {
+        "min": 85,
+        "max": 92
+      },
+      "critical": {
+        "min": 75,
+        "max": 88
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "bnp",
+      "ranges": {
+        "mild": {
+          "min": 100,
+          "max": 300
+        },
+        "moderate": {
+          "min": 300,
+          "max": 900
+        },
+        "severe": {
+          "min": 900,
+          "max": 2500
+        },
+        "critical": {
+          "min": 1500,
+          "max": 5000
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "A normal BNP in an untreated patient makes heart failure unlikely; levels are lower in obesity and higher in renal impairment, older age and atrial fibrillation."
+    },
+    {
+      "test_id": "nt_probnp",
+      "ranges": {
+        "mild": {
+          "min": 125,
+          "max": 450
+        },
+        "moderate": {
+          "min": 450,
+          "max": 1500
+        },
+        "severe": {
+          "min": 1500,
+          "max": 5000
+        },
+        "critical": {
+          "min": 3000,
+          "max": 10000
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "Alternative to BNP; age-stratified cutoffs are used, and levels rise with reduced kidney function."
+    },
+    {
+      "test_id": "hs_tnt",
+      "ranges": {
+        "moderate": {
+          "min": 14,
+          "max": 40
+        },
+        "severe": {
+          "min": 40,
+          "max": 200
+        },
+        "critical": {
+          "min": 100,
+          "max": 1000
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Mildly elevated troponin is common in acute decompensation from demand ischemia; marked elevation suggests acute coronary syndrome as the trigger."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "mild": {
+          "min": 1.1,
+          "max": 1.5
+        },
+        "moderate": {
+          "min": 1.4,
+          "max": 2.0
+        },
+        "severe": {
+          "min": 1.8,
+          "max": 3.0
+        },
+        "critical": {
+          "min": 2.5,
+          "max": 6.0
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "Cardiorenal syndrome; also guides diuretic dosing and safety of renin-angiotensin blockade."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "mild": {
+          "min": 20,
+          "max": 30
+        },
+        "moderate": {
+          "min": 28,
+          "max": 45
+        },
+        "severe": {
+          "min": 40,
+          "max": 70
+        },
+        "critical": {
+          "min": 60,
+          "max": 120
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Rises with reduced effective circulating volume and diuresis."
+    },
+    {
+      "test_id": "na",
+      "ranges": {
+        "mild": {
+          "min": 132,
+          "max": 135
+        },
+        "moderate": {
+          "min": 128,
+          "max": 133
+        },
+        "severe": {
+          "min": 122,
+          "max": 130
+        },
+        "critical": {
+          "min": 115,
+          "max": 125
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Dilutional hyponatremia from neurohormonal activation; a marker of worse prognosis."
+    },
+    {
+      "test_id": "k",
+      "ranges": {
+        "mild": {
+          "min": 3.3,
+          "max": 3.5
+        },
+        "moderate": {
+          "min": 3.0,
+          "max": 3.4
+        },
+        "severe": {
+          "min": 2.5,
+          "max": 3.0
+        },
+        "critical": {
+          "min": 2.0,
+          "max": 2.8
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "Hypokalemia from loop diuretics; hyperkalemia can occur with renin-angiotensin blockade or renal failure."
+    },
+    {
+      "test_id": "hgb",
+      "ranges": {
+        "mild": {
+          "min": 11.0,
+          "max": 12.0
+        },
+        "moderate": {
+          "min": 9.0,
+          "max": 11.0
+        },
+        "severe": {
+          "min": 7.0,
+          "max": 9.0
+        },
+        "critical": {
+          "min": 5.0,
+          "max": 7.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Anemia can both cause and worsen heart failure; look for iron deficiency."
+    },
+    {
+      "test_id": "tsh",
+      "ranges": {
+        "mild": {
+          "min": 4.0,
+          "max": 6.0
+        },
+        "moderate": {
+          "min": 6.0,
+          "max": 10.0
+        },
+        "severe": {
+          "min": 10.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Both hypothyroidism and hyperthyroidism can precipitate or mimic heart failure."
+    },
+    {
+      "test_id": "a1c",
+      "ranges": {
+        "mild": {
+          "min": 5.7,
+          "max": 6.4
+        },
+        "moderate": {
+          "min": 6.5,
+          "max": 8.0
+        },
+        "severe": {
+          "min": 8.0,
+          "max": 12.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Diabetes is a common driver of heart failure and affects management."
+    },
+    {
+      "test_id": "albumin",
+      "ranges": {
+        "mild": {
+          "min": 3.0,
+          "max": 3.5
+        },
+        "moderate": {
+          "min": 2.5,
+          "max": 3.2
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 2.8
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Low albumin from hepatic congestion, malnutrition or protein-losing states."
+    },
+    {
+      "test_id": "tbili",
+      "ranges": {
+        "mild": {
+          "min": 1.2,
+          "max": 2.0
+        },
+        "moderate": {
+          "min": 1.8,
+          "max": 3.0
+        },
+        "severe": {
+          "min": 2.5,
+          "max": 5.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Mild elevation from hepatic congestion; marked elevation suggests a primary liver problem."
+    },
+    {
+      "test_id": "ast",
+      "ranges": {
+        "mild": {
+          "min": 40,
+          "max": 80
+        },
+        "moderate": {
+          "min": 70,
+          "max": 150
+        },
+        "severe": {
+          "min": 120,
+          "max": 300
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Congestive hepatopathy; usually mild and improves with decongestion."
+    },
+    {
+      "test_id": "alt",
+      "ranges": {
+        "mild": {
+          "min": 56,
+          "max": 90
+        },
+        "moderate": {
+          "min": 80,
+          "max": 160
+        },
+        "severe": {
+          "min": 140,
+          "max": 300
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "ua_protein",
+      "qualitative": {
+        "mild": "Trace",
+        "moderate": "1+",
+        "severe": "2+"
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Proteinuria may reflect the underlying cause (hypertensive or diabetic nephropathy) or renal congestion."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "severe": {
+          "min": 2.0,
+          "max": 4.0
+        },
+        "critical": {
+          "min": 3.0,
+          "max": 8.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevated lactate with cool extremities and hypotension indicates cardiogenic shock."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rhythm",
+        "finding": "Sinus tachycardia",
+        "frequency": "common",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Atrial fibrillation",
+        "frequency": "sometimes"
+      },
+      {
+        "feature": "rate",
+        "finding": "Tachycardia",
+        "frequency": "common",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "axis",
+        "finding": "Left axis deviation",
+        "frequency": "sometimes"
+      },
+      {
+        "feature": "p_wave",
+        "finding": "Left atrial enlargement (broad, notched P wave in lead II, terminal negative deflection in V1)",
+        "frequency": "sometimes"
+      },
+      {
+        "feature": "qrs",
+        "finding": "Low voltage in the limb leads",
+        "frequency": "sometimes"
+      },
+      {
+        "feature": "qrs",
+        "finding": "Left bundle branch block",
+        "frequency": "sometimes"
+      },
+      {
+        "feature": "qrs",
+        "finding": "Pathologic Q waves from prior myocardial infarction",
+        "frequency": "sometimes"
+      },
+      {
+        "feature": "qt",
+        "finding": "Prolonged QT interval",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "st",
+        "finding": "ST depression or T wave inversion from demand ischemia or strain",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "st",
+        "finding": "ST elevation in a coronary distribution suggesting acute myocardial infarction as the trigger",
+        "frequency": "rare",
+        "leads": [
+          "II",
+          "III",
+          "aVF",
+          "V1",
+          "V2",
+          "V3",
+          "V4",
+          "V5",
+          "V6"
+        ]
+      },
+      {
+        "feature": "conduction",
+        "finding": "Nonspecific intraventricular conduction delay",
+        "frequency": "sometimes"
+      },
+      {
+        "feature": "other",
+        "finding": "Voltage criteria for left ventricular hypertrophy",
+        "frequency": "common"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Transthoracic echocardiogram",
+      "modality": "echo",
+      "preferred_when": "All patients with suspected heart failure",
+      "findings": [
+        {
+          "text": "Reduced left ventricular ejection fraction (HFrEF) or preserved ejection fraction with diastolic dysfunction (HFpEF)",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Left ventricular hypertrophy",
+          "frequency": "common"
+        },
+        {
+          "text": "Left atrial enlargement",
+          "frequency": "common"
+        },
+        {
+          "text": "Global or regional wall motion abnormality suggesting prior or acute infarction",
+          "frequency": "common"
+        },
+        {
+          "text": "Valvular disease, most often mitral regurgitation or aortic stenosis",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Right ventricular dilation or dysfunction and elevated estimated pulmonary artery pressure",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Pericardial effusion",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Chest x-ray",
+      "modality": "xray",
+      "preferred_when": "Dyspnea of unclear cause; first-line in the emergency setting",
+      "findings": [
+        {
+          "text": "Cardiomegaly with increased cardiothoracic ratio",
+          "frequency": "common"
+        },
+        {
+          "text": "Pulmonary vascular congestion with cephalization of vessels",
+          "frequency": "common"
+        },
+        {
+          "text": "Bilateral pleural effusions, often larger on the right",
+          "frequency": "common"
+        },
+        {
+          "text": "Interstitial or alveolar edema with perihilar haziness",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Kerley B lines",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Normal chest x-ray despite clinical heart failure",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Coronary angiography (invasive or CT)",
+      "modality": "other",
+      "preferred_when": "Suspected coronary artery disease as the cause, or before surgical or device therapy",
+      "findings": [
+        {
+          "text": "Significant coronary artery stenosis",
+          "frequency": "common"
+        },
+        {
+          "text": "Multivessel or left main disease",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "No obstructive coronary disease (nonischemic cardiomyopathy)",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "Cardiac MRI",
+      "modality": "mri",
+      "preferred_when": "Unclear cause of cardiomyopathy or suspected infiltrative or inflammatory disease",
+      "findings": [
+        {
+          "text": "Late gadolinium enhancement in a pattern suggesting infarction, myocarditis or infiltrative disease",
+          "frequency": "common"
+        },
+        {
+          "text": "Increased myocardial wall thickness suggesting amyloidosis or hypertrophy",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Myocardial edema suggesting active inflammation",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "CT chest with IV contrast (CT pulmonary angiography)",
+      "modality": "ct",
+      "preferred_when": "Suspected pulmonary embolism or when echocardiography is unavailable",
+      "findings": [
+        {
+          "text": "Filling defect in the pulmonary arteries (pulmonary embolism)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Right ventricular enlargement",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Pleural effusions and pulmonary edema",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "Nuclear myocardial perfusion imaging",
+      "modality": "nuclear",
+      "preferred_when": "Assessing for ischemia when exercise testing is not feasible",
+      "findings": [
+        {
+          "text": "Reversible perfusion defect indicating inducible ischemia",
+          "frequency": "common"
+        },
+        {
+          "text": "Fixed defect indicating prior infarction",
+          "frequency": "common"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "bnp",
+        "why": "Supports the diagnosis and helps distinguish cardiac from pulmonary causes of dyspnea"
+      },
+      {
+        "test": "nt_probnp",
+        "why": "Alternative natriuretic peptide; useful when BNP is unavailable"
+      },
+      {
+        "test": "cbc",
+        "why": "Looks for anemia or infection as a trigger"
+      },
+      {
+        "test": "bmp",
+        "why": "Assesses renal function, electrolytes and sodium before diuresis"
+      },
+      {
+        "test": "Transthoracic echocardiogram",
+        "why": "Defines ejection fraction, wall motion, valves and chamber size"
+      },
+      {
+        "test": "Chest x-ray",
+        "why": "Shows cardiomegaly, congestion and effusions; helps exclude pneumonia"
+      },
+      {
+        "test": "ECG",
+        "why": "Detects arrhythmia, ischemia, hypertrophy or conduction disease"
+      },
+      {
+        "test": "hs_tnt",
+        "why": "Screens for acute coronary syndrome as the precipitant",
+        "only_if": "chest pain, ischemic ECG changes or hemodynamic instability"
+      },
+      {
+        "test": "tsh",
+        "why": "Thyroid disease can cause or worsen heart failure"
+      },
+      {
+        "test": "a1c",
+        "why": "Identifies diabetes as a contributing cause"
+      },
+      {
+        "test": "lactate",
+        "why": "Assesses perfusion in suspected cardiogenic shock",
+        "only_if": "hypotension, cool extremities or altered mental status"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "cmp_extra",
+        "why": "Assesses hepatic congestion and nutritional status"
+      },
+      {
+        "test": "ua",
+        "why": "Screens for proteinuria suggesting a renal contribution"
+      },
+      {
+        "test": "lipids",
+        "why": "Cardiovascular risk assessment and statin decisions"
+      },
+      {
+        "test": "iron_vitamins",
+        "why": "Iron deficiency is common and treatable in heart failure"
+      },
+      {
+        "test": "Coronary angiography (invasive or CT)",
+        "why": "Identifies obstructive coronary disease",
+        "only_if": "angina, ischemic ECG changes or high pretest probability of coronary disease"
+      },
+      {
+        "test": "Cardiac MRI",
+        "why": "Clarifies the cause when echocardiography is inconclusive",
+        "only_if": "cause remains unclear or infiltrative disease is suspected"
+      },
+      {
+        "test": "CT chest with IV contrast (CT pulmonary angiography)",
+        "why": "Rules out pulmonary embolism",
+        "only_if": "sudden worsening dyspnea with risk factors or pleuritic pain"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "d_dimer",
+        "why": "Nonspecific in heart failure and rarely changes management"
+      },
+      {
+        "test": "procalcitonin",
+        "why": "Not needed unless infection is suspected"
+      },
+      {
+        "test": "csf",
+        "why": "No role in heart failure workup"
+      },
+      {
+        "test": "abg",
+        "why": "Reserved for severe hypoxemia or suspected hypercapnia",
+        "only_if": "severe respiratory distress or suspected CO2 retention"
+      },
+      {
+        "test": "CT chest with IV contrast (CT pulmonary angiography)",
+        "why": "Only when pulmonary embolism is suspected",
+        "only_if": "clinical suspicion of pulmonary embolism"
+      }
+    ],
+    "decision_points": [
+      "Check BNP or NT-proBNP before echocardiography to support the diagnosis when the cause of dyspnea is unclear",
+      "Echocardiography is required to classify HFrEF versus HFpEF and guide therapy",
+      "Troponin and ECG should be obtained urgently when acute coronary syndrome is suspected as the trigger",
+      "Assess for cardiogenic shock (hypotension, cool extremities, elevated lactate) and escalate care accordingly",
+      "Evaluate for reversible precipitants such as infection, arrhythmia, ischemia, nonadherence and NSAID use"
+    ],
+    "criteria": [
+      {
+        "name": "Framingham criteria for heart failure",
+        "summary": "Combines major and minor clinical features; two major or one major plus two minor features support the diagnosis.",
+        "items": [
+          "Major: paroxysmal nocturnal dyspnea, neck vein distention, rales, cardiomegaly, acute pulmonary edema, S3 gallop, increased venous pressure, hepatomegaly, weight loss with treatment",
+          "Minor: ankle edema, night cough, dyspnea on exertion, hepatomegaly, pleural effusion, tachycardia, weight loss with treatment"
+        ]
+      }
+    ],
+    "scores": [
+      "nyha_functional_class",
+      "framingham_heart_failure"
+    ]
+  },
+  "differential": [
+    {
+      "name": "COPD exacerbation",
+      "slug": "copd-exacerbation",
+      "why_considered": "Dyspnea, wheezing, cough and reduced exercise tolerance in an older smoker overlap heavily with heart failure.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Long-standing smoking history with chronic productive cough",
+          "Symptoms worse with respiratory infections, better with inhalers",
+          "Less orthopnea and paroxysmal nocturnal dyspnea"
+        ],
+        "exam": [
+          "Barrel chest, prolonged expiration, diffuse wheezing",
+          "No elevated jugular venous pressure or S3 gallop",
+          "Edema is usually absent or mild"
+        ],
+        "labs": [
+          "BNP normal or only mildly elevated",
+          "Eosinophilia or elevated carbon dioxide on blood gas"
+        ],
+        "imaging": [
+          "Hyperinflation, flattened diaphragms and increased retrosternal air space on chest x-ray",
+          "No pulmonary vascular congestion or cardiomegaly"
+        ]
+      }
+    },
+    {
+      "name": "Pneumonia",
+      "slug": "pneumonia",
+      "why_considered": "Fever, cough, dyspnea and crackles can mimic acute heart failure with pulmonary congestion.",
+      "must_not_miss": true,
+      "trigger": "Fever, productive cough or focal lung findings",
+      "discriminators": {
+        "history": [
+          "Acute fever with chills and productive purulent sputum",
+          "Pleuritic chest pain",
+          "No orthopnea or paroxysmal nocturnal dyspnea"
+        ],
+        "exam": [
+          "Focal crackles, dullness or bronchial breath sounds",
+          "No elevated jugular venous pressure or S3 gallop",
+          "No pitting edema"
+        ],
+        "labs": [
+          "Leukocytosis with left shift",
+          "BNP usually normal or only mildly elevated"
+        ],
+        "imaging": [
+          "Lobar or segmental consolidation on chest x-ray",
+          "No cardiomegaly or vascular redistribution"
+        ]
+      }
+    },
+    {
+      "name": "Pulmonary embolism",
+      "slug": "pulmonary-embolism",
+      "why_considered": "Sudden dyspnea, tachycardia and hypoxemia can resemble acute decompensated heart failure.",
+      "must_not_miss": true,
+      "trigger": "Sudden onset dyspnea with pleuritic pain, hemoptysis or unilateral leg swelling",
+      "discriminators": {
+        "history": [
+          "Abrupt onset over minutes to hours",
+          "Pleuritic chest pain, hemoptysis or syncope",
+          "Recent immobilization, surgery or long travel"
+        ],
+        "exam": [
+          "Tachycardia and hypoxemia with clear lungs",
+          "Unilateral calf swelling or tenderness",
+          "No orthopnea or paroxysmal nocturnal dyspnea"
+        ],
+        "labs": [
+          "BNP normal or mildly elevated",
+          "Elevated D-dimer in low-risk patients"
+        ],
+        "imaging": [
+          "Filling defect in pulmonary arteries on CT pulmonary angiography",
+          "Right ventricular enlargement without left-sided congestion"
+        ],
+        "ecg": [
+          "Sinus tachycardia, S1Q3T3 pattern or right axis deviation"
+        ]
+      }
+    },
+    {
+      "name": "Nephrotic syndrome",
+      "slug": "nephrotic-syndrome",
+      "why_considered": "Generalized edema, weight gain and dyspnea from fluid overload can look like right-sided heart failure.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Frothy urine and periorbital edema",
+          "Recent infection or new medication",
+          "No orthopnea or paroxysmal nocturnal dyspnea"
+        ],
+        "exam": [
+          "Periorbital and generalized edema",
+          "No elevated jugular venous pressure or S3 gallop"
+        ],
+        "labs": [
+          "Heavy proteinuria and hypoalbuminemia",
+          "BNP usually normal"
+        ],
+        "imaging": [
+          "Normal heart size and no pulmonary congestion on chest x-ray"
+        ]
+      }
+    },
+    {
+      "name": "Cirrhosis with ascites",
+      "slug": "cirrhosis",
+      "why_considered": "Abdominal swelling, leg edema and dyspnea from ascites can mimic right-sided heart failure.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Known liver disease, alcohol use or hepatitis",
+          "Jaundice, easy bruising and confusion",
+          "No orthopnea or paroxysmal nocturnal dyspnea"
+        ],
+        "exam": [
+          "Spider angiomata, palmar erythema and caput medusae",
+          "Ascites with a small, nonpulsatile liver",
+          "No elevated jugular venous pressure"
+        ],
+        "labs": [
+          "Thrombocytopenia, hypoalbuminemia and prolonged INR",
+          "BNP usually normal"
+        ],
+        "imaging": [
+          "Nodular liver with portal hypertension and splenomegaly on ultrasound",
+          "Normal heart size"
+        ]
+      }
+    },
+    {
+      "name": "Severe anemia",
+      "slug": "anemia",
+      "why_considered": "Exertional dyspnea, fatigue, tachycardia and edema from high-output state can resemble heart failure.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Pallor, pica or bleeding",
+          "No orthopnea or paroxysmal nocturnal dyspnea"
+        ],
+        "exam": [
+          "Pallor and tachycardia",
+          "Flow murmur without elevated jugular venous pressure or S3"
+        ],
+        "labs": [
+          "Low hemoglobin with normal BNP",
+          "Iron studies or B12/folate abnormalities"
+        ],
+        "imaging": [
+          "Normal cardiac chambers and no congestion on echocardiography"
+        ]
+      }
+    },
+    {
+      "name": "Hypothyroidism",
+      "slug": "hypothyroidism",
+      "why_considered": "Fatigue, cold intolerance, weight gain, edema and dyspnea on exertion overlap with heart failure.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Cold intolerance, constipation and dry skin",
+          "Slow onset over months",
+          "No orthopnea or paroxysmal nocturnal dyspnea"
+        ],
+        "exam": [
+          "Nonpitting periorbital edema, bradycardia and delayed reflexes",
+          "No elevated jugular venous pressure or S3 gallop"
+        ],
+        "labs": [
+          "Elevated TSH with low free T4",
+          "BNP usually normal"
+        ],
+        "imaging": [
+          "Pericardial effusion possible but no pulmonary congestion"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "NYHA class I–II: symptoms only with more than ordinary activity; comfortable at rest, no congestion on exam, BNP mildly elevated",
+      "moderate": "NYHA class III: symptoms with ordinary activity such as walking one block; mild crackles, elevated jugular venous pressure, pitting edema, BNP moderately elevated",
+      "severe": "NYHA class IV: symptoms at rest; orthopnea, paroxysmal nocturnal dyspnea, extensive edema, hypoxemia, BNP markedly elevated",
+      "critical": "Cardiogenic shock or acute pulmonary edema: hypotension, cool extremities, altered mental status, lactate elevation, respiratory failure requiring support"
+    },
+    "red_flags": [
+      {
+        "finding": "Hypotension with cool, mottled extremities",
+        "meaning": "Cardiogenic shock; needs urgent hemodynamic support and intensive care"
+      },
+      {
+        "finding": "Severe respiratory distress with pink frothy sputum",
+        "meaning": "Acute pulmonary edema; needs urgent noninvasive ventilation or intubation"
+      },
+      {
+        "finding": "Altered mental status or confusion",
+        "meaning": "Hypoperfusion or hypoxemia; indicates critical illness"
+      },
+      {
+        "finding": "Chest pain with ischemic ECG changes or rising troponin",
+        "meaning": "Acute coronary syndrome as the precipitant; needs urgent reperfusion evaluation"
+      },
+      {
+        "finding": "New rapid atrial fibrillation or sustained ventricular arrhythmia",
+        "meaning": "Arrhythmia driving decompensation; needs rate or rhythm control and consideration of anticoagulation"
+      },
+      {
+        "finding": "Fever with productive cough or focal lung findings",
+        "meaning": "Pneumonia as a precipitant; needs antibiotics and may worsen heart failure"
+      },
+      {
+        "finding": "Rapid weight gain with worsening edema despite diuretics",
+        "meaning": "Worsening congestion; may need intravenous diuresis or medication adjustment"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Acute pulmonary edema",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Sudden severe dyspnea",
+          "Pink frothy sputum",
+          "Diffuse crackles and hypoxemia"
+        ]
+      },
+      {
+        "name": "Cardiogenic shock",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Hypotension",
+          "Cool extremities",
+          "Elevated lactate and oliguria"
+        ]
+      },
+      {
+        "name": "Atrial fibrillation",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Irregularly irregular pulse",
+          "Palpitations",
+          "New or worsening dyspnea"
+        ]
+      },
+      {
+        "name": "Ventricular arrhythmia and sudden cardiac death",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Syncope",
+          "Palpitations",
+          "Reduced ejection fraction below 35%"
+        ]
+      },
+      {
+        "name": "Cardiorenal syndrome",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Rising creatinine during diuresis",
+          "Oliguria",
+          "Persistent congestion"
+        ]
+      },
+      {
+        "name": "Congestive hepatopathy and cirrhosis",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Right upper quadrant pain",
+          "Jaundice",
+          "Elevated transaminases and bilirubin"
+        ]
+      },
+      {
+        "name": "Pleural effusion",
+        "timing": "any",
+        "seriousness": "minor",
+        "frequency": "common",
+        "clues": [
+          "Dullness at lung bases",
+          "Reduced breath sounds",
+          "Dyspnea"
+        ]
+      },
+      {
+        "name": "Pulmonary hypertension",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Loud pulmonic component of S2",
+          "Right ventricular heave",
+          "Elevated estimated pulmonary artery pressure on echocardiography"
+        ]
+      },
+      {
+        "name": "Cachexia and malnutrition",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Weight loss despite fluid retention",
+          "Early satiety",
+          "Low albumin"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "older_adults",
+        "differences": "May present with confusion, falls, poor appetite or generalized weakness rather than classic dyspnea; symptoms are often attributed to aging. Polypharmacy and renal impairment increase the risk of medication-related decompensation."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Normal pregnancy causes mild dyspnea, leg swelling and fatigue, so worsening orthopnea, paroxysmal nocturnal dyspnea and a new murmur are the clues. Peripartum cardiomyopathy should be considered in the late third trimester or up to five months postpartum."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "Volume overload from kidney disease can mimic heart failure; edema and dyspnea overlap and BNP is elevated by reduced clearance. Diuretic dosing and renin-angiotensin blockade require careful monitoring."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Autonomic neuropathy can blunt exertional symptoms, and patients may present later with silent ischemia or advanced congestion. Diabetes is a common driver and affects management."
+      },
+      {
+        "population": "obesity",
+        "differences": "Breathlessness and leg swelling are blamed on weight; edema may be hard to see and BNP can be lower than expected. Weight loss and sleep apnea treatment improve symptoms."
+      },
+      {
+        "population": "children",
+        "differences": "Heart failure in children is usually due to congenital heart disease or cardiomyopathy. Infants present with feeding difficulty, poor growth, sweating with feeds and tachypnea rather than classic orthopnea."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "What brings you in today — what has been going on?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Exertional shortness of breath, fatigue, or leg swelling as the leading complaint"
+      },
+      {
+        "question": "How much can you do before you get short of breath? Has this changed from a month ago?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Declining exercise tolerance; helps assign NYHA functional class"
+      },
+      {
+        "question": "How many pillows do you sleep on? Can you lie flat?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Orthopnea — needing extra pillows or sleeping upright suggests pulmonary congestion"
+      },
+      {
+        "question": "Do you ever wake up at night gasping for air?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Paroxysmal nocturnal dyspnea, a classic congestion symptom"
+      },
+      {
+        "question": "Have your ankles, legs, or belly been swelling? Have your shoes or rings gotten tight?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Peripheral edema and abdominal distention from fluid retention"
+      },
+      {
+        "question": "Have you gained weight recently? How fast?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Rapid weight gain over days to weeks from fluid, not fat"
+      },
+      {
+        "question": "Do you get tired or winded with activities that used to be easy?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Fatigue and reduced functional capacity"
+      },
+      {
+        "question": "Do you have a cough, especially at night or when lying down? Any pink or frothy sputum?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Dry nocturnal cough; pink frothy sputum suggests acute pulmonary edema"
+      },
+      {
+        "question": "Do you have chest pain or pressure with exertion?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Ischemic symptoms suggesting coronary disease as the cause or trigger"
+      },
+      {
+        "question": "Have you had a heart attack, heart failure, or heart valve problem before?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Prior cardiac disease that explains the current syndrome"
+      },
+      {
+        "question": "Do you have high blood pressure, diabetes, kidney disease, or sleep apnea?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Common drivers and precipitants of heart failure"
+      },
+      {
+        "question": "Have you been taking your heart or blood pressure medications? Any recent changes?",
+        "category": "medications",
+        "importance": "essential",
+        "looking_for": "Nonadherence or a stopped diuretic as the trigger for decompensation"
+      },
+      {
+        "question": "Do you take any anti-inflammatory pain relievers like ibuprofen or naproxen?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "NSAIDs cause sodium and water retention and can precipitate heart failure"
+      },
+      {
+        "question": "Has anyone in your family had heart failure, a cardiomyopathy, or sudden cardiac death at a young age?",
+        "category": "family",
+        "importance": "important",
+        "looking_for": "Inherited cardiomyopathy or familial risk"
+      },
+      {
+        "question": "Do you smoke, drink alcohol, or use any recreational drugs?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Tobacco, heavy alcohol, or stimulant use as contributing causes"
+      },
+      {
+        "question": "Have you ever received chemotherapy or radiation to the chest?",
+        "category": "pmh",
+        "importance": "optional",
+        "looking_for": "Cardiotoxic exposure causing cardiomyopathy"
+      },
+      {
+        "question": "Any fever, chills, or recent infection?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Infection as a precipitant; fever argues for pneumonia or endocarditis"
+      },
+      {
+        "question": "Any palpitations or racing heartbeat?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Atrial fibrillation or other arrhythmia driving decompensation"
+      },
+      {
+        "question": "Any lightheadedness, fainting, or confusion?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Hypoperfusion or arrhythmia; syncope or altered mental status suggests severe disease"
+      },
+      {
+        "question": "Any pain, redness, or swelling in just one leg?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Unilateral findings suggest deep vein thrombosis rather than heart failure"
+      }
+    ],
+    "accepted_names": [
+      "Heart failure",
+      "HF",
+      "Congestive heart failure",
+      "CHF",
+      "Cardiac failure",
+      "Left-sided heart failure",
+      "Right-sided heart failure",
+      "Systolic heart failure",
+      "Diastolic heart failure",
+      "HFrEF",
+      "HFpEF"
+    ],
+    "reasoning_points": [
+      "Exertional dyspnea with declining exercise tolerance is the cardinal symptom",
+      "Orthopnea and paroxysmal nocturnal dyspnea indicate pulmonary congestion",
+      "Bilateral pitting edema, weight gain, and abdominal bloating indicate systemic congestion",
+      "Elevated jugular venous pressure, an S3 gallop, and pulmonary crackles support the diagnosis on exam",
+      "An elevated BNP or NT-proBNP supports a cardiac cause of dyspnea",
+      "Echocardiography classifies the type (reduced vs preserved ejection fraction) and identifies the cause",
+      "A reversible precipitant should be sought: ischemia, arrhythmia, infection, nonadherence, NSAIDs, or anemia",
+      "Look-alikes such as COPD, pneumonia, pulmonary embolism, nephrotic syndrome, and cirrhosis should be considered and excluded"
+    ],
+    "difficulty": {
+      "easy": [
+        "Older adult with known hypertension or prior myocardial infarction",
+        "Classic story of exertional dyspnea, orthopnea, and ankle swelling",
+        "Elevated jugular venous pressure, crackles at the bases, and pitting edema on exam",
+        "Elevated BNP and reduced ejection fraction on echocardiography"
+      ],
+      "medium": [
+        "Older adult presenting with fatigue, poor appetite, or confusion rather than dyspnea",
+        "Obesity masking edema and blunting BNP elevation",
+        "Atrial fibrillation as the precipitant with an irregularly irregular pulse",
+        "Coexisting COPD making it hard to tell cardiac from pulmonary dyspnea"
+      ],
+      "hard": [
+        "Preserved ejection fraction (HFpEF) with a normal or mildly elevated BNP",
+        "Renal impairment with volume overload and an elevated BNP from reduced clearance",
+        "Pregnancy with physiologic dyspnea and leg swelling, or peripartum cardiomyopathy",
+        "Cardiogenic shock with hypotension, cool extremities, and elevated lactate",
+        "Acute pulmonary edema with pink frothy sputum requiring urgent support"
+      ]
+    }
+  }
+}
