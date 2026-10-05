@@ -33,7 +33,7 @@ enum DebugLaunch {
         }
     }
 
-    static func apply(app: AppState, tab: inout Tab, expandedPatient: inout String?) {
+    @MainActor static func apply(app: AppState, tab: inout Tab, expandedPatient: inout String?) {
         guard let screen else { return }
         switch screen {
         case "patients": tab = .patients
@@ -41,44 +41,51 @@ enum DebugLaunch {
         case "patients-open": tab = .patients; expandedPatient = "R2"
         case "profile", "settings": tab = .profile
         case "home", "focus-sheet", "splash", "home-swipe-right", "home-swipe-left": tab = .today
+        case "admit":
+            // Generates a live patient (DeepSeek via local Supabase) and opens its door note.
+            tab = .today
+            Task { @MainActor in await app.admit(focus: FocusSelection()) }
         default:
-            let s = CaseSession()
+            // Case screens open the newest generated patient (admit one first from Home).
             let path: [CaseStep]
             switch screen {
-            case "interview", "voice-listen", "voice-patient": s.debugSeed(through: .interview); path = [.interview]
-            case "examine": s.debugSeed(through: .interview); path = [.interview]
-            case "workup": s.debugSeed(through: .workup); path = [.interview, .workup]
-            case "diagnosis", "diagnosis-suggest": s.debugSeed(through: .diagnosis); path = [.interview, .workup, .diagnosis]
-            case "handoff": s.debugSeed(through: .diagnosis); path = [.interview, .workup, .diagnosis, .handoff]
-            case "debrief": s.debugSeed(through: .diagnosis); path = [.interview, .workup, .diagnosis, .handoff, .debrief]
+            case "interview", "voice-listen", "voice-patient", "examine": path = [.interview]
+            case "workup": path = [.interview, .workup]
+            case "diagnosis", "diagnosis-suggest": path = [.interview, .workup, .diagnosis]
+            case "handoff": path = [.interview, .workup, .diagnosis, .handoff]
+            case "debrief": path = [.interview, .workup, .diagnosis, .handoff, .debrief]
             default: path = []
             }
             app.debugInitialPath = path
-            app.activeCase = s
+            Task { @MainActor in
+                await app.refresh()
+                if let newest = app.ward.first { await app.open(bed: newest.id) }
+            }
         }
     }
 }
 
-extension CaseSession {
-    func debugSeed(through step: CaseStep) {
-        debugInject(
-            messages: [
-                ChatMessage(kind: .doctor, text: "Can you show me where the pain is? Does it go anywhere else?"),
-                ChatMessage(kind: .patient, text: clinical.facts[1].reply),
-                ChatMessage(kind: .reveal, text: "Revealed: radiation, site"),
-                ChatMessage(kind: .doctor, text: "Do you smoke, or have any heart problems in the family?"),
-                ChatMessage(kind: .patient, text: clinical.facts[5].reply),
-                ChatMessage(kind: .reveal, text: "Revealed: smoking, family history"),
-            ],
-            revealed: ["site", "risk", "onset", "character"],
-            examined: step == .interview ? [] : ["inspect", "heart"],
-            tests: step == .interview ? [] : ["ecg", "trop"],
-            pending: step == .workup ? ["trop"] : []
-        )
-        if step == .diagnosis {
-            diagnosis = "Inferior STEMI"
-            plan = "Aspirin, activate cath lab for primary PCI, oxygen only if sats drop below 94%, analgesia."
-        }
-    }
-}
+// MOCK (disabled): seeded the scripted chest-pain conversation for screenshots.
+// extension CaseSession {
+//     func debugSeed(through step: CaseStep) {
+//         debugInject(
+//             messages: [
+//                 ChatMessage(kind: .doctor, text: "Can you show me where the pain is? Does it go anywhere else?"),
+//                 ChatMessage(kind: .patient, text: clinical.facts[1].reply),
+//                 ChatMessage(kind: .reveal, text: "Revealed: radiation, site"),
+//                 ChatMessage(kind: .doctor, text: "Do you smoke, or have any heart problems in the family?"),
+//                 ChatMessage(kind: .patient, text: clinical.facts[5].reply),
+//                 ChatMessage(kind: .reveal, text: "Revealed: smoking, family history"),
+//             ],
+//             revealed: ["site", "risk", "onset", "character"],
+//             examined: step == .interview ? [] : ["inspect", "heart"],
+//             tests: step == .interview ? [] : ["ecg", "trop"],
+//             pending: step == .workup ? ["trop"] : []
+//         )
+//         if step == .diagnosis {
+//             diagnosis = "Inferior STEMI"
+//             plan = "Aspirin, activate cath lab for primary PCI, oxygen only if sats drop below 94%, analgesia."
+//         }
+//     }
+// }
 #endif

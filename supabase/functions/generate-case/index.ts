@@ -99,14 +99,15 @@ async function save(userId: string, profile: Profile, plan: CasePlan, w: Writing
       await sql.begin(async (tx) => {
         await tx`
           insert into public.cases (id, specialty, patient_name, age, sex, quote, complaint, vitals, budget, minutes,
-            published, created_by, setting, demeanor, organ_system, clerkship, suggested, maneuvers, test_menu)
+            published, created_by, setting, demeanor, organ_system, clerkship, suggested, maneuvers, test_menu, key_history)
           values (${id}, ${profile.triage.primary_clerkship}, ${w.patient.name}, ${plan.age}, ${plan.sex},
             ${w.patient.quote}, ${w.patient.complaint}, ${tx.json(doorVitals(plan))}, ${budget}, 10,
             false, ${userId}, ${w.patient.setting}, ${w.patient.demeanor}, ${profile.triage.organ_systems[0]},
             ${profile.triage.primary_clerkship}, ${tx.json(w.suggested)},
             ${tx.json(w.maneuvers.map(({ id, title }) => ({ id, title })))},
             ${tx.json(tests.map(({ id, name, detail, cost, turnaround_s, delays_care_min }) =>
-              ({ id, name, detail, cost, turnaround_s, delays_care_min })))})`;
+              ({ id, name, detail, cost, turnaround_s, delays_care_min })))},
+            ${w.facts.filter((f) => f.importance !== "optional").length})`;
         await tx`
           insert into private.case_content (case_id, facts, exam, tests, answer_key, condition_slug, severity, persona, rubric)
           values (${id}, ${tx.json(w.facts)}, ${tx.json(w.maneuvers)}, ${tx.json(tests)},

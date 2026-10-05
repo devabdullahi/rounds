@@ -54,7 +54,8 @@ Return JSON:
 Include 10–16 facts (onset/timeline, character, associated symptoms, pertinent negatives, past history, medications, allergies, family, social, and the must-not-miss screens), 5–8 suggested questions, every exam finding above as a maneuver plus 2–3 routine ones (key false).`;
 }
 
-const ID = /^[a-z0-9_]+$/;
+// Any short, unique id works: neutralIds() replaces them all before saving.
+const ID = /^[A-Za-z0-9_-]{1,60}$/;
 
 export function checkWriting(w: Writing, plan: CasePlan, terms: string[]): string[] {
   const problems: string[] = [];
@@ -63,14 +64,14 @@ export function checkWriting(w: Writing, plan: CasePlan, terms: string[]): strin
   if (!Array.isArray(w?.facts) || w.facts.length < 8) problems.push("need at least 8 facts");
   const factIds = new Set<string>();
   for (const f of w.facts ?? []) {
-    if (!ID.test(f.id) || factIds.has(f.id)) problems.push(`fact id ${JSON.stringify(f.id)} must be unique snake_case`);
+    if (!ID.test(f.id) || factIds.has(f.id)) problems.push(`fact id ${JSON.stringify(f.id)} must be unique and 1–60 letters, digits, - or _`);
     factIds.add(f.id);
     if (!["essential", "important", "optional"].includes(f.importance)) problems.push(`fact ${f.id}: bad importance`);
   }
   for (const s of w.suggested ?? []) if (!factIds.has(s.fact)) problems.push(`suggested question points to unknown fact ${s.fact}`);
   const maneuverIds = new Set<string>();
   for (const m of w.maneuvers ?? []) {
-    if (!ID.test(m.id) || maneuverIds.has(m.id)) problems.push(`maneuver id ${JSON.stringify(m.id)} must be unique snake_case`);
+    if (!ID.test(m.id) || maneuverIds.has(m.id)) problems.push(`maneuver id ${JSON.stringify(m.id)} must be unique and 1–60 letters, digits, - or _`);
     maneuverIds.add(m.id);
   }
   if (maneuverIds.size < 3) problems.push("need at least 3 maneuvers");

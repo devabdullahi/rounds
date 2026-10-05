@@ -1,15 +1,19 @@
 import SwiftUI
 
-/// How many ward patients fit a focus, as a short label: "3 cases", "1 case", "Coming soon".
-private func caseCount(_ focus: StudyFocus) -> (text: String, empty: Bool) {
-    let n = Ward.count(for: focus)
-    return n == 0 ? ("Coming soon", true) : ("\(n) \(n == 1 ? "case" : "cases")", false)
+/// How many conditions a focus can draw new patients from, as a short label: "12 conditions",
+/// "Coming soon". nil while the counts haven't loaded (e.g. signed out), so nothing shows.
+private func conditionCount(_ focus: StudyFocus, in counts: [String: Int]) -> (text: String, empty: Bool)? {
+    guard !counts.isEmpty else { return nil }
+    let n = counts[focus.stored] ?? 0
+    return n == 0 ? ("Coming soon", true) : ("\(n) \(n == 1 ? "condition" : "conditions")", false)
 }
 
 /// Rotation or system tiles plus a "mix it up" row. Used by onboarding step 2.
 /// Tiles toggle, so a student can pick several; "mix it up" clears them.
 struct FocusGrid: View {
     let byRotation: Bool
+    /// Conditions per topic, keyed by `StudyFocus.stored`; empty hides the counts.
+    var counts: [String: Int] = [:]
     @Binding var selection: FocusSelection
     @Binding var mixChosen: Bool
 
@@ -36,7 +40,7 @@ struct FocusGrid: View {
 
     private func tile(_ label: String, _ detail: String, _ value: StudyFocus) -> some View {
         let on = selection.contains(value)
-        let count = caseCount(value)
+        let count = conditionCount(value, in: counts)
         return Button {
             withAnimation(Springs.pop) { selection.toggle(value); mixChosen = false }
         } label: {
@@ -55,9 +59,11 @@ struct FocusGrid: View {
                     .multilineTextAlignment(.leading)
                     .fixedSize(horizontal: false, vertical: true)
                 Spacer(minLength: 0)
-                Text(count.text)
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundStyle(count.empty ? Theme.faint : Theme.accentText)
+                if let count {
+                    Text(count.text)
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(count.empty ? Theme.faint : Theme.accentText)
+                }
             }
             .foregroundStyle(Theme.text)
             .padding(.horizontal, 14)
@@ -68,7 +74,7 @@ struct FocusGrid: View {
             .modifier(SelectableSurface(on: on))
         }
         .buttonStyle(PressDownStyle())
-        .accessibilityValue(count.text)
+        .accessibilityValue(count?.text ?? "")
         .accessibilityAddTraits(on ? .isSelected : [])
     }
 }
@@ -124,6 +130,8 @@ struct SelectableSurface: ViewModifier {
 /// Home chip and Settings row open this: pick any rotations and systems, or a mix.
 /// Rows use the onboarding selection look and keep the example complaints.
 struct FocusSheet: View {
+    /// Conditions per topic, keyed by `StudyFocus.stored`; empty hides the counts.
+    var counts: [String: Int] = [:]
     @Environment(\.dismiss) private var dismiss
     @AppStorage(StudyFocus.storageKey) private var focusStored = ""
 
@@ -174,7 +182,7 @@ struct FocusSheet: View {
 
     private func row(_ label: String, _ detail: String, _ value: StudyFocus) -> some View {
         let on = focus.contains(value)
-        let count = caseCount(value)
+        let count = conditionCount(value, in: counts)
         return Button {
             var next = focus
             next.toggle(value)
@@ -186,9 +194,11 @@ struct FocusSheet: View {
                     Text(detail).font(.system(size: 13)).foregroundStyle(Theme.muted)
                 }
                 Spacer(minLength: 8)
-                Text(count.text)
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundStyle(count.empty ? Theme.faint : Theme.accentText)
+                if let count {
+                    Text(count.text)
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(count.empty ? Theme.faint : Theme.accentText)
+                }
                 if on { FocusCheck(size: 20) }
             }
             .foregroundStyle(Theme.text)
@@ -198,7 +208,7 @@ struct FocusSheet: View {
             .modifier(SelectableSurface(on: on))
         }
         .buttonStyle(PressDownStyle())
-        .accessibilityValue(count.text)
+        .accessibilityValue(count?.text ?? "")
         .accessibilityAddTraits(on ? .isSelected : [])
     }
 }

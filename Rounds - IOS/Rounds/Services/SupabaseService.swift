@@ -1,7 +1,7 @@
 import Foundation
 import Supabase
 
-/// Supabase connection. Set up but not used by any screen yet: the app still runs on sample data.
+/// Supabase connection used by `LiveCaseService`.
 ///
 /// Values come from Config/Secrets.xcconfig (git-ignored) via Info.plist. While they're empty,
 /// `client` is nil and nothing tries to connect.
