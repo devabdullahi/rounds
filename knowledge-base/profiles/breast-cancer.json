@@ -1,0 +1,1624 @@
+{
+  "schema_version": "0.2",
+  "slug": "breast-cancer",
+  "triage": {
+    "name": "Breast Cancer",
+    "case_suitable": true,
+    "reason": "Palpable breast mass or abnormal screening mammogram is a core case; diagnosis and staging reachable by history, exam, imaging and biopsy.",
+    "kind": "disease",
+    "category": "malignancy",
+    "organ_systems": [
+      "reproductive"
+    ],
+    "primary_clerkship": "obgyn",
+    "secondary_clerkships": [
+      "surgery",
+      "internalMedicine",
+      "familyMedicine"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "clinic",
+      "inpatient"
+    ],
+    "is_cancer": true
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:16:11Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:33:41Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:33:47Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:34:10Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:34:23Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:34:29Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "differential fibroadenoma: no profile yet",
+        "differential breast-cyst: no profile yet",
+        "differential fibrocystic-breast-changes: no profile yet",
+        "differential mastitis: no profile yet",
+        "differential phyllodes-tumor: no profile yet",
+        "differential lactational-adenoma: no profile yet",
+        "differential fat-necrosis: no profile yet",
+        "differential breast-lymphoma: no profile yet",
+        "differential breast-metastasis: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 45,
+      "typical_max": 74,
+      "peak": "55–65",
+      "possible_min": 20,
+      "possible_max": 100
+    },
+    "sex": "female_predominant",
+    "demographics": [
+      "About 1 in 8 US women will be diagnosed with breast cancer in their lifetime; incidence rises steadily with age.",
+      "Non-Hispanic White women have the highest overall incidence; Black women are more often diagnosed at a younger age and with more aggressive subtypes, and have higher mortality.",
+      "Ashkenazi Jewish ancestry carries a higher rate of BRCA1/BRCA2 founder mutations.",
+      "Male breast cancer accounts for under 1% of cases."
+    ],
+    "risk_factors": [
+      {
+        "text": "Increasing age",
+        "strength": "strong"
+      },
+      {
+        "text": "BRCA1 or BRCA2 pathogenic variant, or other inherited cancer syndrome",
+        "strength": "strong"
+      },
+      {
+        "text": "Prior breast cancer or prior chest radiation therapy",
+        "strength": "strong"
+      },
+      {
+        "text": "First-degree relative with breast cancer",
+        "strength": "moderate"
+      },
+      {
+        "text": "High breast density on mammography",
+        "strength": "moderate"
+      },
+      {
+        "text": "Prolonged estrogen exposure: early menarche, late menopause, nulliparity or first birth after age 30",
+        "strength": "moderate"
+      },
+      {
+        "text": "Prior benign breast biopsy, especially atypical hyperplasia",
+        "strength": "moderate"
+      },
+      {
+        "text": "Obesity after menopause",
+        "strength": "moderate"
+      },
+      {
+        "text": "Regular alcohol use",
+        "strength": "moderate"
+      },
+      {
+        "text": "Current or recent menopausal hormone therapy with estrogen plus progestin",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Obesity",
+      "Type 2 diabetes",
+      "Hypertension"
+    ],
+    "family_history": [
+      "Breast cancer in a mother, sister, or daughter",
+      "Ovarian cancer in a close relative",
+      "Male breast cancer in a relative",
+      "Known BRCA1 or BRCA2 mutation in the family"
+    ],
+    "social_history": [
+      "Alcohol use",
+      "Sedentary lifestyle",
+      "Never breastfed or no full-term pregnancy"
+    ],
+    "exposures": [
+      "Prior therapeutic radiation to the chest (for example, mantle radiation for Hodgkin lymphoma)",
+      "Long-term menopausal hormone therapy"
+    ],
+    "risk_medications": [
+      "conjugated estrogens",
+      "medroxyprogesterone acetate",
+      "estradiol"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I felt a lump in my breast",
+        "frequency": "common"
+      },
+      {
+        "text": "My mammogram came back abnormal and they want me to have more tests",
+        "frequency": "common"
+      },
+      {
+        "text": "My nipple has been leaking a little blood",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "The skin on my breast looks dimpled, like an orange peel",
+        "frequency": "rare"
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual; the lump is usually noticed incidentally or on screening imaging, not at a specific moment",
+      "duration": "Weeks to months; many patients cannot say exactly when it started",
+      "progression": "The lump is typically painless and persists or slowly enlarges; it does not come and go with the menstrual cycle",
+      "location": "Most often the upper outer quadrant of the breast; can be anywhere in the breast or axilla",
+      "radiation": "Usually none; advanced disease can cause pain radiating to the chest wall, back, or arm",
+      "quality": "Firm, hard, irregular, and fixed; may feel like a thickening rather than a distinct ball",
+      "severity": "Usually painless; if pain is present it is mild and non-cyclical",
+      "timing": "Constant, present every day, not tied to the menstrual period",
+      "aggravating": [
+        "Pressing on the area",
+        "Lying on that side"
+      ],
+      "relieving": [
+        "Nothing reliably relieves it"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "A lump or thickening in the armpit",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Change in the size or shape of one breast",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Skin dimpling or puckering over the lump",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Nipple turning inward (retraction)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Bloody or clear nipple discharge from one breast",
+          "frequency": "rare"
+        },
+        {
+          "text": "Scaly, red, or itchy skin on the nipple and areola",
+          "frequency": "rare"
+        },
+        {
+          "text": "Breast warmth, redness, and swelling with ridged skin",
+          "frequency": "rare"
+        },
+        {
+          "text": "Unintentional weight loss, bone pain, or new shortness of breath suggesting spread",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Lump that comes and goes with the menstrual cycle",
+        "Fever or chills",
+        "Bilateral milky nipple discharge",
+        "Recent breast trauma or bite",
+        "Redness that started after a piercing or insect bite",
+        "Known prior breast cancer treated with lumpectomy at the same site"
+      ]
+    },
+    "ros": [
+      {
+        "system": "reproductive",
+        "positives": [
+          {
+            "text": "New breast lump or thickening",
+            "frequency": "common"
+          },
+          {
+            "text": "Nipple discharge from one breast",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Nipple retraction or skin dimpling",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Cyclical breast tenderness that resolves after menses",
+          "Bilateral spontaneous milky discharge",
+          "Vaginal bleeding"
+        ],
+        "argues_against": [
+          "Fibrocystic change that fluctuates with the cycle",
+          "Mastitis with fever and a recent history of breastfeeding"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [
+          {
+            "text": "Dimpled or puckered skin over the lump",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Scaly, red, or crusted nipple and areola",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Rash that improves with topical antifungal or steroid",
+          "Cellulitis-like redness with fever"
+        ],
+        "argues_against": [
+          "Eczema of the nipple that responds to topical steroids",
+          "Simple skin infection"
+        ]
+      },
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Feeling well overall",
+            "frequency": "common"
+          },
+          {
+            "text": "Unintentional weight loss",
+            "frequency": "rare"
+          },
+          {
+            "text": "Night sweats",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Fever",
+          "Drenching night sweats",
+          "Generalized itching"
+        ],
+        "argues_against": [
+          "Lymphoma presenting with B symptoms and a breast mass"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "New back or hip pain",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Mechanical back pain that improves with rest",
+          "Recent trauma"
+        ],
+        "argues_against": [
+          "Musculoskeletal strain as the cause of bone pain"
+        ]
+      },
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "New shortness of breath",
+            "frequency": "rare"
+          },
+          {
+            "text": "Cough",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Productive cough with fever",
+          "Pleuritic chest pain with a recent viral illness"
+        ],
+        "argues_against": [
+          "Pneumonia or bronchitis"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "older_adults",
+        "how_it_differs": "May present only with an abnormal screening mammogram and no palpable lump; tumors can be softer and less distinct on exam, and competing illnesses can delay workup.",
+        "missing_classic_features": [
+          "Palpable lump",
+          "Breast asymmetry noticed by the patient"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Presents during lactation or pregnancy with a persistent lump that does not resolve; physiologic breast changes make both self-exam and imaging harder, so diagnosis is often delayed.",
+        "missing_classic_features": [
+          "Clear separation from pregnancy-related breast changes",
+          "Typical mammographic appearance"
+        ]
+      },
+      {
+        "population": "obesity",
+        "how_it_differs": "Larger breast size makes self-detection and clinical examination less reliable; patients more often present with a larger tumor or axillary node involvement.",
+        "missing_classic_features": [
+          "Early self-detected small lump"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "In patients with a history of transplant or prolonged immunosuppression, breast masses may be atypical infections or lymphoproliferative disease rather than carcinoma, so tissue diagnosis is essential.",
+        "missing_classic_features": [
+          "Typical carcinoma imaging features"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Well-appearing, comfortable, no distress",
+      "moderate": "Well-appearing but anxious; may guard the affected breast",
+      "severe": "Ill-appearing with weight loss or visible skin changes over the breast",
+      "critical": "Toxic-appearing with dyspnea, bone pain limiting movement, or altered mental status from metastatic disease"
+    },
+    "findings": [
+      {
+        "id": "breast-mass",
+        "region": "breast",
+        "maneuver": "Palpate all four quadrants of both breasts with the flat of the fingers, using a systematic pattern",
+        "finding": "Firm, hard, irregular mass that is fixed to surrounding tissue and does not move freely",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "skin-dimpling",
+        "region": "breast",
+        "maneuver": "Inspect the breasts with the patient seated, arms raised, and leaning forward",
+        "finding": "Dimpling or puckering of the skin overlying the mass (peau d'orange)",
+        "frequency": "sometimes",
+        "significance": "strongly_supports",
+        "importance": "important"
+      },
+      {
+        "id": "nipple-retraction",
+        "region": "breast",
+        "maneuver": "Inspect the nipples and gently press the areola",
+        "finding": "Nipple turned inward or retracted",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "nipple-discharge",
+        "region": "breast",
+        "maneuver": "Gently express the nipple and inspect for discharge",
+        "finding": "Bloody or clear discharge from a single duct in one breast",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "paget-nipple",
+        "region": "breast",
+        "maneuver": "Inspect the nipple and areola for scaly, red, or crusted skin",
+        "finding": "Eczematous, scaly, red, or crusted change of the nipple and areola",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "inflammatory-breast",
+        "region": "breast",
+        "maneuver": "Inspect and palpate the entire breast for warmth, redness, and swelling",
+        "finding": "Diffuse warmth, erythema, and edema with ridged skin (peau d'orange) without a discrete mass",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "axillary-lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the axilla with the arm relaxed",
+        "finding": "Firm, enlarged, or matted axillary lymph nodes",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "supraclavicular-lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the supraclavicular fossae",
+        "finding": "Enlarged supraclavicular lymph node",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "breast-asymmetry",
+        "region": "breast",
+        "maneuver": "Compare the size and shape of both breasts with the patient seated upright",
+        "finding": "Asymmetry or change in the size or contour of one breast",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "normal-contralateral-breast",
+        "region": "breast",
+        "maneuver": "Examine the opposite breast and axilla",
+        "finding": "No mass, skin change, or lymphadenopathy on the contralateral side",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-fever",
+        "region": "general",
+        "maneuver": "Measure temperature and assess for systemic signs of infection",
+        "finding": "No fever or systemic inflammatory signs",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-cyclical-tenderness",
+        "region": "breast",
+        "maneuver": "Ask about and palpate for tenderness that fluctuates with the menstrual cycle",
+        "finding": "Mass is non-tender and does not change with the cycle",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "bone-tenderness",
+        "region": "musculoskeletal",
+        "maneuver": "Palpate the spine and long bones for focal tenderness",
+        "finding": "Focal bone tenderness suggesting metastatic disease",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "hepatomegaly",
+        "region": "abdomen",
+        "maneuver": "Palpate the right upper quadrant and percuss the liver span",
+        "finding": "Hepatomegaly or nodular liver edge suggesting hepatic metastasis",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "respiratory-effusion",
+        "region": "lung",
+        "maneuver": "Auscultate the lung fields and percuss the bases",
+        "finding": "Decreased breath sounds or dullness at the base suggesting pleural effusion",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "moderate": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "severe": {
+        "min": 97.8,
+        "max": 99.5
+      },
+      "critical": {
+        "min": 97.8,
+        "max": 100.4
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 100
+      },
+      "moderate": {
+        "min": 60,
+        "max": 100
+      },
+      "severe": {
+        "min": 60,
+        "max": 110
+      },
+      "critical": {
+        "min": 60,
+        "max": 120
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 12,
+        "max": 20
+      },
+      "moderate": {
+        "min": 12,
+        "max": 20
+      },
+      "severe": {
+        "min": 12,
+        "max": 24
+      },
+      "critical": {
+        "min": 12,
+        "max": 28
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 90,
+        "max": 140
+      },
+      "moderate": {
+        "min": 90,
+        "max": 140
+      },
+      "severe": {
+        "min": 90,
+        "max": 140
+      },
+      "critical": {
+        "min": 80,
+        "max": 140
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 60,
+        "max": 90
+      },
+      "moderate": {
+        "min": 60,
+        "max": 90
+      },
+      "severe": {
+        "min": 60,
+        "max": 90
+      },
+      "critical": {
+        "min": 50,
+        "max": 90
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 95,
+        "max": 100
+      },
+      "moderate": {
+        "min": 95,
+        "max": 100
+      },
+      "severe": {
+        "min": 92,
+        "max": 100
+      },
+      "critical": {
+        "min": 88,
+        "max": 100
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "hgb",
+      "ranges": {
+        "mild": {
+          "min": 10.5,
+          "max": 12.0
+        },
+        "moderate": {
+          "min": 9.0,
+          "max": 11.5
+        },
+        "severe": {
+          "min": 7.5,
+          "max": 10.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Anemia is usually from chronic disease or prior therapy rather than the tumor itself; a low hemoglobin in a patient with bone pain should raise concern for marrow involvement."
+    },
+    {
+      "test_id": "alp",
+      "ranges": {
+        "moderate": {
+          "min": 150,
+          "max": 350
+        },
+        "severe": {
+          "min": 250,
+          "max": 700
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "An isolated rise can reflect bone metastases or liver involvement; fractionate with GGT if the source is unclear."
+    },
+    {
+      "test_id": "ggt",
+      "ranges": {
+        "moderate": {
+          "min": 60,
+          "max": 200
+        },
+        "severe": {
+          "min": 150,
+          "max": 400
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Helps confirm that a raised alkaline phosphatase is hepatobiliary rather than bony."
+    },
+    {
+      "test_id": "ast",
+      "ranges": {
+        "moderate": {
+          "min": 45,
+          "max": 120
+        },
+        "severe": {
+          "min": 90,
+          "max": 250
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "alt",
+      "ranges": {
+        "moderate": {
+          "min": 60,
+          "max": 150
+        },
+        "severe": {
+          "min": 120,
+          "max": 300
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "tbili",
+      "ranges": {
+        "moderate": {
+          "min": 1.3,
+          "max": 2.5
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 5.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Rises only with significant hepatic replacement or biliary obstruction."
+    },
+    {
+      "test_id": "ca",
+      "ranges": {
+        "moderate": {
+          "min": 10.4,
+          "max": 11.5
+        },
+        "severe": {
+          "min": 11.0,
+          "max": 13.0
+        },
+        "critical": {
+          "min": 12.5,
+          "max": 15.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "important",
+      "caveat": "Hypercalcemia suggests osteolytic bone metastases; correct for albumin."
+    },
+    {
+      "test_id": "ldh",
+      "ranges": {
+        "moderate": {
+          "min": 300,
+          "max": 600
+        },
+        "severe": {
+          "min": 500,
+          "max": 1200
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Nonspecific; high values with a rapidly growing mass or liver involvement."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "moderate": {
+          "min": 1.2,
+          "max": 1.8
+        },
+        "severe": {
+          "min": 1.6,
+          "max": 3.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Check before contrast-enhanced staging imaging and before nephrotoxic chemotherapy."
+    },
+    {
+      "test_id": "esr",
+      "ranges": {
+        "moderate": {
+          "min": 25,
+          "max": 60
+        },
+        "severe": {
+          "min": 50,
+          "max": 100
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "moderate": {
+          "min": 1.5,
+          "max": 6.0
+        },
+        "severe": {
+          "min": 4.0,
+          "max": 12.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "sometimes",
+      "importance": "essential",
+      "caveat": "Negative. Required in anyone of childbearing potential before imaging, biopsy, or systemic therapy."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rate",
+        "finding": "Sinus tachycardia",
+        "frequency": "sometimes",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Sinus rhythm",
+        "frequency": "almost_always"
+      },
+      {
+        "feature": "other",
+        "finding": "Nonspecific ST-T wave flattening or T-wave inversion",
+        "frequency": "rare",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "qt",
+        "finding": "Prolonged QTc",
+        "frequency": "rare",
+        "min_severity": "severe"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Diagnostic mammography with spot compression and magnification views",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Irregular, spiculated high-density mass",
+          "frequency": "common"
+        },
+        {
+          "text": "Fine pleomorphic or linear branching microcalcifications",
+          "frequency": "common"
+        },
+        {
+          "text": "Architectural distortion without a discrete mass",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Skin thickening or nipple retraction",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Enlarged axillary lymph node",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Breast ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "Dense breast tissue, palpable mass, or to characterize a mammographic finding",
+      "findings": [
+        {
+          "text": "Solid hypoechoic mass with irregular or spiculated margins and posterior acoustic shadowing",
+          "frequency": "common"
+        },
+        {
+          "text": "Taller-than-wide orientation with anti-parallel blood flow on color Doppler",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Enlarged, rounded, or cortex-thickened axillary lymph node",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Simple cyst (benign, argues against cancer)",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "MRI breast with and without contrast",
+      "modality": "mri",
+      "preferred_when": "Dense breasts, lobular histology, known BRCA mutation, or to assess extent before breast-conserving surgery",
+      "findings": [
+        {
+          "text": "Enhancing mass with irregular margins and washout kinetics",
+          "frequency": "common"
+        },
+        {
+          "text": "Non-mass enhancement in a segmental or linear distribution",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Additional ipsilateral or contralateral foci of disease not seen on mammography",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Chest x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Pulmonary nodule or mass",
+          "frequency": "rare"
+        },
+        {
+          "text": "Pleural effusion",
+          "frequency": "rare"
+        },
+        {
+          "text": "Normal chest",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "CT chest, abdomen, and pelvis with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Suspected metastatic disease or locally advanced tumor",
+      "findings": [
+        {
+          "text": "Pulmonary nodules or pleural effusion",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Hepatic hypodense lesions",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Enlarged mediastinal, axillary, or retroperitoneal lymph nodes",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Sclerotic or lytic bone lesions",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "No distant disease (normal staging study)",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "Bone scan (technetium-99m)",
+      "modality": "nuclear",
+      "preferred_when": "Bone pain or suspected skeletal metastases",
+      "findings": [
+        {
+          "text": "Focal increased uptake in the spine, ribs, pelvis, or long bones",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Diffuse or multifocal uptake suggesting widespread skeletal disease",
+          "frequency": "rare"
+        },
+        {
+          "text": "No abnormal uptake",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "FDG PET/CT",
+      "modality": "nuclear",
+      "preferred_when": "Suspected recurrence or equivocal conventional staging",
+      "findings": [
+        {
+          "text": "Hypermetabolic primary breast mass",
+          "frequency": "common"
+        },
+        {
+          "text": "Hypermetabolic lymph nodes or distant lesions",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "No hypermetabolic disease",
+          "frequency": "sometimes"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "Diagnostic mammography with spot compression and magnification views",
+        "why": "First-line characterization of a palpable mass or abnormal screening mammogram"
+      },
+      {
+        "test": "Breast ultrasound",
+        "why": "Distinguishes solid from cystic and guides biopsy",
+        "only_if": "dense breast tissue, palpable mass, or a mammographic finding needing characterization"
+      },
+      {
+        "test": "cbc",
+        "why": "Baseline blood counts before biopsy and any systemic therapy"
+      },
+      {
+        "test": "bmp",
+        "why": "Baseline renal function, calcium, and electrolytes before contrast imaging and treatment"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before imaging, biopsy, and systemic therapy",
+        "only_if": "patient is of childbearing potential"
+      },
+      {
+        "test": "liver function tests",
+        "why": "Baseline hepatic function and screen for hepatic involvement"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Core needle biopsy of the breast mass",
+        "why": "Tissue diagnosis with histology, grade, and receptor status (estrogen receptor, progesterone receptor, HER2)"
+      },
+      {
+        "test": "Sentinel lymph node biopsy",
+        "why": "Assesses axillary nodal involvement at the time of surgery",
+        "only_if": "clinically node-negative axilla"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "MRI breast with and without contrast",
+        "why": "Defines extent of disease and screens the contralateral breast",
+        "only_if": "dense breasts, lobular histology, known BRCA mutation, or considering breast-conserving surgery"
+      },
+      {
+        "test": "CT chest, abdomen, and pelvis with IV contrast",
+        "why": "Stages for distant disease",
+        "only_if": "locally advanced tumor, symptoms suggesting metastasis, or abnormal liver function tests"
+      },
+      {
+        "test": "Bone scan (technetium-99m)",
+        "why": "Detects skeletal metastases",
+        "only_if": "bone pain or an elevated alkaline phosphatase"
+      },
+      {
+        "test": "FDG PET/CT",
+        "why": "Clarifies equivocal findings or suspected recurrence",
+        "only_if": "conventional staging is equivocal or recurrence is suspected"
+      },
+      {
+        "test": "Genetic counseling and BRCA testing",
+        "why": "Guides surgical and systemic decisions and family screening",
+        "only_if": "young age at diagnosis, triple-negative tumor, bilateral disease, male breast cancer, or strong family history"
+      },
+      {
+        "test": "axillary lymph node ultrasound with fine needle aspiration",
+        "why": "Confirms nodal involvement when nodes are clinically or radiographically abnormal",
+        "only_if": "palpable or suspicious axillary lymph nodes"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Chest x-ray",
+        "why": "Not a substitute for CT staging; rarely changes management",
+        "only_if": "respiratory symptoms or an abnormal chest exam"
+      },
+      {
+        "test": "CA 15-3 or CA 27.29",
+        "why": "Tumor markers are not used to diagnose or stage breast cancer"
+      },
+      {
+        "test": "CEA",
+        "why": "No role in breast cancer diagnosis or staging"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in the workup of a breast mass"
+      },
+      {
+        "test": "procalcitonin",
+        "why": "No role unless infection is suspected"
+      },
+      {
+        "test": "ua",
+        "why": "Not part of the breast mass workup"
+      },
+      {
+        "test": "lipase",
+        "why": "Not indicated for a breast mass"
+      },
+      {
+        "test": "tsh",
+        "why": "Not part of the diagnostic workup"
+      },
+      {
+        "test": "a1c",
+        "why": "Not part of the diagnostic workup"
+      }
+    ],
+    "decision_points": [
+      "Any solid breast mass in a woman over 30 is imaged first with diagnostic mammography and ultrasound, then sampled by core needle biopsy rather than excisional biopsy",
+      "Pregnancy test before imaging, biopsy, or systemic therapy in anyone of childbearing potential",
+      "Receptor status (estrogen receptor, progesterone receptor, HER2) on the biopsy specimen drives systemic therapy and must be requested",
+      "Axillary ultrasound with fine needle aspiration before sentinel node biopsy when nodes are clinically abnormal",
+      "Staging imaging is reserved for locally advanced disease or symptoms; early-stage disease does not need routine CT or bone scan"
+    ],
+    "criteria": [
+      {
+        "name": "BI-RADS assessment categories",
+        "summary": "A standardized reporting scale for breast imaging: 0 needs additional imaging, 1 negative, 2 benign, 3 probably benign with short-interval follow-up, 4 suspicious and biopsy recommended, 5 highly suggestive of malignancy, 6 known biopsy-proven malignancy. Categories 4 and 5 prompt tissue sampling."
+      },
+      {
+        "name": "TNM staging for breast cancer",
+        "summary": "Stage is assigned from tumor size and chest wall or skin involvement (T), regional lymph node involvement (N), and distant metastasis (M). Stages I through III are non-metastatic and stage IV is metastatic disease."
+      }
+    ],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Fibroadenoma",
+      "slug": "fibroadenoma",
+      "why_considered": "Most common benign solid breast mass in young women; presents as a palpable, mobile lump",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Younger age, typically under 30",
+          "Lump may fluctuate slightly with the menstrual cycle",
+          "No weight loss or systemic symptoms"
+        ],
+        "exam": [
+          "Smooth, well-circumscribed, rubbery, highly mobile mass ('breast mouse')",
+          "No skin dimpling, nipple retraction, or axillary lymphadenopathy"
+        ],
+        "imaging": [
+          "Oval, well-circumscribed hypoechoic mass with smooth margins on ultrasound",
+          "No suspicious microcalcifications on mammography"
+        ]
+      }
+    },
+    {
+      "name": "Breast cyst",
+      "slug": "breast-cyst",
+      "why_considered": "Common cause of a palpable breast lump, especially in perimenopausal women",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "May be tender and fluctuate with the menstrual cycle",
+          "Sudden onset sometimes"
+        ],
+        "exam": [
+          "Smooth, round, sometimes tender mass",
+          "No skin or nipple changes"
+        ],
+        "imaging": [
+          "Anechoic, round or oval structure with imperceptible walls and posterior acoustic enhancement on ultrasound",
+          "Simple cyst resolves or is aspirated; no solid component"
+        ]
+      }
+    },
+    {
+      "name": "Fibrocystic breast changes",
+      "slug": "fibrocystic-breast-changes",
+      "why_considered": "Very common benign condition causing lumpiness and breast pain",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Bilateral, diffuse lumpiness and cyclical tenderness that worsens before menses and improves after",
+          "No persistent focal mass"
+        ],
+        "exam": [
+          "Diffuse, often bilateral nodularity without a dominant fixed mass",
+          "No skin dimpling or lymphadenopathy"
+        ],
+        "imaging": [
+          "Diffuse or scattered benign-appearing densities and cysts; no spiculated mass or suspicious calcifications"
+        ]
+      }
+    },
+    {
+      "name": "Mastitis or breast abscess",
+      "slug": "mastitis",
+      "why_considered": "Presents with a tender breast mass, redness, and warmth, especially in lactating women",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Recent breastfeeding or nipple trauma",
+          "Fever and chills",
+          "Acute onset over hours to days"
+        ],
+        "exam": [
+          "Warm, erythematous, tender, indurated area; may have fluctuance if abscess",
+          "Fever present"
+        ],
+        "labs": [
+          "Leukocytosis",
+          "Elevated inflammatory markers"
+        ],
+        "imaging": [
+          "Ultrasound shows a fluid collection or diffuse inflammatory change; no solid spiculated mass"
+        ]
+      }
+    },
+    {
+      "name": "Phyllodes tumor",
+      "slug": "phyllodes-tumor",
+      "why_considered": "Rare fibroepithelial tumor that can present as a rapidly growing breast mass resembling a fibroadenoma",
+      "must_not_miss": true,
+      "trigger": "A breast mass that grows rapidly or is very large, especially in a younger woman",
+      "discriminators": {
+        "history": [
+          "Rapid growth over weeks to months",
+          "Usually painless"
+        ],
+        "exam": [
+          "Large, smooth, mobile mass; skin may be stretched and shiny but not dimpled",
+          "No nipple discharge"
+        ],
+        "imaging": [
+          "Large, well-circumscribed solid mass with heterogeneous internal echotexture and possible cystic spaces on ultrasound",
+          "Mammography shows a large circumscribed mass without spiculated margins"
+        ]
+      }
+    },
+    {
+      "name": "Lactational adenoma",
+      "slug": "lactational-adenoma",
+      "why_considered": "Palpable breast mass during pregnancy or lactation that can mimic malignancy",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Occurs during pregnancy or lactation",
+          "May regress after breastfeeding ends"
+        ],
+        "exam": [
+          "Mobile, well-circumscribed mass without skin changes"
+        ],
+        "imaging": [
+          "Solid, circumscribed mass on ultrasound; biopsy often needed to exclude carcinoma"
+        ]
+      }
+    },
+    {
+      "name": "Fat necrosis",
+      "slug": "fat-necrosis",
+      "why_considered": "Can present as a firm, irregular breast mass with skin retraction after trauma or surgery, closely mimicking cancer",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Recent breast trauma, surgery, or biopsy",
+          "May be painless"
+        ],
+        "exam": [
+          "Firm, irregular mass that may be fixed; skin dimpling possible",
+          "No axillary lymphadenopathy"
+        ],
+        "imaging": [
+          "Coarse, rim-like or 'oil cyst' calcifications on mammography",
+          "Ultrasound shows an irregular hypoechoic area; biopsy may be needed if imaging is indeterminate"
+        ]
+      }
+    },
+    {
+      "name": "Lymphoma involving the breast",
+      "slug": "breast-lymphoma",
+      "why_considered": "Rare but can present as a breast mass, often with systemic B symptoms",
+      "must_not_miss": true,
+      "trigger": "Breast mass with fever, drenching night sweats, or weight loss",
+      "discriminators": {
+        "history": [
+          "B symptoms: fever, night sweats, unintentional weight loss",
+          "May have other nodal disease"
+        ],
+        "exam": [
+          "Firm, sometimes bilateral breast masses",
+          "Generalized lymphadenopathy or splenomegaly"
+        ],
+        "labs": [
+          "Cytopenias or elevated LDH"
+        ],
+        "imaging": [
+          "PET/CT shows hypermetabolic breast and nodal disease; biopsy shows lymphoid cells, not carcinoma"
+        ]
+      }
+    },
+    {
+      "name": "Metastatic disease to the breast from another primary",
+      "slug": "breast-metastasis",
+      "why_considered": "Rare; another cancer (for example, melanoma, lung, or ovarian) can metastasize to the breast and mimic a primary breast tumor",
+      "must_not_miss": true,
+      "trigger": "Known non-breast malignancy with a new breast mass, or bilateral breast masses",
+      "discriminators": {
+        "history": [
+          "Known primary cancer elsewhere",
+          "Bilateral or multiple breast masses"
+        ],
+        "exam": [
+          "Breast mass without typical primary breast cancer skin changes",
+          "Signs of the primary tumor elsewhere"
+        ],
+        "imaging": [
+          "Imaging features may be atypical; biopsy with immunohistochemistry confirms the origin"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Early-stage disease (stage I–IIA): small tumor, no or minimal nodal involvement, no distant spread; patient feels well with a palpable lump or abnormal screening mammogram",
+      "moderate": "Locally advanced disease (stage IIB–IIIA): larger tumor with skin or chest wall involvement or fixed axillary nodes; may have breast pain, skin changes, or arm swelling",
+      "severe": "Stage IIIB–IIIC or inflammatory breast cancer: extensive skin involvement, ulceration, matted supraclavicular or internal mammary nodes, or rapidly progressive inflammatory changes",
+      "critical": "Stage IV metastatic disease with life-threatening complications such as hypercalcemia of malignancy, spinal cord compression, pleural or pericardial effusion, or extensive hepatic replacement"
+    },
+    "red_flags": [
+      {
+        "finding": "Peau d'orange, skin ulceration, or satellite nodules",
+        "meaning": "Locally advanced or inflammatory breast cancer; urgent oncology referral"
+      },
+      {
+        "finding": "Rapidly enlarging, warm, red, swollen breast",
+        "meaning": "Inflammatory breast cancer; requires urgent biopsy and multidisciplinary care"
+      },
+      {
+        "finding": "New back pain with focal spinal tenderness or neurologic deficits",
+        "meaning": "Possible spinal cord compression from bone metastasis; emergent imaging and steroids"
+      },
+      {
+        "finding": "Confusion, polyuria, constipation, or nausea with a high calcium level",
+        "meaning": "Hypercalcemia of malignancy; requires urgent hydration and treatment"
+      },
+      {
+        "finding": "Shortness of breath with decreased breath sounds or dullness at a lung base",
+        "meaning": "Pleural effusion or pulmonary metastasis; urgent imaging and thoracentesis if large"
+      },
+      {
+        "finding": "Palpable supraclavicular or fixed matted axillary lymph nodes",
+        "meaning": "Advanced nodal disease; changes staging and treatment approach"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Lymphedema of the arm",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Prior axillary surgery or radiation",
+          "Arm swelling, heaviness, or reduced range of motion"
+        ]
+      },
+      {
+        "name": "Bone metastasis with pathologic fracture or spinal cord compression",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "New focal bone pain",
+          "Neurologic deficits or bowel/bladder dysfunction",
+          "Elevated alkaline phosphatase"
+        ]
+      },
+      {
+        "name": "Hypercalcemia of malignancy",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Confusion, polyuria, constipation, nausea",
+          "Serum calcium above 12 mg/dL"
+        ]
+      },
+      {
+        "name": "Pleural effusion or pulmonary metastasis",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Dyspnea, cough, decreased breath sounds at the base",
+          "Hypoxia"
+        ]
+      },
+      {
+        "name": "Hepatic metastasis with liver dysfunction",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Right upper quadrant pain, hepatomegaly",
+          "Elevated AST, ALT, alkaline phosphatase, or bilirubin"
+        ]
+      },
+      {
+        "name": "Brain metastasis",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Headache, seizures, focal neurologic deficits, altered mental status"
+        ]
+      },
+      {
+        "name": "Local recurrence after breast-conserving surgery",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "New lump or skin change at the prior lumpectomy site",
+          "Abnormal surveillance mammogram"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "older_adults",
+        "differences": "May present only with an abnormal screening mammogram and no palpable lump; tumors can be softer and less distinct; competing comorbidities can delay workup and treatment."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Presents during pregnancy or lactation with a persistent lump that does not resolve; physiologic breast changes make self-exam and imaging harder, so diagnosis is often delayed; staging must avoid ionizing radiation where possible."
+      },
+      {
+        "population": "obesity",
+        "differences": "Larger breast size makes self-detection and clinical examination less reliable; patients more often present with a larger tumor or axillary node involvement."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Breast masses may be atypical infections or lymphoproliferative disease rather than carcinoma, so tissue diagnosis is essential."
+      }
+    ]
+  },
+  "cancer": {
+    "screening": "The US Preventive Services Task Force recommends biennial screening mammography for women aged 40 to 74 years. Women at higher risk because of a known BRCA mutation, prior chest radiation, or a strong family history may begin earlier and use MRI in addition to mammography.",
+    "pathology": "Most breast cancers are adenocarcinomas arising from the ductal or lobular epithelium. Ductal carcinoma in situ is non-invasive; invasive ductal carcinoma is the most common invasive type. Lobular carcinoma is more often bilateral. Inflammatory breast cancer and Paget disease of the nipple are less common variants. Receptor status (estrogen receptor, progesterone receptor, HER2) and grade guide treatment.",
+    "staging_concepts": "Staging uses the TNM system: tumor size and chest wall or skin involvement (T), regional lymph node involvement (N), and distant metastasis (M). Stages I through III are non-metastatic; stage IV is metastatic disease. Early-stage disease is often detected by screening before a palpable mass is present.",
+    "metastatic_sites": [
+      "bone",
+      "liver",
+      "lung",
+      "brain",
+      "distant lymph nodes"
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "When did you first notice the lump, and has it changed since then?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Gradual onset over weeks to months; persistent or slowly enlarging rather than coming and going"
+      },
+      {
+        "question": "Does the lump change with your menstrual cycle, or is it there all the time?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Constant and non-cyclical; fluctuation with periods points to benign fibrocystic change"
+      },
+      {
+        "question": "Is the lump painful?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Usually painless; mild non-cyclical pain is possible"
+      },
+      {
+        "question": "Have you noticed any change in the size or shape of that breast?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Asymmetry or contour change of one breast"
+      },
+      {
+        "question": "Any dimpling, puckering, or orange-peel appearance of the skin over the lump?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Skin dimpling or peau d'orange suggesting local invasion"
+      },
+      {
+        "question": "Has either nipple turned inward or changed in appearance?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "New nipple retraction or scaly, crusted nipple and areola"
+      },
+      {
+        "question": "Any nipple discharge? If so, from one breast or both, and what color?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Bloody or clear discharge from a single duct in one breast"
+      },
+      {
+        "question": "Have you felt any lump or fullness in your armpit or above your collarbone?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Axillary or supraclavicular nodal involvement"
+      },
+      {
+        "question": "Have you had an abnormal mammogram or been told you need more breast imaging?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Abnormal screening mammogram or BI-RADS 4/5 assessment prompting biopsy"
+      },
+      {
+        "question": "Have you ever had breast cancer or a benign breast biopsy, especially one showing atypical cells?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Prior breast cancer or atypical hyperplasia, both raising risk"
+      },
+      {
+        "question": "Have you ever had radiation therapy to the chest or breast?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Prior chest radiation, such as mantle radiation for Hodgkin lymphoma"
+      },
+      {
+        "question": "Has anyone in your family had breast, ovarian, pancreatic, or prostate cancer, or male breast cancer?",
+        "category": "family",
+        "importance": "essential",
+        "looking_for": "First-degree relatives with breast or ovarian cancer, male breast cancer, or a known BRCA1/BRCA2 mutation"
+      },
+      {
+        "question": "How old were you when your periods started, and have you gone through menopause?",
+        "category": "obstetric",
+        "importance": "important",
+        "looking_for": "Early menarche or late menopause, meaning longer estrogen exposure"
+      },
+      {
+        "question": "Have you ever been pregnant, and how old were you at your first full-term birth?",
+        "category": "obstetric",
+        "importance": "important",
+        "looking_for": "Nulliparity or first birth after age 30"
+      },
+      {
+        "question": "Have you used menopausal hormone therapy, and for how long?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Current or recent combined estrogen plus progestin therapy"
+      },
+      {
+        "question": "How much alcohol do you drink in a typical week?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Regular alcohol use, a modifiable risk factor"
+      },
+      {
+        "question": "Have you had any unintentional weight loss, new back or hip pain, or new shortness of breath?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Symptoms suggesting metastatic disease to bone, liver, or lung"
+      },
+      {
+        "question": "Could you be pregnant? When was your last menstrual period?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Pregnancy status, which must be known before imaging, biopsy, or systemic therapy"
+      }
+    ],
+    "accepted_names": [
+      "Breast cancer",
+      "Breast carcinoma",
+      "Invasive ductal carcinoma",
+      "Invasive breast cancer",
+      "Ductal carcinoma of the breast",
+      "Carcinoma of the breast",
+      "IDC",
+      "DCIS",
+      "Ductal carcinoma in situ"
+    ],
+    "reasoning_points": [
+      "A persistent, painless, non-cyclical breast mass or an abnormal screening mammogram in a woman over 40",
+      "Risk factors such as older age, family history, BRCA1/BRCA2 mutation, prior chest radiation, or prolonged estrogen exposure",
+      "Examination findings of a firm, irregular, fixed mass, with or without skin dimpling, nipple retraction, or axillary lymphadenopathy",
+      "Diagnostic mammography and ultrasound showing a spiculated mass or suspicious microcalcifications, followed by core needle biopsy for tissue diagnosis",
+      "Receptor status (estrogen receptor, progesterone receptor, HER2) requested on the biopsy specimen to guide systemic therapy",
+      "Pregnancy excluded before imaging, biopsy, or systemic therapy in anyone of childbearing potential",
+      "Staging imaging reserved for locally advanced disease or symptoms suggesting metastasis rather than done routinely in early-stage disease",
+      "Benign look-alikes such as fibroadenoma, cyst, fibrocystic change, and mastitis considered and excluded by imaging and, when needed, biopsy"
+    ],
+    "difficulty": {
+      "easy": [
+        "Woman in her 50s or 60s with a painless, firm, fixed breast lump",
+        "Classic risk factors such as a first-degree relative with breast cancer",
+        "Mammogram shows a spiculated mass with suspicious microcalcifications",
+        "Axillary lymphadenopathy on exam"
+      ],
+      "medium": [
+        "Abnormal screening mammogram with no palpable lump in an older adult",
+        "Dense breast tissue requiring ultrasound to characterize the finding",
+        "Lump with skin dimpling or nipple retraction but no palpable nodes",
+        "Woman of reproductive age where fibroadenoma or cyst must be excluded"
+      ],
+      "hard": [
+        "Inflammatory breast cancer presenting as a warm, red, swollen breast without a discrete mass",
+        "Paget disease of the nipple presenting as a scaly, crusted, itchy nipple that fails topical therapy",
+        "Pregnancy or lactation with a persistent lump attributed to physiologic breast changes",
+        "Metastatic disease presenting first with back pain, hypercalcemia, or shortness of breath",
+        "Male breast cancer presenting as a subareolar mass",
+        "Lobular carcinoma with subtle imaging findings and bilateral involvement"
+      ]
+    }
+  }
+}

@@ -1,0 +1,1368 @@
+{
+  "schema_version": "0.2",
+  "slug": "asthma-in-children",
+  "triage": {
+    "name": "Asthma in Children",
+    "case_suitable": true,
+    "reason": "Classic pediatric presentation with recurrent wheeze, cough and dyspnea; diagnosis reachable by history, exam and spirometry, with important look-alikes such as bronchiolitis and foreign body.",
+    "kind": "disease",
+    "category": "reactive airway disease",
+    "organ_systems": [
+      "respiratory"
+    ],
+    "primary_clerkship": "pediatrics",
+    "secondary_clerkships": [
+      "familyMedicine",
+      "emergency",
+      "internalMedicine"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "clinic",
+      "pediatric_clinic",
+      "emergency",
+      "inpatient"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:15:53Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:28:59Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:29:06Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:29:21Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:29:34Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:29:41Z"
+      }
+    ],
+    "validation": {
+      "status": "failed",
+      "rule_errors": [
+        "reply unusable: Expecting ',' delimiter: line 1 column 6244 (char 6243)",
+        "workup: 'spirometry with bronchodilator response' appears in ['initial', 'confirmatory']; use one group, or not_indicated plus one entry with only_if"
+      ],
+      "review_issues": [
+        "differential bronchiolitis: no profile yet",
+        "differential foreign-body-aspiration: no profile yet",
+        "differential community-acquired-pneumonia: no profile yet",
+        "differential cystic-fibrosis: no profile yet",
+        "differential vocal-cord-dysfunction: no profile yet",
+        "differential gastroesophageal-reflux-disease: no profile yet",
+        "differential allergic-rhinitis: no profile yet",
+        "differential congenital-heart-disease: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 2,
+      "typical_max": 17,
+      "peak": "3–10",
+      "possible_min": 0,
+      "possible_max": 17
+    },
+    "sex": "either",
+    "demographics": [
+      "More common in boys during childhood; the sex difference narrows or reverses in adolescence",
+      "Higher prevalence among Black and Puerto Rican children in the US",
+      "More common in children living in urban, low-income neighborhoods"
+    ],
+    "risk_factors": [
+      {
+        "text": "Parent or sibling with asthma",
+        "strength": "strong"
+      },
+      {
+        "text": "Maternal smoking during pregnancy or secondhand smoke exposure in early childhood",
+        "strength": "strong"
+      },
+      {
+        "text": "Personal history of atopic dermatitis or allergic rhinitis",
+        "strength": "strong"
+      },
+      {
+        "text": "Frequent viral respiratory infections in early childhood",
+        "strength": "moderate"
+      },
+      {
+        "text": "Obesity",
+        "strength": "moderate"
+      },
+      {
+        "text": "Male sex in childhood",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Allergic rhinitis",
+      "Atopic dermatitis",
+      "Obesity",
+      "Gastroesophageal reflux disease"
+    ],
+    "family_history": [
+      "Asthma in a parent or sibling",
+      "Allergic rhinitis or atopic dermatitis in a parent or sibling"
+    ],
+    "social_history": [
+      "Exposure to secondhand smoke at home or in a caregiver's car",
+      "Living in older housing with dust mites, mold, or cockroaches",
+      "Attending daycare or school with frequent viral illnesses"
+    ],
+    "exposures": [
+      "Dust mites",
+      "Mold",
+      "Pet dander",
+      "Pollen",
+      "Cockroach or mouse allergen",
+      "Cold air",
+      "Tobacco smoke",
+      "Outdoor air pollution",
+      "Household cleaning sprays"
+    ],
+    "risk_medications": [
+      "aspirin",
+      "ibuprofen"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My child has been wheezing and coughing at night",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "He can't keep up with the other kids when playing",
+        "frequency": "common"
+      },
+      {
+        "text": "She has a whistling sound when she breathes out",
+        "frequency": "common"
+      },
+      {
+        "text": "He wakes up coughing and can't catch his breath",
+        "frequency": "common"
+      },
+      {
+        "text": "Her chest feels tight",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual over weeks to months, often starting in early childhood; individual flare-ups can come on over hours or suddenly",
+      "duration": "Recurrent episodes over months to years; each flare-up lasts days to weeks if untreated",
+      "progression": "Symptoms come and go, often worse at night and with triggers such as colds, exercise, or allergens; between episodes the child may be completely well",
+      "location": "Chest",
+      "radiation": "None",
+      "quality": "Wheezing, cough, chest tightness, and shortness of breath",
+      "severity": "Mild to severe; can be life-threatening during a severe attack",
+      "timing": "Often worse at night or early morning; may be triggered by exercise, cold air, or viral infections",
+      "aggravating": [
+        "Viral upper respiratory infections",
+        "Exercise",
+        "Cold air",
+        "Allergen exposure (dust, pets, pollen, mold)",
+        "Tobacco smoke",
+        "Strong odors or cleaning sprays"
+      ],
+      "relieving": [
+        "Rest",
+        "Quick-relief inhaler (albuterol)",
+        "Avoiding triggers",
+        "Sitting upright"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Cough, especially at night or early morning",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Wheezing",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Shortness of breath or rapid breathing",
+          "frequency": "common"
+        },
+        {
+          "text": "Chest tightness",
+          "frequency": "common"
+        },
+        {
+          "text": "Feeling tired or irritable",
+          "frequency": "common"
+        },
+        {
+          "text": "Dark circles under the eyes",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Trouble eating or sucking in infants",
+          "frequency": "sometimes"
+        }
+      ],
+      "pertinent_negatives": [
+        "Fever as the main symptom",
+        "Productive cough with purulent sputum",
+        "Chest pain that is sharp and pleuritic",
+        "Hemoptysis",
+        "Weight loss or night sweats",
+        "Choking episode or sudden onset while eating",
+        "Symptoms present continuously since birth",
+        "Failure to thrive"
+      ]
+    },
+    "ros": [
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "Wheezing",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Cough, especially at night",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Shortness of breath",
+            "frequency": "common"
+          },
+          {
+            "text": "Chest tightness",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Hemoptysis",
+          "Pleuritic chest pain",
+          "Productive cough with colored sputum"
+        ],
+        "argues_against": [
+          "Pneumonia",
+          "Foreign body aspiration"
+        ]
+      },
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fatigue",
+            "frequency": "common"
+          },
+          {
+            "text": "Irritability",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Fever",
+          "Weight loss",
+          "Night sweats"
+        ],
+        "argues_against": [
+          "Chronic infection",
+          "Malignancy"
+        ]
+      },
+      {
+        "system": "ent",
+        "positives": [
+          {
+            "text": "Nasal congestion or runny nose",
+            "frequency": "common"
+          },
+          {
+            "text": "Itchy, watery eyes",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Chronic purulent nasal discharge",
+          "Recurrent sinus infections"
+        ],
+        "argues_against": [
+          "Chronic sinusitis",
+          "Cystic fibrosis"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Reflux symptoms",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Vomiting",
+          "Diarrhea",
+          "Failure to thrive"
+        ],
+        "argues_against": [
+          "Gastroesophageal reflux disease as sole cause",
+          "Cystic fibrosis"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [
+          {
+            "text": "Eczema",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Clubbing",
+          "Cyanosis"
+        ],
+        "argues_against": [
+          "Chronic hypoxemia",
+          "Congenital heart disease"
+        ]
+      },
+      {
+        "system": "allergic_immunologic",
+        "positives": [
+          {
+            "text": "Known allergies to pets, dust, or pollen",
+            "frequency": "common"
+          },
+          {
+            "text": "History of allergic rhinitis",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Recurrent severe infections",
+          "Anaphylaxis"
+        ],
+        "argues_against": [
+          "Immunodeficiency"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "infants",
+        "how_it_differs": "Infants may present with trouble feeding, rapid breathing, or coughing during feeds rather than classic wheezing; diagnosis is often made after a trial of asthma medications.",
+        "missing_classic_features": [
+          "Wheezing on auscultation",
+          "Ability to perform spirometry"
+        ]
+      },
+      {
+        "population": "children",
+        "how_it_differs": "Young children may not describe chest tightness or shortness of breath; parents report night cough, exercise intolerance, or recurrent 'chest colds' instead.",
+        "missing_classic_features": [
+          "Verbal report of chest tightness",
+          "Clear trigger identification"
+        ]
+      },
+      {
+        "population": "obesity",
+        "how_it_differs": "Obesity can cause dyspnea and exercise limitation that mimic asthma; symptoms may be less responsive to standard asthma therapy.",
+        "missing_classic_features": [
+          "Clear wheezing",
+          "Atopic history"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Comfortable, playful, speaking in full sentences; no distress at rest",
+      "moderate": "Mildly anxious, prefers sitting upright, speaks in short phrases, mild tachypnea",
+      "severe": "Anxious and agitated, sitting upright and leaning forward, speaks in single words, using accessory muscles",
+      "critical": "Lethargic or exhausted, unable to speak or feed, may be confused or have decreased responsiveness"
+    },
+    "findings": [
+      {
+        "id": "wheeze-on-auscultation",
+        "region": "lung",
+        "maneuver": "Auscultate all lung fields during quiet breathing, then ask the child to breathe deeply",
+        "finding": "Diffuse expiratory wheezing, often polyphonic and worse on expiration",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "prolonged-expiratory-phase",
+        "region": "lung",
+        "maneuver": "Listen to the ratio of inspiration to expiration over the trachea and chest",
+        "finding": "Prolonged expiratory phase",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "accessory-muscle-use",
+        "region": "general",
+        "maneuver": "Observe the child's breathing at rest, looking at the neck, intercostal spaces, and abdomen",
+        "finding": "Use of accessory muscles, suprasternal or intercostal retractions, nasal flaring",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "tachypnea",
+        "region": "general",
+        "maneuver": "Count the respiratory rate for a full minute while the child is calm",
+        "finding": "Respiratory rate above the normal range for age",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "inability-to-complete-sentences",
+        "region": "general",
+        "maneuver": "Ask the child to speak a full sentence or count to ten in one breath",
+        "finding": "Speaks in short phrases or single words only",
+        "frequency": "common",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "silent-chest",
+        "region": "lung",
+        "maneuver": "Auscultate all lung fields",
+        "finding": "Minimal or absent breath sounds with a quiet chest despite severe distress",
+        "frequency": "rare",
+        "min_severity": "critical",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "cyanosis",
+        "region": "skin",
+        "maneuver": "Inspect the lips, tongue, and nail beds in good light",
+        "finding": "Central or peripheral cyanosis",
+        "frequency": "rare",
+        "min_severity": "critical",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "altered-mental-status",
+        "region": "mental_status",
+        "maneuver": "Assess alertness, orientation, and response to voice or touch",
+        "finding": "Drowsiness, confusion, or decreased responsiveness",
+        "frequency": "rare",
+        "min_severity": "critical",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "allergic-shiners",
+        "region": "heent",
+        "maneuver": "Inspect the face and under-eye area",
+        "finding": "Dark circles under the eyes (allergic shiners)",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "nasal-mucosal-pallor",
+        "region": "heent",
+        "maneuver": "Inspect the nasal mucosa with a light",
+        "finding": "Pale, boggy nasal mucosa with clear discharge, consistent with allergic rhinitis",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "eczematous-skin",
+        "region": "skin",
+        "maneuver": "Inspect the flexural creases, cheeks, and extensor surfaces",
+        "finding": "Dry, scaly, eczematous patches",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "no-fever",
+        "region": "general",
+        "maneuver": "Measure the temperature and ask about recent fever",
+        "finding": "Afebrile",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-focal-crackles",
+        "region": "lung",
+        "maneuver": "Auscultate for focal crackles or bronchial breath sounds",
+        "finding": "No focal crackles, dullness, or bronchial breath sounds",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-stridor",
+        "region": "neck",
+        "maneuver": "Listen over the neck and trachea during quiet breathing",
+        "finding": "No inspiratory stridor",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-clubbing",
+        "region": "extremities",
+        "maneuver": "Inspect the fingertips and nail beds",
+        "finding": "No digital clubbing",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-asymmetric-breath-sounds",
+        "region": "lung",
+        "maneuver": "Compare breath sounds side to side",
+        "finding": "Symmetric breath sounds without focal decrease",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 97.7,
+        "max": 99.5
+      },
+      "moderate": {
+        "min": 98.0,
+        "max": 100.0
+      },
+      "severe": {
+        "min": 98.0,
+        "max": 100.4
+      },
+      "critical": {
+        "min": 97.5,
+        "max": 100.4
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 80,
+        "max": 120
+      },
+      "moderate": {
+        "min": 100,
+        "max": 140
+      },
+      "severe": {
+        "min": 120,
+        "max": 160
+      },
+      "critical": {
+        "min": 130,
+        "max": 180
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 20,
+        "max": 30
+      },
+      "moderate": {
+        "min": 28,
+        "max": 40
+      },
+      "severe": {
+        "min": 36,
+        "max": 50
+      },
+      "critical": {
+        "min": 40,
+        "max": 60
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 95,
+        "max": 100
+      },
+      "moderate": {
+        "min": 92,
+        "max": 96
+      },
+      "severe": {
+        "min": 88,
+        "max": 93
+      },
+      "critical": {
+        "min": 80,
+        "max": 90
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "eos_pct",
+      "ranges": {
+        "mild": {
+          "min": 4,
+          "max": 8
+        },
+        "moderate": {
+          "min": 5,
+          "max": 10
+        },
+        "severe": {
+          "min": 6,
+          "max": 12
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Mild peripheral eosinophilia supports an atopic phenotype but is neither sensitive nor specific; a normal value does not argue against asthma."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "moderate": {
+          "min": 1.0,
+          "max": 3.0
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 6.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Usually normal in asthma; a marked elevation should prompt consideration of pneumonia or another infection."
+    },
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "moderate": {
+          "min": 11.0,
+          "max": 14.0
+        },
+        "severe": {
+          "min": 12.0,
+          "max": 16.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Mild leukocytosis can occur with viral triggers or systemic corticosteroids; it does not indicate bacterial infection by itself."
+    },
+    {
+      "test_id": "ph",
+      "ranges": {
+        "severe": {
+          "min": 7.3,
+          "max": 7.35
+        },
+        "critical": {
+          "min": 7.2,
+          "max": 7.3
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Only relevant in a severe or life-threatening exacerbation; early in an attack the pH may be normal or respiratory alkalosis may be present."
+    },
+    {
+      "test_id": "paco2",
+      "ranges": {
+        "severe": {
+          "min": 40,
+          "max": 45
+        },
+        "critical": {
+          "min": 45,
+          "max": 60
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "A normal or rising PaCO2 during a severe attack signals fatigue and impending respiratory failure."
+    },
+    {
+      "test_id": "pao2",
+      "ranges": {
+        "severe": {
+          "min": 60,
+          "max": 80
+        },
+        "critical": {
+          "min": 40,
+          "max": 60
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional"
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rate",
+        "finding": "Sinus tachycardia",
+        "frequency": "common",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Sinus rhythm",
+        "frequency": "almost_always"
+      },
+      {
+        "feature": "other",
+        "finding": "Right axis deviation or right atrial enlargement in chronic severe disease",
+        "frequency": "rare",
+        "min_severity": "severe"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Chest x-ray, two views",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Normal or hyperinflated lungs with flattened diaphragms",
+          "frequency": "common"
+        },
+        {
+          "text": "Peribronchial cuffing or increased perihilar markings",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "No focal consolidation, effusion, or pneumothorax",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Focal consolidation suggesting pneumonia",
+          "frequency": "rare"
+        },
+        {
+          "text": "Pneumothorax or pneumomediastinum",
+          "frequency": "rare"
+        },
+        {
+          "text": "Radio-opaque foreign body",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "Spirometry with bronchodilator response",
+        "why": "Confirms reversible airflow obstruction and is the primary diagnostic test in children old enough to perform it (generally about 5–6 years and older)"
+      },
+      {
+        "test": "Peak expiratory flow rate",
+        "why": "Objective measure of airflow obstruction when spirometry is not available; useful for monitoring and for assessing severity during an exacerbation"
+      },
+      {
+        "test": "Pulse oximetry",
+        "why": "Assesses oxygenation during an exacerbation and guides severity classification"
+      },
+      {
+        "test": "Chest x-ray, two views",
+        "why": "Not routine; helps exclude pneumonia, pneumothorax, or foreign body",
+        "only_if": "the presentation is atypical, there is fever or focal findings, or a complication or alternative diagnosis is suspected"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Spirometry with bronchodilator response",
+        "why": "Demonstrates an obstructive pattern with a significant improvement after a short-acting bronchodilator, confirming reversible airway obstruction"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "Allergy skin testing or allergen-specific IgE",
+        "why": "Identifies allergic triggers and supports an atopic phenotype; helps guide trigger avoidance",
+        "only_if": "an allergic trigger is suspected or the history suggests atopy"
+      },
+      {
+        "test": "Methacholine challenge",
+        "why": "Demonstrates airway hyperresponsiveness when spirometry is normal but asthma is still suspected",
+        "only_if": "symptoms are consistent with asthma but baseline spirometry is normal"
+      },
+      {
+        "test": "Exercise challenge test",
+        "why": "Confirms exercise-induced bronchoconstriction",
+        "only_if": "symptoms occur predominantly with exercise"
+      },
+      {
+        "test": "Fractional exhaled nitric oxide (FeNO)",
+        "why": "Noninvasive marker of eosinophilic airway inflammation that can support the diagnosis and guide therapy",
+        "only_if": "the diagnosis is uncertain or adherence and control are being assessed"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "cbc",
+        "why": "Routine blood counts do not establish the diagnosis and are not needed in a typical presentation"
+      },
+      {
+        "test": "crp",
+        "why": "Not useful for diagnosing asthma; reserve for suspected infection"
+      },
+      {
+        "test": "procalcitonin",
+        "why": "No role in asthma; consider only when bacterial pneumonia is a serious concern"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in the evaluation of pediatric wheeze"
+      },
+      {
+        "test": "bmp",
+        "why": "Not routinely needed; obtain only if the child is dehydrated, on high-dose corticosteroids, or has an electrolyte concern"
+      },
+      {
+        "test": "Chest x-ray, two views",
+        "why": "Not routine in a classic presentation; does not diagnose asthma and adds radiation exposure"
+      }
+    ],
+    "decision_points": [
+      "Spirometry is the preferred confirmatory test but is generally not feasible before about age 5–6; in younger children the diagnosis is supported by a documented response to a trial of asthma medication and by excluding alternative causes",
+      "A normal chest x-ray does not exclude asthma; order it to look for complications or alternative diagnoses, not to confirm asthma",
+      "Consider a trial of short-acting bronchodilator and inhaled corticosteroid in young children who cannot perform spirometry, with reassessment after 4–6 weeks",
+      "Assess severity and control at every visit using symptom frequency, nighttime awakenings, rescue inhaler use, and activity limitation",
+      "In a severe exacerbation, a normal or rising PaCO2 is a warning sign of impending respiratory failure"
+    ],
+    "criteria": [
+      {
+        "name": "Clinical diagnosis of asthma in children",
+        "summary": "The diagnosis is clinical, based on a history of recurrent or persistent wheeze, cough, chest tightness, or shortness of breath that is variable over time and worse at night or with common triggers such as viral infections, exercise, cold air, or allergens, together with documented reversible airflow obstruction or a clear response to asthma therapy, after alternative diagnoses have been considered."
+      }
+    ],
+    "scores": [
+      "pediatric_asthma_severity_score",
+      "asthma_control_test"
+    ]
+  },
+  "differential": [
+    {
+      "name": "Bronchiolitis",
+      "slug": "bronchiolitis",
+      "why_considered": "Wheezing and respiratory distress in a young child, often after a viral illness",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Age under 2 years, usually 2–6 months",
+          "Preceded by 1–3 days of clear rhinorrhea and low-grade fever",
+          "First episode rather than recurrent episodes",
+          "Winter or early spring season"
+        ],
+        "exam": [
+          "Fine crackles or rales in addition to wheeze",
+          "Wheeze may be diffuse but often asymmetric",
+          "Low-grade fever"
+        ],
+        "labs": [
+          "Respiratory viral panel positive for RSV, rhinovirus, or other virus"
+        ],
+        "imaging": [
+          "Chest x-ray may show hyperinflation, peribronchial cuffing, or atelectasis; not required for diagnosis"
+        ]
+      }
+    },
+    {
+      "name": "Foreign body aspiration",
+      "slug": "foreign-body-aspiration",
+      "why_considered": "Sudden onset of cough, wheeze, or respiratory distress in a toddler",
+      "must_not_miss": true,
+      "trigger": "Abrupt onset of symptoms while eating, playing with small objects, or with no preceding illness",
+      "discriminators": {
+        "history": [
+          "Sudden onset, often while eating or playing",
+          "Choking episode witnessed or suspected",
+          "Symptoms unilateral or persistent despite bronchodilator therapy",
+          "No prior history of recurrent wheeze"
+        ],
+        "exam": [
+          "Unilateral wheeze or decreased breath sounds",
+          "Asymmetric chest expansion",
+          "Stridor if the object is in the upper airway"
+        ],
+        "imaging": [
+          "Radio-opaque foreign body on chest x-ray",
+          "Unilateral hyperinflation or mediastinal shift on expiratory film",
+          "Air trapping on the affected side"
+        ]
+      }
+    },
+    {
+      "name": "Pneumonia",
+      "slug": "community-acquired-pneumonia",
+      "why_considered": "Cough, tachypnea, and respiratory distress in a child",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Fever is prominent",
+          "Acute onset over days rather than recurrent episodes",
+          "Productive cough with purulent sputum",
+          "No history of recurrent wheeze or atopy"
+        ],
+        "exam": [
+          "Focal crackles, dullness to percussion, or bronchial breath sounds",
+          "Fever",
+          "Tachypnea without diffuse wheeze"
+        ],
+        "labs": [
+          "Leukocytosis with neutrophilia",
+          "Elevated CRP or procalcitonin"
+        ],
+        "imaging": [
+          "Focal consolidation or infiltrate on chest x-ray"
+        ]
+      }
+    },
+    {
+      "name": "Cystic fibrosis",
+      "slug": "cystic-fibrosis",
+      "why_considered": "Recurrent wheeze, cough, and respiratory infections in a child",
+      "must_not_miss": true,
+      "trigger": "Failure to thrive, recurrent sinopulmonary infections, or persistent GI symptoms in a child with wheeze",
+      "discriminators": {
+        "history": [
+          "Failure to thrive or poor weight gain",
+          "Recurrent sinus or pulmonary infections",
+          "Steatorrhea, bulky foul-smelling stools",
+          "Salty-tasting skin",
+          "Family history of cystic fibrosis"
+        ],
+        "exam": [
+          "Digital clubbing",
+          "Nasal polyps",
+          "Chronic productive cough",
+          "Signs of malabsorption"
+        ],
+        "labs": [
+          "Elevated sweat chloride on sweat chloride test",
+          "Pancreatic insufficiency with low fecal elastase",
+          "Genetic testing showing CFTR mutations"
+        ],
+        "imaging": [
+          "Chest x-ray with bronchiectasis, hyperinflation, or mucus plugging",
+          "CT showing bronchiectasis"
+        ]
+      }
+    },
+    {
+      "name": "Vocal cord dysfunction",
+      "slug": "vocal-cord-dysfunction",
+      "why_considered": "Dyspnea and noisy breathing that can mimic asthma, especially in adolescents",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Symptoms occur at rest or with stress, not primarily with exercise or allergens",
+          "No nighttime cough or nocturnal awakenings",
+          "Symptoms may be triggered by strong odors or emotional stress",
+          "Poor response to asthma medications"
+        ],
+        "exam": [
+          "Inspiratory stridor or hoarse voice",
+          "Wheeze heard loudest over the neck rather than the chest",
+          "Symptoms may resolve with distraction or during sleep"
+        ],
+        "labs": [
+          "Normal spirometry or flow-volume loop showing inspiratory flattening"
+        ],
+        "imaging": [
+          "Laryngoscopy showing paradoxical vocal cord adduction during inspiration"
+        ]
+      }
+    },
+    {
+      "name": "Gastroesophageal reflux disease",
+      "slug": "gastroesophageal-reflux-disease",
+      "why_considered": "Chronic cough and wheeze in a child, often worse at night",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Cough or wheeze after feeding or when lying flat",
+          "Frequent spitting up or vomiting in infants",
+          "Heartburn or sour taste in older children",
+          "No clear response to bronchodilators"
+        ],
+        "exam": [
+          "Usually normal lung exam",
+          "May have poor weight gain in infants"
+        ],
+        "labs": [
+          "pH probe or impedance study showing reflux episodes"
+        ],
+        "imaging": [
+          "Upper GI series may show reflux or anatomic abnormality"
+        ]
+      }
+    },
+    {
+      "name": "Allergic rhinitis",
+      "slug": "allergic-rhinitis",
+      "why_considered": "Chronic nasal congestion, cough, and wheeze in an atopic child",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Prominent nasal congestion, sneezing, and itchy watery eyes",
+          "Symptoms seasonal or with allergen exposure",
+          "Cough often from postnasal drip rather than bronchospasm",
+          "No nighttime awakenings from wheeze"
+        ],
+        "exam": [
+          "Pale, boggy nasal mucosa with clear discharge",
+          "Allergic shiners",
+          "Nasal crease from rubbing"
+        ],
+        "labs": [
+          "Positive allergy skin testing or specific IgE"
+        ],
+        "imaging": [
+          "Not routinely indicated"
+        ]
+      }
+    },
+    {
+      "name": "Congenital heart disease with left-to-right shunt",
+      "slug": "congenital-heart-disease",
+      "why_considered": "Tachypnea, poor feeding, and respiratory distress in an infant",
+      "must_not_miss": true,
+      "trigger": "Poor feeding, failure to thrive, or a cardiac murmur in an infant with respiratory symptoms",
+      "discriminators": {
+        "history": [
+          "Symptoms present since birth or early infancy",
+          "Poor feeding and sweating with feeds",
+          "Failure to thrive",
+          "No symptom-free intervals"
+        ],
+        "exam": [
+          "Cardiac murmur",
+          "Hepatomegaly",
+          "Bounding pulses or wide pulse pressure",
+          "Cyanosis or clubbing"
+        ],
+        "labs": [
+          "Brain natriuretic peptide may be elevated"
+        ],
+        "imaging": [
+          "Cardiomegaly and increased pulmonary vascular markings on chest x-ray",
+          "Echocardiogram showing the structural defect"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Symptoms less than twice a week, nighttime awakenings less than twice a month, no activity limitation, FEV1 at or above 80% predicted, and symptoms controlled with as-needed short-acting bronchodilator alone",
+      "moderate": "Symptoms more than twice a week but not daily, nighttime awakenings 3–4 times a month, some activity limitation, FEV1 60–80% predicted, and requiring daily controller therapy",
+      "severe": "Symptoms throughout the day, nighttime awakenings more than once a week, significant activity limitation, FEV1 below 60% predicted, and requiring high-dose controller therapy plus consideration of biologic therapy",
+      "critical": "Life-threatening exacerbation with inability to speak or feed, silent chest, cyanosis, altered mental status, or impending respiratory failure requiring ICU admission and possible mechanical ventilation"
+    },
+    "red_flags": [
+      {
+        "finding": "Silent chest on auscultation",
+        "meaning": "Airflow is so limited that breath sounds are barely audible; impending respiratory failure"
+      },
+      {
+        "finding": "Cyanosis of lips, tongue, or nail beds",
+        "meaning": "Severe hypoxemia; needs immediate oxygen and emergency treatment"
+      },
+      {
+        "finding": "Altered mental status or drowsiness",
+        "meaning": "Hypoxemia or hypercapnia; impending respiratory failure"
+      },
+      {
+        "finding": "Inability to speak in full sentences or feed",
+        "meaning": "Severe exacerbation; indicates significant airflow obstruction"
+      },
+      {
+        "finding": "Use of accessory muscles, retractions, or nasal flaring",
+        "meaning": "Increased work of breathing; moderate to severe exacerbation"
+      },
+      {
+        "finding": "Respiratory rate above the normal range for age with fatigue",
+        "meaning": "Exhaustion; may progress to respiratory failure"
+      },
+      {
+        "finding": "SpO2 below 90% on room air",
+        "meaning": "Significant hypoxemia; requires supplemental oxygen"
+      },
+      {
+        "finding": "Normal or rising PaCO2 during a severe attack",
+        "meaning": "The child is tiring and can no longer hyperventilate; impending respiratory failure"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Status asthmaticus",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Severe exacerbation not responding to repeated bronchodilator treatments",
+          "Increasing respiratory distress",
+          "Rising PaCO2"
+        ]
+      },
+      {
+        "name": "Respiratory failure requiring mechanical ventilation",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Exhaustion",
+          "Altered mental status",
+          "Silent chest",
+          "Hypoxemia despite oxygen"
+        ]
+      },
+      {
+        "name": "Pneumothorax",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Sudden worsening of dyspnea",
+          "Pleuritic chest pain",
+          "Unilateral decreased breath sounds",
+          "Tracheal deviation"
+        ]
+      },
+      {
+        "name": "Pneumomediastinum",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Sudden chest pain",
+          "Subcutaneous emphysema",
+          "Hamman sign on auscultation"
+        ]
+      },
+      {
+        "name": "Atelectasis",
+        "timing": "early",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Persistent focal decreased breath sounds",
+          "Mucus plugging",
+          "Hypoxemia"
+        ]
+      },
+      {
+        "name": "Growth impairment or poor school performance",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Frequent school absences",
+          "Chronic nighttime awakenings",
+          "Poor weight gain in young children"
+        ]
+      },
+      {
+        "name": "Airway remodeling with fixed airflow obstruction",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Long-standing poorly controlled asthma",
+          "Spirometry showing incomplete reversibility",
+          "Persistent symptoms despite therapy"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "infants",
+        "differences": "May present with feeding difficulty, rapid breathing, or coughing during feeds rather than classic wheezing; diagnosis is often made after a trial of asthma medications because spirometry is not feasible."
+      },
+      {
+        "population": "children",
+        "differences": "Young children may not describe chest tightness or shortness of breath; parents report night cough, exercise intolerance, or recurrent chest colds instead. Spirometry is generally feasible after age 5–6."
+      },
+      {
+        "population": "obesity",
+        "differences": "Obesity can cause dyspnea and exercise limitation that mimic asthma; symptoms may be less responsive to standard asthma therapy and require weight management as part of care."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Asthma may improve, worsen, or remain unchanged during pregnancy; poor control increases the risk of preterm birth and low birth weight, so controller therapy should be continued."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "How often does your child have wheezing, cough, or trouble breathing, and how often does it wake them at night?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Recurrent episodes over weeks to months with nighttime or early-morning symptoms; frequency and nighttime awakenings define severity and control"
+      },
+      {
+        "question": "What seems to set it off or make it worse?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Viral colds, exercise, cold air, pets, dust, mold, pollen, smoke, or strong odors; identifiable triggers support asthma"
+      },
+      {
+        "question": "Does your child get completely better between episodes, or are the symptoms always there?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Symptom-free intervals with episodic flares; continuous symptoms since birth suggest another diagnosis"
+      },
+      {
+        "question": "Does the breathing trouble get better with a rescue inhaler or nebulizer?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Documented improvement with albuterol supports reversible airflow obstruction"
+      },
+      {
+        "question": "How long has this been going on, and how many episodes has your child had?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Months to years of recurrent episodes rather than a single acute illness"
+      },
+      {
+        "question": "Can your child keep up with other kids when playing or running?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Exercise intolerance or stopping to catch their breath; activity limitation indicates poor control"
+      },
+      {
+        "question": "Has your child ever had a choking episode or sudden onset of coughing while eating or playing with small objects?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Abrupt onset with choking suggests foreign body aspiration, not asthma"
+      },
+      {
+        "question": "Has your child had fever, weight loss, night sweats, or a cough bringing up blood or colored sputum?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "These argue against asthma and raise concern for pneumonia, tuberculosis, or another chronic illness"
+      },
+      {
+        "question": "Does your child have eczema, hay fever, or food allergies?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Personal atopic history supports an asthma phenotype"
+      },
+      {
+        "question": "Does anyone in the family have asthma, allergies, or eczema?",
+        "category": "family",
+        "importance": "important",
+        "looking_for": "Parental or sibling asthma, especially maternal, is a strong risk factor"
+      },
+      {
+        "question": "Does anyone smoke in the home or in a car your child rides in?",
+        "category": "social",
+        "importance": "essential",
+        "looking_for": "Secondhand smoke exposure is a common, modifiable trigger"
+      },
+      {
+        "question": "What medicines has your child tried, and how often do they use the rescue inhaler in a typical week?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Rescue inhaler use more than twice a week, or a prior controller trial, informs severity and diagnosis"
+      },
+      {
+        "question": "Any known allergies to medicines, foods, or environmental allergens?",
+        "category": "allergies",
+        "importance": "optional",
+        "looking_for": "Allergic triggers and any prior reaction to asthma medications"
+      },
+      {
+        "question": "Does your child have trouble feeding, or do they cough or sweat during feeds?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "In infants, feeding difficulty or sweating with feeds may be the presenting symptom"
+      },
+      {
+        "question": "Has your child been growing and gaining weight normally?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Failure to thrive raises concern for cystic fibrosis or congenital heart disease"
+      }
+    ],
+    "accepted_names": [
+      "Asthma",
+      "Childhood asthma",
+      "Pediatric asthma",
+      "Reactive airway disease",
+      "Asthma in children",
+      "Bronchial asthma"
+    ],
+    "reasoning_points": [
+      "Recurrent, variable wheeze, cough, chest tightness, or shortness of breath over weeks to months, worse at night or early morning",
+      "Symptoms provoked by typical triggers such as viral infections, exercise, cold air, allergens, or smoke, with symptom-free intervals between episodes",
+      "Documented improvement with a short-acting bronchodilator, or a clear response to a trial of asthma therapy in a child too young for spirometry",
+      "Spirometry showing an obstructive pattern with significant reversibility after bronchodilator in a child old enough to perform the test",
+      "Supporting atopic features such as eczema, allergic rhinitis, or a family history of asthma or atopy",
+      "Alternative diagnoses considered and excluded, including bronchiolitis, foreign body aspiration, pneumonia, cystic fibrosis, vocal cord dysfunction, and congenital heart disease",
+      "Severity and control assessed from symptom frequency, nighttime awakenings, rescue inhaler use, and activity limitation"
+    ],
+    "difficulty": {
+      "easy": [
+        "School-age child with recurrent nighttime cough and wheeze that improves with albuterol",
+        "Known eczema and allergic rhinitis with a parent who has asthma",
+        "Symptoms clearly triggered by exercise and cold air",
+        "Spirometry shows reversible obstruction"
+      ],
+      "medium": [
+        "Toddler with recurrent 'chest colds' and no wheeze heard in the office",
+        "Child whose only symptom is chronic cough, worse at night",
+        "Symptoms attributed to poor inhaler technique or nonadherence",
+        "Coexisting allergic rhinitis or obesity muddying the picture"
+      ],
+      "hard": [
+        "Infant with feeding difficulty and tachypnea, too young for spirometry, diagnosed after a medication trial",
+        "Sudden unilateral wheeze in a toddler suggesting foreign body aspiration",
+        "Adolescent with exertional dyspnea and noisy breathing that is actually vocal cord dysfunction",
+        "Child with failure to thrive and recurrent infections suggesting cystic fibrosis",
+        "Severe exacerbation with a quiet chest, cyanosis, or drowsiness"
+      ]
+    }
+  }
+}

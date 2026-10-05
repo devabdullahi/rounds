@@ -1,0 +1,1568 @@
+{
+  "schema_version": "0.2",
+  "slug": "back-pain",
+  "triage": {
+    "name": "Back Pain",
+    "case_suitable": true,
+    "reason": "Extremely common symptom presentation; workup centers on red flags and distinguishing mechanical pain from radiculopathy, malignancy or infection, making it a strong undifferentiated case.",
+    "kind": "symptom",
+    "category": "musculoskeletal pain",
+    "organ_systems": [
+      "musculoskeletal",
+      "nervous"
+    ],
+    "primary_clerkship": "familyMedicine",
+    "secondary_clerkships": [
+      "internalMedicine",
+      "emergency",
+      "surgery"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "clinic",
+      "emergency",
+      "inpatient"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:15:53Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:32:45Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:32:53Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:33:12Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:33:24Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:33:31Z"
+      }
+    ],
+    "validation": {
+      "status": "failed",
+      "rule_errors": [
+        "workup.not_indicated: unknown test id 'troponin'; use a listed id or the test's plain name",
+        "workup: 'lumbar spine x-ray (ap and lateral)' appears in ['initial', 'not_indicated', 'not_indicated']; use one group, or not_indicated plus one entry with only_if"
+      ],
+      "review_issues": [
+        "differential cauda-equina-syndrome: no profile yet",
+        "differential vertebral-compression-fracture: no profile yet",
+        "differential spinal-epidural-abscess: no profile yet",
+        "differential vertebral-osteomyelitis: no profile yet",
+        "differential spinal-metastasis: no profile yet",
+        "differential abdominal-aortic-aneurysm: no profile yet",
+        "differential kidney-stones: no profile yet",
+        "differential pancreatitis: no profile yet",
+        "differential herpes-zoster: no profile yet",
+        "differential ankylosing-spondylitis: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 20,
+      "typical_max": 65,
+      "peak": "30–50",
+      "possible_min": 5,
+      "possible_max": 100
+    },
+    "sex": "either",
+    "demographics": [
+      "One of the most common reasons for primary care and emergency department visits in the US",
+      "Lifetime prevalence approaches 80% of adults",
+      "Slightly more common and more disabling in women in some surveys",
+      "More prevalent among adults with physically demanding jobs or low job control"
+    ],
+    "risk_factors": [
+      {
+        "text": "Heavy or repetitive lifting, bending or twisting at work",
+        "strength": "strong"
+      },
+      {
+        "text": "Sedentary lifestyle with deconditioning",
+        "strength": "moderate"
+      },
+      {
+        "text": "Prior episode of back pain",
+        "strength": "strong"
+      },
+      {
+        "text": "Obesity",
+        "strength": "moderate"
+      },
+      {
+        "text": "Smoking",
+        "strength": "moderate"
+      },
+      {
+        "text": "Older age",
+        "strength": "moderate"
+      },
+      {
+        "text": "Psychological distress, depression or anxiety",
+        "strength": "moderate"
+      },
+      {
+        "text": "Prolonged sitting or whole-body vibration (long-distance driving)",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Obesity",
+      "Depression or anxiety",
+      "Osteoarthritis",
+      "Diabetes mellitus"
+    ],
+    "family_history": [
+      "Back pain in a parent or sibling"
+    ],
+    "social_history": [
+      "Physically demanding job",
+      "Low job satisfaction or high job strain",
+      "Sedentary desk work",
+      "Smoking",
+      "Limited access to care or physically inactive lifestyle"
+    ],
+    "exposures": [
+      "Recent heavy lifting",
+      "A fall or minor trauma",
+      "Prolonged driving or vibration exposure"
+    ],
+    "risk_medications": []
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My back hurts",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "It hurts to bend over or lift things",
+        "frequency": "common"
+      },
+      {
+        "text": "The pain shoots down my leg",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Usually gradual after activity, lifting or a change in routine; sometimes sudden after a specific movement or minor injury",
+      "duration": "Acute episodes typically a few days to a few weeks; chronic if more than three months",
+      "progression": "Often improves over days to weeks with activity as tolerated; may wax and wane or become persistent",
+      "location": "Lower back (lumbosacral region) most often; can be mid-back or upper back",
+      "radiation": "Usually none; when present, radiates into the buttock, posterior thigh and below the knee in a dermatomal pattern",
+      "quality": "Dull, aching or stiff; sharp with certain movements",
+      "severity": "Mild to moderate, typically 3–7/10; severe with acute muscle spasm",
+      "timing": "Worse with movement, lifting, bending, prolonged sitting or standing; better with rest or position change",
+      "aggravating": [
+        "Bending forward",
+        "Lifting",
+        "Twisting",
+        "Prolonged sitting or standing",
+        "Coughing or sneezing if radicular"
+      ],
+      "relieving": [
+        "Lying down",
+        "Changing position",
+        "Heat",
+        "Over-the-counter acetaminophen or NSAIDs"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Stiffness, especially in the morning or after inactivity",
+          "frequency": "common"
+        },
+        {
+          "text": "Muscle spasm",
+          "frequency": "common"
+        },
+        {
+          "text": "Pain radiating down the leg (sciatica)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Numbness or tingling in the leg or foot",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Weakness in the leg or foot",
+          "frequency": "rare"
+        },
+        {
+          "text": "Difficulty sleeping because of pain",
+          "frequency": "sometimes"
+        }
+      ],
+      "pertinent_negatives": [
+        "Loss of bowel or bladder control",
+        "Saddle anesthesia",
+        "Progressive or severe leg weakness",
+        "Unexplained weight loss",
+        "Fever or chills",
+        "Night pain that wakes from sleep",
+        "History of cancer",
+        "Recent serious fall or trauma",
+        "Intravenous drug use",
+        "Chronic corticosteroid use",
+        "Age over 50 with new onset pain"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fatigue from poor sleep",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Fever",
+          "Chills",
+          "Night sweats",
+          "Unintentional weight loss"
+        ],
+        "argues_against": [
+          "Spinal infection",
+          "Malignancy"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Paraspinal tenderness",
+            "frequency": "common"
+          },
+          {
+            "text": "Limited range of motion due to pain",
+            "frequency": "common"
+          },
+          {
+            "text": "Muscle spasm",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Point tenderness over the spine suggesting fracture",
+          "Deformity",
+          "Localized swelling or mass"
+        ],
+        "argues_against": [
+          "Vertebral fracture",
+          "Spinal tumor"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Numbness or tingling in a leg or foot",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Leg weakness",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Saddle anesthesia",
+          "Bowel or bladder dysfunction",
+          "Progressive bilateral leg weakness",
+          "Foot drop"
+        ],
+        "argues_against": [
+          "Cauda equina syndrome",
+          "Severe radiculopathy"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [],
+        "negatives": [
+          "Abdominal pain",
+          "Vomiting",
+          "Blood in stool",
+          "Change in bowel habits"
+        ],
+        "argues_against": [
+          "Abdominal aortic aneurysm",
+          "Retroperitoneal or gastrointestinal source"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [],
+        "negatives": [
+          "Dysuria",
+          "Hematuria",
+          "Flank pain",
+          "Urinary retention or incontinence"
+        ],
+        "argues_against": [
+          "Pyelonephritis",
+          "Renal colic",
+          "Cauda equina syndrome"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Back pain in children is uncommon and more often has an identifiable cause such as spondylolysis, infection or tumor; children may present with refusal to walk or irritability rather than a clear pain description.",
+        "missing_classic_features": [
+          "Clear mechanical trigger",
+          "Typical adult pattern of activity-related pain"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "More likely to have degenerative changes, spinal stenosis or compression fracture; pain may be less activity-related and more constant, and serious causes are more common.",
+        "missing_classic_features": [
+          "Clear activity-related onset",
+          "Full recovery within weeks"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Pain is often in the lumbosacral region or posterior pelvis, worse with prolonged standing or walking, and may be accompanied by pelvic girdle pain; red flags still require the same evaluation.",
+        "missing_classic_features": [
+          "Typical response to rest",
+          "Absence of pelvic component"
+        ]
+      },
+      {
+        "population": "obesity",
+        "how_it_differs": "Higher mechanical load and deconditioning can make pain more persistent and less responsive to activity; weight loss is often part of management.",
+        "missing_classic_features": [
+          "Rapid resolution with conservative care"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Comfortable at rest, moves slowly but without distress",
+      "moderate": "Guarded posture, shifts weight or stands with a flattened lumbar curve, grimaces when rising from a chair",
+      "severe": "Visibly uncomfortable, splints the back, needs help getting on and off the exam table",
+      "critical": "Distressed or toxic-appearing, may be unable to bear weight or sit up; consider infection, fracture or cauda equina"
+    },
+    "findings": [
+      {
+        "id": "paraspinal-tenderness",
+        "region": "musculoskeletal",
+        "maneuver": "Palpate the paraspinal muscles on both sides of the lumbar spine",
+        "finding": "Tenderness and tightness of the paraspinal musculature without focal bony tenderness",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "limited-flexion",
+        "region": "musculoskeletal",
+        "maneuver": "Ask the patient to bend forward, then extend, side-bend and rotate the trunk",
+        "finding": "Pain-limited range of motion, worst with forward flexion",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "muscle-spasm",
+        "region": "musculoskeletal",
+        "maneuver": "Palpate the lumbar paraspinal muscles while the patient stands",
+        "finding": "Firm, board-like paraspinal spasm with loss of the normal lumbar lordosis",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "no-spinous-tenderness",
+        "region": "musculoskeletal",
+        "maneuver": "Palpate and percuss each spinous process from the thoracic spine to the sacrum",
+        "finding": "No focal point tenderness over a spinous process",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "negative-straight-leg-raise",
+        "region": "extremities",
+        "maneuver": "With the patient supine, raise each extended leg by the heel until pain or tightness occurs",
+        "finding": "No reproduction of radiating leg pain below about 60 degrees",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "positive-straight-leg-raise",
+        "region": "extremities",
+        "maneuver": "With the patient supine, raise the symptomatic extended leg by the heel",
+        "finding": "Reproduction of radiating pain down the posterior thigh and below the knee at 30–70 degrees",
+        "frequency": "sometimes",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "crossed-straight-leg-raise",
+        "region": "extremities",
+        "maneuver": "Raise the asymptomatic leg while the patient is supine",
+        "finding": "Reproduction of pain in the symptomatic leg",
+        "frequency": "rare",
+        "significance": "strongly_supports",
+        "importance": "optional"
+      },
+      {
+        "id": "dermatomal-sensory-loss",
+        "region": "neuro",
+        "maneuver": "Test light touch and pinprick in the L2–S1 dermatomes of both legs",
+        "finding": "Decreased sensation in a single dermatome consistent with a nerve root",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "normal-sensation",
+        "region": "neuro",
+        "maneuver": "Test light touch and pinprick in the L2–S1 dermatomes of both legs",
+        "finding": "Sensation intact and symmetric in both legs",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "weak-dorsiflexion",
+        "region": "neuro",
+        "maneuver": "Test ankle dorsiflexion strength against resistance (L4–L5)",
+        "finding": "Weakness of foot dorsiflexion",
+        "frequency": "rare",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "weak-plantarflexion",
+        "region": "neuro",
+        "maneuver": "Test ankle plantarflexion strength against resistance (S1)",
+        "finding": "Weakness of ankle plantarflexion",
+        "frequency": "rare",
+        "significance": "strongly_supports",
+        "importance": "important"
+      },
+      {
+        "id": "normal-motor",
+        "region": "neuro",
+        "maneuver": "Test hip flexion, knee extension, ankle dorsiflexion and plantarflexion against resistance",
+        "finding": "Motor strength 5/5 and symmetric in both legs",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "normal-reflexes",
+        "region": "neuro",
+        "maneuver": "Check the patellar and Achilles deep tendon reflexes",
+        "finding": "Reflexes 2+ and symmetric",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "reduced-achilles-reflex",
+        "region": "neuro",
+        "maneuver": "Check the Achilles deep tendon reflex",
+        "finding": "Diminished or absent Achilles reflex on the affected side (S1)",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "normal-gait",
+        "region": "neuro",
+        "maneuver": "Observe the patient walking, then ask them to walk on the heels and on the toes",
+        "finding": "Steady, symmetric gait without foot drop",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "antalgic-gait",
+        "region": "neuro",
+        "maneuver": "Observe the patient walking",
+        "finding": "Antalgic or guarded gait favoring the painful side",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "normal-saddle-sensation",
+        "region": "neuro",
+        "maneuver": "Test light touch over the perineum, inner thighs and buttocks (saddle distribution)",
+        "finding": "Sensation intact in the saddle distribution",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "saddle-anesthesia",
+        "region": "neuro",
+        "maneuver": "Test light touch over the perineum, inner thighs and buttocks (saddle distribution)",
+        "finding": "Reduced or absent sensation in the saddle distribution",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "normal-anal-sphincter-tone",
+        "region": "rectal",
+        "maneuver": "Digital rectal exam assessing resting sphincter tone and voluntary squeeze",
+        "finding": "Normal resting tone and voluntary contraction",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "reduced-anal-sphincter-tone",
+        "region": "rectal",
+        "maneuver": "Digital rectal exam assessing resting sphincter tone and voluntary squeeze",
+        "finding": "Decreased resting tone or inability to voluntarily contract the sphincter",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "no-cva-tenderness",
+        "region": "abdomen",
+        "maneuver": "Percuss the costovertebral angles bilaterally",
+        "finding": "No costovertebral angle tenderness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-abdominal-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen and feel for a pulsatile epigastric mass in older patients",
+        "finding": "Soft, non-tender abdomen without a pulsatile mass",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-fever-toxic",
+        "region": "general",
+        "maneuver": "Observe general appearance and check temperature",
+        "finding": "No fever, chills or toxic appearance",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-skin-lesion",
+        "region": "skin",
+        "maneuver": "Inspect the skin over the spine for vesicles, dimpling or a tuft of hair",
+        "finding": "Intact skin without rash, dimple or hair tuft over the spine",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "moderate": {
+        "min": 97.8,
+        "max": 99.5
+      },
+      "severe": {
+        "min": 98.0,
+        "max": 100.4
+      },
+      "critical": {
+        "min": 100.4,
+        "max": 103.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 90
+      },
+      "moderate": {
+        "min": 66,
+        "max": 100
+      },
+      "severe": {
+        "min": 80,
+        "max": 115
+      },
+      "critical": {
+        "min": 100,
+        "max": 130
+      }
+    },
+    "rr": {
+      "severe": {
+        "min": 16,
+        "max": 22
+      },
+      "critical": {
+        "min": 20,
+        "max": 28
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 105,
+        "max": 135
+      },
+      "moderate": {
+        "min": 100,
+        "max": 140
+      },
+      "severe": {
+        "min": 95,
+        "max": 145
+      },
+      "critical": {
+        "min": 85,
+        "max": 150
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 60,
+        "max": 85
+      },
+      "moderate": {
+        "min": 60,
+        "max": 88
+      },
+      "severe": {
+        "min": 55,
+        "max": 90
+      },
+      "critical": {
+        "min": 50,
+        "max": 95
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 96,
+        "max": 100
+      },
+      "moderate": {
+        "min": 95,
+        "max": 100
+      },
+      "severe": {
+        "min": 94,
+        "max": 100
+      },
+      "critical": {
+        "min": 90,
+        "max": 98
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "esr",
+      "ranges": {
+        "moderate": {
+          "min": 21,
+          "max": 45
+        },
+        "severe": {
+          "min": 40,
+          "max": 90
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Nonspecific; a markedly elevated ESR or CRP in an older adult with new back pain raises concern for infection or malignancy."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "moderate": {
+          "min": 1.5,
+          "max": 6.0
+        },
+        "severe": {
+          "min": 5.0,
+          "max": 20.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Usually normal in uncomplicated mechanical back pain; elevation should prompt evaluation for infection or malignancy."
+    },
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "severe": {
+          "min": 11.5,
+          "max": 20.0
+        },
+        "critical": {
+          "min": 15.0,
+          "max": 25.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "important",
+      "caveat": "Leukocytosis is not expected in mechanical back pain and suggests spinal infection."
+    },
+    {
+      "test_id": "alp",
+      "ranges": {
+        "severe": {
+          "min": 150,
+          "max": 400
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Elevated in Paget disease of bone and in bony metastases."
+    },
+    {
+      "test_id": "ca",
+      "ranges": {
+        "severe": {
+          "min": 10.5,
+          "max": 12.5
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Hypercalcemia suggests malignancy with bone involvement."
+    },
+    {
+      "test_id": "ua_blood",
+      "qualitative": {
+        "moderate": "1+",
+        "severe": "2+"
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Hematuria points toward a renal or urinary source rather than a spinal one."
+    },
+    {
+      "test_id": "ua_le",
+      "qualitative": {
+        "moderate": "1+",
+        "severe": "2+"
+      },
+      "frequency": "rare",
+      "importance": "optional"
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "sometimes",
+      "importance": "essential",
+      "caveat": "Negative. Required in anyone who could be pregnant before imaging."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rate",
+        "finding": "Sinus tachycardia",
+        "frequency": "rare",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "other",
+        "finding": "No acute ischemic changes; ECG is normal in uncomplicated mechanical back pain",
+        "frequency": "almost_always"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Lumbar spine x-ray (AP and lateral)",
+      "modality": "xray",
+      "preferred_when": "Suspected fracture, older adults with new pain, or trauma",
+      "findings": [
+        {
+          "text": "Normal vertebral alignment and disc heights",
+          "frequency": "common"
+        },
+        {
+          "text": "Degenerative disc space narrowing and osteophyte formation",
+          "frequency": "common"
+        },
+        {
+          "text": "Vertebral compression fracture with loss of anterior height",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Vertebral body destruction or lytic lesion suggesting malignancy",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "MRI lumbar spine without contrast",
+      "modality": "mri",
+      "preferred_when": "Red flags, progressive neurologic deficit, or failure of conservative care",
+      "findings": [
+        {
+          "text": "Disc bulge or herniation with nerve root compression",
+          "frequency": "common"
+        },
+        {
+          "text": "Central canal or foraminal stenosis",
+          "frequency": "common"
+        },
+        {
+          "text": "Degenerative disc disease and facet arthropathy",
+          "frequency": "common"
+        },
+        {
+          "text": "Discitis or vertebral osteomyelitis with marrow edema and enhancement",
+          "frequency": "rare"
+        },
+        {
+          "text": "Epidural abscess",
+          "frequency": "rare"
+        },
+        {
+          "text": "Vertebral body marrow replacement suggesting metastasis",
+          "frequency": "rare"
+        },
+        {
+          "text": "Cauda equina compression with crowded nerve roots",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "CT lumbar spine without contrast",
+      "modality": "ct",
+      "preferred_when": "When MRI is contraindicated or unavailable",
+      "findings": [
+        {
+          "text": "Degenerative changes, facet hypertrophy and disc space narrowing",
+          "frequency": "common"
+        },
+        {
+          "text": "Vertebral fracture with cortical disruption",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Lytic or sclerotic bone lesion",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Bone scan (nuclear medicine)",
+      "modality": "nuclear",
+      "preferred_when": "Suspected occult fracture, infection or metastasis when MRI is not possible",
+      "findings": [
+        {
+          "text": "Focal increased radiotracer uptake in a vertebral body",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Abdominal ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "Flank or abdominal pain suggesting a renal or aortic source",
+      "findings": [
+        {
+          "text": "Normal kidneys and retroperitoneum",
+          "frequency": "common"
+        },
+        {
+          "text": "Hydronephrosis or renal stone",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Abdominal aortic aneurysm",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "History and physical exam",
+        "why": "The core of evaluation: identify red flags, neurologic deficits and mechanical versus radicular pattern"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before any imaging",
+        "only_if": "patient could be pregnant"
+      },
+      {
+        "test": "Lumbar spine x-ray (AP and lateral)",
+        "why": "Screens for fracture or bony lesion",
+        "only_if": "red flags such as trauma, older age, osteoporosis or corticosteroid use"
+      },
+      {
+        "test": "esr",
+        "why": "Screens for infection or malignancy",
+        "only_if": "red flags such as fever, weight loss, night pain or age over 50 with new pain"
+      },
+      {
+        "test": "crp",
+        "why": "Adds to ESR when infection or malignancy is suspected",
+        "only_if": "red flags present"
+      },
+      {
+        "test": "cbc",
+        "why": "Looks for leukocytosis or anemia suggesting infection or malignancy",
+        "only_if": "red flags present"
+      },
+      {
+        "test": "ua",
+        "why": "Evaluates for urinary infection or stone when pain is flank-predominant",
+        "only_if": "flank pain, dysuria or hematuria"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "MRI lumbar spine without contrast",
+        "why": "Best test for nerve root compression, stenosis, infection, malignancy and cauda equina",
+        "only_if": "red flags, progressive neurologic deficit, or persistent symptoms despite conservative care"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "CT lumbar spine without contrast",
+        "why": "Alternative when MRI is contraindicated or unavailable",
+        "only_if": "MRI cannot be performed"
+      },
+      {
+        "test": "Bone scan (nuclear medicine)",
+        "why": "Detects occult fracture, infection or metastasis",
+        "only_if": "MRI is not possible and a bony source is suspected"
+      },
+      {
+        "test": "Abdominal ultrasound",
+        "why": "Evaluates for renal or aortic cause of back/flank pain",
+        "only_if": "flank or abdominal pain suggests a renal or vascular source"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Lumbar spine x-ray (AP and lateral)",
+        "why": "Not routine in uncomplicated mechanical back pain without red flags"
+      },
+      {
+        "test": "MRI lumbar spine without contrast",
+        "why": "Not indicated in acute mechanical back pain without red flags or neurologic deficit"
+      },
+      {
+        "test": "CT lumbar spine without contrast",
+        "why": "Not first-line; radiation exposure without added benefit over MRI in most cases"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in back pain evaluation"
+      },
+      {
+        "test": "lipase",
+        "why": "Not needed unless pain is epigastric or suggests pancreatitis"
+      },
+      {
+        "test": "troponin",
+        "why": "Not indicated unless chest pain or cardiac symptoms are present"
+      },
+      {
+        "test": "Lumbar spine x-ray (AP and lateral)",
+        "why": "Not routine in uncomplicated mechanical back pain without red flags"
+      }
+    ],
+    "decision_points": [
+      "Screen for red flags (cauda equina, fracture, infection, malignancy) before ordering imaging",
+      "Pregnancy test before any imaging in anyone who could be pregnant",
+      "Cauda equina syndrome or progressive neurologic deficit requires emergent MRI and surgical consultation",
+      "Do not order routine imaging in acute mechanical back pain without red flags"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Cauda equina syndrome",
+      "slug": "cauda-equina-syndrome",
+      "why_considered": "Severe low back pain with bilateral leg symptoms, saddle numbness, or bladder/bowel dysfunction",
+      "must_not_miss": true,
+      "trigger": "Saddle anesthesia, urinary retention or incontinence, or bilateral leg weakness with back pain",
+      "discriminators": {
+        "history": [
+          "Urinary retention or overflow incontinence",
+          "Fecal incontinence",
+          "Saddle numbness",
+          "Rapidly progressive bilateral leg weakness"
+        ],
+        "exam": [
+          "Reduced or absent saddle sensation",
+          "Decreased anal sphincter tone",
+          "Bilateral or asymmetric leg weakness",
+          "Absent or reduced deep tendon reflexes in the legs"
+        ],
+        "labs": [
+          "No specific lab finding; diagnosis is clinical and imaging-based"
+        ],
+        "imaging": [
+          "MRI showing compression of the cauda equina with crowded nerve roots",
+          "Large central disc herniation, epidural mass, or spinal stenosis at multiple levels"
+        ]
+      }
+    },
+    {
+      "name": "Vertebral compression fracture",
+      "slug": "vertebral-compression-fracture",
+      "why_considered": "Acute, focal back pain in an older adult or after minor trauma",
+      "must_not_miss": true,
+      "trigger": "Age over 50, osteoporosis, chronic corticosteroid use, or minor trauma with focal spinal tenderness",
+      "discriminators": {
+        "history": [
+          "Sudden onset after a fall, lifting, or even coughing",
+          "Pain worse with sitting up or standing, better lying flat",
+          "History of osteoporosis or long-term corticosteroid use"
+        ],
+        "exam": [
+          "Focal tenderness over a spinous process",
+          "Loss of height or new kyphosis",
+          "Pain reproduced by gentle percussion over the affected vertebra"
+        ],
+        "labs": [
+          "Normal unless there is an underlying malignancy or infection"
+        ],
+        "imaging": [
+          "X-ray showing loss of vertebral body height with cortical buckling",
+          "MRI showing bone marrow edema in the fractured vertebra"
+        ]
+      }
+    },
+    {
+      "name": "Spinal epidural abscess",
+      "slug": "spinal-epidural-abscess",
+      "why_considered": "Back pain with fever, night pain, or progressive neurologic deficits",
+      "must_not_miss": true,
+      "trigger": "Fever, intravenous drug use, recent spinal procedure, or progressive neurologic deficit",
+      "discriminators": {
+        "history": [
+          "Fever, chills, or night sweats",
+          "Intravenous drug use, recent bacteremia, or spinal surgery/injection",
+          "Severe, unrelenting pain that wakes from sleep",
+          "Progressive weakness or numbness over hours to days"
+        ],
+        "exam": [
+          "Fever",
+          "Focal spinal tenderness",
+          "Neurologic deficits corresponding to the level of compression",
+          "Tachycardia"
+        ],
+        "labs": [
+          "Leukocytosis",
+          "Elevated ESR and CRP",
+          "Positive blood cultures"
+        ],
+        "imaging": [
+          "MRI with contrast showing an epidural fluid collection with rim enhancement",
+          "Associated discitis or vertebral osteomyelitis"
+        ]
+      }
+    },
+    {
+      "name": "Vertebral osteomyelitis or discitis",
+      "slug": "vertebral-osteomyelitis",
+      "why_considered": "Insidious back pain with fever, night pain, or risk factors for infection",
+      "must_not_miss": true,
+      "trigger": "Fever, intravenous drug use, recent bacteremia, or immunosuppression with new back pain",
+      "discriminators": {
+        "history": [
+          "Subacute onset over weeks",
+          "Fever, malaise, or weight loss",
+          "Risk factors: diabetes, immunosuppression, intravenous drug use, recent infection"
+        ],
+        "exam": [
+          "Fever",
+          "Focal spinal tenderness",
+          "Pain with any movement of the spine"
+        ],
+        "labs": [
+          "Elevated ESR and CRP",
+          "Leukocytosis",
+          "Positive blood cultures"
+        ],
+        "imaging": [
+          "MRI showing disc space narrowing, marrow edema, and enhancement of the disc and adjacent vertebral bodies"
+        ]
+      }
+    },
+    {
+      "name": "Malignancy (metastatic disease or multiple myeloma)",
+      "slug": "spinal-metastasis",
+      "why_considered": "Back pain in a patient with a history of cancer, unexplained weight loss, or night pain",
+      "must_not_miss": true,
+      "trigger": "History of cancer, unexplained weight loss, night pain, or age over 50 with new back pain",
+      "discriminators": {
+        "history": [
+          "Known primary cancer (breast, lung, prostate, kidney, thyroid)",
+          "Unexplained weight loss, fatigue, or night sweats",
+          "Pain that is constant and worse at night, not relieved by rest"
+        ],
+        "exam": [
+          "Focal spinal tenderness",
+          "Neurologic deficits if cord compression",
+          "Signs of systemic illness (cachexia, pallor)"
+        ],
+        "labs": [
+          "Anemia",
+          "Hypercalcemia",
+          "Elevated alkaline phosphatase",
+          "Elevated ESR"
+        ],
+        "imaging": [
+          "X-ray showing lytic or sclerotic lesions",
+          "MRI showing marrow replacement and possible epidural extension",
+          "Bone scan showing multiple areas of increased uptake"
+        ]
+      }
+    },
+    {
+      "name": "Abdominal aortic aneurysm",
+      "slug": "abdominal-aortic-aneurysm",
+      "why_considered": "Mid-back or flank pain in an older adult, especially with cardiovascular risk factors",
+      "must_not_miss": true,
+      "trigger": "Age over 60, smoking history, pulsatile abdominal mass, or sudden severe back pain",
+      "discriminators": {
+        "history": [
+          "Sudden onset of severe, tearing mid-back or abdominal pain",
+          "History of hypertension, smoking, or known aneurysm",
+          "Pain not related to movement"
+        ],
+        "exam": [
+          "Pulsatile abdominal mass",
+          "Abdominal tenderness",
+          "Hypotension or tachycardia if ruptured"
+        ],
+        "labs": [
+          "No specific lab finding; may have anemia if ruptured"
+        ],
+        "imaging": [
+          "Abdominal ultrasound showing aortic dilation",
+          "CT angiography showing aneurysm size and possible rupture"
+        ]
+      }
+    },
+    {
+      "name": "Kidney stone or pyelonephritis",
+      "slug": "kidney-stones",
+      "why_considered": "Flank pain radiating to the groin, often with urinary symptoms",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Colicky flank pain radiating to the groin",
+          "Dysuria, frequency, or hematuria",
+          "Nausea and vomiting"
+        ],
+        "exam": [
+          "Costovertebral angle tenderness",
+          "Fever if pyelonephritis"
+        ],
+        "labs": [
+          "Hematuria on urinalysis",
+          "Pyuria and positive urine culture if infection"
+        ],
+        "imaging": [
+          "CT or ultrasound showing renal stone and hydronephrosis"
+        ]
+      }
+    },
+    {
+      "name": "Pancreatitis",
+      "slug": "pancreatitis",
+      "why_considered": "Mid-back pain radiating from the epigastrium, often with nausea and vomiting",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Epigastric pain radiating to the back",
+          "Nausea and vomiting",
+          "Alcohol use or gallstones"
+        ],
+        "exam": [
+          "Epigastric tenderness",
+          "Decreased bowel sounds"
+        ],
+        "labs": [
+          "Elevated lipase and amylase"
+        ],
+        "imaging": [
+          "CT showing pancreatic inflammation or fluid collections"
+        ]
+      }
+    },
+    {
+      "name": "Herpes zoster (shingles)",
+      "slug": "herpes-zoster",
+      "why_considered": "Unilateral burning or shooting back pain preceding a rash",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Pain precedes rash by days",
+          "Unilateral, dermatomal distribution",
+          "History of chickenpox"
+        ],
+        "exam": [
+          "Vesicular rash in a dermatomal pattern",
+          "Allodynia in the affected dermatome"
+        ],
+        "labs": [
+          "Clinical diagnosis; PCR of vesicle fluid if needed"
+        ],
+        "imaging": [
+          "Not indicated"
+        ]
+      }
+    },
+    {
+      "name": "Ankylosing spondylitis",
+      "slug": "ankylosing-spondylitis",
+      "why_considered": "Chronic back pain in a young adult, worse at rest and better with exercise",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Onset before age 40",
+          "Insidious onset over months",
+          "Morning stiffness lasting more than 30 minutes",
+          "Improvement with exercise, not rest",
+          "Family history of ankylosing spondylitis"
+        ],
+        "exam": [
+          "Reduced lumbar flexion (Schober test)",
+          "Limited chest expansion",
+          "Sacroiliac tenderness"
+        ],
+        "labs": [
+          "Elevated ESR and CRP",
+          "Positive HLA-B27"
+        ],
+        "imaging": [
+          "X-ray showing sacroiliitis and bamboo spine",
+          "MRI showing early sacroiliitis"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Acute, self-limited mechanical pain: discomfort with movement, no radiation, no neurologic deficits, able to perform daily activities with minor limitation",
+      "moderate": "More persistent pain with muscle spasm, limited range of motion, some difficulty with work or sleep, but no red flags or neurologic deficits",
+      "severe": "Severe pain with muscle spasm, significant functional limitation, possible radicular symptoms, but no cauda equina or progressive neurologic deficit",
+      "critical": "Back pain with red flags: cauda equina syndrome, spinal infection, fracture with neurologic compromise, or malignancy with cord compression; requires emergent evaluation"
+    },
+    "red_flags": [
+      {
+        "finding": "Saddle anesthesia, urinary retention or incontinence, fecal incontinence",
+        "meaning": "Cauda equina syndrome; emergent MRI and surgical consultation"
+      },
+      {
+        "finding": "Progressive or severe leg weakness",
+        "meaning": "Significant nerve root or cord compression; urgent evaluation"
+      },
+      {
+        "finding": "Fever, chills, or night sweats with back pain",
+        "meaning": "Spinal infection (epidural abscess, osteomyelitis, discitis); urgent MRI and antibiotics"
+      },
+      {
+        "finding": "Unexplained weight loss, night pain, or history of cancer",
+        "meaning": "Malignancy with possible spinal metastasis; urgent imaging"
+      },
+      {
+        "finding": "Age over 50 with new back pain, or minor trauma with focal spinal tenderness",
+        "meaning": "Vertebral compression fracture; imaging needed"
+      },
+      {
+        "finding": "Intravenous drug use, immunosuppression, or recent bacteremia",
+        "meaning": "Increased risk of spinal infection"
+      },
+      {
+        "finding": "Chronic corticosteroid use or osteoporosis",
+        "meaning": "Increased risk of vertebral fracture"
+      },
+      {
+        "finding": "Sudden severe tearing mid-back pain with pulsatile abdominal mass",
+        "meaning": "Abdominal aortic aneurysm; emergent vascular evaluation"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Chronic pain and disability",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Pain lasting more than 3 months",
+          "Functional limitation",
+          "Depression or anxiety"
+        ]
+      },
+      {
+        "name": "Progressive neurologic deficit",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Worsening weakness",
+          "Numbness",
+          "Gait disturbance"
+        ]
+      },
+      {
+        "name": "Cauda equina syndrome",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Saddle anesthesia",
+          "Urinary retention",
+          "Bilateral leg weakness"
+        ]
+      },
+      {
+        "name": "Opioid dependence",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Long-term opioid use",
+          "Escalating doses",
+          "Requests for early refills"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Back pain in children is uncommon and more often has an identifiable cause such as spondylolysis, infection, or tumor; children may present with refusal to walk or irritability rather than a clear pain description."
+      },
+      {
+        "population": "older_adults",
+        "differences": "More likely to have degenerative changes, spinal stenosis, or compression fracture; pain may be less activity-related and more constant, and serious causes are more common."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Pain is often in the lumbosacral region or posterior pelvis, worse with prolonged standing or walking, and may be accompanied by pelvic girdle pain; red flags still require the same evaluation."
+      },
+      {
+        "population": "obesity",
+        "differences": "Higher mechanical load and deconditioning can make pain more persistent and less responsive to activity; weight loss is often part of management."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "Where is the pain, and does it stay in your back or travel anywhere?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Lumbosacral location; radiation into the buttock, posterior thigh, or below the knee suggests radiculopathy"
+      },
+      {
+        "question": "When did it start, and was there a specific movement, lift, or injury?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Gradual or sudden onset after activity or minor trauma; no trauma suggests mechanical or other cause"
+      },
+      {
+        "question": "How long has it been going on?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Acute (days to weeks) versus chronic (more than three months)"
+      },
+      {
+        "question": "What makes it better or worse?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Worse with bending, lifting, prolonged sitting or standing; better with rest or position change"
+      },
+      {
+        "question": "Does the pain wake you from sleep or occur at night?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Night pain that wakes from sleep suggests infection or malignancy"
+      },
+      {
+        "question": "Have you had any loss of bladder or bowel control, or trouble urinating?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Urinary retention or incontinence suggests cauda equina syndrome"
+      },
+      {
+        "question": "Any numbness or tingling in the groin, inner thighs, or buttocks?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Saddle anesthesia suggests cauda equina syndrome"
+      },
+      {
+        "question": "Any weakness in your legs, or has your foot been dragging?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Progressive or severe leg weakness suggests nerve root or cord compression"
+      },
+      {
+        "question": "Have you had any fever, chills, or night sweats?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Fever or chills suggest spinal infection"
+      },
+      {
+        "question": "Have you lost weight without trying?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Unintentional weight loss suggests malignancy"
+      },
+      {
+        "question": "Have you ever been told you have cancer?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "History of cancer raises concern for spinal metastasis"
+      },
+      {
+        "question": "Have you ever used intravenous drugs, or had a recent infection or spinal procedure?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Risk factors for spinal infection"
+      },
+      {
+        "question": "Do you take corticosteroids regularly, or have you been told you have osteoporosis?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Increased risk of vertebral compression fracture"
+      },
+      {
+        "question": "Have you had a fall or other injury to your back?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Trauma raises concern for fracture"
+      },
+      {
+        "question": "What do you do for work, and does it involve heavy lifting or prolonged sitting?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Occupational strain and job control influence risk and recovery"
+      },
+      {
+        "question": "Do you smoke, and how much alcohol do you drink?",
+        "category": "social",
+        "importance": "optional",
+        "looking_for": "Smoking and alcohol use affect bone health and recovery"
+      },
+      {
+        "question": "Does anyone in your family have back problems or arthritis of the spine?",
+        "category": "family",
+        "importance": "optional",
+        "looking_for": "Family history of back pain or ankylosing spondylitis"
+      },
+      {
+        "question": "Any burning or shooting pain in a band around your chest or back, or a rash?",
+        "category": "associated",
+        "importance": "optional",
+        "looking_for": "Dermatomal pain preceding a rash suggests herpes zoster"
+      },
+      {
+        "question": "Any trouble with urination, blood in the urine, or flank pain?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Urinary symptoms suggest a renal source"
+      },
+      {
+        "question": "Any abdominal pain, nausea, or vomiting?",
+        "category": "ros",
+        "importance": "optional",
+        "looking_for": "Abdominal symptoms suggest pancreatitis or another abdominal source"
+      },
+      {
+        "question": "Could you be pregnant? When was your last period?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Pregnancy must be excluded before imaging"
+      }
+    ],
+    "accepted_names": [
+      "Back pain",
+      "Backache",
+      "Lumbago",
+      "Low back pain",
+      "Mechanical back pain"
+    ],
+    "reasoning_points": [
+      "Pain is in the lumbosacral region, worse with movement and better with rest, consistent with a mechanical pattern",
+      "No red flags: no saddle anesthesia, no bowel or bladder dysfunction, no fever, no weight loss, no cancer history, no significant trauma",
+      "No progressive or severe leg weakness and no foot drop",
+      "Neurologic exam is intact: normal strength, sensation, reflexes, and gait",
+      "No focal spinal tenderness or point tenderness over a spinous process",
+      "No costovertebral angle tenderness and no abdominal tenderness or pulsatile mass",
+      "Pregnancy excluded before any imaging",
+      "Imaging is not indicated in uncomplicated mechanical back pain without red flags"
+    ],
+    "difficulty": {
+      "easy": [
+        "Young or middle-aged adult with acute onset after lifting",
+        "Pain limited to the lower back without radiation",
+        "Paraspinal tenderness and pain-limited flexion",
+        "No red flags and a normal neurologic exam"
+      ],
+      "medium": [
+        "Radicular pain radiating below the knee with a positive straight leg raise",
+        "Older adult with new back pain but no red flags",
+        "Pregnancy with lumbosacral and pelvic girdle pain",
+        "Patient with obesity and persistent pain despite conservative care"
+      ],
+      "hard": [
+        "Older adult with a compression fracture after minor trauma or corticosteroid use",
+        "Fever, night pain, and leukocytosis suggesting spinal infection",
+        "History of cancer with night pain and weight loss suggesting metastasis",
+        "Saddle anesthesia or urinary retention suggesting cauda equina syndrome",
+        "Sudden severe tearing mid-back pain with a pulsatile abdominal mass suggesting aortic aneurysm"
+      ]
+    }
+  }
+}
