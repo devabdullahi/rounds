@@ -175,9 +175,15 @@ def run_stage(stage: str, name: str, condition: dict, profile: dict) -> tuple[di
 
     # Only errors this stage introduces count; earlier failures are already recorded.
     baseline = set(rule_errors(profile))
+    output: dict = {}
     errors: list[str] = []
     for attempt in range(2):
-        reply = llm.complete_json(prompt("system"), user)
+        try:
+            reply = llm.complete_json(prompt("system"), user)
+        except (ValueError, RuntimeError) as error:  # malformed JSON or a failed request
+            reply, errors = {}, [f"reply unusable: {error}"]
+            print(f"    {stage}: {errors[0][:120]}", file=sys.stderr)
+            continue
         output = {s: reply[s] for s in sections if s in reply}
         errors = [f"missing section {s}" for s in sections if s not in output and s not in OPTIONAL_SECTIONS]
         for s, value in output.items():
@@ -191,7 +197,10 @@ def run_stage(stage: str, name: str, condition: dict, profile: dict) -> tuple[di
     return output, errors
 
 
-def run_profile(slug: str, conditions: dict[str, dict], triage: dict[str, dict]) -> None:
+def run_profile(slug: str, conditions: dict[str, dict], triage: dict[str, dict], force: bool = False) -> None:
+    if (PROFILES / f"{slug}.json").exists() and not force:
+        print(f"{slug}: profile exists, skipping (use --force to regenerate)", file=sys.stderr)
+        return
     condition, row = conditions.get(slug), triage.get(slug)
     if not condition or not row or not row.get("triage"):
         print(f"{slug}: needs a triage result first", file=sys.stderr)
@@ -248,7 +257,9 @@ def save(profile: dict, stage_errors: list[str]) -> None:
 
 
 def top_suitable(triage: dict[str, dict], count: int) -> list[str]:
-    suitable = [s for s, r in triage.items() if r.get("triage") and r["triage"].get("case_suitable") and not r["errors"]]
+    """The most common suitable conditions that don't have a profile yet."""
+    suitable = [s for s, r in triage.items() if r.get("triage") and r["triage"].get("case_suitable") and not r["errors"]
+                and not (PROFILES / f"{s}.json").exists()]
     suitable.sort(key=lambda s: COMMONNESS_ORDER.index(triage[s]["triage"].get("commonness", "rare")))
     return suitable[:count]
 
@@ -261,6 +272,7 @@ def main() -> None:
     p = sub.add_parser("profile")
     p.add_argument("slugs", nargs="*")
     p.add_argument("--top", type=int)
+    p.add_argument("--force", action="store_true", help="regenerate profiles that already exist")
     c = sub.add_parser("check")
     c.add_argument("slugs", nargs="*")
     args = parser.parse_args()
@@ -272,7 +284,10 @@ def main() -> None:
         slugs = args.slugs or top_suitable(triage, args.top or 10)
         conditions = load_conditions()
         for slug in slugs:
-            run_profile(slug, conditions, triage)
+            try:
+                run_profile(slug, conditions, triage, args.force)
+            except Exception as error:  # one bad condition shouldn't stop the batch
+                print(f"{slug}: failed: {error}", file=sys.stderr)
     else:
         paths = [PROFILES / f"{s}.json" for s in args.slugs] or sorted(PROFILES.glob("*.json"))
         for path in paths:
