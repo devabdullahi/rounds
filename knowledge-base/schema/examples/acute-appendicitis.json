@@ -1,0 +1,232 @@
+{
+  "schema_version": "0.1",
+  "slug": "acute-appendicitis",
+  "triage": {
+    "name": "Acute appendicitis",
+    "case_suitable": true,
+    "reason": "Classic undifferentiated abdominal pain case with a clear diagnosis reachable by history, exam, labs and imaging, and important look-alikes.",
+    "kind": "disease",
+    "category": "acute surgical abdomen",
+    "organ_systems": ["gastrointestinal"],
+    "primary_clerkship": "surgery",
+    "secondary_clerkships": ["emergency", "pediatrics", "familyMedicine"],
+    "commonness": "very_common",
+    "settings": ["emergency", "clinic"],
+    "is_cancer": false
+  },
+  "patient": {
+    "age": { "typical_min": 5, "typical_max": 45, "peak": "10–30", "possible_min": 2, "possible_max": 90 },
+    "sex": "either",
+    "demographics": ["Slightly more common in males"],
+    "risk_factors": [
+      { "text": "Age 10–30", "strength": "strong" },
+      { "text": "Family history of appendicitis", "strength": "moderate" },
+      { "text": "Male sex", "strength": "weak" }
+    ],
+    "comorbidities": [],
+    "family_history": ["Appendicitis in a parent or sibling"],
+    "social_history": [],
+    "exposures": [],
+    "risk_medications": []
+  },
+  "presentation": {
+    "chief_complaints": [
+      { "text": "My stomach hurts", "frequency": "almost_always" },
+      { "text": "Pain started around my belly button and moved to the lower right", "frequency": "common" }
+    ],
+    "hpi": {
+      "onset": "Gradual over a few hours",
+      "duration": "Usually less than 48 hours at presentation",
+      "progression": "Starts as vague periumbilical pain, then localizes to the right lower quadrant within 12–24 hours and becomes constant",
+      "location": "Periumbilical at first, then right lower quadrant",
+      "radiation": "Usually none",
+      "quality": "Dull and crampy at first, then sharp and constant",
+      "severity": "Moderate, worsening; 6–8/10 by presentation",
+      "timing": "Constant once localized",
+      "aggravating": ["Walking", "Coughing", "Bumps in the car ride", "Pressing on the abdomen"],
+      "relieving": ["Lying still with knees bent"],
+      "associated_symptoms": [
+        { "text": "Loss of appetite", "frequency": "common" },
+        { "text": "Nausea", "frequency": "common" },
+        { "text": "Vomiting that began after the pain", "frequency": "common" },
+        { "text": "Low-grade fever or chills", "frequency": "sometimes" },
+        { "text": "Constipation", "frequency": "sometimes" },
+        { "text": "Diarrhea", "frequency": "rare" }
+      ],
+      "pertinent_negatives": [
+        "Vomiting before the pain started",
+        "Profuse watery diarrhea",
+        "Burning with urination",
+        "Vaginal bleeding or missed period",
+        "Sick contacts with the same illness",
+        "Prior appendectomy"
+      ]
+    },
+    "ros": [
+      { "system": "constitutional", "positives": [{ "text": "Feeling warm", "frequency": "sometimes" }, { "text": "Not hungry", "frequency": "common" }], "negatives": ["Weight loss", "Night sweats"] },
+      { "system": "gastrointestinal", "positives": [{ "text": "Nausea", "frequency": "common" }, { "text": "Vomiting", "frequency": "common" }], "negatives": ["Blood in stool", "Jaundice"], "argues_against": ["Profuse diarrhea", "Vomiting before pain"] },
+      { "system": "genitourinary", "positives": [], "negatives": ["Dysuria", "Hematuria", "Flank pain"], "argues_against": ["Colicky flank pain radiating to the groin"] },
+      { "system": "reproductive", "positives": [], "negatives": ["Vaginal discharge", "Vaginal bleeding", "Missed period"], "argues_against": ["Sudden one-sided pelvic pain with vomiting", "Missed period"] }
+    ],
+    "atypical": [
+      { "population": "children", "how_it_differs": "Young children can't describe pain migration; they present with irritability, vomiting and refusal to walk.", "missing_classic_features": ["Clear migration story"] },
+      { "population": "older_adults", "how_it_differs": "Milder pain, little fever and a lower white count despite more advanced disease.", "missing_classic_features": ["Fever", "Marked leukocytosis"] },
+      { "population": "pregnancy", "how_it_differs": "Later in pregnancy the appendix is displaced upward, so pain can be in the right flank or upper quadrant.", "missing_classic_features": ["Right lower quadrant location"] }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Uncomfortable but not toxic; lies still",
+      "moderate": "Lies still, avoids moving, winces with the car ride or cough",
+      "severe": "Ill-appearing, flushed, reluctant to move",
+      "critical": "Toxic-appearing, pale, diaphoretic, lethargic"
+    },
+    "findings": [
+      { "id": "rlq-tenderness", "region": "abdomen", "maneuver": "Palpate all four quadrants, starting away from the pain", "finding": "Right lower quadrant tenderness", "frequency": "almost_always", "significance": "strongly_supports", "importance": "essential" },
+      { "id": "mcburney-tenderness", "region": "abdomen", "maneuver": "Press at McBurney point (one-third from the ASIS to the umbilicus)", "finding": "Point tenderness at McBurney point", "frequency": "common", "significance": "strongly_supports", "importance": "important" },
+      { "id": "guarding", "region": "abdomen", "maneuver": "Palpate the right lower quadrant", "finding": "Voluntary guarding", "frequency": "common", "min_severity": "moderate", "significance": "supports", "importance": "important" },
+      { "id": "rovsing-sign", "region": "abdomen", "maneuver": "Press in the left lower quadrant", "finding": "Pain felt in the right lower quadrant", "frequency": "sometimes", "significance": "supports", "importance": "optional" },
+      { "id": "psoas-sign", "region": "abdomen", "maneuver": "Extend the right hip with the patient on the left side", "finding": "Right lower quadrant pain (retrocecal appendix)", "frequency": "sometimes", "significance": "supports", "importance": "optional" },
+      { "id": "obturator-sign", "region": "abdomen", "maneuver": "Internally rotate the flexed right hip", "finding": "Hypogastric pain (pelvic appendix)", "frequency": "rare", "significance": "supports", "importance": "optional" },
+      { "id": "rebound", "region": "abdomen", "maneuver": "Ask the patient to cough, or tap the heel (gentler than releasing deep pressure)", "finding": "Pain with jarring, suggesting peritoneal irritation", "frequency": "sometimes", "min_severity": "moderate", "significance": "supports", "importance": "important" },
+      { "id": "rigid-abdomen", "region": "abdomen", "finding": "Diffuse rigidity", "frequency": "rare", "min_severity": "critical", "significance": "supports", "importance": "essential" },
+      { "id": "normal-pelvic", "region": "pelvic", "maneuver": "Pelvic exam when a gynecologic cause is possible", "finding": "No cervical motion tenderness or adnexal mass", "frequency": "almost_always", "significance": "neutral", "importance": "important" },
+      { "id": "cva-nontender", "region": "abdomen", "maneuver": "Percuss the costovertebral angles", "finding": "No costovertebral angle tenderness", "frequency": "almost_always", "significance": "neutral", "importance": "optional" }
+    ]
+  },
+  "vitals": {
+    "temp": { "mild": { "min": 98.6, "max": 100.2 }, "moderate": { "min": 99.5, "max": 101.0 }, "severe": { "min": 100.4, "max": 102.6 }, "critical": { "min": 101.0, "max": 103.5 } },
+    "hr": { "mild": { "min": 72, "max": 98 }, "moderate": { "min": 88, "max": 108 }, "severe": { "min": 100, "max": 124 }, "critical": { "min": 115, "max": 145 } },
+    "rr": { "severe": { "min": 18, "max": 24 }, "critical": { "min": 22, "max": 30 } },
+    "sbp": { "critical": { "min": 78, "max": 98 } },
+    "dbp": { "critical": { "min": 40, "max": 60 } }
+  },
+  "labs": [
+    { "test_id": "wbc", "ranges": { "mild": { "min": 9.5, "max": 13.0 }, "moderate": { "min": 11.5, "max": 16.0 }, "severe": { "min": 14.0, "max": 21.0 }, "critical": { "min": 17.0, "max": 28.0 } }, "frequency": "common", "importance": "important", "caveat": "A normal white count doesn't rule out appendicitis, especially early or in older adults." },
+    { "test_id": "neut_pct", "ranges": { "mild": { "min": 68, "max": 80 }, "moderate": { "min": 74, "max": 86 }, "severe": { "min": 80, "max": 90 }, "critical": { "min": 82, "max": 92 } }, "frequency": "common", "importance": "important" },
+    { "test_id": "bands_pct", "ranges": { "severe": { "min": 5, "max": 12 }, "critical": { "min": 8, "max": 20 } }, "frequency": "sometimes", "importance": "optional" },
+    { "test_id": "crp", "ranges": { "mild": { "min": 0.5, "max": 3.0 }, "moderate": { "min": 2.0, "max": 8.0 }, "severe": { "min": 5.0, "max": 20.0 }, "critical": { "min": 10.0, "max": 30.0 } }, "frequency": "common", "importance": "optional", "caveat": "Rises more after 24 hours; higher values suggest perforation." },
+    { "test_id": "lactate", "ranges": { "critical": { "min": 2.2, "max": 5.0 } }, "frequency": "rare", "importance": "optional" },
+    { "test_id": "bun", "ranges": { "severe": { "min": 18, "max": 30 }, "critical": { "min": 22, "max": 40 } }, "frequency": "sometimes", "importance": "optional", "caveat": "From vomiting and poor intake." },
+    { "test_id": "ua_wbc", "ranges": { "moderate": { "min": 3, "max": 10 }, "severe": { "min": 5, "max": 20 } }, "frequency": "sometimes", "importance": "optional", "caveat": "Mild sterile pyuria from an inflamed appendix next to the ureter or bladder; can mislead toward a urinary infection." },
+    { "test_id": "ua_ketones", "qualitative": { "moderate": "Small", "severe": "Moderate" }, "frequency": "sometimes", "importance": "optional" },
+    { "test_id": "hcg", "frequency": "almost_always", "importance": "essential", "caveat": "Negative. Required in anyone who could be pregnant before imaging; rules out ectopic pregnancy." }
+  ],
+  "imaging": [
+    { "study": "Ultrasound of the right lower quadrant", "modality": "ultrasound", "role": "initial", "preferred_when": "Children and pregnancy (no radiation)", "findings": [
+      { "text": "Noncompressible, blind-ending tubular structure", "frequency": "common" },
+      { "text": "Appendix diameter over 6 mm", "frequency": "common" },
+      { "text": "Appendix not seen (nondiagnostic study)", "frequency": "sometimes" }
+    ] },
+    { "study": "CT abdomen and pelvis with IV contrast", "modality": "ct", "role": "confirmatory", "preferred_when": "Nonpregnant adults", "findings": [
+      { "text": "Dilated appendix over 6 mm with wall thickening and enhancement", "frequency": "almost_always" },
+      { "text": "Periappendiceal fat stranding", "frequency": "common" },
+      { "text": "Appendicolith", "frequency": "sometimes" },
+      { "text": "Periappendiceal fluid collection or abscess (perforation)", "frequency": "rare" },
+      { "text": "Extraluminal free air (perforation)", "frequency": "rare" }
+    ] },
+    { "study": "MRI abdomen and pelvis without contrast", "modality": "mri", "role": "supporting", "preferred_when": "Pregnancy when ultrasound is nondiagnostic", "findings": [
+      { "text": "Dilated appendix with surrounding inflammation", "frequency": "common" }
+    ] },
+    { "study": "Abdominal x-ray", "modality": "xray", "role": "not_indicated", "findings": [
+      { "text": "Usually nonspecific; occasionally a calcified appendicolith", "frequency": "rare" }
+    ] }
+  ],
+  "workup": {
+    "initial": [
+      { "test": "cbc", "why": "Leukocytosis with left shift supports inflammation" },
+      { "test": "bmp", "why": "Hydration and electrolytes before surgery" },
+      { "test": "ua", "why": "Looks for urinary infection or a stone" },
+      { "test": "hcg", "why": "Rules out pregnancy and ectopic pregnancy before imaging" }
+    ],
+    "confirmatory": [
+      { "test": "CT abdomen and pelvis with IV contrast", "why": "Most accurate test in nonpregnant adults" },
+      { "test": "Ultrasound of the right lower quadrant", "why": "First choice in children and pregnancy" }
+    ],
+    "supporting": [
+      { "test": "crp", "why": "Adds to the white count in scoring and suggests perforation when high" }
+    ],
+    "not_indicated": [
+      { "test": "Abdominal x-ray", "why": "Rarely changes management" },
+      { "test": "d_dimer", "why": "No role in right lower quadrant pain" },
+      { "test": "lipase", "why": "Not needed unless the pain is epigastric" }
+    ],
+    "decision_points": [
+      "Pregnancy test before CT in anyone who could be pregnant",
+      "Ultrasound first in children and pregnancy; CT if nondiagnostic in nonpregnant patients",
+      "Peritonitis or instability goes to surgery without waiting for imaging"
+    ],
+    "criteria": [],
+    "scores": ["alvarado", "pediatric_appendicitis_score"]
+  },
+  "differential": [
+    { "name": "Ectopic pregnancy", "slug": "ectopic-pregnancy", "why_considered": "Lower abdominal pain in someone who could be pregnant", "must_not_miss": true, "trigger": "Any patient who could be pregnant", "discriminators": { "history": ["Missed period", "Vaginal bleeding"], "exam": ["Adnexal tenderness or mass"], "labs": ["Positive hCG"], "imaging": ["No intrauterine pregnancy on transvaginal ultrasound"] } },
+    { "name": "Ovarian torsion", "slug": "ovarian-torsion", "why_considered": "Sudden one-sided lower abdominal pain with vomiting", "must_not_miss": true, "trigger": "Abrupt onset with vomiting at the start", "discriminators": { "history": ["Sudden onset", "Vomiting at onset", "Known ovarian cyst"], "exam": ["Adnexal tenderness"], "imaging": ["Enlarged ovary with reduced Doppler flow"] } },
+    { "name": "Pelvic inflammatory disease", "slug": "pelvic-inflammatory-disease", "why_considered": "Lower abdominal pain and fever in a sexually active patient", "must_not_miss": false, "discriminators": { "history": ["Vaginal discharge", "New or multiple partners", "Bilateral pain"], "exam": ["Cervical motion tenderness"] } },
+    { "name": "Viral gastroenteritis", "slug": "gastroenteritis", "why_considered": "Nausea, vomiting and abdominal pain", "must_not_miss": false, "discriminators": { "history": ["Vomiting before pain", "Watery diarrhea", "Sick contacts"], "exam": ["Diffuse mild tenderness without localization"] } },
+    { "name": "Kidney stone", "slug": "kidney-stones", "why_considered": "Right-sided abdominal pain with nausea", "must_not_miss": false, "discriminators": { "history": ["Colicky flank pain radiating to the groin", "Writhing, can't get comfortable"], "exam": ["Costovertebral angle tenderness"], "labs": ["Hematuria"], "imaging": ["Stone and hydronephrosis on CT"] } },
+    { "name": "Mesenteric adenitis", "why_considered": "Right lower quadrant pain in a child after a viral illness", "must_not_miss": false, "discriminators": { "history": ["Recent upper respiratory infection"], "imaging": ["Enlarged mesenteric lymph nodes with a normal appendix"] } },
+    { "name": "Crohn disease", "slug": "crohns-disease", "why_considered": "Right lower quadrant pain from terminal ileitis", "must_not_miss": false, "discriminators": { "history": ["Weeks of diarrhea", "Weight loss"], "imaging": ["Terminal ileum thickening"] } }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Early, uncomplicated: less than 24 hours, localized tenderness, low-grade or no fever",
+      "moderate": "Established, uncomplicated: guarding, fever, clear leukocytosis",
+      "severe": "Perforated with a localized abscess or phlegmon",
+      "critical": "Free perforation with diffuse peritonitis and sepsis"
+    },
+    "red_flags": [
+      { "finding": "Diffuse rigidity or rebound", "meaning": "Generalized peritonitis; needs a surgeon now" },
+      { "finding": "Hypotension or heart rate over 120", "meaning": "Sepsis" },
+      { "finding": "Sudden relief of pain followed by worse, spreading pain", "meaning": "Perforation" },
+      { "finding": "Positive pregnancy test", "meaning": "Ectopic pregnancy until proven otherwise" }
+    ],
+    "complications": [
+      { "name": "Perforation", "timing": "early", "seriousness": "serious", "frequency": "sometimes", "clues": ["Symptoms over 48 hours", "High fever", "Diffuse tenderness"] },
+      { "name": "Periappendiceal abscess", "timing": "early", "seriousness": "serious", "frequency": "rare", "clues": ["Palpable right lower quadrant mass", "Persistent fever"] },
+      { "name": "Generalized peritonitis and sepsis", "timing": "early", "seriousness": "life_threatening", "frequency": "rare", "clues": ["Rigid abdomen", "Hypotension"] },
+      { "name": "Adhesive small bowel obstruction", "timing": "late", "seriousness": "serious", "frequency": "rare", "clues": ["Prior appendectomy with new distension and vomiting"] }
+    ],
+    "special_populations": [
+      { "population": "children", "differences": "Younger children perforate more often because diagnosis is delayed; ultrasound first." },
+      { "population": "older_adults", "differences": "Atypical, milder findings and higher perforation rates." },
+      { "population": "pregnancy", "differences": "Most common non-obstetric surgical emergency in pregnancy; pain may be higher; ultrasound then MRI." }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      { "question": "Where did the pain start, and has it moved?", "category": "hpi", "importance": "essential", "looking_for": "Periumbilical pain migrating to the right lower quadrant" },
+      { "question": "When did it start?", "category": "hpi", "importance": "essential", "looking_for": "Hours to under 2 days; longer suggests perforation" },
+      { "question": "What makes it worse?", "category": "hpi", "importance": "important", "looking_for": "Movement, coughing, bumps (peritoneal irritation)" },
+      { "question": "Did the vomiting start before or after the pain?", "category": "associated", "importance": "important", "looking_for": "After; vomiting first suggests gastroenteritis" },
+      { "question": "Have you been hungry?", "category": "associated", "importance": "important", "looking_for": "Loss of appetite" },
+      { "question": "Any diarrhea?", "category": "associated", "importance": "important", "looking_for": "Absent or mild" },
+      { "question": "Any fever or chills?", "category": "associated", "importance": "important", "looking_for": "Low-grade fever" },
+      { "question": "Could you be pregnant? When was your last period?", "category": "obstetric", "importance": "essential", "looking_for": "Excludes ectopic pregnancy" },
+      { "question": "Any vaginal discharge or bleeding?", "category": "sexual", "importance": "important", "looking_for": "Absent; present suggests PID or ectopic pregnancy" },
+      { "question": "Any burning with urination or blood in the urine?", "category": "ros", "importance": "important", "looking_for": "Absent; present suggests a urinary cause" },
+      { "question": "Have you had your appendix out or other abdominal surgery?", "category": "pmh", "importance": "important", "looking_for": "No prior appendectomy" }
+    ],
+    "accepted_names": ["Acute appendicitis", "Appendicitis"],
+    "reasoning_points": [
+      "Pain migrating from the periumbilical area to the right lower quadrant",
+      "Anorexia and vomiting after the pain began",
+      "Localized right lower quadrant tenderness with peritoneal signs",
+      "Leukocytosis with neutrophil predominance",
+      "Pregnancy excluded",
+      "Imaging confirms an inflamed appendix"
+    ],
+    "difficulty": {
+      "easy": ["Teenager or young adult", "Classic migration story", "McBurney point tenderness", "Leukocytosis"],
+      "medium": ["Retrocecal appendix: flank pain, positive psoas sign, little anterior tenderness", "Mild pyuria on urinalysis", "Woman of reproductive age with gynecologic look-alikes"],
+      "hard": ["Older adult with mild pain and a normal white count", "Pregnant patient with right upper quadrant pain", "Toddler with vomiting and refusal to walk", "Presents after perforation with diffuse pain"]
+    }
+  },
+  "generation": {
+    "stages": [
+      { "stage": "triage", "model": "hand-written example", "prompt_version": "example", "generated_at": "2026-10-04T00:00:00Z" }
+    ],
+    "validation": { "status": "pending" },
+    "review": { "status": "pending", "notes": "Reference example for prompts; needs clinician review like any other profile." }
+  }
+}
