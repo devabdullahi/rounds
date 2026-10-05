@@ -38,7 +38,7 @@ enum STACK {
     static let visible = 3
     static let depthOffset: CGFloat = 14      // pt each card peeks out below the one above
     static let depthScale: CGFloat = 0.05
-    static let cardHeight: CGFloat = 448      // one big card owns the screen (Avec-style focus)
+    static let cardHeight: CGFloat = 436      // one big card owns the screen (Avec-style focus)
     static let restack = Animation.spring(response: 0.45, dampingFraction: 0.82)
 }
 
@@ -107,7 +107,7 @@ struct PatientDeck: View {
     @State private var unavailable: IncomingPatient?
 
     var body: some View {
-        VStack(spacing: 18) {
+        VStack(spacing: 14) {
             ZStack {
                 ForEach(Array(queue.prefix(STACK.visible).enumerated()).reversed(), id: \.element.id) { depth, p in
                     card(p, depth: depth)
@@ -115,12 +115,10 @@ struct PatientDeck: View {
             }
             .padding(.bottom, STACK.depthOffset * CGFloat(STACK.visible - 1))
 
-            VStack(spacing: 10) {
-                controls
-                Text("\(queue.count) waiting · swipe right to take, left for later")
-                    .font(.system(size: 13))
-                    .foregroundStyle(Theme.faint)
-            }
+            // The row sits fully above the tab bar's fade, so the red and green buttons aren't
+            // darkened at the bottom while the smaller shuffle button escapes it.
+            controls
+                .accessibilityHint("\(queue.count) waiting. Swipe right to take, left for later.")
         }
         .alert("Case in preparation", isPresented: Binding(get: { unavailable != nil }, set: { if !$0 { unavailable = nil } })) {
             Button("OK", role: .cancel) {}

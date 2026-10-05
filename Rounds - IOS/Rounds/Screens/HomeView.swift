@@ -42,7 +42,7 @@ struct HomeView: View {
 
     var body: some View {
         ScrimScrollView {
-            VStack(alignment: .leading, spacing: 24) {
+            VStack(alignment: .leading, spacing: 20) {
                 header
                     .opacity(stage >= 0 ? 1 : 0)
 
