@@ -75,8 +75,12 @@ struct ClinicalCase: Identifiable, Hashable {
     let keyHistoryTotal: Int
 
     var id: String { bed }
+    /// First letters of the first and last names, skipping nicknames and punctuation
+    /// ("Margaret \"Maggie\" Ellison" → "ME").
     var initials: String {
-        name.split(separator: " ").prefix(2).compactMap(\.first).map(String.init).joined()
+        let words = name.split(separator: " ").filter { !$0.hasPrefix("\"") && !$0.hasPrefix("(") }
+        let letters = [words.first, words.count > 1 ? words.last : nil].compactMap { $0?.first(where: \.isLetter) }
+        return String(letters).uppercased()
     }
 }
 
