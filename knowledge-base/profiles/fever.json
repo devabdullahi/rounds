@@ -1,0 +1,1979 @@
+{
+  "schema_version": "0.2",
+  "slug": "fever",
+  "triage": {
+    "name": "Fever",
+    "case_suitable": true,
+    "reason": "Core undifferentiated symptom with a wide differential (infection, inflammatory, malignant, drug) that students must reason through with history, exam and cultures.",
+    "kind": "symptom",
+    "category": "constitutional symptom",
+    "organ_systems": [
+      "blood"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "emergency",
+      "pediatrics",
+      "familyMedicine",
+      "surgery"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "emergency",
+      "inpatient",
+      "clinic",
+      "pediatric_clinic"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:17:26Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:05:05Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:05:11Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:05:29Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:05:40Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:05:48Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'blood cultures' was in ['initial', 'confirmatory'], kept ['initial']",
+        "auto-repaired: workup: 'rapid influenza test' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'rapid strep test' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'urine culture' was in ['confirmatory', 'supporting'], kept ['confirmatory']",
+        "auto-repaired: workup: 'sputum culture' was in ['confirmatory', 'supporting'], kept ['confirmatory']",
+        "auto-repaired: workup: 'ct abdomen and pelvis with iv contrast' was in ['confirmatory', 'not_indicated'], kept ['not_indicated', 'confirmatory']",
+        "auto-repaired: workup: 'ct chest with iv contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ultrasound of the abdomen, right upper quadrant' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ct head without contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'mri brain with and without contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ultrasound of the kidneys and bladder' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'rapid influenza test' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'rapid strep test' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'ct abdomen and pelvis with iv contrast' was in ['confirmatory', 'not_indicated'], kept ['not_indicated', 'confirmatory']",
+        "auto-repaired: workup: 'ct chest with iv contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ultrasound of the abdomen, right upper quadrant' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ct head without contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'mri brain with and without contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ultrasound of the kidneys and bladder' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "differential sepsis: no profile yet",
+        "differential community-acquired-pneumonia: no profile yet",
+        "differential urinary-tract-infection: no profile yet",
+        "differential bacterial-meningitis: no profile yet",
+        "differential influenza: no profile yet",
+        "differential drug-fever: no profile yet",
+        "differential systemic-lupus-erythematosus: no profile yet",
+        "differential lymphoma: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 0,
+      "typical_max": 90,
+      "peak": "bimodal: children under 5 and adults over 65",
+      "possible_min": 0,
+      "possible_max": 110
+    },
+    "sex": "either",
+    "demographics": [
+      "Occurs at all ages; young children and older adults are most vulnerable to infection-related fever",
+      "More frequent in people with chronic illness, recent hospitalization, or immunosuppression"
+    ],
+    "risk_factors": [
+      {
+        "text": "Recent or current infection (respiratory, urinary, gastrointestinal, skin)",
+        "strength": "strong"
+      },
+      {
+        "text": "Immunosuppression (chemotherapy, transplant, HIV, chronic steroids)",
+        "strength": "strong"
+      },
+      {
+        "text": "Recent hospitalization, surgery, or indwelling devices (catheters, lines)",
+        "strength": "strong"
+      },
+      {
+        "text": "Very young or very old age",
+        "strength": "moderate"
+      },
+      {
+        "text": "Recent travel or exposure to sick contacts",
+        "strength": "moderate"
+      },
+      {
+        "text": "Autoimmune or inflammatory disease",
+        "strength": "moderate"
+      },
+      {
+        "text": "Malignancy",
+        "strength": "moderate"
+      },
+      {
+        "text": "Use of medications that can cause drug fever",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Diabetes mellitus",
+      "Chronic kidney disease",
+      "Chronic lung disease",
+      "Heart failure",
+      "Cancer",
+      "Autoimmune disease",
+      "Immunosuppression"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Recent travel",
+      "Exposure to sick contacts",
+      "Occupational or animal exposure",
+      "Injection drug use",
+      "Recent vaccination"
+    ],
+    "exposures": [
+      "Sick contacts",
+      "Recent travel",
+      "Animal contact",
+      "Healthcare exposure",
+      "Recent vaccination",
+      "Heat exposure"
+    ],
+    "risk_medications": [
+      "Chemotherapy agents",
+      "Corticosteroids",
+      "Antibiotics",
+      "Anticonvulsants",
+      "Antihypertensives",
+      "Immunosuppressants"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I feel hot and feverish",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "I have chills and shivering",
+        "frequency": "common"
+      },
+      {
+        "text": "I feel achy all over",
+        "frequency": "common"
+      },
+      {
+        "text": "I just feel really tired",
+        "frequency": "common"
+      }
+    ],
+    "hpi": {
+      "onset": "Sudden or gradual depending on cause; often noticed over hours to a day",
+      "duration": "Variable; acute infections typically cause fever for a few days, while chronic causes may last weeks",
+      "progression": "May spike and fall (intermittent) or remain persistently elevated; pattern depends on the underlying cause",
+      "location": "Generalized; felt as whole-body warmth",
+      "radiation": "Not applicable",
+      "quality": "Subjective feeling of heat, often with chills or shivering",
+      "severity": "Mild to high; temperature often 100.4–104 °F (38–40 °C), can be higher",
+      "timing": "Can be continuous, intermittent, or remittent",
+      "aggravating": [
+        "Activity",
+        "Warm environments",
+        "Bundling up"
+      ],
+      "relieving": [
+        "Antipyretics (acetaminophen, ibuprofen)",
+        "Cool compresses",
+        "Rest",
+        "Fluids"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Chills",
+          "frequency": "common"
+        },
+        {
+          "text": "Sweating",
+          "frequency": "common"
+        },
+        {
+          "text": "Fatigue and malaise",
+          "frequency": "common"
+        },
+        {
+          "text": "Headache",
+          "frequency": "common"
+        },
+        {
+          "text": "Muscle aches",
+          "frequency": "common"
+        },
+        {
+          "text": "Loss of appetite",
+          "frequency": "common"
+        },
+        {
+          "text": "Nausea",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Rigors (severe shaking chills)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Night sweats",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Weight loss",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "No recent travel",
+        "No sick contacts",
+        "No new medications",
+        "No rash",
+        "No confusion or altered mental status",
+        "No neck stiffness",
+        "No focal pain localizing to a specific organ",
+        "No recent hospitalization or surgery"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fever",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Chills",
+            "frequency": "common"
+          },
+          {
+            "text": "Fatigue",
+            "frequency": "common"
+          },
+          {
+            "text": "Night sweats",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Weight loss",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "No unintentional weight loss",
+          "No failure to thrive"
+        ],
+        "argues_against": [
+          "Chronic wasting illness"
+        ]
+      },
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "Cough",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Sore throat",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Shortness of breath",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "No hemoptysis",
+          "No pleuritic chest pain"
+        ],
+        "argues_against": [
+          "Pneumonia",
+          "Tuberculosis"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Nausea",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Vomiting",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Diarrhea",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Abdominal pain",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "No blood in stool",
+          "No jaundice"
+        ],
+        "argues_against": [
+          "Gastroenteritis",
+          "Hepatitis"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [
+          {
+            "text": "Dysuria",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Frequency",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Flank pain",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "No hematuria",
+          "No vaginal discharge"
+        ],
+        "argues_against": [
+          "Urinary tract infection",
+          "Pyelonephritis"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [
+          {
+            "text": "Rash",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Sweating",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "No petechiae",
+          "No purpura",
+          "No cellulitis"
+        ],
+        "argues_against": [
+          "Meningococcemia",
+          "Cellulitis"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Headache",
+            "frequency": "common"
+          },
+          {
+            "text": "Confusion",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "No neck stiffness",
+          "No photophobia",
+          "No focal weakness"
+        ],
+        "argues_against": [
+          "Meningitis",
+          "Encephalitis"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Muscle aches",
+            "frequency": "common"
+          },
+          {
+            "text": "Joint pain",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "No joint swelling",
+          "No focal bone pain"
+        ],
+        "argues_against": [
+          "Septic arthritis",
+          "Osteomyelitis"
+        ]
+      },
+      {
+        "system": "hematologic",
+        "positives": [
+          {
+            "text": "Easy bruising",
+            "frequency": "rare"
+          },
+          {
+            "text": "Bleeding",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "No lymphadenopathy",
+          "No splenomegaly"
+        ],
+        "argues_against": [
+          "Leukemia",
+          "Lymphoma"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "infants",
+        "how_it_differs": "Infants may not mount a fever or may present with nonspecific signs like poor feeding, irritability, lethargy, or temperature instability.",
+        "missing_classic_features": [
+          "Subjective feeling of heat",
+          "Chills",
+          "Localizing symptoms"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "Older adults may have a blunted fever response, and fever may be absent or low-grade despite serious infection; they may present with confusion or falls.",
+        "missing_classic_features": [
+          "High fever",
+          "Chills",
+          "Rigors"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "Immunocompromised patients may have minimal or no fever despite severe infection, or fever may be the only sign.",
+        "missing_classic_features": [
+          "Localizing symptoms",
+          "Marked inflammatory response"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Baseline body temperature is slightly higher in pregnancy; fever may be blunted or attributed to other causes, and some infections pose fetal risk.",
+        "missing_classic_features": [
+          "High fever",
+          "Chills"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Alert, mildly flushed, comfortable at rest, no distress",
+      "moderate": "Flushed and warm, appears uncomfortable, prefers to lie still",
+      "severe": "Ill-appearing, diaphoretic, shivering or rigoring, tachycardic",
+      "critical": "Toxic-appearing, lethargic or confused, mottled or pale, may be hypotensive"
+    },
+    "findings": [
+      {
+        "id": "measured-temperature-elevated",
+        "region": "general",
+        "maneuver": "Measure the temperature (oral, tympanic, temporal, axillary, or rectal)",
+        "finding": "Body temperature above the normal range (generally >100.4 °F / 38 °C)",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "warm-skin",
+        "region": "skin",
+        "maneuver": "Palpate the skin of the trunk and extremities",
+        "finding": "Skin feels warm or hot to the touch",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "flushed-appearance",
+        "region": "general",
+        "maneuver": "Inspect the face and skin",
+        "finding": "Flushed, erythematous appearance",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "diaphoresis",
+        "region": "skin",
+        "maneuver": "Inspect the skin for moisture",
+        "finding": "Diaphoresis (sweating)",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "rigors",
+        "region": "general",
+        "maneuver": "Observe the patient at rest",
+        "finding": "Shaking chills (rigors)",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "tachycardia",
+        "region": "cardiac",
+        "maneuver": "Palpate the radial pulse or auscultate the heart",
+        "finding": "Heart rate elevated above the expected rate for the temperature",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "tachypnea",
+        "region": "lung",
+        "maneuver": "Observe and count the respiratory rate",
+        "finding": "Elevated respiratory rate",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "hypotension",
+        "region": "cardiac",
+        "maneuver": "Measure the blood pressure",
+        "finding": "Low blood pressure, suggesting sepsis or shock",
+        "frequency": "rare",
+        "min_severity": "critical",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "altered-mental-status",
+        "region": "mental_status",
+        "maneuver": "Assess orientation, attention, and level of consciousness",
+        "finding": "Confusion, disorientation, or lethargy",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "no-neck-stiffness",
+        "region": "neck",
+        "maneuver": "Flex the neck and assess for resistance",
+        "finding": "No neck stiffness or meningismus",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-rash",
+        "region": "skin",
+        "maneuver": "Inspect the entire skin surface",
+        "finding": "No rash, petechiae, or purpura",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-focal-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen and other regions for focal tenderness",
+        "finding": "No focal tenderness or mass localizing to a specific organ",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the cervical, axillary, and inguinal lymph node chains",
+        "finding": "No enlarged or tender lymph nodes",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "clear-lungs",
+        "region": "lung",
+        "maneuver": "Auscultate all lung fields",
+        "finding": "Clear breath sounds without crackles or consolidation",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 99.5,
+        "max": 100.9
+      },
+      "moderate": {
+        "min": 100.4,
+        "max": 102.2
+      },
+      "severe": {
+        "min": 102.0,
+        "max": 104.0
+      },
+      "critical": {
+        "min": 103.5,
+        "max": 106.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 70,
+        "max": 100
+      },
+      "moderate": {
+        "min": 90,
+        "max": 115
+      },
+      "severe": {
+        "min": 105,
+        "max": 130
+      },
+      "critical": {
+        "min": 120,
+        "max": 150
+      }
+    },
+    "rr": {
+      "moderate": {
+        "min": 16,
+        "max": 22
+      },
+      "severe": {
+        "min": 20,
+        "max": 28
+      },
+      "critical": {
+        "min": 24,
+        "max": 34
+      }
+    },
+    "sbp": {
+      "critical": {
+        "min": 70,
+        "max": 90
+      }
+    },
+    "dbp": {
+      "critical": {
+        "min": 40,
+        "max": 60
+      }
+    },
+    "spo2": {
+      "severe": {
+        "min": 90,
+        "max": 96
+      },
+      "critical": {
+        "min": 85,
+        "max": 92
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "mild": {
+          "min": 11.0,
+          "max": 14.0
+        },
+        "moderate": {
+          "min": 13.0,
+          "max": 18.0
+        },
+        "severe": {
+          "min": 16.0,
+          "max": 24.0
+        },
+        "critical": {
+          "min": 20.0,
+          "max": 35.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "A normal or low white count does not exclude serious infection; leukopenia can occur in overwhelming sepsis or viral illness."
+    },
+    {
+      "test_id": "neut_pct",
+      "ranges": {
+        "mild": {
+          "min": 70,
+          "max": 80
+        },
+        "moderate": {
+          "min": 75,
+          "max": 88
+        },
+        "severe": {
+          "min": 80,
+          "max": 92
+        },
+        "critical": {
+          "min": 82,
+          "max": 95
+        }
+      },
+      "frequency": "common",
+      "importance": "important"
+    },
+    {
+      "test_id": "bands_pct",
+      "ranges": {
+        "moderate": {
+          "min": 5,
+          "max": 10
+        },
+        "severe": {
+          "min": 8,
+          "max": 18
+        },
+        "critical": {
+          "min": 12,
+          "max": 25
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "A left shift supports bacterial infection but is nonspecific."
+    },
+    {
+      "test_id": "lymph_pct",
+      "ranges": {
+        "mild": {
+          "min": 40,
+          "max": 55
+        },
+        "moderate": {
+          "min": 45,
+          "max": 65
+        },
+        "severe": {
+          "min": 50,
+          "max": 75
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Lymphocytosis favors a viral cause."
+    },
+    {
+      "test_id": "plt",
+      "ranges": {
+        "severe": {
+          "min": 100,
+          "max": 150
+        },
+        "critical": {
+          "min": 20,
+          "max": 100
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Thrombocytopenia suggests severe sepsis, disseminated intravascular coagulation, or a hematologic process."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "mild": {
+          "min": 1.0,
+          "max": 5.0
+        },
+        "moderate": {
+          "min": 4.0,
+          "max": 15.0
+        },
+        "severe": {
+          "min": 10.0,
+          "max": 30.0
+        },
+        "critical": {
+          "min": 20.0,
+          "max": 50.0
+        }
+      },
+      "frequency": "common",
+      "importance": "optional",
+      "caveat": "Nonspecific; helps gauge the magnitude of inflammation but does not identify the source."
+    },
+    {
+      "test_id": "esr",
+      "ranges": {
+        "mild": {
+          "min": 20,
+          "max": 40
+        },
+        "moderate": {
+          "min": 35,
+          "max": 70
+        },
+        "severe": {
+          "min": 60,
+          "max": 100
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Rises and falls slowly; more useful for chronic or inflammatory causes than acute infection."
+    },
+    {
+      "test_id": "procalcitonin",
+      "ranges": {
+        "moderate": {
+          "min": 0.25,
+          "max": 2.0
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 10.0
+        },
+        "critical": {
+          "min": 10.0,
+          "max": 50.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Higher values favor bacterial infection and sepsis; normal values do not fully exclude it."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "severe": {
+          "min": 2.0,
+          "max": 4.0
+        },
+        "critical": {
+          "min": 4.0,
+          "max": 10.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevated lactate with fever suggests hypoperfusion or sepsis and should prompt urgent evaluation."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "mild": {
+          "min": 20,
+          "max": 28
+        },
+        "moderate": {
+          "min": 25,
+          "max": 40
+        },
+        "severe": {
+          "min": 35,
+          "max": 60
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Rises with dehydration from fever, poor intake, or vomiting."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "mild": {
+          "min": 1.1,
+          "max": 1.5
+        },
+        "moderate": {
+          "min": 1.4,
+          "max": 2.2
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 4.0
+        },
+        "critical": {
+          "min": 3.0,
+          "max": 8.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevated creatinine suggests dehydration or renal injury from sepsis."
+    },
+    {
+      "test_id": "na",
+      "ranges": {
+        "mild": {
+          "min": 131,
+          "max": 135
+        },
+        "moderate": {
+          "min": 128,
+          "max": 134
+        },
+        "severe": {
+          "min": 125,
+          "max": 132
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Hyponatremia can accompany pneumonia, meningitis, or other infections."
+    },
+    {
+      "test_id": "hco3",
+      "ranges": {
+        "mild": {
+          "min": 20,
+          "max": 22
+        },
+        "moderate": {
+          "min": 16,
+          "max": 21
+        },
+        "severe": {
+          "min": 10,
+          "max": 18
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Low bicarbonate suggests metabolic acidosis, which may accompany sepsis or dehydration."
+    },
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "mild": {
+          "min": 100,
+          "max": 140
+        },
+        "moderate": {
+          "min": 140,
+          "max": 250
+        },
+        "severe": {
+          "min": 250,
+          "max": 400
+        },
+        "critical": {
+          "min": 400,
+          "max": 700
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Hyperglycemia can be stress-related or indicate undiagnosed diabetes; infection worsens glycemic control."
+    },
+    {
+      "test_id": "ua_le",
+      "qualitative": {
+        "mild": "Trace",
+        "moderate": "1+",
+        "severe": "2+",
+        "critical": "3+"
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Positive leukocyte esterase supports urinary tract infection as the fever source."
+    },
+    {
+      "test_id": "ua_nitrite",
+      "qualitative": {
+        "moderate": "Positive",
+        "severe": "Positive"
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Positive nitrite is fairly specific for a Gram-negative urinary infection."
+    },
+    {
+      "test_id": "ua_wbc",
+      "ranges": {
+        "mild": {
+          "min": 5,
+          "max": 10
+        },
+        "moderate": {
+          "min": 10,
+          "max": 30
+        },
+        "severe": {
+          "min": 25,
+          "max": 60
+        },
+        "critical": {
+          "min": 50,
+          "max": 100
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Pyuria supports urinary infection but can also occur with sterile inflammation."
+    },
+    {
+      "test_id": "ua_bacteria",
+      "qualitative": {
+        "mild": "Few",
+        "moderate": "Moderate",
+        "severe": "Many"
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "csf_wbc",
+      "ranges": {
+        "moderate": {
+          "min": 10,
+          "max": 100
+        },
+        "severe": {
+          "min": 100,
+          "max": 1000
+        },
+        "critical": {
+          "min": 500,
+          "max": 5000
+        }
+      },
+      "frequency": "rare",
+      "importance": "essential",
+      "caveat": "Only obtained when meningitis or encephalitis is suspected; elevated counts with neutrophil predominance suggest bacterial meningitis."
+    },
+    {
+      "test_id": "csf_protein",
+      "ranges": {
+        "moderate": {
+          "min": 50,
+          "max": 100
+        },
+        "severe": {
+          "min": 80,
+          "max": 200
+        },
+        "critical": {
+          "min": 150,
+          "max": 400
+        }
+      },
+      "frequency": "rare",
+      "importance": "important"
+    },
+    {
+      "test_id": "csf_glucose",
+      "ranges": {
+        "moderate": {
+          "min": 30,
+          "max": 45
+        },
+        "severe": {
+          "min": 20,
+          "max": 40
+        },
+        "critical": {
+          "min": 10,
+          "max": 30
+        }
+      },
+      "frequency": "rare",
+      "importance": "important",
+      "caveat": "Low CSF glucose relative to serum favors bacterial or fungal meningitis."
+    },
+    {
+      "test_id": "csf_appearance",
+      "qualitative": {
+        "moderate": "Cloudy",
+        "severe": "Cloudy",
+        "critical": "Cloudy"
+      },
+      "frequency": "rare",
+      "importance": "optional"
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Check in anyone who could be pregnant before imaging or medications that are unsafe in pregnancy."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rate",
+        "finding": "Sinus tachycardia, roughly 10 beats per minute above normal for each 1 °F of fever",
+        "frequency": "common",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Sinus rhythm; irregularly irregular rhythm suggests atrial fibrillation, which can be triggered by infection or sepsis",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "other",
+        "finding": "Relative bradycardia (heart rate not rising as expected with fever), which can point to typhoid fever, Legionella, or a drug effect",
+        "frequency": "rare",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "st",
+        "finding": "Diffuse ST elevation with PR depression suggesting acute pericarditis",
+        "frequency": "rare",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "t_wave",
+        "finding": "Peaked T waves suggesting hyperkalemia in the setting of sepsis or renal failure",
+        "frequency": "rare",
+        "min_severity": "severe"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Chest x-ray, posteroanterior and lateral",
+      "modality": "xray",
+      "preferred_when": "First-line when pneumonia or another chest source is suspected",
+      "findings": [
+        {
+          "text": "Lobar or segmental consolidation with air bronchograms",
+          "frequency": "common"
+        },
+        {
+          "text": "Patchy interstitial or perihilar opacities",
+          "frequency": "common"
+        },
+        {
+          "text": "Pleural effusion",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Normal chest x-ray despite fever",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "CT chest with IV contrast",
+      "modality": "ct",
+      "preferred_when": "When chest x-ray is nondiagnostic or a complicated pulmonary infection is suspected",
+      "findings": [
+        {
+          "text": "Consolidation, ground-glass opacities, or tree-in-bud nodularity",
+          "frequency": "common"
+        },
+        {
+          "text": "Cavitary lesion or abscess",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Mediastinal or hilar lymphadenopathy",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "CT abdomen and pelvis with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Fever with abdominal pain, tenderness, or an unclear source",
+      "findings": [
+        {
+          "text": "Focal inflammatory change or abscess in an abdominal organ",
+          "frequency": "common"
+        },
+        {
+          "text": "Bowel wall thickening or pericolonic stranding",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Free fluid or free air suggesting perforation",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Ultrasound of the abdomen, right upper quadrant",
+      "modality": "ultrasound",
+      "preferred_when": "Fever with right upper quadrant pain or abnormal liver tests; preferred in pregnancy and children",
+      "findings": [
+        {
+          "text": "Gallstones or gallbladder wall thickening suggesting cholecystitis",
+          "frequency": "common"
+        },
+        {
+          "text": "Biliary duct dilation suggesting obstruction or cholangitis",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Hepatic abscess or focal lesion",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "CT head without contrast",
+      "modality": "ct",
+      "preferred_when": "Fever with altered mental status or new focal neurologic deficit before lumbar puncture",
+      "findings": [
+        {
+          "text": "Normal study",
+          "frequency": "common"
+        },
+        {
+          "text": "Cerebral edema, mass, or hydrocephalus that would make lumbar puncture unsafe",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Sinusitis or mastoiditis as a source of fever",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "MRI brain with and without contrast",
+      "modality": "mri",
+      "preferred_when": "Suspected encephalitis or brain abscess when CT is nondiagnostic",
+      "findings": [
+        {
+          "text": "Temporal lobe signal abnormality suggesting herpes encephalitis",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Ring-enhancing lesion suggesting abscess",
+          "frequency": "rare"
+        },
+        {
+          "text": "Meningeal enhancement",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Ultrasound of the kidneys and bladder",
+      "modality": "ultrasound",
+      "preferred_when": "Fever with flank pain, urinary symptoms, or suspected obstruction; avoids radiation in pregnancy",
+      "findings": [
+        {
+          "text": "Hydronephrosis suggesting obstruction or pyelonephritis",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Renal or perinephric abscess",
+          "frequency": "rare"
+        },
+        {
+          "text": "Normal study",
+          "frequency": "common"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "White count and differential help distinguish bacterial from viral illness and detect leukopenia or thrombocytopenia"
+      },
+      {
+        "test": "bmp",
+        "why": "Assesses hydration, renal function, electrolytes, and acidosis in a febrile patient"
+      },
+      {
+        "test": "ua",
+        "why": "Urinary tract infection is a common and easily missed source of fever"
+      },
+      {
+        "test": "Blood cultures",
+        "why": "Identifies bacteremia and guides antibiotics in moderate to severe fever"
+      },
+      {
+        "test": "Chest x-ray, posteroanterior and lateral",
+        "why": "Looks for pneumonia when respiratory symptoms or abnormal lung exam are present",
+        "only_if": "respiratory symptoms, abnormal lung exam, or no clear source"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before imaging or medication choices",
+        "only_if": "patient could be pregnant"
+      },
+      {
+        "test": "lactate",
+        "why": "Screens for hypoperfusion and sepsis",
+        "only_if": "tachycardia, hypotension, or ill appearance"
+      },
+      {
+        "test": "Rapid influenza test",
+        "why": "Confirms influenza when it would change antiviral treatment",
+        "only_if": "influenza is circulating and symptoms are compatible"
+      },
+      {
+        "test": "Rapid strep test",
+        "why": "Confirms streptococcal pharyngitis",
+        "only_if": "sore throat without viral features"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Urine culture",
+        "why": "Confirms urinary tract infection when urinalysis is abnormal or symptoms are present"
+      },
+      {
+        "test": "Sputum culture",
+        "why": "Identifies the pathogen in suspected bacterial pneumonia",
+        "only_if": "productive cough or an infiltrate on chest imaging"
+      },
+      {
+        "test": "CSF culture",
+        "why": "Confirms bacterial meningitis when lumbar puncture is performed",
+        "only_if": "meningitis or encephalitis is suspected"
+      },
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Identifies an intra-abdominal abscess or other source when the history and exam point to the abdomen",
+        "only_if": "abdominal pain, tenderness, or an unexplained fever"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "crp",
+        "why": "Supports the presence and magnitude of inflammation"
+      },
+      {
+        "test": "esr",
+        "why": "Adds evidence of inflammation, especially in subacute or chronic fever"
+      },
+      {
+        "test": "procalcitonin",
+        "why": "Favors bacterial infection and can support antibiotic decisions"
+      },
+      {
+        "test": "CT chest with IV contrast",
+        "why": "Defines a pulmonary source when chest x-ray is nondiagnostic",
+        "only_if": "chest x-ray is inconclusive or a complicated infection is suspected"
+      },
+      {
+        "test": "Ultrasound of the abdomen, right upper quadrant",
+        "why": "Evaluates for cholecystitis or biliary obstruction",
+        "only_if": "right upper quadrant pain or abnormal liver tests"
+      },
+      {
+        "test": "CT head without contrast",
+        "why": "Rules out a mass or raised pressure before lumbar puncture",
+        "only_if": "altered mental status or focal neurologic deficit"
+      },
+      {
+        "test": "MRI brain with and without contrast",
+        "why": "Evaluates for encephalitis or abscess",
+        "only_if": "suspected encephalitis or a focal brain lesion"
+      },
+      {
+        "test": "Ultrasound of the kidneys and bladder",
+        "why": "Looks for obstruction or pyelonephritis",
+        "only_if": "flank pain or suspected urinary obstruction"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Not routine for fever without abdominal findings",
+        "only_if": "abdominal pain, tenderness, or an unexplained fever"
+      },
+      {
+        "test": "CT chest with IV contrast",
+        "why": "Not needed when chest x-ray is adequate",
+        "only_if": "chest x-ray is inconclusive or a complicated infection is suspected"
+      },
+      {
+        "test": "CT head without contrast",
+        "why": "Not routine for fever alone",
+        "only_if": "altered mental status or focal neurologic deficit"
+      },
+      {
+        "test": "MRI brain with and without contrast",
+        "why": "Reserved for suspected encephalitis or abscess",
+        "only_if": "suspected encephalitis or a focal brain lesion"
+      },
+      {
+        "test": "Ultrasound of the abdomen, right upper quadrant",
+        "why": "Not routine without right upper quadrant symptoms or abnormal liver tests",
+        "only_if": "right upper quadrant pain or abnormal liver tests"
+      },
+      {
+        "test": "Ultrasound of the kidneys and bladder",
+        "why": "Not routine without urinary or flank symptoms",
+        "only_if": "flank pain or suspected urinary obstruction"
+      },
+      {
+        "test": "d_dimer",
+        "why": "Nonspecific and not useful for identifying the source of fever"
+      },
+      {
+        "test": "tsh",
+        "why": "Not part of the acute fever workup unless thyroid disease is suspected"
+      },
+      {
+        "test": "lipase",
+        "why": "Not needed unless the pain is epigastric or pancreatitis is suspected"
+      },
+      {
+        "test": "Rapid influenza test",
+        "why": "Not routine outside influenza season or without compatible symptoms",
+        "only_if": "influenza is circulating and symptoms are compatible"
+      },
+      {
+        "test": "Rapid strep test",
+        "why": "Not routine without sore throat",
+        "only_if": "sore throat without viral features"
+      }
+    ],
+    "decision_points": [
+      "Check pregnancy status before imaging or medications that are unsafe in pregnancy",
+      "Obtain blood cultures before starting antibiotics whenever possible",
+      "Lactate and blood cultures promptly in any patient who appears septic or hypotensive",
+      "Do not delay antibiotics for lumbar puncture in suspected bacterial meningitis; draw cultures and start treatment first",
+      "Consider drug fever when the fever persists without a source and the medication list includes a likely culprit"
+    ],
+    "criteria": [],
+    "scores": [
+      "qsofa",
+      "news2",
+      "curb_65"
+    ]
+  },
+  "differential": [
+    {
+      "name": "Bacterial sepsis",
+      "slug": "sepsis",
+      "why_considered": "Fever is the most common presenting sign of a bloodstream or systemic bacterial infection, and it can be the only early clue.",
+      "must_not_miss": true,
+      "trigger": "Fever with tachycardia, tachypnea, hypotension, altered mental status, or rigors",
+      "discriminators": {
+        "history": [
+          "Recent infection, surgery, or indwelling device",
+          "Rigors and rapidly worsening malaise",
+          "Immunosuppression or chronic illness"
+        ],
+        "exam": [
+          "Hypotension or narrow pulse pressure",
+          "Altered mental status",
+          "Mottled, cool, or clammy skin",
+          "Focal source on exam (lungs, urine, skin, abdomen)"
+        ],
+        "labs": [
+          "Leukocytosis with a left shift or leukopenia",
+          "Elevated lactate",
+          "Elevated procalcitonin",
+          "Positive blood cultures",
+          "Thrombocytopenia or rising creatinine"
+        ],
+        "imaging": [
+          "Chest x-ray or CT showing a source such as pneumonia or an abscess"
+        ]
+      }
+    },
+    {
+      "name": "Pneumonia",
+      "slug": "community-acquired-pneumonia",
+      "why_considered": "A common and easily missed source of fever, especially in older adults who may not report cough.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Productive cough, pleuritic chest pain, shortness of breath",
+          "Recent upper respiratory infection",
+          "Older age or chronic lung disease"
+        ],
+        "exam": [
+          "Crackles, egophony, or dullness to percussion",
+          "Tachypnea and hypoxemia"
+        ],
+        "labs": [
+          "Leukocytosis",
+          "Positive sputum culture or blood culture"
+        ],
+        "imaging": [
+          "Lobar or segmental consolidation on chest x-ray",
+          "Ground-glass or consolidative opacities on CT"
+        ]
+      }
+    },
+    {
+      "name": "Urinary tract infection and pyelonephritis",
+      "slug": "urinary-tract-infection",
+      "why_considered": "A frequent source of fever, particularly in women, older adults, and patients with catheters.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Dysuria, frequency, urgency",
+          "Flank pain, nausea, vomiting",
+          "Indwelling catheter or recent instrumentation"
+        ],
+        "exam": [
+          "Suprapubic or costovertebral angle tenderness",
+          "Confusion in older adults without localizing symptoms"
+        ],
+        "labs": [
+          "Pyuria, positive leukocyte esterase, positive nitrite",
+          "Positive urine culture"
+        ],
+        "imaging": [
+          "Hydronephrosis or perinephric abscess on ultrasound or CT if obstruction is suspected"
+        ]
+      }
+    },
+    {
+      "name": "Bacterial meningitis",
+      "slug": "bacterial-meningitis",
+      "why_considered": "Fever with headache and neck stiffness is a classic presentation that can rapidly become life-threatening.",
+      "must_not_miss": true,
+      "trigger": "Fever with headache, neck stiffness, photophobia, or altered mental status",
+      "discriminators": {
+        "history": [
+          "Severe headache, photophobia, neck pain",
+          "Recent ear or sinus infection",
+          "Vaccination status and immunosuppression"
+        ],
+        "exam": [
+          "Nuchal rigidity, positive Kernig or Brudzinski sign",
+          "Altered mental status, focal neurologic deficit",
+          "Petechial or purpuric rash"
+        ],
+        "labs": [
+          "CSF pleocytosis with neutrophil predominance",
+          "Elevated CSF protein, low CSF glucose",
+          "Positive CSF Gram stain or culture",
+          "Blood cultures positive"
+        ],
+        "imaging": [
+          "CT head before lumbar puncture if altered mental status or focal deficit",
+          "Meningeal enhancement on MRI"
+        ]
+      }
+    },
+    {
+      "name": "Influenza and other viral respiratory infections",
+      "slug": "influenza",
+      "why_considered": "A very common cause of acute fever with myalgias and respiratory symptoms, especially in season.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Abrupt onset of fever, myalgias, headache, sore throat",
+          "Sick contacts or influenza season",
+          "Cough and nasal congestion"
+        ],
+        "exam": [
+          "Pharyngeal erythema without exudate",
+          "Clear lungs or mild wheeze"
+        ],
+        "labs": [
+          "Lymphocytosis",
+          "Positive rapid influenza or respiratory viral panel"
+        ],
+        "imaging": [
+          "Normal chest x-ray unless complicated by pneumonia"
+        ]
+      }
+    },
+    {
+      "name": "Drug fever",
+      "slug": "drug-fever",
+      "why_considered": "Fever can be the only manifestation of an adverse drug reaction and is easily overlooked when an infection has been excluded.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "New medication started days to weeks before fever",
+          "Fever without localizing symptoms",
+          "Relative bradycardia despite fever",
+          "Eosinophilia or rash"
+        ],
+        "exam": [
+          "Rash or urticaria",
+          "No focal source of infection"
+        ],
+        "labs": [
+          "Eosinophilia",
+          "Normal or mildly elevated inflammatory markers",
+          "Negative cultures"
+        ],
+        "imaging": [
+          "No source identified on imaging"
+        ]
+      }
+    },
+    {
+      "name": "Autoimmune or inflammatory disease",
+      "slug": "systemic-lupus-erythematosus",
+      "why_considered": "Fever is a common feature of systemic inflammatory diseases and can mimic infection.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Weeks to months of fever, joint pain, rash, oral ulcers",
+          "Photosensitivity, Raynaud phenomenon",
+          "Family history of autoimmune disease"
+        ],
+        "exam": [
+          "Malar or discoid rash",
+          "Oral ulcers, arthritis, serositis",
+          "Lymphadenopathy or splenomegaly"
+        ],
+        "labs": [
+          "Positive ANA, anti-dsDNA",
+          "Cytopenias",
+          "Elevated ESR and CRP"
+        ],
+        "imaging": [
+          "Serositis or pericardial effusion on echocardiography or CT"
+        ]
+      }
+    },
+    {
+      "name": "Malignancy (lymphoma, leukemia)",
+      "slug": "lymphoma",
+      "why_considered": "Fever can be a presenting symptom of hematologic malignancy, often with night sweats and weight loss.",
+      "must_not_miss": true,
+      "trigger": "Fever with night sweats, weight loss, lymphadenopathy, or splenomegaly",
+      "discriminators": {
+        "history": [
+          "B symptoms: fever, drenching night sweats, unintentional weight loss",
+          "Painless lymph node swelling",
+          "Pruritus"
+        ],
+        "exam": [
+          "Lymphadenopathy, splenomegaly, hepatomegaly",
+          "Pallor or petechiae"
+        ],
+        "labs": [
+          "Cytopenias, lymphocytosis, or blasts on smear",
+          "Elevated LDH and uric acid",
+          "Elevated ESR"
+        ],
+        "imaging": [
+          "Lymphadenopathy or organomegaly on CT",
+          "PET-avid nodes"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Low-grade fever (99.5–100.9 °F), alert and comfortable, no focal symptoms, able to eat and drink",
+      "moderate": "Fever 100.4–102.2 °F with chills, malaise, tachycardia, and mild dehydration but stable vital signs",
+      "severe": "High fever 102–104 °F with rigors, tachypnea, hypoxemia, or focal findings suggesting a serious source",
+      "critical": "Fever with hypotension, altered mental status, or lactate elevation indicating sepsis or septic shock"
+    },
+    "red_flags": [
+      {
+        "finding": "Hypotension or systolic blood pressure below 90 mmHg",
+        "meaning": "Septic shock; requires immediate fluids, cultures, and antibiotics"
+      },
+      {
+        "finding": "Altered mental status or confusion",
+        "meaning": "Possible meningitis, encephalitis, or sepsis; urgent workup"
+      },
+      {
+        "finding": "Neck stiffness or photophobia",
+        "meaning": "Meningitis until proven otherwise; do not delay antibiotics"
+      },
+      {
+        "finding": "Petechial or purpuric rash",
+        "meaning": "Meningococcemia or disseminated intravascular coagulation"
+      },
+      {
+        "finding": "Rigors with high fever",
+        "meaning": "Bacteremia or serious bacterial infection"
+      },
+      {
+        "finding": "Tachypnea or hypoxemia",
+        "meaning": "Pneumonia or sepsis with respiratory compromise"
+      },
+      {
+        "finding": "Fever in an immunocompromised patient",
+        "meaning": "Neutropenic fever; emergency requiring broad-spectrum antibiotics"
+      },
+      {
+        "finding": "Fever lasting more than 3 weeks without a source",
+        "meaning": "Fever of unknown origin; evaluate for malignancy, autoimmune disease, or occult infection"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Dehydration and electrolyte imbalance",
+        "timing": "early",
+        "seriousness": "minor",
+        "frequency": "common",
+        "clues": [
+          "Poor oral intake",
+          "Dry mucous membranes",
+          "Elevated BUN and creatinine"
+        ]
+      },
+      {
+        "name": "Febrile seizures",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Children 6 months to 5 years",
+          "Temperature rise above 102 °F",
+          "Generalized tonic-clonic activity"
+        ]
+      },
+      {
+        "name": "Sepsis and septic shock",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Hypotension",
+          "Lactate above 2 mmol/L",
+          "Altered mental status",
+          "Oliguria"
+        ]
+      },
+      {
+        "name": "Disseminated intravascular coagulation",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Bleeding from multiple sites",
+          "Thrombocytopenia",
+          "Elevated PT and aPTT",
+          "Low fibrinogen"
+        ]
+      },
+      {
+        "name": "Febrile neutropenia",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Absolute neutrophil count below 500",
+          "Recent chemotherapy",
+          "Fever may be the only sign"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "infants",
+        "differences": "Infants under 3 months with fever require urgent evaluation including blood, urine, and CSF cultures because signs of serious infection are nonspecific."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Fever may be blunted or absent; confusion, falls, or functional decline may be the only clue to serious infection."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Fever may be the only sign of infection; neutropenic fever is an emergency requiring immediate broad-spectrum antibiotics."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Baseline temperature is slightly higher; fever may be blunted, and certain infections pose fetal risk. Avoid NSAIDs and tetracyclines."
+      },
+      {
+        "population": "children",
+        "differences": "Febrile seizures can occur; avoid aspirin due to Reye syndrome; use weight-based acetaminophen or ibuprofen dosing."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "How high has the temperature been, and how did you measure it?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Objective measurement above 100.4 °F (38 °C); route and reliability of measurement"
+      },
+      {
+        "question": "When did the fever start, and has it been continuous or coming and going?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Duration and pattern (continuous, intermittent, remittent) that narrows the cause"
+      },
+      {
+        "question": "Have you had shaking chills or drenching night sweats?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Rigors suggest bacteremia or serious infection; night sweats suggest TB, lymphoma, or endocarditis"
+      },
+      {
+        "question": "What other symptoms came with the fever — cough, sore throat, burning with urination, diarrhea, headache, rash, or joint pain?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "A localizing symptom that points to the source"
+      },
+      {
+        "question": "Have you recently been in the hospital, had surgery, or do you have a catheter, line, or other device?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Healthcare-associated infection or device-related source"
+      },
+      {
+        "question": "Do you take any medications that suppress the immune system, such as chemotherapy, steroids, or drugs for transplant or autoimmune disease?",
+        "category": "medications",
+        "importance": "essential",
+        "looking_for": "Immunosuppression, which raises the risk of serious infection and blunts fever"
+      },
+      {
+        "question": "Have you started any new medication in the days to weeks before the fever began?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Drug fever as a cause when no infection is found"
+      },
+      {
+        "question": "Have you traveled recently, or been around anyone who is sick?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Exposure or travel-related infection"
+      },
+      {
+        "question": "Have you had any animal contact or occupational exposure?",
+        "category": "social",
+        "importance": "optional",
+        "looking_for": "Zoonotic infection such as brucellosis or leptospirosis"
+      },
+      {
+        "question": "Have you had any unintentional weight loss?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Chronic illness such as malignancy, TB, or autoimmune disease"
+      },
+      {
+        "question": "Could you be pregnant? When was your last period?",
+        "category": "obstetric",
+        "importance": "important",
+        "looking_for": "Pregnancy, which affects the differential and the safety of imaging and medications"
+      },
+      {
+        "question": "Do you have any confusion, a stiff neck, or sensitivity to light?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Meningitis or encephalitis, which requires urgent evaluation"
+      },
+      {
+        "question": "Do you have any trouble breathing, chest pain, or a racing heart?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Pneumonia or sepsis with respiratory or circulatory compromise"
+      },
+      {
+        "question": "Have you fainted, felt dizzy on standing, or noticed your skin becoming mottled or clammy?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Hypotension or shock suggesting sepsis"
+      },
+      {
+        "question": "Do you have any condition or medication that affects your immune system, such as HIV, cancer, or a transplant?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Immunocompromised state, where fever may be the only sign of serious infection"
+      },
+      {
+        "question": "Have you had any recent vaccination?",
+        "category": "pmh",
+        "importance": "optional",
+        "looking_for": "Post-vaccination fever, which is usually mild and self-limited"
+      },
+      {
+        "question": "Does anyone in your family have an autoimmune disease or a history of recurrent fevers?",
+        "category": "family",
+        "importance": "optional",
+        "looking_for": "Familial autoinflammatory or autoimmune conditions"
+      }
+    ],
+    "accepted_names": [
+      "Fever",
+      "Pyrexia",
+      "Febrile illness",
+      "Elevated temperature"
+    ],
+    "reasoning_points": [
+      "Fever is a sign, not a diagnosis; the goal is to identify the underlying cause",
+      "Onset, duration, and pattern of the fever help narrow the differential",
+      "Associated localizing symptoms point to a specific source such as respiratory, urinary, gastrointestinal, or skin",
+      "Rigors, hypotension, altered mental status, or tachypnea suggest serious infection or sepsis",
+      "Immunosuppression, recent hospitalization, or indwelling devices raise the risk of serious infection",
+      "A new medication can cause drug fever when no infection is found",
+      "Night sweats and weight loss raise concern for malignancy, tuberculosis, or chronic infection",
+      "Pregnancy status must be checked before imaging or medication choices",
+      "Vital signs and a focused exam guide the urgency and the workup",
+      "Cultures should be obtained before antibiotics when possible, without delaying treatment in suspected sepsis"
+    ],
+    "difficulty": {
+      "easy": [
+        "Young, otherwise healthy adult with a short history of fever, cough, and sore throat",
+        "Clear localizing symptom such as dysuria or productive cough",
+        "Vital signs stable, no red flags",
+        "Fever responds to acetaminophen and the patient looks well"
+      ],
+      "medium": [
+        "Older adult with fever and confusion but no localizing symptoms",
+        "Fever with a new medication started two weeks earlier",
+        "Fever with night sweats and weight loss",
+        "Fever in a patient with diabetes or chronic kidney disease"
+      ],
+      "hard": [
+        "Immunocompromised patient with fever but no localizing signs",
+        "Fever of unknown origin lasting more than three weeks",
+        "Fever with a normal white count and no source found on initial workup",
+        "Fever in an infant under three months with nonspecific symptoms",
+        "Fever with relative bradycardia suggesting typhoid, Legionella, or drug fever"
+      ]
+    }
+  }
+}

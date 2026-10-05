@@ -1,0 +1,1853 @@
+{
+  "schema_version": "0.2",
+  "slug": "burns",
+  "triage": {
+    "name": "Burns",
+    "case_suitable": true,
+    "reason": "Clear mechanism and presentation; students assess depth, extent (TBSA), airway involvement and fluids, reaching a diagnosis and management plan.",
+    "kind": "injury",
+    "category": "thermal injury",
+    "organ_systems": [
+      "musculoskeletal"
+    ],
+    "primary_clerkship": "surgery",
+    "secondary_clerkships": [
+      "emergency",
+      "pediatrics"
+    ],
+    "commonness": "common",
+    "settings": [
+      "emergency",
+      "icu",
+      "inpatient"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:16:11Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:32:41Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:32:48Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:33:07Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:33:19Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:33:27Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'ct_chest' to 'Ct chest'",
+        "auto-repaired: workup: renamed 'ct_chest' to 'Ct chest'",
+        "auto-repaired: workup: 'ct chest' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ct head without contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ct cervical spine without contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ct abdomen and pelvis with iv contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'x-ray of the affected extremity' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ct chest' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ct head without contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ct cervical spine without contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ct abdomen and pelvis with iv contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'x-ray of the affected extremity' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "differential toxic-epidermal-necrolysis: no profile yet",
+        "differential stevens-johnson-syndrome: no profile yet",
+        "differential staphylococcal-scalded-skin-syndrome: no profile yet",
+        "differential contact-dermatitis: no profile yet",
+        "differential frostbite: no profile yet",
+        "differential necrotizing-fasciitis: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 1,
+      "typical_max": 90,
+      "peak": "bimodal: young children (scalds) and working-age adults (flames, chemicals, electricity)",
+      "possible_min": 0,
+      "possible_max": 110
+    },
+    "sex": "either",
+    "demographics": [
+      "Scalds from hot liquids and steam are the most common burn in young children",
+      "Flame and chemical burns are more common in working-age adults, often occupational",
+      "Older adults have higher morbidity and mortality for the same burn size",
+      "Low socioeconomic status and lack of working smoke detectors are associated with more severe residential fire burns"
+    ],
+    "risk_factors": [
+      {
+        "text": "Young child in the home (scalds from hot liquids, steam, bath water)",
+        "strength": "strong"
+      },
+      {
+        "text": "Occupational exposure to flames, hot surfaces, chemicals or electricity",
+        "strength": "strong"
+      },
+      {
+        "text": "Smoking and alcohol or substance use",
+        "strength": "moderate"
+      },
+      {
+        "text": "Absent or non-working smoke detectors",
+        "strength": "moderate"
+      },
+      {
+        "text": "Older adult with impaired mobility, sensation or cognition",
+        "strength": "moderate"
+      },
+      {
+        "text": "Seizure disorder, syncope or neuropathy that impairs escape from a heat source",
+        "strength": "moderate"
+      },
+      {
+        "text": "Impaired judgment or supervision (young children, cognitive impairment)",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Diabetes mellitus",
+      "Peripheral neuropathy",
+      "Coronary artery disease or heart failure",
+      "Chronic obstructive pulmonary disease",
+      "Psychiatric illness including dementia and substance use disorders"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Cooking, bathing or heating with open flame or hot water",
+      "Home without functioning smoke detectors",
+      "Occupational or hobby exposure to fire, hot liquids, chemicals or electricity",
+      "Injury pattern inconsistent with the reported mechanism raises concern for abuse or neglect"
+    ],
+    "exposures": [
+      "Hot liquids or steam (scalds)",
+      "Open flame, building fire or flammable liquids and gases",
+      "Hot surfaces or objects",
+      "Caustic chemicals (acids, alkalis, cement)",
+      "Electrical current or lightning",
+      "Sunlight or other radiation",
+      "Smoke or hot gases (inhalation injury)"
+    ],
+    "risk_medications": []
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I burned myself",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "My skin is red and hurts",
+        "frequency": "common"
+      },
+      {
+        "text": "I have blisters where I got burned",
+        "frequency": "common"
+      },
+      {
+        "text": "It hurts a lot",
+        "frequency": "common"
+      }
+    ],
+    "hpi": {
+      "onset": "Sudden, at the moment of contact with the heat source, chemical, electricity or radiation",
+      "duration": "Minutes to hours since injury at presentation; deeper burns may evolve over the first 24–48 hours",
+      "progression": "Pain and redness are immediate; blisters form over minutes to hours; partial-thickness burns can deepen over the first day or two, especially if cooled poorly or infected",
+      "location": "Depends on mechanism: hands, forearms, face and chest with flame; trunk, buttocks, perineum or extremities with scald; mouth and throat with caustic ingestion; often a patterned area matching the source",
+      "radiation": "Usually none; pain is localized to the injured skin",
+      "quality": "Burning, stinging or throbbing pain; deep full-thickness burns may be numb or painless",
+      "severity": "Mild to severe; superficial burns are 2–4/10, partial-thickness burns often 7–10/10, full-thickness burns may be painless",
+      "timing": "Constant, worse with air movement, dressing changes and cleaning",
+      "aggravating": [
+        "Air blowing across the burn",
+        "Touching or pressing the area",
+        "Dressing changes and cleaning",
+        "Movement of the affected part"
+      ],
+      "relieving": [
+        "Cool running water applied soon after injury",
+        "Covering the burn",
+        "Acetaminophen or an opioid for pain"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Redness and swelling of the burned skin",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Blisters",
+          "frequency": "common"
+        },
+        {
+          "text": "Peeling or sloughing skin",
+          "frequency": "common"
+        },
+        {
+          "text": "Pain out of proportion to the visible injury",
+          "frequency": "common"
+        },
+        {
+          "text": "Chills or feeling cold",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Nausea",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Hoarse voice, cough or singed nose hairs after smoke or flame exposure",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Dizziness or lightheadedness",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Numbness over the burned area (deep burn)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Dark or decreased urine after a large burn",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Fever before the injury",
+        "Rash or skin lesions before the injury",
+        "Itching or new medicines before the injury",
+        "Blistering in areas not exposed to the heat source",
+        "Bleeding or drainage from the burn at the time of injury",
+        "Loss of consciousness at the scene (unless electrical or inhalation injury)",
+        "Shortness of breath at rest in a patient with only a small skin burn"
+      ]
+    },
+    "ros": [
+      {
+        "system": "skin",
+        "positives": [
+          {
+            "text": "Redness of the burned skin",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Blisters",
+            "frequency": "common"
+          },
+          {
+            "text": "Peeling or charred skin",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Pale, leathery or waxy skin in deep burns",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Rash elsewhere on the body",
+          "Chronic ulcers",
+          "Moles that have changed"
+        ],
+        "argues_against": [
+          "Widespread rash without a heat source",
+          "Blistering in sun-exposed skin only"
+        ]
+      },
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Feeling cold or shivering",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Feeling weak or lightheaded",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Weight loss",
+          "Night sweats",
+          "Fever before the injury"
+        ],
+        "argues_against": [
+          "Fever and rash before any burn exposure"
+        ]
+      },
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "Cough",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Hoarse voice",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Soot in the mouth or nose",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Shortness of breath",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Chronic productive cough",
+          "Wheezing at baseline"
+        ],
+        "argues_against": [
+          "Chronic obstructive lung disease as the cause of breathlessness"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [
+          {
+            "text": "Fast heartbeat",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Feeling faint on standing",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Chest pain",
+          "Leg swelling",
+          "Palpitations before the injury"
+        ],
+        "argues_against": [
+          "Primary cardiac cause of collapse"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Nausea",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Vomiting",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Blood in vomit",
+          "Black stools",
+          "Abdominal pain before the injury"
+        ],
+        "argues_against": [
+          "Gastrointestinal bleeding as the cause of shock"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Numbness over the burned area",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Dizziness",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Focal weakness",
+          "Seizure before the injury",
+          "Confusion at baseline"
+        ],
+        "argues_against": [
+          "Stroke or seizure as the primary cause"
+        ]
+      },
+      {
+        "system": "psychiatric",
+        "positives": [
+          {
+            "text": "Anxiety about the injury",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Feeling overwhelmed",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Suicidal thoughts",
+          "Intent to self-harm"
+        ],
+        "argues_against": [
+          "Deliberate self-inflicted burn without reported intent"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Scalds are the most common mechanism; children may not localize pain and present with crying, irritability and refusal to use the affected limb. Non-accidental burn patterns (glove-and-stocking, immersion lines, cigarette burns) should be considered.",
+        "missing_classic_features": [
+          "Clear description of the mechanism",
+          "Accurate pain severity"
+        ]
+      },
+      {
+        "population": "infants",
+        "how_it_differs": "Present with poor feeding, lethargy and irritability rather than pain complaints; even small burns can cause significant fluid loss and hypothermia.",
+        "missing_classic_features": [
+          "Verbal report of pain",
+          "Localizing the burn"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "Thinner skin means deeper burns from the same exposure; impaired mobility or cognition may delay escape, and mortality is higher for the same burn size. Pain may be blunted by neuropathy.",
+        "missing_classic_features": [
+          "Severe pain",
+          "Clear history of prolonged exposure"
+        ]
+      },
+      {
+        "population": "diabetes",
+        "how_it_differs": "Peripheral neuropathy can blunt pain, and impaired healing and immune function increase the risk of infection and delayed presentation.",
+        "missing_classic_features": [
+          "Pain out of proportion to the injury"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Maternal hypovolemia and hypoxemia can compromise the fetus; burns are managed with attention to fetal monitoring and maternal resuscitation.",
+        "missing_classic_features": [
+          "Typical pain and fluid shifts without fetal concern"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "Higher risk of rapid wound infection and sepsis; fever may be absent or blunted.",
+        "missing_classic_features": [
+          "Fever with wound infection"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Comfortable, alert, no distress; focused on the burned area",
+      "moderate": "In pain, grimacing, but alert and interactive",
+      "severe": "Distressed, tachycardic, cool extremities, anxious or restless",
+      "critical": "Toxic-appearing, pale, diaphoretic, lethargic or obtunded; may have soot around the mouth or singed facial hair"
+    },
+    "findings": [
+      {
+        "id": "burn-depth-assessment",
+        "region": "skin",
+        "maneuver": "Inspect the burn and note color, blistering, capillary refill and sensation",
+        "finding": "Superficial (first-degree) burns are red, dry and painful without blisters; partial-thickness (second-degree) burns are blistered, moist, red or mottled and very painful; full-thickness (third-degree) burns are white, waxy, leathery or charred, may be painless, and do not blanch",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "tbsa-estimate",
+        "region": "skin",
+        "maneuver": "Estimate the percentage of total body surface area burned using the rule of nines (or Lund-Browder in children)",
+        "finding": "Extent of partial- and full-thickness burn expressed as % TBSA; superficial burns are not counted",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "airway-inspection",
+        "region": "heent",
+        "maneuver": "Inspect the mouth, oropharynx and nose; listen to the voice",
+        "finding": "Soot in the mouth or nose, singed nasal hairs, facial or oral burns, hoarse voice or stridor suggesting inhalation injury",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "circumferential-burn",
+        "region": "extremities",
+        "maneuver": "Inspect the burned extremity or chest for a full-thickness circumferential pattern",
+        "finding": "Tight, unyielding eschar that may impair distal perfusion or chest expansion",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "distal-perfusion",
+        "region": "extremities",
+        "maneuver": "Check capillary refill, radial or pedal pulses, and sensation distal to the burn",
+        "finding": "Delayed capillary refill, weak or absent pulses, or numbness distal to a circumferential burn",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "wound-infection-signs",
+        "region": "skin",
+        "maneuver": "Inspect the burn for purulent drainage, spreading erythema, foul odor or eschar separation",
+        "finding": "Signs of wound infection or sepsis",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "normal-skin-elsewhere",
+        "region": "skin",
+        "maneuver": "Inspect skin not exposed to the heat source",
+        "finding": "No rash, blisters or lesions in unburned areas",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-lung-exam",
+        "region": "lung",
+        "maneuver": "Auscultate the lungs",
+        "finding": "Clear breath sounds without wheeze or crackles in a patient without inhalation injury",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-abdomen",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen",
+        "finding": "Soft, non-tender abdomen without guarding",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-neuro",
+        "region": "neuro",
+        "maneuver": "Assess orientation and gross motor function",
+        "finding": "Alert and oriented without focal deficit (unless electrical injury or hypoxia)",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 97.8,
+        "max": 99.0
+      },
+      "moderate": {
+        "min": 97.0,
+        "max": 99.5
+      },
+      "severe": {
+        "min": 96.0,
+        "max": 100.0
+      },
+      "critical": {
+        "min": 95.0,
+        "max": 101.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 100
+      },
+      "moderate": {
+        "min": 90,
+        "max": 120
+      },
+      "severe": {
+        "min": 110,
+        "max": 140
+      },
+      "critical": {
+        "min": 130,
+        "max": 170
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 12,
+        "max": 20
+      },
+      "moderate": {
+        "min": 18,
+        "max": 24
+      },
+      "severe": {
+        "min": 22,
+        "max": 30
+      },
+      "critical": {
+        "min": 28,
+        "max": 40
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 100,
+        "max": 130
+      },
+      "moderate": {
+        "min": 90,
+        "max": 120
+      },
+      "severe": {
+        "min": 80,
+        "max": 110
+      },
+      "critical": {
+        "min": 60,
+        "max": 90
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 60,
+        "max": 80
+      },
+      "moderate": {
+        "min": 55,
+        "max": 75
+      },
+      "severe": {
+        "min": 50,
+        "max": 70
+      },
+      "critical": {
+        "min": 30,
+        "max": 60
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 95,
+        "max": 100
+      },
+      "moderate": {
+        "min": 94,
+        "max": 99
+      },
+      "severe": {
+        "min": 90,
+        "max": 96
+      },
+      "critical": {
+        "min": 80,
+        "max": 92
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "hgb",
+      "ranges": {
+        "moderate": {
+          "min": 10.0,
+          "max": 13.0
+        },
+        "severe": {
+          "min": 8.0,
+          "max": 11.0
+        },
+        "critical": {
+          "min": 6.0,
+          "max": 9.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "May be normal early from hemoconcentration; a falling hemoglobin suggests blood loss or hemodilution from resuscitation."
+    },
+    {
+      "test_id": "hct",
+      "ranges": {
+        "moderate": {
+          "min": 30,
+          "max": 40
+        },
+        "severe": {
+          "min": 24,
+          "max": 34
+        },
+        "critical": {
+          "min": 18,
+          "max": 28
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Can be falsely elevated early from plasma loss before fluids are given."
+    },
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "moderate": {
+          "min": 11.0,
+          "max": 18.0
+        },
+        "severe": {
+          "min": 14.0,
+          "max": 25.0
+        },
+        "critical": {
+          "min": 18.0,
+          "max": 35.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "A stress leukocytosis is common in the first 24–48 hours and does not by itself mean infection; a rising count after that suggests wound infection or sepsis."
+    },
+    {
+      "test_id": "neut_pct",
+      "ranges": {
+        "moderate": {
+          "min": 70,
+          "max": 85
+        },
+        "severe": {
+          "min": 75,
+          "max": 90
+        },
+        "critical": {
+          "min": 80,
+          "max": 92
+        }
+      },
+      "frequency": "common",
+      "importance": "optional"
+    },
+    {
+      "test_id": "plt",
+      "ranges": {
+        "severe": {
+          "min": 100,
+          "max": 150
+        },
+        "critical": {
+          "min": 50,
+          "max": 120
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Thrombocytopenia can reflect dilution from massive resuscitation, consumption or early sepsis."
+    },
+    {
+      "test_id": "na",
+      "ranges": {
+        "moderate": {
+          "min": 130,
+          "max": 135
+        },
+        "severe": {
+          "min": 125,
+          "max": 133
+        },
+        "critical": {
+          "min": 120,
+          "max": 132
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hyponatremia from fluid shifts and resuscitation; hypernatremia suggests inadequate free water."
+    },
+    {
+      "test_id": "k",
+      "ranges": {
+        "moderate": {
+          "min": 3.2,
+          "max": 3.5
+        },
+        "severe": {
+          "min": 2.8,
+          "max": 3.4
+        },
+        "critical": {
+          "min": 2.5,
+          "max": 3.2
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hypokalemia is common with large-volume resuscitation; hyperkalemia raises concern for electrical injury, rhabdomyolysis or renal failure."
+    },
+    {
+      "test_id": "hco3",
+      "ranges": {
+        "severe": {
+          "min": 16,
+          "max": 21
+        },
+        "critical": {
+          "min": 12,
+          "max": 18
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Low bicarbonate suggests metabolic acidosis from shock, poor perfusion or inhalation injury."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "moderate": {
+          "min": 20,
+          "max": 30
+        },
+        "severe": {
+          "min": 25,
+          "max": 45
+        },
+        "critical": {
+          "min": 30,
+          "max": 60
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Rises with dehydration and hypovolemia; a high BUN/creatinine ratio supports volume depletion."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "moderate": {
+          "min": 1.2,
+          "max": 1.8
+        },
+        "severe": {
+          "min": 1.5,
+          "max": 2.5
+        },
+        "critical": {
+          "min": 2.0,
+          "max": 4.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "A rise after a large burn suggests acute kidney injury from hypovolemia, myoglobinuria or sepsis."
+    },
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "moderate": {
+          "min": 100,
+          "max": 160
+        },
+        "severe": {
+          "min": 140,
+          "max": 220
+        },
+        "critical": {
+          "min": 160,
+          "max": 300
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Stress hyperglycemia is common and worsens outcomes; tight control is avoided because of hypoglycemia risk."
+    },
+    {
+      "test_id": "albumin",
+      "ranges": {
+        "severe": {
+          "min": 2.0,
+          "max": 3.2
+        },
+        "critical": {
+          "min": 1.5,
+          "max": 2.8
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Falls with the systemic inflammatory response and capillary leak; low values worsen fluid resuscitation requirements."
+    },
+    {
+      "test_id": "ck",
+      "ranges": {
+        "severe": {
+          "min": 1000,
+          "max": 10000
+        },
+        "critical": {
+          "min": 5000,
+          "max": 50000
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Markedly elevated in electrical burns, crush injury and deep muscle burns; a very high CK with dark urine suggests rhabdomyolysis and myoglobinuric kidney injury."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "moderate": {
+          "min": 2.0,
+          "max": 3.0
+        },
+        "severe": {
+          "min": 3.0,
+          "max": 5.0
+        },
+        "critical": {
+          "min": 4.0,
+          "max": 8.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Elevated lactate indicates hypoperfusion or shock and guides resuscitation; it also rises with inhalation injury and carbon monoxide exposure."
+    },
+    {
+      "test_id": "ph",
+      "ranges": {
+        "severe": {
+          "min": 7.2,
+          "max": 7.34
+        },
+        "critical": {
+          "min": 7.0,
+          "max": 7.28
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Acidemia from shock, poor perfusion or inhalation injury; measured on arterial blood gas."
+    },
+    {
+      "test_id": "paco2",
+      "ranges": {
+        "severe": {
+          "min": 30,
+          "max": 35
+        },
+        "critical": {
+          "min": 28,
+          "max": 50
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Low from tachypnea and pain; a rising PaCO2 with a hoarse voice or stridor suggests upper airway obstruction from inhalation injury."
+    },
+    {
+      "test_id": "pao2",
+      "ranges": {
+        "severe": {
+          "min": 60,
+          "max": 80
+        },
+        "critical": {
+          "min": 45,
+          "max": 70
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Falls with inhalation injury, smoke inhalation or carbon monoxide poisoning; a normal PaO2 does not exclude carbon monoxide toxicity."
+    },
+    {
+      "test_id": "sao2",
+      "ranges": {
+        "severe": {
+          "min": 90,
+          "max": 95
+        },
+        "critical": {
+          "min": 80,
+          "max": 92
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Pulse oximetry can read falsely normal in carbon monoxide poisoning because it cannot distinguish carboxyhemoglobin from oxyhemoglobin."
+    },
+    {
+      "test_id": "pt",
+      "ranges": {
+        "severe": {
+          "min": 14.0,
+          "max": 18.0
+        },
+        "critical": {
+          "min": 16.0,
+          "max": 24.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Prolonged with severe burns, disseminated intravascular coagulation or liver dysfunction."
+    },
+    {
+      "test_id": "inr",
+      "ranges": {
+        "severe": {
+          "min": 1.3,
+          "max": 1.8
+        },
+        "critical": {
+          "min": 1.6,
+          "max": 2.5
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "aptt",
+      "ranges": {
+        "severe": {
+          "min": 36,
+          "max": 50
+        },
+        "critical": {
+          "min": 45,
+          "max": 70
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "ua_blood",
+      "qualitative": {
+        "severe": "2+",
+        "critical": "3+"
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Positive blood without red cells on microscopy suggests myoglobinuria from muscle injury, especially in electrical or deep burns."
+    },
+    {
+      "test_id": "ua_protein",
+      "qualitative": {
+        "severe": "1+",
+        "critical": "2+"
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "ua_sg",
+      "ranges": {
+        "moderate": {
+          "min": 1.02,
+          "max": 1.03
+        },
+        "severe": {
+          "min": 1.025,
+          "max": 1.035
+        },
+        "critical": {
+          "min": 1.03,
+          "max": 1.04
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "High specific gravity reflects dehydration and concentrated urine; urine output is the key resuscitation endpoint."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Negative. Required in anyone who could be pregnant before imaging, medications and resuscitation decisions."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rate",
+        "finding": "Sinus tachycardia",
+        "frequency": "common",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Sinus rhythm",
+        "frequency": "common",
+        "min_severity": "mild"
+      },
+      {
+        "feature": "other",
+        "finding": "Nonspecific ST-T changes from tachycardia, pain and electrolyte shifts",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "qt",
+        "finding": "Prolonged QT interval with hypokalemia, hypocalcemia or hypomagnesemia",
+        "frequency": "sometimes",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "conduction",
+        "finding": "Widened QRS with severe hyperkalemia from electrical injury or rhabdomyolysis",
+        "frequency": "rare",
+        "min_severity": "critical"
+      },
+      {
+        "feature": "st",
+        "finding": "ST elevation or depression suggesting myocardial injury in electrical burns or in patients with underlying coronary disease",
+        "frequency": "rare",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Ventricular fibrillation or asystole in high-voltage electrical injury",
+        "frequency": "rare",
+        "min_severity": "critical"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Chest x-ray",
+      "modality": "xray",
+      "preferred_when": "Suspected inhalation injury, smoke exposure or respiratory symptoms",
+      "findings": [
+        {
+          "text": "Normal in most patients with a skin burn alone",
+          "frequency": "common"
+        },
+        {
+          "text": "Patchy alveolar or interstitial opacities from inhalation injury or pulmonary edema",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Soot in the trachea or main bronchi",
+          "frequency": "rare"
+        },
+        {
+          "text": "Widened mediastinum or pneumothorax after blast or electrical injury",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "CT chest without contrast",
+      "modality": "ct",
+      "preferred_when": "Suspected inhalation injury with an unclear chest x-ray, or trauma from a blast or fall",
+      "findings": [
+        {
+          "text": "Ground-glass and consolidative opacities from inhalation injury",
+          "frequency": "common"
+        },
+        {
+          "text": "Airway wall thickening and mucus plugging",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Pneumothorax, rib fractures or pulmonary contusion from associated trauma",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "CT head without contrast",
+      "modality": "ct",
+      "preferred_when": "Electrical injury, loss of consciousness, fall or blast injury",
+      "findings": [
+        {
+          "text": "Normal study in most patients with a skin burn alone",
+          "frequency": "common"
+        },
+        {
+          "text": "Intracranial hemorrhage or cerebral edema after electrical injury or head trauma",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "CT cervical spine without contrast",
+      "modality": "ct",
+      "preferred_when": "Fall, blast injury or electrical injury with neck pain or altered mental status",
+      "findings": [
+        {
+          "text": "Normal cervical spine in most patients",
+          "frequency": "common"
+        },
+        {
+          "text": "Fracture or dislocation after a fall or blast",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "CT abdomen and pelvis with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Electrical injury, blunt trauma or unexplained shock",
+      "findings": [
+        {
+          "text": "Normal study in most patients with a skin burn alone",
+          "frequency": "common"
+        },
+        {
+          "text": "Solid organ injury, bowel injury or free fluid after blunt trauma",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "X-ray of the affected extremity",
+      "modality": "xray",
+      "preferred_when": "Electrical burn, deep burn over a joint, or suspected associated fracture",
+      "findings": [
+        {
+          "text": "Normal bone in most thermal burns",
+          "frequency": "common"
+        },
+        {
+          "text": "Fracture or dislocation after a fall or electrical injury",
+          "frequency": "rare"
+        },
+        {
+          "text": "Soft tissue swelling or foreign material in the wound",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Bronchoscopy",
+      "modality": "endoscopy",
+      "preferred_when": "Suspected inhalation injury with worsening oxygenation or unclear airway findings",
+      "findings": [
+        {
+          "text": "Erythema, edema, soot or ulceration of the airway mucosa",
+          "frequency": "common"
+        },
+        {
+          "text": "Carbonaceous material and mucus plugging in the tracheobronchial tree",
+          "frequency": "sometimes"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Baseline hemoglobin, white count and platelets; guides resuscitation and later detects infection"
+      },
+      {
+        "test": "bmp",
+        "why": "Electrolytes, renal function and glucose; guides fluid resuscitation and detects acute kidney injury"
+      },
+      {
+        "test": "abg",
+        "why": "Assesses oxygenation, ventilation and acid-base status",
+        "only_if": "suspected inhalation injury, smoke exposure or respiratory distress"
+      },
+      {
+        "test": "lactate",
+        "why": "Detects hypoperfusion and guides resuscitation in large burns"
+      },
+      {
+        "test": "ua",
+        "why": "Urine output and myoglobin screen in large or electrical burns"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before imaging, medications and resuscitation decisions"
+      },
+      {
+        "test": "Chest x-ray",
+        "why": "Looks for inhalation injury or associated trauma",
+        "only_if": "suspected inhalation injury, smoke exposure or respiratory symptoms"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Bronchoscopy",
+        "why": "Direct visualization confirms inhalation injury when the diagnosis is uncertain or the airway is worsening",
+        "only_if": "suspected inhalation injury with unclear findings or worsening oxygenation"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "ck",
+        "why": "Detects muscle injury and rhabdomyolysis in electrical or deep burns"
+      },
+      {
+        "test": "coag",
+        "why": "Detects coagulopathy in large burns or suspected disseminated intravascular coagulation"
+      },
+      {
+        "test": "Ct chest",
+        "why": "Characterizes inhalation injury and associated trauma when the chest x-ray is unclear",
+        "only_if": "suspected inhalation injury with an unclear chest x-ray or trauma"
+      },
+      {
+        "test": "CT head without contrast",
+        "why": "Evaluates for intracranial injury after electrical injury, fall or blast",
+        "only_if": "electrical injury, loss of consciousness, fall or blast injury"
+      },
+      {
+        "test": "CT cervical spine without contrast",
+        "why": "Evaluates for cervical spine injury after a fall or blast",
+        "only_if": "fall, blast injury or electrical injury with neck pain or altered mental status"
+      },
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Evaluates for intra-abdominal injury after electrical or blunt trauma",
+        "only_if": "electrical injury, blunt trauma or unexplained shock"
+      },
+      {
+        "test": "X-ray of the affected extremity",
+        "why": "Evaluates for fracture or foreign body in electrical or deep burns",
+        "only_if": "electrical burn, deep burn over a joint, or suspected associated fracture"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "lipase",
+        "why": "No role in burn assessment unless abdominal pain suggests pancreatitis"
+      },
+      {
+        "test": "d_dimer",
+        "why": "Not useful in burn assessment"
+      },
+      {
+        "test": "tsh",
+        "why": "Not part of burn workup"
+      },
+      {
+        "test": "a1c",
+        "why": "Not needed acutely unless diabetes management is relevant"
+      },
+      {
+        "test": "Ct chest",
+        "why": "Not routine; reserved for suspected inhalation injury or trauma",
+        "only_if": "suspected inhalation injury with an unclear chest x-ray or trauma"
+      },
+      {
+        "test": "CT head without contrast",
+        "why": "Not routine; reserved for electrical injury, head trauma or altered mental status",
+        "only_if": "electrical injury, loss of consciousness, fall or blast injury"
+      },
+      {
+        "test": "CT cervical spine without contrast",
+        "why": "Not routine; reserved for trauma or electrical injury with neck symptoms",
+        "only_if": "fall, blast injury or electrical injury with neck pain or altered mental status"
+      },
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Not routine; reserved for electrical injury, blunt trauma or unexplained shock",
+        "only_if": "electrical injury, blunt trauma or unexplained shock"
+      },
+      {
+        "test": "X-ray of the affected extremity",
+        "why": "Not routine; reserved for electrical or deep burns with suspected fracture",
+        "only_if": "electrical burn, deep burn over a joint, or suspected associated fracture"
+      }
+    ],
+    "decision_points": [
+      "Assess airway early in any patient with facial burns, soot, hoarse voice or stridor; intubate before edema makes it difficult",
+      "Estimate TBSA with the rule of nines in adults and Lund-Browder in children; superficial burns are not counted",
+      "Start fluid resuscitation for burns over 20% TBSA in adults and over 10% in children using the Parkland or modified Brooke formula, then titrate to urine output",
+      "Pregnancy test before imaging and medications in anyone who could be pregnant",
+      "Suspect carbon monoxide or cyanide toxicity with smoke inhalation and a normal pulse oximetry reading",
+      "Consider child abuse or neglect when the burn pattern does not match the reported mechanism"
+    ],
+    "criteria": [],
+    "scores": [
+      "rule_of_nines",
+      "lund_browder",
+      "parkland_formula",
+      "aba_burn_severity"
+    ]
+  },
+  "differential": [
+    {
+      "name": "Cellulitis",
+      "slug": "cellulitis",
+      "why_considered": "Red, warm, swollen and tender skin with fever can mimic a partial-thickness burn, especially when the burn history is vague.",
+      "must_not_miss": true,
+      "trigger": "Spreading redness with fever and no clear heat or chemical exposure",
+      "discriminators": {
+        "history": [
+          "No heat, chemical or electrical exposure",
+          "Gradual onset over days rather than sudden at the moment of injury",
+          "Often a break in the skin, insect bite or prior wound"
+        ],
+        "exam": [
+          "Poorly demarcated spreading erythema without blisters or a burn pattern",
+          "Tender, warm skin with lymphangitic streaking",
+          "No charred, waxy or leathery areas"
+        ],
+        "labs": [
+          "Leukocytosis with a left shift",
+          "Elevated inflammatory markers"
+        ],
+        "imaging": [
+          "Ultrasound may show subcutaneous edema or abscess",
+          "No findings of inhalation injury on chest imaging"
+        ]
+      }
+    },
+    {
+      "name": "Toxic epidermal necrolysis",
+      "slug": "toxic-epidermal-necrolysis",
+      "why_considered": "Widespread skin sloughing and blistering can look like a large partial-thickness burn.",
+      "must_not_miss": true,
+      "trigger": "Widespread blistering and skin detachment without any heat or chemical exposure",
+      "discriminators": {
+        "history": [
+          "Recent new medication such as an anticonvulsant, allopurinol or sulfonamide",
+          "Preceding fever, malaise and mucosal pain",
+          "No burn mechanism"
+        ],
+        "exam": [
+          "Positive Nikolsky sign with sheet-like epidermal detachment",
+          "Painful erosions of the mouth, eyes or genitals",
+          "Targetoid or dusky macules rather than a patterned burn"
+        ],
+        "labs": [
+          "Often normal or nonspecific; may show leukopenia or elevated liver enzymes"
+        ],
+        "imaging": [
+          "Not diagnostic; chest imaging only if respiratory involvement is suspected"
+        ]
+      }
+    },
+    {
+      "name": "Stevens-Johnson syndrome",
+      "slug": "stevens-johnson-syndrome",
+      "why_considered": "Mucosal and skin blistering with systemic illness can resemble a burn.",
+      "must_not_miss": true,
+      "trigger": "Mucosal erosions with skin blistering after a new medication",
+      "discriminators": {
+        "history": [
+          "New medication in the preceding weeks",
+          "Prodromal fever and sore throat",
+          "No exposure to heat, chemicals or electricity"
+        ],
+        "exam": [
+          "Hemorrhagic crusting of the lips and oral mucosa",
+          "Conjunctivitis or genital erosions",
+          "Detachment of less than 10% of body surface area"
+        ],
+        "labs": [
+          "Nonspecific; may show elevated liver enzymes or leukopenia"
+        ],
+        "imaging": [
+          "Not diagnostic"
+        ]
+      }
+    },
+    {
+      "name": "Staphylococcal scalded skin syndrome",
+      "slug": "staphylococcal-scalded-skin-syndrome",
+      "why_considered": "Widespread tender erythema with superficial peeling in a child can mimic a scald.",
+      "must_not_miss": true,
+      "trigger": "A young child with diffuse tender erythema and peeling skin without a heat source",
+      "discriminators": {
+        "history": [
+          "Recent conjunctivitis, otitis or nasopharyngeal infection",
+          "No burn exposure",
+          "Irritability and poor feeding"
+        ],
+        "exam": [
+          "Superficial, easily peeled skin with a positive Nikolsky sign",
+          "No mucosal involvement",
+          "Perioral crusting"
+        ],
+        "labs": [
+          "Leukocytosis; cultures from the primary site may grow Staphylococcus aureus"
+        ],
+        "imaging": [
+          "Not diagnostic"
+        ]
+      }
+    },
+    {
+      "name": "Contact dermatitis",
+      "slug": "contact-dermatitis",
+      "why_considered": "Localized redness, swelling and blistering after chemical or plant exposure can look like a chemical burn.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Exposure to an allergen or irritant rather than a caustic",
+          "Itching rather than burning pain",
+          "Onset hours to days after exposure"
+        ],
+        "exam": [
+          "Erythematous, vesicular rash with sharp borders matching the contact area",
+          "No charred or leathery skin"
+        ],
+        "labs": [
+          "Not needed"
+        ],
+        "imaging": [
+          "Not needed"
+        ]
+      }
+    },
+    {
+      "name": "Frostbite",
+      "slug": "frostbite",
+      "why_considered": "Cold injury causes skin blistering, numbness and discoloration that can resemble a deep burn.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Prolonged exposure to cold, wind or wet conditions",
+          "No heat, chemical or electrical exposure"
+        ],
+        "exam": [
+          "Affected areas are cold, pale or waxy and numb",
+          "Distal extremities, nose or ears most affected"
+        ],
+        "labs": [
+          "Not diagnostic"
+        ],
+        "imaging": [
+          "Bone scan or angiography may show absent perfusion in severe cases"
+        ]
+      }
+    },
+    {
+      "name": "Necrotizing fasciitis",
+      "slug": "necrotizing-fasciitis",
+      "why_considered": "Severe pain, skin discoloration and systemic toxicity can mimic a deep burn with sepsis.",
+      "must_not_miss": true,
+      "trigger": "Pain out of proportion to skin findings with rapid progression and systemic toxicity",
+      "discriminators": {
+        "history": [
+          "Often follows a minor wound, surgery or varicella",
+          "Rapidly worsening pain over hours",
+          "No burn mechanism"
+        ],
+        "exam": [
+          "Pain out of proportion to visible skin changes",
+          "Dusky or bullous skin with crepitus",
+          "Woody induration and skin anesthesia"
+        ],
+        "labs": [
+          "Marked leukocytosis, elevated lactate and creatinine, hyponatremia"
+        ],
+        "imaging": [
+          "CT or MRI shows fascial thickening, gas or fluid tracking along fascia"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Superficial or small partial-thickness burn, less than 10% TBSA in adults, no airway or inhalation concern, hemodynamically stable, pain controlled with oral analgesia",
+      "moderate": "Partial-thickness burn of 10–20% TBSA in adults, or any burn with significant pain, blisters or concern for deeper injury, but no airway compromise or shock",
+      "severe": "Partial- or full-thickness burn over 20% TBSA in adults, or any full-thickness burn, circumferential burn, or burn with inhalation injury or hemodynamic instability",
+      "critical": "Burn with airway compromise, inhalation injury with respiratory failure, shock, or burns over 40% TBSA; may require immediate intubation, aggressive fluid resuscitation and intensive care"
+    },
+    "red_flags": [
+      {
+        "finding": "Hoarse voice, stridor, soot in the mouth or singed nasal hairs",
+        "meaning": "Inhalation injury with impending airway obstruction; intubate before edema makes it impossible"
+      },
+      {
+        "finding": "Hypotension or heart rate over 120",
+        "meaning": "Burn shock from massive fluid shifts; needs immediate IV fluid resuscitation"
+      },
+      {
+        "finding": "Circumferential full-thickness burn of the chest or extremity",
+        "meaning": "Restrictive eschar can impair ventilation or distal perfusion; may need escharotomy"
+      },
+      {
+        "finding": "Dark or decreased urine output after a large burn",
+        "meaning": "Hypovolemia or myoglobinuria with risk of acute kidney injury"
+      },
+      {
+        "finding": "Altered mental status or loss of consciousness at the scene",
+        "meaning": "Carbon monoxide poisoning, hypoxia, head trauma or electrical injury"
+      },
+      {
+        "finding": "Burn pattern inconsistent with the reported mechanism",
+        "meaning": "Concern for abuse or neglect, especially in children and older adults"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Burn shock",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "common",
+        "clues": [
+          "Burns over 20% TBSA",
+          "Tachycardia and hypotension",
+          "Decreased urine output"
+        ]
+      },
+      {
+        "name": "Inhalation injury with airway obstruction or respiratory failure",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Facial burns, soot or singed nasal hairs",
+          "Hoarse voice or stridor",
+          "Hypoxemia or rising PaCO2"
+        ]
+      },
+      {
+        "name": "Carbon monoxide or cyanide toxicity",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Enclosed-space fire",
+          "Altered mental status",
+          "Normal pulse oximetry despite severe hypoxia"
+        ]
+      },
+      {
+        "name": "Wound infection and sepsis",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "common",
+        "clues": [
+          "Purulent drainage, foul odor or spreading erythema",
+          "Fever, rising white count or hemodynamic instability",
+          "Eschar separation"
+        ]
+      },
+      {
+        "name": "Acute kidney injury",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Dark urine or positive urine blood without red cells",
+          "Elevated creatinine",
+          "Inadequate fluid resuscitation"
+        ]
+      },
+      {
+        "name": "Hypertrophic scarring and contracture",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Deep partial- or full-thickness burns",
+          "Burns crossing joints",
+          "Delayed healing or infection"
+        ]
+      },
+      {
+        "name": "Heterotopic ossification",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "rare",
+        "clues": [
+          "Deep burns over joints",
+          "Decreased range of motion months after injury"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Scalds are the most common mechanism; use the Lund-Browder chart for TBSA because the head is proportionally larger. Fluid resuscitation starts at 10% TBSA rather than 20%. Non-accidental burn patterns should be considered."
+      },
+      {
+        "population": "infants",
+        "differences": "Present with poor feeding, lethargy and irritability rather than pain complaints. Even small burns can cause significant fluid loss and hypothermia; maintain warmth during assessment."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Thinner skin means deeper burns from the same exposure; impaired mobility or cognition may delay escape. Mortality is higher for the same burn size, and fluid resuscitation must be balanced against cardiac and renal comorbidity."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Maternal hypovolemia and hypoxemia can compromise the fetus. Resuscitate the mother aggressively with attention to fetal monitoring and left uterine displacement after 20 weeks."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Peripheral neuropathy can blunt pain and delay presentation; impaired healing and immune function increase the risk of wound infection. Glucose control is important but tight control is avoided because of hypoglycemia risk."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Higher risk of rapid wound infection and sepsis; fever may be absent or blunted, so a low threshold for cultures and imaging is needed."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "What caused the burn, and what was the source?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Scald, flame, hot surface, chemical, electrical, radiation or smoke; guides depth, workup and disposition"
+      },
+      {
+        "question": "When did the burn happen?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Minutes to hours ago; partial-thickness burns can deepen over the first 24–48 hours"
+      },
+      {
+        "question": "Was the burn cooled with running water, and was anything applied to it?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Early cool running water limits depth; butter, toothpaste or ice worsen injury"
+      },
+      {
+        "question": "Where on the body is the burn, and how much of the body does it cover?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Face, hands, feet, perineum, circumferential or large areas change disposition and fluid needs"
+      },
+      {
+        "question": "Did the burn happen in an enclosed space, or was there smoke, soot or hot gas?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Inhalation injury, carbon monoxide or cyanide exposure"
+      },
+      {
+        "question": "Is your voice hoarse, or do you have a cough, trouble breathing or throat tightness?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Airway edema from inhalation injury; intubate before obstruction"
+      },
+      {
+        "question": "Did you lose consciousness at the scene or fall?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Electrical injury, carbon monoxide poisoning, head or spine trauma"
+      },
+      {
+        "question": "How bad is the pain, and is any part of the burn numb?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Numbness suggests full-thickness burn; pain out of proportion suggests deeper injury"
+      },
+      {
+        "question": "Are you able to drink and keep fluids down?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Oral intake determines whether IV fluids are needed for smaller burns"
+      },
+      {
+        "question": "Have you had any fever, chills or worsening redness since the burn?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Wound infection or sepsis"
+      },
+      {
+        "question": "What medical problems do you have, such as diabetes, heart disease or nerve damage?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Comorbidities that worsen healing, blunt pain or complicate fluid resuscitation"
+      },
+      {
+        "question": "What medicines do you take?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Beta blockers or opioids that blunt tachycardia, and drugs affecting healing"
+      },
+      {
+        "question": "Do you have any medication allergies?",
+        "category": "allergies",
+        "importance": "important",
+        "looking_for": "Allergy to sulfa drugs, which affects topical antibiotic choice"
+      },
+      {
+        "question": "Could you be pregnant? When was your last period?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Pregnancy changes imaging, medications and resuscitation decisions"
+      },
+      {
+        "question": "How did the burn happen exactly — could it have been caused by someone else or by a lack of supervision?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Pattern inconsistent with the mechanism raises concern for abuse or neglect"
+      },
+      {
+        "question": "Do you have working smoke detectors at home, and do you smoke or use alcohol or drugs?",
+        "category": "social",
+        "importance": "optional",
+        "looking_for": "Risk factors for more severe burns and impaired escape"
+      }
+    ],
+    "accepted_names": [
+      "Burns",
+      "Burn injury",
+      "Thermal burn",
+      "Burn"
+    ],
+    "reasoning_points": [
+      "A clear mechanism of heat, chemical, electrical or radiation exposure with sudden onset of pain and skin changes at the moment of injury",
+      "Depth assessed from color, blistering, capillary refill and sensation: superficial, partial-thickness or full-thickness",
+      "Extent estimated as percent total body surface area using the rule of nines in adults and Lund-Browder in children, counting only partial- and full-thickness burns",
+      "Airway and inhalation injury assessed from facial burns, soot, singed nasal hairs, hoarse voice or stridor",
+      "Hemodynamic status and urine output used to recognize burn shock and guide fluid resuscitation",
+      "Look-alikes such as cellulitis, toxic epidermal necrolysis, Stevens-Johnson syndrome, staphylococcal scalded skin syndrome, contact dermatitis, frostbite and necrotizing fasciitis excluded by history, exposure and examination",
+      "Pregnancy excluded before imaging, medications and resuscitation decisions",
+      "Burn pattern compared with the reported mechanism to screen for abuse or neglect"
+    ],
+    "difficulty": {
+      "easy": [
+        "Clear scald or flame mechanism with a patterned burn",
+        "Obvious partial-thickness burn with blisters and severe pain",
+        "Small burn under 10% TBSA in a healthy adult",
+        "No airway, inhalation or hemodynamic concern"
+      ],
+      "medium": [
+        "Burn of 10–20% TBSA requiring fluid resuscitation and admission decisions",
+        "Mixed-depth burn that is difficult to classify",
+        "Facial burn with concern for inhalation injury but a normal chest x-ray",
+        "Child with a scald and a mechanism that needs to be verified"
+      ],
+      "hard": [
+        "Full-thickness burn that is painless and mistaken for a less severe injury",
+        "Circumferential chest or extremity burn with impaired ventilation or distal perfusion",
+        "Electrical burn with deep muscle injury, rhabdomyolysis and cardiac arrhythmia",
+        "Smoke inhalation with carbon monoxide toxicity and falsely normal pulse oximetry",
+        "Older adult with a small burn but high mortality and comorbidity limiting resuscitation",
+        "Burn pattern inconsistent with the reported mechanism suggesting abuse or neglect"
+      ]
+    }
+  }
+}

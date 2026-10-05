@@ -1,0 +1,1454 @@
+{
+  "schema_version": "0.2",
+  "slug": "flu",
+  "triage": {
+    "name": "Flu",
+    "case_suitable": true,
+    "reason": "Common acute febrile respiratory illness with clear presentation and important complications and mimics; well suited to interview and exam-based diagnosis.",
+    "kind": "disease",
+    "category": "viral respiratory infection",
+    "organ_systems": [
+      "respiratory"
+    ],
+    "primary_clerkship": "familyMedicine",
+    "secondary_clerkships": [
+      "internalMedicine",
+      "pediatrics",
+      "emergency"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "clinic",
+      "emergency",
+      "pediatric_clinic"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:17:26Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:05:58Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:06:04Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:06:13Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:06:25Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:06:31Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'rapid influenza test' was in ['initial', 'confirmatory'], kept ['initial']",
+        "auto-repaired: workup: 'chest x-ray' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'chest x-ray' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "differential covid-19: no profile yet",
+        "differential community-acquired-pneumonia: no profile yet",
+        "differential streptococcal-pharyngitis: no profile yet",
+        "differential infectious-mononucleosis: no profile yet",
+        "differential viral-gastroenteritis: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 5,
+      "typical_max": 65,
+      "peak": "school-age children and adults 20–50",
+      "possible_min": 0,
+      "possible_max": 100
+    },
+    "sex": "either",
+    "demographics": [
+      "Occurs in all ages; school-age children and their household contacts are most often affected during seasonal outbreaks",
+      "Adults 65 and older, children under 5, and pregnant people account for most severe cases and hospitalizations"
+    ],
+    "risk_factors": [
+      {
+        "text": "Close contact with someone who has influenza (household, school, workplace, crowded settings)",
+        "strength": "strong"
+      },
+      {
+        "text": "Not vaccinated against influenza this season",
+        "strength": "strong"
+      },
+      {
+        "text": "Age 65 or older",
+        "strength": "moderate"
+      },
+      {
+        "text": "Age under 5 years (especially under 2)",
+        "strength": "moderate"
+      },
+      {
+        "text": "Pregnancy",
+        "strength": "moderate"
+      },
+      {
+        "text": "Chronic lung, heart, kidney, liver, blood, or metabolic disease",
+        "strength": "moderate"
+      },
+      {
+        "text": "Immunosuppression from disease or medication",
+        "strength": "moderate"
+      },
+      {
+        "text": "Residence in a long-term care facility",
+        "strength": "weak"
+      },
+      {
+        "text": "Occupational exposure such as health care work",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Asthma or COPD",
+      "Diabetes mellitus",
+      "Congestive heart failure or coronary artery disease",
+      "Chronic kidney disease",
+      "Chronic liver disease",
+      "Obesity",
+      "Immunosuppressive condition or treatment",
+      "Sickle cell disease"
+    ],
+    "family_history": [],
+    "social_history": [
+      "School, daycare, or workplace exposure during flu season",
+      "Crowded living conditions or group housing",
+      "Recent travel or attendance at large gatherings"
+    ],
+    "exposures": [
+      "Sick contacts with fever, cough, and body aches",
+      "Influenza circulating in the community during fall or winter months",
+      "Touching contaminated surfaces then the face"
+    ],
+    "risk_medications": [
+      "Corticosteroids",
+      "Tumor necrosis factor inhibitors",
+      "Chemotherapy agents",
+      "Other immunosuppressants"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I feel like I got hit by a truck",
+        "frequency": "common"
+      },
+      {
+        "text": "I suddenly got a fever and chills",
+        "frequency": "common"
+      },
+      {
+        "text": "My whole body aches",
+        "frequency": "common"
+      },
+      {
+        "text": "I have a cough and my throat hurts",
+        "frequency": "common"
+      },
+      {
+        "text": "I'm so tired I can't get out of bed",
+        "frequency": "common"
+      }
+    ],
+    "hpi": {
+      "onset": "Sudden, over a few hours; patients often can name the hour they started feeling sick",
+      "duration": "Symptoms peak in 1–2 days and usually improve over 3–7 days, though cough and fatigue can linger for 1–2 weeks",
+      "progression": "Abrupt onset of fever, chills, and body aches, followed by sore throat, nasal congestion, and cough; symptoms are worst in the first 2–3 days then gradually ease",
+      "location": "Generalized; centered on the head, throat, and chest",
+      "radiation": "Body aches are diffuse and not localized",
+      "quality": "Dry or minimally productive cough, scratchy sore throat, deep muscle aching, and a heavy, washed-out fatigue",
+      "severity": "Moderate to severe; patients often describe it as the worst they have felt in years",
+      "timing": "Continuous through the day; fever tends to be highest in the evening and night",
+      "aggravating": [
+        "Moving around",
+        "Coughing",
+        "Swallowing",
+        "Cold air"
+      ],
+      "relieving": [
+        "Rest",
+        "Acetaminophen or ibuprofen",
+        "Warm fluids",
+        "Staying in bed under blankets"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Fever or feeling feverish",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Chills or shivering",
+          "frequency": "common"
+        },
+        {
+          "text": "Dry or minimally productive cough",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Muscle or body aches",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Fatigue and weakness",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Headache",
+          "frequency": "common"
+        },
+        {
+          "text": "Sore throat",
+          "frequency": "common"
+        },
+        {
+          "text": "Runny or stuffy nose",
+          "frequency": "common"
+        },
+        {
+          "text": "Sneezing",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Loss of appetite",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Nausea or vomiting",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Diarrhea",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Eye redness, burning, or tearing",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Hoarse voice",
+          "frequency": "sometimes"
+        }
+      ],
+      "pertinent_negatives": [
+        "Gradual onset over several days (more typical of a common cold)",
+        "Predominantly nasal congestion and sneezing with mild symptoms and no fever",
+        "Productive cough with colored sputum for weeks",
+        "Sudden one-sided chest pain with shortness of breath",
+        "Severe sore throat with difficulty swallowing and no cough",
+        "Vomiting and diarrhea as the main symptoms without respiratory complaints",
+        "Rash",
+        "Neck stiffness or confusion",
+        "Symptoms that improve for a few days and then worsen with high fever (suggests secondary bacterial infection)"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fever",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Chills",
+            "frequency": "common"
+          },
+          {
+            "text": "Fatigue and weakness",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Feeling generally unwell",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Loss of appetite",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Weight loss",
+          "Night sweats lasting weeks"
+        ],
+        "argues_against": [
+          "Gradual onset over days with mild symptoms"
+        ]
+      },
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "Cough",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Runny or stuffy nose",
+            "frequency": "common"
+          },
+          {
+            "text": "Sore throat",
+            "frequency": "common"
+          },
+          {
+            "text": "Sneezing",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Hoarse voice",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Coughing up blood",
+          "Chest pain with breathing",
+          "Wheezing",
+          "Shortness of breath at rest"
+        ],
+        "argues_against": [
+          "Sudden pleuritic chest pain with dyspnea",
+          "Productive cough with purulent sputum"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Muscle aches",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Joint aches",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Joint swelling or redness",
+          "Focal limb pain",
+          "Inability to bear weight"
+        ],
+        "argues_against": [
+          "Localized joint swelling and warmth"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Headache",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Confusion",
+          "Neck stiffness",
+          "Seizures",
+          "Fainting",
+          "Numbness or weakness"
+        ],
+        "argues_against": [
+          "Altered mental status",
+          "Meningismus"
+        ]
+      },
+      {
+        "system": "ent",
+        "positives": [
+          {
+            "text": "Sore throat",
+            "frequency": "common"
+          },
+          {
+            "text": "Nasal congestion",
+            "frequency": "common"
+          },
+          {
+            "text": "Ear pressure or earache",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Severe unilateral throat pain with drooling",
+          "Hearing loss",
+          "Facial swelling"
+        ],
+        "argues_against": [
+          "Difficulty swallowing with drooling",
+          "Unilateral facial swelling"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Nausea",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Vomiting",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Diarrhea",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Abdominal discomfort",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Bloody stools",
+          "Severe localized abdominal pain",
+          "Jaundice"
+        ],
+        "argues_against": [
+          "Vomiting and diarrhea as the only symptoms without respiratory complaints"
+        ]
+      },
+      {
+        "system": "eyes",
+        "positives": [
+          {
+            "text": "Red, watery, or burning eyes",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Light sensitivity",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Purulent eye discharge",
+          "Vision loss"
+        ],
+        "argues_against": [
+          "Unilateral purulent conjunctivitis"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Alert, mildly ill-appearing, able to converse normally",
+      "moderate": "Ill-appearing, flushed, prefers to lie still, voice may be hoarse",
+      "severe": "Toxic-appearing, diaphoretic, tachypneic, uncomfortable at rest",
+      "critical": "Severely ill, lethargic or confused, labored breathing, signs of shock or respiratory failure"
+    },
+    "findings": [
+      {
+        "id": "fever-measured",
+        "region": "general",
+        "maneuver": "Measure the temperature (oral or temporal)",
+        "finding": "Fever, often 100.4–103°F",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "chills-rigors",
+        "region": "general",
+        "maneuver": "Observe the patient and ask about chills",
+        "finding": "Chills or shivering, sometimes rigors",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "ill-appearance",
+        "region": "general",
+        "maneuver": "Observe the patient's general appearance and work of breathing",
+        "finding": "Ill-appearing, flushed, fatigued, prefers to lie still",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "tachycardia",
+        "region": "cardiac",
+        "maneuver": "Measure the heart rate and palpate the radial pulse",
+        "finding": "Tachycardia, often out of proportion to fever",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "tachypnea",
+        "region": "lung",
+        "maneuver": "Count the respiratory rate over a full minute",
+        "finding": "Tachypnea",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "pharyngeal-erythema",
+        "region": "heent",
+        "maneuver": "Inspect the oropharynx with a light and tongue blade",
+        "finding": "Diffuse pharyngeal erythema, sometimes with enlarged tonsils; no exudate",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "nasal-congestion",
+        "region": "heent",
+        "maneuver": "Inspect the nasal mucosa",
+        "finding": "Erythematous, congested nasal mucosa with clear discharge",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "conjunctival-injection",
+        "region": "heent",
+        "maneuver": "Inspect the conjunctivae",
+        "finding": "Conjunctival injection or watery eyes",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "cervical-lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the cervical lymph node chains",
+        "finding": "Tender, mildly enlarged anterior cervical lymph nodes",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "lung-clear",
+        "region": "lung",
+        "maneuver": "Auscultate all lung fields",
+        "finding": "Clear breath sounds without crackles or wheezing",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "no-tachypnea-rest",
+        "region": "lung",
+        "maneuver": "Observe the patient at rest and ask them to speak a full sentence",
+        "finding": "No respiratory distress or accessory muscle use",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-meningismus",
+        "region": "neuro",
+        "maneuver": "Assess neck stiffness and perform a brief neurologic screen",
+        "finding": "No neck stiffness, normal mental status, no focal deficits",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-rash",
+        "region": "skin",
+        "maneuver": "Inspect the skin, including the trunk and extremities",
+        "finding": "No rash or petechiae",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-exudate",
+        "region": "heent",
+        "maneuver": "Inspect the tonsils and posterior pharynx",
+        "finding": "No tonsillar exudate or asymmetry",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-cervical-adenopathy-massive",
+        "region": "neck",
+        "maneuver": "Palpate the neck for mass or asymmetry",
+        "finding": "No unilateral neck swelling or mass",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 98.6,
+        "max": 100.4
+      },
+      "moderate": {
+        "min": 100.4,
+        "max": 102.2
+      },
+      "severe": {
+        "min": 101.0,
+        "max": 103.5
+      },
+      "critical": {
+        "min": 102.0,
+        "max": 104.5
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 70,
+        "max": 100
+      },
+      "moderate": {
+        "min": 90,
+        "max": 115
+      },
+      "severe": {
+        "min": 100,
+        "max": 130
+      },
+      "critical": {
+        "min": 110,
+        "max": 150
+      }
+    },
+    "rr": {
+      "moderate": {
+        "min": 16,
+        "max": 22
+      },
+      "severe": {
+        "min": 20,
+        "max": 28
+      },
+      "critical": {
+        "min": 24,
+        "max": 36
+      }
+    },
+    "sbp": {
+      "critical": {
+        "min": 80,
+        "max": 100
+      }
+    },
+    "dbp": {
+      "critical": {
+        "min": 45,
+        "max": 65
+      }
+    },
+    "spo2": {
+      "severe": {
+        "min": 90,
+        "max": 95
+      },
+      "critical": {
+        "min": 82,
+        "max": 92
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "mild": {
+          "min": 3.0,
+          "max": 4.5
+        },
+        "moderate": {
+          "min": 3.5,
+          "max": 11.0
+        },
+        "severe": {
+          "min": 11.0,
+          "max": 16.0
+        },
+        "critical": {
+          "min": 14.0,
+          "max": 22.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Often normal or mildly low from viral suppression; leukocytosis with a left shift suggests secondary bacterial pneumonia."
+    },
+    {
+      "test_id": "lymph_pct",
+      "ranges": {
+        "mild": {
+          "min": 40,
+          "max": 55
+        },
+        "moderate": {
+          "min": 40,
+          "max": 60
+        },
+        "severe": {
+          "min": 35,
+          "max": 60
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Relative lymphocytosis is common in viral illness; not specific for influenza."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "moderate": {
+          "min": 1.0,
+          "max": 4.0
+        },
+        "severe": {
+          "min": 3.0,
+          "max": 10.0
+        },
+        "critical": {
+          "min": 8.0,
+          "max": 20.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Nonspecific; marked elevation should raise concern for bacterial superinfection."
+    },
+    {
+      "test_id": "procalcitonin",
+      "ranges": {
+        "severe": {
+          "min": 0.1,
+          "max": 0.5
+        },
+        "critical": {
+          "min": 0.5,
+          "max": 2.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Low values favor viral illness; higher values suggest bacterial coinfection."
+    },
+    {
+      "test_id": "ck",
+      "ranges": {
+        "severe": {
+          "min": 308,
+          "max": 1000
+        },
+        "critical": {
+          "min": 1000,
+          "max": 5000
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Check when there is severe myalgia, dark urine, or weakness; elevation suggests influenza myositis or rhabdomyolysis."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "critical": {
+          "min": 2.0,
+          "max": 5.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Elevated only with severe illness, shock, or secondary bacterial sepsis."
+    },
+    {
+      "test_id": "hs_tnt",
+      "ranges": {
+        "severe": {
+          "min": 22,
+          "max": 100
+        },
+        "critical": {
+          "min": 50,
+          "max": 500
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Order when chest pain, dyspnea, or hemodynamic instability suggests myocarditis."
+    },
+    {
+      "test_id": "bnp",
+      "ranges": {
+        "severe": {
+          "min": 100,
+          "max": 400
+        },
+        "critical": {
+          "min": 300,
+          "max": 1000
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "May rise with influenza-related myocarditis or heart failure exacerbation."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rhythm",
+        "finding": "Sinus tachycardia",
+        "frequency": "common"
+      },
+      {
+        "feature": "rate",
+        "finding": "Tachycardia out of proportion to fever",
+        "frequency": "sometimes"
+      },
+      {
+        "feature": "st",
+        "finding": "Diffuse ST-segment elevation or depression suggesting myocarditis",
+        "frequency": "rare",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "t_wave",
+        "finding": "T-wave inversions",
+        "frequency": "rare",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "conduction",
+        "finding": "New bundle branch block or AV block",
+        "frequency": "rare",
+        "min_severity": "severe"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Chest x-ray",
+      "modality": "xray",
+      "preferred_when": "Suspected pneumonia or hypoxia",
+      "findings": [
+        {
+          "text": "Normal lungs in uncomplicated influenza",
+          "frequency": "common"
+        },
+        {
+          "text": "Patchy or lobar consolidation suggesting secondary bacterial pneumonia",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Diffuse bilateral interstitial or alveolar opacities suggesting viral pneumonitis",
+          "frequency": "rare"
+        },
+        {
+          "text": "Pleural effusion",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "CT chest without contrast",
+      "modality": "ct",
+      "preferred_when": "Chest x-ray nondiagnostic but pneumonia or pneumonitis strongly suspected",
+      "findings": [
+        {
+          "text": "Ground-glass opacities or consolidation",
+          "frequency": "common"
+        },
+        {
+          "text": "Multifocal or diffuse involvement",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Echocardiogram",
+      "modality": "echo",
+      "preferred_when": "Suspected myocarditis, pericarditis, or new heart failure",
+      "findings": [
+        {
+          "text": "Global or regional wall motion abnormality",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Reduced ejection fraction",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Pericardial effusion",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "Rapid influenza test",
+        "why": "Rapid antigen or molecular test on a nasopharyngeal swab; confirms influenza and guides antiviral treatment"
+      },
+      {
+        "test": "cbc",
+        "why": "Assesses for leukocytosis suggesting bacterial superinfection or leukopenia from viral illness",
+        "only_if": "moderate to severe illness or concern for bacterial complication"
+      },
+      {
+        "test": "bmp",
+        "why": "Assesses hydration and electrolytes in patients who are vomiting or dehydrated",
+        "only_if": "dehydration, vomiting, or severe illness"
+      },
+      {
+        "test": "Chest x-ray",
+        "why": "Looks for pneumonia when hypoxia, abnormal lung exam, or persistent fever is present",
+        "only_if": "pneumonia is suspected (hypoxia, crackles, or worsening after initial improvement)"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Respiratory viral panel (multiplex PCR)",
+        "why": "More sensitive than rapid antigen testing and distinguishes influenza A from B and other viruses",
+        "only_if": "rapid test is negative but influenza is still suspected, or results will change management"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "crp",
+        "why": "Supports inflammation; marked elevation raises concern for bacterial coinfection",
+        "only_if": "concern for bacterial superinfection"
+      },
+      {
+        "test": "procalcitonin",
+        "why": "Low values favor viral illness and argue against bacterial pneumonia",
+        "only_if": "uncertainty about bacterial coinfection"
+      },
+      {
+        "test": "ck",
+        "why": "Evaluates severe myalgia or dark urine for myositis or rhabdomyolysis",
+        "only_if": "severe muscle pain, weakness, or dark urine"
+      },
+      {
+        "test": "hs_tnt",
+        "why": "Evaluates for myocarditis when chest pain or dyspnea is present",
+        "only_if": "chest pain, dyspnea, or hemodynamic instability"
+      },
+      {
+        "test": "Echocardiogram",
+        "why": "Assesses cardiac function and pericardial effusion when myocarditis is suspected",
+        "only_if": "suspected myocarditis or new heart failure"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Chest x-ray",
+        "why": "Not routine in uncomplicated influenza with clear lungs and no hypoxia"
+      },
+      {
+        "test": "CT chest without contrast",
+        "why": "Not needed unless complications are suspected and chest x-ray is nondiagnostic"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in diagnosing influenza or its typical complications"
+      },
+      {
+        "test": "lipase",
+        "why": "Not indicated unless abdominal pain suggests pancreatitis"
+      },
+      {
+        "test": "ua",
+        "why": "Not indicated unless urinary symptoms or dehydration are present"
+      }
+    ],
+    "decision_points": [
+      "Antiviral treatment should start as soon as possible, ideally within 48 hours of symptom onset, and should not be delayed while waiting for test results in high-risk or severely ill patients",
+      "A negative rapid influenza test does not rule out influenza when clinical suspicion is high; consider molecular testing",
+      "Consider bacterial superinfection if symptoms improve then worsen with fever, or if there is hypoxia, purulent sputum, or focal lung findings",
+      "Hospitalize for hypoxia, respiratory distress, altered mental status, inability to tolerate oral intake, or hemodynamic instability"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "COVID-19",
+      "slug": "covid-19",
+      "why_considered": "Overlapping febrile respiratory illness with cough, sore throat, myalgias, and fatigue, especially during respiratory virus season.",
+      "must_not_miss": true,
+      "trigger": "Respiratory symptoms with fever during community circulation of SARS-CoV-2, or new loss of taste or smell.",
+      "discriminators": {
+        "history": [
+          "Gradual or variable onset rather than the abrupt 'hit by a truck' onset of influenza",
+          "New loss of taste or smell",
+          "Known exposure to a person with COVID-19"
+        ],
+        "exam": [
+          "May have hypoxia with relatively mild lung findings",
+          "No specific distinguishing physical finding"
+        ],
+        "labs": [
+          "Positive SARS-CoV-2 nucleic acid amplification or antigen test",
+          "Lymphopenia is common"
+        ],
+        "imaging": [
+          "Chest x-ray often normal early",
+          "CT chest may show peripheral ground-glass opacities"
+        ]
+      }
+    },
+    {
+      "name": "Bacterial pneumonia",
+      "slug": "community-acquired-pneumonia",
+      "why_considered": "Fever, cough, and malaise can mimic influenza, and bacterial pneumonia is a common complication of influenza.",
+      "must_not_miss": true,
+      "trigger": "Focal lung findings, hypoxia, purulent sputum, or worsening after initial improvement.",
+      "discriminators": {
+        "history": [
+          "Productive cough with purulent or blood-tinged sputum",
+          "Pleuritic chest pain",
+          "Symptoms that improve then worsen with recurrent fever"
+        ],
+        "exam": [
+          "Focal crackles, bronchial breath sounds, dullness to percussion, or egophony",
+          "Tachypnea and hypoxemia"
+        ],
+        "labs": [
+          "Leukocytosis with left shift",
+          "Elevated procalcitonin and CRP"
+        ],
+        "imaging": [
+          "Lobar or segmental consolidation on chest x-ray",
+          "Air bronchograms or pleural effusion"
+        ]
+      }
+    },
+    {
+      "name": "Common cold (rhinovirus and other seasonal coronaviruses)",
+      "slug": "common-cold",
+      "why_considered": "Nasal congestion, sore throat, and cough are shared with mild influenza.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Gradual onset over one to three days",
+          "Predominantly nasal congestion, sneezing, and sore throat",
+          "Fever is uncommon in adults",
+          "Mild fatigue without prominent body aches"
+        ],
+        "exam": [
+          "Low-grade or no fever",
+          "Nasal mucosal swelling with clear discharge",
+          "Lungs clear"
+        ],
+        "labs": [
+          "Influenza testing negative",
+          "Respiratory viral panel may identify rhinovirus or seasonal coronavirus"
+        ]
+      }
+    },
+    {
+      "name": "Streptococcal pharyngitis",
+      "slug": "streptococcal-pharyngitis",
+      "why_considered": "Sore throat and fever are prominent in both, and influenza can present with severe throat pain.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Sore throat is the dominant symptom",
+          "Cough and nasal congestion are typically absent",
+          "Abrupt onset of throat pain without prominent myalgias"
+        ],
+        "exam": [
+          "Tonsillar exudate, palatal petechiae, or tender anterior cervical adenopathy",
+          "Scarlet fever rash may be present"
+        ],
+        "labs": [
+          "Positive rapid antigen detection test or throat culture for group A Streptococcus",
+          "Influenza testing negative"
+        ]
+      }
+    },
+    {
+      "name": "Infectious mononucleosis",
+      "slug": "infectious-mononucleosis",
+      "why_considered": "Fever, sore throat, fatigue, and malaise in adolescents and young adults.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Gradual onset over days to weeks",
+          "Severe sore throat with difficulty swallowing",
+          "Profound fatigue lasting weeks"
+        ],
+        "exam": [
+          "Exudative pharyngitis with palatal petechiae",
+          "Posterior cervical lymphadenopathy",
+          "Splenomegaly"
+        ],
+        "labs": [
+          "Lymphocytosis with atypical lymphocytes",
+          "Positive heterophile antibody or EBV serology",
+          "Elevated transaminases"
+        ]
+      }
+    },
+    {
+      "name": "Acute bronchitis",
+      "slug": "acute-bronchitis",
+      "why_considered": "Cough with chest discomfort and low-grade fever can resemble mild influenza.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Cough is the predominant symptom, often productive",
+          "Fever is low-grade or absent",
+          "Body aches and chills are minimal"
+        ],
+        "exam": [
+          "Diffuse wheezing or coarse breath sounds",
+          "No focal consolidation"
+        ],
+        "imaging": [
+          "Chest x-ray typically normal without consolidation"
+        ]
+      }
+    },
+    {
+      "name": "Viral gastroenteritis",
+      "slug": "viral-gastroenteritis",
+      "why_considered": "Influenza can cause nausea, vomiting, and diarrhea, especially in children, and patients may call this 'stomach flu.'",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Vomiting and diarrhea are the primary symptoms",
+          "Respiratory complaints such as cough and sore throat are absent or minimal",
+          "Fever may be low-grade"
+        ],
+        "exam": [
+          "Diffuse abdominal tenderness without focal findings",
+          "Signs of dehydration may be present"
+        ],
+        "labs": [
+          "Influenza testing negative",
+          "Stool testing may identify norovirus or other enteric pathogens"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Afebrile or low-grade fever, mild cough and congestion, able to carry out usual activities with some difficulty, no risk factors for complications.",
+      "moderate": "Fever 100.4–102.2°F, prominent myalgias, headache, and cough, feels too unwell to work or attend school, but no respiratory distress or dehydration.",
+      "severe": "High fever, marked prostration, tachypnea, hypoxemia, or inability to tolerate oral intake; may require hospitalization, especially with underlying chronic disease.",
+      "critical": "Respiratory failure, shock, encephalopathy, or myocarditis requiring intensive care; most often in older adults, infants, pregnant people, or the immunocompromised."
+    },
+    "red_flags": [
+      {
+        "finding": "Shortness of breath at rest or oxygen saturation below 92%",
+        "meaning": "Suggests viral pneumonitis or secondary bacterial pneumonia; needs urgent evaluation and imaging."
+      },
+      {
+        "finding": "Symptoms improve for a few days then worsen with high fever and productive cough",
+        "meaning": "Classic pattern of secondary bacterial pneumonia."
+      },
+      {
+        "finding": "Confusion, lethargy, or difficulty waking",
+        "meaning": "Possible influenza encephalopathy, sepsis, or severe dehydration; requires emergent workup."
+      },
+      {
+        "finding": "Chest pain, palpitations, or syncope",
+        "meaning": "Raises concern for myocarditis or pericarditis."
+      },
+      {
+        "finding": "Severe muscle pain with dark urine or weakness",
+        "meaning": "Suggests rhabdomyolysis or influenza myositis."
+      },
+      {
+        "finding": "Inability to keep fluids down or signs of dehydration",
+        "meaning": "May require intravenous fluids and hospitalization."
+      },
+      {
+        "finding": "Hypotension or tachycardia out of proportion to fever",
+        "meaning": "Suggests sepsis or hemodynamic compromise."
+      }
+    ],
+    "complications": [
+      {
+        "name": "Secondary bacterial pneumonia",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Improvement followed by worsening fever and cough",
+          "Purulent sputum",
+          "Focal crackles or consolidation on chest x-ray",
+          "Leukocytosis with left shift"
+        ]
+      },
+      {
+        "name": "Primary influenza viral pneumonia",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Rapid progression of dyspnea and hypoxemia within 1–2 days of onset",
+          "Diffuse bilateral opacities on chest imaging",
+          "Cyanosis or respiratory failure"
+        ]
+      },
+      {
+        "name": "Myocarditis or pericarditis",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Chest pain, dyspnea, or palpitations",
+          "New ECG changes or elevated troponin",
+          "Wall motion abnormality on echocardiogram"
+        ]
+      },
+      {
+        "name": "Encephalitis or encephalopathy",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Altered mental status, seizures, or focal neurologic deficits",
+          "Fever with confusion"
+        ]
+      },
+      {
+        "name": "Myositis or rhabdomyolysis",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Severe calf or thigh pain",
+          "Dark urine",
+          "Elevated creatine kinase"
+        ]
+      },
+      {
+        "name": "Otitis media",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Ear pain or pressure",
+          "Bulging, erythematous tympanic membrane",
+          "More common in children"
+        ]
+      },
+      {
+        "name": "Sinusitis",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Facial pain or pressure",
+          "Persistent nasal congestion and purulent discharge"
+        ]
+      },
+      {
+        "name": "Exacerbation of chronic disease (asthma, COPD, heart failure, diabetes)",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Wheezing or increased inhaler use",
+          "Worsening dyspnea or edema",
+          "Hyperglycemia or diabetic ketoacidosis"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Vomiting and diarrhea are more common; febrile seizures can occur; otitis media and croup are more frequent complications. Children under 5, especially under 2, are at higher risk of severe disease."
+      },
+      {
+        "population": "infants",
+        "differences": "May present with fever, poor feeding, lethargy, or apnea rather than classic cough and myalgias; sepsis evaluation is often considered."
+      },
+      {
+        "population": "older_adults",
+        "differences": "May lack fever and present with weakness, confusion, or decompensation of chronic illness; higher risk of pneumonia, hospitalization, and death."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Higher risk of severe illness, hospitalization, preterm labor, and fetal complications; antiviral treatment should be started promptly and is recommended in pregnancy."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Prolonged viral shedding, atypical or more severe presentation, higher risk of viral pneumonia and bacterial superinfection; may require extended antiviral therapy."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Higher risk of severe influenza and of hyperglycemia or diabetic ketoacidosis during illness; monitor glucose closely."
+      },
+      {
+        "population": "obesity",
+        "differences": "Higher risk of severe influenza, hospitalization, and respiratory failure."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "How did your symptoms start — suddenly or gradually?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Abrupt onset over a few hours; patients often can name the hour they started feeling sick"
+      },
+      {
+        "question": "When did the symptoms start?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Within the last 1–2 days; determines whether antiviral therapy can still be started within 48 hours"
+      },
+      {
+        "question": "Have you had a fever or chills?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Fever or feeling feverish with chills or shivering; not everyone with influenza has a fever"
+      },
+      {
+        "question": "Do your muscles or body ache?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Prominent diffuse myalgias, often described as feeling like being hit by a truck"
+      },
+      {
+        "question": "How severe is your fatigue?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Marked prostration and weakness, worse than a typical cold"
+      },
+      {
+        "question": "Do you have a cough, sore throat, or runny nose?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Dry or minimally productive cough, sore throat, and nasal congestion accompanying the systemic symptoms"
+      },
+      {
+        "question": "Have you had any nausea, vomiting, or diarrhea?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Sometimes present, more common in children; vomiting and diarrhea as the only symptoms suggest gastroenteritis rather than influenza"
+      },
+      {
+        "question": "Has anyone around you been sick with fever, cough, and body aches?",
+        "category": "social",
+        "importance": "essential",
+        "looking_for": "Sick contacts at home, school, or work, or influenza circulating in the community during flu season"
+      },
+      {
+        "question": "Have you been vaccinated against influenza this season?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Not vaccinated increases likelihood; vaccination reduces risk and severity but does not rule out influenza"
+      },
+      {
+        "question": "Do you have any chronic conditions such as asthma, diabetes, heart disease, or kidney disease?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Conditions that increase the risk of complications and lower the threshold for antiviral treatment"
+      },
+      {
+        "question": "Are you pregnant, or could you be pregnant?",
+        "category": "obstetric",
+        "importance": "important",
+        "looking_for": "Pregnancy increases the risk of severe illness; antiviral treatment is recommended and should be started promptly"
+      },
+      {
+        "question": "Are you taking any medications that weaken your immune system, such as steroids or chemotherapy?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Immunosuppression, which raises the risk of severe or prolonged illness"
+      },
+      {
+        "question": "Are you short of breath at rest, or does it hurt to breathe?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Dyspnea or pleuritic chest pain suggesting pneumonia, viral pneumonitis, or myocarditis"
+      },
+      {
+        "question": "Did your symptoms improve and then get worse again with a new fever?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Classic pattern of secondary bacterial pneumonia"
+      },
+      {
+        "question": "Have you been confused, unusually sleepy, or unable to keep fluids down?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Encephalopathy, severe dehydration, or sepsis requiring urgent evaluation"
+      }
+    ],
+    "accepted_names": [
+      "Influenza",
+      "Flu",
+      "Seasonal influenza",
+      "Influenza A",
+      "Influenza B",
+      "Human influenza"
+    ],
+    "reasoning_points": [
+      "Abrupt onset of fever, chills, myalgias, and fatigue over a few hours",
+      "Prominent systemic symptoms with dry cough, sore throat, and nasal congestion",
+      "Sick contact or community circulation of influenza during fall or winter",
+      "Absence of gradual-onset, predominantly nasal symptoms typical of a common cold",
+      "No focal lung findings, hypoxia, or purulent sputum to suggest bacterial pneumonia",
+      "Rapid influenza test or molecular testing confirms influenza when obtained",
+      "Risk factors for complications (age, pregnancy, chronic disease, immunosuppression) identified to guide antiviral treatment"
+    ],
+    "difficulty": {
+      "easy": [
+        "Classic abrupt onset of fever, chills, myalgias, and cough during flu season",
+        "Clear sick contact at home, school, or work",
+        "Ill-appearing but lungs clear and no hypoxia",
+        "Rapid influenza test positive"
+      ],
+      "medium": [
+        "Older adult without fever presenting with weakness or confusion",
+        "Patient with asthma or COPD whose respiratory symptoms are worsening",
+        "Symptoms overlap with COVID-19 or another respiratory virus",
+        "Negative rapid antigen test but high clinical suspicion"
+      ],
+      "hard": [
+        "Infant with fever, poor feeding, and lethargy rather than classic cough and myalgias",
+        "Pregnant patient with severe illness and concern for complications",
+        "Immunocompromised patient with prolonged or atypical presentation",
+        "Symptoms improve then worsen with high fever and productive cough suggesting secondary bacterial pneumonia",
+        "Chest pain or dyspnea raising concern for myocarditis"
+      ]
+    }
+  }
+}

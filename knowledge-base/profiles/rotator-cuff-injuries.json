@@ -1,0 +1,981 @@
+{
+  "schema_version": "0.2",
+  "slug": "rotator-cuff-injuries",
+  "triage": {
+    "name": "Rotator Cuff Injuries",
+    "case_suitable": true,
+    "reason": "Very common shoulder complaint with a clear diagnosis reachable by history, provocative maneuvers and imaging; mimics include adhesive capsulitis and impingement.",
+    "kind": "injury",
+    "category": "musculoskeletal soft tissue injury",
+    "organ_systems": [
+      "musculoskeletal"
+    ],
+    "primary_clerkship": "familyMedicine",
+    "secondary_clerkships": [
+      "emergency",
+      "surgery"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "clinic",
+      "emergency"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:20:02Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:10:48Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:10:54Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:11:01Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:11:10Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:11:17Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'musculoskeletal ultrasound of the shoulder' was in ['initial', 'supporting', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'mr arthrography of the shoulder' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'musculoskeletal ultrasound of the shoulder' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'mr arthrography of the shoulder' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "differential adhesive-capsulitis: no profile yet",
+        "differential subacromial-impingement-syndrome: no profile yet",
+        "differential cervical-radiculopathy: no profile yet",
+        "differential glenohumeral-osteoarthritis: no profile yet",
+        "differential acromioclavicular-joint-arthritis: no profile yet",
+        "differential shoulder-dislocation: no profile yet",
+        "differential proximal-humerus-fracture: no profile yet",
+        "differential septic-arthritis: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 40,
+      "typical_max": 80,
+      "peak": "50–70",
+      "possible_min": 15,
+      "possible_max": 95
+    },
+    "sex": "either",
+    "demographics": [
+      "More common with increasing age; most cases are degenerative wear-and-tear in adults over 40",
+      "Athletes in overhead sports (baseball pitching, swimming, tennis) and manual workers who reach overhead or lift heavily are affected at younger ages",
+      "Traumatic full-thickness tears are more common in men; degenerative tears are more evenly distributed"
+    ],
+    "risk_factors": [
+      {
+        "text": "Age over 40 with cumulative shoulder use",
+        "strength": "strong"
+      },
+      {
+        "text": "Repetitive overhead activity (throwing, swimming, painting, carpentry, stocking shelves)",
+        "strength": "strong"
+      },
+      {
+        "text": "Heavy lifting or repetitive shoulder loading at work",
+        "strength": "moderate"
+      },
+      {
+        "text": "Acute fall onto an outstretched arm or sudden heavy lift",
+        "strength": "moderate"
+      },
+      {
+        "text": "Smoking",
+        "strength": "moderate"
+      },
+      {
+        "text": "Shoulder impingement or prior shoulder injury",
+        "strength": "moderate"
+      },
+      {
+        "text": "Diabetes mellitus",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Diabetes mellitus",
+      "Shoulder impingement or subacromial bursitis",
+      "Prior shoulder trauma or surgery"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Occupations or hobbies requiring repeated overhead reaching or heavy lifting",
+      "Participation in overhead or throwing sports"
+    ],
+    "exposures": [],
+    "risk_medications": [
+      "fluoroquinolones"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My shoulder hurts, especially when I lift my arm",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "I can't reach behind my back or overhead like I used to",
+        "frequency": "common"
+      },
+      {
+        "text": "My arm feels weak when I try to lift things",
+        "frequency": "common"
+      },
+      {
+        "text": "It hurts at night when I lie on that side",
+        "frequency": "common"
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual over weeks to months with no clear injury in degenerative cases; sudden after a fall, a pull, or lifting a heavy object in acute tears",
+      "duration": "Weeks to months for degenerative tendinopathy or bursitis; hours to days for an acute traumatic tear",
+      "progression": "Slowly worsening with continued activity; pain may plateau or improve with rest, while weakness and loss of motion tend to persist or progress",
+      "location": "Top and outer part of the shoulder and upper arm, over the deltoid and lateral shoulder",
+      "radiation": "May spread down the outer upper arm toward the elbow; does not go past the elbow",
+      "quality": "Dull, aching or sore at rest; sharp and catching with overhead or reaching movements",
+      "severity": "Mild to moderate at rest, moderate to severe with activity; often 4–7/10 with movement",
+      "timing": "Worse with activity and at night; may wake the patient when rolling onto the affected side",
+      "aggravating": [
+        "Lifting the arm overhead or to the side",
+        "Reaching behind the back (e.g., fastening a bra, reaching a back pocket)",
+        "Lying on the affected shoulder",
+        "Pulling or pushing with the arm",
+        "Carrying or lifting objects away from the body"
+      ],
+      "relieving": [
+        "Resting the arm",
+        "Keeping the arm at the side",
+        "Over-the-counter acetaminophen or ibuprofen",
+        "Ice or heat to the shoulder",
+        "Sleeping propped up or on the other side"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Night pain that disturbs sleep",
+          "frequency": "common"
+        },
+        {
+          "text": "Weakness lifting the arm or carrying objects",
+          "frequency": "common"
+        },
+        {
+          "text": "Clicking, catching or popping with shoulder movement",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Stiffness or difficulty with overhead reach",
+          "frequency": "common"
+        },
+        {
+          "text": "Pain referred down the outer arm",
+          "frequency": "sometimes"
+        }
+      ],
+      "pertinent_negatives": [
+        "Numbness, tingling or electric shocks down the arm or into the hand",
+        "Neck pain radiating into the arm",
+        "Severe pain and deformity after a fall (suggests dislocation or fracture)",
+        "Inability to move the shoulder at all in any direction",
+        "Fever, redness, warmth or swelling of the joint",
+        "Unexplained weight loss or night sweats",
+        "History of cancer"
+      ]
+    },
+    "ros": [
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Shoulder pain with overhead movement",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Weakness with lifting or reaching",
+            "frequency": "common"
+          },
+          {
+            "text": "Night pain when lying on the shoulder",
+            "frequency": "common"
+          },
+          {
+            "text": "Clicking or catching in the shoulder",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Joint swelling or redness",
+          "Locking or giving way of the shoulder",
+          "Pain in other joints"
+        ],
+        "argues_against": [
+          "Inflammatory arthritis",
+          "Acute septic arthritis"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [],
+        "negatives": [
+          "Numbness or tingling in the arm or hand",
+          "Weakness in the hand or grip",
+          "Neck pain radiating into the arm"
+        ],
+        "argues_against": [
+          "Cervical radiculopathy",
+          "Peripheral nerve entrapment"
+        ]
+      },
+      {
+        "system": "constitutional",
+        "positives": [],
+        "negatives": [
+          "Fever",
+          "Chills",
+          "Unintentional weight loss",
+          "Night sweats"
+        ],
+        "argues_against": [
+          "Infection",
+          "Malignancy"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [],
+        "negatives": [
+          "Redness or warmth over the shoulder",
+          "Rash"
+        ],
+        "argues_against": [
+          "Cellulitis",
+          "Septic arthritis"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "older_adults",
+        "how_it_differs": "Degenerative full-thickness tears are very common and may cause little or no pain; patients often present with weakness, difficulty lifting the arm, or a painless loss of overhead reach rather than severe pain.",
+        "missing_classic_features": [
+          "Significant pain",
+          "Clear history of injury"
+        ]
+      },
+      {
+        "population": "children",
+        "how_it_differs": "Rotator cuff tears are rare in children; shoulder pain in this age group is more often from overuse apophysitis, Little League shoulder, or instability, and the history usually centers on throwing or overhead sport.",
+        "missing_classic_features": [
+          "Degenerative wear-and-tear history",
+          "Night pain"
+        ]
+      },
+      {
+        "population": "diabetes",
+        "how_it_differs": "Tendon healing is impaired and symptoms may be more persistent; frozen shoulder (adhesive capsulitis) is more common and can mask or accompany a cuff problem with prominent stiffness.",
+        "missing_classic_features": [
+          "Rapid response to conservative care"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Comfortable at rest, holds the arm at the side, moves the shoulder without obvious distress",
+      "moderate": "Guards the affected arm, winces when lifting the arm overhead or reaching behind the back",
+      "severe": "Holds the arm protectively against the body, avoids active shoulder movement, distressed with passive motion",
+      "critical": "Not applicable to this condition; a toxic or systemically unwell appearance should prompt evaluation for another cause"
+    },
+    "findings": [
+      {
+        "id": "painful-arc",
+        "region": "musculoskeletal",
+        "maneuver": "Ask the patient to actively abduct the arm slowly from the side to overhead while watching for the point of pain",
+        "finding": "Pain in the mid-range of abduction (roughly 60–120 degrees) that eases as the arm approaches overhead",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "supraspinatus-weakness",
+        "region": "musculoskeletal",
+        "maneuver": "Test resisted abduction with the arm at the side or in the scapular plane (empty can / Jobe test)",
+        "finding": "Weakness and pain with resisted abduction, worse than the opposite side",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "external-rotation-weakness",
+        "region": "musculoskeletal",
+        "maneuver": "Test resisted external rotation with the elbow at the side",
+        "finding": "Weakness with resisted external rotation, suggesting infraspinatus or teres minor involvement",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "drop-arm-sign",
+        "region": "musculoskeletal",
+        "maneuver": "Passively abduct the arm to 90 degrees and ask the patient to lower it slowly",
+        "finding": "The arm drops suddenly or the patient cannot lower it smoothly, indicating a large or full-thickness tear",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "important"
+      },
+      {
+        "id": "positive-neer",
+        "region": "musculoskeletal",
+        "maneuver": "Stabilize the scapula and passively flex the arm forward overhead (Neer impingement sign)",
+        "finding": "Pain reproduced in the shoulder with forward flexion",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "positive-hawkins",
+        "region": "musculoskeletal",
+        "maneuver": "Flex the shoulder to 90 degrees, flex the elbow, and internally rotate the arm (Hawkins–Kennedy test)",
+        "finding": "Pain reproduced in the shoulder with internal rotation",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "painful-lift-off",
+        "region": "musculoskeletal",
+        "maneuver": "Ask the patient to place the hand behind the back and lift it away from the lumbar spine (lift-off / Gerber test)",
+        "finding": "Inability to lift the hand off the back or marked weakness, suggesting subscapularis involvement",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "night-pain-reproduction",
+        "region": "musculoskeletal",
+        "maneuver": "Ask the patient to lie on the affected side or press the shoulder into the examining table",
+        "finding": "Reproduction of the characteristic night pain",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-passive-rom",
+        "region": "musculoskeletal",
+        "maneuver": "Passively move the shoulder through flexion, abduction, and rotation",
+        "finding": "Passive range of motion is preserved or near-normal (unlike adhesive capsulitis, where passive motion is also restricted)",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-neck-pain",
+        "region": "neck",
+        "maneuver": "Palpate the cervical paraspinals and perform Spurling maneuver",
+        "finding": "No neck tenderness and no reproduction of arm pain with neck extension and rotation",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "normal-neuro-vascular",
+        "region": "neuro",
+        "maneuver": "Test sensation, grip strength, and radial pulse in the affected arm",
+        "finding": "Intact sensation, normal grip strength, and palpable distal pulses",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-effusion-redness",
+        "region": "musculoskeletal",
+        "maneuver": "Inspect and palpate the shoulder joint for swelling, warmth, or erythema",
+        "finding": "No joint effusion, warmth, or erythema",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "no-deformity",
+        "region": "musculoskeletal",
+        "maneuver": "Inspect the shoulder contour and compare with the opposite side",
+        "finding": "No obvious deformity or squaring of the shoulder (which would suggest dislocation or fracture)",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      }
+    ]
+  },
+  "vitals": {},
+  "labs": [],
+  "imaging": [
+    {
+      "study": "Shoulder x-ray (anteroposterior and scapular Y or axillary views)",
+      "modality": "xray",
+      "preferred_when": "First-line imaging for any shoulder pain; rules out fracture, dislocation, and arthritis",
+      "findings": [
+        {
+          "text": "Normal bony alignment and joint spaces; no fracture or dislocation",
+          "frequency": "common"
+        },
+        {
+          "text": "Acromiohumeral interval narrowed to less than 7 mm, suggesting a chronic large or full-thickness tear",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Subacromial spur or acromial osteophyte",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Superior migration of the humeral head",
+          "frequency": "rare"
+        },
+        {
+          "text": "Glenohumeral osteoarthritis or calcific tendinitis",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "MRI of the shoulder without contrast",
+      "modality": "mri",
+      "preferred_when": "Suspected full-thickness tear, failed conservative care, or preoperative planning",
+      "findings": [
+        {
+          "text": "Tendon thickening, increased intrasubstance signal, or partial-thickness tear of the supraspinatus",
+          "frequency": "common"
+        },
+        {
+          "text": "Full-thickness tendon defect with fluid signal extending through the tendon",
+          "frequency": "common"
+        },
+        {
+          "text": "Tendon retraction and muscle atrophy or fatty infiltration in chronic tears",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Subacromial-subdeltoid bursitis with fluid in the bursa",
+          "frequency": "common"
+        },
+        {
+          "text": "Subscapularis or infraspinatus involvement",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Normal rotator cuff (no tear)",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Musculoskeletal ultrasound of the shoulder",
+      "modality": "ultrasound",
+      "preferred_when": "Office-based evaluation of a suspected tear; avoids radiation and is cheaper than MRI",
+      "findings": [
+        {
+          "text": "Hypoechoic or anechoic tendon defect consistent with a partial- or full-thickness tear",
+          "frequency": "common"
+        },
+        {
+          "text": "Tendon thinning, heterogeneity, or calcification suggesting tendinopathy",
+          "frequency": "common"
+        },
+        {
+          "text": "Fluid distending the subacromial-subdeltoid bursa",
+          "frequency": "common"
+        },
+        {
+          "text": "Dynamic impingement of the tendon under the acromion with abduction",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "MR arthrography of the shoulder",
+      "modality": "mri",
+      "preferred_when": "Suspected partial-thickness articular-sided tear or labral injury when standard MRI is equivocal",
+      "findings": [
+        {
+          "text": "Contrast extending into the articular surface of the tendon, confirming a partial-thickness tear",
+          "frequency": "common"
+        },
+        {
+          "text": "Labral tear or contrast extravasation",
+          "frequency": "sometimes"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "Shoulder x-ray (anteroposterior and scapular Y or axillary views)",
+        "why": "First-line imaging to exclude fracture, dislocation, and glenohumeral arthritis and to look for chronic tear signs"
+      },
+      {
+        "test": "Musculoskeletal ultrasound of the shoulder",
+        "why": "Office-based, low-cost test that can confirm a full-thickness tear",
+        "only_if": "a full-thickness tear is suspected and MRI is not immediately available"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "MRI of the shoulder without contrast",
+        "why": "Most accurate noninvasive test for tear size, retraction, and muscle quality; guides surgery"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "MR arthrography of the shoulder",
+        "why": "Detects partial-thickness articular-sided tears and labral injury",
+        "only_if": "standard MRI is equivocal and surgery is being considered"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "cbc",
+        "why": "No role in a mechanical shoulder problem unless infection or systemic illness is suspected"
+      },
+      {
+        "test": "crp",
+        "why": "Not needed for routine rotator cuff injury; reserved for suspected infection or inflammatory arthritis"
+      },
+      {
+        "test": "esr",
+        "why": "Not needed for routine rotator cuff injury; reserved for suspected infection or inflammatory arthritis"
+      },
+      {
+        "test": "Musculoskeletal ultrasound of the shoulder",
+        "why": "Not needed when MRI is already planned and available"
+      },
+      {
+        "test": "MR arthrography of the shoulder",
+        "why": "Invasive and unnecessary when standard MRI answers the question"
+      }
+    ],
+    "decision_points": [
+      "Order shoulder x-ray first in any acute shoulder injury to exclude fracture or dislocation before attributing pain to the cuff",
+      "Choose ultrasound when a tear is suspected and MRI is unavailable or contraindicated; choose MRI when surgery is being considered or the tear extent must be defined",
+      "Do not image a mild, atraumatic shoulder pain that improves with conservative care unless symptoms persist beyond 6 to 12 weeks",
+      "Consider adhesive capsulitis when passive range of motion is also restricted, and cervical radiculopathy when neck pain or neurologic symptoms are present"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Adhesive capsulitis (frozen shoulder)",
+      "slug": "adhesive-capsulitis",
+      "why_considered": "Shoulder pain with progressive loss of motion, worse at night, in the same middle-aged population",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Gradual onset with progressive global stiffness rather than activity-related pain",
+          "Difficulty with both active and passive movement in all directions",
+          "More common in diabetes and after immobilization"
+        ],
+        "exam": [
+          "Passive range of motion is also markedly restricted, especially external rotation",
+          "Global loss of motion rather than weakness in a specific tendon"
+        ],
+        "imaging": [
+          "Normal rotator cuff on MRI or ultrasound",
+          "Thickened coracohumeral ligament and axillary recess on MRI"
+        ]
+      }
+    },
+    {
+      "name": "Subacromial impingement syndrome",
+      "slug": "subacromial-impingement-syndrome",
+      "why_considered": "Overhead shoulder pain with a painful arc, very common in the same repetitive-use population",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Pain with overhead activity but no significant weakness or night pain",
+          "Symptoms improve with activity modification and therapy"
+        ],
+        "exam": [
+          "Positive Neer and Hawkins tests",
+          "Strength is preserved; no drop-arm sign"
+        ],
+        "imaging": [
+          "No tendon defect on ultrasound or MRI",
+          "Subacromial bursal fluid or acromial spur may be present"
+        ]
+      }
+    },
+    {
+      "name": "Cervical radiculopathy",
+      "slug": "cervical-radiculopathy",
+      "why_considered": "Shoulder and arm pain that can mimic a cuff problem, especially with radiation down the arm",
+      "must_not_miss": true,
+      "trigger": "Neck pain or numbness, tingling, or weakness in a dermatomal pattern",
+      "discriminators": {
+        "history": [
+          "Neck pain radiating into the arm in a dermatomal distribution",
+          "Numbness, tingling, or electric shocks in the hand",
+          "Pain worsened by neck extension or rotation"
+        ],
+        "exam": [
+          "Positive Spurling maneuver reproduces arm pain",
+          "Dermatomal sensory loss, diminished reflex, or myotomal weakness",
+          "Shoulder provocative tests are negative"
+        ],
+        "imaging": [
+          "Cervical spine MRI showing nerve root compression",
+          "Normal rotator cuff on shoulder imaging"
+        ]
+      }
+    },
+    {
+      "name": "Glenohumeral osteoarthritis",
+      "slug": "glenohumeral-osteoarthritis",
+      "why_considered": "Chronic shoulder pain and stiffness in older adults",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Deep, aching pain with progressive stiffness over years",
+          "Pain with all movements, not just overhead"
+        ],
+        "exam": [
+          "Crepitus with passive motion",
+          "Restricted passive range of motion"
+        ],
+        "imaging": [
+          "Joint space narrowing, osteophytes, and subchondral sclerosis on x-ray"
+        ]
+      }
+    },
+    {
+      "name": "Acromioclavicular joint arthritis",
+      "slug": "acromioclavicular-joint-arthritis",
+      "why_considered": "Top-of-shoulder pain that can be confused with cuff pain",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Pain localized to the top of the shoulder, worse with cross-body reaching",
+          "History of prior AC joint injury"
+        ],
+        "exam": [
+          "Tenderness directly over the AC joint",
+          "Positive cross-body adduction test"
+        ],
+        "imaging": [
+          "AC joint space narrowing and osteophytes on x-ray"
+        ]
+      }
+    },
+    {
+      "name": "Acute shoulder dislocation",
+      "slug": "shoulder-dislocation",
+      "why_considered": "Sudden shoulder pain and weakness after trauma",
+      "must_not_miss": true,
+      "trigger": "Obvious deformity, severe pain, or inability to move the shoulder after a fall",
+      "discriminators": {
+        "history": [
+          "Sudden severe pain after a fall or injury",
+          "Inability to move the shoulder at all"
+        ],
+        "exam": [
+          "Squaring of the shoulder or palpable humeral head anteriorly",
+          "Marked restriction of all active and passive motion"
+        ],
+        "imaging": [
+          "Humeral head displaced from the glenoid on x-ray"
+        ]
+      }
+    },
+    {
+      "name": "Proximal humerus fracture",
+      "slug": "proximal-humerus-fracture",
+      "why_considered": "Acute shoulder pain and weakness after a fall, especially in older adults",
+      "must_not_miss": true,
+      "trigger": "Severe pain, swelling, ecchymosis, or deformity after a fall",
+      "discriminators": {
+        "history": [
+          "Acute severe pain immediately after a fall",
+          "Inability to lift the arm"
+        ],
+        "exam": [
+          "Swelling, ecchymosis, and focal tenderness over the proximal humerus",
+          "Pain with any movement"
+        ],
+        "imaging": [
+          "Fracture line visible on shoulder x-ray"
+        ]
+      }
+    },
+    {
+      "name": "Septic arthritis of the shoulder",
+      "slug": "septic-arthritis",
+      "why_considered": "Shoulder pain with systemic symptoms, though rare",
+      "must_not_miss": true,
+      "trigger": "Fever, chills, or a hot swollen joint",
+      "discriminators": {
+        "history": [
+          "Fever, chills, and systemic illness",
+          "Recent infection, injection, or immunosuppression"
+        ],
+        "exam": [
+          "Warm, swollen, erythematous joint",
+          "Severe pain with any movement"
+        ],
+        "labs": [
+          "Elevated WBC, CRP, and ESR",
+          "Positive synovial fluid culture"
+        ],
+        "imaging": [
+          "Joint effusion on ultrasound or MRI"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Tendinopathy or bursitis with mild pain only with overhead activity, no weakness, full active range of motion, and no night pain",
+      "moderate": "Persistent pain with activity and at night, painful arc, mild weakness with resisted testing, and difficulty with overhead reach but no drop-arm sign",
+      "severe": "Large or full-thickness tear with marked weakness, positive drop-arm sign, significant night pain, and inability to lift the arm overhead or reach behind the back"
+    },
+    "red_flags": [
+      {
+        "finding": "Inability to move the shoulder in any direction after trauma",
+        "meaning": "Possible dislocation or fracture; obtain x-ray before attributing to the cuff"
+      },
+      {
+        "finding": "Obvious deformity or squaring of the shoulder",
+        "meaning": "Dislocation until proven otherwise"
+      },
+      {
+        "finding": "Fever, chills, or a hot swollen joint",
+        "meaning": "Septic arthritis; needs urgent aspiration and antibiotics"
+      },
+      {
+        "finding": "Numbness, tingling, or weakness in a dermatomal pattern",
+        "meaning": "Cervical radiculopathy or nerve injury, not a simple cuff problem"
+      },
+      {
+        "finding": "Unexplained weight loss, night sweats, or history of cancer",
+        "meaning": "Possible metastatic disease or infection"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Progressive tear enlargement",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Increasing weakness over months",
+          "New drop-arm sign",
+          "Difficulty with overhead reach"
+        ]
+      },
+      {
+        "name": "Chronic shoulder stiffness or adhesive capsulitis",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Global loss of passive range of motion",
+          "Pain with all movements"
+        ]
+      },
+      {
+        "name": "Rotator cuff arthropathy",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Chronic large tear with superior humeral head migration",
+          "Glenohumeral joint destruction on x-ray"
+        ]
+      },
+      {
+        "name": "Postoperative infection or stiffness after repair",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Fever, wound drainage, or increasing pain after surgery",
+          "Loss of motion after repair"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "older_adults",
+        "differences": "Degenerative full-thickness tears are very common and may cause little or no pain; patients often present with weakness or painless loss of overhead reach rather than severe pain."
+      },
+      {
+        "population": "children",
+        "differences": "Rotator cuff tears are rare; shoulder pain is more often from overuse apophysitis, Little League shoulder, or instability, and the history usually centers on throwing or overhead sport."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Tendon healing is impaired and symptoms may be more persistent; frozen shoulder is more common and can mask or accompany a cuff problem with prominent stiffness."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "When did the shoulder pain start, and was there an injury or a specific event?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Gradual onset over weeks to months suggests degenerative tendinopathy or bursitis; sudden onset after a fall onto an outstretched arm or a heavy lift suggests an acute tear"
+      },
+      {
+        "question": "Where exactly is the pain, and does it spread anywhere?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Top and outer shoulder and upper arm, radiating down the outer arm but not past the elbow; pain past the elbow or into the hand suggests a neck or nerve problem"
+      },
+      {
+        "question": "What movements bring the pain on?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Overhead reaching, lifting the arm to the side or front, and reaching behind the back (fastening a bra, back pocket); this is the classic activity-related pattern"
+      },
+      {
+        "question": "Does it hurt at night, or when you lie on that shoulder?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Night pain that wakes the patient or pain when rolling onto the affected side supports a rotator cuff problem"
+      },
+      {
+        "question": "Have you noticed weakness in the arm, or does it feel like it might give way?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Weakness lifting the arm or carrying objects suggests a tear rather than simple tendinitis or bursitis"
+      },
+      {
+        "question": "Do you hear or feel clicking, catching, or popping when you move the shoulder?",
+        "category": "associated",
+        "importance": "optional",
+        "looking_for": "Clicking or catching with movement is sometimes reported with cuff tears"
+      },
+      {
+        "question": "Do you have numbness, tingling, or electric shocks in the arm or hand?",
+        "category": "ros",
+        "importance": "essential",
+        "looking_for": "Absent in a simple cuff problem; present symptoms point to cervical radiculopathy or a nerve injury"
+      },
+      {
+        "question": "Do you have neck pain that shoots into the arm?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Absent; neck pain radiating into the arm suggests cervical radiculopathy instead"
+      },
+      {
+        "question": "What do you do for work or sport — any repeated overhead reaching or heavy lifting?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Occupations like carpentry, construction, or painting, and overhead sports such as swimming, tennis, or baseball pitching, raise the likelihood of a cuff injury"
+      },
+      {
+        "question": "Have you had a shoulder injury, shoulder surgery, or been told you have impingement or bursitis before?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Prior shoulder injury or impingement supports a cuff problem; prior surgery changes the workup"
+      },
+      {
+        "question": "Do you have diabetes or any other long-term medical conditions?",
+        "category": "pmh",
+        "importance": "optional",
+        "looking_for": "Diabetes is associated with more persistent tendon symptoms and a higher chance of frozen shoulder"
+      },
+      {
+        "question": "Have you taken any antibiotics in the last few months, especially for an infection?",
+        "category": "medications",
+        "importance": "optional",
+        "looking_for": "Fluoroquinolone use is a risk factor for tendon injury"
+      },
+      {
+        "question": "Have you had a fever, chills, or unintentional weight loss?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Absent; fever or a hot swollen joint suggests septic arthritis, and weight loss or night sweats raises concern for malignancy"
+      },
+      {
+        "question": "After any injury, could you move the shoulder at all, and is there any deformity?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Inability to move the shoulder in any direction or an obvious deformity suggests dislocation or fracture and needs x-ray first"
+      }
+    ],
+    "accepted_names": [
+      "Rotator cuff injury",
+      "Rotator cuff tear",
+      "Rotator cuff tendinitis",
+      "Rotator cuff tendinopathy",
+      "Rotator cuff bursitis",
+      "Supraspinatus tear",
+      "Rotator cuff syndrome"
+    ],
+    "reasoning_points": [
+      "Middle-aged or older adult with shoulder pain worsened by overhead reaching and reaching behind the back",
+      "Pain localized to the top and outer shoulder and upper arm, not radiating past the elbow",
+      "Night pain when lying on the affected shoulder",
+      "Weakness with lifting or reaching, suggesting tendon involvement rather than simple bursitis",
+      "Painful arc of abduction and weakness with resisted abduction or external rotation on exam",
+      "Passive range of motion preserved, which argues against adhesive capsulitis",
+      "No neck pain, numbness, or tingling, which argues against cervical radiculopathy",
+      "Shoulder x-ray excludes fracture and dislocation; ultrasound or MRI confirms a tendon tear when surgery is considered"
+    ],
+    "difficulty": {
+      "easy": [
+        "Adult over 40 with gradual shoulder pain worse with overhead activity",
+        "Night pain when lying on the affected side",
+        "Painful arc of abduction and weakness with resisted abduction",
+        "No history of trauma, no neurologic symptoms"
+      ],
+      "medium": [
+        "Acute onset after a fall onto an outstretched arm with new weakness",
+        "Older adult with painless loss of overhead reach and no clear injury",
+        "Patient with diabetes and prominent stiffness that raises concern for frozen shoulder",
+        "Overhead athlete with shoulder pain and clicking"
+      ],
+      "hard": [
+        "Older adult with minimal pain but marked weakness and a drop-arm sign",
+        "Patient with neck pain and arm tingling that mimics cervical radiculopathy",
+        "Shoulder pain after trauma with inability to move the arm, requiring fracture or dislocation to be excluded first",
+        "Chronic large tear with superior humeral head migration and features of rotator cuff arthropathy"
+      ]
+    }
+  }
+}

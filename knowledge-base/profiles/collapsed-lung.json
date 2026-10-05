@@ -1,0 +1,1416 @@
+{
+  "schema_version": "0.2",
+  "slug": "collapsed-lung",
+  "triage": {
+    "name": "Collapsed Lung",
+    "case_suitable": true,
+    "reason": "Acute presentation with dyspnea and chest pain; diagnosis reachable by exam and imaging, with important mimics.",
+    "kind": "disease",
+    "category": "pleural/airway disease",
+    "organ_systems": [
+      "respiratory"
+    ],
+    "primary_clerkship": "emergency",
+    "secondary_clerkships": [
+      "internalMedicine",
+      "surgery"
+    ],
+    "commonness": "common",
+    "settings": [
+      "emergency",
+      "inpatient",
+      "icu"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:16:40Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:41:15Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:41:21Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:41:32Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:41:45Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:41:51Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'chest x-ray, posteroanterior and lateral' was in ['initial', 'confirmatory'], kept ['initial']",
+        "auto-repaired: workup: 'cbc' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'bmp' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'abg' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'ct pulmonary angiogram' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'bnp' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'd_dimer' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'cbc' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'bmp' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'abg' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'ct pulmonary angiogram' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'bnp' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'd_dimer' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "differential pulmonary-embolism: no profile yet",
+        "differential acute-coronary-syndrome: no profile yet",
+        "differential pleural-effusion: no profile yet",
+        "differential atelectasis: no profile yet",
+        "differential pneumothorax: no profile yet",
+        "differential tension-pneumothorax: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 15,
+      "typical_max": 75,
+      "peak": "bimodal: 20s (spontaneous pneumothorax) and 60s (secondary to lung disease)",
+      "possible_min": 0,
+      "possible_max": 100
+    },
+    "sex": "male_predominant",
+    "demographics": [
+      "Spontaneous pneumothorax is more common in males, especially tall, thin young men",
+      "Secondary pneumothorax is more common in older adults with underlying lung disease",
+      "Atelectasis is common in hospitalized or postoperative patients of any age"
+    ],
+    "risk_factors": [
+      {
+        "text": "Smoking",
+        "strength": "strong"
+      },
+      {
+        "text": "Tall, thin body habitus in a young male",
+        "strength": "moderate"
+      },
+      {
+        "text": "Underlying lung disease such as COPD, asthma, cystic fibrosis, or interstitial lung disease",
+        "strength": "strong"
+      },
+      {
+        "text": "Recent chest trauma or rib fracture",
+        "strength": "strong"
+      },
+      {
+        "text": "Recent chest or abdominal surgery",
+        "strength": "moderate"
+      },
+      {
+        "text": "Mechanical ventilation",
+        "strength": "moderate"
+      },
+      {
+        "text": "Prolonged bed rest or immobility",
+        "strength": "moderate"
+      },
+      {
+        "text": "Prior pneumothorax",
+        "strength": "strong"
+      },
+      {
+        "text": "Marfan syndrome or other connective tissue disease",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "COPD",
+      "Asthma",
+      "Cystic fibrosis",
+      "Interstitial lung disease",
+      "Lung cancer",
+      "Pneumonia",
+      "Marfan syndrome",
+      "Recent surgery or trauma"
+    ],
+    "family_history": [
+      "Spontaneous pneumothorax in a family member"
+    ],
+    "social_history": [
+      "Cigarette smoking",
+      "Recent air travel or scuba diving (for pneumothorax)"
+    ],
+    "exposures": [
+      "Chest trauma",
+      "Mechanical ventilation",
+      "Recent surgery"
+    ],
+    "risk_medications": []
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I suddenly felt a sharp pain in my chest",
+        "frequency": "common"
+      },
+      {
+        "text": "I'm short of breath",
+        "frequency": "common"
+      },
+      {
+        "text": "It hurts when I take a deep breath",
+        "frequency": "common"
+      }
+    ],
+    "hpi": {
+      "onset": "Sudden for pneumothorax; gradual or insidious for atelectasis",
+      "duration": "Minutes to hours for pneumothorax; hours to days for atelectasis",
+      "progression": "Pneumothorax: pain and breathlessness peak within minutes to hours and may plateau. Atelectasis: symptoms develop over hours to days and worsen as more lung collapses.",
+      "location": "One side of the chest, often the same side as the collapsed lung",
+      "radiation": "May radiate to the shoulder or back on the affected side",
+      "quality": "Sharp, stabbing, or pleuritic",
+      "severity": "Moderate to severe; 6–9/10 for pneumothorax, milder for atelectasis",
+      "timing": "Constant, but worse with breathing",
+      "aggravating": [
+        "Deep breathing",
+        "Coughing",
+        "Movement"
+      ],
+      "relieving": [
+        "Sitting upright",
+        "Shallow breathing",
+        "Pain medication"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Shortness of breath",
+          "frequency": "common"
+        },
+        {
+          "text": "Rapid heart rate",
+          "frequency": "common"
+        },
+        {
+          "text": "Cough",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Feeling of tightness in the chest",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Fever (if due to pneumonia or atelectasis)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Cyanosis or bluish lips (severe cases)",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Chest pain that is pressure-like and radiates to the jaw or arm",
+        "Pain relieved by nitroglycerin",
+        "Recent long travel or immobilization",
+        "Calf pain or swelling",
+        "Fever with productive cough",
+        "Weight loss or night sweats"
+      ]
+    },
+    "ros": [
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "Shortness of breath",
+            "frequency": "common"
+          },
+          {
+            "text": "Pleuritic chest pain",
+            "frequency": "common"
+          },
+          {
+            "text": "Cough",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Hemoptysis",
+          "Sputum production",
+          "Wheezing"
+        ],
+        "argues_against": [
+          "Productive cough with fever suggests pneumonia rather than primary pneumothorax"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [
+          {
+            "text": "Rapid heart rate",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Chest pressure radiating to jaw or arm",
+          "Palpitations",
+          "Leg swelling"
+        ],
+        "argues_against": [
+          "Pressure-like chest pain radiating to jaw suggests acute coronary syndrome"
+        ]
+      },
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Feeling unwell",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Weight loss",
+          "Night sweats",
+          "Chills"
+        ],
+        "argues_against": [
+          "Weight loss and night sweats suggest malignancy or tuberculosis"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Children may have vague chest pain, abdominal pain, or irritability; infants may present with tachypnea and grunting.",
+        "missing_classic_features": [
+          "Clear pleuritic chest pain",
+          "Ability to localize pain"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "Older adults may have milder pain and more breathlessness, and may not mount a fever or tachycardia.",
+        "missing_classic_features": [
+          "Severe pain",
+          "Fever",
+          "Tachycardia"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Pregnancy can mask or alter symptoms; dyspnea is common, and chest pain may be attributed to other causes.",
+        "missing_classic_features": [
+          "Sudden onset",
+          "Severe pain"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Comfortable at rest, speaking in full sentences, no distress",
+      "moderate": "Mild distress, prefers sitting upright, speaks in full sentences but pauses with deep breaths",
+      "severe": "Obvious respiratory distress, sitting upright, using accessory muscles, speaks in short phrases",
+      "critical": "Toxic-appearing, agitated or lethargic, diaphoretic, unable to speak in full sentences, may be hypotensive"
+    },
+    "findings": [
+      {
+        "id": "reduced-breath-sounds",
+        "region": "lung",
+        "maneuver": "Auscultate both lung fields at the apices, mid-lung, and bases while comparing sides",
+        "finding": "Decreased or absent breath sounds on the affected side",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "ipsilateral-tenderness",
+        "region": "lung",
+        "maneuver": "Palpate the chest wall over the affected side",
+        "finding": "Chest wall tenderness, especially after trauma",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "hyperresonance",
+        "region": "lung",
+        "maneuver": "Percuss the chest on both sides from apex to base",
+        "finding": "Hyperresonance or tympany over the affected side (pneumothorax)",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "dullness",
+        "region": "lung",
+        "maneuver": "Percuss the chest on both sides from apex to base",
+        "finding": "Dullness over the affected area (atelectasis or pleural effusion)",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "tactile-fremitus-decreased",
+        "region": "lung",
+        "maneuver": "Ask the patient to say 'ninety-nine' while palpating both sides of the chest",
+        "finding": "Decreased tactile fremitus on the affected side",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "tracheal-deviation",
+        "region": "neck",
+        "maneuver": "Palpate the trachea at the suprasternal notch and compare its position with midline",
+        "finding": "Tracheal deviation away from the affected side (tension pneumothorax) or toward the affected side (atelectasis)",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "jvd",
+        "region": "neck",
+        "maneuver": "Inspect the internal jugular veins with the patient at 30–45 degrees",
+        "finding": "Elevated jugular venous pressure (tension pneumothorax with impaired venous return)",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "subcutaneous-emphysema",
+        "region": "skin",
+        "maneuver": "Palpate the neck, supraclavicular area, and chest wall",
+        "finding": "Crepitus from subcutaneous air",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "strongly_supports",
+        "importance": "important"
+      },
+      {
+        "id": "accessory-muscle-use",
+        "region": "general",
+        "maneuver": "Observe the patient's breathing at rest",
+        "finding": "Use of accessory muscles of respiration, nasal flaring, or intercostal retractions",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "cyanosis",
+        "region": "general",
+        "maneuver": "Inspect the lips, oral mucosa, and nail beds",
+        "finding": "Central or peripheral cyanosis",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "normal-heart-sounds",
+        "region": "cardiac",
+        "maneuver": "Auscultate the heart at the apex and base",
+        "finding": "Normal S1 and S2 without murmur, rub, or gallop",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-leg-swelling",
+        "region": "extremities",
+        "maneuver": "Inspect and palpate both calves for asymmetry, swelling, or tenderness",
+        "finding": "No unilateral calf swelling or tenderness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-fever-source",
+        "region": "general",
+        "maneuver": "Assess for focal infectious signs (productive cough, consolidation, rash)",
+        "finding": "No focal signs of pneumonia or systemic infection",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 98.0,
+        "max": 99.5
+      },
+      "moderate": {
+        "min": 98.0,
+        "max": 100.4
+      },
+      "severe": {
+        "min": 98.0,
+        "max": 101.0
+      },
+      "critical": {
+        "min": 97.0,
+        "max": 102.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 70,
+        "max": 100
+      },
+      "moderate": {
+        "min": 90,
+        "max": 115
+      },
+      "severe": {
+        "min": 110,
+        "max": 135
+      },
+      "critical": {
+        "min": 120,
+        "max": 160
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 14,
+        "max": 20
+      },
+      "moderate": {
+        "min": 20,
+        "max": 26
+      },
+      "severe": {
+        "min": 24,
+        "max": 34
+      },
+      "critical": {
+        "min": 28,
+        "max": 40
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 110,
+        "max": 140
+      },
+      "moderate": {
+        "min": 100,
+        "max": 135
+      },
+      "severe": {
+        "min": 90,
+        "max": 125
+      },
+      "critical": {
+        "min": 70,
+        "max": 100
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 65,
+        "max": 85
+      },
+      "moderate": {
+        "min": 60,
+        "max": 85
+      },
+      "severe": {
+        "min": 55,
+        "max": 80
+      },
+      "critical": {
+        "min": 40,
+        "max": 65
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 94,
+        "max": 99
+      },
+      "moderate": {
+        "min": 90,
+        "max": 96
+      },
+      "severe": {
+        "min": 85,
+        "max": 93
+      },
+      "critical": {
+        "min": 70,
+        "max": 90
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "moderate": {
+          "min": 11.5,
+          "max": 16.0
+        },
+        "severe": {
+          "min": 14.0,
+          "max": 22.0
+        },
+        "critical": {
+          "min": 16.0,
+          "max": 28.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "A normal white count is common in primary spontaneous pneumothorax; leukocytosis suggests an underlying pneumonia, empyema, or other infection rather than the collapse itself."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "critical": {
+          "min": 2.2,
+          "max": 6.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Elevated only with shock or severe hypoperfusion, as in tension pneumothorax."
+    },
+    {
+      "test_id": "bnp",
+      "ranges": {
+        "moderate": {
+          "min": 150,
+          "max": 500
+        },
+        "severe": {
+          "min": 400,
+          "max": 1500
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Helps separate decompensated heart failure from a primary lung problem when acute dyspnea is the main complaint."
+    },
+    {
+      "test_id": "d_dimer",
+      "ranges": {
+        "moderate": {
+          "min": 0.6,
+          "max": 2.0
+        },
+        "severe": {
+          "min": 1.5,
+          "max": 4.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Nonspecific; may be elevated in pneumothorax and many other acute illnesses. Useful mainly to rule out pulmonary embolism when the chest x-ray is normal or the presentation is atypical."
+    },
+    {
+      "test_id": "ph",
+      "ranges": {
+        "moderate": {
+          "min": 7.3,
+          "max": 7.34
+        },
+        "severe": {
+          "min": 7.2,
+          "max": 7.29
+        },
+        "critical": {
+          "min": 7.0,
+          "max": 7.19
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Respiratory alkalosis from hyperventilation; acidosis indicates respiratory failure or a tension pneumothorax."
+    },
+    {
+      "test_id": "paco2",
+      "ranges": {
+        "moderate": {
+          "min": 28,
+          "max": 34
+        },
+        "severe": {
+          "min": 24,
+          "max": 30
+        },
+        "critical": {
+          "min": 20,
+          "max": 28
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Low from hyperventilation; a rising PaCO2 in a breathless patient signals impending respiratory failure."
+    },
+    {
+      "test_id": "pao2",
+      "ranges": {
+        "moderate": {
+          "min": 60,
+          "max": 79
+        },
+        "severe": {
+          "min": 45,
+          "max": 59
+        },
+        "critical": {
+          "min": 30,
+          "max": 44
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "sao2",
+      "ranges": {
+        "moderate": {
+          "min": 90,
+          "max": 94
+        },
+        "severe": {
+          "min": 85,
+          "max": 89
+        },
+        "critical": {
+          "min": 70,
+          "max": 84
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Negative. Required in anyone who could be pregnant before chest x-ray or CT."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rate",
+        "finding": "Sinus tachycardia",
+        "frequency": "common"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Sinus rhythm",
+        "frequency": "common"
+      },
+      {
+        "feature": "axis",
+        "finding": "Right axis deviation or rightward shift in tension pneumothorax",
+        "frequency": "rare",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "other",
+        "finding": "Low-voltage QRS complexes from increased air between the heart and the electrodes",
+        "frequency": "rare",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "t_wave",
+        "finding": "T-wave inversion in the precordial leads",
+        "frequency": "rare",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "st",
+        "finding": "ST-segment elevation or depression mimicking acute coronary syndrome",
+        "frequency": "rare",
+        "min_severity": "moderate"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Chest x-ray, posteroanterior and lateral",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Visible pleural line with no lung markings peripheral to it",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Collapsed or compressed lung on the affected side",
+          "frequency": "common"
+        },
+        {
+          "text": "Hyperlucent hemithorax on the affected side",
+          "frequency": "common"
+        },
+        {
+          "text": "Mediastinal shift away from the affected side (tension pneumothorax)",
+          "frequency": "rare"
+        },
+        {
+          "text": "Tracheal deviation away from the affected side (tension pneumothorax)",
+          "frequency": "rare"
+        },
+        {
+          "text": "Deep sulcus sign on a supine film",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Subcutaneous emphysema",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Rib fractures or other trauma",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Patchy opacity, volume loss, and displacement of fissures (atelectasis)",
+          "frequency": "common"
+        },
+        {
+          "text": "No pneumothorax seen (false negative in a small or anterior collection)",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Chest CT without contrast",
+      "modality": "ct",
+      "preferred_when": "When the chest x-ray is equivocal, or to define the size, cause, and underlying lung disease",
+      "findings": [
+        {
+          "text": "Air in the pleural space with a visible visceral pleural edge",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Underlying emphysema, bullae, or blebs",
+          "frequency": "common"
+        },
+        {
+          "text": "Lung collapse with mediastinal shift in tension pneumothorax",
+          "frequency": "rare"
+        },
+        {
+          "text": "Endobronchial obstruction or mass causing atelectasis",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Pleural effusion or empyema",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Lung ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "Bedside assessment in the emergency department or ICU; avoids radiation",
+      "findings": [
+        {
+          "text": "Absent lung sliding",
+          "frequency": "common"
+        },
+        {
+          "text": "Absent B-lines and a lung point",
+          "frequency": "common"
+        },
+        {
+          "text": "A-lines with no comet-tail artifact",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "CT pulmonary angiogram",
+      "modality": "ct",
+      "preferred_when": "When pulmonary embolism is the leading alternative diagnosis",
+      "findings": [
+        {
+          "text": "Filling defect in a pulmonary artery (pulmonary embolism)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Incidental pneumothorax or pleural air",
+          "frequency": "sometimes"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "Chest x-ray, posteroanterior and lateral",
+        "why": "First-line test to confirm pneumothorax and estimate its size"
+      },
+      {
+        "test": "Pulse oximetry",
+        "why": "Assesses oxygenation at the bedside"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before chest x-ray or CT",
+        "only_if": "the patient could be pregnant"
+      },
+      {
+        "test": "cbc",
+        "why": "Looks for infection or anemia when pneumonia, empyema, or trauma is suspected",
+        "only_if": "fever, productive cough, or suspected infection"
+      },
+      {
+        "test": "bmp",
+        "why": "Baseline electrolytes and renal function before procedures or contrast",
+        "only_if": "moderate to severe illness or planned intervention"
+      },
+      {
+        "test": "abg",
+        "why": "Assesses ventilation and acid-base status in severe dyspnea or suspected respiratory failure",
+        "only_if": "severe dyspnea, hypoxemia, or suspected respiratory failure"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Chest CT without contrast",
+        "why": "Defines the cause and extent when the chest x-ray is equivocal or underlying lung disease is suspected",
+        "only_if": "chest x-ray is equivocal or a secondary cause is suspected"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "Lung ultrasound",
+        "why": "Rapid bedside confirmation when radiography is delayed or unavailable"
+      },
+      {
+        "test": "CT pulmonary angiogram",
+        "why": "Evaluates for pulmonary embolism when that is the leading alternative",
+        "only_if": "pulmonary embolism is suspected"
+      },
+      {
+        "test": "bnp",
+        "why": "Helps distinguish heart failure from a primary lung cause of dyspnea",
+        "only_if": "heart failure is a consideration"
+      },
+      {
+        "test": "d_dimer",
+        "why": "Screens for pulmonary embolism when the chest x-ray is normal and the presentation is atypical",
+        "only_if": "pulmonary embolism is suspected and the chest x-ray is normal"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "CT pulmonary angiogram",
+        "why": "Not needed when the chest x-ray already shows pneumothorax",
+        "only_if": "pulmonary embolism is suspected"
+      },
+      {
+        "test": "bnp",
+        "why": "Not routine for a clear pneumothorax",
+        "only_if": "heart failure is a consideration"
+      },
+      {
+        "test": "d_dimer",
+        "why": "Not routine and nonspecific in pneumothorax",
+        "only_if": "pulmonary embolism is suspected and the chest x-ray is normal"
+      },
+      {
+        "test": "cbc",
+        "why": "Not needed for an uncomplicated primary spontaneous pneumothorax",
+        "only_if": "fever, productive cough, or suspected infection"
+      },
+      {
+        "test": "bmp",
+        "why": "Not needed for an uncomplicated primary spontaneous pneumothorax",
+        "only_if": "moderate to severe illness or planned intervention"
+      },
+      {
+        "test": "abg",
+        "why": "Not needed for mild disease with normal oxygen saturation",
+        "only_if": "severe dyspnea, hypoxemia, or suspected respiratory failure"
+      }
+    ],
+    "decision_points": [
+      "Pregnancy test before chest x-ray or CT in anyone who could be pregnant",
+      "Tension pneumothorax is a clinical diagnosis; decompress immediately without waiting for imaging",
+      "Chest x-ray first; CT when the film is equivocal or an underlying cause is suspected",
+      "Consider pulmonary embolism when the chest x-ray is normal and dyspnea is unexplained"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Pulmonary embolism",
+      "slug": "pulmonary-embolism",
+      "why_considered": "Sudden dyspnea and pleuritic chest pain with tachycardia and hypoxemia can look identical to a spontaneous pneumothorax.",
+      "must_not_miss": true,
+      "trigger": "Acute dyspnea with a normal chest x-ray, or with risk factors such as recent immobility, surgery, or malignancy",
+      "discriminators": {
+        "history": [
+          "Sudden onset of dyspnea, often without chest wall pain",
+          "Recent surgery, immobility, long travel, or active cancer",
+          "Prior venous thromboembolism",
+          "Hemoptysis"
+        ],
+        "exam": [
+          "Tachycardia and tachypnea with clear, symmetric breath sounds",
+          "Unilateral calf swelling or tenderness",
+          "Signs of right heart strain in massive embolism"
+        ],
+        "labs": [
+          "Elevated D-dimer",
+          "Elevated troponin or BNP with right ventricular strain",
+          "Respiratory alkalosis with hypoxemia"
+        ],
+        "imaging": [
+          "Chest x-ray is usually normal or shows nonspecific findings, not a pleural line",
+          "CT pulmonary angiogram shows a filling defect in a pulmonary artery",
+          "Right ventricular enlargement on echocardiography"
+        ],
+        "ecg": [
+          "Sinus tachycardia",
+          "S1Q3T3 pattern or right axis deviation",
+          "T-wave inversion in the right precordial leads"
+        ]
+      }
+    },
+    {
+      "name": "Acute coronary syndrome",
+      "slug": "acute-coronary-syndrome",
+      "why_considered": "Acute chest pain with dyspnea and tachycardia is a common presentation of myocardial ischemia, and pneumothorax can even mimic it on ECG.",
+      "must_not_miss": true,
+      "trigger": "Pressure-like chest pain, diaphoresis, or cardiovascular risk factors in an older adult",
+      "discriminators": {
+        "history": [
+          "Pressure-like or squeezing chest pain",
+          "Pain radiating to the jaw, neck, or left arm",
+          "Exertional onset or relief with rest",
+          "Nausea and diaphoresis"
+        ],
+        "exam": [
+          "Symmetric breath sounds",
+          "No hyperresonance or tracheal deviation",
+          "New murmur or signs of heart failure"
+        ],
+        "labs": [
+          "Elevated troponin",
+          "Elevated BNP in heart failure"
+        ],
+        "imaging": [
+          "Chest x-ray without a pleural line",
+          "Echocardiography showing regional wall motion abnormality"
+        ],
+        "ecg": [
+          "ST-segment elevation or depression",
+          "T-wave inversion in a coronary distribution",
+          "New Q waves"
+        ]
+      }
+    },
+    {
+      "name": "Pneumonia",
+      "slug": "pneumonia",
+      "why_considered": "Fever, cough, pleuritic chest pain, and focal decreased breath sounds with dullness can resemble atelectasis or a collapsed lung.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Productive cough with fever and chills",
+          "Gradual onset over days",
+          "Recent upper respiratory infection"
+        ],
+        "exam": [
+          "Fever and tachypnea",
+          "Dullness to percussion with increased tactile fremitus",
+          "Crackles or bronchial breath sounds over the affected area"
+        ],
+        "labs": [
+          "Leukocytosis with left shift",
+          "Elevated inflammatory markers",
+          "Positive sputum or blood cultures"
+        ],
+        "imaging": [
+          "Lobar or patchy consolidation on chest x-ray",
+          "Air bronchograms on CT",
+          "Pleural effusion may be present"
+        ]
+      }
+    },
+    {
+      "name": "Pleural effusion",
+      "slug": "pleural-effusion",
+      "why_considered": "Dyspnea with decreased breath sounds and dullness on the affected side can be mistaken for a collapsed lung.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Gradual onset of dyspnea",
+          "History of heart failure, malignancy, or infection",
+          "Pleuritic pain that improves when the effusion is large"
+        ],
+        "exam": [
+          "Dullness to percussion at the base",
+          "Decreased tactile fremitus",
+          "Tracheal deviation toward the affected side if massive"
+        ],
+        "labs": [
+          "BNP elevated if due to heart failure",
+          "Pleural fluid analysis shows exudate or transudate"
+        ],
+        "imaging": [
+          "Blunting of the costophrenic angle or meniscus sign on chest x-ray",
+          "Ultrasound shows anechoic fluid collection",
+          "CT shows dependent pleural fluid"
+        ]
+      }
+    },
+    {
+      "name": "Atelectasis",
+      "slug": "atelectasis",
+      "why_considered": "Partial lung collapse from mucus plugging or compression is a direct form of collapsed lung and can present with mild dyspnea and focal decreased breath sounds.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Recent surgery, prolonged bed rest, or mechanical ventilation",
+          "Gradual onset over hours to days",
+          "History of asthma, COPD, or cystic fibrosis"
+        ],
+        "exam": [
+          "Dullness to percussion over the affected area",
+          "Decreased breath sounds with crackles",
+          "Tracheal deviation toward the affected side if severe"
+        ],
+        "labs": [
+          "Usually normal unless underlying infection",
+          "Hypoxemia may be present"
+        ],
+        "imaging": [
+          "Patchy opacity with volume loss and fissure displacement on chest x-ray",
+          "CT shows collapsed lung with airway obstruction or external compression",
+          "No pleural line or air in the pleural space"
+        ]
+      }
+    },
+    {
+      "name": "Pneumothorax (spontaneous)",
+      "slug": "pneumothorax",
+      "why_considered": "This is the primary form of collapsed lung and must be distinguished from other causes of acute dyspnea and chest pain.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Sudden onset of sharp, pleuritic chest pain",
+          "Tall, thin young male or known lung disease",
+          "Prior pneumothorax"
+        ],
+        "exam": [
+          "Hyperresonance to percussion on the affected side",
+          "Decreased or absent breath sounds",
+          "Subcutaneous emphysema"
+        ],
+        "labs": [
+          "Usually normal white count",
+          "Hypoxemia may be present"
+        ],
+        "imaging": [
+          "Visible pleural line with no lung markings peripheral to it on chest x-ray",
+          "Hyperlucent hemithorax",
+          "Absent lung sliding on ultrasound"
+        ]
+      }
+    },
+    {
+      "name": "Tension pneumothorax",
+      "slug": "tension-pneumothorax",
+      "why_considered": "A life-threatening form of collapsed lung with hemodynamic compromise that must be recognized clinically without waiting for imaging.",
+      "must_not_miss": true,
+      "trigger": "Hypotension, distended neck veins, and tracheal deviation away from the affected side in a patient with acute dyspnea",
+      "discriminators": {
+        "history": [
+          "Rapidly worsening dyspnea",
+          "Recent chest trauma or positive-pressure ventilation",
+          "Chest pain followed by cardiovascular collapse"
+        ],
+        "exam": [
+          "Hypotension and tachycardia",
+          "Distended neck veins",
+          "Tracheal deviation away from the affected side",
+          "Absent breath sounds and hyperresonance on the affected side"
+        ],
+        "labs": [
+          "Elevated lactate from shock",
+          "Respiratory acidosis"
+        ],
+        "imaging": [
+          "Chest x-ray shows mediastinal shift away from the affected side and a deep sulcus",
+          "Imaging should not delay decompression"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Small pneumothorax or limited atelectasis; minimal symptoms, no distress, normal vital signs, oxygen saturation above 94% on room air",
+      "moderate": "Larger pneumothorax or significant atelectasis; dyspnea and pleuritic pain, mild tachycardia and tachypnea, oxygen saturation 90–94%",
+      "severe": "Large pneumothorax or extensive atelectasis with respiratory distress, accessory muscle use, oxygen saturation below 90%, and hemodynamic stability maintained",
+      "critical": "Tension pneumothorax or respiratory failure with hypotension, distended neck veins, tracheal deviation, altered mental status, or need for immediate decompression"
+    },
+    "red_flags": [
+      {
+        "finding": "Hypotension with distended neck veins and tracheal deviation away from the affected side",
+        "meaning": "Tension pneumothorax; decompress immediately without waiting for imaging"
+      },
+      {
+        "finding": "Oxygen saturation below 90% on room air or increasing oxygen requirement",
+        "meaning": "Severe hypoxemia; needs urgent intervention and monitoring"
+      },
+      {
+        "finding": "Altered mental status or agitation",
+        "meaning": "Cerebral hypoperfusion or severe hypoxemia; assess for tension pneumothorax and respiratory failure"
+      },
+      {
+        "finding": "Subcutaneous emphysema spreading to the neck and face",
+        "meaning": "Air tracking from the pleural space; may indicate a larger leak or barotrauma"
+      },
+      {
+        "finding": "Rapidly increasing dyspnea after chest trauma or positive-pressure ventilation",
+        "meaning": "Expanding pneumothorax; high risk of tension physiology"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Tension pneumothorax",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Hypotension",
+          "Distended neck veins",
+          "Tracheal deviation away from the affected side",
+          "Rapid clinical deterioration"
+        ]
+      },
+      {
+        "name": "Respiratory failure",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Oxygen saturation below 90%",
+          "Rising PaCO2",
+          "Accessory muscle use",
+          "Altered mental status"
+        ]
+      },
+      {
+        "name": "Recurrent pneumothorax",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Prior episode of pneumothorax",
+          "Sudden return of pleuritic chest pain and dyspnea",
+          "New pleural line on chest x-ray"
+        ]
+      },
+      {
+        "name": "Persistent air leak",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Continued air bubbling from a chest tube",
+          "Failure of the lung to re-expand",
+          "Prolonged hospital stay"
+        ]
+      },
+      {
+        "name": "Empyema",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Fever and leukocytosis",
+          "Pleural fluid with low pH and positive cultures",
+          "Persistent pleural effusion"
+        ]
+      },
+      {
+        "name": "Bronchopleural fistula",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Persistent large air leak",
+          "Failure of lung expansion",
+          "History of necrotizing pneumonia or surgery"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "May present with vague chest or abdominal pain, irritability, or tachypnea without localizing findings; infants may have grunting and poor feeding. Neonatal pneumothorax can occur spontaneously or with respiratory distress syndrome."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Often have underlying COPD or interstitial lung disease; symptoms may be milder but the risk of respiratory failure and death is higher. A secondary pneumothorax in an older adult is more dangerous than a primary spontaneous one in a young person."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Dyspnea is common in pregnancy and may delay diagnosis. Chest x-ray with abdominal shielding is safe when indicated; treatment principles are similar but coordination with obstetrics is important."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Higher risk of infectious causes such as Pneumocystis pneumonia leading to pneumothorax; consider atypical infections and malignancy in the differential."
+      },
+      {
+        "population": "obesity",
+        "differences": "May have reduced baseline lung volumes and oxygen reserve, so a smaller pneumothorax can cause more significant hypoxemia; physical exam findings may be harder to elicit."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "When did the pain or shortness of breath start, and how fast did it come on?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Sudden onset over minutes to hours suggests pneumothorax; gradual onset over hours to days suggests atelectasis"
+      },
+      {
+        "question": "Where is the pain, and does it radiate anywhere?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "One-sided sharp chest pain that may radiate to the shoulder or back on the affected side"
+      },
+      {
+        "question": "What makes the pain worse?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Worse with deep breathing, coughing, or movement (pleuritic)"
+      },
+      {
+        "question": "Are you more short of breath than usual, and is it getting worse?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Progressive dyspnea; rapidly worsening breathlessness raises concern for tension pneumothorax"
+      },
+      {
+        "question": "Have you had a collapsed lung or pneumothorax before?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Prior pneumothorax strongly increases the likelihood of recurrence"
+      },
+      {
+        "question": "Do you have any lung disease such as COPD, asthma, cystic fibrosis, or interstitial lung disease?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Underlying lung disease points to secondary pneumothorax and a more dangerous course"
+      },
+      {
+        "question": "Have you had any recent chest injury, chest or abdominal surgery, or been on a breathing machine?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Trauma, recent surgery, or mechanical ventilation are common causes of a collapsed lung"
+      },
+      {
+        "question": "Do you smoke, or have you ever smoked?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Smoking is a strong risk factor for spontaneous pneumothorax"
+      },
+      {
+        "question": "Have you recently flown or been scuba diving?",
+        "category": "social",
+        "importance": "optional",
+        "looking_for": "Pressure changes can precipitate pneumothorax"
+      },
+      {
+        "question": "Do you have a cough, fever, or are you coughing up sputum or blood?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Productive cough and fever suggest pneumonia or atelectasis rather than primary pneumothorax"
+      },
+      {
+        "question": "Have you had any weight loss, night sweats, or been around anyone with tuberculosis?",
+        "category": "ros",
+        "importance": "optional",
+        "looking_for": "Constitutional symptoms raise concern for malignancy or tuberculosis"
+      },
+      {
+        "question": "Could you be pregnant? When was your last period?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Must be excluded before chest x-ray or CT in anyone who could be pregnant"
+      },
+      {
+        "question": "Does anyone in your family have a history of collapsed lung or pneumothorax?",
+        "category": "family",
+        "importance": "optional",
+        "looking_for": "Family history of spontaneous pneumothorax or connective tissue disease"
+      }
+    ],
+    "accepted_names": [
+      "Collapsed lung",
+      "Pneumothorax",
+      "Spontaneous pneumothorax",
+      "Tension pneumothorax",
+      "Atelectasis",
+      "Pulmonary atelectasis"
+    ],
+    "reasoning_points": [
+      "Sudden onset of sharp, one-sided pleuritic chest pain with dyspnea",
+      "Risk factors such as smoking, tall thin body habitus, underlying lung disease, recent trauma, surgery, or mechanical ventilation",
+      "Decreased or absent breath sounds and hyperresonance to percussion on the affected side",
+      "Tachycardia and tachypnea with hypoxemia on pulse oximetry",
+      "Chest x-ray showing a visible pleural line with no lung markings peripheral to it, or patchy opacity with volume loss for atelectasis",
+      "Tension pneumothorax considered and excluded when hypotension, distended neck veins, or tracheal deviation are present",
+      "Pregnancy excluded before imaging when applicable",
+      "Alternative diagnoses such as pulmonary embolism, acute coronary syndrome, and pneumonia considered and addressed"
+    ],
+    "difficulty": {
+      "easy": [
+        "Tall, thin young male smoker with sudden sharp one-sided chest pain and dyspnea",
+        "Decreased breath sounds and hyperresonance on the affected side",
+        "Chest x-ray clearly shows a pleural line with absent lung markings"
+      ],
+      "medium": [
+        "Older adult with COPD and milder pain but significant breathlessness",
+        "Small pneumothorax with subtle exam findings and a less obvious pleural line on chest x-ray",
+        "Postoperative patient with gradual dyspnea and focal decreased breath sounds due to atelectasis",
+        "Woman of reproductive age with chest pain requiring pregnancy testing before imaging"
+      ],
+      "hard": [
+        "Tension pneumothorax with hypotension and distended neck veins requiring immediate decompression before imaging",
+        "Patient on mechanical ventilation with sudden desaturation and rising airway pressures",
+        "Chest x-ray equivocal or normal in a small anterior pneumothorax, requiring CT or ultrasound",
+        "Pneumothorax mimicking acute coronary syndrome on ECG with ST changes",
+        "Child or infant with vague chest or abdominal pain, irritability, and tachypnea without localizing findings"
+      ]
+    }
+  }
+}

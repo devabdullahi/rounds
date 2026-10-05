@@ -1,0 +1,1718 @@
+{
+  "schema_version": "0.2",
+  "slug": "colorectal-cancer",
+  "triage": {
+    "name": "Colorectal Cancer",
+    "case_suitable": true,
+    "reason": "Common malignancy with clear presentation of bleeding, weight loss, and anemia; diagnosis reachable by history, exam, and colonoscopy.",
+    "kind": "disease",
+    "category": "malignancy",
+    "organ_systems": [
+      "gastrointestinal"
+    ],
+    "primary_clerkship": "surgery",
+    "secondary_clerkships": [
+      "internalMedicine",
+      "familyMedicine",
+      "emergency"
+    ],
+    "commonness": "common",
+    "settings": [
+      "inpatient",
+      "clinic",
+      "emergency"
+    ],
+    "is_cancer": true
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:16:40Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:43:10Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:43:16Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:43:29Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:43:45Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:43:51Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'colonoscopy' was in ['initial', 'confirmatory'], kept ['initial']",
+        "differential diverticular-disease: no profile yet",
+        "differential ulcerative-colitis: no profile yet",
+        "differential ischemic-colitis: no profile yet",
+        "differential infectious-colitis: no profile yet",
+        "differential irritable-bowel-syndrome: no profile yet",
+        "differential small-bowel-obstruction: no profile yet",
+        "differential colonic-lymphoma: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 45,
+      "typical_max": 85,
+      "peak": "60–75",
+      "possible_min": 20,
+      "possible_max": 100
+    },
+    "sex": "either",
+    "demographics": [
+      "Incidence rises steadily with age; most cases are diagnosed after age 50",
+      "Slightly more common in men than women",
+      "Black adults in the US have higher incidence and mortality than other racial groups",
+      "Increasing incidence among adults younger than 50",
+      "More common in developed countries and in urban populations"
+    ],
+    "risk_factors": [
+      {
+        "text": "Age 45 or older",
+        "strength": "strong"
+      },
+      {
+        "text": "Personal history of colorectal adenomas or prior colorectal cancer",
+        "strength": "strong"
+      },
+      {
+        "text": "Family history of colorectal cancer in a first-degree relative",
+        "strength": "strong"
+      },
+      {
+        "text": "Inherited syndromes such as Lynch syndrome or familial adenomatous polyposis",
+        "strength": "strong"
+      },
+      {
+        "text": "Long-standing inflammatory bowel disease (ulcerative colitis or Crohn disease) involving the colon",
+        "strength": "strong"
+      },
+      {
+        "text": "Obesity",
+        "strength": "moderate"
+      },
+      {
+        "text": "Cigarette smoking",
+        "strength": "moderate"
+      },
+      {
+        "text": "Heavy alcohol use (three or more drinks per day)",
+        "strength": "moderate"
+      },
+      {
+        "text": "Diet high in red or processed meat and low in fiber, fruits, and vegetables",
+        "strength": "moderate"
+      },
+      {
+        "text": "Physical inactivity",
+        "strength": "weak"
+      },
+      {
+        "text": "Type 2 diabetes mellitus",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Ulcerative colitis or Crohn disease",
+      "Obesity",
+      "Type 2 diabetes mellitus",
+      "Prior colorectal adenomas"
+    ],
+    "family_history": [
+      "Colorectal cancer in a first-degree relative",
+      "Colorectal cancer diagnosed in a relative before age 50",
+      "Known Lynch syndrome or familial adenomatous polyposis in the family",
+      "Multiple family members with colorectal or other Lynch-associated cancers (endometrial, ovarian, gastric, urinary tract)"
+    ],
+    "social_history": [
+      "Current or former cigarette smoking",
+      "Heavy alcohol use",
+      "Sedentary lifestyle",
+      "Low fiber intake with high red or processed meat consumption"
+    ],
+    "exposures": [],
+    "risk_medications": []
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I've been seeing blood in my stool",
+        "frequency": "common"
+      },
+      {
+        "text": "My bowel habits have changed and won't go back to normal",
+        "frequency": "common"
+      },
+      {
+        "text": "I've lost weight without trying",
+        "frequency": "common"
+      },
+      {
+        "text": "I'm tired all the time",
+        "frequency": "common"
+      },
+      {
+        "text": "I feel like I can't empty my bowels completely",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "My stomach has been cramping and bloated",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual and insidious over weeks to months; often no symptoms at all early on",
+      "duration": "Usually weeks to months by the time of diagnosis",
+      "progression": "Symptoms are persistent and slowly worsen; bleeding may become more frequent, bowel changes become constant, and weight loss and fatigue progress",
+      "location": "Lower abdomen or rectum; discomfort may be vague and poorly localized",
+      "radiation": "Usually none",
+      "quality": "Blood in or on the stool; crampy, aching abdominal discomfort; a persistent urge to defecate",
+      "severity": "Variable; often mild at first and easy to dismiss, becoming more bothersome as disease advances",
+      "timing": "Bowel changes and bleeding are persistent rather than intermittent; rectal bleeding may occur with each bowel movement",
+      "aggravating": [
+        "Eating",
+        "Passing stool"
+      ],
+      "relieving": [
+        "Passing stool or gas temporarily relieves cramping",
+        "Nothing reliably relieves the bleeding or bowel change"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Fatigue and weakness from anemia",
+          "frequency": "common"
+        },
+        {
+          "text": "Unintentional weight loss",
+          "frequency": "common"
+        },
+        {
+          "text": "Change in stool caliber (narrow, pencil-thin stools)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Tenesmus (feeling of incomplete evacuation)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Abdominal bloating, gas, or cramping",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Iron-deficiency anemia found on blood work",
+          "frequency": "common"
+        },
+        {
+          "text": "Alternating diarrhea and constipation",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Sense of incomplete bowel emptying",
+          "frequency": "sometimes"
+        }
+      ],
+      "pertinent_negatives": [
+        "Fever or night sweats",
+        "Profuse watery diarrhea with dehydration",
+        "Bloody diarrhea with mucus and urgency suggesting acute infectious colitis",
+        "Severe constant abdominal pain with guarding or rebound",
+        "Vomiting of blood or coffee-ground material",
+        "Recent travel or antibiotic use preceding diarrhea",
+        "Known hemorrhoids only, with no change in bowel habits",
+        "Weight gain rather than loss"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fatigue",
+            "frequency": "common"
+          },
+          {
+            "text": "Unintentional weight loss",
+            "frequency": "common"
+          },
+          {
+            "text": "Loss of appetite",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Fever",
+          "Night sweats",
+          "Chills"
+        ],
+        "argues_against": [
+          "Acute infectious colitis",
+          "Lymphoma with B symptoms"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Blood in stool (bright red or dark)",
+            "frequency": "common"
+          },
+          {
+            "text": "Change in bowel habits",
+            "frequency": "common"
+          },
+          {
+            "text": "Abdominal cramping or bloating",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Tenesmus",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Narrow stools",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Hematemesis",
+          "Melena",
+          "Jaundice",
+          "Dysphagia",
+          "Severe constant abdominal pain"
+        ],
+        "argues_against": [
+          "Upper gastrointestinal bleeding",
+          "Acute surgical abdomen"
+        ]
+      },
+      {
+        "system": "hematologic",
+        "positives": [
+          {
+            "text": "Anemia (low hemoglobin or iron deficiency)",
+            "frequency": "common"
+          },
+          {
+            "text": "Easy bruising or bleeding",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Lymphadenopathy",
+          "Petechiae",
+          "Recurrent infections"
+        ],
+        "argues_against": [
+          "Primary hematologic malignancy"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [
+          {
+            "text": "Blood in urine (if tumor invades bladder)",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Dysuria",
+          "Urinary frequency",
+          "Flank pain"
+        ],
+        "argues_against": [
+          "Urinary tract infection",
+          "Nephrolithiasis"
+        ]
+      },
+      {
+        "system": "reproductive",
+        "positives": [],
+        "negatives": [
+          "Vaginal bleeding",
+          "Pelvic pain",
+          "Missed period"
+        ],
+        "argues_against": [
+          "Gynecologic malignancy",
+          "Pregnancy"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "older_adults",
+        "how_it_differs": "May present with vague symptoms attributed to aging, such as fatigue, anemia, or mild abdominal discomfort, without obvious bleeding or bowel change.",
+        "missing_classic_features": [
+          "Visible rectal bleeding",
+          "Clear change in bowel habits"
+        ]
+      },
+      {
+        "population": "children",
+        "how_it_differs": "Colorectal cancer is very rare in children; when it occurs it is usually associated with an inherited syndrome and presents with abdominal pain, weight loss, or a palpable mass.",
+        "missing_classic_features": [
+          "Typical adult age",
+          "Screening-detected polyp"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Symptoms such as rectal bleeding, anemia, and bowel changes are often attributed to pregnancy or hemorrhoids, delaying diagnosis.",
+        "missing_classic_features": [
+          "Clear temporal separation from pregnancy-related symptoms"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "May present with more aggressive disease or atypical symptoms due to underlying conditions or medications; bleeding and bowel changes may be attributed to infection or inflammation.",
+        "missing_classic_features": [
+          "Typical gradual onset",
+          "Clear benign explanation for symptoms"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Well-appearing, no distress; may look pale",
+      "moderate": "Mildly pale and tired-appearing; comfortable at rest",
+      "severe": "Pale, thin, chronically ill-appearing; may have temporal wasting",
+      "critical": "Cachectic, pale, weak-appearing; may be in distress from obstruction or perforation"
+    },
+    "findings": [
+      {
+        "id": "conjunctival-pallor",
+        "region": "heent",
+        "maneuver": "Inspect the conjunctivae and mucous membranes",
+        "finding": "Conjunctival pallor suggesting anemia",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "abdominal-mass",
+        "region": "abdomen",
+        "maneuver": "Palpate all four quadrants of the abdomen",
+        "finding": "A palpable abdominal mass, most often in the right or left lower quadrant depending on tumor location",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "abdominal-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen",
+        "finding": "Focal or diffuse abdominal tenderness",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "abdominal-distension",
+        "region": "abdomen",
+        "maneuver": "Inspect and percuss the abdomen",
+        "finding": "Abdominal distension with tympany suggesting obstruction",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "hepatomegaly",
+        "region": "abdomen",
+        "maneuver": "Palpate the liver edge below the right costal margin",
+        "finding": "Hepatomegaly suggesting hepatic metastases",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "ascites",
+        "region": "abdomen",
+        "maneuver": "Perform shifting dullness or fluid wave testing",
+        "finding": "Ascites suggesting peritoneal carcinomatosis",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "rectal-mass",
+        "region": "rectal",
+        "maneuver": "Perform a digital rectal exam with a lubricated gloved finger",
+        "finding": "A palpable rectal mass or irregularity",
+        "frequency": "sometimes",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "gross-rectal-blood",
+        "region": "rectal",
+        "maneuver": "Perform a digital rectal exam and inspect the glove for blood",
+        "finding": "Gross blood on the examining finger or in the rectal vault",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "fecal-occult-blood",
+        "region": "rectal",
+        "maneuver": "Test a stool sample obtained on rectal exam for occult blood",
+        "finding": "Positive fecal occult blood test",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "inguinal-lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the inguinal lymph node basins",
+        "finding": "Enlarged inguinal lymph nodes",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "supraclavicular-lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the supraclavicular fossae",
+        "finding": "Left supraclavicular lymphadenopathy (Virchow node) suggesting advanced disease",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-abdomen",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen for masses and organomegaly",
+        "finding": "No abdominal mass or organomegaly",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-guarding-rebound",
+        "region": "abdomen",
+        "maneuver": "Assess for peritoneal signs with gentle palpation and cough",
+        "finding": "No guarding or rebound tenderness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-hemorrhoid-exam",
+        "region": "rectal",
+        "maneuver": "Inspect the perianal area and perform a digital rectal exam",
+        "finding": "No external hemorrhoids or fissure to explain bleeding",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "important"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "severe": {
+        "min": 99.5,
+        "max": 101.0
+      },
+      "critical": {
+        "min": 100.4,
+        "max": 102.6
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 72,
+        "max": 100
+      },
+      "moderate": {
+        "min": 88,
+        "max": 110
+      },
+      "severe": {
+        "min": 100,
+        "max": 125
+      },
+      "critical": {
+        "min": 115,
+        "max": 145
+      }
+    },
+    "sbp": {
+      "severe": {
+        "min": 90,
+        "max": 110
+      },
+      "critical": {
+        "min": 78,
+        "max": 98
+      }
+    },
+    "dbp": {
+      "severe": {
+        "min": 55,
+        "max": 70
+      },
+      "critical": {
+        "min": 40,
+        "max": 60
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "hgb",
+      "ranges": {
+        "mild": {
+          "min": 10.5,
+          "max": 12.0
+        },
+        "moderate": {
+          "min": 8.5,
+          "max": 11.0
+        },
+        "severe": {
+          "min": 6.5,
+          "max": 9.0
+        },
+        "critical": {
+          "min": 4.5,
+          "max": 7.5
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "Microcytic anemia from chronic blood loss; a normal hemoglobin does not rule out colorectal cancer, especially early disease."
+    },
+    {
+      "test_id": "mcv",
+      "ranges": {
+        "mild": {
+          "min": 75,
+          "max": 82
+        },
+        "moderate": {
+          "min": 68,
+          "max": 80
+        },
+        "severe": {
+          "min": 60,
+          "max": 76
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Low MCV reflects iron deficiency from chronic occult blood loss."
+    },
+    {
+      "test_id": "ferritin",
+      "ranges": {
+        "mild": {
+          "min": 8,
+          "max": 20
+        },
+        "moderate": {
+          "min": 4,
+          "max": 15
+        },
+        "severe": {
+          "min": 1,
+          "max": 10
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Low ferritin confirms iron deficiency; ferritin is an acute-phase reactant and may be falsely normal with inflammation."
+    },
+    {
+      "test_id": "iron",
+      "ranges": {
+        "mild": {
+          "min": 35,
+          "max": 55
+        },
+        "moderate": {
+          "min": 20,
+          "max": 45
+        },
+        "severe": {
+          "min": 10,
+          "max": 35
+        }
+      },
+      "frequency": "common",
+      "importance": "optional"
+    },
+    {
+      "test_id": "tibc",
+      "ranges": {
+        "mild": {
+          "min": 360,
+          "max": 450
+        },
+        "moderate": {
+          "min": 400,
+          "max": 500
+        },
+        "severe": {
+          "min": 440,
+          "max": 550
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Elevated TIBC accompanies iron deficiency."
+    },
+    {
+      "test_id": "rdw",
+      "ranges": {
+        "mild": {
+          "min": 14.5,
+          "max": 16.5
+        },
+        "moderate": {
+          "min": 15.5,
+          "max": 18.0
+        },
+        "severe": {
+          "min": 17.0,
+          "max": 20.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "plt",
+      "ranges": {
+        "mild": {
+          "min": 400,
+          "max": 500
+        },
+        "moderate": {
+          "min": 450,
+          "max": 600
+        },
+        "severe": {
+          "min": 500,
+          "max": 750
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Reactive thrombocytosis from chronic inflammation or iron deficiency."
+    },
+    {
+      "test_id": "albumin",
+      "ranges": {
+        "mild": {
+          "min": 3.2,
+          "max": 3.5
+        },
+        "moderate": {
+          "min": 2.8,
+          "max": 3.4
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 3.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Low albumin reflects malnutrition or advanced disease and affects treatment planning."
+    },
+    {
+      "test_id": "alp",
+      "ranges": {
+        "mild": {
+          "min": 150,
+          "max": 250
+        },
+        "moderate": {
+          "min": 200,
+          "max": 400
+        },
+        "severe": {
+          "min": 350,
+          "max": 700
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevation suggests hepatobiliary involvement or hepatic metastases."
+    },
+    {
+      "test_id": "ast",
+      "ranges": {
+        "mild": {
+          "min": 45,
+          "max": 80
+        },
+        "moderate": {
+          "min": 70,
+          "max": 150
+        },
+        "severe": {
+          "min": 120,
+          "max": 300
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "alt",
+      "ranges": {
+        "mild": {
+          "min": 60,
+          "max": 100
+        },
+        "moderate": {
+          "min": 90,
+          "max": 180
+        },
+        "severe": {
+          "min": 150,
+          "max": 350
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "tbili",
+      "ranges": {
+        "mild": {
+          "min": 1.3,
+          "max": 2.0
+        },
+        "moderate": {
+          "min": 1.8,
+          "max": 3.5
+        },
+        "severe": {
+          "min": 3.0,
+          "max": 8.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Rises with extensive hepatic replacement or biliary obstruction."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "mild": {
+          "min": 1.2,
+          "max": 1.5
+        },
+        "moderate": {
+          "min": 1.4,
+          "max": 2.0
+        },
+        "severe": {
+          "min": 1.8,
+          "max": 3.5
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevated from dehydration, obstruction, or contrast exposure; guides chemotherapy dosing."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "mild": {
+          "min": 21,
+          "max": 30
+        },
+        "moderate": {
+          "min": 28,
+          "max": 45
+        },
+        "severe": {
+          "min": 40,
+          "max": 70
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Rises with dehydration or obstruction."
+    },
+    {
+      "test_id": "ca",
+      "ranges": {
+        "mild": {
+          "min": 10.3,
+          "max": 11.0
+        },
+        "moderate": {
+          "min": 10.8,
+          "max": 12.0
+        },
+        "severe": {
+          "min": 11.5,
+          "max": 13.5
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Hypercalcemia suggests bone metastases or paraneoplastic secretion."
+    },
+    {
+      "test_id": "ldh",
+      "ranges": {
+        "mild": {
+          "min": 290,
+          "max": 400
+        },
+        "moderate": {
+          "min": 380,
+          "max": 600
+        },
+        "severe": {
+          "min": 550,
+          "max": 1000
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Nonspecific marker of tumor burden or tissue turnover."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "mild": {
+          "min": 1.1,
+          "max": 3.0
+        },
+        "moderate": {
+          "min": 2.5,
+          "max": 8.0
+        },
+        "severe": {
+          "min": 6.0,
+          "max": 20.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "esr",
+      "ranges": {
+        "mild": {
+          "min": 21,
+          "max": 40
+        },
+        "moderate": {
+          "min": 35,
+          "max": 70
+        },
+        "severe": {
+          "min": 60,
+          "max": 110
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Negative. Required before cross-sectional imaging or systemic therapy in anyone who could be pregnant."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rate",
+        "finding": "Sinus tachycardia from anemia, dehydration, or pain",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "other",
+        "finding": "Nonspecific ST-T changes from anemia or electrolyte disturbance",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "CT colonography (virtual colonoscopy)",
+      "modality": "ct",
+      "preferred_when": "Patients who cannot or will not undergo colonoscopy",
+      "findings": [
+        {
+          "text": "Colonic mass or polyp detected on reconstructed images",
+          "frequency": "common"
+        },
+        {
+          "text": "Colonic wall thickening",
+          "frequency": "common"
+        },
+        {
+          "text": "Extracolonic findings such as hepatic lesions or lymphadenopathy",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "CT abdomen and pelvis with IV and oral contrast",
+      "modality": "ct",
+      "preferred_when": "Staging and evaluation for obstruction or metastases",
+      "findings": [
+        {
+          "text": "Colonic wall thickening or mass at the tumor site",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Regional lymphadenopathy",
+          "frequency": "common"
+        },
+        {
+          "text": "Hepatic metastases (hypodense lesions)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Proximal colonic dilation suggesting obstruction",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Peritoneal nodules or ascites suggesting carcinomatosis",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "MRI pelvis with contrast",
+      "modality": "mri",
+      "preferred_when": "Local staging of rectal cancer and assessment of mesorectal fascia",
+      "findings": [
+        {
+          "text": "Rectal mass with depth of invasion through the bowel wall",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Mesorectal lymph nodes",
+          "frequency": "common"
+        },
+        {
+          "text": "Involvement of the mesorectal fascia or adjacent organs",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Chest CT",
+      "modality": "ct",
+      "preferred_when": "Staging to evaluate for pulmonary metastases",
+      "findings": [
+        {
+          "text": "Pulmonary nodules or metastases",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Mediastinal lymphadenopathy",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "PET-CT",
+      "modality": "nuclear",
+      "preferred_when": "Suspected recurrence or equivocal findings on conventional imaging",
+      "findings": [
+        {
+          "text": "FDG-avid primary tumor or metastatic lesions",
+          "frequency": "common"
+        },
+        {
+          "text": "Occult distant metastases not seen on CT",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Colonoscopy",
+      "modality": "endoscopy",
+      "preferred_when": "Diagnosis and biopsy of suspected colorectal cancer",
+      "findings": [
+        {
+          "text": "Visible mass, ulceration, or stricture in the colon or rectum",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Additional synchronous polyps or lesions",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Biopsy-confirmed adenocarcinoma",
+          "frequency": "almost_always"
+        }
+      ]
+    },
+    {
+      "study": "Flexible sigmoidoscopy",
+      "modality": "endoscopy",
+      "preferred_when": "Limited evaluation of the distal colon when full colonoscopy is not possible",
+      "findings": [
+        {
+          "text": "Distal colonic or rectal mass",
+          "frequency": "common"
+        },
+        {
+          "text": "Cannot evaluate the proximal colon",
+          "frequency": "almost_always"
+        }
+      ]
+    },
+    {
+      "study": "Abdominal x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Nonspecific; may show dilated bowel loops in obstruction",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "No mass or tumor visible",
+          "frequency": "almost_always"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Detects anemia from chronic blood loss and thrombocytosis"
+      },
+      {
+        "test": "cmp_extra",
+        "why": "Assesses liver enzymes, albumin, and renal function before treatment"
+      },
+      {
+        "test": "bmp",
+        "why": "Baseline renal function and electrolytes"
+      },
+      {
+        "test": "iron_vitamins",
+        "why": "Confirms iron-deficiency anemia"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before imaging or therapy",
+        "only_if": "patient is of childbearing potential"
+      },
+      {
+        "test": "Colonoscopy",
+        "why": "Direct visualization and biopsy of the suspected tumor"
+      },
+      {
+        "test": "CT abdomen and pelvis with IV and oral contrast",
+        "why": "Staging and evaluation for obstruction or metastases"
+      },
+      {
+        "test": "Chest CT",
+        "why": "Staging for pulmonary metastases"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "crp",
+        "why": "Inflammatory marker that may reflect tumor burden"
+      },
+      {
+        "test": "ldh",
+        "why": "Nonspecific marker of tumor burden"
+      },
+      {
+        "test": "MRI pelvis with contrast",
+        "why": "Local staging of rectal cancer",
+        "only_if": "rectal cancer is suspected or confirmed"
+      },
+      {
+        "test": "PET-CT",
+        "why": "Evaluates for occult metastatic disease",
+        "only_if": "recurrence is suspected or conventional imaging is equivocal"
+      },
+      {
+        "test": "CT colonography (virtual colonoscopy)",
+        "why": "Alternative when colonoscopy cannot be completed",
+        "only_if": "colonoscopy is contraindicated or incomplete"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Abdominal x-ray",
+        "why": "Rarely adds information beyond CT"
+      },
+      {
+        "test": "Flexible sigmoidoscopy",
+        "why": "Does not evaluate the proximal colon; colonoscopy is preferred"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in the evaluation of colorectal cancer"
+      },
+      {
+        "test": "lipase",
+        "why": "Not needed unless pancreatitis is suspected"
+      },
+      {
+        "test": "ua",
+        "why": "Not routinely helpful unless urinary symptoms suggest invasion"
+      }
+    ],
+    "decision_points": [
+      "Pregnancy test before CT or systemic therapy in anyone who could be pregnant",
+      "Colonoscopy with biopsy is required for histologic diagnosis before treatment",
+      "Staging with CT chest, abdomen, and pelvis (and pelvic MRI for rectal cancer) guides surgical and systemic therapy",
+      "Obstruction or perforation requires urgent surgical evaluation"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Hemorrhoidal disease",
+      "slug": "hemorrhoids",
+      "why_considered": "Bright red blood on the stool or toilet paper is the most common reason patients attribute rectal bleeding to hemorrhoids, and hemorrhoids are extremely common.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Bleeding is typically bright red, small in volume, and associated with straining or hard stools",
+          "No persistent change in bowel habits",
+          "No unintentional weight loss",
+          "Symptoms may be intermittent over years rather than progressive"
+        ],
+        "exam": [
+          "External hemorrhoids or skin tags visible on perianal inspection",
+          "No palpable rectal mass",
+          "No anemia on general appearance"
+        ],
+        "labs": [
+          "Hemoglobin and iron studies are usually normal",
+          "Fecal occult blood may be negative between episodes"
+        ],
+        "imaging": [
+          "Colonoscopy shows hemorrhoids but no mass or other source of bleeding"
+        ]
+      }
+    },
+    {
+      "name": "Diverticular bleeding",
+      "slug": "diverticular-disease",
+      "why_considered": "Diverticular disease is a common cause of painless lower gastrointestinal bleeding in older adults, overlapping with the presentation of colorectal cancer.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Sudden, large-volume, painless bright red or maroon bleeding",
+          "Often resolves spontaneously",
+          "No change in bowel habits or weight loss between episodes",
+          "Known history of diverticulosis"
+        ],
+        "exam": [
+          "Usually normal abdominal exam",
+          "No palpable rectal mass",
+          "May show signs of acute blood loss if bleeding is brisk"
+        ],
+        "labs": [
+          "Acute drop in hemoglobin if bleeding is active",
+          "Iron studies may be normal if bleeding is recent rather than chronic"
+        ],
+        "imaging": [
+          "CT angiography or colonoscopy shows diverticula without a mass",
+          "Colonoscopy after bleeding stops may show diverticula as the only potential source"
+        ]
+      }
+    },
+    {
+      "name": "Inflammatory bowel disease",
+      "slug": "ulcerative-colitis",
+      "why_considered": "Chronic bloody diarrhea, urgency, and abdominal cramping in ulcerative colitis or Crohn disease can mimic colorectal cancer, and long-standing colitis also raises cancer risk.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Younger age at onset, often with years of intermittent flares",
+          "Bloody diarrhea with mucus and urgency",
+          "Extra-intestinal symptoms such as joint pain, eye inflammation, or skin lesions",
+          "Symptoms fluctuate with flares rather than steadily progressing"
+        ],
+        "exam": [
+          "May be normal or show mild abdominal tenderness",
+          "No discrete rectal mass",
+          "Signs of chronic illness during severe flares"
+        ],
+        "labs": [
+          "Elevated inflammatory markers (CRP, ESR) during flares",
+          "Anemia may be present but iron deficiency is less prominent than in chronic occult cancer bleeding",
+          "Perinuclear antineutrophil cytoplasmic antibodies or anti-Saccharomyces cerevisiae antibodies may support the diagnosis"
+        ],
+        "imaging": [
+          "Colonoscopy shows continuous mucosal inflammation, friability, and pseudopolyps rather than a discrete mass",
+          "Biopsies show chronic inflammation and crypt architectural distortion, not adenocarcinoma"
+        ]
+      }
+    },
+    {
+      "name": "Ischemic colitis",
+      "slug": "ischemic-colitis",
+      "why_considered": "Older adults with vascular risk factors can present with abdominal pain and bloody stools, overlapping with colorectal cancer symptoms.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Sudden onset of crampy abdominal pain followed by urgency to defecate and then bloody diarrhea",
+          "Pain is often out of proportion to exam findings early on",
+          "Associated with atrial fibrillation, hypotension, or recent vascular events",
+          "Symptoms typically improve over days to weeks"
+        ],
+        "exam": [
+          "Mild to moderate abdominal tenderness over the affected segment",
+          "No palpable mass",
+          "May have signs of hypoperfusion or arrhythmia"
+        ],
+        "labs": [
+          "Leukocytosis and elevated lactate may be present",
+          "Anemia is usually acute rather than chronic"
+        ],
+        "imaging": [
+          "CT shows segmental colonic wall thickening with pericolonic fat stranding",
+          "Colonoscopy shows segmental mucosal edema, erythema, or ulceration with a sharp transition",
+          "Biopsies show mucosal ischemia or ghost cells rather than adenocarcinoma"
+        ]
+      }
+    },
+    {
+      "name": "Infectious colitis",
+      "slug": "infectious-colitis",
+      "why_considered": "Acute bloody diarrhea with abdominal cramping and fever can resemble the bowel changes and bleeding of colorectal cancer.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Acute onset over hours to days",
+          "Recent travel, antibiotic use, or consumption of undercooked food",
+          "Fever, tenesmus, and watery or bloody diarrhea",
+          "Sick contacts with similar symptoms"
+        ],
+        "exam": [
+          "Fever and diffuse abdominal tenderness",
+          "No palpable mass",
+          "Signs of dehydration"
+        ],
+        "labs": [
+          "Leukocytosis with left shift",
+          "Stool studies positive for a pathogen (e.g., Salmonella, Shigella, Campylobacter, E. coli O157:H7, C. difficile toxin)",
+          "Anemia is not typical"
+        ],
+        "imaging": [
+          "CT may show diffuse colonic wall thickening",
+          "Colonoscopy is usually avoided in acute infectious colitis due to perforation risk",
+          "Stool testing and clinical course establish the diagnosis"
+        ]
+      }
+    },
+    {
+      "name": "Irritable bowel syndrome",
+      "slug": "irritable-bowel-syndrome",
+      "why_considered": "Chronic abdominal pain with altered bowel habits is common in IBS and can be mistaken for the bowel changes of colorectal cancer, especially in younger patients.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Long-standing fluctuating symptoms, often years",
+          "Pain relieved by defecation and associated with changes in stool frequency or form",
+          "No rectal bleeding, weight loss, or anemia",
+          "Symptoms often triggered by stress or specific foods"
+        ],
+        "exam": [
+          "Normal abdominal and rectal exam",
+          "No mass, no blood on rectal exam",
+          "No signs of malnutrition or chronic illness"
+        ],
+        "labs": [
+          "Normal CBC, iron studies, and inflammatory markers",
+          "Celiac serology may be checked and is negative"
+        ],
+        "imaging": [
+          "Colonoscopy is normal or shows only benign findings",
+          "No mass or stricture"
+        ]
+      }
+    },
+    {
+      "name": "Colonic obstruction from adhesions or stricture",
+      "slug": "small-bowel-obstruction",
+      "why_considered": "Colorectal cancer can present with obstruction, and other causes of large bowel obstruction such as adhesions or benign strictures can mimic this presentation.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Prior abdominal or pelvic surgery suggesting adhesions",
+          "History of diverticulitis or inflammatory bowel disease suggesting benign stricture",
+          "Gradual onset of constipation, abdominal distension, and vomiting",
+          "No rectal bleeding or weight loss if benign"
+        ],
+        "exam": [
+          "Abdominal distension and tympany",
+          "High-pitched or absent bowel sounds",
+          "No palpable rectal mass"
+        ],
+        "labs": [
+          "Electrolyte abnormalities from vomiting",
+          "Anemia and iron deficiency are less typical"
+        ],
+        "imaging": [
+          "CT shows a transition point without a mass or with a benign-appearing stricture",
+          "Colonoscopy or barium enema can distinguish a benign stricture from malignancy"
+        ]
+      }
+    },
+    {
+      "name": "Lymphoma of the colon",
+      "slug": "colonic-lymphoma",
+      "why_considered": "Primary colonic lymphoma is rare but can present with abdominal pain, a palpable mass, weight loss, and anemia, mimicking colorectal adenocarcinoma.",
+      "must_not_miss": true,
+      "trigger": "A colonic mass with B symptoms (fever, night sweats, weight loss) or a mass that appears atypical on imaging",
+      "discriminators": {
+        "history": [
+          "B symptoms such as fever, drenching night sweats, and significant weight loss",
+          "May have a known history of immunosuppression or inflammatory bowel disease",
+          "Symptoms may be more systemic than in typical colorectal cancer"
+        ],
+        "exam": [
+          "Palpable abdominal mass",
+          "Generalized lymphadenopathy or hepatosplenomegaly may be present",
+          "No typical rectal bleeding pattern"
+        ],
+        "labs": [
+          "Cytopenias or atypical lymphocytes on CBC",
+          "Elevated LDH and uric acid",
+          "Anemia may be present but iron deficiency is not the primary mechanism"
+        ],
+        "imaging": [
+          "CT shows a bulky, homogeneous colonic mass with regional or distant lymphadenopathy",
+          "PET-CT shows FDG avidity in the mass and nodes",
+          "Biopsy is required and shows lymphoid origin, not adenocarcinoma"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Early, localized disease: small tumor confined to the bowel wall, no symptoms or only mild intermittent rectal bleeding, no anemia or weight loss",
+      "moderate": "Locally advanced disease: tumor invades through the bowel wall or involves regional lymph nodes, with persistent bleeding, change in bowel habits, and mild anemia",
+      "severe": "Advanced disease with significant anemia, weight loss, partial obstruction, or distant metastases; may require urgent intervention",
+      "critical": "Life-threatening complications such as complete bowel obstruction with perforation, massive hemorrhage, or sepsis"
+    },
+    "red_flags": [
+      {
+        "finding": "Unintentional weight loss with rectal bleeding",
+        "meaning": "Suggests malignancy and warrants urgent colonoscopy"
+      },
+      {
+        "finding": "Iron-deficiency anemia in a man or postmenopausal woman",
+        "meaning": "Colorectal cancer must be excluded until proven otherwise"
+      },
+      {
+        "finding": "New persistent change in bowel habits after age 45",
+        "meaning": "Requires evaluation for colorectal cancer"
+      },
+      {
+        "finding": "Abdominal distension with vomiting and inability to pass stool or gas",
+        "meaning": "Possible bowel obstruction; needs urgent imaging and surgical evaluation"
+      },
+      {
+        "finding": "Severe abdominal pain with guarding or rebound",
+        "meaning": "Possible perforation and peritonitis; surgical emergency"
+      },
+      {
+        "finding": "Large-volume rectal bleeding with hypotension or tachycardia",
+        "meaning": "Hemodynamic instability from hemorrhage; resuscitate and evaluate urgently"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Iron-deficiency anemia",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Fatigue and pallor",
+          "Low hemoglobin and MCV",
+          "Low ferritin"
+        ]
+      },
+      {
+        "name": "Bowel obstruction",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Abdominal distension and cramping",
+          "Vomiting",
+          "Inability to pass stool or gas",
+          "Dilated bowel loops on imaging"
+        ]
+      },
+      {
+        "name": "Perforation with peritonitis",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Sudden severe abdominal pain",
+          "Rigid abdomen with rebound tenderness",
+          "Fever and hypotension"
+        ]
+      },
+      {
+        "name": "Liver metastases",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Right upper quadrant pain",
+          "Hepatomegaly",
+          "Elevated alkaline phosphatase and transaminases",
+          "Hypodense liver lesions on CT"
+        ]
+      },
+      {
+        "name": "Peritoneal carcinomatosis",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Ascites",
+          "Abdominal distension",
+          "Diffuse peritoneal nodules on imaging"
+        ]
+      },
+      {
+        "name": "Fistula formation to adjacent organs",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Pneumaturia or fecaluria if bladder involved",
+          "Recurrent urinary tract infections",
+          "Passage of stool or gas per vagina"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "older_adults",
+        "differences": "May present with vague symptoms such as fatigue, anemia, or mild abdominal discomfort without obvious bleeding or bowel change; higher rates of comorbidity affecting treatment tolerance."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Symptoms such as rectal bleeding, anemia, and bowel changes are often attributed to pregnancy or hemorrhoids, delaying diagnosis; imaging and treatment must account for fetal safety."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "May present with more aggressive disease or atypical symptoms; bleeding and bowel changes may be attributed to infection or inflammation, delaying diagnosis."
+      },
+      {
+        "population": "obesity",
+        "differences": "Obesity is a risk factor and may complicate surgical approach and staging imaging; symptoms may be attributed to weight-related issues."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Type 2 diabetes is associated with increased risk; may present with atypical symptoms and higher rates of postoperative complications."
+      }
+    ]
+  },
+  "cancer": {
+    "screening": "The USPSTF recommends screening for colorectal cancer in all adults aged 45 to 75 years. For adults aged 76 to 85 years, screening should be individualized based on overall health, prior screening history, and patient preferences. Screening options include colonoscopy every 10 years, flexible sigmoidoscopy every 5 years, CT colonography every 5 years, and stool-based tests such as annual high-sensitivity fecal occult blood testing or fecal immunochemical testing, and multi-target stool DNA testing every 1 to 3 years. Colonoscopy is preferred for individuals with a family history or other risk factors.",
+    "pathology": "The vast majority of colorectal cancers are adenocarcinomas arising from adenomatous polyps or sessile serrated lesions. Other less common types include mucinous adenocarcinoma, signet ring cell carcinoma, medullary carcinoma, and neuroendocrine tumors. Molecular pathways include chromosomal instability, microsatellite instability (MSI), and CpG island methylator phenotype. Approximately 15% of colorectal cancers show MSI, which may be sporadic or associated with Lynch syndrome. Immunohistochemistry for mismatch repair proteins and testing for BRAF and KRAS mutations guide prognosis and therapy.",
+    "staging_concepts": "Staging uses the TNM system. T describes depth of invasion through the bowel wall, N describes regional lymph node involvement, and M describes distant metastases. Stage I is confined to the bowel wall; stage II invades through the wall but has no nodal involvement; stage III involves regional lymph nodes; stage IV includes distant metastases. Staging is performed with CT of the chest, abdomen, and pelvis, and pelvic MRI for rectal cancer. PET-CT may be used for equivocal findings. Serum carcinoembryonic antigen (CEA) is obtained at baseline and followed during treatment.",
+    "metastatic_sites": [
+      "Liver",
+      "Lungs",
+      "Peritoneum",
+      "Distant lymph nodes",
+      "Bones",
+      "Brain"
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "Have you noticed blood in your stool or on the toilet paper?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Rectal bleeding, bright red or dark, persistent rather than a one-time episode"
+      },
+      {
+        "question": "Has there been any change in your bowel habits, and how long has it lasted?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Persistent change over more than a few days: new constipation, diarrhea, or alternating pattern"
+      },
+      {
+        "question": "Has your stool become narrower or a different shape than usual?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Pencil-thin or narrowed stools suggesting a distal obstructing lesion"
+      },
+      {
+        "question": "Do you feel like you cannot empty your bowels completely, or do you have to strain or go frequently?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Tenesmus and a sense of incomplete evacuation, typical of rectal tumors"
+      },
+      {
+        "question": "Have you lost weight without trying?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Unintentional weight loss, a red flag for malignancy"
+      },
+      {
+        "question": "Have you been more tired or short of breath than usual?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Symptoms of anemia from chronic occult blood loss"
+      },
+      {
+        "question": "Have you had cramping, bloating, gas pains, or a feeling of fullness?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Recurrent crampy abdominal discomfort or distension"
+      },
+      {
+        "question": "When was your last colonoscopy or colorectal cancer screening, and what were the results?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Never screened, overdue for screening, or prior adenomas/polyps removed"
+      },
+      {
+        "question": "Have you ever had colon polyps, colorectal cancer, or inflammatory bowel disease?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Prior adenomas, prior colorectal cancer, or long-standing ulcerative colitis or Crohn disease"
+      },
+      {
+        "question": "Has anyone in your family had colorectal cancer or polyps, and at what age?",
+        "category": "family",
+        "importance": "essential",
+        "looking_for": "First-degree relative with colorectal cancer, especially before age 50, or a known inherited syndrome"
+      },
+      {
+        "question": "Has anyone in your family had cancer of the uterus, ovary, stomach, or urinary tract?",
+        "category": "family",
+        "importance": "important",
+        "looking_for": "Lynch syndrome-associated cancers suggesting a hereditary syndrome"
+      },
+      {
+        "question": "Do you smoke, drink alcohol, and how much?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Cigarette smoking, heavy alcohol use (three or more drinks per day)"
+      },
+      {
+        "question": "What does your diet look like, and how much do you exercise?",
+        "category": "social",
+        "importance": "optional",
+        "looking_for": "High red or processed meat intake, low fiber, sedentary lifestyle"
+      },
+      {
+        "question": "Have you had fever, night sweats, or bloody diarrhea with mucus and urgency?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Absent; present suggests infectious colitis or inflammatory bowel disease rather than cancer"
+      },
+      {
+        "question": "Have you had vomiting, inability to pass stool or gas, or severe constant abdominal pain?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Obstruction or perforation requiring urgent surgical evaluation"
+      },
+      {
+        "question": "Could you be pregnant? When was your last menstrual period?",
+        "category": "obstetric",
+        "importance": "important",
+        "looking_for": "Pregnancy status before imaging or systemic therapy"
+      }
+    ],
+    "accepted_names": [
+      "Colorectal cancer",
+      "Colon cancer",
+      "Rectal cancer",
+      "Colorectal carcinoma",
+      "CRC",
+      "Adenocarcinoma of the colon",
+      "Adenocarcinoma of the rectum"
+    ],
+    "reasoning_points": [
+      "Age 45 or older with persistent rectal bleeding, a change in bowel habits, or unexplained iron-deficiency anemia",
+      "Unintentional weight loss and fatigue from chronic occult blood loss",
+      "Risk factors such as prior adenomas, family history of colorectal cancer, or long-standing inflammatory bowel disease",
+      "Iron-deficiency anemia with low MCV and low ferritin on laboratory testing",
+      "A palpable abdominal or rectal mass on examination, or gross blood on digital rectal exam",
+      "Colonoscopy with biopsy showing adenocarcinoma confirms the diagnosis",
+      "Staging with CT chest, abdomen, and pelvis (and pelvic MRI for rectal cancer) guides treatment"
+    ],
+    "difficulty": {
+      "easy": [
+        "Older adult with visible rectal bleeding, weight loss, and a change in bowel habits",
+        "Iron-deficiency anemia with low MCV and low ferritin",
+        "Palpable rectal mass or gross blood on digital rectal exam",
+        "Colonoscopy shows a mass and biopsy confirms adenocarcinoma"
+      ],
+      "medium": [
+        "Right-sided colon cancer presenting with fatigue and anemia but no visible bleeding",
+        "Symptoms attributed to hemorrhoids for months before evaluation",
+        "Normal hemoglobin with only a positive fecal occult blood test",
+        "Younger adult with a family history prompting earlier evaluation"
+      ],
+      "hard": [
+        "Older adult with vague fatigue and anemia attributed to aging",
+        "Pregnancy with rectal bleeding attributed to hemorrhoids",
+        "Presentation with obstruction or perforation rather than bleeding",
+        "Atypical colonic mass later found to be lymphoma rather than adenocarcinoma"
+      ]
+    }
+  }
+}

@@ -1,0 +1,1806 @@
+{
+  "schema_version": "0.2",
+  "slug": "head-injuries",
+  "triage": {
+    "name": "Head Injuries",
+    "case_suitable": true,
+    "reason": "Traumatic brain injury with altered mental status; diagnosis reachable by history, exam and imaging, with critical severity stratification.",
+    "kind": "injury",
+    "category": "traumatic brain injury",
+    "organ_systems": [
+      "nervous"
+    ],
+    "primary_clerkship": "emergency",
+    "secondary_clerkships": [
+      "surgery",
+      "neurology",
+      "pediatrics"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "emergency",
+      "icu",
+      "inpatient"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:17:44Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:27:21Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:31:52Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:32:08Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:32:25Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:47:36Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'type_and_screen' to 'Type and screen'",
+        "auto-repaired: workup: 'noncontrast ct head' was in ['initial', 'confirmatory'], kept ['initial']",
+        "differential alcohol-intoxication: no profile yet",
+        "differential ischemic-stroke: no profile yet",
+        "differential subarachnoid-hemorrhage: no profile yet",
+        "differential meningitis: no profile yet",
+        "differential epilepsy: no profile yet",
+        "differential spinal-cord-injuries: no profile yet",
+        "differential delirium: no profile yet",
+        "differential conversion-disorder: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 15,
+      "typical_max": 65,
+      "peak": "bimodal: 15–30 and 65+",
+      "possible_min": 0,
+      "possible_max": 110
+    },
+    "sex": "either",
+    "demographics": [
+      "More common in males, especially in adolescents and young adults",
+      "Falls are the leading cause in older adults and young children",
+      "Motor vehicle crashes and sports injuries predominate in adolescents and young adults"
+    ],
+    "risk_factors": [
+      {
+        "text": "Recent fall, especially from a height or in an older adult",
+        "strength": "strong"
+      },
+      {
+        "text": "Motor vehicle or motorcycle crash",
+        "strength": "strong"
+      },
+      {
+        "text": "Contact or high-impact sports participation",
+        "strength": "moderate"
+      },
+      {
+        "text": "Alcohol or recreational drug use",
+        "strength": "moderate"
+      },
+      {
+        "text": "Anticoagulant or antiplatelet use",
+        "strength": "moderate"
+      },
+      {
+        "text": "Prior head injury",
+        "strength": "moderate"
+      },
+      {
+        "text": "Male sex",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Osteoporosis",
+      "Seizure disorder",
+      "Bleeding disorder or thrombocytopenia",
+      "Liver disease with coagulopathy"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Alcohol use",
+      "Recreational drug use",
+      "Participation in contact sports",
+      "Occupational exposure to falls or blunt trauma",
+      "Inadequate helmet or seatbelt use"
+    ],
+    "exposures": [],
+    "risk_medications": [
+      "warfarin",
+      "apixaban",
+      "rivaroxaban",
+      "dabigatran",
+      "edoxaban",
+      "aspirin",
+      "clopidogrel",
+      "ticagrelor",
+      "prasugrel"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I hit my head",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "I have a headache",
+        "frequency": "common"
+      },
+      {
+        "text": "I feel dizzy and foggy",
+        "frequency": "common"
+      },
+      {
+        "text": "I blacked out for a moment",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Sudden, immediately after a blow to the head, fall, crash or collision",
+      "duration": "Minutes to hours at presentation; symptoms can persist for days to weeks after a concussion",
+      "progression": "Headache and confusion are worst in the first minutes to hours; nausea, dizziness and memory trouble may build over the first day. Worsening headache, repeated vomiting, drowsiness or new weakness suggests an expanding intracranial injury and needs urgent evaluation.",
+      "location": "Diffuse head pain, often worst at the site of impact; neck pain if there was a whiplash component",
+      "radiation": "Usually none; neck pain may radiate to the shoulders",
+      "quality": "Aching, pressure-like or throbbing head pain; the injury itself is described as a blow or impact",
+      "severity": "Mild to moderate in most patients; severe and worsening in those with intracranial bleeding",
+      "timing": "Constant after the injury, often worse with movement, bending or straining",
+      "aggravating": [
+        "Physical exertion",
+        "Bending over or straining",
+        "Bright lights or loud noise",
+        "Screen use",
+        "Coughing or sneezing"
+      ],
+      "relieving": [
+        "Resting in a quiet, dark room",
+        "Acetaminophen",
+        "Ice at the site of impact"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Headache",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Feeling dazed, confused or foggy",
+          "frequency": "common"
+        },
+        {
+          "text": "Dizziness or lightheadedness",
+          "frequency": "common"
+        },
+        {
+          "text": "Nausea",
+          "frequency": "common"
+        },
+        {
+          "text": "Trouble remembering the injury or the moments around it",
+          "frequency": "common"
+        },
+        {
+          "text": "Brief loss of consciousness",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Vomiting",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Blurred or double vision",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Ringing in the ears",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Trouble concentrating or feeling slowed down",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Scalp cut, bruise or swelling",
+          "frequency": "common"
+        },
+        {
+          "text": "Neck pain or stiffness",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Sensitivity to light or noise",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Sleeping more or less than usual",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Clear fluid or blood from the nose or ear",
+          "frequency": "rare"
+        },
+        {
+          "text": "A seizure right after the injury",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "No headache before the injury",
+        "No fever or neck stiffness before the injury",
+        "No sudden worst headache of life without trauma",
+        "No focal weakness or numbness before the injury",
+        "No speech difficulty before the injury",
+        "No recent illness with rash, joint pain or weight loss",
+        "No known bleeding disorder or anticoagulant use (if applicable)"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Feeling tired or sluggish",
+            "frequency": "common"
+          },
+          {
+            "text": "Feeling warm or sweaty after the event",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Fever",
+          "Chills",
+          "Weight loss",
+          "Night sweats"
+        ],
+        "argues_against": [
+          "Meningitis or systemic infection"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Headache",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Confusion or feeling foggy",
+            "frequency": "common"
+          },
+          {
+            "text": "Dizziness or balance problems",
+            "frequency": "common"
+          },
+          {
+            "text": "Memory trouble around the time of injury",
+            "frequency": "common"
+          },
+          {
+            "text": "Blurred or double vision",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Numbness or weakness in an arm or leg",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Slurred speech",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Seizure",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Progressive weakness",
+          "Loss of consciousness lasting more than a few minutes",
+          "Repeated vomiting",
+          "Worsening drowsiness",
+          "One pupil larger than the other"
+        ],
+        "argues_against": [
+          "Stroke or seizure disorder without trauma"
+        ]
+      },
+      {
+        "system": "eyes",
+        "positives": [
+          {
+            "text": "Sensitivity to light",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Blurred vision",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Vision loss",
+          "Eye pain",
+          "Red eye"
+        ],
+        "argues_against": [
+          "Primary eye disease"
+        ]
+      },
+      {
+        "system": "ent",
+        "positives": [
+          {
+            "text": "Ringing in the ears",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Blood or clear fluid from the nose or ear",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Hearing loss",
+          "Sore throat",
+          "Nasal congestion"
+        ],
+        "argues_against": [
+          "Upper respiratory infection"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Neck pain or stiffness",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Scalp tenderness or swelling",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Midline spine tenderness",
+          "Inability to move the neck",
+          "Arm or leg deformity"
+        ],
+        "argues_against": [
+          "Cervical spine fracture"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Nausea",
+            "frequency": "common"
+          },
+          {
+            "text": "Vomiting",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Blood in vomit",
+          "Blood in stool",
+          "Abdominal pain"
+        ],
+        "argues_against": [
+          "Gastrointestinal bleeding"
+        ]
+      },
+      {
+        "system": "psychiatric",
+        "positives": [
+          {
+            "text": "Feeling anxious or irritable",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Feeling more emotional than usual",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Suicidal thoughts",
+          "Hallucinations",
+          "Severe agitation"
+        ],
+        "argues_against": [
+          "Primary psychiatric disorder"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Infants and young children may present with irritability, poor feeding, vomiting or a bulging fontanelle rather than reporting headache or confusion. Non-accidental trauma should be considered when the mechanism does not fit the injury.",
+        "missing_classic_features": [
+          "Verbal report of headache",
+          "Clear description of loss of consciousness"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "Even a minor fall can cause a subdural hematoma, and symptoms may be subtle: new confusion, gait change or drowsiness rather than a dramatic headache. Anticoagulant use raises the risk substantially.",
+        "missing_classic_features": [
+          "Severe headache",
+          "Clear loss of consciousness"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Trauma evaluation must also consider the pregnancy; imaging decisions balance fetal radiation exposure against the need to exclude intracranial bleeding. Symptoms of head injury can be confused with preeclampsia or eclampsia.",
+        "missing_classic_features": [
+          "Isolated headache without trauma"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "A minor head injury can be more serious because of bleeding risk from low platelets or coagulopathy; infection of a scalp wound or skull fracture is also more likely.",
+        "missing_classic_features": [
+          "Mild, self-limited symptoms"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Alert, awake, conversant; may look dazed or hold the head; no external signs of serious injury",
+      "moderate": "Drowsy but arousable, disoriented to time or place, may vomit or need help sitting up",
+      "severe": "Difficult to arouse, confused or combative, obvious scalp or facial trauma, may have focal deficits",
+      "critical": "Unresponsive or only to painful stimuli, abnormal posturing, dilated or asymmetric pupils, hemodynamic instability"
+    },
+    "findings": [
+      {
+        "id": "gcs",
+        "region": "neuro",
+        "maneuver": "Assess eye opening, verbal response and motor response to voice and painful stimulus",
+        "finding": "Glasgow Coma Scale score below 15; mild 13–15, moderate 9–12, severe 3–8",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "pupillary-asymmetry",
+        "region": "neuro",
+        "maneuver": "Shine a light in each eye and compare pupil size and reactivity",
+        "finding": "One pupil larger than the other or sluggish to react, suggesting uncal herniation or third nerve compression",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "focal-motor-deficit",
+        "region": "neuro",
+        "maneuver": "Test strength in all four limbs and compare sides",
+        "finding": "Weakness or drift of one arm or leg",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "babinski-sign",
+        "region": "neuro",
+        "maneuver": "Stroke the sole of each foot from heel to toe",
+        "finding": "Upgoing toe (extensor plantar response) on one or both sides",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "altered-mental-status",
+        "region": "mental_status",
+        "maneuver": "Ask the patient their name, where they are, the date and what happened",
+        "finding": "Disorientation, confusion, slowed responses or inability to recall the injury",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "scalp-laceration-hematoma",
+        "region": "skin",
+        "maneuver": "Inspect and palpate the entire scalp, parting the hair",
+        "finding": "Laceration, abrasion, contusion or boggy swelling at the site of impact",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "depressed-skull-fracture",
+        "region": "heent",
+        "maneuver": "Palpate the skull gently for a step-off or depression",
+        "finding": "A palpable depression or step-off in the skull contour",
+        "frequency": "rare",
+        "min_severity": "moderate",
+        "significance": "strongly_supports",
+        "importance": "important"
+      },
+      {
+        "id": "raccoon-eyes",
+        "region": "heent",
+        "maneuver": "Inspect around both eyes",
+        "finding": "Periorbital ecchymosis (raccoon eyes), suggesting a basilar skull fracture",
+        "frequency": "rare",
+        "min_severity": "moderate",
+        "significance": "strongly_supports",
+        "importance": "important"
+      },
+      {
+        "id": "battle-sign",
+        "region": "heent",
+        "maneuver": "Inspect behind the ears",
+        "finding": "Ecchymosis over the mastoid process (Battle sign), suggesting a basilar skull fracture",
+        "frequency": "rare",
+        "min_severity": "moderate",
+        "significance": "strongly_supports",
+        "importance": "important"
+      },
+      {
+        "id": "hemotympanum",
+        "region": "heent",
+        "maneuver": "Inspect the tympanic membranes with an otoscope",
+        "finding": "Blood behind the eardrum, suggesting a basilar skull fracture",
+        "frequency": "rare",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "csf-rhinorrhea-otorrhea",
+        "region": "heent",
+        "maneuver": "Inspect the nose and ears for clear fluid; ask the patient to lean forward",
+        "finding": "Clear fluid dripping from the nose or ear, suggesting a CSF leak from a basilar skull fracture",
+        "frequency": "rare",
+        "min_severity": "moderate",
+        "significance": "strongly_supports",
+        "importance": "important"
+      },
+      {
+        "id": "cervical-spine-tenderness",
+        "region": "neck",
+        "maneuver": "Palpate the posterior midline of the neck and ask about pain with movement",
+        "finding": "Midline cervical tenderness or pain on neck movement, raising concern for a cervical spine injury",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "normal-cervical-spine",
+        "region": "neck",
+        "maneuver": "Palpate the midline neck and test active rotation if the patient is alert and has no distracting injury",
+        "finding": "No midline tenderness and full painless range of motion",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-abdomen",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen for tenderness, guarding or distension",
+        "finding": "Soft, non-tender abdomen without guarding",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-chest",
+        "region": "lung",
+        "maneuver": "Auscultate breath sounds and palpate the chest wall",
+        "finding": "Clear breath sounds and no chest wall tenderness or crepitus",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-extremities",
+        "region": "extremities",
+        "maneuver": "Inspect and palpate the arms and legs for deformity, tenderness or swelling",
+        "finding": "No deformity, focal tenderness or swelling",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "moderate": {
+        "min": 98.0,
+        "max": 99.5
+      },
+      "severe": {
+        "min": 97.5,
+        "max": 100.0
+      },
+      "critical": {
+        "min": 96.5,
+        "max": 100.5
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 100
+      },
+      "moderate": {
+        "min": 70,
+        "max": 110
+      },
+      "severe": {
+        "min": 80,
+        "max": 130
+      },
+      "critical": {
+        "min": 40,
+        "max": 150
+      }
+    },
+    "rr": {
+      "moderate": {
+        "min": 14,
+        "max": 22
+      },
+      "severe": {
+        "min": 16,
+        "max": 28
+      },
+      "critical": {
+        "min": 8,
+        "max": 36
+      }
+    },
+    "sbp": {
+      "moderate": {
+        "min": 100,
+        "max": 150
+      },
+      "severe": {
+        "min": 90,
+        "max": 180
+      },
+      "critical": {
+        "min": 70,
+        "max": 200
+      }
+    },
+    "dbp": {
+      "moderate": {
+        "min": 60,
+        "max": 90
+      },
+      "severe": {
+        "min": 50,
+        "max": 100
+      },
+      "critical": {
+        "min": 40,
+        "max": 110
+      }
+    },
+    "spo2": {
+      "moderate": {
+        "min": 94,
+        "max": 100
+      },
+      "severe": {
+        "min": 90,
+        "max": 100
+      },
+      "critical": {
+        "min": 80,
+        "max": 100
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "hcg",
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Negative. Required in anyone who could be pregnant before CT imaging; a positive result changes imaging choice and management."
+    },
+    {
+      "test_id": "pt",
+      "ranges": {
+        "moderate": {
+          "min": 13.5,
+          "max": 18.0
+        },
+        "severe": {
+          "min": 16.0,
+          "max": 25.0
+        },
+        "critical": {
+          "min": 20.0,
+          "max": 40.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Prolonged in warfarin use, liver disease or disseminated intravascular coagulation; a bleeding risk marker before neurosurgery."
+    },
+    {
+      "test_id": "inr",
+      "ranges": {
+        "moderate": {
+          "min": 1.2,
+          "max": 1.8
+        },
+        "severe": {
+          "min": 1.6,
+          "max": 3.0
+        },
+        "critical": {
+          "min": 2.5,
+          "max": 6.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "essential",
+      "caveat": "An elevated INR in a patient on warfarin predicts progression of intracranial hemorrhage and guides reversal."
+    },
+    {
+      "test_id": "aptt",
+      "ranges": {
+        "moderate": {
+          "min": 35,
+          "max": 50
+        },
+        "severe": {
+          "min": 45,
+          "max": 70
+        },
+        "critical": {
+          "min": 60,
+          "max": 100
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Prolonged with heparin use or a coagulopathy."
+    },
+    {
+      "test_id": "plt",
+      "ranges": {
+        "moderate": {
+          "min": 100,
+          "max": 150
+        },
+        "severe": {
+          "min": 50,
+          "max": 100
+        },
+        "critical": {
+          "min": 10,
+          "max": 50
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Thrombocytopenia raises bleeding risk and may reflect alcohol use, liver disease or a primary hematologic disorder."
+    },
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "mild": {
+          "min": 11.0,
+          "max": 15.0
+        },
+        "moderate": {
+          "min": 14.0,
+          "max": 20.0
+        },
+        "severe": {
+          "min": 18.0,
+          "max": 28.0
+        },
+        "critical": {
+          "min": 22.0,
+          "max": 35.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Mild leukocytosis is common after trauma and does not by itself indicate infection."
+    },
+    {
+      "test_id": "na",
+      "ranges": {
+        "moderate": {
+          "min": 130,
+          "max": 134
+        },
+        "severe": {
+          "min": 125,
+          "max": 130
+        },
+        "critical": {
+          "min": 115,
+          "max": 125
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hyponatremia can follow traumatic brain injury from SIADH or cerebral salt wasting and can worsen confusion or seizures."
+    },
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "moderate": {
+          "min": 50,
+          "max": 69
+        },
+        "severe": {
+          "min": 30,
+          "max": 50
+        },
+        "critical": {
+          "min": 20,
+          "max": 40
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "essential",
+      "caveat": "Hypoglycemia is a reversible cause of altered mental status and must be excluded in any patient with a head injury and confusion."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "moderate": {
+          "min": 2.0,
+          "max": 4.0
+        },
+        "severe": {
+          "min": 3.5,
+          "max": 6.0
+        },
+        "critical": {
+          "min": 5.0,
+          "max": 10.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Elevated with shock or associated multisystem trauma; supports the need for resuscitation."
+    },
+    {
+      "test_id": "ck",
+      "ranges": {
+        "moderate": {
+          "min": 300,
+          "max": 1000
+        },
+        "severe": {
+          "min": 800,
+          "max": 5000
+        },
+        "critical": {
+          "min": 3000,
+          "max": 20000
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Rises after prolonged immobility, seizures or associated muscle trauma; very high values raise concern for rhabdomyolysis."
+    },
+    {
+      "test_id": "csf_opening",
+      "ranges": {
+        "moderate": {
+          "min": 20,
+          "max": 30
+        },
+        "severe": {
+          "min": 25,
+          "max": 40
+        },
+        "critical": {
+          "min": 30,
+          "max": 50
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Only measured if a lumbar puncture is performed; elevated opening pressure suggests raised intracranial pressure."
+    },
+    {
+      "test_id": "csf_rbc",
+      "ranges": {
+        "moderate": {
+          "min": 1,
+          "max": 100
+        },
+        "severe": {
+          "min": 100,
+          "max": 10000
+        },
+        "critical": {
+          "min": 1000,
+          "max": 100000
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Blood in the CSF can reflect subarachnoid hemorrhage or a traumatic tap; a lumbar puncture is generally avoided when intracranial bleeding is suspected."
+    },
+    {
+      "test_id": "csf_protein",
+      "ranges": {
+        "moderate": {
+          "min": 45,
+          "max": 100
+        },
+        "severe": {
+          "min": 80,
+          "max": 200
+        },
+        "critical": {
+          "min": 150,
+          "max": 400
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Elevated with subarachnoid blood or central nervous system inflammation."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rate",
+        "finding": "Sinus bradycardia or relative bradycardia from raised intracranial pressure (Cushing response)",
+        "frequency": "rare",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "other",
+        "finding": "Diffuse deep T-wave inversions with a long QT interval (cerebral T waves), sometimes with prominent U waves",
+        "frequency": "rare",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "qt",
+        "finding": "Prolonged QT interval",
+        "frequency": "rare",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Sinus tachycardia from pain, stress or associated trauma",
+        "frequency": "sometimes"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Noncontrast CT head",
+      "modality": "ct",
+      "preferred_when": "First-line in moderate to severe head injury, any focal deficit, anticoagulant use or concerning mechanism",
+      "findings": [
+        {
+          "text": "No acute intracranial abnormality (normal study)",
+          "frequency": "common"
+        },
+        {
+          "text": "Hyperdense extra-axial collection along the cerebral convexity (acute subdural hematoma)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Lens-shaped hyperdense extra-axial collection (epidural hematoma)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Hyperdense material in the sulci, cisterns or Sylvian fissure (subarachnoid hemorrhage)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Punctate hyperdense foci in white matter or gray-white junction (diffuse axonal injury)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Hypodense or mixed-density intraparenchymal contusion, often frontal or temporal",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Linear lucency through the skull vault (skull fracture)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Midline shift, effaced cisterns or sulcal effacement (mass effect)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Pneumocephalus or intracranial air",
+          "frequency": "rare"
+        },
+        {
+          "text": "Depressed skull fracture fragment below the inner table",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Noncontrast CT cervical spine",
+      "modality": "ct",
+      "preferred_when": "Midline neck tenderness, distracting injury, altered mental status or high-risk mechanism",
+      "findings": [
+        {
+          "text": "No fracture or malalignment",
+          "frequency": "common"
+        },
+        {
+          "text": "Vertebral body or posterior element fracture",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Facet joint subluxation or dislocation",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Prevertebral soft tissue swelling",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "MRI brain without contrast",
+      "modality": "mri",
+      "preferred_when": "Persistent neurologic deficits, suspected diffuse axonal injury or symptoms out of proportion to CT findings",
+      "findings": [
+        {
+          "text": "Multiple small susceptibility artifacts in white matter or gray-white junction (diffuse axonal injury)",
+          "frequency": "common"
+        },
+        {
+          "text": "Subtle cortical contusions or brainstem lesions not seen on CT",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Subacute or chronic subdural hematoma with signal characteristics of blood breakdown products",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Skull x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Usually not performed; CT is the study of choice for suspected skull fracture",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Linear skull fracture lucency",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "Noncontrast CT head",
+        "why": "First-line imaging to exclude intracranial hemorrhage, contusion, mass effect or skull fracture"
+      },
+      {
+        "test": "glucose",
+        "why": "Reversible cause of altered mental status; must be checked in any confused patient"
+      },
+      {
+        "test": "cbc",
+        "why": "Baseline hemoglobin and platelet count; screens for anemia and thrombocytopenia"
+      },
+      {
+        "test": "coag",
+        "why": "Baseline coagulation status, especially in patients on anticoagulants or with liver disease"
+      },
+      {
+        "test": "bmp",
+        "why": "Sodium, glucose and renal function; hyponatremia can worsen confusion"
+      },
+      {
+        "test": "hcg",
+        "why": "Required in anyone who could be pregnant before CT imaging"
+      },
+      {
+        "test": "Noncontrast CT cervical spine",
+        "why": "Clears the cervical spine in patients with midline tenderness, distracting injury or altered mental status",
+        "only_if": "midline neck tenderness, distracting injury, altered mental status or high-risk mechanism"
+      },
+      {
+        "test": "Type and screen",
+        "why": "Prepares for possible transfusion or neurosurgery",
+        "only_if": "severe injury, anemia or planned operative intervention"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "lactate",
+        "why": "Assesses perfusion in associated multisystem trauma"
+      },
+      {
+        "test": "ck",
+        "why": "Screens for rhabdomyolysis after prolonged immobility, seizures or crush injury"
+      },
+      {
+        "test": "MRI brain without contrast",
+        "why": "Detects diffuse axonal injury or subtle lesions when symptoms exceed CT findings",
+        "only_if": "persistent deficits or symptoms out of proportion to CT"
+      },
+      {
+        "test": "pt",
+        "why": "Assesses bleeding risk and guides reversal in patients on warfarin"
+      },
+      {
+        "test": "inr",
+        "why": "Assesses bleeding risk and guides reversal in patients on warfarin"
+      },
+      {
+        "test": "aptt",
+        "why": "Assesses bleeding risk in patients on heparin or with a coagulopathy"
+      },
+      {
+        "test": "plt",
+        "why": "Thrombocytopenia raises bleeding risk and may require platelet transfusion before neurosurgery"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Skull x-ray",
+        "why": "CT is more sensitive and is the standard for suspected skull fracture"
+      },
+      {
+        "test": "lumbar puncture",
+        "why": "Contraindicated when raised intracranial pressure or intracranial mass effect is suspected; risks herniation"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in the evaluation of head trauma"
+      },
+      {
+        "test": "lipase",
+        "why": "Not indicated unless abdominal pain or pancreatic injury is suspected"
+      },
+      {
+        "test": "tsh",
+        "why": "Not part of the acute trauma workup"
+      },
+      {
+        "test": "ua",
+        "why": "Not routinely indicated unless urinary tract injury or infection is suspected"
+      }
+    ],
+    "decision_points": [
+      "Pregnancy test before CT in anyone who could be pregnant",
+      "Glasgow Coma Scale 8 or less: secure the airway before imaging",
+      "Anticoagulated or antiplatelet-treated patients: low threshold for CT and repeat imaging",
+      "Cervical spine imaging before clearing the neck in patients with midline tenderness or distracting injury",
+      "Signs of herniation or rapidly declining mental status: treat for raised intracranial pressure and involve neurosurgery before or during imaging"
+    ],
+    "criteria": [
+      {
+        "name": "Canadian CT Head Rule",
+        "summary": "Applies to adults with minor head injury and a Glasgow Coma Scale of 13 to 15. CT is recommended if any high-risk feature is present (failure to reach GCS 15 within 2 hours, suspected open or depressed skull fracture, vomiting, age 65 or older, or signs of basilar skull fracture) or any medium-risk feature is present (amnesia before impact longer than 30 minutes, or a dangerous mechanism such as a pedestrian struck, ejection from a vehicle, or a fall from more than 3 feet or 5 stairs).",
+        "items": [
+          "GCS less than 15 at 2 hours after injury",
+          "Suspected open or depressed skull fracture",
+          "Vomiting two or more times",
+          "Age 65 years or older",
+          "Signs of basilar skull fracture",
+          "Amnesia before impact longer than 30 minutes",
+          "Dangerous mechanism"
+        ]
+      },
+      {
+        "name": "New Orleans Criteria",
+        "summary": "Applies to patients with minor head injury and a Glasgow Coma Scale of 15. CT is recommended if any of the listed features is present.",
+        "items": [
+          "Headache",
+          "Vomiting",
+          "Age over 60 years",
+          "Drug or alcohol intoxication",
+          "Persistent anterograde amnesia",
+          "Physical evidence of trauma above the clavicles",
+          "Seizure"
+        ]
+      },
+      {
+        "name": "PECARN",
+        "summary": "Applies to children under 2 years and children 2 years and older with minor head injury. CT is recommended for children with a Glasgow Coma Scale of 14 or less, altered mental status, or signs of skull fracture; imaging is also considered when the mechanism is severe or when vomiting, severe headache or loss of consciousness is present.",
+        "items": [
+          "GCS 14 or less",
+          "Altered mental status",
+          "Palpable skull fracture",
+          "Severe mechanism",
+          "Vomiting",
+          "Severe headache",
+          "Loss of consciousness"
+        ]
+      }
+    ],
+    "scores": [
+      "gcs",
+      "canadian_ct_head",
+      "new_orleans_criteria",
+      "pecarn"
+    ]
+  },
+  "differential": [
+    {
+      "name": "Acute alcohol or drug intoxication",
+      "slug": "alcohol-intoxication",
+      "why_considered": "Altered mental status, slurred speech, ataxia and a fall are common in patients who have been drinking, and the trauma may be the reason they fell rather than the result of the fall.",
+      "must_not_miss": true,
+      "trigger": "Alcohol on the breath, slurred speech or ataxia with a reported fall",
+      "discriminators": {
+        "history": [
+          "Heavy drinking before the event",
+          "No clear head impact or a low-energy fall",
+          "Prior similar episodes"
+        ],
+        "exam": [
+          "Smell of alcohol",
+          "Diffuse neurologic depression without focal deficit",
+          "Symptoms improve with time and observation"
+        ],
+        "labs": [
+          "Elevated blood alcohol level",
+          "Negative or low urine drug screen for other agents"
+        ],
+        "imaging": [
+          "CT head without acute intracranial injury"
+        ]
+      }
+    },
+    {
+      "name": "Ischemic stroke",
+      "slug": "ischemic-stroke",
+      "why_considered": "Sudden focal weakness, numbness, slurred speech or confusion can be mistaken for a head injury, especially when the patient fell after the neurologic event began.",
+      "must_not_miss": true,
+      "trigger": "Focal deficit that does not fit the reported trauma or that was present before the fall",
+      "discriminators": {
+        "history": [
+          "Abrupt onset of focal symptoms before the fall",
+          "No or trivial head impact",
+          "Vascular risk factors such as hypertension, diabetes or atrial fibrillation"
+        ],
+        "exam": [
+          "Focal cortical signs such as aphasia or neglect",
+          "Deficit in a vascular territory",
+          "No external signs of head trauma"
+        ],
+        "labs": [
+          "Glucose and coagulation studies to exclude mimics and guide thrombolysis"
+        ],
+        "imaging": [
+          "CT head without hemorrhage, with early ischemic changes or a hyperdense vessel",
+          "MRI with restricted diffusion in a vascular territory"
+        ]
+      }
+    },
+    {
+      "name": "Subarachnoid hemorrhage",
+      "slug": "subarachnoid-hemorrhage",
+      "why_considered": "Sudden severe headache, vomiting, neck stiffness and photophobia overlap with head injury, and a ruptured aneurysm can cause a fall with secondary head trauma.",
+      "must_not_miss": true,
+      "trigger": "Worst headache of life with neck stiffness and no clear trauma, or a headache that started before the fall",
+      "discriminators": {
+        "history": [
+          "Thunderclap headache at onset",
+          "Headache preceded the fall",
+          "No significant head impact"
+        ],
+        "exam": [
+          "Nuchal rigidity",
+          "Photophobia",
+          "Often no external head trauma"
+        ],
+        "labs": [
+          "Xanthochromia or elevated red blood cell count in cerebrospinal fluid if lumbar puncture is performed"
+        ],
+        "imaging": [
+          "Hyperdense blood in the basal cisterns, sulci or Sylvian fissure on noncontrast CT",
+          "Aneurysm on CT angiography or catheter angiography"
+        ]
+      }
+    },
+    {
+      "name": "Meningitis or encephalitis",
+      "slug": "meningitis",
+      "why_considered": "Fever, headache, neck stiffness, photophobia and altered mental status can resemble post-traumatic symptoms, and a patient with infection may fall and strike the head.",
+      "must_not_miss": true,
+      "trigger": "Fever, neck stiffness or rash with headache and confusion",
+      "discriminators": {
+        "history": [
+          "Fever and systemic illness before the neurologic symptoms",
+          "No significant head trauma",
+          "Sick contacts or recent infection"
+        ],
+        "exam": [
+          "Nuchal rigidity",
+          "Positive Kernig or Brudzinski sign",
+          "Rash or focal neurologic deficits"
+        ],
+        "labs": [
+          "Elevated white blood cell count",
+          "Cerebrospinal fluid pleocytosis, elevated protein and low glucose"
+        ],
+        "imaging": [
+          "CT head without acute traumatic findings",
+          "MRI showing meningeal enhancement or temporal lobe signal change in encephalitis"
+        ]
+      }
+    },
+    {
+      "name": "Post-traumatic seizure or epilepsy",
+      "slug": "epilepsy",
+      "why_considered": "A seizure can cause a fall and head impact, and a head injury can cause a seizure, so the two are easily confused.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Witnessed tonic-clonic activity, tongue biting or incontinence",
+          "Postictal confusion out of proportion to the injury",
+          "Prior seizure history or missed anticonvulsant doses"
+        ],
+        "exam": [
+          "Postictal drowsiness that improves over minutes to hours",
+          "Lateral tongue laceration"
+        ],
+        "labs": [
+          "Elevated creatine kinase after a generalized seizure",
+          "Anticonvulsant levels if applicable"
+        ],
+        "imaging": [
+          "CT head to exclude acute traumatic bleeding",
+          "MRI to look for a structural cause of seizures"
+        ]
+      }
+    },
+    {
+      "name": "Cervical spine injury",
+      "slug": "spinal-cord-injuries",
+      "why_considered": "Neck pain, midline tenderness and neurologic deficits often accompany head trauma and can be missed if attention is focused on the head.",
+      "must_not_miss": true,
+      "trigger": "Midline neck tenderness, distracting injury or a high-risk mechanism",
+      "discriminators": {
+        "history": [
+          "Neck pain after the injury",
+          "High-risk mechanism such as a dive, fall from height or motor vehicle crash",
+          "Numbness or weakness in the arms or legs"
+        ],
+        "exam": [
+          "Midline cervical tenderness",
+          "Limited or painful neck movement",
+          "Sensory level or focal motor deficit"
+        ],
+        "labs": [],
+        "imaging": [
+          "CT cervical spine showing fracture, subluxation or prevertebral swelling",
+          "MRI for ligamentous or spinal cord injury when CT is negative but symptoms persist"
+        ]
+      }
+    },
+    {
+      "name": "Metabolic or toxic encephalopathy",
+      "slug": "delirium",
+      "why_considered": "Hypoglycemia, hyponatremia, hepatic encephalopathy, uremia or drug toxicity can cause confusion, dizziness and falls that are attributed to a head injury.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Diabetes, liver disease, kidney disease or new medications",
+          "No or minor head impact",
+          "Fluctuating symptoms before the event"
+        ],
+        "exam": [
+          "Diffuse cognitive impairment without focal deficit",
+          "Asterixis, tremor or jaundice"
+        ],
+        "labs": [
+          "Hypoglycemia",
+          "Hyponatremia",
+          "Elevated ammonia, urea or drug levels"
+        ],
+        "imaging": [
+          "CT head without acute traumatic findings"
+        ]
+      }
+    },
+    {
+      "name": "Psychiatric or functional disorder",
+      "slug": "conversion-disorder",
+      "why_considered": "Symptoms such as dizziness, memory trouble, weakness or unresponsiveness can occur without structural injury, and a minor head injury may be the trigger.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Symptoms inconsistent with the mechanism",
+          "Prior psychiatric history or psychosocial stressors",
+          "Symptoms that vary with attention"
+        ],
+        "exam": [
+          "Inconsistent effort or give-way weakness",
+          "Normal reflexes and no focal cortical signs"
+        ],
+        "labs": [
+          "Normal routine blood work"
+        ],
+        "imaging": [
+          "Normal CT and MRI of the brain"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Glasgow Coma Scale 13–15, alert and conversant, headache and dizziness only, no focal deficit, no vomiting, no anticoagulant use, and a low-risk mechanism; may be managed with observation and return precautions.",
+      "moderate": "Glasgow Coma Scale 9–12, drowsy but arousable, disoriented, repeated vomiting, focal deficit, post-traumatic seizure, or a skull fracture on imaging; requires admission, close neurologic monitoring and neurosurgical consultation.",
+      "severe": "Glasgow Coma Scale 3–8, unable to protect the airway, signs of raised intracranial pressure or herniation, or a large intracranial hematoma with mass effect; requires intubation, intensive care and possible surgery.",
+      "critical": "Unresponsive with abnormal posturing, asymmetric or fixed dilated pupils, hemodynamic instability or a rapidly expanding intracranial hemorrhage; requires immediate airway control, hyperosmolar therapy, blood pressure support and emergency neurosurgery."
+    },
+    "red_flags": [
+      {
+        "finding": "Glasgow Coma Scale 8 or less or inability to protect the airway",
+        "meaning": "Severe traumatic brain injury; intubate and involve neurosurgery immediately"
+      },
+      {
+        "finding": "One pupil larger than the other or sluggish to react",
+        "meaning": "Uncal herniation or third nerve compression; a neurosurgical emergency"
+      },
+      {
+        "finding": "New focal weakness, numbness or slurred speech",
+        "meaning": "Intracranial hemorrhage, contusion or mass effect until proven otherwise"
+      },
+      {
+        "finding": "Worsening headache, repeated vomiting or increasing drowsiness",
+        "meaning": "Expanding intracranial hematoma or rising intracranial pressure"
+      },
+      {
+        "finding": "Seizure after the injury",
+        "meaning": "Cortical irritation from contusion, hemorrhage or fracture; needs imaging and monitoring"
+      },
+      {
+        "finding": "Clear fluid or blood from the nose or ear, raccoon eyes or Battle sign",
+        "meaning": "Basilar skull fracture with risk of cerebrospinal fluid leak and meningitis"
+      },
+      {
+        "finding": "Anticoagulant or antiplatelet use with any head impact",
+        "meaning": "High risk of delayed intracranial hemorrhage; low threshold for CT and repeat imaging"
+      },
+      {
+        "finding": "Midline cervical tenderness or a distracting injury",
+        "meaning": "Possible cervical spine injury; immobilize and image before clearing the neck"
+      },
+      {
+        "finding": "Hypotension or tachycardia",
+        "meaning": "Associated multisystem trauma or shock; resuscitate before imaging"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Epidural hematoma",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Temporal blow with a brief loss of consciousness followed by a lucid interval",
+          "Rapidly worsening headache and drowsiness",
+          "Lens-shaped hyperdense collection on CT"
+        ]
+      },
+      {
+        "name": "Acute subdural hematoma",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Older adult or anticoagulated patient",
+          "Progressive confusion and focal deficit",
+          "Crescent-shaped hyperdense collection on CT"
+        ]
+      },
+      {
+        "name": "Traumatic subarachnoid hemorrhage",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Severe headache and neck stiffness after trauma",
+          "Blood in the sulci or cisterns on CT"
+        ]
+      },
+      {
+        "name": "Cerebral contusion with edema",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Frontal or temporal impact",
+          "Persistent confusion or focal deficit",
+          "Mixed-density lesion with surrounding edema on CT"
+        ]
+      },
+      {
+        "name": "Diffuse axonal injury",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "High-speed deceleration mechanism",
+          "Prolonged coma out of proportion to CT findings",
+          "Punctate white matter lesions on MRI"
+        ]
+      },
+      {
+        "name": "Raised intracranial pressure and herniation",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Declining Glasgow Coma Scale",
+          "Pupillary asymmetry",
+          "Cushing response with hypertension, bradycardia and irregular respirations"
+        ]
+      },
+      {
+        "name": "Post-traumatic seizure",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Seizure within the first week after injury",
+          "Cortical contusion, hemorrhage or depressed fracture on imaging"
+        ]
+      },
+      {
+        "name": "Cerebrospinal fluid leak and meningitis",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Clear fluid from the nose or ear",
+          "Basilar skull fracture on imaging",
+          "Fever and neck stiffness days later"
+        ]
+      },
+      {
+        "name": "Chronic subdural hematoma",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Older adult with weeks of headache, gait change or confusion",
+          "Minor or forgotten head injury",
+          "Hypodense or mixed-density crescentic collection on CT"
+        ]
+      },
+      {
+        "name": "Post-concussion syndrome",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "common",
+        "clues": [
+          "Headache, dizziness, poor concentration and irritability lasting weeks",
+          "Symptoms provoked by exertion, screens or noise"
+        ]
+      },
+      {
+        "name": "Cognitive and neuroendocrine sequelae",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Persistent memory or executive dysfunction",
+          "Fatigue, weight change or hypotension suggesting hypopituitarism"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Infants and young children may present with irritability, poor feeding, vomiting or a bulging fontanelle rather than reporting headache or confusion. Non-accidental trauma should be considered when the mechanism does not fit the injury, and the PECARN rule guides imaging."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Even a minor fall can cause a subdural hematoma, and symptoms may be subtle: new confusion, gait change or drowsiness rather than a dramatic headache. Anticoagulant use raises the risk substantially, and a lower threshold for CT and repeat imaging is warranted."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Trauma evaluation must also consider the pregnancy; imaging decisions balance fetal radiation exposure against the need to exclude intracranial bleeding. Symptoms of head injury can be confused with preeclampsia or eclampsia."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "A minor head injury can be more serious because of bleeding risk from low platelets or coagulopathy; infection of a scalp wound or skull fracture is also more likely."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "What happened, and how did you hit your head?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "A clear mechanism (fall, crash, assault, sports collision) and the height or force involved; a dangerous mechanism such as a fall from more than 3 feet or 5 stairs, ejection from a vehicle, or a pedestrian struck raises the risk of intracranial injury"
+      },
+      {
+        "question": "Did you lose consciousness, and if so, for how long?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Any loss of consciousness, however brief; a lucid interval followed by worsening drowsiness suggests an expanding epidural hematoma"
+      },
+      {
+        "question": "Do you remember what happened right before and right after the injury?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Amnesia around the event; amnesia longer than 30 minutes before impact is a medium-risk feature on the Canadian CT Head Rule"
+      },
+      {
+        "question": "Is your headache getting worse, and have you vomited?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Worsening or persistent headache and repeated vomiting, which suggest rising intracranial pressure or an expanding hematoma"
+      },
+      {
+        "question": "Have you felt drowsier, harder to wake, or more confused since the injury?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Progressive decline in level of consciousness, which is the most important warning sign of a worsening intracranial injury"
+      },
+      {
+        "question": "Any weakness, numbness, trouble speaking, or trouble seeing?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "New focal deficits such as limb weakness, slurred speech, or visual change, which point to intracranial hemorrhage, contusion, or mass effect"
+      },
+      {
+        "question": "Did you have a seizure after the injury?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "A post-traumatic seizure, which indicates cortical irritation and warrants imaging and monitoring"
+      },
+      {
+        "question": "Any clear fluid or blood dripping from your nose or ear?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "CSF rhinorrhea or otorrhea, raccoon eyes, or Battle sign, which suggest a basilar skull fracture"
+      },
+      {
+        "question": "Does your neck hurt, especially in the middle?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Midline cervical tenderness, which raises concern for a cervical spine injury and requires immobilization and imaging"
+      },
+      {
+        "question": "Do you take any blood thinners, such as warfarin, apixaban, rivaroxaban, aspirin, or clopidogrel?",
+        "category": "medications",
+        "importance": "essential",
+        "looking_for": "Anticoagulant or antiplatelet use, which markedly raises the risk of delayed intracranial hemorrhage and lowers the threshold for CT and repeat imaging"
+      },
+      {
+        "question": "Have you ever had a head injury or brain surgery before?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Prior head injury or neurosurgery, which increases vulnerability to a new injury and can complicate interpretation of imaging"
+      },
+      {
+        "question": "Do you have a bleeding disorder, liver disease, or a low platelet count?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "A coagulopathy or thrombocytopenia, which raises bleeding risk and may require reversal or transfusion before neurosurgery"
+      },
+      {
+        "question": "Had you been drinking alcohol or using any drugs before the injury?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Alcohol or drug use, which can cause the fall and also confound the neurologic exam; intoxication is a risk feature on the New Orleans Criteria"
+      },
+      {
+        "question": "Were you wearing a helmet or seatbelt?",
+        "category": "social",
+        "importance": "optional",
+        "looking_for": "Absence of protective equipment, which supports a higher-energy mechanism and a lower threshold for imaging"
+      },
+      {
+        "question": "Could you be pregnant? When was your last period?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Possible pregnancy, which must be excluded before CT imaging and changes the imaging and management plan"
+      },
+      {
+        "question": "Do you have any other injuries, such as chest, abdominal, or limb pain?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Associated multisystem trauma, which may be more immediately life-threatening than the head injury and changes resuscitation priorities"
+      }
+    ],
+    "accepted_names": [
+      "Head injury",
+      "Head injuries",
+      "Head trauma",
+      "Traumatic brain injury",
+      "TBI",
+      "Concussion",
+      "Mild traumatic brain injury",
+      "mTBI",
+      "Craniocerebral trauma",
+      "Closed head injury",
+      "Blunt head trauma",
+      "Skull fracture"
+    ],
+    "reasoning_points": [
+      "A clear mechanism of trauma to the head, such as a fall, motor vehicle crash, assault, or sports collision",
+      "Headache, confusion or feeling foggy, dizziness, and nausea after the impact",
+      "Amnesia around the event or a brief loss of consciousness",
+      "Glasgow Coma Scale below 15 or an altered level of consciousness on exam",
+      "Focal neurologic deficits, pupillary asymmetry, or signs of raised intracranial pressure",
+      "External signs of trauma such as a scalp laceration, hematoma, raccoon eyes, Battle sign, or hemotympanum",
+      "Risk factors that lower the threshold for imaging: age 65 or older, anticoagulant or antiplatelet use, vomiting, dangerous mechanism, or post-traumatic seizure",
+      "Noncontrast CT head showing hemorrhage, contusion, mass effect, or skull fracture, or a normal study in concussion",
+      "Reversible causes of altered mental status such as hypoglycemia and intoxication excluded",
+      "Cervical spine injury considered and the neck cleared or imaged before mobilization"
+    ],
+    "difficulty": {
+      "easy": [
+        "Young adult with a clear blow to the head after a fall or collision",
+        "Headache, dizziness, and nausea with a Glasgow Coma Scale of 15",
+        "Scalp laceration or hematoma at the site of impact",
+        "No focal deficit and a normal noncontrast CT head"
+      ],
+      "medium": [
+        "Older adult on warfarin or an antiplatelet agent after a ground-level fall",
+        "Brief loss of consciousness with a lucid interval followed by worsening drowsiness",
+        "Post-traumatic seizure with a cortical contusion on CT",
+        "Basilar skull fracture signs such as raccoon eyes, Battle sign, or clear fluid from the ear"
+      ],
+      "hard": [
+        "Patient with alcohol intoxication whose confusion is attributed to drinking rather than the head injury",
+        "Older adult with weeks of subtle confusion or gait change from a chronic subdural hematoma and a forgotten fall",
+        "High-speed deceleration injury with prolonged coma out of proportion to a near-normal CT (diffuse axonal injury)",
+        "Patient with a focal deficit from a stroke who fell afterward, so the trauma is mistaken for the cause",
+        "Toddler with irritability and vomiting where non-accidental trauma must be considered"
+      ]
+    }
+  }
+}

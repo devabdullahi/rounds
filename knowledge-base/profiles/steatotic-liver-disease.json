@@ -1,0 +1,1567 @@
+{
+  "schema_version": "0.2",
+  "slug": "steatotic-liver-disease",
+  "triage": {
+    "name": "Steatotic Liver Disease",
+    "case_suitable": true,
+    "reason": "Common incidental abnormal liver enzymes or imaging finding; diagnosis reachable by history (alcohol, metabolic risk factors), exam, labs and imaging, with important distinctions between alcohol-associated and metabolic causes.",
+    "kind": "disease",
+    "category": "hepatic steatosis / chronic liver disease",
+    "organ_systems": [
+      "gastrointestinal",
+      "endocrine"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "familyMedicine",
+      "surgery",
+      "emergency"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "clinic",
+      "inpatient"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:20:22Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:14:34Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:14:39Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:14:53Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:15:09Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:15:17Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'liver biopsy' was in ['confirmatory', 'not_indicated'], kept ['not_indicated', 'confirmatory']",
+        "auto-repaired: workup: 'liver biopsy' was in ['confirmatory', 'not_indicated'], kept ['not_indicated', 'confirmatory']",
+        "differential alcohol-associated-liver-disease: no profile yet",
+        "differential hepatitis-c: no profile yet",
+        "differential hepatitis-b: no profile yet",
+        "differential hemochromatosis: no profile yet",
+        "differential wilson-disease: no profile yet",
+        "differential drug-induced-liver-injury: no profile yet",
+        "differential primary-biliary-cholangitis: no profile yet",
+        "differential autoimmune-hepatitis: no profile yet",
+        "differential alpha-1-antitrypsin-deficiency: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 40,
+      "typical_max": 70,
+      "peak": "45–65",
+      "possible_min": 2,
+      "possible_max": 90
+    },
+    "sex": "either",
+    "demographics": [
+      "More common in adults with obesity or type 2 diabetes; prevalence rises with age",
+      "In the US, MASLD is more prevalent in Hispanic and non-Hispanic White populations than in non-Hispanic Black populations",
+      "Alcohol-associated liver disease is more common in men, but women develop liver injury at lower levels of alcohol intake",
+      "Children and adolescents can develop MASLD, usually in the setting of obesity"
+    ],
+    "risk_factors": [
+      {
+        "text": "Obesity or central adiposity",
+        "strength": "strong"
+      },
+      {
+        "text": "Type 2 diabetes or prediabetes",
+        "strength": "strong"
+      },
+      {
+        "text": "Metabolic syndrome (high blood pressure, high triglycerides, low HDL, elevated fasting glucose)",
+        "strength": "strong"
+      },
+      {
+        "text": "Heavy or long-standing alcohol use (for alcohol-associated liver disease)",
+        "strength": "strong"
+      },
+      {
+        "text": "Dyslipidemia",
+        "strength": "moderate"
+      },
+      {
+        "text": "Rapid weight loss or malnutrition",
+        "strength": "moderate"
+      },
+      {
+        "text": "Chronic hepatitis C infection",
+        "strength": "moderate"
+      },
+      {
+        "text": "Certain medications (corticosteroids, some cancer chemotherapies, amiodarone, methotrexate, tamoxifen)",
+        "strength": "moderate"
+      },
+      {
+        "text": "Female sex for alcohol-associated injury at lower intake",
+        "strength": "moderate"
+      },
+      {
+        "text": "Genetic variants (e.g., PNPLA3) and family history",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Type 2 diabetes mellitus",
+      "Obesity",
+      "Hypertension",
+      "Dyslipidemia",
+      "Metabolic syndrome",
+      "Hypothyroidism",
+      "Polycystic ovary syndrome",
+      "Obstructive sleep apnea"
+    ],
+    "family_history": [
+      "Steatotic liver disease or cirrhosis in a first-degree relative",
+      "Type 2 diabetes in a first-degree relative",
+      "Obesity or dyslipidemia in a first-degree relative"
+    ],
+    "social_history": [
+      "Sedentary lifestyle",
+      "High intake of processed foods, sugar-sweetened beverages, or fructose",
+      "Heavy or binge alcohol use",
+      "Lower socioeconomic status and food insecurity"
+    ],
+    "exposures": [
+      "Total parenteral nutrition",
+      "Occupational or environmental exposure to hepatotoxins (e.g., carbon tetrachloride, vinyl chloride)",
+      "Herbal or dietary supplements with potential hepatotoxicity"
+    ],
+    "risk_medications": [
+      "Corticosteroids",
+      "Amiodarone",
+      "Methotrexate",
+      "Tamoxifen",
+      "Valproic acid",
+      "Irinotecan",
+      "Antiretroviral medications"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I feel tired all the time",
+        "frequency": "common"
+      },
+      {
+        "text": "I have a dull ache in my upper right belly",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "My doctor said my liver tests were abnormal",
+        "frequency": "common"
+      },
+      {
+        "text": "I don't have any symptoms, it was found on a scan",
+        "frequency": "common"
+      }
+    ],
+    "hpi": {
+      "onset": "Insidious; often discovered incidentally on routine blood work or imaging",
+      "duration": "Months to years; may be present for a long time before detection",
+      "progression": "Usually stable or slowly progressive; most patients remain asymptomatic, but some develop progressive fibrosis and eventually cirrhosis",
+      "location": "Right upper quadrant or epigastric region when discomfort is present",
+      "radiation": "Usually none",
+      "quality": "Dull, vague, or pressure-like",
+      "severity": "Mild; often 2–4/10 when present",
+      "timing": "Intermittent or constant; not typically related to meals",
+      "aggravating": [
+        "Large meals",
+        "Physical activity"
+      ],
+      "relieving": [
+        "Rest",
+        "Nothing specific"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Fatigue or reduced energy",
+          "frequency": "common"
+        },
+        {
+          "text": "Malaise",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Right upper quadrant discomfort or fullness",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Mild jaundice (yellowing of eyes or skin)",
+          "frequency": "rare"
+        },
+        {
+          "text": "Pruritus",
+          "frequency": "rare"
+        },
+        {
+          "text": "Weight gain or difficulty losing weight",
+          "frequency": "common"
+        }
+      ],
+      "pertinent_negatives": [
+        "Heavy alcohol use (for MASLD)",
+        "Use of hepatotoxic medications or supplements",
+        "Fever",
+        "Severe abdominal pain",
+        "Vomiting blood or black stools",
+        "Confusion or altered mental status",
+        "Swelling of the abdomen or legs",
+        "Dark urine or pale stools",
+        "Known viral hepatitis or autoimmune liver disease"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fatigue",
+            "frequency": "common"
+          },
+          {
+            "text": "Malaise",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Fever",
+          "Weight loss",
+          "Night sweats"
+        ],
+        "argues_against": [
+          "Acute infection",
+          "Malignancy"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Right upper quadrant discomfort",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Nausea",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Vomiting blood",
+          "Black stools",
+          "Diarrhea",
+          "Constipation",
+          "Jaundice"
+        ],
+        "argues_against": [
+          "Gastrointestinal bleeding",
+          "Biliary obstruction"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [
+          {
+            "text": "Easy bruising",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Jaundice",
+          "Pruritus",
+          "Spider angiomas",
+          "Palmar erythema"
+        ],
+        "argues_against": [
+          "Decompensated cirrhosis"
+        ]
+      },
+      {
+        "system": "endocrine",
+        "positives": [
+          {
+            "text": "Weight gain",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Polyuria",
+          "Polydipsia",
+          "Heat or cold intolerance"
+        ],
+        "argues_against": [
+          "Uncontrolled diabetes",
+          "Thyroid disease"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Usually asymptomatic and detected during evaluation for obesity or incidentally on labs; abdominal pain can be more prominent.",
+        "missing_classic_features": [
+          "Fatigue",
+          "Right upper quadrant discomfort"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "More likely to have advanced fibrosis or cirrhosis at presentation and may present with complications such as ascites or encephalopathy.",
+        "missing_classic_features": [
+          "Normal liver enzymes",
+          "Absence of signs of chronic liver disease"
+        ]
+      },
+      {
+        "population": "obesity",
+        "how_it_differs": "Often have metabolic syndrome and more severe steatohepatitis; symptoms may be attributed to obesity rather than liver disease.",
+        "missing_classic_features": [
+          "Normal BMI",
+          "Absence of metabolic risk factors"
+        ]
+      },
+      {
+        "population": "diabetes",
+        "how_it_differs": "Higher risk of advanced fibrosis and cirrhosis; may have normal ALT despite significant disease.",
+        "missing_classic_features": [
+          "Elevated liver enzymes"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Steatotic liver disease may be pre-existing and can worsen during pregnancy; must be distinguished from acute fatty liver of pregnancy, which is a different emergency.",
+        "missing_classic_features": [
+          "Typical chronic indolent course"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Well-appearing, comfortable, often overweight or obese with central adiposity; no distress",
+      "moderate": "Well-appearing but fatigued; central obesity; may have acanthosis nigricans or other metabolic stigmata",
+      "severe": "May appear chronically ill with signs of advanced fibrosis or portal hypertension (spider angiomas, palmar erythema, muscle wasting)",
+      "critical": "Ill-appearing with decompensated cirrhosis: jaundice, ascites, confusion, or asterixis"
+    },
+    "findings": [
+      {
+        "id": "bmi-elevated",
+        "region": "general",
+        "maneuver": "Measure height and weight and calculate BMI; measure waist circumference",
+        "finding": "Elevated BMI (overweight or obese) with increased waist circumference",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "hepatomegaly",
+        "region": "abdomen",
+        "maneuver": "Palpate the right upper quadrant and percuss the liver span",
+        "finding": "Smooth, mildly tender hepatomegaly",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "ruq-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate the right upper quadrant",
+        "finding": "Mild right upper quadrant tenderness without guarding or rebound",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "acanthosis-nigricans",
+        "region": "skin",
+        "maneuver": "Inspect the neck, axillae, and skin folds",
+        "finding": "Velvety hyperpigmented plaques (acanthosis nigricans), suggesting insulin resistance",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "no-jaundice",
+        "region": "heent",
+        "maneuver": "Inspect the sclerae and skin in natural light",
+        "finding": "No scleral icterus or jaundice",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-ascites",
+        "region": "abdomen",
+        "maneuver": "Percuss for shifting dullness and test for a fluid wave",
+        "finding": "No ascites",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-spider-angiomas",
+        "region": "skin",
+        "maneuver": "Inspect the upper trunk, face, and arms",
+        "finding": "No spider angiomas or palmar erythema",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-encephalopathy",
+        "region": "neuro",
+        "maneuver": "Assess orientation, attention, and test for asterixis",
+        "finding": "Alert and oriented; no asterixis or confusion",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "no-murphy-sign",
+        "region": "abdomen",
+        "maneuver": "Press under the right costal margin during inspiration (Murphy sign)",
+        "finding": "No inspiratory arrest, arguing against acute cholecystitis",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-fever",
+        "region": "general",
+        "maneuver": "Measure temperature and assess for systemic signs",
+        "finding": "Afebrile, no signs of acute infection",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-peripheral-edema",
+        "region": "extremities",
+        "maneuver": "Press over the pretibial area and dorsum of the feet",
+        "finding": "No pitting edema",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {},
+  "labs": [
+    {
+      "test_id": "alt",
+      "ranges": {
+        "mild": {
+          "min": 57,
+          "max": 90
+        },
+        "moderate": {
+          "min": 80,
+          "max": 160
+        },
+        "severe": {
+          "min": 130,
+          "max": 300
+        },
+        "critical": {
+          "min": 200,
+          "max": 600
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "ALT is often only mildly elevated or even normal in steatotic liver disease; a normal ALT does not exclude significant fibrosis. ALT > AST favors MASLD."
+    },
+    {
+      "test_id": "ast",
+      "ranges": {
+        "mild": {
+          "min": 41,
+          "max": 70
+        },
+        "moderate": {
+          "min": 60,
+          "max": 120
+        },
+        "severe": {
+          "min": 100,
+          "max": 250
+        },
+        "critical": {
+          "min": 180,
+          "max": 500
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "An AST/ALT ratio above 1 suggests alcohol-associated liver disease or advanced fibrosis; in MASLD the ratio is usually below 1."
+    },
+    {
+      "test_id": "ggt",
+      "ranges": {
+        "mild": {
+          "min": 49,
+          "max": 100
+        },
+        "moderate": {
+          "min": 80,
+          "max": 200
+        },
+        "severe": {
+          "min": 150,
+          "max": 400
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Supports alcohol use or biliary involvement but is nonspecific; can be elevated by many medications."
+    },
+    {
+      "test_id": "alp",
+      "ranges": {
+        "mild": {
+          "min": 148,
+          "max": 220
+        },
+        "moderate": {
+          "min": 200,
+          "max": 350
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Mild elevation can occur; marked elevation should prompt evaluation for biliary obstruction or infiltrative disease."
+    },
+    {
+      "test_id": "tbili",
+      "ranges": {
+        "mild": {
+          "min": 1.3,
+          "max": 2.0
+        },
+        "moderate": {
+          "min": 1.8,
+          "max": 3.5
+        },
+        "severe": {
+          "min": 3.0,
+          "max": 8.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Usually normal or only mildly elevated until advanced disease; higher values suggest cirrhosis or another cause."
+    },
+    {
+      "test_id": "albumin",
+      "ranges": {
+        "moderate": {
+          "min": 3.0,
+          "max": 3.4
+        },
+        "severe": {
+          "min": 2.2,
+          "max": 3.0
+        },
+        "critical": {
+          "min": 1.8,
+          "max": 2.5
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Low albumin indicates synthetic dysfunction and suggests advanced fibrosis or cirrhosis."
+    },
+    {
+      "test_id": "plt",
+      "ranges": {
+        "moderate": {
+          "min": 100,
+          "max": 149
+        },
+        "severe": {
+          "min": 50,
+          "max": 110
+        },
+        "critical": {
+          "min": 30,
+          "max": 80
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "essential",
+      "caveat": "Thrombocytopenia is an early clue to portal hypertension and advanced fibrosis; a low platelet count should trigger fibrosis assessment."
+    },
+    {
+      "test_id": "inr",
+      "ranges": {
+        "moderate": {
+          "min": 1.2,
+          "max": 1.5
+        },
+        "severe": {
+          "min": 1.4,
+          "max": 2.0
+        },
+        "critical": {
+          "min": 1.8,
+          "max": 3.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Prolongation reflects impaired synthetic function in advanced disease."
+    },
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "mild": {
+          "min": 100,
+          "max": 125
+        },
+        "moderate": {
+          "min": 126,
+          "max": 200
+        },
+        "severe": {
+          "min": 180,
+          "max": 350
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Fasting glucose of 100–125 mg/dL indicates prediabetes and 126 mg/dL or higher supports diabetes, both part of the metabolic criteria."
+    },
+    {
+      "test_id": "a1c",
+      "ranges": {
+        "mild": {
+          "min": 5.7,
+          "max": 6.4
+        },
+        "moderate": {
+          "min": 6.5,
+          "max": 9.0
+        },
+        "severe": {
+          "min": 8.0,
+          "max": 12.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Documents prediabetes or diabetes as a cardiometabolic criterion."
+    },
+    {
+      "test_id": "tg",
+      "ranges": {
+        "mild": {
+          "min": 150,
+          "max": 250
+        },
+        "moderate": {
+          "min": 200,
+          "max": 500
+        },
+        "severe": {
+          "min": 400,
+          "max": 1000
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Hypertriglyceridemia is a cardiometabolic criterion and often accompanies insulin resistance."
+    },
+    {
+      "test_id": "hdl",
+      "ranges": {
+        "mild": {
+          "min": 35,
+          "max": 49
+        },
+        "moderate": {
+          "min": 25,
+          "max": 40
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Low HDL is a cardiometabolic criterion; the reference lower limits are 40 mg/dL in men and 50 mg/dL in women."
+    },
+    {
+      "test_id": "ldl",
+      "ranges": {
+        "mild": {
+          "min": 100,
+          "max": 160
+        },
+        "moderate": {
+          "min": 130,
+          "max": 220
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Part of global cardiovascular risk assessment rather than the liver diagnosis itself."
+    },
+    {
+      "test_id": "ferritin",
+      "ranges": {
+        "mild": {
+          "min": 308,
+          "max": 600
+        },
+        "moderate": {
+          "min": 400,
+          "max": 1000
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Mildly elevated ferritin is common in steatotic liver disease as an acute-phase reactant; marked elevation or high transferrin saturation should prompt evaluation for hemochromatosis."
+    },
+    {
+      "test_id": "tsh",
+      "ranges": {
+        "mild": {
+          "min": 4.1,
+          "max": 10.0
+        },
+        "moderate": {
+          "min": 8.0,
+          "max": 20.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Hypothyroidism is associated with steatotic liver disease and is a treatable contributor to abnormal liver tests."
+    }
+  ],
+  "imaging": [
+    {
+      "study": "Abdominal ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "First-line imaging for suspected hepatic steatosis",
+      "findings": [
+        {
+          "text": "Increased hepatic echogenicity (bright liver) compared with the kidney",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Hepatomegaly",
+          "frequency": "common"
+        },
+        {
+          "text": "Increased sound attenuation with poor visualization of deep structures and the diaphragm",
+          "frequency": "common"
+        },
+        {
+          "text": "Loss of definition of intrahepatic vessel walls",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Focal fat sparing or focal fat deposition",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Coarse echotexture suggesting fibrosis or cirrhosis",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Splenomegaly or ascites suggesting portal hypertension",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Transient elastography (vibration-controlled, with controlled attenuation parameter)",
+      "modality": "ultrasound",
+      "preferred_when": "Noninvasive assessment of fibrosis and steatosis when available",
+      "findings": [
+        {
+          "text": "Elevated liver stiffness measurement indicating fibrosis",
+          "frequency": "common"
+        },
+        {
+          "text": "Elevated controlled attenuation parameter indicating hepatic steatosis",
+          "frequency": "common"
+        },
+        {
+          "text": "Values in the cirrhosis range in advanced disease",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "MRI liver with proton density fat fraction and MR elastography",
+      "modality": "mri",
+      "preferred_when": "When ultrasound or elastography is nondiagnostic or a precise fat quantification is needed",
+      "findings": [
+        {
+          "text": "Elevated hepatic proton density fat fraction confirming and quantifying steatosis",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Increased liver stiffness on MR elastography indicating fibrosis",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "CT abdomen with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Not the preferred test for steatosis; usually performed for another indication",
+      "findings": [
+        {
+          "text": "Diffusely decreased hepatic attenuation (fatty liver)",
+          "frequency": "common"
+        },
+        {
+          "text": "Liver attenuation lower than spleen attenuation",
+          "frequency": "common"
+        },
+        {
+          "text": "Hepatomegaly",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Nodular liver contour, splenomegaly, or ascites in advanced disease",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cmp_extra",
+        "why": "Assesses aminotransferases, bilirubin, alkaline phosphatase, albumin, and total protein to characterize the liver injury pattern and synthetic function"
+      },
+      {
+        "test": "cbc",
+        "why": "Thrombocytopenia or cytopenias suggest portal hypertension or advanced fibrosis"
+      },
+      {
+        "test": "lipids",
+        "why": "Documents dyslipidemia as a cardiometabolic criterion and guides cardiovascular risk management"
+      },
+      {
+        "test": "a1c",
+        "why": "Identifies prediabetes or diabetes, a key cardiometabolic criterion"
+      },
+      {
+        "test": "ggt",
+        "why": "Supports alcohol use or biliary contribution when the pattern is unclear"
+      },
+      {
+        "test": "Abdominal ultrasound",
+        "why": "First-line test to confirm hepatic steatosis and screen for cirrhosis, splenomegaly, or biliary disease"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before imaging or further workup in anyone who could be pregnant",
+        "only_if": "patient could be pregnant"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Transient elastography (vibration-controlled, with controlled attenuation parameter)",
+        "why": "Noninvasive confirmation of steatosis and staging of fibrosis, which determines prognosis and referral"
+      },
+      {
+        "test": "MRI liver with proton density fat fraction and MR elastography",
+        "why": "Confirms and quantifies steatosis and fibrosis when elastography is unavailable or discordant",
+        "only_if": "elastography is unavailable or results are discordant"
+      },
+      {
+        "test": "Liver biopsy",
+        "why": "Definitive diagnosis and staging when noninvasive tests are discordant or another cause is suspected",
+        "only_if": "noninvasive testing is nondiagnostic or an alternative cause such as autoimmune or drug-induced liver disease is suspected"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "tsh",
+        "why": "Hypothyroidism is associated with steatotic liver disease and is treatable"
+      },
+      {
+        "test": "ferritin",
+        "why": "Screens for iron overload; mild elevation is common but marked elevation needs further study"
+      },
+      {
+        "test": "iron",
+        "why": "With ferritin and transferrin saturation, evaluates for hemochromatosis when iron studies are abnormal",
+        "only_if": "ferritin is elevated or transferrin saturation is high"
+      },
+      {
+        "test": "tibc",
+        "why": "Completes iron studies when hemochromatosis is being considered",
+        "only_if": "ferritin is elevated or transferrin saturation is high"
+      },
+      {
+        "test": "pt",
+        "why": "Assesses synthetic function when advanced fibrosis or cirrhosis is suspected",
+        "only_if": "thrombocytopenia, low albumin, or signs of cirrhosis are present"
+      },
+      {
+        "test": "inr",
+        "why": "Assesses synthetic function and supports cirrhosis staging",
+        "only_if": "advanced fibrosis or cirrhosis is suspected"
+      },
+      {
+        "test": "ammonia",
+        "why": "Supports the diagnosis of hepatic encephalopathy when confusion is present",
+        "only_if": "altered mental status or asterixis is present"
+      },
+      {
+        "test": "ua_bili",
+        "why": "Bedside evidence of conjugated hyperbilirubinemia when jaundice is present",
+        "only_if": "jaundice is present"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "hs_tnt",
+        "why": "No role in the evaluation of steatotic liver disease unless cardiac ischemia is suspected"
+      },
+      {
+        "test": "d_dimer",
+        "why": "Not part of the liver workup"
+      },
+      {
+        "test": "lipase",
+        "why": "Not needed unless the pain is epigastric or pancreatitis is suspected"
+      },
+      {
+        "test": "Abdominal x-ray",
+        "why": "Does not assess hepatic fat or fibrosis and rarely changes management"
+      },
+      {
+        "test": "CT abdomen with IV contrast",
+        "why": "Not the preferred test for steatosis; reserve for another indication or when ultrasound is nondiagnostic"
+      },
+      {
+        "test": "Liver biopsy",
+        "why": "Invasive and not routine; reserve for discordant noninvasive results or suspected alternative cause"
+      }
+    ],
+    "decision_points": [
+      "Quantify alcohol use with a validated tool before labeling disease as metabolic; both can coexist",
+      "Screen for advanced fibrosis with a noninvasive test (FIB-4 or elastography) in everyone with steatosis, since symptoms and aminotransferases do not predict stage",
+      "If FIB-4 or elastography is indeterminate or high, refer to hepatology and consider biopsy or MR elastography",
+      "Check pregnancy status before imaging or biopsy in anyone who could be pregnant",
+      "Evaluate competing causes (viral hepatitis, autoimmune, drug-induced, iron overload, Wilson disease in younger patients) when the picture is atypical"
+    ],
+    "criteria": [
+      {
+        "name": "Metabolic dysfunction-associated steatotic liver disease (MASLD)",
+        "summary": "Hepatic steatosis plus at least one cardiometabolic risk factor, without another clear cause and without heavy alcohol use. Cardiometabolic factors include overweight or obesity, prediabetes or type 2 diabetes, hypertension, dyslipidemia, and metabolic syndrome.",
+        "items": [
+          "Hepatic steatosis on imaging or histology",
+          "At least one cardiometabolic criterion (overweight/obesity, prediabetes or type 2 diabetes, hypertension, hypertriglyceridemia, low HDL, or metabolic syndrome)",
+          "No heavy alcohol use and no other competing cause of liver disease"
+        ]
+      },
+      {
+        "name": "Alcohol-associated liver disease (ALD)",
+        "summary": "Hepatic steatosis in the setting of chronic heavy alcohol use, with typical laboratory findings such as an AST/ALT ratio above 1 and elevated GGT. It is the earliest stage of alcohol-related liver injury and can progress to alcoholic hepatitis and cirrhosis.",
+        "items": [
+          "History of chronic heavy alcohol use",
+          "Hepatic steatosis on imaging or histology",
+          "AST/ALT ratio above 1 and often elevated GGT"
+        ]
+      }
+    ],
+    "scores": [
+      "fib_4",
+      "nafld_fibrosis_score"
+    ]
+  },
+  "differential": [
+    {
+      "name": "Alcohol-associated liver disease",
+      "slug": "alcohol-associated-liver-disease",
+      "why_considered": "Hepatic steatosis with abnormal liver enzymes in a patient who drinks alcohol; overlaps heavily with metabolic steatotic liver disease and the two often coexist.",
+      "must_not_miss": true,
+      "trigger": "Any patient with hepatic steatosis who reports more than moderate alcohol use, or whose AST/ALT ratio is above 1.",
+      "discriminators": {
+        "history": [
+          "Chronic heavy or binge alcohol use, quantified with a validated tool",
+          "Drinking pattern temporally related to liver enzyme abnormalities",
+          "Prior episodes of alcohol withdrawal or alcohol-related medical problems"
+        ],
+        "exam": [
+          "Signs of chronic liver disease out of proportion to metabolic findings",
+          "Tremor, tachycardia, or other features of alcohol use disorder"
+        ],
+        "labs": [
+          "AST/ALT ratio above 1, often above 2",
+          "Elevated GGT",
+          "Macrocytosis with elevated MCV",
+          "Elevated total bilirubin and INR in alcoholic hepatitis"
+        ],
+        "imaging": [
+          "Hepatic steatosis on ultrasound or CT",
+          "Coarse echotexture or nodular contour suggesting advanced fibrosis",
+          "Transient elastography showing higher stiffness than expected for metabolic disease alone"
+        ]
+      }
+    },
+    {
+      "name": "Chronic hepatitis C",
+      "slug": "hepatitis-c",
+      "why_considered": "Chronic viral hepatitis can cause mild transaminase elevation and is a known contributor to steatosis and fibrosis.",
+      "must_not_miss": true,
+      "trigger": "Any patient with abnormal liver enzymes and risk factors for blood-borne infection, or with unexplained fibrosis.",
+      "discriminators": {
+        "history": [
+          "History of injection drug use, blood transfusion before screening, or other percutaneous exposure",
+          "Known prior hepatitis C exposure or incarceration"
+        ],
+        "exam": [
+          "Usually no specific findings; may have signs of chronic liver disease if advanced"
+        ],
+        "labs": [
+          "Positive hepatitis C antibody with detectable HCV RNA",
+          "ALT and AST elevation that may fluctuate",
+          "Thrombocytopenia or low albumin if cirrhotic"
+        ],
+        "imaging": [
+          "Steatosis and fibrosis on ultrasound or elastography",
+          "Cirrhotic morphology in advanced disease"
+        ]
+      }
+    },
+    {
+      "name": "Chronic hepatitis B",
+      "slug": "hepatitis-b",
+      "why_considered": "Chronic hepatitis B can present with incidentally abnormal liver tests and hepatic steatosis, and is a treatable cause of chronic liver disease.",
+      "must_not_miss": true,
+      "trigger": "Abnormal liver enzymes in a patient from a high-prevalence region, with household contacts, or with prior percutaneous exposure.",
+      "discriminators": {
+        "history": [
+          "Birth in or travel to a high-prevalence region",
+          "Household or sexual contact with a person with hepatitis B",
+          "Prior injection drug use or hemodialysis"
+        ],
+        "exam": [
+          "Usually normal; signs of chronic liver disease only if advanced"
+        ],
+        "labs": [
+          "Positive hepatitis B surface antigen",
+          "Elevated ALT and AST",
+          "IgM anti-HBc if acute flare suspected"
+        ],
+        "imaging": [
+          "Steatosis and fibrosis on ultrasound or elastography",
+          "Cirrhotic morphology in advanced disease"
+        ]
+      }
+    },
+    {
+      "name": "Hemochromatosis",
+      "slug": "hemochromatosis",
+      "why_considered": "Iron overload can cause hepatic steatosis, elevated transaminases, and cirrhosis, and is easily missed if iron studies are not checked.",
+      "must_not_miss": true,
+      "trigger": "Elevated ferritin with high transferrin saturation, or a family history of iron overload.",
+      "discriminators": {
+        "history": [
+          "Family history of hemochromatosis or early-onset liver disease",
+          "Arthralgias, fatigue, or skin darkening",
+          "Diabetes or hypogonadism"
+        ],
+        "exam": [
+          "Bronze or gray skin pigmentation",
+          "Hepatomegaly",
+          "Arthritis of the hands"
+        ],
+        "labs": [
+          "Transferrin saturation above 45%",
+          "Ferritin markedly elevated",
+          "Elevated ALT and AST"
+        ],
+        "imaging": [
+          "Hepatic steatosis on ultrasound",
+          "Increased hepatic iron on MRI T2* or R2* sequences",
+          "Cirrhotic morphology in advanced disease"
+        ]
+      }
+    },
+    {
+      "name": "Wilson disease",
+      "slug": "wilson-disease",
+      "why_considered": "A treatable inherited disorder of copper metabolism that can present with hepatic steatosis and abnormal liver tests, especially in younger patients.",
+      "must_not_miss": true,
+      "trigger": "Liver disease in a patient under 40, or any patient with unexplained liver disease plus neuropsychiatric symptoms.",
+      "discriminators": {
+        "history": [
+          "Younger age at presentation",
+          "Family history of liver disease or movement disorder",
+          "Neuropsychiatric symptoms such as tremor, mood changes, or school decline"
+        ],
+        "exam": [
+          "Kayser-Fleischer rings on slit-lamp exam",
+          "Tremor, rigidity, or dysarthria",
+          "Signs of chronic liver disease"
+        ],
+        "labs": [
+          "Low ceruloplasmin",
+          "Elevated 24-hour urinary copper",
+          "Coombs-negative hemolytic anemia with low haptoglobin",
+          "Elevated ALT and AST"
+        ],
+        "imaging": [
+          "Hepatic steatosis on ultrasound",
+          "Basal ganglia changes on brain MRI in neurologic disease",
+          "Cirrhotic morphology in advanced disease"
+        ]
+      }
+    },
+    {
+      "name": "Drug-induced liver injury",
+      "slug": "drug-induced-liver-injury",
+      "why_considered": "Many medications and supplements cause steatosis, elevated transaminases, or a mixed injury pattern that mimics steatotic liver disease.",
+      "must_not_miss": true,
+      "trigger": "Temporal relationship between a new medication or supplement and abnormal liver tests, or jaundice with rising enzymes.",
+      "discriminators": {
+        "history": [
+          "New medication, herbal product, or supplement in the weeks to months before presentation",
+          "Known hepatotoxic agents such as amiodarone, methotrexate, tamoxifen, valproate, or corticosteroids",
+          "Fever, rash, or eosinophilia with some agents"
+        ],
+        "exam": [
+          "Jaundice",
+          "Hepatomegaly",
+          "Rash or fever suggesting a hypersensitivity reaction"
+        ],
+        "labs": [
+          "ALT and AST elevation that may be marked",
+          "Bilirubin elevation with jaundice",
+          "Eosinophilia or autoantibodies in some patterns"
+        ],
+        "imaging": [
+          "Steatosis on ultrasound",
+          "No biliary obstruction on ultrasound",
+          "Normal or nonspecific findings on CT or MRI"
+        ]
+      }
+    },
+    {
+      "name": "Primary biliary cholangitis",
+      "slug": "primary-biliary-cholangitis",
+      "why_considered": "A chronic cholestatic liver disease that can present with fatigue and abnormal liver tests, and may coexist with steatosis.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Middle-aged woman with fatigue and pruritus",
+          "Dry eyes and dry mouth suggesting sicca symptoms",
+          "Family history of autoimmune disease"
+        ],
+        "exam": [
+          "Xanthelasma",
+          "Hyperpigmentation",
+          "Hepatomegaly or splenomegaly"
+        ],
+        "labs": [
+          "Elevated alkaline phosphatase out of proportion to aminotransferases",
+          "Positive antimitochondrial antibody",
+          "Elevated total bilirubin in advanced disease"
+        ],
+        "imaging": [
+          "Normal biliary tree on ultrasound",
+          "No obstruction on MRCP",
+          "Cirrhotic morphology in advanced disease"
+        ]
+      }
+    },
+    {
+      "name": "Autoimmune hepatitis",
+      "slug": "autoimmune-hepatitis",
+      "why_considered": "An immune-mediated liver disease that can present with fatigue, abnormal liver enzymes, and hepatomegaly, and can be mistaken for steatotic liver disease.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Younger or middle-aged woman",
+          "Other autoimmune conditions such as thyroid disease or celiac disease",
+          "Fluctuating or relapsing symptoms"
+        ],
+        "exam": [
+          "Hepatomegaly",
+          "Jaundice during flares",
+          "Signs of other autoimmune disease"
+        ],
+        "labs": [
+          "Elevated ALT and AST, often marked",
+          "Positive antinuclear antibody or anti-smooth muscle antibody",
+          "Elevated IgG",
+          "Positive anti-LKM1 in some patients"
+        ],
+        "imaging": [
+          "Hepatomegaly on ultrasound",
+          "Steatosis may be present",
+          "No biliary obstruction"
+        ]
+      }
+    },
+    {
+      "name": "Alpha-1 antitrypsin deficiency",
+      "slug": "alpha-1-antitrypsin-deficiency",
+      "why_considered": "An inherited cause of chronic liver disease that can present with abnormal liver tests and steatosis, especially in younger patients.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Family history of early emphysema or liver disease",
+          "Younger age at presentation",
+          "Smoking-related emphysema"
+        ],
+        "exam": [
+          "Signs of chronic obstructive pulmonary disease",
+          "Hepatomegaly",
+          "Signs of chronic liver disease if advanced"
+        ],
+        "labs": [
+          "Low alpha-1 antitrypsin level",
+          "Abnormal alpha-1 antitrypsin phenotype or genotype",
+          "Elevated ALT and AST"
+        ],
+        "imaging": [
+          "Hepatic steatosis on ultrasound",
+          "Emphysema on chest imaging",
+          "Cirrhotic morphology in advanced disease"
+        ]
+      }
+    },
+    {
+      "name": "Hypothyroidism",
+      "slug": "hypothyroidism",
+      "why_considered": "Hypothyroidism is associated with steatotic liver disease and can cause fatigue, weight gain, and mild transaminase elevation.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Fatigue, cold intolerance, constipation, and weight gain",
+          "Prior thyroid surgery or radioactive iodine",
+          "Family history of thyroid disease"
+        ],
+        "exam": [
+          "Dry skin, bradycardia, delayed relaxation of deep tendon reflexes",
+          "Goiter or thyroidectomy scar",
+          "Periorbital edema"
+        ],
+        "labs": [
+          "Elevated TSH with low free T4",
+          "Mild ALT and AST elevation",
+          "Elevated total cholesterol and LDL"
+        ],
+        "imaging": [
+          "Hepatic steatosis on ultrasound",
+          "Thyroid ultrasound findings depending on cause"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Simple hepatic steatosis without significant inflammation or fibrosis; asymptomatic or mild fatigue, normal or mildly elevated aminotransferases, and no evidence of advanced fibrosis on noninvasive testing.",
+      "moderate": "Metabolic dysfunction-associated steatohepatitis or alcohol-associated steatohepatitis with inflammation and early fibrosis (F1–F2); may have fatigue, right upper quadrant discomfort, and persistent enzyme elevation.",
+      "severe": "Advanced fibrosis (F3–F4) or compensated cirrhosis; may have thrombocytopenia, low albumin, splenomegaly, or signs of portal hypertension without overt decompensation.",
+      "critical": "Decompensated cirrhosis with ascites, variceal bleeding, hepatic encephalopathy, or hepatorenal syndrome; or acute-on-chronic liver failure with jaundice, coagulopathy, and multi-organ dysfunction."
+    },
+    "red_flags": [
+      {
+        "finding": "Jaundice with confusion or asterixis",
+        "meaning": "Hepatic encephalopathy and decompensated liver disease; needs urgent evaluation and hospitalization."
+      },
+      {
+        "finding": "Vomiting blood or black stools",
+        "meaning": "Variceal bleeding from portal hypertension; a life-threatening emergency."
+      },
+      {
+        "finding": "Rapidly increasing abdominal girth or new lower extremity edema",
+        "meaning": "Ascites from decompensated cirrhosis; evaluate for spontaneous bacterial peritonitis."
+      },
+      {
+        "finding": "Fever with abdominal pain in a patient with known ascites",
+        "meaning": "Possible spontaneous bacterial peritonitis; perform diagnostic paracentesis."
+      },
+      {
+        "finding": "Thrombocytopenia or low albumin with elevated INR",
+        "meaning": "Advanced fibrosis or cirrhosis with synthetic dysfunction; refer to hepatology."
+      },
+      {
+        "finding": "Marked transaminase elevation with rising bilirubin",
+        "meaning": "Acute liver injury or superimposed hepatitis; evaluate for drug toxicity, viral hepatitis, or ischemic injury."
+      }
+    ],
+    "complications": [
+      {
+        "name": "Progression to cirrhosis",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Persistent thrombocytopenia",
+          "Low albumin or elevated INR",
+          "Coarse echotexture or nodular contour on imaging",
+          "Splenomegaly"
+        ]
+      },
+      {
+        "name": "Portal hypertension with varices",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Thrombocytopenia",
+          "Splenomegaly",
+          "Hematemesis or melena",
+          "Ascites"
+        ]
+      },
+      {
+        "name": "Hepatocellular carcinoma",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Cirrhosis on imaging",
+          "New liver lesion on surveillance ultrasound",
+          "Rising alpha-fetoprotein"
+        ]
+      },
+      {
+        "name": "Hepatic encephalopathy",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Confusion",
+          "Asterixis",
+          "Sleep-wake reversal",
+          "Elevated ammonia"
+        ]
+      },
+      {
+        "name": "Ascites and spontaneous bacterial peritonitis",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Increasing abdominal girth",
+          "Fever or abdominal pain",
+          "Ascitic fluid neutrophil count above 250 cells/mm3"
+        ]
+      },
+      {
+        "name": "Hepatorenal syndrome",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Rising creatinine in a patient with cirrhosis and ascites",
+          "Oliguria",
+          "Lack of response to volume expansion"
+        ]
+      },
+      {
+        "name": "Cardiovascular disease",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Metabolic syndrome",
+          "Diabetes",
+          "Dyslipidemia",
+          "Hypertension"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Usually asymptomatic and detected during evaluation for obesity or incidentally on labs; abdominal pain can be more prominent. Weight management and family lifestyle changes are the mainstay."
+      },
+      {
+        "population": "older_adults",
+        "differences": "More likely to have advanced fibrosis or cirrhosis at presentation and may present with complications such as ascites or encephalopathy. Polypharmacy increases the risk of drug-induced liver injury."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Steatotic liver disease may be pre-existing and can worsen during pregnancy. Must be distinguished from acute fatty liver of pregnancy, which is a different emergency with hypoglycemia, coagulopathy, and rapid progression."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Higher risk of advanced fibrosis and cirrhosis; may have normal ALT despite significant disease. Screen for fibrosis with noninvasive testing regardless of enzyme levels."
+      },
+      {
+        "population": "obesity",
+        "differences": "Often have metabolic syndrome and more severe steatohepatitis; symptoms may be attributed to obesity rather than liver disease. Weight loss of 7–10% of body weight can improve steatohepatitis and fibrosis."
+      },
+      {
+        "population": "hepatic_impairment",
+        "differences": "Dose adjustments and avoidance of hepatotoxic medications are needed; vaccination against hepatitis A and B is recommended."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "How much alcohol do you drink in a typical week, and has that changed recently?",
+        "category": "social",
+        "importance": "essential",
+        "looking_for": "Quantify with a validated tool; heavy or binge use points to alcohol-associated liver disease, while little or no use supports MASLD. Both can coexist."
+      },
+      {
+        "question": "Have you been told you have diabetes, prediabetes, high blood pressure, or high cholesterol?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Cardiometabolic risk factors that are required to label steatotic liver disease as metabolic dysfunction-associated."
+      },
+      {
+        "question": "Has your weight changed recently, and how much do you weigh now compared with a few years ago?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Overweight or obesity, central adiposity, or rapid weight loss; both weight gain and rapid loss can drive steatosis."
+      },
+      {
+        "question": "What medicines, supplements, vitamins, or herbal products do you take?",
+        "category": "medications",
+        "importance": "essential",
+        "looking_for": "Hepatotoxic agents such as corticosteroids, amiodarone, methotrexate, tamoxifen, valproate, or herbal supplements that could explain the liver findings."
+      },
+      {
+        "question": "Do you have any discomfort or fullness in your upper right belly?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Dull right upper quadrant ache or fullness; often absent because the disease is usually asymptomatic."
+      },
+      {
+        "question": "How is your energy level? Do you feel tired all the time?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Fatigue or malaise, the most common symptom when any is present."
+      },
+      {
+        "question": "Have you noticed yellowing of your eyes or skin, dark urine, or pale stools?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Jaundice or cholestatic symptoms suggesting advanced disease or an alternative cause such as biliary obstruction."
+      },
+      {
+        "question": "Have you had swelling of your belly or legs, vomiting of blood, or black stools?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Ascites, variceal bleeding, or other signs of decompensated cirrhosis that need urgent evaluation."
+      },
+      {
+        "question": "Any confusion, trouble concentrating, or excessive sleepiness?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Hepatic encephalopathy; altered mental status in liver disease is an emergency."
+      },
+      {
+        "question": "Has anyone in your family had liver disease, cirrhosis, or early emphysema?",
+        "category": "family",
+        "importance": "important",
+        "looking_for": "Inherited causes such as hemochromatosis, Wilson disease, or alpha-1 antitrypsin deficiency."
+      },
+      {
+        "question": "Have you ever had hepatitis, a blood transfusion, or injected drugs?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Risk factors for chronic hepatitis B or C, which can cause steatosis and fibrosis."
+      },
+      {
+        "question": "How much physical activity do you get, and what does a typical day of eating look like?",
+        "category": "social",
+        "importance": "optional",
+        "looking_for": "Sedentary lifestyle and high intake of processed foods or sugar-sweetened beverages that contribute to metabolic disease."
+      }
+    ],
+    "accepted_names": [
+      "Steatotic liver disease",
+      "SLD",
+      "Fatty liver disease",
+      "Hepatic steatosis",
+      "Metabolic dysfunction-associated steatotic liver disease",
+      "MASLD",
+      "Nonalcoholic fatty liver disease",
+      "NAFLD",
+      "Alcohol-associated liver disease",
+      "ALD",
+      "Alcoholic fatty liver disease"
+    ],
+    "reasoning_points": [
+      "Hepatic steatosis is confirmed on imaging (bright liver on ultrasound) or histology, often found incidentally.",
+      "The history quantifies alcohol use with a validated tool to separate metabolic from alcohol-associated disease, recognizing that both can coexist.",
+      "At least one cardiometabolic criterion is documented (overweight or obesity, prediabetes or type 2 diabetes, hypertension, hypertriglyceridemia, low HDL, or metabolic syndrome) to support MASLD.",
+      "Alternative causes are considered and excluded: viral hepatitis, drug-induced liver injury, hemochromatosis, Wilson disease, autoimmune hepatitis, and alpha-1 antitrypsin deficiency.",
+      "Aminotransferases are typically normal or only mildly elevated; an AST/ALT ratio above 1 suggests alcohol-associated disease or advanced fibrosis.",
+      "Noninvasive fibrosis assessment (FIB-4 or elastography) is performed because symptoms and enzyme levels do not predict stage.",
+      "Thrombocytopenia, low albumin, or elevated INR should prompt evaluation for advanced fibrosis or cirrhosis.",
+      "Red flags such as jaundice with confusion, hematemesis, or new ascites indicate decompensated disease and require urgent care."
+    ],
+    "difficulty": {
+      "easy": [
+        "Middle-aged adult with obesity and type 2 diabetes",
+        "Incidentally elevated ALT on routine labs",
+        "Abdominal ultrasound showing a bright liver",
+        "Minimal or no alcohol use",
+        "No signs of chronic liver disease on exam"
+      ],
+      "medium": [
+        "Patient with both metabolic risk factors and moderate alcohol use, requiring careful attribution",
+        "AST/ALT ratio above 1 raising concern for alcohol-associated disease",
+        "Normal aminotransferases despite steatosis on imaging",
+        "Mild right upper quadrant discomfort with hepatomegaly",
+        "Need to exclude chronic hepatitis B or C before labeling as MASLD"
+      ],
+      "hard": [
+        "Older adult with thrombocytopenia and low albumin suggesting unrecognized cirrhosis",
+        "Young patient with steatosis and neuropsychiatric symptoms raising concern for Wilson disease",
+        "Elevated ferritin with high transferrin saturation suggesting hemochromatosis",
+        "Patient on amiodarone or methotrexate where drug-induced injury must be excluded",
+        "Pregnant patient with abnormal liver tests requiring distinction from acute fatty liver of pregnancy",
+        "Child with obesity and abdominal pain found to have steatosis"
+      ]
+    }
+  }
+}

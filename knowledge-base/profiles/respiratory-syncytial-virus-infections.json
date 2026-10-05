@@ -1,0 +1,1602 @@
+{
+  "schema_version": "0.2",
+  "slug": "respiratory-syncytial-virus-infections",
+  "triage": {
+    "name": "Respiratory Syncytial Virus Infections",
+    "case_suitable": true,
+    "reason": "Classic infant bronchiolitis with wheeze, tachypnea and feeding difficulty; diagnosis and severity assessment are core pediatric skills.",
+    "kind": "disease",
+    "category": "viral respiratory infection",
+    "organ_systems": [
+      "respiratory",
+      "blood"
+    ],
+    "primary_clerkship": "pediatrics",
+    "secondary_clerkships": [
+      "familyMedicine",
+      "emergency"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "pediatric_clinic",
+      "emergency",
+      "inpatient"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:19:53Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:10:01Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:10:09Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:10:20Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:10:33Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:10:40Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: labs: dropped 'cbc' (not in the reference table)",
+        "auto-repaired: labs: dropped 'bmp' (not in the reference table)",
+        "auto-repaired: labs: dropped 'abg' (not in the reference table)",
+        "auto-repaired: workup: 'chest x-ray, frontal and lateral' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'bmp' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'cbc' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'procalcitonin' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'abg' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'chest x-ray, frontal and lateral' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'bmp' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'cbc' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'procalcitonin' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'abg' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "differential influenza: no profile yet",
+        "differential covid-19: no profile yet",
+        "differential human-metapneumovirus-infection: no profile yet",
+        "differential parainfluenza-virus-infection: no profile yet",
+        "differential community-acquired-pneumonia: no profile yet",
+        "differential foreign-body-aspiration: no profile yet",
+        "differential pertussis: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 0,
+      "typical_max": 90,
+      "peak": "bimodal: under 2 years and over 65",
+      "possible_min": 0,
+      "possible_max": 110
+    },
+    "sex": "either",
+    "demographics": [
+      "Nearly all children are infected by age 2",
+      "Infants and young children account for most severe pediatric disease",
+      "Adults 65 and older have the highest adult hospitalization rates",
+      "In the US, infections cluster in fall through spring (RSV season)"
+    ],
+    "risk_factors": [
+      {
+        "text": "Infancy, especially under 6 months of age",
+        "strength": "strong"
+      },
+      {
+        "text": "Premature birth",
+        "strength": "strong"
+      },
+      {
+        "text": "Age 65 and older",
+        "strength": "strong"
+      },
+      {
+        "text": "Chronic lung disease such as asthma, COPD or bronchopulmonary dysplasia",
+        "strength": "strong"
+      },
+      {
+        "text": "Congenital heart disease or heart failure",
+        "strength": "strong"
+      },
+      {
+        "text": "Immunocompromising condition or immunosuppressive therapy",
+        "strength": "strong"
+      },
+      {
+        "text": "Residence in a nursing home or other congregate living setting",
+        "strength": "moderate"
+      },
+      {
+        "text": "Household or daycare exposure to someone with a cold or RSV",
+        "strength": "moderate"
+      },
+      {
+        "text": "Neuromuscular disorder with difficulty clearing secretions",
+        "strength": "moderate"
+      },
+      {
+        "text": "Cystic fibrosis",
+        "strength": "moderate"
+      },
+      {
+        "text": "Tobacco smoke exposure",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Asthma",
+      "COPD",
+      "Chronic heart failure",
+      "Congenital heart disease",
+      "Bronchopulmonary dysplasia or other chronic lung disease of prematurity",
+      "Immunosuppression",
+      "Cystic fibrosis",
+      "Neuromuscular disease"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Daycare attendance or older siblings at home",
+      "Nursing home or assisted living residence",
+      "Crowded household"
+    ],
+    "exposures": [
+      "Sick contacts with cold symptoms",
+      "Childcare or school outbreak",
+      "Recent hospitalization or congregate living"
+    ],
+    "risk_medications": [
+      "prednisone",
+      "prednisolone",
+      "dexamethasone",
+      "tacrolimus",
+      "cyclosporine",
+      "mycophenolate",
+      "azathioprine",
+      "methotrexate",
+      "rituximab"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My nose is runny and I keep coughing",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "My baby is breathing fast and wheezing",
+        "frequency": "common"
+      },
+      {
+        "text": "My child is not eating or drinking well",
+        "frequency": "common"
+      },
+      {
+        "text": "I feel short of breath and worn out",
+        "frequency": "common"
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual, starting 4 to 6 days after exposure with nasal congestion and runny nose",
+      "duration": "Symptoms peak around days 3 to 5 and usually resolve in 1 to 2 weeks; cough can linger longer",
+      "progression": "Begins as a mild cold with congestion and cough, then in more severe cases progresses over several days to wheezing, fast breathing, and difficulty feeding or shortness of breath",
+      "location": "Upper airway at first, then chest and lower airways",
+      "radiation": "Not applicable",
+      "quality": "Clear runny nose and sneezing, followed by a dry or wet cough and audible wheezing",
+      "severity": "Mild in most people; moderate to severe in infants, older adults, and those with chronic heart or lung disease or weakened immunity",
+      "timing": "Continuous, worse at night and with feeding or activity",
+      "aggravating": [
+        "Feeding",
+        "Crying",
+        "Activity",
+        "Lying flat"
+      ],
+      "relieving": [
+        "Sitting upright",
+        "Rest",
+        "Acetaminophen or ibuprofen for fever"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Cough",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Runny nose or nasal congestion",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Sneezing",
+          "frequency": "common"
+        },
+        {
+          "text": "Fever",
+          "frequency": "common"
+        },
+        {
+          "text": "Decreased appetite or poor feeding",
+          "frequency": "common"
+        },
+        {
+          "text": "Wheezing",
+          "frequency": "common"
+        },
+        {
+          "text": "Fast or labored breathing",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Sore throat",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Ear pain",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Irritability or decreased activity in infants",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Vomiting after coughing spells",
+          "frequency": "sometimes"
+        }
+      ],
+      "pertinent_negatives": [
+        "Barking cough with a hoarse voice",
+        "Drooling or trouble swallowing",
+        "Sudden onset of symptoms within hours",
+        "High fever with severe body aches",
+        "Vomiting and diarrhea as the main symptoms",
+        "Rash",
+        "Sick contacts with a known strep or influenza diagnosis"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fever",
+            "frequency": "common"
+          },
+          {
+            "text": "Decreased activity or tiredness",
+            "frequency": "common"
+          },
+          {
+            "text": "Poor feeding or appetite",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Weight loss",
+          "Night sweats"
+        ]
+      },
+      {
+        "system": "ent",
+        "positives": [
+          {
+            "text": "Runny nose",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Nasal congestion",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Sneezing",
+            "frequency": "common"
+          },
+          {
+            "text": "Sore throat",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Ear pain",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Drooling",
+          "Trouble swallowing",
+          "Hoarse voice"
+        ],
+        "argues_against": [
+          "Epiglottitis or severe croup"
+        ]
+      },
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "Cough",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Wheezing",
+            "frequency": "common"
+          },
+          {
+            "text": "Fast breathing",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Shortness of breath",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Chest tightness",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Coughing up blood",
+          "Barking cough",
+          "Stridor at rest"
+        ],
+        "argues_against": [
+          "Croup",
+          "Foreign body aspiration"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Vomiting after coughing",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Bloody stools",
+          "Persistent diarrhea",
+          "Severe abdominal pain"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Irritability in infants",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Seizures",
+          "Confusion",
+          "Stiff neck"
+        ],
+        "argues_against": [
+          "Meningitis or encephalitis"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "infants",
+        "how_it_differs": "Very young infants may have no classic cold symptoms and instead present with irritability, decreased activity, poor feeding, and trouble breathing; apnea can be the first sign.",
+        "missing_classic_features": [
+          "Cough",
+          "Wheezing",
+          "Runny nose"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "Symptoms may be milder or atypical, with low-grade fever, confusion, or worsening of underlying heart or lung disease rather than prominent wheezing.",
+        "missing_classic_features": [
+          "High fever",
+          "Prominent wheezing"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "Illness can be more severe and prolonged, with higher viral loads and progression to pneumonia; shedding may last weeks.",
+        "missing_classic_features": [
+          "Self-limited one-week course"
+        ]
+      },
+      {
+        "population": "children",
+        "how_it_differs": "Older children often have a mild cold or tracheobronchitis rather than bronchiolitis, and may wheeze if they have asthma.",
+        "missing_classic_features": [
+          "Apnea",
+          "Severe respiratory distress"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Alert, playful or interactive, feeding well, no respiratory distress",
+      "moderate": "Mildly irritable or tired, feeding less than usual, mild tachypnea with intercostal retractions",
+      "severe": "Irritable or lethargic, poor feeding, marked tachypnea with nasal flaring and retractions, audible wheeze",
+      "critical": "Lethargic or unresponsive, unable to feed, grunting, apnea or cyanosis, impending respiratory failure"
+    },
+    "findings": [
+      {
+        "id": "nasal-congestion-discharge",
+        "region": "heent",
+        "maneuver": "Inspect the nasal passages and nares",
+        "finding": "Clear rhinorrhea and congested nasal mucosa",
+        "frequency": "almost_always",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "pharyngeal-erythema",
+        "region": "heent",
+        "maneuver": "Inspect the oropharynx with a tongue blade",
+        "finding": "Mild pharyngeal erythema without exudate or tonsillar enlargement",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "otitis-media",
+        "region": "heent",
+        "maneuver": "Perform pneumatic otoscopy of both tympanic membranes",
+        "finding": "Bulging, erythematous, immobile tympanic membrane suggesting acute otitis media",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "tachypnea",
+        "region": "lung",
+        "maneuver": "Count the respiratory rate for a full 60 seconds while the patient is calm",
+        "finding": "Elevated respiratory rate for age",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "wheezing",
+        "region": "lung",
+        "maneuver": "Auscultate all lung fields with the bell and diaphragm during quiet breathing",
+        "finding": "Diffuse expiratory wheezing, often with a prolonged expiratory phase",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "crackles",
+        "region": "lung",
+        "maneuver": "Auscultate the lung bases",
+        "finding": "Fine inspiratory crackles",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "prolonged-expiration",
+        "region": "lung",
+        "maneuver": "Listen for the ratio of inspiration to expiration",
+        "finding": "Prolonged expiratory phase",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "retractions",
+        "region": "lung",
+        "maneuver": "Observe the chest wall for suprasternal, intercostal, or subcostal indrawing",
+        "finding": "Intercostal, subcostal, or suprasternal retractions",
+        "frequency": "common",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "nasal-flaring",
+        "region": "lung",
+        "maneuver": "Observe the nares during breathing",
+        "finding": "Nasal flaring with each breath",
+        "frequency": "common",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "important"
+      },
+      {
+        "id": "grunting",
+        "region": "lung",
+        "maneuver": "Listen for expiratory grunting without a stethoscope",
+        "finding": "Audible expiratory grunting",
+        "frequency": "sometimes",
+        "min_severity": "critical",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "head-bobbing",
+        "region": "general",
+        "maneuver": "Observe the head and neck during breathing",
+        "finding": "Head bobbing with each breath (infants)",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "apnea",
+        "region": "lung",
+        "maneuver": "Observe breathing for 20 seconds or more, especially in infants under 2 months",
+        "finding": "Pauses in breathing lasting 20 seconds or more, or shorter pauses with bradycardia or cyanosis",
+        "frequency": "sometimes",
+        "min_severity": "critical",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "cyanosis",
+        "region": "skin",
+        "maneuver": "Inspect the lips, tongue, and nail beds",
+        "finding": "Central cyanosis",
+        "frequency": "rare",
+        "min_severity": "critical",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "dehydration",
+        "region": "general",
+        "maneuver": "Assess mucous membranes, skin turgor, and fontanelle",
+        "finding": "Dry mucous membranes, decreased skin turgor, or sunken fontanelle",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "tachycardia",
+        "region": "cardiac",
+        "maneuver": "Auscultate the heart and count the rate for 60 seconds",
+        "finding": "Heart rate above the normal range for age",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "normal-heart-sounds",
+        "region": "cardiac",
+        "maneuver": "Auscultate for murmurs, gallops, and rubs",
+        "finding": "Normal S1 and S2 without murmur or gallop",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-stridor",
+        "region": "neck",
+        "maneuver": "Listen over the trachea and neck during quiet breathing",
+        "finding": "No inspiratory stridor at rest",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "no-drooling",
+        "region": "heent",
+        "maneuver": "Observe swallowing and ask about drooling",
+        "finding": "No drooling or difficulty swallowing",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "no-toxic-appearance",
+        "region": "general",
+        "maneuver": "Observe the patient's overall interaction and tone",
+        "finding": "Alert and interactive without toxic appearance",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 98.6,
+        "max": 100.4
+      },
+      "moderate": {
+        "min": 99.5,
+        "max": 101.5
+      },
+      "severe": {
+        "min": 100.4,
+        "max": 103.0
+      },
+      "critical": {
+        "min": 97.0,
+        "max": 104.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 80,
+        "max": 120
+      },
+      "moderate": {
+        "min": 110,
+        "max": 150
+      },
+      "severe": {
+        "min": 140,
+        "max": 180
+      },
+      "critical": {
+        "min": 160,
+        "max": 220
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 24,
+        "max": 40
+      },
+      "moderate": {
+        "min": 40,
+        "max": 60
+      },
+      "severe": {
+        "min": 60,
+        "max": 80
+      },
+      "critical": {
+        "min": 70,
+        "max": 100
+      }
+    },
+    "sbp": {
+      "severe": {
+        "min": 70,
+        "max": 90
+      },
+      "critical": {
+        "min": 50,
+        "max": 70
+      }
+    },
+    "dbp": {
+      "severe": {
+        "min": 40,
+        "max": 60
+      },
+      "critical": {
+        "min": 30,
+        "max": 50
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 95,
+        "max": 100
+      },
+      "moderate": {
+        "min": 92,
+        "max": 96
+      },
+      "severe": {
+        "min": 88,
+        "max": 92
+      },
+      "critical": {
+        "min": 80,
+        "max": 88
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "mild": {
+          "min": 5.0,
+          "max": 12.0
+        },
+        "moderate": {
+          "min": 8.0,
+          "max": 15.0
+        },
+        "severe": {
+          "min": 10.0,
+          "max": 20.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Viral illness usually gives a normal or mildly elevated count; marked leukocytosis suggests bacterial superinfection."
+    },
+    {
+      "test_id": "lymph_pct",
+      "ranges": {
+        "mild": {
+          "min": 35,
+          "max": 55
+        },
+        "moderate": {
+          "min": 40,
+          "max": 60
+        },
+        "severe": {
+          "min": 45,
+          "max": 65
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Lymphocytosis is typical of viral infection but is nonspecific."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "moderate": {
+          "min": 1.0,
+          "max": 4.0
+        },
+        "severe": {
+          "min": 3.0,
+          "max": 10.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Mildly elevated in uncomplicated RSV; higher values raise concern for bacterial pneumonia."
+    },
+    {
+      "test_id": "procalcitonin",
+      "ranges": {
+        "severe": {
+          "min": 0.1,
+          "max": 0.5
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Low values support a viral cause and argue against bacterial pneumonia."
+    },
+    {
+      "test_id": "na",
+      "ranges": {
+        "moderate": {
+          "min": 130,
+          "max": 134
+        },
+        "severe": {
+          "min": 125,
+          "max": 133
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hyponatremia can occur with SIADH in severe bronchiolitis."
+    },
+    {
+      "test_id": "hco3",
+      "ranges": {
+        "severe": {
+          "min": 18,
+          "max": 21
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Low bicarbonate suggests metabolic acidosis from respiratory distress or dehydration."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "moderate": {
+          "min": 18,
+          "max": 28
+        },
+        "severe": {
+          "min": 22,
+          "max": 40
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Elevated from dehydration and poor oral intake."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "moderate": {
+          "min": 1.0,
+          "max": 1.4
+        },
+        "severe": {
+          "min": 1.2,
+          "max": 1.8
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Rises with dehydration or acute kidney injury."
+    },
+    {
+      "test_id": "paco2",
+      "ranges": {
+        "severe": {
+          "min": 45,
+          "max": 60
+        },
+        "critical": {
+          "min": 55,
+          "max": 80
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Rising CO2 in a tiring patient signals impending respiratory failure."
+    },
+    {
+      "test_id": "pao2",
+      "ranges": {
+        "severe": {
+          "min": 55,
+          "max": 75
+        },
+        "critical": {
+          "min": 40,
+          "max": 60
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important"
+    },
+    {
+      "test_id": "ph",
+      "ranges": {
+        "severe": {
+          "min": 7.3,
+          "max": 7.35
+        },
+        "critical": {
+          "min": 7.2,
+          "max": 7.3
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Acidosis from hypoventilation or fatigue."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "critical": {
+          "min": 2.2,
+          "max": 5.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Elevated with severe hypoxemia or shock."
+    },
+    {
+      "test_id": "ua_sg",
+      "ranges": {
+        "severe": {
+          "min": 1.025,
+          "max": 1.035
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Concentrated urine supports dehydration."
+    },
+    {
+      "test_id": "ua_ketones",
+      "qualitative": {
+        "moderate": "Small",
+        "severe": "Moderate"
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "From poor intake and dehydration."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rate",
+        "finding": "Sinus tachycardia appropriate for age and fever",
+        "frequency": "common",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Sinus rhythm",
+        "frequency": "almost_always"
+      },
+      {
+        "feature": "other",
+        "finding": "No specific ECG pattern for RSV; ECG is not part of routine workup and is done only to evaluate hypoxia, tachycardia, or suspected myocarditis",
+        "frequency": "almost_always"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Chest x-ray, frontal and lateral",
+      "modality": "xray",
+      "preferred_when": "When pneumonia or another complication is suspected, or the diagnosis is unclear",
+      "findings": [
+        {
+          "text": "Hyperinflation with flattened diaphragms",
+          "frequency": "common"
+        },
+        {
+          "text": "Peribronchial cuffing and increased perihilar markings",
+          "frequency": "common"
+        },
+        {
+          "text": "Patchy or diffuse airspace opacities (viral pneumonia)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Focal lobar consolidation suggesting bacterial superinfection",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Small pleural effusion",
+          "frequency": "rare"
+        },
+        {
+          "text": "Normal chest x-ray",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "CT chest without IV contrast",
+      "modality": "ct",
+      "preferred_when": "Rarely needed; considered in immunocompromised or severely ill adults when complications are unclear",
+      "findings": [
+        {
+          "text": "Ground-glass opacities",
+          "frequency": "common"
+        },
+        {
+          "text": "Tree-in-bud nodularity or bronchial wall thickening",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Lobar consolidation",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Lung ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "Point-of-care assessment of consolidation or effusion when available",
+      "findings": [
+        {
+          "text": "Subpleural consolidations or B-lines",
+          "frequency": "sometimes"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "Rapid respiratory viral panel (nasopharyngeal swab)",
+        "why": "Confirms RSV and identifies other viruses such as influenza or SARS-CoV-2 that change management"
+      },
+      {
+        "test": "Pulse oximetry",
+        "why": "Detects hypoxemia and guides oxygen therapy"
+      },
+      {
+        "test": "Chest x-ray, frontal and lateral",
+        "why": "Evaluates for pneumonia or complications",
+        "only_if": "pneumonia is suspected (abnormal vitals, focal exam findings, or worsening course)"
+      },
+      {
+        "test": "bmp",
+        "why": "Assesses hydration and electrolytes",
+        "only_if": "poor feeding, vomiting, or dehydration is present"
+      },
+      {
+        "test": "cbc",
+        "why": "Looks for bacterial superinfection",
+        "only_if": "bacterial infection is suspected (high fever, toxic appearance, focal findings)"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Respiratory viral panel (nasopharyngeal swab)",
+        "why": "The reference standard for confirming RSV infection"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "crp",
+        "why": "Supports inflammation and helps assess bacterial superinfection",
+        "only_if": "bacterial pneumonia is a concern"
+      },
+      {
+        "test": "procalcitonin",
+        "why": "Low values favor a viral cause",
+        "only_if": "distinguishing viral from bacterial pneumonia is uncertain"
+      },
+      {
+        "test": "abg",
+        "why": "Assesses ventilation and acid-base status",
+        "only_if": "severe respiratory distress or impending respiratory failure"
+      },
+      {
+        "test": "ua",
+        "why": "Assesses hydration",
+        "only_if": "dehydration is suspected"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Chest x-ray, frontal and lateral",
+        "why": "Not routine in typical bronchiolitis; does not change management unless pneumonia is suspected"
+      },
+      {
+        "test": "cbc",
+        "why": "Not routine in uncomplicated RSV"
+      },
+      {
+        "test": "bmp",
+        "why": "Not routine when the patient is feeding and hydrated"
+      },
+      {
+        "test": "abg",
+        "why": "Not needed in mild or moderate illness"
+      },
+      {
+        "test": "lactate",
+        "why": "No role unless shock or severe hypoxemia is present"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in RSV"
+      },
+      {
+        "test": "procalcitonin",
+        "why": "Not routine; reserved for uncertain bacterial coinfection"
+      },
+      {
+        "test": "CT chest without IV contrast",
+        "why": "Rarely changes management and exposes the patient to radiation"
+      }
+    ],
+    "decision_points": [
+      "Use the rapid respiratory viral panel in patients who are hospitalized, immunocompromised, or when the result changes management (for example, influenza antiviral therapy).",
+      "Assess severity with respiratory rate, work of breathing, feeding, and oxygen saturation; these guide admission and oxygen therapy.",
+      "Do not order a chest x-ray routinely; order it when pneumonia or another complication is suspected.",
+      "Consider bacterial superinfection when fever is high or persistent, the patient is toxic-appearing, or focal consolidation is present."
+    ],
+    "criteria": [],
+    "scores": [
+      "bronchiolitis_severity"
+    ]
+  },
+  "differential": [
+    {
+      "name": "Influenza",
+      "slug": "influenza",
+      "why_considered": "Seasonal viral illness with fever, cough, and nasal congestion in the same fall-to-spring window as RSV",
+      "must_not_miss": true,
+      "trigger": "Abrupt onset of high fever with prominent myalgias and headache during influenza season",
+      "discriminators": {
+        "history": [
+          "Sudden onset over hours rather than the gradual 4 to 6 day RSV prodrome",
+          "Severe body aches, headache, and chills",
+          "Wheezing and feeding difficulty are less prominent in older children and adults"
+        ],
+        "exam": [
+          "High fever with a toxic or markedly fatigued appearance",
+          "Diffuse wheezing and marked retractions are less typical",
+          "Conjunctival injection may be present"
+        ],
+        "labs": [
+          "Rapid influenza antigen or PCR positive on nasopharyngeal swab",
+          "Respiratory viral panel negative for RSV"
+        ],
+        "imaging": [
+          "Chest x-ray usually normal unless viral pneumonia develops"
+        ]
+      }
+    },
+    {
+      "name": "SARS-CoV-2 infection",
+      "slug": "covid-19",
+      "why_considered": "Overlapping cough, fever, and respiratory distress during respiratory virus season",
+      "must_not_miss": true,
+      "trigger": "Known COVID-19 exposure or a household cluster of respiratory illness with loss of taste or smell",
+      "discriminators": {
+        "history": [
+          "Loss of taste or smell",
+          "Exposure to a confirmed COVID-19 case",
+          "Wheezing in an infant is less typical"
+        ],
+        "exam": [
+          "Findings range from normal to severe hypoxemia with minimal auscultatory findings",
+          "Diffuse wheeze is less common than in RSV bronchiolitis"
+        ],
+        "labs": [
+          "SARS-CoV-2 PCR or antigen positive",
+          "Respiratory viral panel negative for RSV"
+        ],
+        "imaging": [
+          "Chest x-ray may show peripheral or basilar opacities",
+          "CT chest may show peripheral ground-glass opacities"
+        ]
+      }
+    },
+    {
+      "name": "Human metapneumovirus infection",
+      "slug": "human-metapneumovirus-infection",
+      "why_considered": "Nearly identical bronchiolitis syndrome with wheeze, tachypnea, and feeding difficulty in young children",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Indistinguishable clinically from RSV",
+          "Same seasonal pattern and age distribution"
+        ],
+        "exam": [
+          "Diffuse wheezing and retractions identical to RSV bronchiolitis"
+        ],
+        "labs": [
+          "Respiratory viral panel positive for human metapneumovirus and negative for RSV"
+        ],
+        "imaging": [
+          "Chest x-ray findings of hyperinflation and peribronchial cuffing are the same"
+        ]
+      }
+    },
+    {
+      "name": "Parainfluenza virus infection",
+      "slug": "parainfluenza-virus-infection",
+      "why_considered": "Common cause of croup and lower respiratory infection in young children with cough and stridor",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Barking cough and hoarse voice",
+          "Stridor worse at night"
+        ],
+        "exam": [
+          "Inspiratory stridor at rest",
+          "Suprasternal retractions with a hoarse cry"
+        ],
+        "labs": [
+          "Respiratory viral panel positive for parainfluenza and negative for RSV"
+        ],
+        "imaging": [
+          "Neck x-ray may show subglottic narrowing (steeple sign)"
+        ]
+      }
+    },
+    {
+      "name": "Bacterial pneumonia",
+      "slug": "community-acquired-pneumonia",
+      "why_considered": "Fever, cough, and tachypnea with abnormal lung findings in a child or older adult",
+      "must_not_miss": true,
+      "trigger": "High or persistent fever, focal crackles, or toxic appearance",
+      "discriminators": {
+        "history": [
+          "Fever may be higher and more persistent",
+          "Productive cough with purulent sputum in older patients",
+          "Less prominent wheezing and sneezing"
+        ],
+        "exam": [
+          "Focal crackles or dullness rather than diffuse wheeze",
+          "Toxic appearance",
+          "No prominent nasal congestion"
+        ],
+        "labs": [
+          "Marked leukocytosis with neutrophilia",
+          "Elevated CRP and procalcitonin",
+          "Respiratory viral panel may be negative or show a coinfection"
+        ],
+        "imaging": [
+          "Focal lobar consolidation on chest x-ray",
+          "Possible pleural effusion"
+        ]
+      }
+    },
+    {
+      "name": "Asthma exacerbation",
+      "slug": "asthma",
+      "why_considered": "Wheezing, cough, and increased work of breathing in a child or adult",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Recurrent episodes of wheeze triggered by allergens, exercise, or cold air",
+          "Known asthma diagnosis",
+          "No preceding cold symptoms in some cases"
+        ],
+        "exam": [
+          "Diffuse wheeze with prolonged expiration",
+          "Improvement with bronchodilators",
+          "Eczema or allergic rhinitis may be present"
+        ],
+        "labs": [
+          "Respiratory viral panel negative for RSV",
+          "Eosinophilia may be present"
+        ],
+        "imaging": [
+          "Chest x-ray usually normal or hyperinflated"
+        ]
+      }
+    },
+    {
+      "name": "Foreign body aspiration",
+      "slug": "foreign-body-aspiration",
+      "why_considered": "Sudden onset of cough, wheeze, or respiratory distress in a young child",
+      "must_not_miss": true,
+      "trigger": "Abrupt onset of choking or coughing while eating or playing, with unilateral wheeze",
+      "discriminators": {
+        "history": [
+          "Sudden onset during eating or playing",
+          "No preceding runny nose or fever",
+          "Witnessed choking episode"
+        ],
+        "exam": [
+          "Unilateral wheeze or decreased breath sounds",
+          "Stridor may be present if the object is in the upper airway"
+        ],
+        "labs": [
+          "No specific laboratory findings"
+        ],
+        "imaging": [
+          "Chest x-ray may show unilateral hyperinflation, mediastinal shift, or a radiopaque object",
+          "CT or bronchoscopy may be needed if suspicion is high"
+        ]
+      }
+    },
+    {
+      "name": "Pertussis",
+      "slug": "pertussis",
+      "why_considered": "Prolonged cough illness with post-tussive vomiting in infants and older children",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Paroxysmal cough lasting weeks",
+          "Inspiratory whoop",
+          "Post-tussive vomiting",
+          "Cough worse at night"
+        ],
+        "exam": [
+          "Often normal between coughing paroxysms",
+          "Whoop may be absent in infants"
+        ],
+        "labs": [
+          "Lymphocytosis with marked leukocytosis",
+          "PCR or culture positive for Bordetella pertussis"
+        ],
+        "imaging": [
+          "Chest x-ray usually normal or shows mild perihilar markings"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Upper respiratory cold: clear rhinorrhea, sneezing, mild cough, low-grade or no fever, feeding and activity preserved, no respiratory distress, oxygen saturation 95% or higher on room air",
+      "moderate": "Lower respiratory involvement: tachypnea for age, mild retractions, audible or auscultated wheeze, decreased feeding, oxygen saturation 92 to 96% on room air, no apnea",
+      "severe": "Marked respiratory distress: tachypnea with nasal flaring and intercostal or subcostal retractions, grunting, poor feeding, dehydration, oxygen saturation 88 to 92% on room air, may require supplemental oxygen and hospitalization",
+      "critical": "Impending or overt respiratory failure: apnea, cyanosis, lethargy, grunting, oxygen saturation below 88% on room air, rising PaCO2, or need for mechanical ventilation; can be life-threatening"
+    },
+    "red_flags": [
+      {
+        "finding": "Apnea or pauses in breathing lasting 20 seconds or more",
+        "meaning": "Impending respiratory failure, especially in infants under 2 months; requires immediate evaluation and monitoring"
+      },
+      {
+        "finding": "Central cyanosis or oxygen saturation below 90% on room air",
+        "meaning": "Severe hypoxemia; needs supplemental oxygen and possible escalation of care"
+      },
+      {
+        "finding": "Grunting, nasal flaring, or marked retractions",
+        "meaning": "Severe increased work of breathing; indicates impending respiratory failure"
+      },
+      {
+        "finding": "Lethargy, poor feeding, or dehydration",
+        "meaning": "Systemic decompensation; may require intravenous fluids and hospitalization"
+      },
+      {
+        "finding": "High or persistent fever with focal lung findings",
+        "meaning": "Possible bacterial superinfection such as pneumonia; consider chest x-ray and antibiotics"
+      },
+      {
+        "finding": "Rising PaCO2 or respiratory acidosis on blood gas",
+        "meaning": "Ventilatory failure; consider mechanical ventilation"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Bronchiolitis",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Wheezing and crackles in an infant",
+          "Tachypnea and retractions",
+          "Hyperinflation on chest x-ray"
+        ]
+      },
+      {
+        "name": "Viral pneumonia",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Persistent fever",
+          "Hypoxemia",
+          "Patchy or diffuse opacities on chest x-ray"
+        ]
+      },
+      {
+        "name": "Bacterial superinfection (pneumonia or otitis media)",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "High or recurrent fever",
+          "Focal crackles or consolidation",
+          "Ear pain or bulging tympanic membrane",
+          "Marked leukocytosis"
+        ]
+      },
+      {
+        "name": "Apnea",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Infant under 2 months",
+          "Prematurity",
+          "Pauses in breathing with bradycardia or cyanosis"
+        ]
+      },
+      {
+        "name": "Respiratory failure requiring mechanical ventilation",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Grunting and cyanosis",
+          "Rising PaCO2",
+          "Lethargy and poor respiratory effort"
+        ]
+      },
+      {
+        "name": "Dehydration",
+        "timing": "early",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Poor feeding",
+          "Dry mucous membranes",
+          "Concentrated urine"
+        ]
+      },
+      {
+        "name": "Hyponatremia from SIADH",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Severe bronchiolitis",
+          "Sodium below 135 mmol/L",
+          "Confusion or seizures in severe cases"
+        ]
+      },
+      {
+        "name": "Worsening of underlying asthma or COPD",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Increased wheeze and shortness of breath",
+          "Poor response to usual bronchodilators",
+          "Known chronic lung disease"
+        ]
+      },
+      {
+        "name": "Worsening of heart failure",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Known heart failure",
+          "New or worsening edema and dyspnea",
+          "Weight gain"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "infants",
+        "differences": "Highest risk for severe disease, especially under 6 months and those born prematurely. Apnea can be the first sign. Very young infants may present only with irritability, decreased activity, and poor feeding without classic cough or wheeze."
+      },
+      {
+        "population": "children",
+        "differences": "Older children often have a mild cold or tracheobronchitis rather than bronchiolitis. Those with asthma may wheeze prominently and respond to bronchodilators."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Symptoms may be milder or atypical, with low-grade fever, confusion, or worsening of underlying heart or lung disease rather than prominent wheezing. Higher risk of hospitalization and death."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Illness can be more severe and prolonged, with higher viral loads, progression to pneumonia, and viral shedding lasting weeks. Consider prolonged isolation and antiviral discussion with specialists."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "RSV can cause more severe respiratory illness in pregnancy. Maternal vaccination between 32 and 36 weeks gestation protects the newborn for the first 6 months of life."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Poor glycemic control may worsen with infection; monitor blood glucose closely during acute illness."
+      },
+      {
+        "population": "obesity",
+        "differences": "May increase risk of severe lower respiratory infection and hypoxemia; monitor respiratory status closely."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "How did the illness start, and how has it changed over the past few days?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Gradual onset of runny nose and cough 4 to 6 days after exposure, worsening over days 3 to 5 toward wheezing and fast breathing"
+      },
+      {
+        "question": "Is the patient breathing fast, working hard to breathe, or having pauses in breathing?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Tachypnea, retractions, nasal flaring, grunting, or apnea, especially in infants under 2 months"
+      },
+      {
+        "question": "How is feeding and fluid intake compared with normal?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Poor feeding, fewer wet diapers, or refusal to drink, indicating dehydration and need for admission"
+      },
+      {
+        "question": "Is there any wheezing or noisy breathing?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Audible or auscultated wheeze with prolonged expiration, typical of bronchiolitis"
+      },
+      {
+        "question": "Any fever, and how high has it been?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Low-grade to moderate fever; high or persistent fever raises concern for bacterial superinfection"
+      },
+      {
+        "question": "Any ear pain, ear pulling, or discharge?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Otitis media as a complication, common in young children with RSV"
+      },
+      {
+        "question": "Has the patient been around anyone with a cold, or is there a daycare or school outbreak?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Sick contacts or group exposure during RSV season (fall through spring)"
+      },
+      {
+        "question": "Was the patient born prematurely, or do they have chronic lung, heart, or immune problems?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Risk factors for severe disease: prematurity, bronchopulmonary dysplasia, congenital heart disease, immunosuppression, cystic fibrosis, neuromuscular disease"
+      },
+      {
+        "question": "Does the patient take any immunosuppressive medications?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Corticosteroids, tacrolimus, cyclosporine, mycophenolate, azathioprine, methotrexate, or rituximab, which increase risk of severe and prolonged illness"
+      },
+      {
+        "question": "Has the patient received an RSV vaccine or monoclonal antibody (nirsevimab or palivizumab)?",
+        "category": "pmh",
+        "importance": "optional",
+        "looking_for": "Immunization status; prior protection lowers but does not eliminate risk"
+      },
+      {
+        "question": "Any barking cough, hoarse voice, drooling, or trouble swallowing?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Absent; these point to croup, epiglottitis, or another diagnosis rather than RSV"
+      },
+      {
+        "question": "Any sudden choking episode while eating or playing?",
+        "category": "red_flag",
+        "importance": "important",
+        "looking_for": "Absent; a witnessed choking event with unilateral wheeze suggests foreign body aspiration"
+      }
+    ],
+    "accepted_names": [
+      "Respiratory syncytial virus infection",
+      "RSV infection",
+      "RSV",
+      "RSV bronchiolitis",
+      "Bronchiolitis due to RSV",
+      "RSV pneumonia"
+    ],
+    "reasoning_points": [
+      "Gradual cold-like prodrome with runny nose and cough that worsens over several days",
+      "Wheezing with tachypnea and increased work of breathing in an infant or high-risk adult",
+      "Poor feeding or dehydration in an infant",
+      "Risk factors such as infancy, prematurity, age 65 or older, chronic lung or heart disease, or immunosuppression",
+      "Presentation during RSV season (fall through spring) with sick contacts",
+      "Positive rapid respiratory viral panel or PCR for RSV on a nasopharyngeal swab",
+      "Chest x-ray findings of hyperinflation and peribronchial cuffing when imaging is obtained",
+      "Absence of features pointing to influenza, COVID-19, bacterial pneumonia, croup, asthma, or foreign body aspiration"
+    ],
+    "difficulty": {
+      "easy": [
+        "Infant under 1 year with classic runny nose, cough, and wheeze",
+        "Presentation during RSV season with a sick contact",
+        "Diffuse wheezing with tachypnea and mild retractions",
+        "Positive rapid RSV test"
+      ],
+      "medium": [
+        "Older adult with low-grade fever, cough, and worsening of underlying COPD or heart failure rather than prominent wheeze",
+        "Infant with apnea or poor feeding but minimal cough or wheeze",
+        "Child with fever and ear pain suggesting otitis media complicating RSV",
+        "Need to distinguish RSV from influenza or COVID-19 during respiratory virus season"
+      ],
+      "hard": [
+        "Very young infant under 2 months presenting only with irritability, decreased activity, and apnea",
+        "Immunocompromised patient with prolonged, severe illness and progression to pneumonia",
+        "Patient with focal crackles and high fever suggesting bacterial superinfection rather than viral bronchiolitis",
+        "Toddler with sudden unilateral wheeze raising concern for foreign body aspiration",
+        "Pregnant patient with severe respiratory illness requiring assessment of both maternal and fetal status"
+      ]
+    }
+  }
+}

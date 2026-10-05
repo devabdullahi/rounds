@@ -1,0 +1,1513 @@
+{
+  "schema_version": "0.2",
+  "slug": "animal-bites",
+  "triage": {
+    "name": "Animal Bites",
+    "case_suitable": true,
+    "reason": "A bite wound is a concrete presentation requiring history of the animal, exam for tendon/nerve/joint involvement, and decisions on antibiotics, rabies and tetanus.",
+    "kind": "injury",
+    "category": "traumatic wound and infection risk",
+    "organ_systems": [
+      "musculoskeletal"
+    ],
+    "primary_clerkship": "emergency",
+    "secondary_clerkships": [
+      "familyMedicine",
+      "surgery",
+      "pediatrics"
+    ],
+    "commonness": "common",
+    "settings": [
+      "emergency",
+      "clinic"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:15:42Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:25:33Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:25:39Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:25:48Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:26:01Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:26:08Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'ct' to 'CT'",
+        "auto-repaired: workup: renamed 'mri' to 'MRI'",
+        "auto-repaired: workup: 'ultrasound of the wound' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ultrasound of the wound' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "differential human-bite: no profile yet",
+        "differential necrotizing-soft-tissue-infection: no profile yet",
+        "differential abscess: no profile yet",
+        "differential tendon-laceration: no profile yet",
+        "differential septic-arthritis: no profile yet",
+        "differential osteomyelitis: no profile yet",
+        "differential foreign-body-reaction: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 5,
+      "typical_max": 65,
+      "peak": "children 5–14 and adults 20–45",
+      "possible_min": 0,
+      "possible_max": 100
+    },
+    "sex": "either",
+    "demographics": [
+      "Dog bites are the most common animal bite overall and occur at all ages",
+      "Cat bites are more common in adult women and older adults",
+      "Children are bitten most often on the face, head and neck because they are at the animal's level",
+      "Adults are bitten most often on the hands, arms and legs",
+      "Bites from wild or exotic animals are more common in people with occupational or recreational animal contact"
+    ],
+    "risk_factors": [
+      {
+        "text": "Owning or frequently handling dogs or cats",
+        "strength": "strong"
+      },
+      {
+        "text": "Young child left unsupervised around a pet",
+        "strength": "strong"
+      },
+      {
+        "text": "Occupational animal contact (veterinarian, animal control, farm work, wildlife handling)",
+        "strength": "moderate"
+      },
+      {
+        "text": "Unfamiliar or stray animal, or animal that is sick, injured or protecting food or young",
+        "strength": "moderate"
+      },
+      {
+        "text": "Alcohol or recreational drug use around animals",
+        "strength": "weak"
+      },
+      {
+        "text": "Immunosuppression or diabetes (raises infection risk after a bite)",
+        "strength": "moderate"
+      }
+    ],
+    "comorbidities": [
+      "Diabetes mellitus",
+      "Immunosuppression (including asplenia, HIV, transplant, chronic steroids)",
+      "Peripheral vascular disease",
+      "Lymphedema or prior mastectomy on the affected side"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Pet ownership or household with dogs or cats",
+      "Unsupervised contact with unfamiliar animals",
+      "Outdoor or rural work and recreation"
+    ],
+    "exposures": [
+      "Dog bite",
+      "Cat bite",
+      "Rodent, rabbit or other small mammal bite",
+      "Wild animal bite (raccoon, skunk, fox, bat, monkey)",
+      "Human bite (clenched-fist injury)"
+    ],
+    "risk_medications": [
+      "prednisone",
+      "methotrexate",
+      "tacrolimus",
+      "cyclosporine",
+      "azathioprine",
+      "mycophenolate"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "A dog bit my hand",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "My arm is sore and swollen where the animal bit me",
+        "frequency": "common"
+      },
+      {
+        "text": "The wound is red and draining",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Sudden, at the time of the bite; most patients present within hours to a day, though some wait until the wound becomes infected",
+      "duration": "Usually less than 24 hours at presentation; infected bites may present after 1–3 days",
+      "progression": "Immediate pain and bleeding at the bite site, followed by swelling and tenderness; if infection develops, redness, warmth, increasing pain and purulent drainage appear over 12–72 hours",
+      "location": "Depends on the animal and situation: hands, forearms and legs in adults; face, scalp and neck in children",
+      "radiation": "Pain is usually local; deep bites near a joint or nerve can cause shooting pain or numbness in the distribution of the affected nerve",
+      "quality": "Sharp, stinging or aching pain; crushing pain with large dogs",
+      "severity": "Mild to moderate; severe with deep puncture wounds, fractures or tendon injury",
+      "timing": "Constant, worse with movement of the affected part",
+      "aggravating": [
+        "Moving the affected hand, arm or leg",
+        "Pressing on the wound",
+        "Cleaning the wound"
+      ],
+      "relieving": [
+        "Keeping the area still",
+        "Elevating the limb",
+        "Acetaminophen or ibuprofen"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Bleeding from the wound at the time of the bite",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Swelling and tenderness around the wound",
+          "frequency": "common"
+        },
+        {
+          "text": "Bruising or a crush injury",
+          "frequency": "common"
+        },
+        {
+          "text": "Numbness or tingling beyond the wound (possible nerve injury)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Inability to fully move a finger or the hand (possible tendon injury)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Fever and chills if the wound becomes infected",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Red streaks spreading up the limb",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Bite from a bat, raccoon, skunk, fox or other high-risk rabies animal",
+        "Unprovoked attack by a healthy-appearing animal",
+        "Loss of consciousness or head injury during the attack",
+        "Heavy bleeding that will not stop",
+        "Fever at the time of the bite (suggests pre-existing infection rather than a fresh bite)",
+        "Known bleeding disorder or use of anticoagulants",
+        "Tetanus vaccination more than 5–10 years ago"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Feeling warm or feverish if the wound is infected",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Feeling tired or unwell",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Weight loss",
+          "Night sweats"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [
+          {
+            "text": "Break in the skin, puncture marks or a laceration",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Redness, warmth and swelling around the wound",
+            "frequency": "common"
+          },
+          {
+            "text": "Pus or cloudy drainage from the wound",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Rash elsewhere on the body",
+          "Skin ulcers unrelated to the bite"
+        ],
+        "argues_against": [
+          "A spreading rash suggesting cellulitis from another cause",
+          "A chronic ulcer suggesting vascular or diabetic wound"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Pain with movement of the affected hand, arm or leg",
+            "frequency": "common"
+          },
+          {
+            "text": "Weakness or inability to move a finger or joint",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Obvious deformity of the limb",
+          "Inability to bear weight"
+        ],
+        "argues_against": [
+          "Fracture with gross deformity",
+          "Dislocation"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Numbness or tingling in the fingers or toes beyond the wound",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Confusion",
+          "Seizure",
+          "Weakness on one side of the body"
+        ],
+        "argues_against": [
+          "Head injury with altered mental status",
+          "Stroke"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [],
+        "negatives": [
+          "Chest pain",
+          "Shortness of breath",
+          "Palpitations"
+        ],
+        "argues_against": [
+          "Anaphylaxis from venom or drug reaction"
+        ]
+      },
+      {
+        "system": "psychiatric",
+        "positives": [
+          {
+            "text": "Anxiety or fear after the attack",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Suicidal thoughts",
+          "Hallucinations"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Bites are more often on the face, scalp and neck because children are at the animal's level; they may not report the bite or may be frightened and give a limited history.",
+        "missing_classic_features": [
+          "Hand or forearm location",
+          "Clear description of the attack"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "Thinner skin and poorer circulation mean bites tear more easily and become infected with less obvious redness, swelling or fever.",
+        "missing_classic_features": [
+          "Marked redness and warmth",
+          "Fever"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "Infection can develop rapidly and spread deeply with less pain and fewer local signs; unusual organisms are more likely.",
+        "missing_classic_features": [
+          "Prominent local inflammation",
+          "Fever"
+        ]
+      },
+      {
+        "population": "diabetes",
+        "how_it_differs": "Neuropathy and poor perfusion can mask pain and delay healing, so the wound may look minor while infection is deep.",
+        "missing_classic_features": [
+          "Severe pain",
+          "Rapid healing"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Presentation is similar, but antibiotic and imaging choices must be adjusted for fetal safety.",
+        "missing_classic_features": []
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Alert, comfortable, holding the injured part still",
+      "moderate": "Uncomfortable, guarding the injured limb, but not toxic-appearing",
+      "severe": "Ill-appearing, in obvious pain, may be pale or diaphoretic",
+      "critical": "Toxic-appearing, lethargic or agitated, signs of shock or spreading infection"
+    },
+    "findings": [
+      {
+        "id": "wound-puncture-laceration",
+        "region": "skin",
+        "maneuver": "Inspect the wound under good light, measuring its length and depth",
+        "finding": "Puncture marks, laceration or avulsion with surrounding bruising",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "wound-tenderness",
+        "region": "skin",
+        "maneuver": "Palpate the wound edges and surrounding tissue",
+        "finding": "Focal tenderness and swelling around the bite",
+        "frequency": "almost_always",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "erythema-warmth",
+        "region": "skin",
+        "maneuver": "Inspect and feel the skin around the wound",
+        "finding": "Erythema, warmth and induration extending from the wound",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "purulent-drainage",
+        "region": "skin",
+        "maneuver": "Gently press the wound edges",
+        "finding": "Purulent or cloudy drainage",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "lymphangitic-streaks",
+        "region": "lymph",
+        "maneuver": "Inspect the limb proximal to the wound",
+        "finding": "Red streaks tracking up the limb",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "regional-lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the draining lymph node basin",
+        "finding": "Tender, enlarged regional lymph nodes",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "tendon-function",
+        "region": "extremities",
+        "maneuver": "Ask the patient to flex and extend each finger and the wrist against resistance",
+        "finding": "Inability to flex or extend a finger or joint, suggesting tendon injury",
+        "frequency": "sometimes",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "neuro-sensory",
+        "region": "neuro",
+        "maneuver": "Test two-point discrimination and light touch distal to the wound",
+        "finding": "Decreased sensation in the distribution of a nerve crossing the wound",
+        "frequency": "sometimes",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "joint-involvement",
+        "region": "musculoskeletal",
+        "maneuver": "Inspect and gently move the adjacent joint",
+        "finding": "Joint effusion, pain with passive motion or a wound communicating with the joint",
+        "frequency": "rare",
+        "significance": "strongly_supports",
+        "importance": "important"
+      },
+      {
+        "id": "deformity-crepitus",
+        "region": "musculoskeletal",
+        "maneuver": "Inspect and palpate the limb for deformity or crepitus",
+        "finding": "Deformity, abnormal motion or crepitus suggesting fracture",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "distal-pulses",
+        "region": "extremities",
+        "maneuver": "Palpate the radial or dorsalis pedis pulse distal to the wound",
+        "finding": "Weak or absent distal pulse",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "capillary-refill",
+        "region": "extremities",
+        "maneuver": "Press the nail bed and observe refill",
+        "finding": "Delayed capillary refill distal to the wound",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-neuro-vascular",
+        "region": "neuro",
+        "maneuver": "Document intact sensation, motor function and distal pulses",
+        "finding": "Intact sensation, full motor function and palpable distal pulses",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "no-foreign-body",
+        "region": "skin",
+        "maneuver": "Explore the wound with a gloved finger or probe when safe",
+        "finding": "No retained tooth fragment, dirt or foreign body",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-venous-bleeding",
+        "region": "skin",
+        "maneuver": "Observe the wound after applying direct pressure",
+        "finding": "Bleeding controlled with pressure, no pulsatile or persistent bleeding",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "important"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 98.0,
+        "max": 99.5
+      },
+      "moderate": {
+        "min": 99.0,
+        "max": 100.8
+      },
+      "severe": {
+        "min": 100.4,
+        "max": 102.5
+      },
+      "critical": {
+        "min": 101.5,
+        "max": 104.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 100
+      },
+      "moderate": {
+        "min": 80,
+        "max": 110
+      },
+      "severe": {
+        "min": 100,
+        "max": 130
+      },
+      "critical": {
+        "min": 120,
+        "max": 150
+      }
+    },
+    "rr": {
+      "moderate": {
+        "min": 16,
+        "max": 22
+      },
+      "severe": {
+        "min": 20,
+        "max": 28
+      },
+      "critical": {
+        "min": 24,
+        "max": 34
+      }
+    },
+    "sbp": {
+      "severe": {
+        "min": 90,
+        "max": 110
+      },
+      "critical": {
+        "min": 70,
+        "max": 95
+      }
+    },
+    "dbp": {
+      "severe": {
+        "min": 55,
+        "max": 70
+      },
+      "critical": {
+        "min": 40,
+        "max": 60
+      }
+    },
+    "spo2": {
+      "severe": {
+        "min": 92,
+        "max": 97
+      },
+      "critical": {
+        "min": 85,
+        "max": 93
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "mild": {
+          "min": 11.0,
+          "max": 14.0
+        },
+        "moderate": {
+          "min": 13.0,
+          "max": 18.0
+        },
+        "severe": {
+          "min": 16.0,
+          "max": 24.0
+        },
+        "critical": {
+          "min": 20.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "A normal white count does not exclude infection, especially early or in older or immunocompromised patients."
+    },
+    {
+      "test_id": "neut_pct",
+      "ranges": {
+        "mild": {
+          "min": 70,
+          "max": 80
+        },
+        "moderate": {
+          "min": 75,
+          "max": 85
+        },
+        "severe": {
+          "min": 80,
+          "max": 90
+        },
+        "critical": {
+          "min": 82,
+          "max": 92
+        }
+      },
+      "frequency": "common",
+      "importance": "optional"
+    },
+    {
+      "test_id": "bands_pct",
+      "ranges": {
+        "moderate": {
+          "min": 5,
+          "max": 10
+        },
+        "severe": {
+          "min": 8,
+          "max": 15
+        },
+        "critical": {
+          "min": 10,
+          "max": 20
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "mild": {
+          "min": 1.0,
+          "max": 4.0
+        },
+        "moderate": {
+          "min": 3.0,
+          "max": 10.0
+        },
+        "severe": {
+          "min": 8.0,
+          "max": 20.0
+        },
+        "critical": {
+          "min": 15.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Supports the diagnosis of wound infection but does not identify the organism."
+    },
+    {
+      "test_id": "esr",
+      "ranges": {
+        "moderate": {
+          "min": 20,
+          "max": 40
+        },
+        "severe": {
+          "min": 35,
+          "max": 70
+        },
+        "critical": {
+          "min": 50,
+          "max": 90
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "severe": {
+          "min": 2.2,
+          "max": 4.0
+        },
+        "critical": {
+          "min": 3.0,
+          "max": 6.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Elevated only with severe or systemic infection such as sepsis."
+    },
+    {
+      "test_id": "pt",
+      "ranges": {
+        "moderate": {
+          "min": 13.6,
+          "max": 15.5
+        },
+        "severe": {
+          "min": 15.0,
+          "max": 18.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Prolonged only if the patient is anticoagulated or has a bleeding disorder; not a routine test for a bite."
+    },
+    {
+      "test_id": "inr",
+      "ranges": {
+        "moderate": {
+          "min": 1.2,
+          "max": 1.6
+        },
+        "severe": {
+          "min": 1.5,
+          "max": 2.5
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Elevated only with anticoagulation or coagulopathy."
+    },
+    {
+      "test_id": "aptt",
+      "ranges": {
+        "moderate": {
+          "min": 36,
+          "max": 50
+        },
+        "severe": {
+          "min": 45,
+          "max": 70
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional"
+    },
+    {
+      "test_id": "ck",
+      "ranges": {
+        "moderate": {
+          "min": 200,
+          "max": 600
+        },
+        "severe": {
+          "min": 500,
+          "max": 2000
+        },
+        "critical": {
+          "min": 1500,
+          "max": 5000
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Consider only with extensive crush injury or compartment syndrome."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Negative. Ordered in anyone who could be pregnant before radiographs, sedation or antibiotics that are unsafe in pregnancy."
+    }
+  ],
+  "imaging": [
+    {
+      "study": "X-ray of the affected part (hand, forearm, leg or skull)",
+      "modality": "xray",
+      "preferred_when": "Suspected fracture, retained tooth fragment or foreign body, or deep puncture over bone",
+      "findings": [
+        {
+          "text": "Fracture of the underlying bone",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Retained radiopaque tooth fragment or foreign body",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Soft tissue swelling around the wound",
+          "frequency": "common"
+        },
+        {
+          "text": "No acute osseous abnormality",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "CT of the affected region with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Suspected deep space infection, abscess, osteomyelitis or retained foreign body not seen on x-ray",
+      "findings": [
+        {
+          "text": "Soft tissue abscess or fluid collection",
+          "frequency": "common"
+        },
+        {
+          "text": "Deep soft tissue swelling and fat stranding",
+          "frequency": "common"
+        },
+        {
+          "text": "Foreign body or retained tooth fragment",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Bone destruction suggesting osteomyelitis",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "MRI of the affected region without and with contrast",
+      "modality": "mri",
+      "preferred_when": "Suspected tendon, joint or bone involvement, or when CT is nondiagnostic",
+      "findings": [
+        {
+          "text": "Tendon laceration or tenosynovitis",
+          "frequency": "common"
+        },
+        {
+          "text": "Joint effusion or septic arthritis",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Bone marrow edema suggesting osteomyelitis",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Soft tissue abscess",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Ultrasound of the wound",
+      "modality": "ultrasound",
+      "preferred_when": "Children and pregnancy when a retained foreign body is suspected and radiation should be avoided",
+      "findings": [
+        {
+          "text": "Retained foreign body or tooth fragment",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Soft tissue fluid collection or abscess",
+          "frequency": "sometimes"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "White count and differential support wound infection and assess for systemic illness"
+      },
+      {
+        "test": "bmp",
+        "why": "Baseline renal function and electrolytes before antibiotics or surgery"
+      },
+      {
+        "test": "X-ray of the affected part (hand, forearm, leg or skull)",
+        "why": "Looks for fracture, retained tooth fragment or foreign body",
+        "only_if": "suspected fracture, deep puncture over bone, or retained foreign body"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before radiographs or antibiotics that are unsafe in pregnancy",
+        "only_if": "patient could be pregnant"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Wound culture and Gram stain",
+        "why": "Identifies the causative organism and guides antibiotic choice in infected or deep bites"
+      },
+      {
+        "test": "CT of the affected region with IV contrast",
+        "why": "Defines deep space infection, abscess or osteomyelitis",
+        "only_if": "suspected deep infection, abscess or retained foreign body not seen on x-ray"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "crp",
+        "why": "Adds to the white count in assessing the severity of wound infection"
+      },
+      {
+        "test": "esr",
+        "why": "Supports the diagnosis of deep or bone infection"
+      },
+      {
+        "test": "lactate",
+        "why": "Assesses for sepsis in a toxic-appearing patient",
+        "only_if": "systemic illness or sepsis is suspected"
+      },
+      {
+        "test": "MRI of the affected region without and with contrast",
+        "why": "Best test for tendon, joint or bone involvement",
+        "only_if": "suspected tendon, joint or bone injury, or CT is nondiagnostic"
+      },
+      {
+        "test": "Ultrasound of the wound",
+        "why": "Avoids radiation",
+        "only_if": "child or pregnant patient with suspected retained foreign body"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "d_dimer",
+        "why": "No role in the evaluation of a bite wound"
+      },
+      {
+        "test": "lipase",
+        "why": "Not needed unless the presentation suggests pancreatitis"
+      },
+      {
+        "test": "tsh",
+        "why": "Unrelated to a traumatic wound"
+      },
+      {
+        "test": "a1c",
+        "why": "Not part of acute bite evaluation; may be checked later if diabetes is suspected"
+      },
+      {
+        "test": "CT",
+        "why": "Not routine; reserved for suspected deep infection or retained foreign body",
+        "only_if": "suspected deep infection, abscess or retained foreign body not seen on x-ray"
+      },
+      {
+        "test": "MRI",
+        "why": "Not routine; reserved for suspected tendon, joint or bone involvement",
+        "only_if": "suspected tendon, joint or bone injury, or CT is nondiagnostic"
+      },
+      {
+        "test": "Ultrasound of the wound",
+        "why": "Not routine; reserved for children or pregnancy when a retained foreign body is suspected",
+        "only_if": "child or pregnant patient with suspected retained foreign body"
+      }
+    ],
+    "decision_points": [
+      "Assess tetanus vaccination status and give a booster or immunoglobulin as indicated",
+      "Assess rabies risk based on the animal species, behavior and availability for observation or testing; start post-exposure prophylaxis when indicated",
+      "Examine for tendon, nerve, joint and bone involvement before closing the wound",
+      "Do not close cat bites or infected wounds primarily; leave them open or loosely approximated",
+      "Start antibiotics for infected bites, deep puncture wounds, hand or face bites, and immunocompromised or diabetic patients",
+      "Pregnancy test before radiographs or antibiotics that are unsafe in pregnancy"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Human bite (clenched-fist injury)",
+      "slug": "human-bite",
+      "why_considered": "A wound over the knuckles or hand that looks like an animal bite but the history involves striking a person in the mouth",
+      "must_not_miss": true,
+      "trigger": "Wound over the metacarpophalangeal joints in a patient who punched someone in the mouth",
+      "discriminators": {
+        "history": [
+          "Punched or struck another person in the mouth",
+          "Wound noted after a fight, sometimes with a delayed or vague account",
+          "Alcohol or drug use around the time of injury"
+        ],
+        "exam": [
+          "Small puncture or laceration over the third or fourth metacarpophalangeal joint",
+          "Wound may look minor but extends into the joint or tendon sheath",
+          "Pain and swelling that worsen when the hand is flexed"
+        ],
+        "labs": [
+          "Wound culture grows oral flora including Eikenella corrodens"
+        ],
+        "imaging": [
+          "X-ray for fracture, retained tooth fragment or foreign body",
+          "MRI or CT if deep space infection or septic arthritis is suspected"
+        ]
+      }
+    },
+    {
+      "name": "Necrotizing soft tissue infection",
+      "slug": "necrotizing-soft-tissue-infection",
+      "why_considered": "A bite wound with rapidly worsening pain, swelling and systemic illness",
+      "must_not_miss": true,
+      "trigger": "Pain out of proportion to the wound, skin discoloration, crepitus or rapid progression over hours",
+      "discriminators": {
+        "history": [
+          "Pain worsening much faster than expected for a simple bite",
+          "Rapidly spreading redness or skin discoloration",
+          "Diabetes or immunosuppression"
+        ],
+        "exam": [
+          "Pain out of proportion to the visible wound",
+          "Tense swelling, bullae, dusky or necrotic skin",
+          "Crepitus or loss of sensation over the affected area",
+          "Systemic toxicity with tachycardia and hypotension"
+        ],
+        "labs": [
+          "Marked leukocytosis",
+          "Elevated lactate",
+          "Elevated creatine kinase"
+        ],
+        "imaging": [
+          "CT showing gas in soft tissues, fat stranding or fluid collections",
+          "MRI showing deep fascial involvement"
+        ]
+      }
+    },
+    {
+      "name": "Cellulitis",
+      "slug": "cellulitis",
+      "why_considered": "Redness, warmth and swelling around a wound, with or without a clear bite history",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Spreading redness and warmth over hours to days",
+          "Often no clear break in the skin or a minor one",
+          "Fever and chills"
+        ],
+        "exam": [
+          "Diffuse erythema, warmth and induration without a deep puncture",
+          "Tender regional lymph nodes",
+          "No tendon, nerve or joint deficit"
+        ],
+        "labs": [
+          "Leukocytosis",
+          "Elevated CRP or ESR"
+        ],
+        "imaging": [
+          "Not usually needed; ultrasound or CT if an abscess is suspected"
+        ]
+      }
+    },
+    {
+      "name": "Abscess",
+      "slug": "abscess",
+      "why_considered": "A fluctuant, painful swelling at or near the bite site",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Increasing focal pain and swelling days after the bite",
+          "Fever and malaise"
+        ],
+        "exam": [
+          "Fluctuant, tender mass",
+          "Overlying erythema and warmth",
+          "Purulent drainage if it ruptures"
+        ],
+        "labs": [
+          "Leukocytosis",
+          "Wound culture identifies the organism"
+        ],
+        "imaging": [
+          "Ultrasound showing a fluid collection",
+          "CT showing a rim-enhancing fluid collection"
+        ]
+      }
+    },
+    {
+      "name": "Tendon laceration or tenosynovitis",
+      "slug": "tendon-laceration",
+      "why_considered": "A deep bite over the hand or wrist with inability to move a finger",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Bite over the dorsum of the hand or wrist",
+          "Inability to flex or extend a finger after the injury",
+          "Pain with finger movement"
+        ],
+        "exam": [
+          "Weakness or absence of flexion or extension of a finger",
+          "Tenderness along the tendon sheath",
+          "Fusiform swelling of the finger with it held in slight flexion"
+        ],
+        "labs": [
+          "Leukocytosis if infection is present"
+        ],
+        "imaging": [
+          "MRI showing tendon discontinuity or fluid in the tendon sheath",
+          "Ultrasound showing tendon injury or sheath fluid"
+        ]
+      }
+    },
+    {
+      "name": "Septic arthritis",
+      "slug": "septic-arthritis",
+      "why_considered": "A bite near a joint with a swollen, painful joint",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Bite directly over or near a joint",
+          "Joint pain and swelling that worsen over hours to days",
+          "Fever"
+        ],
+        "exam": [
+          "Joint effusion, warmth and pain with passive motion",
+          "Wound communicating with the joint space",
+          "Inability to bear weight or move the joint"
+        ],
+        "labs": [
+          "Leukocytosis",
+          "Elevated CRP or ESR",
+          "Joint aspirate with high white count and positive Gram stain or culture"
+        ],
+        "imaging": [
+          "X-ray may show joint effusion",
+          "MRI showing joint effusion and bone marrow edema"
+        ]
+      }
+    },
+    {
+      "name": "Osteomyelitis",
+      "slug": "osteomyelitis",
+      "why_considered": "A deep bite over bone with persistent pain and fever",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Deep puncture wound over a bone",
+          "Persistent pain and fever despite wound care",
+          "Diabetes or immunosuppression"
+        ],
+        "exam": [
+          "Focal bone tenderness",
+          "Overlying swelling and erythema",
+          "Wound that fails to heal or drains"
+        ],
+        "labs": [
+          "Leukocytosis",
+          "Elevated ESR and CRP",
+          "Blood cultures may be positive"
+        ],
+        "imaging": [
+          "X-ray showing bone destruction or periosteal reaction (often late)",
+          "MRI showing bone marrow edema and enhancement",
+          "CT showing bone destruction"
+        ]
+      }
+    },
+    {
+      "name": "Foreign body reaction",
+      "slug": "foreign-body-reaction",
+      "why_considered": "A bite wound that remains painful and swollen with a retained tooth fragment or debris",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Persistent pain and swelling after the bite",
+          "Wound that does not heal or drains intermittently",
+          "History of a deep puncture"
+        ],
+        "exam": [
+          "Focal tenderness and induration",
+          "Wound may drain or have a visible fragment",
+          "No tendon or nerve deficit"
+        ],
+        "labs": [
+          "Leukocytosis if infected"
+        ],
+        "imaging": [
+          "X-ray showing a radiopaque tooth fragment or foreign body",
+          "Ultrasound showing a retained foreign body",
+          "CT showing a retained fragment and surrounding inflammation"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Superficial abrasion or small laceration, no deep structures involved, no signs of infection, patient comfortable",
+      "moderate": "Deep puncture or laceration with local swelling and tenderness, early signs of infection such as erythema and warmth, but no systemic illness",
+      "severe": "Deep wound with tendon, nerve, joint or bone involvement, or established infection with fever, purulent drainage and regional lymphadenopathy",
+      "critical": "Rapidly progressive infection with sepsis, necrotizing soft tissue infection, compartment syndrome, or major hemorrhage from a large vessel injury"
+    },
+    "red_flags": [
+      {
+        "finding": "Pain out of proportion to the wound or rapidly spreading redness",
+        "meaning": "Possible necrotizing soft tissue infection; needs urgent surgical evaluation"
+      },
+      {
+        "finding": "Hypotension, tachycardia or altered mental status",
+        "meaning": "Sepsis; needs resuscitation and broad-spectrum antibiotics"
+      },
+      {
+        "finding": "Inability to flex or extend a finger or joint",
+        "meaning": "Tendon injury; needs surgical repair"
+      },
+      {
+        "finding": "Numbness or tingling beyond the wound",
+        "meaning": "Nerve injury; needs careful documentation and possible surgical repair"
+      },
+      {
+        "finding": "Wound over a joint with swelling and pain on passive motion",
+        "meaning": "Possible septic arthritis; needs joint aspiration and antibiotics"
+      },
+      {
+        "finding": "Bite from a bat, raccoon, skunk, fox or other high-risk rabies animal",
+        "meaning": "Needs rabies post-exposure prophylaxis"
+      },
+      {
+        "finding": "Tetanus vaccination not up to date",
+        "meaning": "Needs tetanus booster or immunoglobulin"
+      },
+      {
+        "finding": "Uncontrolled bleeding or expanding hematoma",
+        "meaning": "Possible major vessel injury; needs urgent surgical evaluation"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Wound infection",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Increasing pain, redness and swelling 12–72 hours after the bite",
+          "Purulent drainage",
+          "Fever"
+        ]
+      },
+      {
+        "name": "Abscess",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Fluctuant, tender mass",
+          "Persistent fever",
+          "Purulent drainage"
+        ]
+      },
+      {
+        "name": "Tendon laceration or tenosynovitis",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Inability to flex or extend a finger",
+          "Fusiform swelling of the finger",
+          "Pain along the tendon sheath"
+        ]
+      },
+      {
+        "name": "Septic arthritis",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Joint effusion and warmth",
+          "Pain with passive motion",
+          "Fever"
+        ]
+      },
+      {
+        "name": "Osteomyelitis",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Persistent bone pain and fever",
+          "Wound that fails to heal",
+          "Elevated ESR and CRP"
+        ]
+      },
+      {
+        "name": "Necrotizing soft tissue infection",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Pain out of proportion to the wound",
+          "Crepitus or dusky skin",
+          "Rapid progression and systemic toxicity"
+        ]
+      },
+      {
+        "name": "Sepsis",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Hypotension",
+          "Tachycardia",
+          "Altered mental status"
+        ]
+      },
+      {
+        "name": "Rabies",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Bite from a high-risk animal",
+          "Progressive encephalitis with hydrophobia, agitation and confusion"
+        ]
+      },
+      {
+        "name": "Tetanus",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Vaccination not up to date",
+          "Muscle stiffness and spasms, trismus"
+        ]
+      },
+      {
+        "name": "Compartment syndrome",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Severe pain with passive stretch",
+          "Tense swelling",
+          "Paresthesia and weak pulses"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Bites are more often on the face, scalp and neck; they may not report the bite or give a limited history. Facial bites need careful cosmetic and functional assessment."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Thinner skin and poorer circulation mean bites tear more easily and become infected with less obvious redness, swelling or fever."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Infection can develop rapidly and spread deeply with less pain and fewer local signs; unusual organisms are more likely. Lower threshold for antibiotics and close follow-up."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Neuropathy and poor perfusion can mask pain and delay healing, so the wound may look minor while infection is deep. Higher risk of osteomyelitis."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Presentation is similar, but antibiotic and imaging choices must be adjusted for fetal safety. Avoid radiographs when possible and choose pregnancy-safe antibiotics."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "What kind of animal bit you, and do you know the animal or was it a stray?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Species and ownership; a known, healthy, owned dog or cat can be observed, while a stray or wild animal raises rabies risk"
+      },
+      {
+        "question": "Was the attack provoked or unprovoked?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "An unprovoked attack by a healthy-appearing animal is a rabies red flag and changes post-exposure prophylaxis decisions"
+      },
+      {
+        "question": "When exactly did the bite happen?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Time since injury; most present within hours, but a delay of 1–3 days suggests developing infection"
+      },
+      {
+        "question": "Where on your body is the wound, and how deep does it look?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Hand, wrist, face or joint-adjacent wounds carry higher risk of deep structure injury and infection"
+      },
+      {
+        "question": "Can you move all your fingers, hand or toes normally?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Inability to flex or extend suggests tendon injury and needs surgical evaluation"
+      },
+      {
+        "question": "Do you have any numbness or tingling beyond the wound?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Sensory loss in a nerve distribution suggests nerve injury"
+      },
+      {
+        "question": "Is the wound getting more painful, red, swollen or draining?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Progressive local signs over 12–72 hours suggest wound infection or abscess"
+      },
+      {
+        "question": "Have you had fever, chills or felt generally unwell?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Systemic symptoms suggest infection, sepsis or a deeper process"
+      },
+      {
+        "question": "When was your last tetanus booster?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "A booster more than 5–10 years ago, or an unknown status, requires tetanus prophylaxis"
+      },
+      {
+        "question": "Do you have diabetes, HIV, or take any medicines that suppress your immune system?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Immunosuppression or diabetes lowers the threshold for antibiotics and close follow-up"
+      },
+      {
+        "question": "Are you taking any blood thinners or do you have a bleeding disorder?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Anticoagulation or coagulopathy increases bleeding risk and may change wound management"
+      },
+      {
+        "question": "Could you be pregnant? When was your last menstrual period?",
+        "category": "obstetric",
+        "importance": "important",
+        "looking_for": "Pregnancy affects radiograph and antibiotic choices"
+      },
+      {
+        "question": "Do you have any allergies to antibiotics, especially penicillin or cephalosporins?",
+        "category": "allergies",
+        "importance": "important",
+        "looking_for": "Guides antibiotic selection for bite prophylaxis or treatment"
+      },
+      {
+        "question": "What is your job or hobby — do you work with animals or handle wildlife?",
+        "category": "social",
+        "importance": "optional",
+        "looking_for": "Occupational or recreational animal contact raises exposure risk and may affect rabies assessment"
+      }
+    ],
+    "accepted_names": [
+      "Animal bite",
+      "Animal bites",
+      "Dog bite",
+      "Cat bite",
+      "Mammal bite",
+      "Bite wound"
+    ],
+    "reasoning_points": [
+      "A clear history of a bite from a dog, cat or other mammal with a break in the skin",
+      "Wound inspection showing puncture marks, laceration or avulsion with surrounding tenderness and swelling",
+      "Assessment for deep structure injury: tendon function, sensation, joint involvement and possible fracture",
+      "Evaluation for local infection with erythema, warmth, purulent drainage or regional lymphadenopathy",
+      "Tetanus vaccination status reviewed and prophylaxis given when not up to date",
+      "Rabies risk assessed from the animal species, behavior and availability for observation or testing",
+      "Antibiotic decisions based on wound type, location, depth and patient risk factors",
+      "Imaging and cultures used selectively for suspected fracture, retained foreign body or deep infection"
+    ],
+    "difficulty": {
+      "easy": [
+        "Known healthy pet dog or cat with a superficial laceration and a clear bite history",
+        "Patient presents within hours with pain and bleeding but no signs of infection",
+        "Tetanus status is up to date and rabies risk is low",
+        "Wound is on the forearm or leg and does not involve deep structures"
+      ],
+      "medium": [
+        "Cat bite puncture wound over the hand with early redness and swelling",
+        "Patient with diabetes or immunosuppression and a bite that looks minor",
+        "Wound over a joint or tendon with pain but preserved function",
+        "Delayed presentation 2–3 days after the bite with purulent drainage"
+      ],
+      "hard": [
+        "Deep hand bite with inability to flex a finger, suggesting tendon injury",
+        "Bite from a stray or wild animal with unclear rabies vaccination status",
+        "Older adult with thin skin and minimal signs despite a deep infection",
+        "Child with a facial bite requiring cosmetic and functional assessment",
+        "Rapidly worsening pain and swelling suggesting necrotizing soft tissue infection"
+      ]
+    }
+  }
+}

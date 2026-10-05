@@ -1,0 +1,1322 @@
+{
+  "schema_version": "0.2",
+  "slug": "gerd",
+  "triage": {
+    "name": "GERD",
+    "case_suitable": true,
+    "reason": "Very common reflux presentation with classic heartburn history and response to therapy; good ambulatory case with alarm-feature reasoning.",
+    "kind": "disease",
+    "category": "esophageal disorder",
+    "organ_systems": [
+      "gastrointestinal"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "familyMedicine",
+      "surgery"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "clinic"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:17:35Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:25:59Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:26:05Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:26:15Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:26:26Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:26:33Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: labs: dropped 'cbc' (not in the reference table)",
+        "differential acute-coronary-syndrome: no profile yet",
+        "differential peptic-ulcer-disease: no profile yet",
+        "differential esophageal-cancer: no profile yet",
+        "differential achalasia: no profile yet",
+        "differential functional-heartburn: no profile yet",
+        "differential eosinophilic-esophagitis: no profile yet",
+        "differential cholecystitis: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 30,
+      "typical_max": 70,
+      "peak": "40–60",
+      "possible_min": 0,
+      "possible_max": 100
+    },
+    "sex": "either",
+    "demographics": [
+      "Affects both sexes similarly",
+      "More common with increasing age",
+      "More common in people with obesity"
+    ],
+    "risk_factors": [
+      {
+        "text": "Obesity or excess weight",
+        "strength": "strong"
+      },
+      {
+        "text": "Hiatal hernia",
+        "strength": "strong"
+      },
+      {
+        "text": "Cigarette smoking or secondhand smoke exposure",
+        "strength": "moderate"
+      },
+      {
+        "text": "Pregnancy",
+        "strength": "moderate"
+      },
+      {
+        "text": "Large or late evening meals",
+        "strength": "moderate"
+      },
+      {
+        "text": "Alcohol use",
+        "strength": "weak"
+      },
+      {
+        "text": "Family history of GERD",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Obesity",
+      "Hiatal hernia",
+      "Asthma",
+      "Diabetes mellitus"
+    ],
+    "family_history": [
+      "GERD or frequent heartburn in a first-degree relative"
+    ],
+    "social_history": [
+      "Tobacco use",
+      "Alcohol use",
+      "Late-night eating habits"
+    ],
+    "exposures": [
+      "Secondhand smoke"
+    ],
+    "risk_medications": [
+      "ibuprofen",
+      "naproxen",
+      "aspirin",
+      "alendronate",
+      "nifedipine",
+      "amlodipine",
+      "nitroglycerin",
+      "prednisone"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I get a burning feeling in my chest after I eat",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "Sour liquid comes up into my throat",
+        "frequency": "common"
+      },
+      {
+        "text": "It gets worse when I lie down at night",
+        "frequency": "common"
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual, often over weeks to months; many patients have had intermittent symptoms for years",
+      "duration": "Chronic, typically present for months to years",
+      "progression": "Symptoms come and go, often worse after large meals or when lying down; may slowly increase in frequency over time",
+      "location": "Burning behind the breastbone (mid-chest), sometimes rising into the throat",
+      "radiation": "Can radiate upward toward the throat or neck; occasionally to the back",
+      "quality": "Burning or warm, sometimes sour or acid-like",
+      "severity": "Mild to moderate; usually 3–6/10, worse after meals",
+      "timing": "Typically 30–60 minutes after meals and when lying down or bending over",
+      "aggravating": [
+        "Large or fatty meals",
+        "Lying down or bending over soon after eating",
+        "Spicy foods, chocolate, caffeine, citrus, tomato",
+        "Alcohol",
+        "Tight clothing around the waist"
+      ],
+      "relieving": [
+        "Antacids",
+        "Sitting upright or standing",
+        "Smaller meals",
+        "Avoiding food close to bedtime",
+        "Elevating the head of the bed"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Regurgitation of sour or bitter fluid",
+          "frequency": "common"
+        },
+        {
+          "text": "Water brash (sudden excess saliva)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Chronic dry cough",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Hoarse or raspy voice, especially in the morning",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Sensation of a lump in the throat",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Belching",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Nausea",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Wheezing or asthma-like symptoms",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Trouble swallowing solid food",
+        "Painful swallowing",
+        "Vomiting blood or coffee-ground material",
+        "Black or tarry stools",
+        "Unintentional weight loss",
+        "Chest pain with shortness of breath, sweating, or pain radiating to the jaw or arm",
+        "Anemia",
+        "Choking or coughing up food at night"
+      ]
+    },
+    "ros": [
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Heartburn after meals",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Regurgitation of sour fluid",
+            "frequency": "common"
+          },
+          {
+            "text": "Belching",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Nausea",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Dysphagia",
+          "Odynophagia",
+          "Hematemesis",
+          "Melena",
+          "Early satiety",
+          "Jaundice"
+        ],
+        "argues_against": [
+          "Progressive solid-food dysphagia",
+          "Gastrointestinal bleeding"
+        ]
+      },
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "Dry cough",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Wheezing",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Productive cough with fever",
+          "Hemoptysis",
+          "Pleuritic chest pain"
+        ],
+        "argues_against": [
+          "Pneumonia or other acute lung infection"
+        ]
+      },
+      {
+        "system": "ent",
+        "positives": [
+          {
+            "text": "Hoarseness",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Sore throat",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Globus sensation",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Unilateral throat pain",
+          "Drooling",
+          "Difficulty opening the mouth"
+        ],
+        "argues_against": [
+          "Peritonsillar abscess or epiglottitis"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [],
+        "negatives": [
+          "Chest pain with exertion",
+          "Shortness of breath with exertion",
+          "Palpitations",
+          "Leg swelling"
+        ],
+        "argues_against": [
+          "Acute coronary syndrome",
+          "Heart failure"
+        ]
+      },
+      {
+        "system": "constitutional",
+        "positives": [],
+        "negatives": [
+          "Fever",
+          "Unintentional weight loss",
+          "Night sweats",
+          "Fatigue"
+        ],
+        "argues_against": [
+          "Malignancy or chronic infection"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Older children may report heartburn, but younger children often present with recurrent vomiting, poor feeding, irritability, or respiratory symptoms rather than classic burning chest pain.",
+        "missing_classic_features": [
+          "Heartburn",
+          "Clear relationship to meals and lying down"
+        ]
+      },
+      {
+        "population": "infants",
+        "how_it_differs": "Infants typically present with spitting up, feeding refusal, arching of the back, irritability, or poor weight gain; classic heartburn cannot be reported.",
+        "missing_classic_features": [
+          "Heartburn",
+          "Regurgitation described as sour or acid"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "Symptoms may be milder or atypical, with more dysphagia, respiratory symptoms, or silent reflux; they are also more likely to have severe esophagitis or Barrett's esophagus.",
+        "missing_classic_features": [
+          "Prominent heartburn"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Heartburn is very common in the third trimester due to increased abdominal pressure and hormonal effects; symptoms usually improve after delivery.",
+        "missing_classic_features": [
+          "Chronic long-standing history"
+        ]
+      },
+      {
+        "population": "obesity",
+        "how_it_differs": "Symptoms tend to be more frequent and severe, and are more likely to persist; weight loss often improves symptoms.",
+        "missing_classic_features": []
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Comfortable, well-appearing, no distress",
+      "moderate": "Mild discomfort, occasionally clears throat or shifts position for reflux symptoms",
+      "severe": "Uncomfortable, frequent throat clearing or cough, appears fatigued from nocturnal symptoms",
+      "critical": "Ill-appearing with signs of GI bleeding (pallor, diaphoresis) or severe pain suggesting complication"
+    },
+    "findings": [
+      {
+        "id": "epigastric-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate the epigastric region",
+        "finding": "Mild epigastric tenderness without guarding or rebound",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "normal-abdominal-exam",
+        "region": "abdomen",
+        "maneuver": "Palpate all four quadrants and check for organomegaly",
+        "finding": "Soft, non-tender abdomen without masses or organomegaly",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "no-murphy-sign",
+        "region": "abdomen",
+        "maneuver": "Perform Murphy sign (press under the right costal margin while the patient inhales)",
+        "finding": "No arrest of inspiration or right upper quadrant tenderness",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "no-rebound-guarding",
+        "region": "abdomen",
+        "maneuver": "Check for rebound tenderness and involuntary guarding",
+        "finding": "No peritoneal signs",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "essential"
+      },
+      {
+        "id": "oropharyngeal-erosion",
+        "region": "heent",
+        "maneuver": "Inspect the posterior pharynx and oropharynx",
+        "finding": "Erythema or erosions on the posterior pharyngeal wall or uvula",
+        "frequency": "rare",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "dental-erosion",
+        "region": "heent",
+        "maneuver": "Inspect the teeth for enamel erosion",
+        "finding": "Loss of enamel on the lingual surfaces of teeth",
+        "frequency": "rare",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "hoarse-voice",
+        "region": "heent",
+        "maneuver": "Listen to the patient's voice during history",
+        "finding": "Hoarse or raspy voice",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-lung-exam",
+        "region": "lung",
+        "maneuver": "Auscultate all lung fields",
+        "finding": "Clear breath sounds without crackles or wheezing",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "wheezing",
+        "region": "lung",
+        "maneuver": "Auscultate the lungs during expiration",
+        "finding": "Diffuse expiratory wheezing",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-cardiac-exam",
+        "region": "cardiac",
+        "maneuver": "Auscultate the heart and palpate peripheral pulses",
+        "finding": "Regular rate and rhythm, no murmurs, no jugular venous distension or peripheral edema",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "no-chest-wall-tenderness",
+        "region": "cardiac",
+        "maneuver": "Palpate the anterior chest wall and reproduce any chest pain",
+        "finding": "No reproducible chest wall tenderness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the cervical, supraclavicular, and axillary lymph nodes",
+        "finding": "No enlarged or tender lymph nodes",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "moderate": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "severe": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "critical": {
+        "min": 97.8,
+        "max": 99.1
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 100
+      },
+      "moderate": {
+        "min": 60,
+        "max": 100
+      },
+      "severe": {
+        "min": 60,
+        "max": 100
+      },
+      "critical": {
+        "min": 100,
+        "max": 130
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 12,
+        "max": 20
+      },
+      "moderate": {
+        "min": 12,
+        "max": 20
+      },
+      "severe": {
+        "min": 12,
+        "max": 20
+      },
+      "critical": {
+        "min": 20,
+        "max": 28
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 90,
+        "max": 140
+      },
+      "moderate": {
+        "min": 90,
+        "max": 140
+      },
+      "severe": {
+        "min": 90,
+        "max": 140
+      },
+      "critical": {
+        "min": 70,
+        "max": 100
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 60,
+        "max": 90
+      },
+      "moderate": {
+        "min": 60,
+        "max": 90
+      },
+      "severe": {
+        "min": 60,
+        "max": 90
+      },
+      "critical": {
+        "min": 40,
+        "max": 65
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 95,
+        "max": 100
+      },
+      "moderate": {
+        "min": 95,
+        "max": 100
+      },
+      "severe": {
+        "min": 95,
+        "max": 100
+      },
+      "critical": {
+        "min": 88,
+        "max": 95
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "hgb",
+      "ranges": {
+        "moderate": {
+          "min": 10.0,
+          "max": 11.9
+        },
+        "severe": {
+          "min": 7.0,
+          "max": 10.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "important",
+      "caveat": "Anemia is not caused by uncomplicated GERD; when present it points to erosive esophagitis, Barrett's esophagus, or a separate bleeding lesion."
+    },
+    {
+      "test_id": "ferritin",
+      "ranges": {
+        "moderate": {
+          "min": 5,
+          "max": 11
+        },
+        "severe": {
+          "min": 2,
+          "max": 5
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Low ferritin supports chronic blood loss from esophagitis rather than GERD itself."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Negative. Check in anyone who could be pregnant before endoscopy, sedation, or reflux medications that are not pregnancy-safe."
+    },
+    {
+      "test_id": "hs_tnt",
+      "frequency": "sometimes",
+      "importance": "essential",
+      "caveat": "Normal. Must be checked when chest pain could be cardiac; a normal troponin helps exclude acute coronary syndrome before attributing pain to reflux."
+    },
+    {
+      "test_id": "lipase",
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Normal. Useful when epigastric pain raises concern for pancreatitis rather than reflux."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rhythm",
+        "finding": "Normal sinus rhythm",
+        "frequency": "almost_always"
+      },
+      {
+        "feature": "rate",
+        "finding": "Normal rate, 60–100 bpm",
+        "frequency": "almost_always"
+      },
+      {
+        "feature": "st",
+        "finding": "No ST elevation or depression; no ischemic changes",
+        "frequency": "almost_always"
+      },
+      {
+        "feature": "t_wave",
+        "finding": "No T-wave inversion",
+        "frequency": "almost_always"
+      },
+      {
+        "feature": "conduction",
+        "finding": "Normal PR and QRS intervals without block",
+        "frequency": "almost_always"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Upper GI endoscopy (esophagogastroduodenoscopy)",
+      "modality": "endoscopy",
+      "preferred_when": "Alarm features, age over 60 with new symptoms, or failure of empiric therapy",
+      "findings": [
+        {
+          "text": "Normal-appearing esophageal mucosa",
+          "frequency": "common"
+        },
+        {
+          "text": "Erythema, friability, or linear erosions in the distal esophagus (erosive esophagitis)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Mucosal breaks or ulceration in severe esophagitis",
+          "frequency": "rare"
+        },
+        {
+          "text": "Salmon-colored tongues of mucosa extending above the gastroesophageal junction (Barrett's esophagus)",
+          "frequency": "rare"
+        },
+        {
+          "text": "Peptic stricture with luminal narrowing",
+          "frequency": "rare"
+        },
+        {
+          "text": "Hiatal hernia",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Barium swallow (upper GI series)",
+      "modality": "xray",
+      "preferred_when": "Dysphagia or suspected stricture when endoscopy is not immediately available",
+      "findings": [
+        {
+          "text": "Free reflux of contrast from stomach into esophagus",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Hiatal hernia",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Smooth tapering stricture in the distal esophagus",
+          "frequency": "rare"
+        },
+        {
+          "text": "Normal study",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "Ambulatory esophageal pH monitoring",
+      "modality": "other",
+      "preferred_when": "Normal endoscopy with persistent symptoms, or before antireflux surgery",
+      "findings": [
+        {
+          "text": "Increased esophageal acid exposure time (pH below 4 for more than about 4–6% of the study)",
+          "frequency": "common"
+        },
+        {
+          "text": "Symptom episodes correlate with acid reflux events",
+          "frequency": "common"
+        },
+        {
+          "text": "Normal acid exposure (functional heartburn)",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Esophageal manometry",
+      "modality": "other",
+      "preferred_when": "Before antireflux surgery or when a motility disorder is suspected",
+      "findings": [
+        {
+          "text": "Low lower esophageal sphincter resting pressure",
+          "frequency": "common"
+        },
+        {
+          "text": "Normal esophageal peristalsis",
+          "frequency": "common"
+        },
+        {
+          "text": "Weak or absent peristalsis suggesting a motility disorder",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Chest x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Usually normal; no role in diagnosing GERD",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Retrocardiac air-fluid level from a large hiatal hernia",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Baseline blood count; anemia would suggest erosive disease or another bleeding source",
+        "only_if": "alarm features such as dysphagia, weight loss, or suspected GI bleeding"
+      },
+      {
+        "test": "hs_tnt",
+        "why": "Excludes acute coronary syndrome when chest pain could be cardiac",
+        "only_if": "chest pain is not clearly reflux, or there are cardiac risk factors"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before endoscopy, sedation, or medication changes",
+        "only_if": "patient could be pregnant"
+      },
+      {
+        "test": "Upper GI endoscopy (esophagogastroduodenoscopy)",
+        "why": "Directly assesses for esophagitis, stricture, and Barrett's esophagus",
+        "only_if": "alarm features, age over 60 with new symptoms, or failure of empiric PPI therapy"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Ambulatory esophageal pH monitoring",
+        "why": "Documents abnormal acid exposure when symptoms persist despite therapy and endoscopy is normal"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "Barium swallow (upper GI series)",
+        "why": "Evaluates anatomy and stricture when endoscopy is unavailable or not tolerated",
+        "only_if": "dysphagia or suspected stricture"
+      },
+      {
+        "test": "Esophageal manometry",
+        "why": "Assesses peristalsis and sphincter function before antireflux surgery",
+        "only_if": "antireflux surgery is being considered or a motility disorder is suspected"
+      },
+      {
+        "test": "lipase",
+        "why": "Excludes pancreatitis when epigastric pain is prominent",
+        "only_if": "epigastric pain suggests pancreatitis"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Chest x-ray",
+        "why": "Does not diagnose GERD and rarely changes management"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in typical reflux symptoms"
+      },
+      {
+        "test": "Abdominal ultrasound",
+        "why": "Not useful for reflux; consider only if biliary or pancreatic disease is suspected"
+      }
+    ],
+    "decision_points": [
+      "Trial of lifestyle changes plus a proton pump inhibitor is appropriate first-line therapy for classic symptoms without alarm features",
+      "Endoscopy is indicated for alarm features (dysphagia, odynophagia, weight loss, GI bleeding, anemia), age over 60 with new-onset symptoms, or failure of empiric therapy",
+      "Exclude cardiac causes of chest pain before attributing symptoms to GERD when the presentation is atypical",
+      "pH monitoring is reserved for persistent symptoms with normal endoscopy or before antireflux surgery"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Acute coronary syndrome",
+      "slug": "acute-coronary-syndrome",
+      "why_considered": "Burning mid-chest discomfort that can be mistaken for heartburn; both are common and can occur after meals or at rest",
+      "must_not_miss": true,
+      "trigger": "Chest pain with exertional onset, diaphoresis, shortness of breath, or pain radiating to the jaw, neck, or arm",
+      "discriminators": {
+        "history": [
+          "Pressure or squeezing quality rather than burning",
+          "Provoked by exertion and relieved by rest",
+          "Radiation to jaw, neck, or left arm",
+          "Associated dyspnea, diaphoresis, or nausea",
+          "Cardiac risk factors such as diabetes, smoking, hypertension, or hyperlipidemia"
+        ],
+        "exam": [
+          "Diaphoresis, pallor, or distress",
+          "New S3, S4, or murmur",
+          "Hypotension or tachycardia"
+        ],
+        "labs": [
+          "Elevated high-sensitivity troponin",
+          "Rising troponin on serial testing"
+        ],
+        "imaging": [
+          "Regional wall motion abnormality on echocardiography",
+          "Coronary stenosis on angiography"
+        ],
+        "ecg": [
+          "ST elevation or depression",
+          "T-wave inversion",
+          "New Q waves or conduction abnormality"
+        ]
+      }
+    },
+    {
+      "name": "Peptic ulcer disease",
+      "slug": "peptic-ulcer-disease",
+      "why_considered": "Epigastric burning pain that may be relieved or worsened by food and overlaps with reflux symptoms",
+      "must_not_miss": true,
+      "trigger": "Epigastric pain that wakes the patient at night, or melena, hematemesis, or anemia",
+      "discriminators": {
+        "history": [
+          "Epigastric rather than retrosternal pain",
+          "Pain relieved by food (duodenal) or worsened by food (gastric)",
+          "NSAID use or prior H. pylori infection",
+          "Melena or hematemesis"
+        ],
+        "exam": [
+          "Focal epigastric tenderness",
+          "Signs of anemia such as pallor",
+          "Peritoneal signs if perforated"
+        ],
+        "labs": [
+          "Anemia with low ferritin",
+          "Positive H. pylori stool antigen or urea breath test"
+        ],
+        "imaging": [
+          "Gastric or duodenal ulcer on endoscopy",
+          "Free air on upright chest x-ray if perforated"
+        ]
+      }
+    },
+    {
+      "name": "Esophageal cancer",
+      "slug": "esophageal-cancer",
+      "why_considered": "Reflux is a risk factor and early disease can present with heartburn or regurgitation before dysphagia develops",
+      "must_not_miss": true,
+      "trigger": "Progressive solid-food dysphagia, unintentional weight loss, or iron-deficiency anemia in a patient with long-standing reflux",
+      "discriminators": {
+        "history": [
+          "Progressive dysphagia, first to solids then liquids",
+          "Unintentional weight loss",
+          "Odynophagia",
+          "Long-standing GERD or Barrett's esophagus",
+          "Tobacco or heavy alcohol use"
+        ],
+        "exam": [
+          "Cachexia or temporal wasting",
+          "Supraclavicular or cervical lymphadenopathy",
+          "Hepatomegaly if metastatic"
+        ],
+        "labs": [
+          "Iron-deficiency anemia",
+          "Elevated liver enzymes if hepatic metastases"
+        ],
+        "imaging": [
+          "Irregular mass or stricture with mucosal destruction on endoscopy",
+          "Malignant-appearing stricture on barium swallow",
+          "Mass or lymphadenopathy on CT or endoscopic ultrasound"
+        ]
+      }
+    },
+    {
+      "name": "Achalasia",
+      "slug": "achalasia",
+      "why_considered": "Regurgitation and chest discomfort that can be mistaken for reflux",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Dysphagia to both solids and liquids from the outset",
+          "Regurgitation of undigested food hours after eating",
+          "Nocturnal regurgitation and aspiration",
+          "Heartburn less prominent or absent"
+        ],
+        "exam": [
+          "Usually normal abdominal exam",
+          "Signs of weight loss"
+        ],
+        "imaging": [
+          "Dilated esophagus with a smooth bird-beak narrowing at the gastroesophageal junction on barium swallow",
+          "Absent peristalsis and failure of lower esophageal sphincter relaxation on manometry"
+        ]
+      }
+    },
+    {
+      "name": "Functional heartburn",
+      "slug": "functional-heartburn",
+      "why_considered": "Burning retrosternal discomfort with normal endoscopy and no response to acid suppression",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Symptoms persist despite adequate proton pump inhibitor therapy",
+          "No relationship to meals or lying down",
+          "Associated anxiety or somatization"
+        ],
+        "exam": [
+          "Normal examination"
+        ],
+        "labs": [
+          "Normal blood count and metabolic panel"
+        ],
+        "imaging": [
+          "Normal endoscopy",
+          "Normal esophageal acid exposure on pH monitoring",
+          "No symptom correlation with reflux events"
+        ]
+      }
+    },
+    {
+      "name": "Eosinophilic esophagitis",
+      "slug": "eosinophilic-esophagitis",
+      "why_considered": "Reflux-like symptoms with dysphagia, more common in younger patients with atopy",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Dysphagia or food impaction",
+          "History of asthma, eczema, or allergic rhinitis",
+          "Poor response to proton pump inhibitors"
+        ],
+        "exam": [
+          "Usually normal",
+          "Oral allergy findings such as lip or tongue swelling"
+        ],
+        "labs": [
+          "Peripheral eosinophilia sometimes present"
+        ],
+        "imaging": [
+          "Rings, furrows, or white exudates on endoscopy",
+          "Esophageal eosinophils on biopsy"
+        ]
+      }
+    },
+    {
+      "name": "Biliary colic or cholecystitis",
+      "slug": "cholecystitis",
+      "why_considered": "Right upper quadrant or epigastric pain after fatty meals that can be confused with reflux",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Pain in the right upper quadrant or epigastrium",
+          "Colicky pain after fatty meals",
+          "Radiation to the right shoulder or back",
+          "Fever and vomiting if cholecystitis"
+        ],
+        "exam": [
+          "Positive Murphy sign",
+          "Right upper quadrant tenderness or palpable gallbladder"
+        ],
+        "labs": [
+          "Leukocytosis",
+          "Elevated alkaline phosphatase, GGT, or bilirubin"
+        ],
+        "imaging": [
+          "Gallstones, gallbladder wall thickening, or pericholecystic fluid on ultrasound",
+          "Biliary dilation on ultrasound or MRCP"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Intermittent heartburn less than twice a week, no nocturnal symptoms, no esophagitis on endoscopy, symptoms controlled with lifestyle changes or occasional antacids",
+      "moderate": "Heartburn two or more times a week, nocturnal symptoms, mild erosive esophagitis (Los Angeles grade A or B), symptoms controlled with daily proton pump inhibitor",
+      "severe": "Daily symptoms despite proton pump inhibitor, severe erosive esophagitis (grade C or D), peptic stricture, or Barrett's esophagus",
+      "critical": "Complicated disease with GI bleeding, perforation, or severe aspiration; life-threatening but uncommon"
+    },
+    "red_flags": [
+      {
+        "finding": "Progressive dysphagia or odynophagia",
+        "meaning": "Suggests stricture, severe esophagitis, or malignancy; endoscopy is indicated"
+      },
+      {
+        "finding": "Unintentional weight loss",
+        "meaning": "Raises concern for malignancy or severe dysphagia; endoscopy is indicated"
+      },
+      {
+        "finding": "Hematemesis, melena, or iron-deficiency anemia",
+        "meaning": "Suggests erosive esophagitis, ulcer, or malignancy; urgent endoscopy is indicated"
+      },
+      {
+        "finding": "Chest pain with dyspnea, diaphoresis, or radiation to jaw or arm",
+        "meaning": "Must exclude acute coronary syndrome before attributing to reflux"
+      },
+      {
+        "finding": "Choking, coughing, or nocturnal aspiration",
+        "meaning": "Suggests severe reflux with aspiration risk; further evaluation and aggressive therapy needed"
+      },
+      {
+        "finding": "Failure of an adequate proton pump inhibitor trial",
+        "meaning": "Suggests an alternative diagnosis or complicated disease; endoscopy and pH monitoring should be considered"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Erosive esophagitis",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Persistent symptoms despite therapy",
+          "Odynophagia",
+          "Endoscopic mucosal breaks"
+        ]
+      },
+      {
+        "name": "Peptic stricture",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Progressive solid-food dysphagia",
+          "Food impaction",
+          "Smooth tapering narrowing on barium swallow"
+        ]
+      },
+      {
+        "name": "Barrett's esophagus",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Long-standing GERD symptoms",
+          "Salmon-colored mucosa above the gastroesophageal junction on endoscopy",
+          "Intestinal metaplasia on biopsy"
+        ]
+      },
+      {
+        "name": "Esophageal adenocarcinoma",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Progressive dysphagia",
+          "Weight loss",
+          "Irregular mass or malignant stricture on endoscopy"
+        ]
+      },
+      {
+        "name": "GI bleeding from esophagitis",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Hematemesis or melena",
+          "Anemia",
+          "Hemodynamic instability"
+        ]
+      },
+      {
+        "name": "Aspiration pneumonia",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Nocturnal cough or choking",
+          "Fever and productive cough",
+          "Infiltrate on chest x-ray"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Older children may report heartburn, but younger children often present with recurrent vomiting, poor feeding, irritability, or respiratory symptoms rather than classic burning chest pain."
+      },
+      {
+        "population": "infants",
+        "differences": "Infants typically present with spitting up, feeding refusal, arching of the back, irritability, or poor weight gain; classic heartburn cannot be reported."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Symptoms may be milder or atypical, with more dysphagia, respiratory symptoms, or silent reflux; they are also more likely to have severe esophagitis or Barrett's esophagus."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Heartburn is very common in the third trimester due to increased abdominal pressure and hormonal effects; symptoms usually improve after delivery. Treatment options are limited to pregnancy-safe medications."
+      },
+      {
+        "population": "obesity",
+        "differences": "Symptoms tend to be more frequent and severe, and are more likely to persist; weight loss often improves symptoms."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "What does the burning feel like, and where exactly is it?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Burning behind the breastbone (mid-chest), sometimes rising into the throat"
+      },
+      {
+        "question": "When does it happen in relation to meals and lying down?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "30–60 minutes after meals, worse when lying down or bending over"
+      },
+      {
+        "question": "How often do you get it, and how long has this been going on?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Two or more times a week for months to years supports GERD rather than occasional reflux"
+      },
+      {
+        "question": "Does anything come up into your throat or mouth?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Regurgitation of sour or bitter fluid, or a sudden excess of saliva (water brash)"
+      },
+      {
+        "question": "What makes it better or worse?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Worse with large, fatty, or spicy meals, alcohol, caffeine, chocolate, and tight clothing; better with antacids and sitting upright"
+      },
+      {
+        "question": "Do you have any trouble swallowing, painful swallowing, or food getting stuck?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Progressive solid-food dysphagia or odynophagia suggests stricture, severe esophagitis, or malignancy"
+      },
+      {
+        "question": "Have you vomited blood or coffee-ground material, or had black tarry stools?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Hematemesis or melena suggests erosive esophagitis, ulcer, or malignancy"
+      },
+      {
+        "question": "Have you lost weight without trying?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Unintentional weight loss raises concern for malignancy or severe dysphagia"
+      },
+      {
+        "question": "Does the chest pain ever come with shortness of breath, sweating, or pain in your jaw or arm?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "These features suggest acute coronary syndrome and must be excluded before attributing pain to reflux"
+      },
+      {
+        "question": "Do you have a chronic cough, hoarse voice, or a lump-in-the-throat feeling?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Extraesophageal reflux symptoms such as dry cough, morning hoarseness, or globus"
+      },
+      {
+        "question": "Do you ever wake at night with reflux, cough, or choking?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Nocturnal symptoms suggest more severe disease and aspiration risk"
+      },
+      {
+        "question": "What medicines do you take, including over-the-counter pain relievers?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "NSAIDs, aspirin, alendronate, calcium channel blockers, nitrates, or prednisone can worsen reflux"
+      },
+      {
+        "question": "Do you smoke or drink alcohol, and how much?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Tobacco and alcohol use are modifiable risk factors"
+      },
+      {
+        "question": "Have you gained weight recently, or do you eat large or late meals?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Obesity and late evening meals are strong contributors to reflux"
+      },
+      {
+        "question": "Has anyone in your family had frequent heartburn or GERD?",
+        "category": "family",
+        "importance": "optional",
+        "looking_for": "Family history of GERD or frequent heartburn"
+      },
+      {
+        "question": "Could you be pregnant? When was your last period?",
+        "category": "obstetric",
+        "importance": "important",
+        "looking_for": "Pregnancy is a common cause of reflux and affects medication and testing choices"
+      }
+    ],
+    "accepted_names": [
+      "GERD",
+      "Gastroesophageal reflux disease",
+      "Gastro-oesophageal reflux disease",
+      "GORD",
+      "Gastroesophageal reflux"
+    ],
+    "reasoning_points": [
+      "Classic burning retrosternal discomfort occurring 30–60 minutes after meals and worse when lying down or bending over",
+      "Regurgitation of sour or bitter fluid, sometimes with water brash",
+      "Symptoms occurring two or more times a week over months to years, distinguishing GERD from occasional physiologic reflux",
+      "Relief with antacids and with sitting upright, and improvement with smaller meals and head-of-bed elevation",
+      "Risk factors such as obesity, hiatal hernia, smoking, pregnancy, and large or late meals",
+      "No alarm features: no dysphagia, odynophagia, GI bleeding, anemia, or unintentional weight loss",
+      "Cardiac causes of chest pain excluded when the presentation is atypical",
+      "Extraesophageal symptoms such as chronic dry cough, hoarseness, or globus sensation support the diagnosis",
+      "Diagnosis is clinical in typical cases; endoscopy is reserved for alarm features, older age with new symptoms, or failure of empiric therapy"
+    ],
+    "difficulty": {
+      "easy": [
+        "Middle-aged adult with classic postprandial burning behind the breastbone",
+        "Symptoms worse lying down and relieved by antacids",
+        "Obesity or known hiatal hernia as a risk factor",
+        "No alarm features and a normal abdominal and cardiac exam"
+      ],
+      "medium": [
+        "Predominant extraesophageal symptoms such as chronic dry cough or morning hoarseness without much heartburn",
+        "Chest pain that requires excluding acute coronary syndrome before attributing it to reflux",
+        "Pregnancy with third-trimester heartburn and limited medication options",
+        "Symptoms that persist despite lifestyle changes and require a proton pump inhibitor trial"
+      ],
+      "hard": [
+        "Older adult with new-onset symptoms and mild or atypical complaints, raising concern for complicated disease",
+        "Long-standing reflux with progressive dysphagia suggesting a peptic stricture or malignancy",
+        "Normal endoscopy with persistent symptoms, requiring pH monitoring to distinguish GERD from functional heartburn",
+        "Overlap with peptic ulcer disease, biliary colic, or eosinophilic esophagitis in a younger patient with atopy"
+      ]
+    }
+  }
+}

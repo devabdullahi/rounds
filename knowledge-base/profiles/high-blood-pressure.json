@@ -1,0 +1,1946 @@
+{
+  "schema_version": "0.2",
+  "slug": "high-blood-pressure",
+  "triage": {
+    "name": "High Blood Pressure",
+    "case_suitable": true,
+    "reason": "Extremely common clinic problem; students must confirm elevated readings, assess end-organ effects and secondary causes, and manage risk — a core interview-and-exam diagnosis.",
+    "kind": "disease",
+    "category": "cardiovascular risk factor",
+    "organ_systems": [
+      "cardiovascular"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "familyMedicine",
+      "emergency",
+      "neurology"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "clinic",
+      "inpatient",
+      "emergency"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:18:03Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:53:02Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:53:11Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:53:27Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:53:40Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:53:48Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'ct angiography of the renal arteries' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'ct abdomen and pelvis without contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'magnetic resonance imaging of the pituitary' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ct angiography of the chest' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ct angiography of the renal arteries' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'ct abdomen and pelvis without contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'magnetic resonance imaging of the pituitary' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ct angiography of the chest' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "differential white-coat-hypertension: no profile yet",
+        "differential primary-aldosteronism: no profile yet",
+        "differential renal-artery-stenosis: no profile yet",
+        "differential obstructive-sleep-apnea: no profile yet",
+        "differential hyperthyroidism: no profile yet",
+        "differential pheochromocytoma: no profile yet",
+        "differential cushing-syndrome: no profile yet",
+        "differential coarctation-of-the-aorta: no profile yet",
+        "differential medication-induced-hypertension: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 30,
+      "typical_max": 75,
+      "peak": "40–65",
+      "possible_min": 18,
+      "possible_max": 110
+    },
+    "sex": "either",
+    "demographics": [
+      "Prevalence rises steadily with age; about two-thirds of US adults over 60 have hypertension",
+      "More common and more severe in non-Hispanic Black adults, who also develop it at younger ages",
+      "Men tend to develop it earlier than women; women catch up and exceed men after menopause",
+      "Lower socioeconomic status and lower education are associated with higher prevalence"
+    ],
+    "risk_factors": [
+      {
+        "text": "Older age",
+        "strength": "strong"
+      },
+      {
+        "text": "Family history of hypertension",
+        "strength": "strong"
+      },
+      {
+        "text": "Black race",
+        "strength": "strong"
+      },
+      {
+        "text": "Obesity or weight gain",
+        "strength": "strong"
+      },
+      {
+        "text": "High dietary sodium intake",
+        "strength": "strong"
+      },
+      {
+        "text": "Physical inactivity",
+        "strength": "moderate"
+      },
+      {
+        "text": "Heavy or regular alcohol use",
+        "strength": "moderate"
+      },
+      {
+        "text": "Metabolic syndrome or diabetes",
+        "strength": "moderate"
+      },
+      {
+        "text": "Chronic kidney disease",
+        "strength": "moderate"
+      },
+      {
+        "text": "Obstructive sleep apnea",
+        "strength": "moderate"
+      },
+      {
+        "text": "Tobacco use",
+        "strength": "weak"
+      },
+      {
+        "text": "Low potassium intake",
+        "strength": "weak"
+      },
+      {
+        "text": "Psychosocial stress",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Diabetes mellitus",
+      "Chronic kidney disease",
+      "Obstructive sleep apnea",
+      "Obesity",
+      "Hyperlipidemia",
+      "Coronary artery disease",
+      "Heart failure",
+      "Gout",
+      "Metabolic syndrome"
+    ],
+    "family_history": [
+      "Hypertension in a parent or sibling",
+      "Early cardiovascular disease in a first-degree relative",
+      "Familial hyperlipidemia",
+      "Polycystic kidney disease"
+    ],
+    "social_history": [
+      "Sedentary desk work",
+      "High-sodium diet or frequent restaurant meals",
+      "Regular alcohol use",
+      "Tobacco use",
+      "Night-shift work or poor sleep",
+      "High chronic stress"
+    ],
+    "exposures": [
+      "Chronic loud snoring or witnessed apnea in a bed partner",
+      "Secondhand smoke"
+    ],
+    "risk_medications": [
+      "ibuprofen",
+      "naproxen",
+      "prednisone",
+      "dexamethasone",
+      "pseudoephedrine",
+      "phenylephrine",
+      "ethinyl estradiol",
+      "testosterone",
+      "methylphenidate",
+      "amphetamine",
+      "cyclosporine",
+      "tacrolimus",
+      "erythropoietin",
+      "venlafaxine",
+      "bupropion",
+      "licorice"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "The nurse told me my blood pressure was high at my last checkup",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "I feel fine — I only came in because my numbers were up",
+        "frequency": "common"
+      },
+      {
+        "text": "I get headaches and wonder if it's my pressure",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "My home cuff keeps reading high",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Insidious; found incidentally on a routine visit or screening, or after a mildly elevated reading is repeated",
+      "duration": "Usually present for months to years before it is recognized; most patients have no clear start date",
+      "progression": "Slowly progressive with age; readings drift upward over years, and many patients are diagnosed only after several elevated readings at separate visits",
+      "location": "Not applicable — a whole-body condition measured in the arm",
+      "radiation": "Not applicable",
+      "quality": "Asymptomatic; when symptoms occur they are nonspecific (dull headache, fatigue, dizziness)",
+      "severity": "Most patients feel entirely well; severity is defined by the blood pressure numbers and by end-organ effects, not by how the patient feels",
+      "timing": "Readings are elevated on repeated occasions, at rest, on separate days",
+      "aggravating": [
+        "High-salt meals",
+        "Alcohol",
+        "Stress",
+        "Nonsteroidal anti-inflammatory drugs",
+        "Decongestants",
+        "Missing doses of blood pressure medicine"
+      ],
+      "relieving": [
+        "Resting quietly before the reading",
+        "Weight loss",
+        "Reducing sodium",
+        "Regular exercise",
+        "Taking prescribed blood pressure medicine"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Usually no symptoms at all",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Headache, often in the morning or at the back of the head",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Fatigue or low energy",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Dizziness or lightheadedness",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Shortness of breath with exertion",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Nosebleeds",
+          "frequency": "rare"
+        },
+        {
+          "text": "Blurred vision",
+          "frequency": "rare"
+        },
+        {
+          "text": "Chest pain or pressure with exertion",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Chest pain at rest or pressure lasting more than a few minutes",
+        "Sudden weakness or numbness on one side of the body",
+        "Slurred speech or trouble speaking",
+        "Sudden severe headache unlike any before",
+        "Vision loss",
+        "Fainting or loss of consciousness",
+        "Blood in the urine",
+        "Passing very little urine",
+        "Racing heart with sweating and pounding headaches (spells)",
+        "Muscle cramps or weakness from low potassium",
+        "Weight loss, fever or night sweats",
+        "Swelling of the face, hands or feet with dark urine"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Feeling tired",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Weight loss",
+          "Fever",
+          "Night sweats"
+        ],
+        "argues_against": [
+          "Vasculitis or another systemic inflammatory illness"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [
+          {
+            "text": "Chest discomfort with exertion",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Pounding or racing heartbeat",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Swelling in the ankles",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Chest pain at rest",
+          "Fainting",
+          "Chest pain that radiates to the back"
+        ],
+        "argues_against": [
+          "Acute coronary syndrome",
+          "Aortic dissection"
+        ]
+      },
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "Shortness of breath with activity",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Shortness of breath at rest",
+          "Coughing up blood",
+          "Waking up gasping for air"
+        ],
+        "argues_against": [
+          "Heart failure with volume overload",
+          "Pulmonary embolism"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Headache",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Dizziness",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Blurred vision",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "One-sided weakness or numbness",
+          "Slurred speech",
+          "Sudden vision loss",
+          "Seizures"
+        ],
+        "argues_against": [
+          "Stroke or transient ischemic attack",
+          "Hypertensive encephalopathy"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [
+          {
+            "text": "Getting up at night to urinate",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Blood in the urine",
+          "Passing very little urine",
+          "Flank pain"
+        ],
+        "argues_against": [
+          "Renal artery stenosis",
+          "Glomerulonephritis",
+          "Kidney stones"
+        ]
+      },
+      {
+        "system": "endocrine",
+        "positives": [
+          {
+            "text": "Snoring or witnessed pauses in breathing at night",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Episodes of pounding headache, sweating and racing heart",
+          "Muscle cramps or weakness",
+          "Unexplained weight gain with purple stretch marks"
+        ],
+        "argues_against": [
+          "Pheochromocytoma",
+          "Primary aldosteronism",
+          "Cushing syndrome"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Hypertension is uncommon in children and usually secondary to kidney disease, coarctation of the aorta or an endocrine cause; it is detected on routine screening or during workup of another problem, and the child is typically symptom-free.",
+        "missing_classic_features": [
+          "Adult pattern of essential hypertension",
+          "Long-standing asymptomatic course"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "Isolated systolic hypertension with a wide pulse pressure is typical because arteries stiffen with age; orthostatic drops in pressure and postprandial dizziness are more common, and symptoms may be attributed to aging rather than to blood pressure.",
+        "missing_classic_features": [
+          "Elevated diastolic pressure",
+          "Clear symptom attribution"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Elevated readings after 20 weeks with proteinuria, swelling or headaches suggest preeclampsia rather than chronic hypertension; blood pressure can fall in early pregnancy and rise again later, so a previously normal reading does not exclude the diagnosis.",
+        "missing_classic_features": [
+          "Stable chronic readings",
+          "Absence of proteinuria or edema"
+        ]
+      },
+      {
+        "population": "diabetes",
+        "how_it_differs": "The threshold for treatment is lower and target pressures are tighter; hypertension often coexists with diabetic kidney disease, so rising creatinine or protein in the urine may be the first clue.",
+        "missing_classic_features": [
+          "Isolated elevation of blood pressure without kidney involvement"
+        ]
+      },
+      {
+        "population": "obesity",
+        "how_it_differs": "Often accompanied by obstructive sleep apnea, so daytime sleepiness, loud snoring and morning headaches are more prominent; weight loss alone can lower pressure substantially.",
+        "missing_classic_features": [
+          "Normal sleep pattern",
+          "Absence of metabolic risk factors"
+        ]
+      },
+      {
+        "population": "renal_impairment",
+        "how_it_differs": "Hypertension is frequently secondary to chronic kidney disease and is harder to control; patients may have swelling, fatigue and abnormal kidney labs rather than an isolated high reading.",
+        "missing_classic_features": [
+          "Normal kidney function",
+          "Easy blood pressure control with one medicine"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Well-appearing, no distress; often overweight; comfortable at rest",
+      "moderate": "Well-appearing but may be overweight with central adiposity; no acute distress",
+      "severe": "May appear anxious or mildly uncomfortable; possible signs of chronic end-organ strain (mild dyspnea on exertion, ankle edema)",
+      "critical": "Ill-appearing with signs of acute end-organ injury — severe headache, confusion, chest pain, dyspnea, focal neurologic deficits, or visual disturbance"
+    },
+    "findings": [
+      {
+        "id": "elevated-bp-both-arms",
+        "region": "extremities",
+        "maneuver": "Measure blood pressure in both arms with the patient seated quietly for 5 minutes, using an appropriately sized cuff at heart level",
+        "finding": "Elevated systolic and/or diastolic pressure, confirmed on repeat measurement",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "elevated-bp-repeat",
+        "region": "extremities",
+        "maneuver": "Repeat the blood pressure after 5 minutes of quiet rest and again at a separate visit",
+        "finding": "Persistently elevated readings on separate occasions",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "normal-contralateral-bp",
+        "region": "extremities",
+        "maneuver": "Compare blood pressure in both arms",
+        "finding": "Interarm difference less than 10 mm Hg",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "interarm-difference",
+        "region": "extremities",
+        "maneuver": "Compare blood pressure in both arms",
+        "finding": "Interarm systolic difference of 10 mm Hg or more, suggesting peripheral arterial disease or aortic coarctation",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "fundoscopic-changes",
+        "region": "heent",
+        "maneuver": "Perform a fundoscopic exam",
+        "finding": "Arteriolar narrowing, arteriovenous nicking, or flame hemorrhages and cotton-wool spots in severe cases",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "papilledema",
+        "region": "heent",
+        "maneuver": "Perform a fundoscopic exam",
+        "finding": "Blurring of the optic disc margins (papilledema), indicating malignant hypertension",
+        "frequency": "rare",
+        "min_severity": "critical",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "s4-gallop",
+        "region": "cardiac",
+        "maneuver": "Auscultate the heart at the apex with the bell",
+        "finding": "Fourth heart sound (S4), reflecting a stiff, hypertrophied left ventricle",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "displaced-pmi",
+        "region": "cardiac",
+        "maneuver": "Palpate the apical impulse",
+        "finding": "Laterally displaced and sustained apical impulse from left ventricular hypertrophy",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "carotid-bruit",
+        "region": "neck",
+        "maneuver": "Auscultate the carotid arteries",
+        "finding": "Carotid bruit, suggesting atherosclerotic narrowing",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "jugular-venous-distention",
+        "region": "neck",
+        "maneuver": "Inspect the internal jugular venous pulsation at 45 degrees",
+        "finding": "Elevated jugular venous pressure, suggesting heart failure",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "pulmonary-crackles",
+        "region": "lung",
+        "maneuver": "Auscultate the lung bases",
+        "finding": "Bibasilar crackles, suggesting pulmonary edema from hypertensive heart failure",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "pedal-edema",
+        "region": "extremities",
+        "maneuver": "Press over the dorsum of each foot and the lower shins",
+        "finding": "Pitting edema, suggesting heart failure or kidney disease",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "abdominal-bruit",
+        "region": "abdomen",
+        "maneuver": "Auscultate over the epigastrium and both upper quadrants for a bruit",
+        "finding": "Systolic-diastolic bruit in the epigastrium or flank, suggesting renal artery stenosis",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "enlarged-kidneys",
+        "region": "abdomen",
+        "maneuver": "Palpate the flanks and abdomen for masses",
+        "finding": "Palpable enlarged kidneys, suggesting polycystic kidney disease",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "radiofemoral-delay",
+        "region": "extremities",
+        "maneuver": "Palpate the radial and femoral pulses simultaneously",
+        "finding": "Diminished or delayed femoral pulses, suggesting coarctation of the aorta",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "normal-neuro-exam",
+        "region": "neuro",
+        "maneuver": "Perform a focused neurologic exam including strength, sensation, speech and gait",
+        "finding": "No focal deficits",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-mental-status",
+        "region": "mental_status",
+        "maneuver": "Assess orientation, attention and level of consciousness",
+        "finding": "Alert and oriented, no confusion",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-skin",
+        "region": "skin",
+        "maneuver": "Inspect the skin for striae, bruising, xanthomas and acanthosis nigricans",
+        "finding": "No violaceous striae, no xanthomas, no acanthosis nigricans",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-thyroid",
+        "region": "neck",
+        "maneuver": "Palpate the thyroid gland",
+        "finding": "No goiter or nodule",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "moderate": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "severe": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "critical": {
+        "min": 97.8,
+        "max": 99.1
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 90
+      },
+      "moderate": {
+        "min": 60,
+        "max": 95
+      },
+      "severe": {
+        "min": 65,
+        "max": 105
+      },
+      "critical": {
+        "min": 70,
+        "max": 120
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 12,
+        "max": 18
+      },
+      "moderate": {
+        "min": 12,
+        "max": 18
+      },
+      "severe": {
+        "min": 14,
+        "max": 22
+      },
+      "critical": {
+        "min": 16,
+        "max": 28
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 130,
+        "max": 139
+      },
+      "moderate": {
+        "min": 140,
+        "max": 159
+      },
+      "severe": {
+        "min": 160,
+        "max": 179
+      },
+      "critical": {
+        "min": 180,
+        "max": 240
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 80,
+        "max": 89
+      },
+      "moderate": {
+        "min": 90,
+        "max": 99
+      },
+      "severe": {
+        "min": 100,
+        "max": 119
+      },
+      "critical": {
+        "min": 120,
+        "max": 140
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 95,
+        "max": 100
+      },
+      "moderate": {
+        "min": 95,
+        "max": 100
+      },
+      "severe": {
+        "min": 92,
+        "max": 100
+      },
+      "critical": {
+        "min": 88,
+        "max": 100
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "mild": {
+          "min": 100,
+          "max": 115
+        },
+        "moderate": {
+          "min": 110,
+          "max": 140
+        },
+        "severe": {
+          "min": 120,
+          "max": 180
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Fasting glucose screens for diabetes and prediabetes, which are common companions of primary hypertension and change the treatment target."
+    },
+    {
+      "test_id": "a1c",
+      "ranges": {
+        "mild": {
+          "min": 5.7,
+          "max": 6.4
+        },
+        "moderate": {
+          "min": 6.5,
+          "max": 8.0
+        },
+        "severe": {
+          "min": 7.0,
+          "max": 10.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Values of 5.7–6.4% indicate prediabetes and 6.5% or higher diabetes; either lowers the threshold for drug treatment."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "mild": {
+          "min": 1.2,
+          "max": 1.5
+        },
+        "moderate": {
+          "min": 1.4,
+          "max": 2.0
+        },
+        "severe": {
+          "min": 1.8,
+          "max": 3.5
+        },
+        "critical": {
+          "min": 2.5,
+          "max": 6.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "essential",
+      "caveat": "A rise in creatinine suggests chronic kidney disease as a cause or consequence of hypertension; a creatinine bump of more than 30% after starting an ACE inhibitor or ARB points to renal artery stenosis."
+    },
+    {
+      "test_id": "k",
+      "ranges": {
+        "mild": {
+          "min": 3.2,
+          "max": 3.5
+        },
+        "moderate": {
+          "min": 2.8,
+          "max": 3.4
+        },
+        "severe": {
+          "min": 2.2,
+          "max": 3.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "essential",
+      "caveat": "Spontaneous or diuretic-induced hypokalemia should raise suspicion for primary aldosteronism."
+    },
+    {
+      "test_id": "na",
+      "ranges": {
+        "mild": {
+          "min": 133,
+          "max": 135
+        },
+        "moderate": {
+          "min": 128,
+          "max": 134
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Mild hyponatremia can accompany syndrome of inappropriate ADH or adrenal insufficiency."
+    },
+    {
+      "test_id": "hco3",
+      "ranges": {
+        "mild": {
+          "min": 20,
+          "max": 22
+        },
+        "moderate": {
+          "min": 16,
+          "max": 21
+        },
+        "severe": {
+          "min": 12,
+          "max": 18
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Low bicarbonate suggests a metabolic acidosis from advanced kidney disease or a secondary endocrine cause."
+    },
+    {
+      "test_id": "chol",
+      "ranges": {
+        "mild": {
+          "min": 200,
+          "max": 239
+        },
+        "moderate": {
+          "min": 220,
+          "max": 280
+        },
+        "severe": {
+          "min": 260,
+          "max": 350
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Part of global cardiovascular risk estimation; hyperlipidemia commonly coexists with hypertension."
+    },
+    {
+      "test_id": "ldl",
+      "ranges": {
+        "mild": {
+          "min": 100,
+          "max": 129
+        },
+        "moderate": {
+          "min": 130,
+          "max": 159
+        },
+        "severe": {
+          "min": 160,
+          "max": 220
+        }
+      },
+      "frequency": "common",
+      "importance": "important"
+    },
+    {
+      "test_id": "hdl",
+      "ranges": {
+        "mild": {
+          "min": 35,
+          "max": 45
+        },
+        "moderate": {
+          "min": 25,
+          "max": 40
+        },
+        "severe": {
+          "min": 20,
+          "max": 35
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Low HDL is part of the metabolic syndrome that frequently accompanies primary hypertension."
+    },
+    {
+      "test_id": "tg",
+      "ranges": {
+        "mild": {
+          "min": 150,
+          "max": 199
+        },
+        "moderate": {
+          "min": 200,
+          "max": 400
+        },
+        "severe": {
+          "min": 400,
+          "max": 1000
+        }
+      },
+      "frequency": "common",
+      "importance": "important"
+    },
+    {
+      "test_id": "ua_protein",
+      "qualitative": {
+        "mild": "Trace",
+        "moderate": "1+",
+        "severe": "2+",
+        "critical": "3+"
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Proteinuria suggests hypertensive or diabetic kidney damage and worsens cardiovascular risk."
+    },
+    {
+      "test_id": "ua_blood",
+      "qualitative": {
+        "mild": "Trace",
+        "moderate": "1+",
+        "severe": "2+"
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Hematuria with proteinuria and rising creatinine suggests glomerulonephritis rather than uncomplicated hypertension."
+    },
+    {
+      "test_id": "ua_casts",
+      "qualitative": {
+        "moderate": "Granular (muddy brown)",
+        "severe": "RBC casts"
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "RBC casts point to glomerulonephritis; muddy-brown casts point to acute tubular injury."
+    },
+    {
+      "test_id": "tsh",
+      "ranges": {
+        "mild": {
+          "min": 0.1,
+          "max": 0.4
+        },
+        "moderate": {
+          "min": 0.05,
+          "max": 0.3
+        },
+        "severe": {
+          "min": 0.01,
+          "max": 0.2
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Both hypothyroidism and hyperthyroidism can raise blood pressure; a suppressed TSH suggests hyperthyroidism as a secondary cause."
+    },
+    {
+      "test_id": "cortisol_am",
+      "ranges": {
+        "moderate": {
+          "min": 26,
+          "max": 40
+        },
+        "severe": {
+          "min": 35,
+          "max": 60
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "An elevated morning cortisol is a screening clue to Cushing syndrome; confirm with a 24-hour urine free cortisol or overnight dexamethasone suppression test."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "sometimes",
+      "importance": "essential",
+      "caveat": "Negative. Mandatory in anyone who could be pregnant before starting an ACE inhibitor, ARB or thiazide and before any imaging that uses radiation."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "other",
+        "finding": "Left ventricular hypertrophy by voltage criteria (S in V1 plus R in V5 or V6 greater than 35 mm, or R in aVL greater than 11 mm)",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "leads": [
+          "V1",
+          "V5",
+          "V6",
+          "aVL"
+        ]
+      },
+      {
+        "feature": "st",
+        "finding": "Downsloping ST depression with asymmetric T-wave inversion in a strain pattern",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "leads": [
+          "I",
+          "aVL",
+          "V5",
+          "V6"
+        ]
+      },
+      {
+        "feature": "t_wave",
+        "finding": "Peaked, symmetric T waves suggesting hyperkalemia",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "leads": [
+          "II",
+          "III",
+          "aVF",
+          "V2",
+          "V3",
+          "V4"
+        ]
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Atrial fibrillation",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "conduction",
+        "finding": "Left bundle branch block or nonspecific intraventricular conduction delay",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "other",
+        "finding": "Left atrial enlargement (broad, notched P waves in lead II and a deep terminal negative component in V1)",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "leads": [
+          "II",
+          "V1"
+        ]
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Echocardiogram, transthoracic",
+      "modality": "echo",
+      "preferred_when": "Suspected left ventricular hypertrophy, heart failure, or a murmur",
+      "findings": [
+        {
+          "text": "Concentric left ventricular hypertrophy with increased wall thickness",
+          "frequency": "common"
+        },
+        {
+          "text": "Diastolic dysfunction with impaired relaxation (grade I)",
+          "frequency": "common"
+        },
+        {
+          "text": "Left atrial enlargement",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Reduced left ventricular ejection fraction (hypertensive cardiomyopathy)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Aortic valve sclerosis or stenosis",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Renal artery duplex ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "Resistant hypertension, an abdominal bruit, or a creatinine rise after starting an ACE inhibitor or ARB",
+      "findings": [
+        {
+          "text": "Elevated peak systolic velocity in the renal artery suggesting stenosis",
+          "frequency": "common"
+        },
+        {
+          "text": "Tardus-parvus waveform downstream of a stenosis",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Asymmetric kidney size",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "CT angiography of the renal arteries",
+      "modality": "ct",
+      "preferred_when": "When duplex ultrasound is nondiagnostic and renal artery stenosis is strongly suspected",
+      "findings": [
+        {
+          "text": "Focal narrowing at the ostium or proximal renal artery (atherosclerotic stenosis)",
+          "frequency": "common"
+        },
+        {
+          "text": "String-of-beads appearance suggesting fibromuscular dysplasia",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Magnetic resonance angiography of the renal arteries",
+      "modality": "mri",
+      "preferred_when": "When iodinated contrast or radiation must be avoided",
+      "findings": [
+        {
+          "text": "Renal artery narrowing or a string-of-beads pattern",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "CT angiography of the chest",
+      "modality": "ct",
+      "preferred_when": "Suspected aortic coarctation or aortic dissection",
+      "findings": [
+        {
+          "text": "Narrowing of the aortic isthmus just distal to the left subclavian artery (coarctation)",
+          "frequency": "common"
+        },
+        {
+          "text": "Intimal flap dividing the aortic lumen (dissection)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Extensive collateral intercostal arteries",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "CT abdomen and pelvis without contrast",
+      "modality": "ct",
+      "preferred_when": "Suspected autosomal dominant polycystic kidney disease or an adrenal mass",
+      "findings": [
+        {
+          "text": "Multiple bilateral renal cysts of varying size",
+          "frequency": "common"
+        },
+        {
+          "text": "Enlarged kidneys with a bosselated contour",
+          "frequency": "common"
+        },
+        {
+          "text": "Adrenal nodule or hyperplasia",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Magnetic resonance imaging of the pituitary",
+      "modality": "mri",
+      "preferred_when": "Biochemical testing confirms Cushing disease",
+      "findings": [
+        {
+          "text": "Pituitary microadenoma",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "Chest x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Cardiomegaly with a left ventricular contour",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Rib notching from collateral vessels (coarctation)",
+          "frequency": "rare"
+        },
+        {
+          "text": "Pulmonary vascular congestion or edema (hypertensive heart failure)",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "bmp",
+        "why": "Baseline potassium, sodium, bicarbonate and creatinine before starting a diuretic or renin-angiotensin blocker"
+      },
+      {
+        "test": "cbc",
+        "why": "Screens for anemia or polycythemia that can accompany kidney disease"
+      },
+      {
+        "test": "lipids",
+        "why": "Fasting lipid panel for global cardiovascular risk estimation"
+      },
+      {
+        "test": "a1c",
+        "why": "Screens for diabetes and prediabetes, which change the treatment threshold"
+      },
+      {
+        "test": "tsh",
+        "why": "Thyroid disease is a treatable secondary cause of hypertension"
+      },
+      {
+        "test": "ua",
+        "why": "Proteinuria, hematuria or casts point to kidney disease as a cause or consequence"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before starting an ACE inhibitor, ARB or thiazide",
+        "only_if": "the patient could be pregnant"
+      },
+      {
+        "test": "Echocardiogram, transthoracic",
+        "why": "Assesses left ventricular hypertrophy, diastolic function and ejection fraction",
+        "only_if": "there is a murmur, signs of heart failure, or an abnormal ECG"
+      },
+      {
+        "test": "Renal artery duplex ultrasound",
+        "why": "Screens for renal artery stenosis",
+        "only_if": "hypertension is resistant, an abdominal bruit is heard, or creatinine rises after starting an ACE inhibitor or ARB"
+      },
+      {
+        "test": "CT angiography of the renal arteries",
+        "why": "Confirms renal artery stenosis when ultrasound is nondiagnostic",
+        "only_if": "renal artery stenosis is strongly suspected and duplex ultrasound is inconclusive"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Ambulatory blood pressure monitoring",
+        "why": "Confirms sustained hypertension and excludes white-coat hypertension when office readings are borderline or discordant with home readings"
+      },
+      {
+        "test": "Home blood pressure monitoring",
+        "why": "Multiple readings at home confirm the diagnosis and guide treatment"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "cortisol_am",
+        "why": "Screens for Cushing syndrome",
+        "only_if": "central obesity, purple striae, proximal weakness or unexplained hypokalemia is present"
+      },
+      {
+        "test": "CT abdomen and pelvis without contrast",
+        "why": "Looks for polycystic kidneys or an adrenal mass",
+        "only_if": "flank masses, a family history of polycystic kidney disease, or an adrenal nodule is suspected"
+      },
+      {
+        "test": "Magnetic resonance imaging of the pituitary",
+        "why": "Localizes a pituitary adenoma",
+        "only_if": "biochemical testing confirms Cushing disease"
+      },
+      {
+        "test": "CT angiography of the chest",
+        "why": "Confirms coarctation or dissection",
+        "only_if": "there is an arm-to-leg blood pressure gradient, diminished femoral pulses, or tearing chest pain"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "d_dimer",
+        "why": "No role in the routine evaluation of hypertension"
+      },
+      {
+        "test": "lactate",
+        "why": "Not part of the hypertension workup unless there is shock or sepsis"
+      },
+      {
+        "test": "Chest x-ray",
+        "why": "Rarely changes management in uncomplicated hypertension"
+      },
+      {
+        "test": "CT angiography of the renal arteries",
+        "why": "Not routine; reserved for suspected renal artery stenosis",
+        "only_if": "renal artery stenosis is strongly suspected and duplex ultrasound is inconclusive"
+      },
+      {
+        "test": "CT abdomen and pelvis without contrast",
+        "why": "Not routine; reserved for suspected polycystic kidney disease or an adrenal mass",
+        "only_if": "flank masses, a family history of polycystic kidney disease, or an adrenal nodule is suspected"
+      },
+      {
+        "test": "Magnetic resonance imaging of the pituitary",
+        "why": "Not routine; reserved for confirmed Cushing disease",
+        "only_if": "biochemical testing confirms Cushing disease"
+      },
+      {
+        "test": "CT angiography of the chest",
+        "why": "Not routine; reserved for suspected coarctation or dissection",
+        "only_if": "there is an arm-to-leg blood pressure gradient, diminished femoral pulses, or tearing chest pain"
+      }
+    ],
+    "decision_points": [
+      "Confirm elevated readings on at least two separate visits before labeling hypertension; use home or ambulatory monitoring when office values are borderline or discordant.",
+      "Screen every newly diagnosed patient for target-organ damage and for clues to a secondary cause.",
+      "Check a pregnancy test before prescribing an ACE inhibitor, ARB or thiazide, and before any imaging that uses radiation.",
+      "A blood pressure of 180/120 mm Hg or higher with signs of acute end-organ injury is a hypertensive emergency and needs immediate treatment, not an outpatient workup.",
+      "Resistant hypertension (uncontrolled on three drugs including a diuretic) should prompt a search for secondary causes and for medication nonadherence."
+    ],
+    "criteria": [
+      {
+        "name": "ACC/AHA blood pressure categories",
+        "summary": "Normal is below 120/80 mm Hg; elevated is 120–129 systolic with diastolic below 80; stage 1 hypertension is 130–139 systolic or 80–89 diastolic; stage 2 hypertension is 140 or higher systolic or 90 or higher diastolic; a hypertensive crisis is above 180 systolic and/or above 120 diastolic.",
+        "items": [
+          "Normal: less than 120/80 mm Hg",
+          "Elevated: 120–129 systolic and less than 80 diastolic",
+          "Stage 1 hypertension: 130–139 systolic or 80–89 diastolic",
+          "Stage 2 hypertension: 140 or higher systolic or 90 or higher diastolic",
+          "Hypertensive crisis: above 180 systolic and/or above 120 diastolic"
+        ]
+      }
+    ],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "White-coat hypertension",
+      "slug": "white-coat-hypertension",
+      "why_considered": "Office readings are elevated but the patient feels well and home readings are normal",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Home or workplace readings are consistently normal",
+          "Anxiety around medical visits",
+          "No symptoms and no end-organ complaints"
+        ],
+        "exam": [
+          "Elevated office blood pressure that falls with repeated measurement and quiet rest",
+          "No signs of target-organ damage"
+        ],
+        "labs": [
+          "Normal basic metabolic panel, urinalysis and lipid panel"
+        ],
+        "imaging": [
+          "Normal echocardiogram without left ventricular hypertrophy"
+        ]
+      }
+    },
+    {
+      "name": "Primary aldosteronism",
+      "slug": "primary-aldosteronism",
+      "why_considered": "Resistant hypertension with spontaneous or diuretic-induced low potassium",
+      "must_not_miss": true,
+      "trigger": "Hypokalemia that is spontaneous or persists after stopping diuretics, or hypertension resistant to three drugs",
+      "discriminators": {
+        "history": [
+          "Hypertension requiring three or more medicines",
+          "Muscle cramps, weakness or palpitations from low potassium",
+          "Early onset hypertension or a family history of early hypertension"
+        ],
+        "exam": [
+          "Blood pressure that remains high despite multiple drugs",
+          "No specific physical findings"
+        ],
+        "labs": [
+          "Low potassium",
+          "Elevated plasma aldosterone with suppressed renin activity",
+          "Metabolic alkalosis"
+        ],
+        "imaging": [
+          "Adrenal nodule or bilateral adrenal hyperplasia on CT"
+        ]
+      }
+    },
+    {
+      "name": "Renal artery stenosis",
+      "slug": "renal-artery-stenosis",
+      "why_considered": "Resistant or abruptly worsening hypertension, especially with an abdominal bruit",
+      "must_not_miss": true,
+      "trigger": "Creatinine rise of more than 30% after starting an ACE inhibitor or ARB, or a new abdominal bruit",
+      "discriminators": {
+        "history": [
+          "Hypertension that was previously controlled and is now difficult",
+          "Flash pulmonary edema",
+          "Atherosclerotic disease elsewhere"
+        ],
+        "exam": [
+          "Systolic-diastolic bruit in the epigastrium or flank",
+          "Signs of peripheral arterial disease"
+        ],
+        "labs": [
+          "Rising creatinine after starting an ACE inhibitor or ARB",
+          "Mild proteinuria"
+        ],
+        "imaging": [
+          "Elevated peak systolic velocity on renal artery duplex ultrasound",
+          "Focal ostial narrowing on CT or MR angiography",
+          "String-of-beads pattern suggesting fibromuscular dysplasia"
+        ]
+      }
+    },
+    {
+      "name": "Chronic kidney disease",
+      "slug": "chronic-kidney-disease",
+      "why_considered": "Hypertension with abnormal kidney labs, proteinuria or edema",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Long-standing diabetes or known kidney disease",
+          "Foamy urine or swelling",
+          "Fatigue and poor appetite"
+        ],
+        "exam": [
+          "Pitting edema",
+          "Pallor",
+          "Hypertension that is difficult to control"
+        ],
+        "labs": [
+          "Elevated creatinine with reduced estimated glomerular filtration rate",
+          "Proteinuria or hematuria",
+          "Anemia and hyperkalemia in advanced disease"
+        ],
+        "imaging": [
+          "Small, echogenic kidneys on ultrasound"
+        ]
+      }
+    },
+    {
+      "name": "Obstructive sleep apnea",
+      "slug": "obstructive-sleep-apnea",
+      "why_considered": "Hypertension with loud snoring, witnessed apneas and daytime sleepiness",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Loud snoring with witnessed pauses in breathing",
+          "Morning headaches and unrefreshing sleep",
+          "Daytime sleepiness"
+        ],
+        "exam": [
+          "Obesity with a large neck circumference",
+          "Crowded oropharynx"
+        ],
+        "labs": [
+          "No specific laboratory abnormality"
+        ],
+        "imaging": [
+          "Polysomnography showing apneas and hypopneas with oxygen desaturation"
+        ]
+      }
+    },
+    {
+      "name": "Thyroid disease",
+      "slug": "hyperthyroidism",
+      "why_considered": "Hypertension with palpitations, weight change or heat intolerance",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Weight loss despite increased appetite, heat intolerance, tremor",
+          "Or weight gain, cold intolerance and fatigue in hypothyroidism"
+        ],
+        "exam": [
+          "Tachycardia, tremor, warm moist skin, goiter",
+          "Or bradycardia, dry skin and delayed reflexes"
+        ],
+        "labs": [
+          "Suppressed TSH with elevated free T4 in hyperthyroidism",
+          "Elevated TSH with low free T4 in hypothyroidism"
+        ]
+      }
+    },
+    {
+      "name": "Pheochromocytoma",
+      "slug": "pheochromocytoma",
+      "why_considered": "Paroxysmal hypertension with spells of headache, sweating and racing heart",
+      "must_not_miss": true,
+      "trigger": "Episodic pounding headache with sweating and tachycardia, or marked blood pressure variability",
+      "discriminators": {
+        "history": [
+          "Sudden spells of severe headache, palpitations and drenching sweats",
+          "Spells triggered by stress, exercise or abdominal pressure",
+          "Family history of endocrine tumors"
+        ],
+        "exam": [
+          "Hypertension during a spell",
+          "Pallor during the episode"
+        ],
+        "labs": [
+          "Elevated plasma free metanephrines or 24-hour urine metanephrines"
+        ],
+        "imaging": [
+          "Adrenal mass on CT or MRI",
+          "Increased uptake on MIBG or DOTATATE imaging"
+        ]
+      }
+    },
+    {
+      "name": "Cushing syndrome",
+      "slug": "cushing-syndrome",
+      "why_considered": "Hypertension with central obesity, purple striae and proximal weakness",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Weight gain around the trunk with thin arms and legs",
+          "Easy bruising and proximal muscle weakness",
+          "Use of glucocorticoid medications"
+        ],
+        "exam": [
+          "Violaceous abdominal striae",
+          "Moon facies and dorsocervical fat pad",
+          "Proximal muscle weakness"
+        ],
+        "labs": [
+          "Elevated late-night salivary cortisol or 24-hour urine free cortisol",
+          "Failure to suppress cortisol on overnight dexamethasone suppression test",
+          "Hyperglycemia and hypokalemia"
+        ],
+        "imaging": [
+          "Pituitary microadenoma on MRI",
+          "Adrenal nodule or hyperplasia on CT"
+        ]
+      }
+    },
+    {
+      "name": "Coarctation of the aorta",
+      "slug": "coarctation-of-the-aorta",
+      "why_considered": "Hypertension in a young patient with upper-limb hypertension and weak leg pulses",
+      "must_not_miss": true,
+      "trigger": "Arm-to-leg blood pressure gradient or diminished femoral pulses in a young patient",
+      "discriminators": {
+        "history": [
+          "Hypertension diagnosed at a young age",
+          "Leg fatigue or cramping with exercise",
+          "Known congenital heart disease"
+        ],
+        "exam": [
+          "Diminished or delayed femoral pulses",
+          "Arm-to-leg systolic gradient",
+          "Systolic murmur over the back or left infraclavicular area"
+        ],
+        "labs": [
+          "No specific laboratory abnormality"
+        ],
+        "imaging": [
+          "Narrowing of the aortic isthmus on CT or MR angiography",
+          "Rib notching on chest x-ray from collateral vessels"
+        ]
+      }
+    },
+    {
+      "name": "Medication-induced hypertension",
+      "slug": "medication-induced-hypertension",
+      "why_considered": "Elevated readings that began or worsened after starting a new medication",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Recent use of NSAIDs, decongestants, oral contraceptives, corticosteroids, stimulants or calcineurin inhibitors",
+          "Temporal relationship between the drug and rising readings",
+          "Alcohol or licorice use"
+        ],
+        "exam": [
+          "Elevated blood pressure without other specific findings"
+        ],
+        "labs": [
+          "Normal basic metabolic panel and urinalysis"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Stage 1 hypertension: systolic 130–139 or diastolic 80–89 mm Hg, no symptoms, no target-organ damage",
+      "moderate": "Stage 2 hypertension: systolic 140–159 or diastolic 90–99 mm Hg, possible early target-organ changes such as left ventricular hypertrophy",
+      "severe": "Systolic 160–179 or diastolic 100–119 mm Hg, often with target-organ strain such as retinopathy, diastolic dysfunction or proteinuria",
+      "critical": "Hypertensive crisis: systolic above 180 and/or diastolic above 120 mm Hg; with acute end-organ injury this is a hypertensive emergency requiring immediate treatment"
+    },
+    "red_flags": [
+      {
+        "finding": "Blood pressure above 180/120 mm Hg with chest pain, dyspnea, neurologic deficit or visual change",
+        "meaning": "Hypertensive emergency with acute end-organ injury; needs immediate treatment"
+      },
+      {
+        "finding": "Sudden severe headache unlike any before",
+        "meaning": "Possible intracerebral hemorrhage or hypertensive encephalopathy"
+      },
+      {
+        "finding": "Focal weakness, numbness, slurred speech or vision loss",
+        "meaning": "Possible stroke or transient ischemic attack"
+      },
+      {
+        "finding": "Tearing chest or back pain",
+        "meaning": "Possible aortic dissection"
+      },
+      {
+        "finding": "Papilledema on fundoscopy",
+        "meaning": "Malignant hypertension; requires urgent blood pressure control"
+      },
+      {
+        "finding": "New confusion or reduced level of consciousness",
+        "meaning": "Hypertensive encephalopathy or another acute neurologic emergency"
+      },
+      {
+        "finding": "Pulmonary edema with crackles and hypoxemia",
+        "meaning": "Hypertensive heart failure; needs urgent treatment"
+      },
+      {
+        "finding": "Spontaneous hypokalemia with resistant hypertension",
+        "meaning": "Suggests primary aldosteronism or another secondary cause"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Left ventricular hypertrophy",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "S4 gallop",
+          "Displaced apical impulse",
+          "Voltage criteria on ECG",
+          "Increased wall thickness on echocardiogram"
+        ]
+      },
+      {
+        "name": "Heart failure with preserved or reduced ejection fraction",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Exertional dyspnea",
+          "Pedal edema",
+          "Elevated jugular venous pressure",
+          "Bibasilar crackles"
+        ]
+      },
+      {
+        "name": "Ischemic stroke",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "common",
+        "clues": [
+          "Sudden focal neurologic deficit",
+          "Slurred speech",
+          "Vision loss"
+        ]
+      },
+      {
+        "name": "Intracerebral hemorrhage",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Sudden severe headache",
+          "Vomiting",
+          "Focal deficit with reduced consciousness"
+        ]
+      },
+      {
+        "name": "Coronary artery disease and myocardial infarction",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "common",
+        "clues": [
+          "Exertional chest pressure",
+          "Ischemic ECG changes",
+          "Elevated troponin"
+        ]
+      },
+      {
+        "name": "Chronic kidney disease",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Rising creatinine",
+          "Proteinuria",
+          "Small echogenic kidneys"
+        ]
+      },
+      {
+        "name": "Hypertensive retinopathy",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Arteriolar narrowing",
+          "Arteriovenous nicking",
+          "Flame hemorrhages and cotton-wool spots",
+          "Papilledema in malignant hypertension"
+        ]
+      },
+      {
+        "name": "Aortic dissection",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Tearing chest or back pain",
+          "Interarm blood pressure difference",
+          "Widened mediastinum on chest x-ray"
+        ]
+      },
+      {
+        "name": "Peripheral arterial disease",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Claudication",
+          "Diminished distal pulses",
+          "Carotid or femoral bruits"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Hypertension is uncommon and usually secondary to kidney disease, coarctation of the aorta or an endocrine cause; diagnosis uses age-, height- and sex-specific percentiles, and the child is typically symptom-free."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Isolated systolic hypertension with a wide pulse pressure is typical because arteries stiffen with age; orthostatic and postprandial drops in pressure are more common, and treatment must avoid excessive lowering that causes falls."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Elevated readings after 20 weeks with proteinuria, swelling or headaches suggest preeclampsia rather than chronic hypertension; ACE inhibitors, ARBs and thiazides are avoided, and blood pressure can fall in early pregnancy and rise again later."
+      },
+      {
+        "population": "diabetes",
+        "differences": "The threshold for treatment is lower and target pressures are tighter; hypertension often coexists with diabetic kidney disease, so rising creatinine or protein in the urine may be the first clue."
+      },
+      {
+        "population": "obesity",
+        "differences": "Often accompanied by obstructive sleep apnea, so daytime sleepiness, loud snoring and morning headaches are more prominent; weight loss alone can lower pressure substantially."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "Hypertension is frequently secondary to chronic kidney disease and is harder to control; patients may have swelling, fatigue and abnormal kidney labs rather than an isolated high reading, and creatinine must be monitored after starting an ACE inhibitor or ARB."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "What were your blood pressure readings, and where were they taken?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Repeated office readings of 130/80 mm Hg or higher, or home readings that are consistently elevated; a single high reading is not enough"
+      },
+      {
+        "question": "How long have your pressures been high, and when were they first noted?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Months to years of elevated readings; a recent abrupt rise suggests a secondary cause"
+      },
+      {
+        "question": "Do you have any symptoms at all — headaches, dizziness, chest pain, shortness of breath, vision changes?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Usually none; the presence of chest pain, dyspnea, focal neurologic symptoms or visual loss suggests end-organ injury"
+      },
+      {
+        "question": "Do you check your blood pressure at home, and what do those readings show?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Home readings that confirm or refute office values; normal home readings suggest white-coat hypertension"
+      },
+      {
+        "question": "Are you taking any blood pressure medicine, and have you been able to take it as prescribed?",
+        "category": "medications",
+        "importance": "essential",
+        "looking_for": "Current regimen, doses, adherence, and whether the patient has missed doses"
+      },
+      {
+        "question": "Do you take any over-the-counter pain relievers, decongestants, or other medicines?",
+        "category": "medications",
+        "importance": "essential",
+        "looking_for": "NSAIDs, pseudoephedrine or phenylephrine, oral contraceptives, corticosteroids, stimulants, or other agents that raise blood pressure"
+      },
+      {
+        "question": "Have you ever been told you have kidney disease, diabetes, or sleep apnea?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Conditions that are causes or consequences of hypertension and that change treatment targets"
+      },
+      {
+        "question": "Does anyone in your family have high blood pressure, early heart disease, or kidney disease?",
+        "category": "family",
+        "importance": "important",
+        "looking_for": "A strong family history supports primary hypertension; early cardiovascular disease or polycystic kidney disease suggests other causes"
+      },
+      {
+        "question": "How much alcohol do you drink, and do you use tobacco or any stimulants?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Heavy or regular alcohol use, tobacco, or stimulant use that contributes to elevated pressure"
+      },
+      {
+        "question": "How much salt do you eat, and how often do you exercise?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "High dietary sodium and physical inactivity — modifiable contributors"
+      },
+      {
+        "question": "Do you snore loudly or has anyone seen you stop breathing at night?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Obstructive sleep apnea, a common secondary contributor"
+      },
+      {
+        "question": "Have you had spells of pounding headache with sweating and a racing heart?",
+        "category": "red_flag",
+        "importance": "important",
+        "looking_for": "Paroxysmal spells suggesting pheochromocytoma"
+      },
+      {
+        "question": "Have you had sudden weakness, numbness, trouble speaking, or loss of vision?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Stroke or transient ischemic attack — an emergency"
+      },
+      {
+        "question": "Have you had tearing chest or back pain, or chest pressure with exertion?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Aortic dissection or acute coronary syndrome"
+      },
+      {
+        "question": "Could you be pregnant? When was your last period?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Pregnancy must be excluded before starting an ACE inhibitor, ARB or thiazide, and before imaging that uses radiation"
+      }
+    ],
+    "accepted_names": [
+      "High blood pressure",
+      "Hypertension",
+      "HTN",
+      "HBP",
+      "Essential hypertension",
+      "Primary hypertension",
+      "Benign essential hypertension"
+    ],
+    "reasoning_points": [
+      "Elevated blood pressure confirmed on repeated readings at separate visits, or by home or ambulatory monitoring",
+      "The patient is usually asymptomatic, so the diagnosis rests on the numbers rather than on symptoms",
+      "Office readings are interpreted against the ACC/AHA categories: normal below 120/80, elevated 120–129 systolic, stage 1 130–139 or 80–89, stage 2 140 or higher or 90 or higher",
+      "A search for target-organ damage: left ventricular hypertrophy, retinopathy, kidney impairment, proteinuria, vascular disease",
+      "A search for secondary causes when the presentation is atypical: young age, resistant hypertension, hypokalemia, abdominal bruit, spells, or a creatinine rise after starting an ACE inhibitor or ARB",
+      "Medications and substances that raise blood pressure are reviewed and, where possible, stopped",
+      "Global cardiovascular risk is estimated from lipids, glucose or A1c, smoking and kidney function",
+      "Pregnancy is excluded before prescribing an ACE inhibitor, ARB or thiazide",
+      "A blood pressure above 180/120 mm Hg with signs of acute end-organ injury is a hypertensive emergency, not an outpatient workup"
+    ],
+    "difficulty": {
+      "easy": [
+        "Middle-aged or older adult with repeated office readings of 150/95 mm Hg",
+        "No symptoms and no target-organ damage",
+        "Overweight, high-sodium diet, family history of hypertension",
+        "Basic metabolic panel, urinalysis and lipids are unremarkable"
+      ],
+      "medium": [
+        "Borderline office readings with normal home readings — white-coat hypertension must be excluded",
+        "Patient on an NSAID or decongestant that is raising the pressure",
+        "Coexisting diabetes or chronic kidney disease that changes the treatment target",
+        "Mild left ventricular hypertrophy on ECG or echocardiogram"
+      ],
+      "hard": [
+        "Young patient with severe hypertension and hypokalemia suggesting primary aldosteronism",
+        "Resistant hypertension on three drugs including a diuretic",
+        "Abdominal bruit or a creatinine rise after starting an ACE inhibitor suggesting renal artery stenosis",
+        "Paroxysmal spells of headache, sweating and tachycardia suggesting pheochromocytoma",
+        "Young patient with weak femoral pulses and an arm-to-leg gradient suggesting coarctation of the aorta",
+        "Blood pressure above 180/120 mm Hg with chest pain, dyspnea or a focal neurologic deficit — a hypertensive emergency"
+      ]
+    }
+  }
+}

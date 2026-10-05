@@ -1,0 +1,980 @@
+{
+  "schema_version": "0.2",
+  "slug": "refractive-errors",
+  "triage": {
+    "name": "Refractive Errors",
+    "case_suitable": true,
+    "reason": "Blurred vision complaint with a straightforward diagnosis by history and vision testing; limited but real clinical reasoning.",
+    "kind": "disease",
+    "category": "ophthalmologic disorder",
+    "organ_systems": [
+      "nervous"
+    ],
+    "primary_clerkship": "familyMedicine",
+    "secondary_clerkships": [
+      "pediatrics"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "clinic",
+      "pediatric_clinic"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:19:53Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:08:22Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:08:28Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:08:37Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:08:47Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:08:54Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'cycloplegic refraction' was in ['initial', 'confirmatory'], kept ['initial']",
+        "differential diabetic-retinopathy: no profile yet",
+        "differential glaucoma: no profile yet",
+        "differential age-related-macular-degeneration: no profile yet",
+        "differential amblyopia: no profile yet",
+        "differential keratoconus: no profile yet",
+        "differential retinal-detachment: no profile yet",
+        "differential optic-neuritis: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 5,
+      "typical_max": 80,
+      "peak": "bimodal: childhood and 40s–50s",
+      "possible_min": 2,
+      "possible_max": 110
+    },
+    "sex": "either",
+    "demographics": [
+      "Myopia and astigmatism often begin in school-age children and progress through the teenage years",
+      "Presbyopia affects nearly everyone, typically starting around age 45",
+      "Refractive error is the most common type of vision problem worldwide"
+    ],
+    "risk_factors": [
+      {
+        "text": "Family history of glasses or contact lenses",
+        "strength": "strong"
+      },
+      {
+        "text": "Age around 45 or older (presbyopia)",
+        "strength": "strong"
+      },
+      {
+        "text": "School-age or adolescent years (myopia progression)",
+        "strength": "moderate"
+      },
+      {
+        "text": "Prematurity or low birth weight",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [],
+    "family_history": [
+      "Parent or sibling who wears glasses or contact lenses",
+      "High myopia in a parent"
+    ],
+    "social_history": [
+      "Prolonged near work (reading, screens) is often reported but is not a proven cause"
+    ],
+    "exposures": [],
+    "risk_medications": []
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "Things look blurry",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "I have to squint to see the board or read signs",
+        "frequency": "common"
+      },
+      {
+        "text": "My eyes feel tired and I get headaches after reading or using the computer",
+        "frequency": "common"
+      },
+      {
+        "text": "I have to hold things farther away to read them",
+        "frequency": "common"
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual; myopia and astigmatism often noticed in childhood or the teen years, presbyopia noticed in the mid-40s",
+      "duration": "Weeks to years of slowly changing vision; presbyopia symptoms progress over years",
+      "progression": "Slowly progressive blurring that worsens with distance (myopia) or with near work (hyperopia, presbyopia); often noticed first when vision is compared with a friend's or when a school or driving vision test is failed",
+      "location": "Both eyes, usually symmetric though one eye may be worse",
+      "radiation": "Not applicable",
+      "quality": "Blurred, hazy or distorted vision; objects may look smeared or doubled at the edges",
+      "severity": "Mild to moderate; vision is usually still functional with squinting or moving closer",
+      "timing": "Constant, but most noticeable with specific tasks such as driving at night, reading, or looking at a screen",
+      "aggravating": [
+        "Looking at distant objects (myopia)",
+        "Reading or close work (hyperopia, presbyopia)",
+        "Dim light or night driving",
+        "Long periods of screen use"
+      ],
+      "relieving": [
+        "Squinting",
+        "Moving closer to or farther from the object",
+        "Wearing glasses or contact lenses"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Eye strain or tired eyes",
+          "frequency": "common"
+        },
+        {
+          "text": "Headaches, often frontal or around the eyes, after visual tasks",
+          "frequency": "common"
+        },
+        {
+          "text": "Squinting",
+          "frequency": "common"
+        },
+        {
+          "text": "Glare or halos around bright lights",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Difficulty focusing when reading or using a computer",
+          "frequency": "common"
+        },
+        {
+          "text": "Double vision",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Sudden painless loss of vision in one eye",
+        "Eye pain or redness",
+        "Flashes of light or new floaters",
+        "Curtain or shadow over part of the vision",
+        "Eye trauma or foreign body",
+        "Recent eye surgery",
+        "Contact lens overwear with discharge"
+      ]
+    },
+    "ros": [
+      {
+        "system": "eyes",
+        "positives": [
+          {
+            "text": "Blurred vision",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Squinting to see clearly",
+            "frequency": "common"
+          },
+          {
+            "text": "Eye strain with reading or screens",
+            "frequency": "common"
+          },
+          {
+            "text": "Glare or halos around lights",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Eye pain",
+          "Redness or discharge",
+          "Flashes or floaters",
+          "Sudden vision loss",
+          "Visual field loss"
+        ],
+        "argues_against": [
+          "Sudden painless monocular vision loss",
+          "Painful red eye with photophobia"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Headache after prolonged visual tasks",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Weakness or numbness",
+          "Speech difficulty",
+          "Diplopia from a neurologic cause",
+          "Gait imbalance"
+        ],
+        "argues_against": [
+          "Focal neurologic deficit",
+          "Thunderclap headache"
+        ]
+      },
+      {
+        "system": "constitutional",
+        "positives": [],
+        "negatives": [
+          "Fever",
+          "Weight loss",
+          "Malaise"
+        ],
+        "argues_against": [
+          "Systemic illness causing visual change"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Young children rarely complain of blur; they may sit very close to the TV, hold books close, squint, rub their eyes, or be noted to have trouble at school or on vision screening.",
+        "missing_classic_features": [
+          "Clear description of blurred vision",
+          "Headache complaint"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "Presbyopia is nearly universal, and symptoms may be attributed to cataract or macular disease; glare and difficulty with night driving are more prominent.",
+        "missing_classic_features": [
+          "Isolated distance blur without other age-related eye findings"
+        ]
+      },
+      {
+        "population": "diabetes",
+        "how_it_differs": "Fluctuating blood sugar can cause temporary refractive shifts, so blur may come and go and a new prescription may not be stable until glucose is controlled.",
+        "missing_classic_features": [
+          "Stable, slowly progressive blur"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Comfortable, well-appearing; may squint or lean toward the chart",
+      "moderate": "Squints or narrows the eyes to read; may move closer to the chart or hold it at arm's length",
+      "severe": "Marked squinting, head tilting or turning, holds material very close or far; otherwise well-appearing",
+      "critical": "Not applicable to uncomplicated refractive error; a toxic or systemically ill appearance suggests another cause"
+    },
+    "findings": [
+      {
+        "id": "reduced-distance-va",
+        "region": "heent",
+        "maneuver": "Check distance visual acuity one eye at a time with a Snellen or picture chart, with and without correction",
+        "finding": "Reduced distance acuity that improves with a pinhole or with the patient's glasses or contact lenses",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "reduced-near-va",
+        "region": "heent",
+        "maneuver": "Check near visual acuity with a near card at reading distance, one eye at a time",
+        "finding": "Reduced near acuity, most prominent in patients over 40 (presbyopia) or with hyperopia",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "pinhole-improvement",
+        "region": "heent",
+        "maneuver": "Repeat the acuity test through a pinhole occluder",
+        "finding": "Vision improves through the pinhole, indicating a refractive rather than a retinal or optic nerve cause",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "squinting",
+        "region": "heent",
+        "maneuver": "Observe the patient while they attempt to read the chart",
+        "finding": "Squinting, head tilting, or partially closing one eye to see better",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "normal-pupils",
+        "region": "heent",
+        "maneuver": "Test pupillary light and accommodation responses",
+        "finding": "Pupils equal, round, and reactive to light and accommodation; no afferent pupillary defect",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-ocular-motility",
+        "region": "heent",
+        "maneuver": "Test extraocular movements in all directions of gaze",
+        "finding": "Full, conjugate, painless eye movements without diplopia",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-confrontation-fields",
+        "region": "neuro",
+        "maneuver": "Confrontation visual field testing in all four quadrants of each eye",
+        "finding": "Full visual fields to confrontation",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-fundoscopy",
+        "region": "heent",
+        "maneuver": "Perform direct ophthalmoscopy of the optic disc, macula, vessels, and periphery",
+        "finding": "Clear media, sharp disc margins, normal macula and vessels; no hemorrhage, edema, or detachment",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "normal-anterior-segment",
+        "region": "heent",
+        "maneuver": "Inspect the conjunctiva, cornea, anterior chamber, and lens with a penlight or slit lamp",
+        "finding": "White conjunctiva, clear cornea, no cells or flare, no discharge; lens may show age-related changes but no acute opacity",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-iop",
+        "region": "heent",
+        "maneuver": "Measure intraocular pressure by tonometry when available",
+        "finding": "Normal intraocular pressure without pain or corneal edema",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {},
+  "labs": [],
+  "imaging": [
+    {
+      "study": "Ocular ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "Media opacity (dense cataract, corneal scar, vitreous hemorrhage) prevents a view of the retina",
+      "findings": [
+        {
+          "text": "Normal globe contour and axial length; no retinal detachment, mass, or vitreous hemorrhage",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Axial length measurement used to calculate intraocular lens power before cataract or refractive surgery",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "Optical coherence tomography of the macula and optic nerve",
+      "modality": "other",
+      "preferred_when": "Blurred vision that does not fully correct with refraction, or when macular or optic nerve disease is suspected",
+      "findings": [
+        {
+          "text": "Normal retinal nerve fiber layer and macular architecture; no edema, hole, or epiretinal membrane",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Thinning of the retinal nerve fiber layer suggesting optic neuropathy or glaucoma",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Corneal topography and tomography",
+      "modality": "other",
+      "preferred_when": "Irregular or high astigmatism, poor best-corrected acuity, or evaluation before refractive surgery",
+      "findings": [
+        {
+          "text": "Regular astigmatism with symmetric bow-tie pattern; normal corneal thickness",
+          "frequency": "common"
+        },
+        {
+          "text": "Irregular astigmatism or inferior steepening suggesting keratoconus",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "CT orbits without contrast",
+      "modality": "ct",
+      "preferred_when": "Not indicated for isolated refractive error; reserved for suspected orbital or intracranial pathology",
+      "findings": [
+        {
+          "text": "Normal globes, extraocular muscles, and optic nerves; no mass, fracture, or foreign body",
+          "frequency": "almost_always"
+        }
+      ]
+    },
+    {
+      "study": "MRI brain and orbits with and without contrast",
+      "modality": "mri",
+      "preferred_when": "Not indicated for isolated refractive error; reserved for suspected optic neuropathy, chiasmal lesion, or intracranial cause of visual loss",
+      "findings": [
+        {
+          "text": "Normal optic nerves, chiasm, and visual pathways; no enhancing lesion or demyelination",
+          "frequency": "almost_always"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "Distance visual acuity with Snellen chart, each eye, with and without correction",
+        "why": "First-line test that quantifies the visual deficit and shows whether it corrects with lenses"
+      },
+      {
+        "test": "Near visual acuity with a near card, each eye",
+        "why": "Detects hyperopia and presbyopia, which blur near vision more than distance vision"
+      },
+      {
+        "test": "Pinhole visual acuity",
+        "why": "Improvement through a pinhole points to a refractive cause rather than retinal or optic nerve disease"
+      },
+      {
+        "test": "Automated refraction (autorefractor)",
+        "why": "Objective starting point for the spectacle prescription"
+      },
+      {
+        "test": "Manifest refraction and subjective refinement",
+        "why": "Determines the exact lens power that gives the best corrected acuity"
+      },
+      {
+        "test": "Cycloplegic refraction",
+        "why": "Relaxes accommodation to uncover latent hyperopia",
+        "only_if": "child or young adult with suspected hyperopia or accommodative spasm"
+      },
+      {
+        "test": "Slit-lamp examination of the anterior segment",
+        "why": "Looks for corneal, lenticular, or other anterior causes of blurred vision"
+      },
+      {
+        "test": "Dilated fundoscopic examination",
+        "why": "Rules out retinal or optic nerve disease that can mimic refractive blur"
+      },
+      {
+        "test": "Extraocular motility and cover/uncover testing",
+        "why": "Detects strabismus or binocular vision problems that can cause asthenopia"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Manifest refraction with subjective refinement",
+        "why": "The diagnosis is confirmed when blurred vision improves to normal or near-normal with the correct lens power"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "Amsler grid testing",
+        "why": "Screens for central metamorphopsia from macular disease",
+        "only_if": "distortion or central blur is reported"
+      },
+      {
+        "test": "Color vision testing (Ishihara plates)",
+        "why": "Helps distinguish optic nerve disease from refractive blur",
+        "only_if": "reduced acuity does not fully correct with refraction"
+      },
+      {
+        "test": "Visual field testing (automated perimetry)",
+        "why": "Detects field loss from glaucoma or neurologic disease",
+        "only_if": "acuity does not correct with refraction or field loss is suspected"
+      },
+      {
+        "test": "Optical coherence tomography of the macula and optic nerve",
+        "why": "Evaluates for macular or optic nerve pathology when corrected acuity remains reduced",
+        "only_if": "blurred vision persists after optimal refraction"
+      },
+      {
+        "test": "Corneal topography and tomography",
+        "why": "Identifies irregular astigmatism or keratoconus when acuity does not correct well",
+        "only_if": "irregular or high astigmatism, or poor best-corrected acuity"
+      },
+      {
+        "test": "Ocular ultrasound",
+        "why": "Assesses the posterior segment when media opacity blocks the view",
+        "only_if": "dense cataract, corneal scar, or vitreous hemorrhage prevents fundoscopy"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "CT orbits without contrast",
+        "why": "No role in isolated refractive error; reserved for suspected orbital or intracranial pathology"
+      },
+      {
+        "test": "MRI brain and orbits with and without contrast",
+        "why": "No role in isolated refractive error; reserved for suspected optic neuropathy or intracranial lesion"
+      },
+      {
+        "test": "cbc",
+        "why": "Does not change the diagnosis or management of refractive error"
+      },
+      {
+        "test": "bmp",
+        "why": "Does not change the diagnosis or management of refractive error"
+      },
+      {
+        "test": "tsh",
+        "why": "Not routinely needed; consider only if thyroid eye disease is suspected"
+      },
+      {
+        "test": "a1c",
+        "why": "Not routinely needed; consider only if diabetic retinopathy or fluctuating glucose-related blur is suspected"
+      },
+      {
+        "test": "esr",
+        "why": "No role unless giant cell arteritis or another inflammatory cause is suspected"
+      },
+      {
+        "test": "crp",
+        "why": "No role unless an inflammatory or infectious cause is suspected"
+      }
+    ],
+    "decision_points": [
+      "If acuity improves with pinhole or refraction, the cause is refractive; if it does not, pursue retinal, optic nerve, or neurologic evaluation",
+      "Check acuity one eye at a time; a unilateral deficit changes the differential toward amblyopia, cataract, or retinal disease",
+      "In children, use cycloplegic refraction to uncover latent hyperopia and prevent amblyopia",
+      "New or changing blur in a patient with diabetes may reflect fluctuating glucose rather than a true change in refractive error; wait until glucose is stable before finalizing a prescription"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Cataract",
+      "slug": "cataract",
+      "why_considered": "Gradual painless blurring of vision in an older adult, often with glare and difficulty with night driving",
+      "must_not_miss": true,
+      "trigger": "Blur that does not fully correct with refraction, or a lens opacity seen on slit-lamp examination",
+      "discriminators": {
+        "history": [
+          "Progressive blur over months to years, often worse in bright light or at night",
+          "Glare and halos around lights",
+          "Difficulty with night driving",
+          "May be asymmetric between eyes"
+        ],
+        "exam": [
+          "Reduced visual acuity that may not fully improve with pinhole or refraction",
+          "Lens opacity or nuclear sclerosis on slit-lamp examination",
+          "Reduced red reflex"
+        ],
+        "labs": [],
+        "imaging": [
+          "Ocular ultrasound showing lens opacity when the view is poor"
+        ]
+      }
+    },
+    {
+      "name": "Diabetic retinopathy",
+      "slug": "diabetic-retinopathy",
+      "why_considered": "Blurred vision in a patient with diabetes, which can fluctuate with glucose control and mimic a refractive change",
+      "must_not_miss": true,
+      "trigger": "Diabetes with blurred vision, especially if acuity does not fully correct with refraction",
+      "discriminators": {
+        "history": [
+          "Known diabetes, often long-standing",
+          "Blur that fluctuates with blood sugar control",
+          "Floaters or visual distortion"
+        ],
+        "exam": [
+          "Reduced acuity that may not fully correct with pinhole",
+          "Microaneurysms, dot-blot hemorrhages, hard exudates, or neovascularization on dilated fundoscopy"
+        ],
+        "labs": [
+          "Elevated hemoglobin A1c or fluctuating glucose"
+        ],
+        "imaging": [
+          "Optical coherence tomography showing macular edema",
+          "Fluorescein angiography showing leakage or ischemia"
+        ]
+      }
+    },
+    {
+      "name": "Glaucoma",
+      "slug": "glaucoma",
+      "why_considered": "Blurred vision and halos around lights, especially in older adults",
+      "must_not_miss": true,
+      "trigger": "Halos, eye pain, or visual field loss with reduced acuity that does not correct with refraction",
+      "discriminators": {
+        "history": [
+          "Gradual peripheral vision loss (open-angle) or sudden painful vision loss with nausea (angle-closure)",
+          "Halos around lights",
+          "Family history of glaucoma"
+        ],
+        "exam": [
+          "Elevated intraocular pressure",
+          "Cupping of the optic disc",
+          "Reduced visual fields",
+          "Mid-dilated fixed pupil and corneal edema in acute angle-closure"
+        ],
+        "labs": [],
+        "imaging": [
+          "Optical coherence tomography showing retinal nerve fiber layer thinning",
+          "Automated perimetry showing field defects"
+        ]
+      }
+    },
+    {
+      "name": "Age-related macular degeneration",
+      "slug": "age-related-macular-degeneration",
+      "why_considered": "Central blurring and distortion in older adults",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Central blur or distortion rather than uniform blur",
+          "Difficulty reading or recognizing faces",
+          "Straight lines appear wavy"
+        ],
+        "exam": [
+          "Reduced central acuity with relatively preserved peripheral vision",
+          "Drusen, pigmentary changes, or subretinal fluid on fundoscopy"
+        ],
+        "labs": [],
+        "imaging": [
+          "Optical coherence tomography showing drusen or subretinal fluid",
+          "Amsler grid showing metamorphopsia"
+        ]
+      }
+    },
+    {
+      "name": "Amblyopia",
+      "slug": "amblyopia",
+      "why_considered": "Reduced vision in one eye in a child that may be mistaken for a refractive error",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Often asymptomatic; detected on vision screening",
+          "May have a history of strabismus or anisometropia"
+        ],
+        "exam": [
+          "Reduced acuity in one eye that does not fully correct with refraction",
+          "Strabismus or anisometropia",
+          "Normal ocular structures"
+        ],
+        "labs": [],
+        "imaging": []
+      }
+    },
+    {
+      "name": "Keratoconus",
+      "slug": "keratoconus",
+      "why_considered": "Progressive blurring and irregular astigmatism, often in adolescents or young adults",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Progressive blur and frequent prescription changes",
+          "Poor vision with glasses",
+          "Eye rubbing"
+        ],
+        "exam": [
+          "Irregular astigmatism",
+          "Scissoring of the retinoscopic reflex",
+          "Munson sign or conical cornea in advanced cases"
+        ],
+        "labs": [],
+        "imaging": [
+          "Corneal topography showing inferior steepening and irregular astigmatism"
+        ]
+      }
+    },
+    {
+      "name": "Retinal detachment",
+      "slug": "retinal-detachment",
+      "why_considered": "Sudden onset of floaters, flashes, and a curtain-like visual loss that can be confused with refractive blur",
+      "must_not_miss": true,
+      "trigger": "Sudden flashes, floaters, or a curtain over the vision",
+      "discriminators": {
+        "history": [
+          "Sudden onset of flashes and floaters",
+          "Curtain or shadow over part of the visual field",
+          "May follow trauma or eye surgery"
+        ],
+        "exam": [
+          "Reduced visual field or acuity",
+          "Retinal tear or detachment on dilated fundoscopy"
+        ],
+        "labs": [],
+        "imaging": [
+          "Ocular ultrasound showing retinal detachment when the view is obscured"
+        ]
+      }
+    },
+    {
+      "name": "Optic neuritis",
+      "slug": "optic-neuritis",
+      "why_considered": "Subacute unilateral vision loss with pain on eye movement, often in young adults",
+      "must_not_miss": true,
+      "trigger": "Pain with eye movement and reduced color vision",
+      "discriminators": {
+        "history": [
+          "Unilateral vision loss over hours to days",
+          "Pain with eye movement",
+          "Reduced color vision",
+          "May have prior neurologic symptoms"
+        ],
+        "exam": [
+          "Afferent pupillary defect",
+          "Reduced color vision on Ishihara testing",
+          "Swollen or normal optic disc"
+        ],
+        "labs": [
+          "May have elevated inflammatory markers if associated with systemic disease"
+        ],
+        "imaging": [
+          "MRI showing enhancement of the optic nerve"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Blurred vision only with specific tasks (driving at night, reading small print); acuity corrects to normal with lenses; no functional limitation",
+      "moderate": "Blurred vision interferes with daily activities such as reading, schoolwork, or driving; headaches and eye strain with prolonged visual tasks; corrects with lenses",
+      "severe": "Marked blurring that limits activities even with effort; high refractive error or anisometropia; may be associated with amblyopia in children or difficulty functioning without correction",
+      "critical": "Not applicable to uncomplicated refractive error; sudden severe vision loss or painful red eye suggests another diagnosis"
+    },
+    "red_flags": [
+      {
+        "finding": "Sudden painless loss of vision in one eye",
+        "meaning": "Suggests retinal artery occlusion, retinal detachment, or vitreous hemorrhage; needs urgent ophthalmology evaluation"
+      },
+      {
+        "finding": "Eye pain, redness, or photophobia",
+        "meaning": "Suggests keratitis, uveitis, or acute angle-closure glaucoma; not a simple refractive error"
+      },
+      {
+        "finding": "Flashes of light or new floaters",
+        "meaning": "Suggests retinal tear or detachment; needs urgent dilated fundoscopic examination"
+      },
+      {
+        "finding": "Curtain or shadow over part of the vision",
+        "meaning": "Suggests retinal detachment; urgent ophthalmology referral"
+      },
+      {
+        "finding": "Reduced acuity that does not improve with pinhole or refraction",
+        "meaning": "Suggests retinal, optic nerve, or other non-refractive cause; needs further evaluation"
+      },
+      {
+        "finding": "Diplopia that persists with one eye covered",
+        "meaning": "Suggests neurologic or orbital cause rather than refractive error"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Amblyopia",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Child with uncorrected anisometropia or high refractive error",
+          "Reduced acuity in one eye that does not fully correct with lenses"
+        ]
+      },
+      {
+        "name": "Strabismus",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Child with uncorrected hyperopia or anisometropia",
+          "Eye misalignment on cover/uncover testing"
+        ]
+      },
+      {
+        "name": "Reduced quality of life and safety risks",
+        "timing": "any",
+        "seriousness": "minor",
+        "frequency": "common",
+        "clues": [
+          "Difficulty driving at night",
+          "Falls or accidents related to poor vision",
+          "Eye strain and headaches"
+        ]
+      },
+      {
+        "name": "Progression to high myopia with retinal complications",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "High myopia (greater than -6 diopters)",
+          "Increased axial length",
+          "New flashes, floaters, or visual field loss"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Young children rarely complain of blur; they may sit close to the TV, squint, or rub their eyes. Uncorrected refractive error can cause amblyopia and strabismus, so early detection and correction are critical. Cycloplegic refraction is often needed."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Presbyopia is nearly universal, and symptoms may be attributed to cataract or macular disease. Glare and difficulty with night driving are more prominent. Refractive changes may also be the first sign of cataract or diabetes."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Fluctuating blood sugar can cause temporary refractive shifts, so blur may come and go and a new prescription may not be stable until glucose is controlled. Diabetic retinopathy can also cause blurred vision."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Hormonal changes can cause temporary changes in corneal thickness and refractive error; vision may fluctuate. Pre-eclampsia can cause blurred vision and should be ruled out if sudden."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "What exactly is blurry — things far away, things up close, or both?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Distance blur suggests myopia; near blur suggests hyperopia or presbyopia; blur at all distances suggests astigmatism"
+      },
+      {
+        "question": "When did you first notice this, and has it changed since?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Gradual onset over weeks to years; sudden onset points to a non-refractive cause"
+      },
+      {
+        "question": "Does squinting, moving closer, or holding things farther away help?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Squinting or changing the viewing distance improves vision, which supports a refractive cause"
+      },
+      {
+        "question": "Do you wear glasses or contact lenses, and when was your last prescription?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Existing correction that is outdated or no longer working; recent prescription change"
+      },
+      {
+        "question": "Do you get headaches, eye strain, or tired eyes after reading or using a screen?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Asthenopia with near work, typical of hyperopia or presbyopia"
+      },
+      {
+        "question": "Is the blur worse in dim light or when driving at night?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Glare, halos, and night vision difficulty, which also raise concern for cataract"
+      },
+      {
+        "question": "Does anyone in your family wear glasses or contact lenses?",
+        "category": "family",
+        "importance": "important",
+        "looking_for": "Family history of refractive error, a strong risk factor"
+      },
+      {
+        "question": "Have you had any eye pain, redness, discharge, or recent eye injury or surgery?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Pain, redness, or trauma suggests infection, inflammation, or injury rather than simple refractive error"
+      },
+      {
+        "question": "Have you noticed sudden flashes of light, new floaters, or a curtain or shadow over part of your vision?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Symptoms of retinal tear or detachment, which require urgent evaluation"
+      },
+      {
+        "question": "Is the blur in one eye or both eyes?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Unilateral blur shifts the differential toward amblyopia, cataract, or retinal or optic nerve disease"
+      },
+      {
+        "question": "Do you have diabetes, and if so, how well controlled is your blood sugar?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Fluctuating glucose can cause temporary refractive shifts; diabetic retinopathy can also blur vision"
+      },
+      {
+        "question": "Do you take any medications that can affect vision, such as steroids or anticholinergics?",
+        "category": "medications",
+        "importance": "optional",
+        "looking_for": "Medications that can cause blurred vision or precipitate angle-closure glaucoma"
+      }
+    ],
+    "accepted_names": [
+      "Refractive error",
+      "Refractive errors",
+      "Myopia",
+      "Nearsightedness",
+      "Hyperopia",
+      "Farsightedness",
+      "Astigmatism",
+      "Presbyopia"
+    ],
+    "reasoning_points": [
+      "Gradual, painless, bilateral blurring of vision that is worse for specific viewing distances",
+      "Blur improves with squinting, pinhole testing, or the correct spectacle or contact lens correction",
+      "Eye strain, headaches, and squinting with prolonged visual tasks",
+      "Normal eye examination apart from reduced acuity: no pain, redness, discharge, or afferent pupillary defect",
+      "Normal fundoscopic examination and full visual fields, ruling out retinal or optic nerve disease",
+      "Refraction confirms the diagnosis when acuity corrects to normal or near-normal with lenses",
+      "Red flags such as sudden vision loss, flashes, floaters, or a curtain over the vision are absent"
+    ],
+    "difficulty": {
+      "easy": [
+        "School-age child who squints at the board and fails a vision screening",
+        "Young adult with clear distance blur that corrects with a pinhole and with glasses",
+        "Healthy 48-year-old who must hold reading material at arm's length",
+        "Normal eye examination apart from reduced acuity"
+      ],
+      "medium": [
+        "Patient with astigmatism and blur at all distances plus glare and night vision difficulty",
+        "Young adult with latent hyperopia unmasked only on cycloplegic refraction",
+        "Patient with diabetes whose blur fluctuates with glucose control",
+        "Adult with an outdated prescription and eye strain from prolonged screen use"
+      ],
+      "hard": [
+        "Child with unilateral reduced acuity from anisometropic amblyopia rather than simple refractive error",
+        "Older adult whose blur does not fully correct with refraction because of an underlying cataract",
+        "Patient with reduced acuity that persists through a pinhole, pointing to retinal or optic nerve disease",
+        "Patient with irregular astigmatism and poor best-corrected acuity suggesting keratoconus",
+        "Pregnant patient with temporary refractive fluctuation from hormonal corneal changes"
+      ]
+    }
+  }
+}

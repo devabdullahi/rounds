@@ -1,0 +1,1338 @@
+{
+  "schema_version": "0.2",
+  "slug": "indigestion",
+  "triage": {
+    "name": "Indigestion",
+    "case_suitable": true,
+    "reason": "Common dyspepsia presentation with broad differential including GERD, ulcer and functional causes; reachable by history, exam and targeted testing.",
+    "kind": "symptom",
+    "category": "upper GI symptom",
+    "organ_systems": [
+      "gastrointestinal"
+    ],
+    "primary_clerkship": "familyMedicine",
+    "secondary_clerkships": [
+      "internalMedicine",
+      "emergency"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "clinic",
+      "emergency"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:18:12Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:55:21Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:55:27Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:55:34Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:55:46Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:55:54Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'h_pylori_stool_antigen' to 'H pylori stool antigen'",
+        "auto-repaired: workup: renamed 'h_pylori_urea_breath' to 'H pylori urea breath'",
+        "auto-repaired: labs: dropped 'cbc' (not in the reference table)",
+        "auto-repaired: labs: dropped 'h_pylori_stool_antigen' (not in the reference table)",
+        "auto-repaired: labs: dropped 'h_pylori_urea_breath' (not in the reference table)",
+        "auto-repaired: workup: 'upper gastrointestinal endoscopy (esophagogastroduodenoscopy)' was in ['initial', 'confirmatory'], kept ['initial']",
+        "auto-repaired: workup: 'abdominal ultrasound' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ct abdomen and pelvis with iv contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'abdominal ultrasound' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ct abdomen and pelvis with iv contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "differential gastroesophageal-reflux-disease: no profile yet",
+        "differential peptic-ulcer-disease: no profile yet",
+        "differential acute-pancreatitis: no profile yet",
+        "differential acute-coronary-syndrome: no profile yet",
+        "differential cholecystitis: no profile yet",
+        "differential gastric-cancer: no profile yet",
+        "differential functional-dyspepsia: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 18,
+      "typical_max": 70,
+      "peak": "30–50",
+      "possible_min": 5,
+      "possible_max": 95
+    },
+    "sex": "either",
+    "demographics": [
+      "Very common in the general adult population; most adults report at least one episode in their lifetime",
+      "Slightly more common in women in clinic-based series",
+      "More frequent in people with high-stress lifestyles or irregular eating patterns"
+    ],
+    "risk_factors": [
+      {
+        "text": "Eating large, high-fat or spicy meals",
+        "strength": "strong"
+      },
+      {
+        "text": "Eating quickly or at irregular times",
+        "strength": "moderate"
+      },
+      {
+        "text": "Ongoing psychological stress or anxiety",
+        "strength": "moderate"
+      },
+      {
+        "text": "Cigarette smoking",
+        "strength": "moderate"
+      },
+      {
+        "text": "Heavy alcohol use",
+        "strength": "moderate"
+      },
+      {
+        "text": "Use of NSAIDs or aspirin",
+        "strength": "moderate"
+      },
+      {
+        "text": "Caffeine or carbonated drinks",
+        "strength": "weak"
+      },
+      {
+        "text": "Being overweight",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Gastroesophageal reflux disease",
+      "Peptic ulcer disease",
+      "Helicobacter pylori infection",
+      "Irritable bowel syndrome",
+      "Anxiety or depression",
+      "Diabetes mellitus"
+    ],
+    "family_history": [
+      "Dyspepsia or peptic ulcer disease in a first-degree relative"
+    ],
+    "social_history": [
+      "High work or life stress",
+      "Irregular meals or skipping meals",
+      "Frequent dining out or late-night eating"
+    ],
+    "exposures": [
+      "Tobacco smoke",
+      "Alcohol",
+      "Nonsteroidal anti-inflammatory drugs",
+      "Aspirin",
+      "Corticosteroids",
+      "Certain antibiotics, iron or potassium supplements"
+    ],
+    "risk_medications": [
+      "ibuprofen",
+      "naproxen",
+      "aspirin",
+      "prednisone",
+      "doxycycline",
+      "ferrous sulfate",
+      "potassium chloride"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My stomach feels upset after I eat",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "I get a burning or uncomfortable feeling in my upper belly",
+        "frequency": "common"
+      },
+      {
+        "text": "I feel bloated and keep belching",
+        "frequency": "common"
+      },
+      {
+        "text": "I feel full really quickly when I eat",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual, often over days to weeks, and typically related to eating patterns or stress",
+      "duration": "Recurrent episodes lasting minutes to a few hours; by definition often present for weeks to months when medical care is sought",
+      "progression": "Comes and goes, usually worse after meals and better between meals; does not steadily worsen",
+      "location": "Upper abdomen, around or just below the breastbone",
+      "radiation": "May spread upward into the chest or throat; does not radiate to the back or right shoulder",
+      "quality": "Burning, gnawing, or a sense of fullness and discomfort",
+      "severity": "Mild to moderate; usually 3–5/10, rarely severe",
+      "timing": "Often within 30–60 minutes after eating; can also occur on an empty stomach",
+      "aggravating": [
+        "Large or high-fat meals",
+        "Spicy foods",
+        "Eating quickly",
+        "Alcohol",
+        "Caffeine",
+        "Stress",
+        "Lying down soon after eating",
+        "NSAIDs"
+      ],
+      "relieving": [
+        "Smaller, more frequent meals",
+        "Antacids",
+        "Belching",
+        "Sitting upright",
+        "Relaxation"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Belching",
+          "frequency": "common"
+        },
+        {
+          "text": "Bloating or upper abdominal fullness",
+          "frequency": "common"
+        },
+        {
+          "text": "Nausea",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Heartburn or acid regurgitation",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Early satiety",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Vomiting",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Difficulty swallowing or painful swallowing",
+        "Vomiting blood or coffee-ground material",
+        "Black or tarry stools",
+        "Unintentional weight loss",
+        "Persistent vomiting",
+        "Pain that wakes them from sleep",
+        "Pain radiating to the back or right shoulder",
+        "Chest pressure or pain with exertion",
+        "Shortness of breath",
+        "Fever",
+        "Jaundice"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Feeling tired or stressed",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Weight loss",
+          "Fever",
+          "Night sweats",
+          "Loss of appetite"
+        ],
+        "argues_against": [
+          "Unintentional weight loss",
+          "Fever"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Upper abdominal discomfort or burning",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Belching",
+            "frequency": "common"
+          },
+          {
+            "text": "Bloating",
+            "frequency": "common"
+          },
+          {
+            "text": "Nausea",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Heartburn",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Dysphagia",
+          "Odynophagia",
+          "Hematemesis",
+          "Melena",
+          "Persistent vomiting",
+          "Jaundice",
+          "Blood in stool"
+        ],
+        "argues_against": [
+          "Dysphagia or odynophagia",
+          "Gastrointestinal bleeding",
+          "Persistent vomiting"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [],
+        "negatives": [
+          "Chest pain with exertion",
+          "Palpitations",
+          "Shortness of breath",
+          "Leg swelling"
+        ],
+        "argues_against": [
+          "Exertional chest pressure",
+          "Dyspnea"
+        ]
+      },
+      {
+        "system": "respiratory",
+        "positives": [],
+        "negatives": [
+          "Cough",
+          "Wheezing",
+          "Shortness of breath"
+        ],
+        "argues_against": [
+          "Chronic cough or wheeze suggesting reflux-related airway disease"
+        ]
+      },
+      {
+        "system": "psychiatric",
+        "positives": [
+          {
+            "text": "Stress or anxiety",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Depressed mood",
+          "Panic attacks"
+        ],
+        "argues_against": [
+          "Symptoms driven primarily by an eating disorder"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "older_adults",
+        "how_it_differs": "May present with vague upper abdominal discomfort, early satiety or anorexia rather than classic burning; alarm features such as weight loss or anemia are more concerning for malignancy or ulcer.",
+        "missing_classic_features": [
+          "Clear relation to meals",
+          "Burning quality"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Heartburn and indigestion are very common in the second and third trimesters due to hormonal and mechanical changes; symptoms are often worse when lying down.",
+        "missing_classic_features": [
+          "Relation to dietary indiscretion or stress"
+        ]
+      },
+      {
+        "population": "children",
+        "how_it_differs": "Young children cannot localize the discomfort and present with irritability, poor feeding, recurrent abdominal pain or vomiting.",
+        "missing_classic_features": [
+          "Clear description of burning or meal-related pattern"
+        ]
+      },
+      {
+        "population": "diabetes",
+        "how_it_differs": "Autonomic neuropathy can cause delayed gastric emptying, so bloating, early satiety and nausea may dominate over burning.",
+        "missing_classic_features": [
+          "Burning epigastric pain"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Comfortable, non-toxic, no distress",
+      "moderate": "Mild discomfort, may grimace or shift position during the visit",
+      "severe": "Ill-appearing, diaphoretic, guarding the upper abdomen",
+      "critical": "Toxic-appearing, pale, lethargic, with signs of hypoperfusion"
+    },
+    "findings": [
+      {
+        "id": "epigastric-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate the epigastrium and all four quadrants, starting away from the area of discomfort",
+        "finding": "Mild to moderate epigastric tenderness without rebound or guarding",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "no-rebound-guarding",
+        "region": "abdomen",
+        "maneuver": "Assess for rebound tenderness and involuntary guarding",
+        "finding": "No rebound tenderness or involuntary guarding",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential"
+      },
+      {
+        "id": "no-organomegaly",
+        "region": "abdomen",
+        "maneuver": "Palpate for hepatosplenomegaly and abdominal masses",
+        "finding": "No hepatosplenomegaly or palpable mass",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-bowel-sounds",
+        "region": "abdomen",
+        "maneuver": "Auscultate bowel sounds in all four quadrants",
+        "finding": "Normal active bowel sounds",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-succussion-splash",
+        "region": "abdomen",
+        "maneuver": "Perform succussion splash with the patient seated",
+        "finding": "No succussion splash",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-cva-tenderness",
+        "region": "abdomen",
+        "maneuver": "Percuss the costovertebral angles",
+        "finding": "No costovertebral angle tenderness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-jaundice",
+        "region": "skin",
+        "maneuver": "Inspect the sclera and skin in natural light",
+        "finding": "No scleral icterus or jaundice",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-pallor",
+        "region": "general",
+        "maneuver": "Inspect the conjunctivae and palmar creases",
+        "finding": "No pallor",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-cyanosis-clubbing",
+        "region": "extremities",
+        "maneuver": "Inspect the fingers and nail beds",
+        "finding": "No cyanosis or clubbing",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the cervical, supraclavicular and axillary lymph nodes",
+        "finding": "No lymphadenopathy",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-murphy-sign",
+        "region": "abdomen",
+        "maneuver": "Press below the right costal margin while the patient inhales deeply",
+        "finding": "No Murphy sign",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-peritoneal-signs",
+        "region": "abdomen",
+        "maneuver": "Ask the patient to cough and gently percuss the abdomen",
+        "finding": "No pain with jarring or percussion",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "moderate": {
+        "min": 98.0,
+        "max": 99.5
+      },
+      "severe": {
+        "min": 98.6,
+        "max": 100.4
+      },
+      "critical": {
+        "min": 99.0,
+        "max": 101.5
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 90
+      },
+      "moderate": {
+        "min": 70,
+        "max": 100
+      },
+      "severe": {
+        "min": 85,
+        "max": 115
+      },
+      "critical": {
+        "min": 100,
+        "max": 135
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 12,
+        "max": 18
+      },
+      "moderate": {
+        "min": 14,
+        "max": 20
+      },
+      "severe": {
+        "min": 16,
+        "max": 24
+      },
+      "critical": {
+        "min": 20,
+        "max": 30
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 100,
+        "max": 130
+      },
+      "moderate": {
+        "min": 95,
+        "max": 130
+      },
+      "severe": {
+        "min": 90,
+        "max": 125
+      },
+      "critical": {
+        "min": 80,
+        "max": 110
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 60,
+        "max": 85
+      },
+      "moderate": {
+        "min": 55,
+        "max": 85
+      },
+      "severe": {
+        "min": 50,
+        "max": 80
+      },
+      "critical": {
+        "min": 45,
+        "max": 70
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 95,
+        "max": 100
+      },
+      "moderate": {
+        "min": 94,
+        "max": 100
+      },
+      "severe": {
+        "min": 92,
+        "max": 99
+      },
+      "critical": {
+        "min": 90,
+        "max": 98
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "lipase",
+      "ranges": {
+        "moderate": {
+          "min": 200,
+          "max": 600
+        },
+        "severe": {
+          "min": 500,
+          "max": 1500
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Order when epigastric pain radiates to the back or is severe, to rule out acute pancreatitis."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Negative. Required in anyone who could be pregnant before imaging or medication choices."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "st",
+        "finding": "ST-segment elevation or depression suggesting myocardial ischemia",
+        "frequency": "rare",
+        "leads": [
+          "II",
+          "III",
+          "aVF",
+          "V1",
+          "V2",
+          "V3",
+          "V4",
+          "V5",
+          "V6"
+        ],
+        "min_severity": "severe"
+      },
+      {
+        "feature": "t_wave",
+        "finding": "T-wave inversion in a coronary distribution",
+        "frequency": "rare",
+        "leads": [
+          "I",
+          "II",
+          "V2",
+          "V3",
+          "V4",
+          "V5",
+          "V6"
+        ],
+        "min_severity": "severe"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Sinus rhythm",
+        "frequency": "almost_always"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Upper gastrointestinal endoscopy (esophagogastroduodenoscopy)",
+      "modality": "endoscopy",
+      "preferred_when": "Alarm features, age over 60 with new dyspepsia, or failure of empiric therapy",
+      "findings": [
+        {
+          "text": "Normal-appearing esophagus, stomach and duodenum",
+          "frequency": "common"
+        },
+        {
+          "text": "Gastric or duodenal mucosal erythema or erosions",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Gastric or duodenal ulcer",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Esophagitis or hiatal hernia",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Gastric or esophageal malignancy",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Abdominal ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "Right upper quadrant pain, jaundice or suspected biliary disease",
+      "findings": [
+        {
+          "text": "Gallstones or gallbladder wall thickening",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Normal gallbladder, bile ducts, liver and pancreas",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "CT abdomen and pelvis with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Severe pain, suspected pancreatitis, perforation or mass",
+      "findings": [
+        {
+          "text": "Normal stomach, duodenum, pancreas and biliary tree",
+          "frequency": "common"
+        },
+        {
+          "text": "Pancreatic enlargement or peripancreatic fluid (pancreatitis)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Gastric wall thickening or mass",
+          "frequency": "rare"
+        },
+        {
+          "text": "Free air or fluid collection suggesting perforation",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Abdominal x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Usually normal; may show nonspecific bowel gas pattern",
+          "frequency": "common"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Looks for anemia or infection that would suggest ulcer bleeding or another cause"
+      },
+      {
+        "test": "H pylori stool antigen",
+        "why": "Noninvasive test for H. pylori, a common treatable cause of dyspepsia"
+      },
+      {
+        "test": "H pylori urea breath",
+        "why": "Alternative noninvasive test for H. pylori",
+        "only_if": "stool antigen testing is unavailable or the patient prefers a breath test"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before imaging or medication selection",
+        "only_if": "patient could be pregnant"
+      },
+      {
+        "test": "Upper gastrointestinal endoscopy (esophagogastroduodenoscopy)",
+        "why": "Direct visualization and biopsy when alarm features or high risk are present",
+        "only_if": "alarm features (weight loss, dysphagia, bleeding, anemia, age over 60 with new onset) are present"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "lipase",
+        "why": "Rules out acute pancreatitis when pain radiates to the back or is severe",
+        "only_if": "epigastric pain radiates to the back or is severe"
+      },
+      {
+        "test": "Abdominal ultrasound",
+        "why": "Evaluates for gallstones or biliary disease",
+        "only_if": "right upper quadrant pain, jaundice or suspected biliary colic"
+      },
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Evaluates for pancreatitis, perforation or mass when symptoms are severe or atypical",
+        "only_if": "severe pain, suspected pancreatitis, perforation or mass"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Abdominal x-ray",
+        "why": "Rarely changes management in uncomplicated dyspepsia"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in dyspepsia evaluation"
+      },
+      {
+        "test": "hs_tnt",
+        "why": "Not routine unless cardiac ischemia is suspected"
+      },
+      {
+        "test": "Abdominal ultrasound",
+        "why": "Not routine in typical dyspepsia without biliary symptoms",
+        "only_if": "right upper quadrant pain, jaundice or suspected biliary colic"
+      },
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Not routine in uncomplicated dyspepsia",
+        "only_if": "severe pain, suspected pancreatitis, perforation or mass"
+      }
+    ],
+    "decision_points": [
+      "Test for H. pylori in all patients with dyspepsia who are not already known to be infected",
+      "Endoscopy for alarm features, age over 60 with new dyspepsia, or failure of empiric therapy",
+      "Pregnancy test before imaging or medication selection in anyone who could be pregnant",
+      "Consider cardiac ischemia if chest pain or risk factors are present"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Gastroesophageal reflux disease",
+      "slug": "gastroesophageal-reflux-disease",
+      "why_considered": "Burning upper abdominal and retrosternal discomfort after meals is the classic overlap between dyspepsia and reflux",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Heartburn and acid regurgitation are the dominant symptoms",
+          "Worse when lying down or bending over",
+          "Relieved by antacids or acid suppression",
+          "Water brash or sour taste in the mouth"
+        ],
+        "exam": [
+          "Usually normal abdominal exam",
+          "May have mild epigastric tenderness"
+        ],
+        "labs": [
+          "No specific laboratory abnormality"
+        ],
+        "imaging": [
+          "Esophagitis or hiatal hernia on endoscopy",
+          "Normal endoscopy in non-erosive reflux disease"
+        ]
+      }
+    },
+    {
+      "name": "Peptic ulcer disease",
+      "slug": "peptic-ulcer-disease",
+      "why_considered": "Epigastric burning pain is shared with dyspepsia, and ulcer is a common treatable cause",
+      "must_not_miss": true,
+      "trigger": "NSAID use, H. pylori risk, or alarm features such as anemia, melena or night pain",
+      "discriminators": {
+        "history": [
+          "Chronic NSAID or aspirin use",
+          "Nocturnal or fasting pain that may improve with food (duodenal) or worsen with food (gastric)",
+          "Melena or coffee-ground emesis",
+          "Family history of ulcer disease"
+        ],
+        "exam": [
+          "Epigastric tenderness",
+          "Pallor if chronic bleeding",
+          "Signs of peritonitis if perforated"
+        ],
+        "labs": [
+          "Iron deficiency anemia",
+          "Positive H. pylori stool antigen or urea breath test"
+        ],
+        "imaging": [
+          "Gastric or duodenal ulcer on endoscopy",
+          "Free air on abdominal x-ray or CT if perforated"
+        ]
+      }
+    },
+    {
+      "name": "Acute pancreatitis",
+      "slug": "acute-pancreatitis",
+      "why_considered": "Severe epigastric pain with nausea and vomiting can be mistaken for bad indigestion",
+      "must_not_miss": true,
+      "trigger": "Severe constant epigastric pain radiating to the back, often with vomiting and a history of gallstones or heavy alcohol use",
+      "discriminators": {
+        "history": [
+          "Severe, constant pain radiating to the back",
+          "Relieved by leaning forward",
+          "Heavy alcohol use or known gallstones",
+          "Vomiting that does not relieve the pain"
+        ],
+        "exam": [
+          "Marked epigastric tenderness",
+          "Decreased bowel sounds",
+          "Fever or tachycardia",
+          "Jaundice if biliary obstruction"
+        ],
+        "labs": [
+          "Lipase elevated more than three times the upper limit of normal",
+          "Leukocytosis",
+          "Elevated liver enzymes if biliary cause"
+        ],
+        "imaging": [
+          "Pancreatic enlargement or peripancreatic fluid on CT",
+          "Gallstones on ultrasound"
+        ]
+      }
+    },
+    {
+      "name": "Acute coronary syndrome",
+      "slug": "acute-coronary-syndrome",
+      "why_considered": "Epigastric or upper abdominal discomfort can be the presenting symptom of myocardial ischemia, especially in older adults and people with diabetes",
+      "must_not_miss": true,
+      "trigger": "Exertional or pressure-like upper abdominal or chest discomfort, diaphoresis, dyspnea, or cardiac risk factors",
+      "discriminators": {
+        "history": [
+          "Pressure-like discomfort brought on by exertion and relieved by rest",
+          "Radiation to the left arm, jaw or shoulder",
+          "Diaphoresis, nausea, shortness of breath",
+          "Known coronary disease or multiple risk factors"
+        ],
+        "exam": [
+          "May be normal",
+          "Diaphoresis, pallor, tachycardia or hypotension",
+          "New murmur or signs of heart failure"
+        ],
+        "labs": [
+          "Elevated high-sensitivity troponin"
+        ],
+        "imaging": [
+          "Regional wall motion abnormality on echocardiography",
+          "Coronary stenosis on angiography"
+        ],
+        "ecg": [
+          "ST-segment elevation or depression",
+          "T-wave inversion in a coronary distribution",
+          "New Q waves"
+        ]
+      }
+    },
+    {
+      "name": "Biliary colic or cholecystitis",
+      "slug": "cholecystitis",
+      "why_considered": "Right upper quadrant and epigastric pain after fatty meals overlaps with meal-related dyspepsia",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Pain after fatty meals, lasting hours",
+          "Right upper quadrant or epigastric pain radiating to the right shoulder or back",
+          "Nausea and vomiting",
+          "Fever if cholecystitis"
+        ],
+        "exam": [
+          "Right upper quadrant tenderness",
+          "Positive Murphy sign",
+          "Fever or jaundice"
+        ],
+        "labs": [
+          "Leukocytosis",
+          "Elevated alkaline phosphatase, bilirubin or transaminases"
+        ],
+        "imaging": [
+          "Gallstones or gallbladder wall thickening on ultrasound",
+          "Pericholecystic fluid or a distended gallbladder"
+        ]
+      }
+    },
+    {
+      "name": "Gastric cancer",
+      "slug": "gastric-cancer",
+      "why_considered": "Early gastric cancer can present with vague dyspepsia before alarm features appear",
+      "must_not_miss": true,
+      "trigger": "New dyspepsia in an older adult, unintentional weight loss, early satiety, anemia, or a family history of gastric cancer",
+      "discriminators": {
+        "history": [
+          "Unintentional weight loss",
+          "Early satiety or anorexia",
+          "Progressive rather than intermittent symptoms",
+          "Dysphagia or vomiting if proximal or obstructing"
+        ],
+        "exam": [
+          "Pallor",
+          "Palpable epigastric mass",
+          "Supraclavicular lymph node (Virchow node)",
+          "Signs of metastatic disease"
+        ],
+        "labs": [
+          "Iron deficiency anemia",
+          "Occult blood in stool"
+        ],
+        "imaging": [
+          "Gastric mass, ulceration or wall thickening on endoscopy",
+          "Malignant-appearing lesion on biopsy",
+          "Metastases on CT"
+        ]
+      }
+    },
+    {
+      "name": "Functional dyspepsia",
+      "slug": "functional-dyspepsia",
+      "why_considered": "Persistent dyspepsia without an identifiable structural cause is common and is a diagnosis of exclusion",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Symptoms for at least three months with onset at least six months earlier",
+          "No relief with defecation and no change in stool frequency or form",
+          "Postprandial fullness or early satiety",
+          "Normal evaluation including endoscopy"
+        ],
+        "exam": [
+          "Normal abdominal exam",
+          "No alarm features"
+        ],
+        "labs": [
+          "Normal complete blood count and metabolic panel",
+          "Negative H. pylori testing"
+        ],
+        "imaging": [
+          "Normal upper endoscopy"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Occasional episodes of upper abdominal discomfort or burning after large or rich meals, lasting minutes to a couple of hours, relieved by antacids or belching, with no interference in daily activities",
+      "moderate": "Frequent episodes over weeks, with bloating, early satiety and nausea, some avoidance of foods or activities, and mild epigastric tenderness on exam but no alarm features",
+      "severe": "Persistent or recurrent symptoms despite lifestyle changes and empiric acid suppression, with significant impact on eating, sleep or work, and possible weight loss or anemia that requires endoscopy",
+      "critical": "Not applicable; uncomplicated indigestion is not life-threatening, but severe pain, bleeding, or signs of perforation or cardiac ischemia require urgent evaluation"
+    },
+    "red_flags": [
+      {
+        "finding": "Difficulty swallowing or painful swallowing",
+        "meaning": "Suggests an esophageal stricture, severe esophagitis or malignancy; needs endoscopy"
+      },
+      {
+        "finding": "Vomiting blood or coffee-ground material",
+        "meaning": "Upper gastrointestinal bleeding, often from an ulcer or erosion; needs urgent evaluation"
+      },
+      {
+        "finding": "Black or tarry stools",
+        "meaning": "Melena indicates upper gastrointestinal bleeding"
+      },
+      {
+        "finding": "Unintentional weight loss",
+        "meaning": "Raises concern for malignancy or a chronic inflammatory or malabsorptive process"
+      },
+      {
+        "finding": "Persistent vomiting",
+        "meaning": "Suggests obstruction, pancreatitis or another serious cause"
+      },
+      {
+        "finding": "Pain radiating to the back or right shoulder",
+        "meaning": "Suggests pancreatitis or biliary disease rather than simple dyspepsia"
+      },
+      {
+        "finding": "Chest pressure or pain with exertion, or shortness of breath",
+        "meaning": "Possible myocardial ischemia; needs immediate cardiac evaluation"
+      },
+      {
+        "finding": "Fever with severe abdominal pain or peritoneal signs",
+        "meaning": "Suggests perforation, cholecystitis or another acute abdomen"
+      },
+      {
+        "finding": "Jaundice",
+        "meaning": "Suggests biliary obstruction or hepatobiliary disease"
+      },
+      {
+        "finding": "New dyspepsia in an older adult",
+        "meaning": "Higher risk of malignancy or ulcer; lower threshold for endoscopy"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Peptic ulcer with bleeding",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Melena or hematemesis",
+          "Iron deficiency anemia",
+          "NSAID use",
+          "Epigastric pain that changes in character"
+        ]
+      },
+      {
+        "name": "Peptic ulcer perforation",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Sudden severe abdominal pain",
+          "Rigid abdomen",
+          "Free air on imaging"
+        ]
+      },
+      {
+        "name": "Gastric outlet obstruction",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Persistent vomiting",
+          "Early satiety",
+          "Succussion splash",
+          "Weight loss"
+        ]
+      },
+      {
+        "name": "Chronic functional symptoms and reduced quality of life",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Symptoms persisting for months",
+          "Avoidance of foods and social eating",
+          "Anxiety about symptoms"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "older_adults",
+        "differences": "May present with vague discomfort, early satiety or anorexia rather than classic burning; alarm features such as weight loss or anemia are more concerning for malignancy or ulcer, so endoscopy is recommended at a lower threshold."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Heartburn and indigestion are very common in the second and third trimesters due to hormonal and mechanical changes; symptoms are often worse when lying down, and medication choices must be pregnancy-safe."
+      },
+      {
+        "population": "children",
+        "differences": "Young children cannot localize the discomfort and present with irritability, poor feeding, recurrent abdominal pain or vomiting; the differential includes more congenital and infectious causes."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Autonomic neuropathy can cause delayed gastric emptying, so bloating, early satiety and nausea may dominate over burning; gastroparesis should be considered."
+      },
+      {
+        "population": "obesity",
+        "differences": "Increased intra-abdominal pressure and dietary patterns can worsen reflux and dyspepsia; weight loss is a useful part of management."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "Where exactly do you feel the discomfort, and can you point to it?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Upper abdomen, around or just below the breastbone"
+      },
+      {
+        "question": "When did this start, and how long has it been going on?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Gradual onset over days to weeks; recurrent episodes over weeks to months when care is sought"
+      },
+      {
+        "question": "Does it come and go, or is it getting steadily worse?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Comes and goes, worse after meals and better between meals; steady worsening suggests another cause"
+      },
+      {
+        "question": "What does it feel like — burning, gnawing, or more of a fullness?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Burning, gnawing, or a sense of fullness and discomfort"
+      },
+      {
+        "question": "Is it related to eating? How soon after a meal does it start?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Often within 30–60 minutes after eating; can also occur on an empty stomach"
+      },
+      {
+        "question": "What makes it worse?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Large or high-fat meals, spicy foods, eating quickly, alcohol, caffeine, stress, lying down after eating, NSAIDs"
+      },
+      {
+        "question": "What makes it better?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Smaller more frequent meals, antacids, belching, sitting upright, relaxation"
+      },
+      {
+        "question": "Do you belch, feel bloated, or feel full very quickly when you eat?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Belching, bloating, upper abdominal fullness, early satiety"
+      },
+      {
+        "question": "Do you have heartburn or sour fluid coming up into your throat?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Heartburn or acid regurgitation; if dominant, points toward GERD"
+      },
+      {
+        "question": "Have you had any nausea or vomiting?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Nausea sometimes; persistent vomiting is a red flag"
+      },
+      {
+        "question": "Have you had any trouble swallowing, or pain when you swallow?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Absent; dysphagia or odynophagia suggests stricture, severe esophagitis or malignancy"
+      },
+      {
+        "question": "Have you vomited blood or coffee-ground material, or had black or tarry stools?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Absent; hematemesis or melena indicates upper GI bleeding"
+      },
+      {
+        "question": "Have you lost weight without trying?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Absent; unintentional weight loss raises concern for malignancy or chronic disease"
+      },
+      {
+        "question": "Does the pain ever wake you from sleep, or radiate to your back or right shoulder?",
+        "category": "red_flag",
+        "importance": "important",
+        "looking_for": "Absent; night pain suggests ulcer, and back or shoulder radiation suggests pancreatitis or biliary disease"
+      },
+      {
+        "question": "Do you have chest pressure or pain with exertion, or shortness of breath?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Absent; present symptoms suggest myocardial ischemia and need immediate cardiac evaluation"
+      },
+      {
+        "question": "Do you take NSAIDs, aspirin, steroids, or iron or potassium supplements?",
+        "category": "medications",
+        "importance": "essential",
+        "looking_for": "NSAID, aspirin or steroid use raises the risk of ulcer; iron and potassium can irritate the stomach"
+      },
+      {
+        "question": "Do you smoke or drink alcohol, and how much?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Smoking and heavy alcohol use both cause or worsen dyspepsia"
+      },
+      {
+        "question": "How would you describe your stress level and your eating pattern?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Ongoing stress, irregular meals, skipping meals, late-night or large high-fat meals"
+      },
+      {
+        "question": "Has anyone in your family had indigestion, an ulcer, or stomach cancer?",
+        "category": "family",
+        "importance": "important",
+        "looking_for": "Family history of dyspepsia, peptic ulcer disease or gastric cancer"
+      },
+      {
+        "question": "Have you had an ulcer, reflux, H. pylori infection, or stomach surgery before?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Prior peptic ulcer disease, GERD, H. pylori infection or gastric surgery"
+      },
+      {
+        "question": "Could you be pregnant? When was your last period?",
+        "category": "obstetric",
+        "importance": "important",
+        "looking_for": "Pregnancy changes medication choices and the differential; test before imaging or medication selection"
+      },
+      {
+        "question": "Any fever, chills, or yellowing of the eyes or skin?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Absent; fever with severe pain suggests an acute abdomen, and jaundice suggests biliary obstruction"
+      }
+    ],
+    "accepted_names": [
+      "Indigestion",
+      "Dyspepsia",
+      "Functional dyspepsia",
+      "Upset stomach",
+      "Non-ulcer dyspepsia"
+    ],
+    "reasoning_points": [
+      "Upper abdominal burning or discomfort that comes and goes, typically within 30–60 minutes after eating",
+      "Relation to large, high-fat or spicy meals, eating quickly, alcohol, caffeine, stress or NSAIDs",
+      "Relief with smaller meals, antacids, belching or sitting upright",
+      "Associated belching, bloating, early satiety and sometimes nausea or heartburn",
+      "No alarm features: no dysphagia, odynophagia, hematemesis, melena, unintentional weight loss or persistent vomiting",
+      "Mild to moderate epigastric tenderness on exam without rebound, guarding or peritoneal signs",
+      "Normal or near-normal vital signs and no jaundice, pallor or organomegaly",
+      "Pregnancy excluded when relevant before imaging or medication selection",
+      "H. pylori testing considered, since it is a common treatable cause of dyspepsia",
+      "Endoscopy reserved for alarm features, new dyspepsia in an older adult, or failure of empiric therapy",
+      "Cardiac ischemia considered when chest pressure, exertional symptoms or cardiac risk factors are present"
+    ],
+    "difficulty": {
+      "easy": [
+        "Young or middle-aged adult with classic meal-related burning and belching",
+        "Clear relation to large, high-fat or spicy meals and stress",
+        "Mild epigastric tenderness with a benign abdominal exam",
+        "No alarm features and normal vital signs",
+        "Symptoms relieved by antacids"
+      ],
+      "medium": [
+        "Overlap with GERD: heartburn and acid regurgitation are prominent",
+        "NSAID or aspirin use raising concern for peptic ulcer disease",
+        "Woman of reproductive age needing a pregnancy test before imaging or medication choices",
+        "Older adult with new dyspepsia requiring a lower threshold for endoscopy",
+        "Symptoms that persist despite lifestyle changes and empiric acid suppression"
+      ],
+      "hard": [
+        "Older adult with vague discomfort, early satiety or anorexia rather than classic burning",
+        "Diabetic patient with bloating, early satiety and nausea suggesting gastroparesis",
+        "Pregnant patient with heartburn and indigestion in the second or third trimester",
+        "Young child with irritability, poor feeding or recurrent abdominal pain who cannot localize the discomfort",
+        "Epigastric discomfort that is actually myocardial ischemia, especially with exertional symptoms or cardiac risk factors",
+        "Severe constant epigastric pain radiating to the back that turns out to be acute pancreatitis"
+      ]
+    }
+  }
+}

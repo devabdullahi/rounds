@@ -1,0 +1,1071 @@
+{
+  "schema_version": "0.2",
+  "slug": "hay-fever",
+  "triage": {
+    "name": "Hay Fever",
+    "case_suitable": true,
+    "reason": "Allergic rhinitis with classic seasonal sneezing, rhinorrhea and itchy eyes; diagnosis reachable by history and exam, common in primary care.",
+    "kind": "disease",
+    "category": "allergic rhinitis",
+    "organ_systems": [
+      "respiratory"
+    ],
+    "primary_clerkship": "familyMedicine",
+    "secondary_clerkships": [
+      "pediatrics",
+      "internalMedicine"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "clinic",
+      "pediatric_clinic"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:17:44Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:26:41Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:26:47Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:26:53Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:27:05Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T06:27:10Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'ige_total' to 'Ige total'",
+        "auto-repaired: labs: dropped 'ige_total' (not in the reference table)",
+        "auto-repaired: workup: 'skin prick testing to seasonal aeroallergens' was in ['initial', 'confirmatory'], kept ['initial']",
+        "differential viral-upper-respiratory-infection: no profile yet",
+        "differential nonallergic-rhinitis: no profile yet",
+        "differential acute-bacterial-sinusitis: no profile yet",
+        "differential allergic-conjunctivitis: no profile yet",
+        "differential bacterial-conjunctivitis: no profile yet",
+        "differential nasal-foreign-body: no profile yet",
+        "differential nasal-polyps: no profile yet",
+        "differential csf-rhinorrhea: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 5,
+      "typical_max": 45,
+      "peak": "10–30",
+      "possible_min": 2,
+      "possible_max": 90
+    },
+    "sex": "either",
+    "demographics": [
+      "Slightly more common in males in childhood and early adulthood",
+      "Often begins in childhood or adolescence and can persist or recur throughout adult life",
+      "More common in people with a personal or family history of atopic disease"
+    ],
+    "risk_factors": [
+      {
+        "text": "Personal or family history of atopic disease (asthma, eczema, allergic rhinitis)",
+        "strength": "strong"
+      },
+      {
+        "text": "Sensitization to seasonal pollens (trees, grasses, weeds)",
+        "strength": "strong"
+      },
+      {
+        "text": "Childhood or adolescent age",
+        "strength": "moderate"
+      },
+      {
+        "text": "Male sex in childhood",
+        "strength": "weak"
+      },
+      {
+        "text": "Exposure to outdoor pollen during peak seasons",
+        "strength": "moderate"
+      }
+    ],
+    "comorbidities": [
+      "Asthma",
+      "Atopic dermatitis",
+      "Other allergic conditions (e.g., food allergy)"
+    ],
+    "family_history": [
+      "Allergic rhinitis",
+      "Asthma",
+      "Atopic dermatitis"
+    ],
+    "social_history": [
+      "Outdoor occupation or hobbies during pollen season",
+      "Living in an area with high seasonal pollen counts"
+    ],
+    "exposures": [
+      "Tree pollen (spring)",
+      "Grass pollen (late spring and summer)",
+      "Weed pollen (late summer and fall)"
+    ],
+    "risk_medications": []
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My nose is runny and I keep sneezing",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "My eyes are itchy and watery",
+        "frequency": "common"
+      },
+      {
+        "text": "My nose is stuffy and I can't breathe through it",
+        "frequency": "common"
+      },
+      {
+        "text": "I have an itchy throat and keep clearing it",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual, often over days to weeks at the start of a pollen season",
+      "duration": "Recurs at the same time each year; symptoms last weeks to months while the allergen is present",
+      "progression": "Symptoms build during the pollen season and resolve when the season ends; they recur the following year",
+      "location": "Nose, eyes, throat, and sometimes ears and palate",
+      "radiation": "Usually none",
+      "quality": "Itchy, watery, sneezy, and congested",
+      "severity": "Mild to moderate; can interfere with sleep, work, and school",
+      "timing": "Seasonal; worse outdoors, on dry windy days, and in the morning",
+      "aggravating": [
+        "Being outdoors",
+        "Dry, windy days",
+        "Mowing the lawn or gardening",
+        "Pollen exposure"
+      ],
+      "relieving": [
+        "Staying indoors with windows closed and air conditioning",
+        "Antihistamines",
+        "Nasal saline rinses"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Sneezing fits",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Clear runny nose",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Itchy, watery, red eyes",
+          "frequency": "common"
+        },
+        {
+          "text": "Nasal congestion",
+          "frequency": "common"
+        },
+        {
+          "text": "Itchy nose, throat, or palate",
+          "frequency": "common"
+        },
+        {
+          "text": "Postnasal drip and throat clearing",
+          "frequency": "common"
+        },
+        {
+          "text": "Cough, often worse at night",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Dark circles under the eyes",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Fatigue or poor sleep",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Decreased sense of smell",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Fever",
+        "Purulent or thick yellow-green nasal discharge",
+        "Facial pain or pressure",
+        "Loss of smell",
+        "Unilateral nasal obstruction or bleeding",
+        "Contact with someone with a similar illness",
+        "Recent travel or new medication"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fatigue",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Fever",
+          "Weight loss",
+          "Night sweats"
+        ],
+        "argues_against": [
+          "Systemic infection or malignancy"
+        ]
+      },
+      {
+        "system": "eyes",
+        "positives": [
+          {
+            "text": "Itchy eyes",
+            "frequency": "common"
+          },
+          {
+            "text": "Watery eyes",
+            "frequency": "common"
+          },
+          {
+            "text": "Red eyes",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Eye pain",
+          "Vision loss",
+          "Purulent discharge"
+        ],
+        "argues_against": [
+          "Bacterial conjunctivitis",
+          "Acute angle-closure glaucoma"
+        ]
+      },
+      {
+        "system": "ent",
+        "positives": [
+          {
+            "text": "Sneezing",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Runny nose",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Nasal congestion",
+            "frequency": "common"
+          },
+          {
+            "text": "Itchy nose or throat",
+            "frequency": "common"
+          },
+          {
+            "text": "Postnasal drip",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Facial pain",
+          "Loss of smell",
+          "Unilateral nasal obstruction",
+          "Epistaxis"
+        ],
+        "argues_against": [
+          "Sinusitis",
+          "Nasal polyps",
+          "Foreign body"
+        ]
+      },
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "Cough",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Wheezing",
+          "Shortness of breath",
+          "Chest tightness"
+        ],
+        "argues_against": [
+          "Asthma exacerbation",
+          "Lower respiratory infection"
+        ]
+      },
+      {
+        "system": "allergic_immunologic",
+        "positives": [
+          {
+            "text": "Known seasonal allergy triggers",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Anaphylaxis",
+          "Urticaria",
+          "Angioedema"
+        ],
+        "argues_against": [
+          "Systemic allergic reaction"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Young children may not describe itching; they present with clear rhinorrhea, sneezing, nasal rubbing (allergic salute), and mouth breathing. Symptoms can be mistaken for recurrent colds.",
+        "missing_classic_features": [
+          "Itchy eyes",
+          "Clear seasonal pattern"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "Symptoms may be milder or attributed to aging; nasal dryness and medication effects can complicate the picture. The seasonal pattern may be less obvious.",
+        "missing_classic_features": [
+          "Prominent itching",
+          "Clear seasonal onset"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Nasal congestion can be worsened by pregnancy rhinitis, and some allergy medications are avoided. Symptoms may be more bothersome and management is limited.",
+        "missing_classic_features": [
+          "Clear seasonal pattern"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Comfortable, alert, breathing easily; may rub nose or eyes",
+      "moderate": "Mildly uncomfortable with frequent sneezing and nose rubbing; no distress",
+      "severe": "Visibly uncomfortable, sneezing fits, mouth breathing, watery eyes; not toxic",
+      "critical": "Not applicable; hay fever does not cause a critical general appearance"
+    },
+    "findings": [
+      {
+        "id": "nasal-mucosa-pale-boggy",
+        "region": "heent",
+        "maneuver": "Inspect the nasal mucosa with an otoscope or nasal speculum",
+        "finding": "Pale, bluish, boggy nasal mucosa",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "clear-rhinorrhea",
+        "region": "heent",
+        "maneuver": "Inspect the nasal cavity and ask the patient to sniff",
+        "finding": "Clear, watery nasal discharge",
+        "frequency": "almost_always",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "nasal-turbinate-edema",
+        "region": "heent",
+        "maneuver": "Inspect the nasal cavity",
+        "finding": "Swollen, edematous nasal turbinates",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "conjunctival-injection",
+        "region": "heent",
+        "maneuver": "Inspect the conjunctivae",
+        "finding": "Bilateral conjunctival redness",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "watery-eyes",
+        "region": "heent",
+        "maneuver": "Inspect the eyes for tearing",
+        "finding": "Excess tearing (lacrimation)",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "allergic-shiners",
+        "region": "heent",
+        "maneuver": "Inspect the lower eyelids and periorbital skin",
+        "finding": "Dark circles under the eyes (allergic shiners)",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "allergic-salute",
+        "region": "heent",
+        "maneuver": "Observe the patient during the visit",
+        "finding": "Transverse nasal crease from repeated upward nose rubbing (allergic salute)",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "cobblestone-posterior-pharynx",
+        "region": "heent",
+        "maneuver": "Inspect the posterior pharynx",
+        "finding": "Cobblestoning of the posterior pharyngeal wall from postnasal drip",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "no-purulent-discharge",
+        "region": "heent",
+        "maneuver": "Inspect the nasal cavity and pharynx",
+        "finding": "No thick purulent yellow-green discharge",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "no-facial-tenderness",
+        "region": "heent",
+        "maneuver": "Palpate the frontal and maxillary sinuses",
+        "finding": "No sinus tenderness",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "no-unilateral-obstruction",
+        "region": "heent",
+        "maneuver": "Inspect and compare both nasal passages",
+        "finding": "No unilateral obstruction, mass, or foreign body",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "normal-tympanic-membranes",
+        "region": "heent",
+        "maneuver": "Otoscopy of both ears",
+        "finding": "Tympanic membranes normal without effusion",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "no-cervical-lymphadenopathy",
+        "region": "neck",
+        "maneuver": "Palpate the cervical lymph node chains",
+        "finding": "No enlarged or tender cervical lymph nodes",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-lung-exam",
+        "region": "lung",
+        "maneuver": "Auscultate all lung fields",
+        "finding": "Clear breath sounds without wheezing or crackles",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-urticaria-angioedema",
+        "region": "skin",
+        "maneuver": "Inspect the skin and lips",
+        "finding": "No hives or lip/tongue swelling",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "moderate": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "severe": {
+        "min": 97.8,
+        "max": 99.1
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 90
+      },
+      "moderate": {
+        "min": 60,
+        "max": 95
+      },
+      "severe": {
+        "min": 60,
+        "max": 100
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 12,
+        "max": 18
+      },
+      "moderate": {
+        "min": 12,
+        "max": 20
+      },
+      "severe": {
+        "min": 12,
+        "max": 22
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 97,
+        "max": 100
+      },
+      "moderate": {
+        "min": 97,
+        "max": 100
+      },
+      "severe": {
+        "min": 96,
+        "max": 100
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "eos_pct",
+      "ranges": {
+        "mild": {
+          "min": 5,
+          "max": 8
+        },
+        "moderate": {
+          "min": 6,
+          "max": 12
+        },
+        "severe": {
+          "min": 8,
+          "max": 15
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Mild peripheral eosinophilia supports an allergic process but is neither sensitive nor specific; a normal count does not exclude allergic rhinitis."
+    }
+  ],
+  "imaging": [
+    {
+      "study": "Sinus x-ray (Waters view)",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Normal aerated paranasal sinuses without air-fluid levels or mucosal thickening",
+          "frequency": "common"
+        },
+        {
+          "text": "Mild mucosal thickening of the maxillary sinuses",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "CT sinuses without contrast",
+      "modality": "ct",
+      "preferred_when": "Only when complications or another sinus diagnosis is suspected",
+      "findings": [
+        {
+          "text": "Normal paranasal sinuses",
+          "frequency": "common"
+        },
+        {
+          "text": "Mucosal thickening or air-fluid levels suggesting acute or chronic sinusitis",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Chest x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Normal lungs without infiltrate, hyperinflation, or focal opacity",
+          "frequency": "almost_always"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Screens for anemia or another cause of fatigue and may show mild eosinophilia supporting an allergic process"
+      },
+      {
+        "test": "Skin prick testing to seasonal aeroallergens",
+        "why": "Identifies the specific pollen trigger when the history is unclear or immunotherapy is being considered",
+        "only_if": "the trigger is uncertain or allergy immunotherapy is planned"
+      },
+      {
+        "test": "Allergen-specific serum IgE (e.g., ImmunoCAP)",
+        "why": "Alternative to skin testing when skin testing is not feasible or antihistamines cannot be stopped",
+        "only_if": "skin testing is unavailable or contraindicated"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "eos_pct",
+        "why": "Mild eosinophilia supports an allergic cause but is not required for diagnosis"
+      },
+      {
+        "test": "Ige total",
+        "why": "May be elevated in atopic patients; not diagnostic on its own"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "CT sinuses without contrast",
+        "why": "Not needed for uncomplicated seasonal allergic rhinitis",
+        "only_if": "complications or another sinus diagnosis are suspected"
+      },
+      {
+        "test": "Sinus x-ray (Waters view)",
+        "why": "Low yield and does not change management of typical hay fever",
+        "only_if": "sinusitis is suspected"
+      },
+      {
+        "test": "Chest x-ray",
+        "why": "Not indicated unless lower respiratory symptoms or another pulmonary process is suspected",
+        "only_if": "cough, wheeze, or hypoxia suggests asthma or pneumonia"
+      },
+      {
+        "test": "crp",
+        "why": "Inflammatory markers are not useful in uncomplicated allergic rhinitis"
+      },
+      {
+        "test": "esr",
+        "why": "Not useful for diagnosing or managing hay fever"
+      }
+    ],
+    "decision_points": [
+      "Diagnosis is clinical; testing is reserved for unclear triggers, treatment failure, or before immunotherapy",
+      "Antihistamines must be stopped before skin prick testing",
+      "Consider asthma or another cause if wheezing, shortness of breath, or persistent cough is present"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Viral upper respiratory infection",
+      "slug": "viral-upper-respiratory-infection",
+      "why_considered": "Sneezing, clear rhinorrhea, nasal congestion and cough are the most common symptoms of a cold, especially in children and in the fall and winter.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Sick contacts at home, school or work",
+          "Sore throat and low-grade fever at the start",
+          "Symptoms last about a week and resolve rather than recurring each year at the same time",
+          "No prominent itching of the eyes, nose or palate"
+        ],
+        "exam": [
+          "Erythematous nasal mucosa rather than pale and boggy",
+          "Injected posterior pharynx with exudate or enlarged tender cervical nodes",
+          "No conjunctival itching or tearing"
+        ],
+        "labs": [
+          "No eosinophilia",
+          "Viral testing only if it would change management"
+        ]
+      }
+    },
+    {
+      "name": "Nonallergic (vasomotor) rhinitis",
+      "slug": "nonallergic-rhinitis",
+      "why_considered": "Chronic or recurrent clear rhinorrhea and congestion without an obvious seasonal trigger.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Symptoms year-round or triggered by temperature changes, odors, alcohol, spicy foods or stress",
+          "Little or no itching of the eyes, nose or palate",
+          "No clear seasonal pattern and no personal or family history of atopy"
+        ],
+        "exam": [
+          "Nasal mucosa may be erythematous or normal rather than pale and boggy",
+          "No conjunctival injection or tearing"
+        ],
+        "labs": [
+          "Negative skin prick testing and normal allergen-specific IgE"
+        ]
+      }
+    },
+    {
+      "name": "Acute bacterial sinusitis",
+      "slug": "acute-bacterial-sinusitis",
+      "why_considered": "Nasal congestion and discharge with facial pressure can be mistaken for severe hay fever, and allergic rhinitis predisposes to sinusitis.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Symptoms for more than 10 days without improvement, or worse after initial improvement",
+          "Thick yellow-green or purulent nasal discharge",
+          "Facial pain or pressure, often unilateral, worse when bending forward",
+          "Fever and reduced sense of smell"
+        ],
+        "exam": [
+          "Tenderness over the frontal or maxillary sinuses",
+          "Purulent discharge in the nasal cavity or posterior pharynx",
+          "Unilateral findings"
+        ],
+        "imaging": [
+          "CT sinuses showing air-fluid levels or mucosal thickening when complications are suspected"
+        ]
+      }
+    },
+    {
+      "name": "Allergic conjunctivitis",
+      "slug": "allergic-conjunctivitis",
+      "why_considered": "Itchy, watery, red eyes are a hallmark of hay fever and can occur alone or with mild nasal symptoms.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Eye symptoms dominate and nasal symptoms are minimal",
+          "Bilateral itching and tearing with seasonal or perennial triggers"
+        ],
+        "exam": [
+          "Bilateral conjunctival injection and chemosis",
+          "Cobblestone papillae on the upper tarsal conjunctiva in chronic cases",
+          "No purulent discharge or corneal involvement"
+        ]
+      }
+    },
+    {
+      "name": "Bacterial conjunctivitis",
+      "slug": "bacterial-conjunctivitis",
+      "why_considered": "Red, watery eyes can be caused by infection rather than allergy.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Thick purulent discharge that sticks the eyelids together in the morning",
+          "Unilateral or asymmetric onset",
+          "No itching and no seasonal pattern"
+        ],
+        "exam": [
+          "Purulent discharge on the lids and lashes",
+          "Conjunctival injection without significant tearing or chemosis"
+        ]
+      }
+    },
+    {
+      "name": "Nasal foreign body",
+      "slug": "nasal-foreign-body",
+      "why_considered": "Unilateral nasal obstruction and discharge in a young child can be mistaken for allergy.",
+      "must_not_miss": true,
+      "trigger": "Unilateral nasal obstruction or foul-smelling discharge in a child",
+      "discriminators": {
+        "history": [
+          "Unilateral obstruction and discharge",
+          "Foul or bloody odor noticed by parents",
+          "No seasonal pattern or itching"
+        ],
+        "exam": [
+          "Visible foreign body or unilateral mucosal inflammation on nasal inspection",
+          "Contralateral nasal passage normal"
+        ],
+        "imaging": [
+          "Rarely needed; CT or plain film only if a radiopaque object or complication is suspected"
+        ]
+      }
+    },
+    {
+      "name": "Nasal polyps",
+      "slug": "nasal-polyps",
+      "why_considered": "Chronic nasal obstruction and reduced smell can be attributed to allergy.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Progressive, persistent nasal obstruction over months",
+          "Reduced or absent sense of smell",
+          "May be associated with asthma or aspirin sensitivity"
+        ],
+        "exam": [
+          "Pale, translucent, grape-like masses in the nasal cavity",
+          "Little or no itching or sneezing"
+        ],
+        "imaging": [
+          "CT sinuses showing polypoid mucosal disease and sinus opacification"
+        ]
+      }
+    },
+    {
+      "name": "Cerebrospinal fluid rhinorrhea",
+      "slug": "csf-rhinorrhea",
+      "why_considered": "Clear watery nasal drainage can be mistaken for allergic rhinorrhea.",
+      "must_not_miss": true,
+      "trigger": "Clear drainage that is unilateral, worse when leaning forward, or follows head trauma or sinus surgery",
+      "discriminators": {
+        "history": [
+          "Recent head trauma, sinus or skull base surgery",
+          "Drainage worse when bending forward or straining",
+          "Headache or history of meningitis"
+        ],
+        "exam": [
+          "Clear drainage from one nostril",
+          "No itching, sneezing or conjunctival symptoms"
+        ],
+        "labs": [
+          "Nasal fluid positive for beta-2 transferrin"
+        ],
+        "imaging": [
+          "High-resolution CT or MRI of the skull base showing a defect"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Intermittent sneezing, clear rhinorrhea and itchy eyes that are noticed but do not interfere with sleep, school, work or daily activities; exam shows mild nasal mucosal pallor and no complications.",
+      "moderate": "Daily symptoms that interfere with sleep, concentration or activities; prominent congestion, sneezing and itchy watery eyes; exam shows pale boggy nasal mucosa and conjunctival injection.",
+      "severe": "Persistent, bothersome symptoms despite first-line antihistamines and nasal steroids, with poor sleep, daytime fatigue, reduced school or work performance, and frequent use of rescue medications; may be accompanied by asthma or recurrent sinusitis.",
+      "critical": "Not applicable; hay fever itself is not life-threatening. A critical presentation should prompt evaluation for anaphylaxis, severe asthma exacerbation or another diagnosis."
+    },
+    "red_flags": [
+      {
+        "finding": "Unilateral nasal obstruction, bleeding or foul-smelling discharge",
+        "meaning": "Suggests a foreign body, polyp or tumor rather than simple allergic rhinitis"
+      },
+      {
+        "finding": "Fever, purulent nasal discharge or facial pain and pressure",
+        "meaning": "Suggests acute bacterial sinusitis or another infection"
+      },
+      {
+        "finding": "Wheezing, shortness of breath or chest tightness",
+        "meaning": "Suggests asthma or another lower respiratory process rather than isolated hay fever"
+      },
+      {
+        "finding": "Clear rhinorrhea after head trauma or sinus surgery, or drainage worse when leaning forward",
+        "meaning": "Suggests cerebrospinal fluid leak"
+      },
+      {
+        "finding": "Loss of smell, vision changes or severe headache",
+        "meaning": "Suggests a complication such as sinusitis with orbital or intracranial extension, or another diagnosis"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Acute or chronic sinusitis",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Facial pain or pressure",
+          "Purulent nasal discharge",
+          "Symptoms lasting more than 10 days or worsening after initial improvement"
+        ]
+      },
+      {
+        "name": "Otitis media with effusion",
+        "timing": "any",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Ear fullness or popping",
+          "Reduced hearing",
+          "Fluid behind the tympanic membrane on otoscopy"
+        ]
+      },
+      {
+        "name": "Asthma exacerbation",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Wheezing",
+          "Cough, especially at night",
+          "Shortness of breath during pollen season"
+        ]
+      },
+      {
+        "name": "Sleep disturbance and daytime fatigue",
+        "timing": "any",
+        "seriousness": "minor",
+        "frequency": "common",
+        "clues": [
+          "Nasal congestion at night",
+          "Mouth breathing",
+          "Daytime sleepiness or poor concentration"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Young children may not describe itching and present with clear rhinorrhea, sneezing, nasal rubbing (allergic salute) and mouth breathing; symptoms are often mistaken for recurrent colds. Untreated disease can contribute to otitis media with effusion and poor sleep."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Symptoms may be milder or attributed to aging, and the seasonal pattern may be less obvious. Nasal dryness and medication effects (such as antihypertensives) can complicate the picture, and sedating antihistamines should be avoided."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Nasal congestion may be worsened by pregnancy rhinitis, and some allergy medications are avoided. Intranasal corticosteroids and second-generation antihistamines are generally preferred; immunotherapy is usually not started during pregnancy."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "When do your symptoms happen — is there a time of year they always come back?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "A recurring seasonal pattern (spring tree pollen, summer grass pollen, late summer/fall weed pollen) rather than year-round or a one-off illness"
+      },
+      {
+        "question": "Do your eyes, nose, or throat itch?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Prominent itching of the eyes, nose, or palate — the hallmark that separates allergy from infection"
+      },
+      {
+        "question": "What does the nasal discharge look like?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Clear, watery discharge; thick yellow-green purulent discharge suggests infection"
+      },
+      {
+        "question": "What makes your symptoms better or worse?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Worse outdoors, on dry windy days, with mowing or gardening; better indoors with windows closed and air conditioning, or with antihistamines"
+      },
+      {
+        "question": "How long do the symptoms last each time they start?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Weeks to months while the pollen is in the air, then resolution; a cold lasts about a week"
+      },
+      {
+        "question": "Do you have sneezing fits, and how often?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Frequent paroxysmal sneezing, often in the morning or after going outdoors"
+      },
+      {
+        "question": "Do you have a cough, wheezing, or shortness of breath?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Cough from postnasal drip is common; wheezing or shortness of breath suggests asthma and changes management"
+      },
+      {
+        "question": "Do you have any facial pain or pressure, fever, or loss of smell?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "These suggest bacterial sinusitis or another complication rather than uncomplicated hay fever"
+      },
+      {
+        "question": "Do you have any blockage or bleeding from just one side of your nose?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Unilateral obstruction, bleeding, or foul discharge suggests a foreign body, polyp, or tumor"
+      },
+      {
+        "question": "Do you have asthma, eczema, or other allergies? Does anyone in your family?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "A personal or family history of atopic disease supports the diagnosis"
+      },
+      {
+        "question": "What have you tried for this, and did it help?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Response to antihistamines or nasal steroids supports an allergic cause and guides treatment"
+      },
+      {
+        "question": "Do you spend a lot of time outdoors, or do you have hobbies like gardening or mowing?",
+        "category": "social",
+        "importance": "optional",
+        "looking_for": "Outdoor exposure during pollen season that fits the seasonal pattern"
+      }
+    ],
+    "accepted_names": [
+      "Hay fever",
+      "Allergic rhinitis",
+      "Seasonal allergic rhinitis",
+      "Pollen allergy",
+      "Allergic rhinoconjunctivitis"
+    ],
+    "reasoning_points": [
+      "Recurrent symptoms that occur at the same time each year, matching a pollen season",
+      "Prominent itching of the eyes, nose, or palate, which points away from infection",
+      "Clear, watery rhinorrhea with sneezing fits and nasal congestion",
+      "Itchy, watery, red eyes (allergic conjunctivitis) accompanying the nasal symptoms",
+      "Personal or family history of atopic disease such as asthma or eczema",
+      "Exam shows pale, boggy nasal mucosa with clear discharge and no purulent discharge or sinus tenderness",
+      "No fever, facial pain, or unilateral findings to suggest infection, foreign body, or another cause",
+      "Symptoms improve with antihistamines or nasal corticosteroids and with avoidance of the allergen"
+    ],
+    "difficulty": {
+      "easy": [
+        "Clear seasonal pattern with symptoms every spring or fall",
+        "Prominent itchy, watery eyes and sneezing fits",
+        "Pale, boggy nasal mucosa with clear discharge on exam",
+        "Personal or family history of atopy"
+      ],
+      "medium": [
+        "Symptoms overlap with a cold or with year-round nonallergic rhinitis",
+        "Patient cannot clearly describe a seasonal pattern",
+        "Mild cough and postnasal drip raise the question of asthma",
+        "Young child who cannot describe itching and presents with clear rhinorrhea and nasal rubbing"
+      ],
+      "hard": [
+        "Older adult with milder symptoms attributed to aging or medications",
+        "Pregnant patient with congestion worsened by pregnancy rhinitis and limited medication options",
+        "Symptoms that persist more than 10 days or worsen after improving, suggesting bacterial sinusitis",
+        "Unilateral obstruction or clear drainage after head trauma, suggesting a foreign body or CSF leak"
+      ]
+    }
+  }
+}
