@@ -128,7 +128,23 @@ def rule_errors(profile: dict) -> list[str]:
                 name = ref["test"]
                 looks_like_id = re.fullmatch(r"[a-z0-9_]+", name) is not None
                 if looks_like_id and name not in TESTS and name not in PANELS:
-                    errors.append(f"workup.{group}: unknown test id {name!r}")
+                    errors.append(f"workup.{group}: unknown test id {name!r}; use a listed id or the test's plain name")
+                if name == "vitals":
+                    errors.append(f"workup.{group}: vital signs aren't an orderable test")
+
+    # A test sits in one group, except "not routine, but order it if X": not_indicated plus one
+    # conditional entry (only_if) elsewhere.
+    groups: dict[str, list[tuple[str, bool]]] = {}
+    for group in ("initial", "confirmatory", "supporting", "not_indicated"):
+        for ref in (profile.get("workup") or {}).get(group, []):
+            groups.setdefault(ref["test"].lower(), []).append((group, bool(ref.get("only_if"))))
+    for name, found in groups.items():
+        if len(found) == 1:
+            continue
+        others = [f for f in found if f[0] != "not_indicated"]
+        conditional_pair = len(found) == 2 and len(others) == 1 and others[0][1]
+        if not conditional_pair:
+            errors.append(f"workup: {name!r} appears in {[g for g, _ in found]}; use one group, or not_indicated plus one entry with only_if")
 
     if profile.get("labs") and profile.get("teaching"):
         if not any(d.get("must_not_miss") for d in profile.get("differential", [])):

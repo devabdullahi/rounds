@@ -1,4 +1,4 @@
-# Condition profile schema (draft 0.1)
+# Condition profile schema (draft 0.2)
 
 One profile per condition: the reusable medical knowledge that cases are built from. An LLM generates it once, in stages. Then code validates it, a second model reviews it, and a clinician approves it. Profiles name the diagnosis, so like everything in `knowledge-base/` they never reach the patient LLM.
 
@@ -61,7 +61,8 @@ Each stage is one LLM call, validated before the next one runs.
 - Every `labs[].test_id` exists in `reference_ranges.json` and isn't a derived test.
 - Each range has min ≤ max. A high-direction lab stays at or above the normal low, and the reverse for low-direction labs.
 - Vitals use the reference units (°F, not °C).
-- Workup tests resolve to a panel or test id, or name an imaging study.
+- Workup tests resolve to a panel or test id, or name an imaging study. Vital signs aren't orderable.
+- Each test sits in one workup group. The one exception is "not routine, but order it if X": `not_indicated` plus one entry elsewhere with `only_if`. Imaging entries hold findings only, and their ordering role lives in `workup`.
 - Differential `slug`s point to existing profiles, or are flagged for later.
 - `workup.scores` ids exist in the score library.
 - Female-only conditions have `sex: female_only`, and the age range fits the primary clerkship (e.g. pediatrics).

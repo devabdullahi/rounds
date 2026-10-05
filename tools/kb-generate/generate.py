@@ -30,7 +30,7 @@ TRIAGE = KB / "triage.jsonl"
 EXAMPLE = json.loads((KB / "schema" / "examples" / "acute-appendicitis.json").read_text())
 
 # Bump when a prompt changes so regenerated profiles can be told apart.
-PROMPT_VERSION = "1"
+PROMPT_VERSION = "7"
 TRIAGE_BATCH = 20
 BACKGROUND_LIMIT = 4000
 
@@ -97,8 +97,7 @@ def run_triage(limit: int | None) -> None:
                     schema=json.dumps(SCHEMA["properties"]["triage"]),
                     example=json.dumps(EXAMPLE["triage"]),
                     conditions=json.dumps(listing, indent=1, ensure_ascii=False))
-        reply = llm.complete_json(prompt("system"), user)
-        results = {r.get("id"): r.get("triage") for r in reply.get("results", [])}
+        results = triage_batch(user)
         with TRIAGE.open("a") as f:
             for s in batch:
                 triage = results.get(s)
@@ -108,6 +107,22 @@ def run_triage(limit: int | None) -> None:
                     "generation": {"model": f"{provider}/{model}", "prompt_version": PROMPT_VERSION, "generated_at": now()},
                 }, ensure_ascii=False) + "\n")
         print(f"  {start + len(batch)}/{len(todo)}", file=sys.stderr)
+
+
+def triage_batch(user: str) -> dict[str, dict]:
+    """One batch call; results that fail the schema are re-asked once with their errors."""
+    reply = llm.complete_json(prompt("system"), user)
+    results = {r.get("id"): r.get("triage") for r in reply.get("results", [])}
+    failing = {i: section_errors("triage", t) for i, t in results.items() if t is not None}
+    failing = {i: e for i, e in failing.items() if e}
+    if failing:
+        problems = "\n".join(f"- {i}: {'; '.join(e)}" for i, e in failing.items())
+        retry = llm.complete_json(prompt("system"), user + (
+            "\n\nThese results broke the rules. Reply with the same JSON shape containing only these ids, fixed:\n" + problems))
+        for r in retry.get("results", []):
+            if r.get("id") in failing and r.get("triage") is not None:
+                results[r["id"]] = r["triage"]
+    return results
 
 
 # MARK: - Stages 1–5: profile
@@ -126,6 +141,8 @@ def reference_table() -> str:
     """Compact test list for the diagnostics stage: id, name, unit, normal range, derived flag."""
     lines = ["Reference tests (id | name | unit | normal | notes):"]
     for panel in json.loads((KB / "reference_ranges.json").read_text())["panels"]:
+        if panel["id"] == "vitals":  # the exam_vitals stage owns these; listing them invites "order vitals"
+            continue
         lines.append(f"[panel {panel['id']}] {panel['name']}")
         for t in panel["tests"]:
             if "normal" in t:
@@ -156,6 +173,8 @@ def run_stage(stage: str, name: str, condition: dict, profile: dict) -> tuple[di
                 extra=reference_table() if stage == "diagnostics" else "",
                 previous=json.dumps(previous, ensure_ascii=False))
 
+    # Only errors this stage introduces count; earlier failures are already recorded.
+    baseline = set(rule_errors(profile))
     errors: list[str] = []
     for attempt in range(2):
         reply = llm.complete_json(prompt("system"), user)
@@ -164,7 +183,7 @@ def run_stage(stage: str, name: str, condition: dict, profile: dict) -> tuple[di
         for s, value in output.items():
             errors += section_errors(s, value)
         if not errors:
-            errors = rule_errors(profile | output)
+            errors = [e for e in rule_errors(profile | output) if e not in baseline]
         if not errors:
             return output, []
         print(f"    {stage}: {len(errors)} error(s){', retrying' if attempt == 0 else ''}", file=sys.stderr)
@@ -183,7 +202,7 @@ def run_profile(slug: str, conditions: dict[str, dict], triage: dict[str, dict])
 
     provider, model = llm.current()
     profile = {
-        "schema_version": "0.1",
+        "schema_version": "0.2",
         "slug": slug,
         "triage": row["triage"],
         "generation": {

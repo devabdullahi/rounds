@@ -1,88 +1,282 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://rounds.app/schema/condition_profile/0.1.json",
+  "$id": "https://rounds.app/schema/condition_profile/0.2.json",
   "title": "Rounds condition profile",
   "description": "Reusable medical knowledge for one condition, generated once by an LLM in stages, validated, then clinician-reviewed. Cases are built from it; it is never shown to the patient LLM. Facts appear once: rubric, case-generation rules and lab relationships are derived by code, not generated. Numbers for labs and vitals use the units in reference_ranges.json; the model never picks units.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "slug", "triage", "generation"],
+  "required": [
+    "schema_version",
+    "slug",
+    "triage",
+    "generation"
+  ],
   "properties": {
-    "schema_version": { "const": "0.1" },
-    "slug": { "$ref": "#/$defs/slug" },
-
+    "schema_version": {
+      "const": "0.2"
+    },
+    "slug": {
+      "$ref": "#/$defs/slug"
+    },
     "triage": {
       "description": "Stage 0. Cheap pass over every condition; only case_suitable ones get the later stages.",
       "type": "object",
       "additionalProperties": false,
-      "required": ["name", "case_suitable", "reason", "kind", "organ_systems", "primary_clerkship", "secondary_clerkships", "commonness", "settings", "is_cancer"],
+      "required": [
+        "name",
+        "case_suitable",
+        "reason",
+        "kind",
+        "organ_systems",
+        "primary_clerkship",
+        "secondary_clerkships",
+        "commonness",
+        "settings",
+        "is_cancer"
+      ],
       "properties": {
-        "name": { "type": "string" },
-        "case_suitable": { "type": "boolean", "description": "False for topics that aren't a diagnosis a student can reach by interview and workup (e.g. 'Caregivers', 'Body Weight')." },
-        "reason": { "type": "string", "maxLength": 300 },
-        "kind": { "enum": ["disease", "symptom", "injury", "poisoning", "other"] },
-        "category": { "type": "string", "description": "Short medical category, e.g. 'acute surgical abdomen', 'infection', 'arrhythmia'." },
-        "organ_systems": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/organ_system" } },
-        "primary_clerkship": { "$ref": "#/$defs/clerkship" },
-        "secondary_clerkships": { "type": "array", "items": { "$ref": "#/$defs/clerkship" } },
-        "commonness": { "enum": ["very_common", "common", "uncommon", "rare"] },
-        "settings": { "type": "array", "minItems": 1, "items": { "enum": ["clinic", "emergency", "inpatient", "icu", "labor_delivery", "pediatric_clinic", "psychiatric"] } },
-        "is_cancer": { "type": "boolean" }
+        "name": {
+          "type": "string"
+        },
+        "case_suitable": {
+          "type": "boolean",
+          "description": "False for topics that aren't a diagnosis a student can reach by interview and workup (e.g. 'Caregivers', 'Body Weight')."
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "kind": {
+          "enum": [
+            "disease",
+            "symptom",
+            "injury",
+            "poisoning",
+            "other"
+          ]
+        },
+        "category": {
+          "type": "string",
+          "description": "Short medical category, e.g. 'acute surgical abdomen', 'infection', 'arrhythmia'."
+        },
+        "organ_systems": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/organ_system"
+          }
+        },
+        "primary_clerkship": {
+          "$ref": "#/$defs/clerkship"
+        },
+        "secondary_clerkships": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/clerkship"
+          }
+        },
+        "commonness": {
+          "enum": [
+            "very_common",
+            "common",
+            "uncommon",
+            "rare"
+          ]
+        },
+        "settings": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "enum": [
+              "clinic",
+              "emergency",
+              "inpatient",
+              "icu",
+              "labor_delivery",
+              "pediatric_clinic",
+              "psychiatric"
+            ]
+          }
+        },
+        "is_cancer": {
+          "type": "boolean"
+        }
       }
     },
-
     "patient": {
       "description": "Stage 1a. Who typically has it.",
       "type": "object",
       "additionalProperties": false,
-      "required": ["age", "sex", "risk_factors"],
+      "required": [
+        "age",
+        "sex",
+        "risk_factors"
+      ],
       "properties": {
         "age": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["typical_min", "typical_max"],
+          "required": [
+            "typical_min",
+            "typical_max"
+          ],
           "properties": {
-            "typical_min": { "type": "integer", "minimum": 0, "maximum": 110 },
-            "typical_max": { "type": "integer", "minimum": 0, "maximum": 110 },
-            "peak": { "type": "string", "description": "e.g. '10–30', 'bimodal: 20s and 60s'" },
-            "possible_min": { "type": "integer", "minimum": 0 },
-            "possible_max": { "type": "integer", "maximum": 110 }
+            "typical_min": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 110
+            },
+            "typical_max": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 110
+            },
+            "peak": {
+              "type": "string",
+              "description": "e.g. '10–30', 'bimodal: 20s and 60s'"
+            },
+            "possible_min": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "possible_max": {
+              "type": "integer",
+              "maximum": 110
+            }
           }
         },
-        "sex": { "enum": ["either", "female_predominant", "male_predominant", "female_only", "male_only"] },
-        "demographics": { "type": "array", "items": { "type": "string" }, "description": "Population patterns worth reflecting, stated as epidemiology, never as stereotypes." },
-        "risk_factors": { "type": "array", "items": { "$ref": "#/$defs/weighted_item" } },
-        "comorbidities": { "type": "array", "items": { "type": "string" } },
-        "family_history": { "type": "array", "items": { "type": "string" } },
-        "social_history": { "type": "array", "items": { "type": "string" } },
-        "exposures": { "type": "array", "items": { "type": "string" } },
-        "risk_medications": { "type": "array", "items": { "type": "string", "description": "Generic name as in drugs.jsonl." } }
+        "sex": {
+          "enum": [
+            "either",
+            "female_predominant",
+            "male_predominant",
+            "female_only",
+            "male_only"
+          ]
+        },
+        "demographics": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Population patterns worth reflecting, stated as epidemiology, never as stereotypes."
+        },
+        "risk_factors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/weighted_item"
+          }
+        },
+        "comorbidities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "family_history": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "social_history": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "exposures": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "risk_medications": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Generic name as in drugs.jsonl."
+          }
+        }
       }
     },
-
     "presentation": {
       "description": "Stage 1b. What the patient says. The AI patient's facts come from here.",
       "type": "object",
       "additionalProperties": false,
-      "required": ["chief_complaints", "hpi", "ros"],
+      "required": [
+        "chief_complaints",
+        "hpi",
+        "ros"
+      ],
       "properties": {
-        "chief_complaints": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/frequent_item" }, "description": "In the patient's words, e.g. 'my stomach hurts'." },
+        "chief_complaints": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/frequent_item"
+          },
+          "description": "In the patient's words, e.g. 'my stomach hurts'."
+        },
         "hpi": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["onset", "progression", "associated_symptoms", "pertinent_negatives"],
+          "required": [
+            "onset",
+            "progression",
+            "associated_symptoms",
+            "pertinent_negatives"
+          ],
           "properties": {
-            "onset": { "type": "string" },
-            "duration": { "type": "string" },
-            "progression": { "type": "string" },
-            "location": { "type": "string" },
-            "radiation": { "type": "string" },
-            "quality": { "type": "string" },
-            "severity": { "type": "string" },
-            "timing": { "type": "string" },
-            "aggravating": { "type": "array", "items": { "type": "string" } },
-            "relieving": { "type": "array", "items": { "type": "string" } },
-            "associated_symptoms": { "type": "array", "items": { "$ref": "#/$defs/frequent_item" } },
-            "pertinent_negatives": { "type": "array", "items": { "type": "string" }, "description": "Usually absent; present makes the diagnosis less likely." }
+            "onset": {
+              "type": "string"
+            },
+            "duration": {
+              "type": "string"
+            },
+            "progression": {
+              "type": "string"
+            },
+            "location": {
+              "type": "string"
+            },
+            "radiation": {
+              "type": "string"
+            },
+            "quality": {
+              "type": "string"
+            },
+            "severity": {
+              "type": "string"
+            },
+            "timing": {
+              "type": "string"
+            },
+            "aggravating": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "relieving": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "associated_symptoms": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/frequent_item"
+              }
+            },
+            "pertinent_negatives": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Usually absent; present makes the diagnosis less likely."
+            }
           }
         },
         "ros": {
@@ -90,12 +284,49 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["system", "positives", "negatives"],
+            "required": [
+              "system",
+              "positives",
+              "negatives"
+            ],
             "properties": {
-              "system": { "enum": ["constitutional", "eyes", "ent", "cardiovascular", "respiratory", "gastrointestinal", "genitourinary", "musculoskeletal", "skin", "neurologic", "psychiatric", "endocrine", "hematologic", "allergic_immunologic", "reproductive"] },
-              "positives": { "type": "array", "items": { "$ref": "#/$defs/frequent_item" } },
-              "negatives": { "type": "array", "items": { "type": "string" } },
-              "argues_against": { "type": "array", "items": { "type": "string" } }
+              "system": {
+                "enum": [
+                  "constitutional",
+                  "eyes",
+                  "ent",
+                  "cardiovascular",
+                  "respiratory",
+                  "gastrointestinal",
+                  "genitourinary",
+                  "musculoskeletal",
+                  "skin",
+                  "neurologic",
+                  "psychiatric",
+                  "endocrine",
+                  "hematologic",
+                  "allergic_immunologic",
+                  "reproductive"
+                ]
+              },
+              "positives": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/frequent_item"
+                }
+              },
+              "negatives": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "argues_against": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
             }
           }
         },
@@ -104,31 +335,53 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["population", "how_it_differs"],
+            "required": [
+              "population",
+              "how_it_differs"
+            ],
             "properties": {
-              "population": { "$ref": "#/$defs/population" },
-              "how_it_differs": { "type": "string" },
-              "missing_classic_features": { "type": "array", "items": { "type": "string" } }
+              "population": {
+                "$ref": "#/$defs/population"
+              },
+              "how_it_differs": {
+                "type": "string"
+              },
+              "missing_classic_features": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
             }
           }
         }
       }
     },
-
     "exam": {
       "description": "Stage 2a. Findings a student can elicit. Maneuver importance here feeds the rubric.",
       "type": "object",
       "additionalProperties": false,
-      "required": ["general", "findings"],
+      "required": [
+        "general",
+        "findings"
+      ],
       "properties": {
         "general": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "mild": { "type": "string" },
-            "moderate": { "type": "string" },
-            "severe": { "type": "string" },
-            "critical": { "type": "string" }
+            "mild": {
+              "type": "string"
+            },
+            "moderate": {
+              "type": "string"
+            },
+            "severe": {
+              "type": "string"
+            },
+            "critical": {
+              "type": "string"
+            }
           }
         },
         "findings": {
@@ -137,125 +390,319 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["id", "region", "finding", "frequency", "significance", "importance"],
+            "required": [
+              "id",
+              "region",
+              "finding",
+              "frequency",
+              "significance",
+              "importance"
+            ],
             "properties": {
-              "id": { "$ref": "#/$defs/slug" },
-              "region": { "enum": ["general", "heent", "neck", "cardiac", "lung", "abdomen", "pelvic", "rectal", "genitourinary", "extremities", "skin", "neuro", "mental_status", "musculoskeletal", "breast", "lymph"] },
-              "maneuver": { "type": "string", "description": "What the student does, e.g. 'palpate the left lower quadrant'." },
-              "finding": { "type": "string", "description": "What they find when present." },
-              "frequency": { "$ref": "#/$defs/frequency" },
-              "min_severity": { "$ref": "#/$defs/severity", "description": "Appears from this severity up." },
-              "significance": { "enum": ["supports", "strongly_supports", "argues_against", "neutral"] },
-              "importance": { "$ref": "#/$defs/importance" },
-              "snomed_id": { "type": "string" }
+              "id": {
+                "$ref": "#/$defs/slug"
+              },
+              "region": {
+                "enum": [
+                  "general",
+                  "heent",
+                  "neck",
+                  "cardiac",
+                  "lung",
+                  "abdomen",
+                  "pelvic",
+                  "rectal",
+                  "genitourinary",
+                  "extremities",
+                  "skin",
+                  "neuro",
+                  "mental_status",
+                  "musculoskeletal",
+                  "breast",
+                  "lymph"
+                ]
+              },
+              "maneuver": {
+                "type": "string",
+                "description": "What the student does, e.g. 'palpate the left lower quadrant'."
+              },
+              "finding": {
+                "type": "string",
+                "description": "What they find when present."
+              },
+              "frequency": {
+                "$ref": "#/$defs/frequency"
+              },
+              "min_severity": {
+                "$ref": "#/$defs/severity",
+                "description": "Appears from this severity up."
+              },
+              "significance": {
+                "enum": [
+                  "supports",
+                  "strongly_supports",
+                  "argues_against",
+                  "neutral"
+                ]
+              },
+              "importance": {
+                "$ref": "#/$defs/importance"
+              },
+              "snomed_id": {
+                "type": "string"
+              }
             }
           }
         }
       }
     },
-
     "vitals": {
       "description": "Stage 2b. Ranges per severity in reference_ranges.json units (°F, /min, mm Hg, %). Code picks the patient's value.",
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "temp": { "$ref": "#/$defs/severity_ranges" },
-        "hr": { "$ref": "#/$defs/severity_ranges" },
-        "rr": { "$ref": "#/$defs/severity_ranges" },
-        "sbp": { "$ref": "#/$defs/severity_ranges" },
-        "dbp": { "$ref": "#/$defs/severity_ranges" },
-        "spo2": { "$ref": "#/$defs/severity_ranges" }
+        "temp": {
+          "$ref": "#/$defs/severity_ranges"
+        },
+        "hr": {
+          "$ref": "#/$defs/severity_ranges"
+        },
+        "rr": {
+          "$ref": "#/$defs/severity_ranges"
+        },
+        "sbp": {
+          "$ref": "#/$defs/severity_ranges"
+        },
+        "dbp": {
+          "$ref": "#/$defs/severity_ranges"
+        },
+        "spo2": {
+          "$ref": "#/$defs/severity_ranges"
+        }
       }
     },
-
     "labs": {
       "description": "Stage 3a. Only tests that differ from normal or matter for the diagnosis. Unlisted tests are generated normal. Derived tests (anion gap, eGFR…) are never listed; code computes them.",
       "type": "array",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["test_id", "frequency", "importance"],
+        "required": [
+          "test_id",
+          "frequency",
+          "importance"
+        ],
         "properties": {
-          "test_id": { "type": "string", "description": "id from reference_ranges.json." },
-          "ranges": { "$ref": "#/$defs/severity_ranges" },
-          "qualitative": { "type": "object", "description": "For qualitative tests: severity → result from the test's 'abnormal' list.", "additionalProperties": { "type": "string" } },
-          "frequency": { "$ref": "#/$defs/frequency" },
-          "importance": { "$ref": "#/$defs/importance" },
-          "caveat": { "type": "string" }
+          "test_id": {
+            "type": "string",
+            "description": "id from reference_ranges.json."
+          },
+          "ranges": {
+            "$ref": "#/$defs/severity_ranges"
+          },
+          "qualitative": {
+            "type": "object",
+            "description": "For qualitative tests: severity → result from the test's 'abnormal' list.",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "frequency": {
+            "$ref": "#/$defs/frequency"
+          },
+          "importance": {
+            "$ref": "#/$defs/importance"
+          },
+          "caveat": {
+            "type": "string"
+          }
         }
       }
     },
-
     "ecg": {
       "description": "Stage 3b. Omit when not relevant.",
       "type": "object",
       "additionalProperties": false,
-      "required": ["findings"],
+      "required": [
+        "findings"
+      ],
       "properties": {
         "findings": {
           "type": "array",
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["feature", "finding", "frequency"],
+            "required": [
+              "feature",
+              "finding",
+              "frequency"
+            ],
             "properties": {
-              "feature": { "enum": ["rhythm", "rate", "axis", "p_wave", "pr", "qrs", "qt", "st", "t_wave", "reciprocal", "conduction", "other"] },
-              "finding": { "type": "string" },
-              "leads": { "type": "array", "items": { "enum": ["I", "II", "III", "aVR", "aVL", "aVF", "V1", "V2", "V3", "V4", "V5", "V6"] } },
-              "frequency": { "$ref": "#/$defs/frequency" },
-              "min_severity": { "$ref": "#/$defs/severity" }
+              "feature": {
+                "enum": [
+                  "rhythm",
+                  "rate",
+                  "axis",
+                  "p_wave",
+                  "pr",
+                  "qrs",
+                  "qt",
+                  "st",
+                  "t_wave",
+                  "reciprocal",
+                  "conduction",
+                  "other"
+                ]
+              },
+              "finding": {
+                "type": "string"
+              },
+              "leads": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "I",
+                    "II",
+                    "III",
+                    "aVR",
+                    "aVL",
+                    "aVF",
+                    "V1",
+                    "V2",
+                    "V3",
+                    "V4",
+                    "V5",
+                    "V6"
+                  ]
+                }
+              },
+              "frequency": {
+                "$ref": "#/$defs/frequency"
+              },
+              "min_severity": {
+                "$ref": "#/$defs/severity"
+              }
             }
           }
         }
       }
     },
-
     "imaging": {
-      "description": "Stage 3c. Written report findings; the app shows no images.",
+      "description": "Stage 3c. Written report findings per study; the app shows no images. Whether to order a study lives only in workup.",
       "type": "array",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["study", "modality", "role", "findings"],
+        "required": [
+          "study",
+          "modality",
+          "findings"
+        ],
         "properties": {
-          "study": { "type": "string", "description": "e.g. 'CT abdomen and pelvis with IV contrast'" },
-          "modality": { "enum": ["xray", "ultrasound", "ct", "mri", "nuclear", "echo", "endoscopy", "other"] },
-          "role": { "enum": ["initial", "confirmatory", "supporting", "not_indicated"] },
-          "preferred_when": { "type": "string", "description": "e.g. 'children and pregnancy (avoids radiation)'" },
-          "findings": { "type": "array", "items": { "$ref": "#/$defs/frequent_item" } }
+          "study": {
+            "type": "string",
+            "description": "e.g. 'CT abdomen and pelvis with IV contrast'"
+          },
+          "modality": {
+            "enum": [
+              "xray",
+              "ultrasound",
+              "ct",
+              "mri",
+              "nuclear",
+              "echo",
+              "endoscopy",
+              "other"
+            ]
+          },
+          "preferred_when": {
+            "type": "string",
+            "description": "e.g. 'children and pregnancy (avoids radiation)'"
+          },
+          "findings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/frequent_item"
+            }
+          }
         }
       }
     },
-
     "workup": {
-      "description": "Stage 3d. What a good student orders, in order. Grading penalizes not_indicated tests.",
+      "description": "Stage 3d. What a good student orders. Each test or study appears in exactly one group. Grading penalizes not_indicated tests.",
       "type": "object",
       "additionalProperties": false,
-      "required": ["initial", "confirmatory"],
+      "required": [
+        "initial",
+        "confirmatory"
+      ],
       "properties": {
-        "initial": { "type": "array", "items": { "$ref": "#/$defs/test_ref" } },
-        "confirmatory": { "type": "array", "items": { "$ref": "#/$defs/test_ref" } },
-        "supporting": { "type": "array", "items": { "$ref": "#/$defs/test_ref" } },
-        "not_indicated": { "type": "array", "items": { "$ref": "#/$defs/test_ref" } },
-        "decision_points": { "type": "array", "items": { "type": "string" }, "description": "e.g. 'pregnancy test before CT in anyone who could be pregnant'." },
+        "initial": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/test_ref"
+          }
+        },
+        "confirmatory": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/test_ref"
+          }
+        },
+        "supporting": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/test_ref"
+          }
+        },
+        "not_indicated": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/test_ref"
+          }
+        },
+        "decision_points": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "e.g. 'pregnancy test before CT in anyone who could be pregnant'."
+        },
         "criteria": {
           "type": "array",
           "description": "Formal diagnostic criteria, paraphrased. Never quote copyrighted criteria (e.g. DSM-5) verbatim.",
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["name", "summary"],
+            "required": [
+              "name",
+              "summary"
+            ],
             "properties": {
-              "name": { "type": "string" },
-              "summary": { "type": "string" },
-              "items": { "type": "array", "items": { "type": "string" } }
+              "name": {
+                "type": "string"
+              },
+              "summary": {
+                "type": "string"
+              },
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
             }
           }
         },
-        "scores": { "type": "array", "items": { "type": "string" }, "description": "ids from the shared clinical-score library (e.g. 'alvarado', 'wells_pe'). Point values live in code, not here." }
+        "scores": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "ids from the shared clinical-score library (e.g. 'alvarado', 'wells_pe'). Point values live in code, not here."
+        }
       }
     },
-
     "differential": {
       "description": "Stage 4a. Look-alikes and how to tell them apart. must_not_miss feeds grading.",
       "type": "array",
@@ -263,42 +710,93 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["name", "why_considered", "must_not_miss", "discriminators"],
+        "required": [
+          "name",
+          "why_considered",
+          "must_not_miss",
+          "discriminators"
+        ],
         "properties": {
-          "name": { "type": "string" },
-          "slug": { "$ref": "#/$defs/slug", "description": "Links to another profile when one exists." },
-          "why_considered": { "type": "string" },
-          "must_not_miss": { "type": "boolean" },
-          "trigger": { "type": "string", "description": "For must-not-miss: the finding that should make a student think of it." },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "$ref": "#/$defs/slug",
+            "description": "Links to another profile when one exists."
+          },
+          "why_considered": {
+            "type": "string"
+          },
+          "must_not_miss": {
+            "type": "boolean"
+          },
+          "trigger": {
+            "type": "string",
+            "description": "For must-not-miss: the finding that should make a student think of it."
+          },
           "discriminators": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              "history": { "type": "array", "items": { "type": "string" } },
-              "exam": { "type": "array", "items": { "type": "string" } },
-              "labs": { "type": "array", "items": { "type": "string" } },
-              "imaging": { "type": "array", "items": { "type": "string" } }
+              "history": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "exam": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "labs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "imaging": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
             }
           }
         }
       }
     },
-
     "course": {
       "description": "Stage 4b. Severity, red flags, complications, special populations.",
       "type": "object",
       "additionalProperties": false,
-      "required": ["severity", "red_flags"],
+      "required": [
+        "severity",
+        "red_flags"
+      ],
       "properties": {
         "severity": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["mild", "moderate", "severe"],
+          "required": [
+            "mild",
+            "moderate",
+            "severe"
+          ],
           "properties": {
-            "mild": { "type": "string" },
-            "moderate": { "type": "string" },
-            "severe": { "type": "string" },
-            "critical": { "type": "string" }
+            "mild": {
+              "type": "string"
+            },
+            "moderate": {
+              "type": "string"
+            },
+            "severe": {
+              "type": "string"
+            },
+            "critical": {
+              "type": "string"
+            }
           }
         },
         "red_flags": {
@@ -306,8 +804,18 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["finding", "meaning"],
-            "properties": { "finding": { "type": "string" }, "meaning": { "type": "string" } }
+            "required": [
+              "finding",
+              "meaning"
+            ],
+            "properties": {
+              "finding": {
+                "type": "string"
+              },
+              "meaning": {
+                "type": "string"
+              }
+            }
           }
         },
         "complications": {
@@ -315,13 +823,38 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["name", "timing", "seriousness"],
+            "required": [
+              "name",
+              "timing",
+              "seriousness"
+            ],
             "properties": {
-              "name": { "type": "string" },
-              "timing": { "enum": ["early", "late", "any"] },
-              "seriousness": { "enum": ["minor", "serious", "life_threatening"] },
-              "frequency": { "$ref": "#/$defs/frequency" },
-              "clues": { "type": "array", "items": { "type": "string" } }
+              "name": {
+                "type": "string"
+              },
+              "timing": {
+                "enum": [
+                  "early",
+                  "late",
+                  "any"
+                ]
+              },
+              "seriousness": {
+                "enum": [
+                  "minor",
+                  "serious",
+                  "life_threatening"
+                ]
+              },
+              "frequency": {
+                "$ref": "#/$defs/frequency"
+              },
+              "clues": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
             }
           }
         },
@@ -330,33 +863,55 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["population", "differences"],
+            "required": [
+              "population",
+              "differences"
+            ],
             "properties": {
-              "population": { "$ref": "#/$defs/population" },
-              "differences": { "type": "string" }
+              "population": {
+                "$ref": "#/$defs/population"
+              },
+              "differences": {
+                "type": "string"
+              }
             }
           }
         }
       }
     },
-
     "cancer": {
       "description": "Stage 4c. Only when triage.is_cancer.",
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "screening": { "type": "string", "description": "USPSTF-style summary, paraphrased." },
-        "pathology": { "type": "string" },
-        "staging_concepts": { "type": "string" },
-        "metastatic_sites": { "type": "array", "items": { "type": "string" } }
+        "screening": {
+          "type": "string",
+          "description": "USPSTF-style summary, paraphrased."
+        },
+        "pathology": {
+          "type": "string"
+        },
+        "staging_concepts": {
+          "type": "string"
+        },
+        "metastatic_sites": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       }
     },
-
     "teaching": {
       "description": "Stage 5. Questions and reasoning a strong student shows. Rubric weights are assigned by code from importance.",
       "type": "object",
       "additionalProperties": false,
-      "required": ["key_questions", "accepted_names", "reasoning_points", "difficulty"],
+      "required": [
+        "key_questions",
+        "accepted_names",
+        "reasoning_points",
+        "difficulty"
+      ],
       "properties": {
         "key_questions": {
           "type": "array",
@@ -364,120 +919,350 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["question", "category", "importance", "looking_for"],
+            "required": [
+              "question",
+              "category",
+              "importance",
+              "looking_for"
+            ],
             "properties": {
-              "question": { "type": "string" },
-              "category": { "enum": ["hpi", "associated", "pmh", "medications", "allergies", "family", "social", "sexual", "obstetric", "ros", "red_flag"] },
-              "importance": { "$ref": "#/$defs/importance" },
-              "looking_for": { "type": "string" }
+              "question": {
+                "type": "string"
+              },
+              "category": {
+                "enum": [
+                  "hpi",
+                  "associated",
+                  "pmh",
+                  "medications",
+                  "allergies",
+                  "family",
+                  "social",
+                  "sexual",
+                  "obstetric",
+                  "ros",
+                  "red_flag"
+                ]
+              },
+              "importance": {
+                "$ref": "#/$defs/importance"
+              },
+              "looking_for": {
+                "type": "string"
+              }
             }
           }
         },
-        "accepted_names": { "type": "array", "minItems": 1, "items": { "type": "string" }, "description": "Names and abbreviations that count as the correct diagnosis." },
-        "reasoning_points": { "type": "array", "items": { "type": "string" }, "description": "What a complete justification mentions." },
+        "accepted_names": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          },
+          "description": "Names and abbreviations that count as the correct diagnosis."
+        },
+        "reasoning_points": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "What a complete justification mentions."
+        },
         "difficulty": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["easy", "medium", "hard"],
+          "required": [
+            "easy",
+            "medium",
+            "hard"
+          ],
           "properties": {
-            "easy": { "type": "array", "items": { "type": "string" } },
-            "medium": { "type": "array", "items": { "type": "string" } },
-            "hard": { "type": "array", "items": { "type": "string" } }
+            "easy": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "medium": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "hard": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         }
       }
     },
-
     "generation": {
       "description": "Provenance and review state, so profiles can be regenerated as prompts and schema improve.",
       "type": "object",
       "additionalProperties": false,
-      "required": ["stages", "validation", "review"],
+      "required": [
+        "stages",
+        "validation",
+        "review"
+      ],
       "properties": {
         "stages": {
           "type": "array",
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["stage", "model", "prompt_version", "generated_at"],
+            "required": [
+              "stage",
+              "model",
+              "prompt_version",
+              "generated_at"
+            ],
             "properties": {
-              "stage": { "enum": ["triage", "patient_presentation", "exam_vitals", "diagnostics", "differential_course", "teaching"] },
-              "model": { "type": "string" },
-              "prompt_version": { "type": "string" },
-              "generated_at": { "type": "string", "format": "date-time" }
+              "stage": {
+                "enum": [
+                  "triage",
+                  "patient_presentation",
+                  "exam_vitals",
+                  "diagnostics",
+                  "differential_course",
+                  "teaching"
+                ]
+              },
+              "model": {
+                "type": "string"
+              },
+              "prompt_version": {
+                "type": "string"
+              },
+              "generated_at": {
+                "type": "string",
+                "format": "date-time"
+              }
             }
           }
         },
         "validation": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["status"],
+          "required": [
+            "status"
+          ],
           "properties": {
-            "status": { "enum": ["pending", "passed", "failed"] },
-            "rule_errors": { "type": "array", "items": { "type": "string" } },
-            "reviewer_model": { "type": "string" },
-            "review_issues": { "type": "array", "items": { "type": "string" } }
+            "status": {
+              "enum": [
+                "pending",
+                "passed",
+                "failed"
+              ]
+            },
+            "rule_errors": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "reviewer_model": {
+              "type": "string"
+            },
+            "review_issues": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         },
         "review": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["status"],
+          "required": [
+            "status"
+          ],
           "properties": {
-            "status": { "enum": ["pending", "approved", "changes_requested", "rejected"] },
-            "reviewer": { "type": "string", "description": "Clinician credential, e.g. 'MD, emergency medicine'. No personal data beyond what they agree to." },
-            "reviewed_at": { "type": "string", "format": "date-time" },
-            "notes": { "type": "string" }
+            "status": {
+              "enum": [
+                "pending",
+                "approved",
+                "changes_requested",
+                "rejected"
+              ]
+            },
+            "reviewer": {
+              "type": "string",
+              "description": "Clinician credential, e.g. 'MD, emergency medicine'. No personal data beyond what they agree to."
+            },
+            "reviewed_at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "notes": {
+              "type": "string"
+            }
           }
         }
       }
     }
   },
-
   "$defs": {
-    "slug": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
-    "clerkship": { "enum": ["internalMedicine", "surgery", "pediatrics", "obgyn", "psychiatry", "familyMedicine", "neurology", "emergency"] },
-    "organ_system": { "enum": ["cardiovascular", "respiratory", "gastrointestinal", "renal", "nervous", "endocrine", "blood", "musculoskeletal", "reproductive", "behavioral"] },
-    "frequency": { "enum": ["almost_always", "common", "sometimes", "rare"], "description": ">90%, 50–90%, 10–50%, <10% of patients." },
-    "importance": { "enum": ["essential", "important", "optional"] },
-    "severity": { "enum": ["mild", "moderate", "severe", "critical"] },
-    "population": { "enum": ["children", "infants", "older_adults", "pregnancy", "immunocompromised", "renal_impairment", "hepatic_impairment", "diabetes", "obesity"] },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "clerkship": {
+      "enum": [
+        "internalMedicine",
+        "surgery",
+        "pediatrics",
+        "obgyn",
+        "psychiatry",
+        "familyMedicine",
+        "neurology",
+        "emergency"
+      ]
+    },
+    "organ_system": {
+      "enum": [
+        "cardiovascular",
+        "respiratory",
+        "gastrointestinal",
+        "renal",
+        "nervous",
+        "endocrine",
+        "blood",
+        "musculoskeletal",
+        "reproductive",
+        "behavioral"
+      ]
+    },
+    "frequency": {
+      "enum": [
+        "almost_always",
+        "common",
+        "sometimes",
+        "rare"
+      ],
+      "description": ">90%, 50–90%, 10–50%, <10% of patients."
+    },
+    "importance": {
+      "enum": [
+        "essential",
+        "important",
+        "optional"
+      ]
+    },
+    "severity": {
+      "enum": [
+        "mild",
+        "moderate",
+        "severe",
+        "critical"
+      ]
+    },
+    "population": {
+      "enum": [
+        "children",
+        "infants",
+        "older_adults",
+        "pregnancy",
+        "immunocompromised",
+        "renal_impairment",
+        "hepatic_impairment",
+        "diabetes",
+        "obesity"
+      ]
+    },
     "frequent_item": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["text", "frequency"],
-      "properties": { "text": { "type": "string" }, "frequency": { "$ref": "#/$defs/frequency" } }
+      "required": [
+        "text",
+        "frequency"
+      ],
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "frequency": {
+          "$ref": "#/$defs/frequency"
+        }
+      }
     },
     "weighted_item": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["text", "strength"],
-      "properties": { "text": { "type": "string" }, "strength": { "enum": ["strong", "moderate", "weak"] } }
+      "required": [
+        "text",
+        "strength"
+      ],
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "strength": {
+          "enum": [
+            "strong",
+            "moderate",
+            "weak"
+          ]
+        }
+      }
     },
     "range": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["min", "max"],
-      "properties": { "min": { "type": "number" }, "max": { "type": "number" } }
+      "required": [
+        "min",
+        "max"
+      ],
+      "properties": {
+        "min": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        }
+      }
     },
     "severity_ranges": {
       "type": "object",
       "additionalProperties": false,
       "description": "Value range at each severity, in the reference_ranges.json unit. Omit a severity to mean 'normal at that severity'.",
       "properties": {
-        "mild": { "$ref": "#/$defs/range" },
-        "moderate": { "$ref": "#/$defs/range" },
-        "severe": { "$ref": "#/$defs/range" },
-        "critical": { "$ref": "#/$defs/range" }
+        "mild": {
+          "$ref": "#/$defs/range"
+        },
+        "moderate": {
+          "$ref": "#/$defs/range"
+        },
+        "severe": {
+          "$ref": "#/$defs/range"
+        },
+        "critical": {
+          "$ref": "#/$defs/range"
+        }
       }
     },
     "test_ref": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["test"],
+      "required": [
+        "test"
+      ],
       "properties": {
-        "test": { "type": "string", "description": "Panel or test id from reference_ranges.json, or an imaging study name." },
-        "why": { "type": "string" }
+        "test": {
+          "type": "string",
+          "description": "Panel or test id from reference_ranges.json, or an imaging study name."
+        },
+        "why": {
+          "type": "string"
+        },
+        "only_if": {
+          "type": "string",
+          "description": "Condition for ordering it, e.g. 'pneumonia is suspected (abnormal vitals or lung exam)'."
+        }
       }
     }
   }
