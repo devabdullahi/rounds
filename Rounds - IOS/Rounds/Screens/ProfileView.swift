@@ -91,7 +91,7 @@ struct ProfileView: View {
                 Avatar(initials: "AK", size: 60, fg: Theme.accentInk, bg: Theme.accent)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(SampleUser.name).font(.system(size: 20, weight: .bold))
-                    Text(SampleUser.training).font(.system(size: 15)).foregroundStyle(Theme.muted).lineLimit(1).truncationMode(.tail)
+                    Text(SampleUser.training).font(.system(size: 15)).foregroundStyle(Theme.muted).lineLimit(2)
                 }
                 Spacer()
                 VStack(alignment: .trailing, spacing: 0) {

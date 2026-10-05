@@ -56,7 +56,7 @@ struct SignInView: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                IconButton(glyph: .chevronLeft, label: "Back to welcome") { router.back() }
+                IconButton(glyph: .chevronLeft, label: "Back to welcome", quiet: true) { router.back() }
                 Spacer()
             }
             .padding(.leading, 7)   // chevron edge on the 24pt auth margin

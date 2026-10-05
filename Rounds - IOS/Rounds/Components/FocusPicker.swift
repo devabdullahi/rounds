@@ -62,7 +62,9 @@ struct FocusGrid: View {
             .foregroundStyle(Theme.text)
             .padding(.horizontal, 14)
             .padding(.vertical, 12)
-            .frame(maxWidth: .infinity, minHeight: byRotation ? 96 : 86, alignment: .topLeading)
+            // One fixed height per grid, sized for a two-line name, so every row lines up.
+            .frame(maxWidth: .infinity, alignment: .topLeading)
+            .frame(height: byRotation ? 122 : 92, alignment: .topLeading)
             .modifier(SelectableSurface(on: on))
         }
         .buttonStyle(PressDownStyle())
@@ -124,12 +126,10 @@ struct SelectableSurface: ViewModifier {
 struct FocusSheet: View {
     @Environment(\.dismiss) private var dismiss
     @AppStorage(StudyFocus.storageKey) private var focusStored = ""
-    @AppStorage(TrainingLevel.storageKey) private var levelStored = TrainingLevel.ms3.rawValue
 
     @State private var bySystem = false
 
     private var focus: FocusSelection { FocusSelection(stored: focusStored) }
-    private var level: TrainingLevel { TrainingLevel(rawValue: levelStored) ?? .ms3 }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -160,12 +160,6 @@ struct FocusSheet: View {
                     }
                 }
                 .padding(.top, 12)
-
-                VStack(alignment: .leading, spacing: 8) {
-                    Eyebrow("Training year")
-                    Segmented(options: TrainingLevel.allCases.map { ($0.rawValue, $0.shortLabel) }, selection: $levelStored)
-                }
-                .padding(.top, 24)
                 .padding(.bottom, 12)
             }
             .scrollIndicators(.hidden)
@@ -175,9 +169,7 @@ struct FocusSheet: View {
         .presentationDetents([.large])
         .presentationDragIndicator(.visible)
         .presentationBackground(Theme.bg)
-        .onAppear { bySystem = focus.leadsWithSystem || (focus.isMix && !level.studiesByRotation) }
-        // The year decides what you study by, same as onboarding.
-        .onChange(of: levelStored) { withAnimation(Springs.pop) { bySystem = !level.studiesByRotation } }
+        .onAppear { bySystem = focus.leadsWithSystem }
     }
 
     private func row(_ label: String, _ detail: String, _ value: StudyFocus) -> some View {

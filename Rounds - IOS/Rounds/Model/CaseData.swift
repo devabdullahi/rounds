@@ -85,7 +85,7 @@ extension ClinicalCase {
             Vital(id: "bp", label: "BP", value: "148/92", tone: .warn),
             Vital(id: "spo2", label: "SpO₂", value: "95%", tone: .info),
             Vital(id: "rr", label: "RR", value: "20", tone: .plain),
-            Vital(id: "temp", label: "Temp", value: "36.9°", tone: .plain),
+            Vital(id: "temp", label: "Temp", value: "98.4°F", tone: .plain),
             Vital(id: "pain", label: "Pain", value: "7/10", tone: .plain),
         ],
         task: "Take a focused history, examine, order investigations, and give a working diagnosis with a plan.",
@@ -188,35 +188,38 @@ struct WardPatient: Identifiable {
     let id: String
     let quote: String
     let meta: String
-    let specialty: String
+    let system: OrganSystem
     let status: Status
     enum Status { case new, resume, revisit }
     var hasCase: Bool { id == "B4" }
 }
 
 enum Ward {
-    static let specialties = ["All", "Cardiology", "Respiratory", "Abdominal", "Neuro"]
+    /// Topic filters on the Patients tab: the organ systems that have patients on the ward.
+    static var systems: [OrganSystem] {
+        OrganSystem.allCases.filter { sys in (rotation + revisit).contains { $0.system == sys } }
+    }
 
     static let rotation: [WardPatient] = [
-        WardPatient(id: "B7", quote: "My heart keeps racing.", meta: "F · 31 · palpitations", specialty: "Cardiology", status: .new),
-        WardPatient(id: "B8", quote: "My legs keep swelling.", meta: "F · 72 · edema", specialty: "Cardiology", status: .resume),
-        WardPatient(id: "B9", quote: "I get breathless on stairs.", meta: "M · 67 · dyspnea", specialty: "Cardiology", status: .new),
-        WardPatient(id: "R4", quote: "I can't stop wheezing.", meta: "M · 24 · wheeze", specialty: "Respiratory", status: .new),
-        WardPatient(id: "A3", quote: "The pain moved to my right side.", meta: "F · 19 · abdominal pain", specialty: "Abdominal", status: .new),
-        WardPatient(id: "N2", quote: "Worst headache of my life.", meta: "F · 45 · headache", specialty: "Neuro", status: .new),
+        WardPatient(id: "B7", quote: "My heart keeps racing.", meta: "F · 31 · palpitations", system: .cardiovascular, status: .new),
+        WardPatient(id: "B8", quote: "My legs keep swelling.", meta: "F · 72 · edema", system: .cardiovascular, status: .resume),
+        WardPatient(id: "B9", quote: "I get breathless on stairs.", meta: "M · 67 · dyspnea", system: .cardiovascular, status: .new),
+        WardPatient(id: "R4", quote: "I can't stop wheezing.", meta: "M · 24 · wheeze", system: .respiratory, status: .new),
+        WardPatient(id: "A3", quote: "The pain moved to my right side.", meta: "F · 19 · abdominal pain", system: .gastrointestinal, status: .new),
+        WardPatient(id: "N2", quote: "Worst headache of my life.", meta: "F · 45 · headache", system: .nervous, status: .new),
     ]
 
     static let revisit: [WardPatient] = [
-        WardPatient(id: "B4", quote: "My chest has been hurting.", meta: "M · 54 · chest pain", specialty: "Cardiology", status: .revisit),
-        WardPatient(id: "R2", quote: "This cough won't go away.", meta: "M · 63 · chronic cough", specialty: "Respiratory", status: .revisit),
-        WardPatient(id: "N1", quote: "My head is pounding.", meta: "F · 22 · headache", specialty: "Neuro", status: .revisit),
+        WardPatient(id: "B4", quote: "My chest has been hurting.", meta: "M · 54 · chest pain", system: .cardiovascular, status: .revisit),
+        WardPatient(id: "R2", quote: "This cough won't go away.", meta: "M · 63 · chronic cough", system: .respiratory, status: .revisit),
+        WardPatient(id: "N1", quote: "My head is pounding.", meta: "F · 22 · headache", system: .nervous, status: .revisit),
     ]
 
     /// Seed history: what was missed last time on each patient, and the score.
     static let seededMisses: [String: [Miss]] = [
         "R2": [
             Miss(flag: "Weight loss", why: "Cough plus weight loss in a smoker is lung cancer until proven otherwise."),
-            Miss(flag: "Haemoptysis", why: "Coughing blood needs an urgent chest X-ray and 2-week-wait referral."),
+            Miss(flag: "Hemoptysis", why: "Coughing blood needs an urgent chest X-ray and a chest CT."),
         ],
         "N1": [
             Miss(flag: "Neck stiffness", why: "Fever with headache: check for meningism before calling it a migraine."),
@@ -230,6 +233,6 @@ enum Ward {
 enum SampleUser {
     static let name = "Alex Kim"
     static let initials = "AK"
-    static let training = "MS3, Riverside School of Medicine"
+    static let training = "Riverside School of Medicine"
     static let email = "alex.kim@riverside.edu"
 }

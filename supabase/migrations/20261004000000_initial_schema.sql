@@ -13,10 +13,10 @@ create schema if not exists private;
 
 -- ───────────────────────────── profiles ─────────────────────────────
 
+-- Study focus (rotations / systems) is a device preference for now; no training year is stored.
 create table public.profiles (
   id              uuid primary key references auth.users (id) on delete cascade,
   name            text not null default '',
-  training_level  text check (training_level in ('ms12', 'ms3', 'ms4')),  -- US medical students only
   rating          integer not null default 1200,
   streak          integer not null default 0,
   created_at      timestamptz not null default now()
@@ -143,7 +143,7 @@ create policy "profiles: read own"   on public.profiles for select to authentica
 create policy "profiles: update own" on public.profiles for update to authenticated
   using ((select auth.uid()) = id) with check ((select auth.uid()) = id);
 revoke update on public.profiles from authenticated;
-grant update (name, training_level) on public.profiles to authenticated;
+grant update (name) on public.profiles to authenticated;
 
 -- cases: any signed-in student can browse published cases.
 create policy "cases: read published" on public.cases for select to authenticated using (published);

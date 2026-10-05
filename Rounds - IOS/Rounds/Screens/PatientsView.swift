@@ -3,7 +3,8 @@ import SwiftUI
 struct PatientsView: View {
     @Environment(AppState.self) private var app
     @State private var query = ""
-    @State private var specialty = "All"
+    @State private var system: OrganSystem? = nil   // nil = all topics
+    @AppStorage(StudyFocus.storageKey) private var focusStored = ""
     @State private var unavailable: WardPatient?
     @State private var expanded: String?
 
@@ -36,11 +37,7 @@ struct PatientsView: View {
                 }
 
                 if !rotation.isEmpty {
-                    if specialty == "Cardiology" {
-                        sectionHeader("Cardiology rotation", trailing: "\(app.rotationDone)/\(app.rotationTotal)", color: Theme.muted, trailingMono: true)
-                    } else {
-                        sectionHeader(specialty == "All" ? "New patients" : specialty, trailing: "\(rotation.count)", color: Theme.muted)
-                    }
+                    sectionHeader(system?.label ?? "New patients", trailing: "\(rotation.count)", color: Theme.muted)
                     VStack(spacing: 0) {
                         ForEach(Array(rotation.enumerated()), id: \.element.id) { i, p in
                             if i > 0 { Hairline() }
@@ -61,7 +58,7 @@ struct PatientsView: View {
             .padding(.horizontal, 20)
             .padding(.top, 8)
             .padding(.bottom, 20)
-            .animation(Springs.slide, value: specialty)
+            .animation(Springs.slide, value: system)
             .animation(Springs.slide, value: query)
         }
         .scrollIndicators(.hidden)
@@ -77,15 +74,15 @@ struct PatientsView: View {
     private func filter(_ list: [WardPatient]) -> [WardPatient] {
         let q = query.lowercased().trimmingCharacters(in: .whitespaces)
         return list.filter { p in
-            (specialty == "All" || p.specialty == specialty) &&
-            (q.isEmpty || [p.quote, p.meta, p.specialty, p.id].contains { $0.lowercased().contains(q) })
+            (system == nil || p.system == system) &&
+            (q.isEmpty || [p.quote, p.meta, p.system.label, p.id].contains { $0.lowercased().contains(q) })
         }
     }
 
     private var searchField: some View {
         HStack(spacing: 10) {
             AppIcon(.search, size: 18).foregroundStyle(Theme.muted)
-            TextField("", text: $query, prompt: Text("Symptom, specialty or exam").foregroundStyle(Theme.faint))
+            TextField("", text: $query, prompt: Text("Symptom, topic or bed").foregroundStyle(Theme.faint))
                 .font(.system(size: 16))
                 .autocorrectionDisabled()
                 .submitLabel(.search)
@@ -104,9 +101,9 @@ struct PatientsView: View {
     private var chips: some View {
         ScrollView(.horizontal) {
             HStack(spacing: 8) {
-                ForEach(Ward.specialties, id: \.self) { s in
-                    let on = s == specialty
-                    Button(s) { specialty = s }
+                ForEach([nil] + Ward.systems.map(Optional.some), id: \.self) { s in
+                    let on = s == system
+                    Button(s?.label ?? "All") { system = s }
                         .font(.system(size: 15, weight: on ? .semibold : .regular))
                         .foregroundStyle(.white)
                         .padding(.horizontal, 14)
@@ -247,7 +244,9 @@ struct PatientsView: View {
                 }
                 .card(padding: 14, fillHeight: true)
                 VStack(alignment: .leading, spacing: 0) {
-                    Text("Cardiology rotation").font(.system(size: 13)).foregroundStyle(Theme.muted)
+                    // Progress through the student's own focus, not a fixed rotation.
+                    Text(FocusSelection(stored: focusStored).isMix ? "All topics" : FocusSelection(stored: focusStored).label)
+                        .font(.system(size: 13)).foregroundStyle(Theme.muted).lineLimit(1)
                     Text("\(app.rotationDone)/\(app.rotationTotal)").font(.mono(26))
                     ProgressBar(value: Double(app.rotationDone) / Double(app.rotationTotal), height: 4)
                         .padding(.top, 6)

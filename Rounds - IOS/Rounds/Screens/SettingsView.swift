@@ -36,7 +36,6 @@ struct SettingsView: View {
     @State private var confirmSignOut = false
     @AppStorage("signedIn") private var signedIn = true
     @AppStorage(StudyFocus.storageKey) private var focusStored = ""
-    @AppStorage(TrainingLevel.storageKey) private var levelStored = ""
     @State private var editingFocus = false
 
     private let limits: [(Int, String)] = [(5, "5 min"), (10, "10"), (15, "15"), (20, "20"), (0, "Off")]
@@ -56,9 +55,7 @@ struct SettingsView: View {
                         navRow(.keyRound, "Signed in with", value: "Apple")
                     }
 
-                    section("Training") {
-                        yearRow
-                        Hairline()
+                    section("Practice") {
                         navRow(.target, "Study focus", value: focusSummary) { editingFocus = true }
                     }
 
@@ -210,32 +207,6 @@ struct SettingsView: View {
     private var focusSummary: String {
         let focus = FocusSelection(stored: focusStored)
         return focus.items.count > 1 ? "\(focus.items.count) picked" : focus.label
-    }
-
-    /// Year is a three-way choice, so it opens a menu in place rather than a whole sheet.
-    private var yearRow: some View {
-        Menu {
-            Picker("Training year", selection: $levelStored) {
-                ForEach(TrainingLevel.allCases) { level in
-                    Text(level.label).tag(level.rawValue)
-                }
-            }
-        } label: {
-            HStack(spacing: 12) {
-                iconTile(.graduationCap)
-                Text("Training year").font(.system(size: 16))
-                Spacer()
-                Text(TrainingLevel(rawValue: levelStored)?.shortLabel ?? "Not set")
-                    .font(.system(size: 15))
-                    .foregroundStyle(Theme.muted)
-                AppIcon(.chevronDown, size: 16).foregroundStyle(Theme.faint)
-            }
-            .foregroundStyle(Theme.text)
-            .padding(.horizontal, 16)
-            .frame(minHeight: 56)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(PressableStyle())
     }
 
     private func navRow(_ glyph: IconGlyph, _ title: String, value: String? = nil, detail: String? = nil, action: @escaping () -> Void = {}) -> some View {

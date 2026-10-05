@@ -22,6 +22,8 @@ targets:
     sources: [Rounds]
     dependencies:
       - package: Supabase
+    scheme:
+      testTargets: [RoundsTests]
     info:
       path: Rounds/Info.plist
       properties:
@@ -39,3 +41,13 @@ targets:
         INFOPLIST_KEY_NSMicrophoneUsageDescription: "Rounds listens so you can talk to the patient out loud."
         INFOPLIST_KEY_NSSpeechRecognitionUsageDescription: "Rounds turns what you say into questions for the patient."
         TARGETED_DEVICE_FAMILY: "1"
+  RoundsTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [RoundsTests]
+    dependencies:
+      - target: Rounds
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.abdul.rounds.tests

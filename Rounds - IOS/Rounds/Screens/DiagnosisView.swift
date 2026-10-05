@@ -4,6 +4,8 @@ struct DiagnosisView: View {
     @Environment(CaseRouter.self) private var router
     @Bindable var session: CaseSession
 
+    @Environment(\.reference) private var reference
+    @State private var assist = ReferenceAssist()
     @State private var addingDifferential = false
     @State private var newDifferential = ""
     @FocusState private var focus: Field?
@@ -33,7 +35,13 @@ struct DiagnosisView: View {
                             .background(Theme.surface, in: RoundedRectangle(cornerRadius: 14))
                             .overlay(RoundedRectangle(cornerRadius: 14).strokeBorder(focus == .dx ? Theme.accent : Theme.border))
                             .accessibilityLabel("Working diagnosis")
+
+                        if focus == .dx, !assist.suggestions.isEmpty {
+                            suggestionList.transition(.opacity.combined(with: .offset(y: -4)))
+                        }
                     }
+                    .animation(.easeOut(duration: 0.15), value: assist.suggestions)
+                    .task(id: session.diagnosis) { await assist.diagnosisChanged(session.diagnosis) }
 
                     VStack(alignment: .leading, spacing: 4) {
                         HStack {
@@ -99,7 +107,13 @@ struct DiagnosisView: View {
                             .background(Theme.surface, in: RoundedRectangle(cornerRadius: 14))
                             .overlay(RoundedRectangle(cornerRadius: 14).strokeBorder(focus == .plan ? Theme.accent : Theme.border))
                             .accessibilityLabel("Immediate plan")
+
+                        if !assist.drugs.isEmpty {
+                            recognizedDrugs.transition(.opacity)
+                        }
                     }
+                    .animation(.easeOut(duration: 0.2), value: assist.drugs)
+                    .task(id: session.plan) { await assist.planChanged(session.plan) }
 
                     HStack(alignment: .top, spacing: 12) {
                         AppIcon(.triangleAlert, size: 18).foregroundStyle(Theme.warnText)
@@ -131,6 +145,15 @@ struct DiagnosisView: View {
             .padding(.bottom, 8)
         }
         .background(Theme.bg)
+        .onAppear { assist.reference = reference }
+        #if DEBUG
+        .task {
+            guard DebugLaunch.screen == "diagnosis-suggest" else { return }
+            session.diagnosis = "pulm"
+            focus = .dx
+        }
+        #endif
+        .onChange(of: focus) { if focus != .dx { assist.dismissSuggestions() } }
         .alert("Add to differential", isPresented: $addingDifferential) {
             TextField("Diagnosis", text: $newDifferential)
             Button("Add") {
@@ -140,5 +163,46 @@ struct DiagnosisView: View {
             }
             Button("Cancel", role: .cancel) { newDifferential = "" }
         }
+    }
+
+    // MARK: Reference helpers
+
+    /// Standard condition names as the student types; tapping one fills the field.
+    private var suggestionList: some View {
+        VStack(spacing: 0) {
+            ForEach(Array(assist.suggestions.enumerated()), id: \.element.id) { i, match in
+                Button {
+                    session.diagnosis = assist.pick(match)
+                    focus = .plan
+                } label: {
+                    HStack(spacing: 12) {
+                        Text(match.name).font(.system(size: 16)).foregroundStyle(Theme.text)
+                        Spacer(minLength: 8)
+                        Text(match.code).font(.mono(13, weight: .medium)).foregroundStyle(Theme.faint)
+                    }
+                    .padding(.horizontal, 16)
+                    .frame(minHeight: 46)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(PressableStyle())
+                .accessibilityHint("Uses this diagnosis")
+                if i < assist.suggestions.count - 1 { Hairline() }
+            }
+        }
+        .listSurface()
+    }
+
+    /// Drugs found in the plan, so the student sees what will be read as a medication.
+    private var recognizedDrugs: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("Recognized drugs").font(.system(size: 13)).foregroundStyle(Theme.muted)
+            FlowLayout(spacing: 6) {
+                ForEach(assist.drugs) { drug in
+                    Pill(text: drug.name, glyph: .check)
+                }
+            }
+        }
+        .padding(.top, 4)
+        .accessibilityElement(children: .combine)
     }
 }
