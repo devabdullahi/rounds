@@ -6,19 +6,19 @@ import SwiftUI
  * DRAG
  *   live   top card follows the finger, tilts 1° per 20pt
  *   live   "TAKE" stamp (green) fades in dragging right,
- *          "LATER" stamp (amber) fades in dragging left
+ *          "SKIP" stamp (red) fades in dragging left
  *   live   card behind grows toward full size as the top one leaves
  *   cross  selection haptic when the drag passes the commit point
  *
  * RELEASE
  *   past 110pt or a fast flick → card flies off that side (spring)
  *   right  take the patient (opens the case)
- *   left   card leaves, then slots in at the back of the stack
+ *   left   card leaves the deck for good (skipped); the next one rises
  *   short  springs back to centre
  *
- * BUTTONS  (later ⟵ · random · ⟶ take) — Liquid Glass on iOS 26+,
+ * BUTTONS  (skip ⟵ · random · ⟶ take) — Liquid Glass on iOS 26+,
  *          interactive: they flex and shimmer under the finger
- *   later / take   same fly-off as a swipe
+ *   skip / take    same fly-off as a swipe
  *   random         deck riffles (3 quick shuffles, 90ms apart),
  *                  lands on a random patient, then takes it
  *
@@ -123,7 +123,7 @@ struct PatientDeck: View {
             // The row sits fully above the tab bar's fade, so the red and green buttons aren't
             // darkened at the bottom while the smaller shuffle button escapes it.
             controls
-                .accessibilityHint("\(queue.count) waiting. Swipe right to take, left for later.")
+                .accessibilityHint("\(queue.count) waiting. Swipe right to take, left to skip.")
         }
         .sensoryFeedback(.selection, trigger: pastCommit)
         .onAppear { syncQueue() }
@@ -160,19 +160,20 @@ struct PatientDeck: View {
             .allowsHitTesting(isTop)
             .zIndex(Double(STACK.visible - depth))
             .gesture(isTop ? dragGesture : nil)
+            .transition(.asymmetric(insertion: .opacity, removal: .identity))
             .accessibilityHidden(!isTop)
             .accessibilityAction(named: "Take patient") { take() }
-            .accessibilityAction(named: "Send to the end of the list") { later() }
+            .accessibilityAction(named: "Skip patient") { skip() }
     }
 
-    /// TAKE / LATER stamps that fade in with the drag.
+    /// TAKE / SKIP stamps that fade in with the drag.
     private var stamps: some View {
         let right = max(0, min(1, drag.width / SWIPE.commit))
         let left = max(0, min(1, -drag.width / SWIPE.commit))
         return HStack {
             stamp("TAKE", color: Theme.correct, angle: -12).opacity(right)
             Spacer()
-            stamp("LATER", color: Theme.streak, angle: 12).opacity(left)
+            stamp("SKIP", color: Theme.streak, angle: 12).opacity(left)
         }
         .padding(22)
         .padding(.top, 34)
@@ -203,7 +204,7 @@ struct PatientDeck: View {
                 guard !busy, drag != .zero else { return }
                 let w = v.predictedEndTranslation.width
                 if drag.width > SWIPE.commit || w > SWIPE.flick { take() }
-                else if drag.width < -SWIPE.commit || w < -SWIPE.flick { later() }
+                else if drag.width < -SWIPE.commit || w < -SWIPE.flick { skip() }
                 else { withAnimation(SWIPE.snapBack) { drag = .zero } }
                 pastCommit = false
             }
@@ -213,7 +214,7 @@ struct PatientDeck: View {
 
     private var controls: some View {
         HStack(spacing: 28) {
-            roundButton(.clock, label: "Later", tint: Theme.streak, size: 60) { later() }
+            roundButton(.x, label: "Skip patient", tint: Theme.streak, size: 60) { skip() }
             roundButton(.shuffle, label: queue.count > 1 ? "Random patient" : "Admit a new patient", tint: Theme.shuffle, size: 50) { random() }
             roundButton(.check, label: "Take patient", tint: Theme.correct, size: 60) { take() }
         }
@@ -268,15 +269,20 @@ struct PatientDeck: View {
         queue = queue.filter { $0.fits(focus) } + queue.filter { !$0.fits(focus) }
     }
 
-    private func later() {
-        guard !busy, queue.count > 1 else { withAnimation(SWIPE.snapBack) { drag = .zero }; return }
+    /// Left: the top patient leaves the deck for good. They stay on the Patients tab.
+    /// Skipping the last one leaves the admit card.
+    private func skip() {
+        guard !busy, let p = queue.first else { withAnimation(SWIPE.snapBack) { drag = .zero }; return }
         busy = true
         withAnimation(SWIPE.fly) { drag = CGSize(width: -SWIPE.flyDistance, height: 0) }
         Task { @MainActor in
             try? await Task.sleep(for: .seconds(0.28))
             var t = Transaction(); t.disablesAnimations = true
             withTransaction(t) { drag = .zero }
-            withAnimation(STACK.restack) { queue.append(queue.removeFirst()) }
+            // Same render pass: the leaver (already off-screen) vanishes via its .identity removal
+            // while the cards behind spring up a place.
+            withAnimation(STACK.restack) { _ = queue.removeFirst() }
+            app.skip(bed: p.id)
             busy = false
         }
     }

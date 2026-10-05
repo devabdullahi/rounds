@@ -32,8 +32,13 @@ final class AppState {
     var lastScores: [String: Int] { ward.reduce(into: [:]) { $0[$1.id] = $1.lastScore } }
     var totalMisses: Int { ward.reduce(0) { $0 + $1.misses.count } }
     var revisitPatients: [WardPatient] { ward.filter { $0.status == .revisit } }
-    /// Patients still to see: new or half-done.
-    var waiting: [WardPatient] { ward.filter { $0.status == .new || $0.status == .resume } }
+    /// Patients still to see on the deck: new or half-done, and not skipped.
+    var waiting: [WardPatient] { ward.filter { ($0.status == .new || $0.status == .resume) && !skipped.contains($0.id) } }
+
+    /// Beds the student swiped away on the deck. Kept on this device so they don't come back;
+    /// the patients stay on the Patients tab.
+    private(set) var skipped: Set<String> = Set(UserDefaults.standard.stringArray(forKey: AppState.skippedStorageKey) ?? [])
+    static let skippedStorageKey = "skippedBeds"
     /// Organ systems that have patients on the ward, for filter chips.
     var wardSystems: [OrganSystem] { OrganSystem.allCases.filter { s in ward.contains { $0.system == s } } }
 
@@ -103,6 +108,11 @@ final class AppState {
         } catch {
             problem = error.localizedDescription
         }
+    }
+
+    func skip(bed: String) {
+        skipped.insert(bed)
+        UserDefaults.standard.set(Array(skipped), forKey: Self.skippedStorageKey)
     }
 
     func record(_ grade: Grade, patient: String) {
