@@ -46,7 +46,7 @@ const POINTS = { diagnosis: 35, history: 25, exam: 15, redFlags: 10, tests: 10, 
 const PENALTY = { unnecessaryTest: 3, overBudget: 3 };
 const MAX_FEEDBACK = 4;
 
-const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "").slice(0, 60); // matches casegen ids
 
 /** Accepted when the answer contains an accepted name, ignoring case and punctuation. */
 export function matchesDiagnosis(answer: string, accepted: string[]): boolean {

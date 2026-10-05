@@ -5,7 +5,10 @@ import { seeded } from "./labs.ts";
 const dir = new URL("../../../knowledge-base/profiles/", import.meta.url);
 const profiles: Profile[] = [];
 for await (const entry of Deno.readDir(dir)) {
-  if (entry.name.endsWith(".json")) profiles.push(JSON.parse(await Deno.readTextFile(new URL(entry.name, dir))));
+  if (!entry.name.endsWith(".json")) continue;
+  const profile = JSON.parse(await Deno.readTextFile(new URL(entry.name, dir)));
+  // Only validated profiles reach generate-case, so only those are planned here.
+  if (profile.generation.validation.status === "passed") profiles.push(profile);
 }
 
 Deno.test("every generated profile plans a complete case", () => {

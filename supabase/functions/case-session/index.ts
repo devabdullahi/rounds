@@ -13,6 +13,7 @@ import { body, callerId, HttpError, json, serve } from "../_shared/http.ts";
 import { sql } from "../_shared/db.ts";
 import { completeJSON } from "../_shared/llm.ts";
 import { leaks } from "../_shared/casegen.ts";
+import { GRADER, PATIENT, REPLY_CHECKER } from "../_shared/prompts.ts";
 import { type Actions, grade, matchesDiagnosis, type Rubric } from "./grade.ts";
 
 type Fact = { id: string; label: string; reply: string; importance: string; screens_for: string | null };
@@ -81,15 +82,6 @@ async function start(userId: string, input: Record<string, unknown>) {
 
 // MARK: - ask
 
-const PATIENT_SYSTEM = `You are role-playing a patient in a medical-school practice app. Stay in character as the person described. You know only the facts listed; you don't know your diagnosis.
-
-Rules:
-- Answer the student's latest message using only the listed facts that it actually asks about. Use their content, in your own natural words and voice, 1–3 sentences.
-- Don't volunteer facts the student didn't ask about, even to be helpful. A vague question gets a short, vague answer.
-- If the question asks about something not in the facts, say you don't know, haven't noticed, or aren't sure, in character. Never invent symptoms, history, medications, results or diagnoses.
-- Greetings, introductions and small talk get a brief in-character reply with no medical facts.
-- Reply with JSON: {"fact_ids": ["ids of the facts you used"], "reply": "what you say"}.`;
-
 async function ask(userId: string, input: Record<string, unknown>) {
   const question = text(input.question, "question", LIMITS.question);
   const { attempt, content } = await loadAttempt(userId, input.attempt_id);
@@ -106,7 +98,7 @@ Student's latest message: ${JSON.stringify(question)}`;
   let reply = String(persona.fallback ?? "");
   let used: string[] = [];
   try {
-    const answer = await completeJSON<{ fact_ids: string[]; reply: string }>(PATIENT_SYSTEM, prompt, 400);
+    const answer = await completeJSON<{ fact_ids: string[]; reply: string }>(PATIENT, prompt, 400);
     used = (answer.fact_ids ?? []).filter((id) => known.has(id));
     reply = (answer.reply ?? "").trim() || reply;
     const terms = [content.answer_key.diagnosis, ...content.answer_key.accepted].map((t) => t.toLowerCase()).filter((t) => t.length > 3);
@@ -139,10 +131,8 @@ Student's latest message: ${JSON.stringify(question)}`;
 /** Second check for replies that matched no fact: did the model slip in medical information? */
 async function addsFacts(reply: string): Promise<boolean> {
   const verdict = await completeJSON<{ medical_information: boolean }>(
-    "You check a simulated patient's reply. Answer in JSON.",
-    `Reply: ${JSON.stringify(reply)}
-Does this reply state any specific medical information about the speaker (a symptom, its timing or character, past illness, medication, allergy, test result, or diagnosis)? Saying they don't know or aren't sure, greetings and small talk are not medical information.
-Return {"medical_information": true|false}.`,
+    REPLY_CHECKER,
+    `Reply: ${JSON.stringify(reply)}`,
     50,
   );
   return verdict.medical_information === true;
@@ -210,11 +200,10 @@ async function submit(userId: string, input: Record<string, unknown>) {
 async function judge(r: Rubric, diagnosis: string, plan: string) {
   const exact = matchesDiagnosis(diagnosis, [r.diagnosis, ...r.accepted]);
   const verdict = await completeJSON<{ diagnosis_correct: boolean; plan_appropriate: boolean; plan_note: string }>(
-    "You grade a medical student's answer on a practice case. Be fair: accept synonyms and more specific correct answers; reject a different condition. Answer in JSON.",
+    GRADER,
     `Correct diagnosis: ${r.diagnosis} (accepted: ${r.accepted.join(", ")}); severity ${r.severity}.
 Student diagnosis: ${JSON.stringify(diagnosis)}
-Student plan: ${JSON.stringify(plan || "(none)")}
-Return {"diagnosis_correct": true|false, "plan_appropriate": true|false (initial management a supervising physician would accept for this diagnosis and severity), "plan_note": "one sentence on the most important thing missing or wrong in the plan, or empty if fine"}.`,
+Student plan: ${JSON.stringify(plan || "(none)")}`,
     200,
   );
   return {

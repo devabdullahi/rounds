@@ -30,9 +30,9 @@ TRIAGE = KB / "triage.jsonl"
 EXAMPLE = json.loads((KB / "schema" / "examples" / "acute-appendicitis.json").read_text())
 
 # Bump when a prompt changes so regenerated profiles can be told apart.
-PROMPT_VERSION = "8"
+PROMPT_VERSION = "9"
 TRIAGE_BATCH = 20
-BACKGROUND_LIMIT = 4000
+BACKGROUND_LIMIT = 9000
 
 # Stage name → sections it fills, in order. Later stages see earlier output.
 STAGES = {
@@ -127,8 +127,25 @@ def triage_batch(user: str) -> dict[str, dict]:
 
 # MARK: - Stages 1–5: profile
 
+def load_cdc_pages() -> dict[str, list[dict]]:
+    """CDC pages by condition id, clinician pages first (see tools/kb-import/cdc.py)."""
+    path = KB / "cdc_pages.jsonl"
+    pages: dict[str, list[dict]] = {}
+    if path.exists():
+        for row in map(json.loads, path.open()):
+            pages.setdefault(row["condition_id"], []).append(row)
+    for rows in pages.values():
+        rows.sort(key=lambda r: r.get("audience") != "clinician")
+    return pages
+
+
+CDC_PAGES = load_cdc_pages()
+
+
 def background(condition: dict) -> str:
     parts = [condition["summary"]]
+    for page in CDC_PAGES.get(condition["id"], [])[:2]:
+        parts.append(f"CDC ({page.get('audience', 'public')}): {page['title']}\n{page['text'][:2500]}")
     parts += [f"MeSH definition ({m['name']}): {m['scope_note']}" for m in condition["mesh"] if m["scope_note"]]
     if condition["also_called"]:
         parts.append("Also called: " + ", ".join(condition["also_called"]))

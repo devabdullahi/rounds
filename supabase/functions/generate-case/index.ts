@@ -10,8 +10,9 @@
 import { body, callerId, HttpError, json, serve } from "../_shared/http.ts";
 import { sql } from "../_shared/db.ts";
 import { completeJSON, currentModel } from "../_shared/llm.ts";
+import { CASE_WRITER, PROMPT_VERSION } from "../_shared/prompts.ts";
 import { type CasePlan, leakTerms, planCase, type Profile } from "../_shared/casegen.ts";
-import { buildRubric, checkWriting, neutralIds, type Writing, writerPrompt, WRITER_SYSTEM } from "./writer.ts";
+import { buildRubric, checkWriting, neutralIds, type Writing, writerPrompt } from "./writer.ts";
 
 type Request = { focus?: string };
 
@@ -39,7 +40,7 @@ serve(async (req) => {
   let problems: string[] = [];
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
-      writing = await completeJSON<Writing>(WRITER_SYSTEM, user, 7000);
+      writing = await completeJSON<Writing>(CASE_WRITER, user, 7000);
       problems = checkWriting(writing, plan, terms);
     } catch (error) {
       problems = [`reply unusable: ${(error as Error).message.slice(0, 200)}`];
@@ -112,7 +113,7 @@ async function save(userId: string, profile: Profile, plan: CasePlan, w: Writing
           insert into private.case_content (case_id, facts, exam, tests, answer_key, condition_slug, severity, persona, rubric)
           values (${id}, ${tx.json(w.facts)}, ${tx.json(w.maneuvers)}, ${tx.json(tests)},
             ${tx.json({ diagnosis: profile.triage.name, accepted: profile.teaching.accepted_names })},
-            ${profile.slug}, ${plan.severity}, ${tx.json({ ...w.persona, name: w.patient.name, age: plan.age, sex: plan.sex, model: currentModel() })},
+            ${profile.slug}, ${plan.severity}, ${tx.json({ ...w.persona, name: w.patient.name, age: plan.age, sex: plan.sex, model: currentModel(), prompt_version: PROMPT_VERSION })},
             ${tx.json(buildRubric(profile, plan, w, tests))})`;
       });
       return id;

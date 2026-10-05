@@ -12,16 +12,6 @@ export type Writing = {
   test_meta: { test_id: string; detail: string; cost: number; turnaround_s: number; delays_care_min?: number }[];
 };
 
-export const WRITER_SYSTEM = `You write fictional patients for Rounds, an educational app where US medical students interview a simulated patient. You are given a plan made by code: the hidden diagnosis, severity, demographics, which symptoms and findings are present or absent, and test results. Write the person and their words around that plan.
-
-Rules:
-- Everything is fictional. Invent a realistic name, life and voice. No real people.
-- Follow the plan exactly: include present symptoms and findings, deny absent ones, never add new medical facts that change the picture.
-- The patient doesn't know their diagnosis. The diagnosis name and its synonyms must never appear in the door note, facts, suggested questions or exam findings.
-- Patient replies are first person, plain everyday language, 1–3 sentences, with the patient's personality.
-- Exam findings and study reports are written like a clinician's note, concise, US units.
-- Reply with one JSON object only.`;
-
 export function writerPrompt(profile: Profile, plan: CasePlan): string {
   const studies = plan.tests.filter((t) => t.kind === "study");
   const mustNotMiss = profile.differential.filter((d) => d.must_not_miss).map((d) => ({ name: d.name, trigger: d.trigger ?? d.why_considered }));
@@ -39,7 +29,7 @@ Questions a strong student asks (each must be answerable by some fact): ${JSON.s
 Must-not-miss alternatives the student should screen for (write facts whose replies rule them in or out per this case): ${JSON.stringify(mustNotMiss)}
 Exam findings (present ones as written; absent ones as a normal result for that maneuver): ${JSON.stringify(plan.exam.map((f) => ({ id: f.id, maneuver: f.maneuver ?? f.region, finding: f.finding, present: f.present, key: f.importance !== "optional" })))}
 Studies needing a written report (base it on these findings; if none listed, write a normal or nonspecific report): ${JSON.stringify(studies.map((s) => ({ test_id: s.id, name: s.name, findings: s.findings })))}
-Every test on the menu needs a price and wait (USD, seconds 2–20 of in-app wait, delays_care_min = real-world minutes it delays definitive care, 0 for quick bedside tests): ${JSON.stringify(plan.tests.map((t) => ({ test_id: t.id, name: t.name })))}
+Every test on the menu needs a price and wait (USD (0 for free bedside items), seconds 1–20 of in-app wait, delays_care_min = real-world minutes it delays definitive care, 0 for quick bedside tests): ${JSON.stringify(plan.tests.map((t) => ({ test_id: t.id, name: t.name })))}
 
 Return JSON:
 {
@@ -81,7 +71,7 @@ export function checkWriting(w: Writing, plan: CasePlan, terms: string[]): strin
   for (const t of plan.tests) {
     const m = meta.get(t.id);
     if (!m) problems.push(`missing test_meta for ${t.id}`);
-    else if (!(m.cost >= 5 && m.cost <= 5000 && m.turnaround_s >= 2 && m.turnaround_s <= 30 && (m.delays_care_min ?? 0) >= 0)) {
+    else if (!(m.cost >= 0 && m.cost <= 5000 && m.turnaround_s >= 1 && m.turnaround_s <= 30 && (m.delays_care_min ?? 0) >= 0)) {
       problems.push(`test_meta for ${t.id} out of range`);
     }
   }
@@ -121,7 +111,7 @@ export function buildRubric(profile: Profile, plan: CasePlan, w: Writing, tests:
     }),
     key_maneuvers: w.maneuvers.filter((m) => m.key).map((m) => ({ id: m.id, title: m.title })),
     indicated_tests: tests.filter((t) => t.role === "indicated").map((t) => ({ id: t.id, name: t.name })),
-    first_tests: profile.workup.initial.filter((r) => !r.only_if).map((r) => r.test),
+    first_tests: (profile.workup.initial ?? []).filter((r) => !r.only_if).map((r) => r.test),
     unnecessary_tests: tests.filter((t) => t.role === "not_indicated").map((t) => ({ id: t.id, name: t.name, why: t.why })),
     must_not_miss: [...must.values()].map((d) => d.name),
   };

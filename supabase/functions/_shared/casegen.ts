@@ -21,11 +21,12 @@ export type Profile = {
   labs?: { test_id: string; ranges?: Partial<Record<Severity, Range>>; qualitative?: Partial<Record<Severity, string>> }[];
   ecg?: { findings: { feature: string; finding: string; frequency: Frequency; leads?: string[]; min_severity?: Severity }[] };
   imaging?: { study: string; modality: string; findings: Item[] }[];
-  workup: Record<"initial" | "confirmatory" | "supporting" | "not_indicated", { test: string; why?: string; only_if?: string }[]> & { scores?: string[] };
+  workup: Partial<Record<WorkupGroup, { test: string; why?: string; only_if?: string }[]>> & { scores?: string[] };
   differential: { name: string; must_not_miss: boolean; why_considered: string; trigger?: string }[];
   course: { severity: Partial<Record<Severity, string>> };
   teaching: { key_questions: { question: string; importance: string; looking_for: string; category: string }[]; accepted_names: string[]; reasoning_points: string[] };
 };
+type WorkupGroup = "initial" | "confirmatory" | "supporting" | "not_indicated";
 type ExamFinding = {
   id: string;
   region: string;
@@ -128,14 +129,15 @@ export function planCase(profile: Profile, rng: () => number): CasePlan {
 /** The test menu: everything the profile's workup mentions plus routine panels, with lab results filled in. */
 function planTests(profile: Profile, severity: Severity, sex: Sex, age: number, rng: () => number): PlannedTest[] {
   const roles = new Map<string, { role: PlannedTest["role"]; why?: string }>();
-  const notIndicated = new Set(profile.workup.not_indicated.map((t) => t.test.toLowerCase()));
-  for (const group of ["initial", "confirmatory", "supporting"] as const) {
-    for (const ref of profile.workup[group]) {
+  const group = (g: WorkupGroup) => profile.workup?.[g] ?? [];
+  const notIndicated = new Set(group("not_indicated").map((t) => t.test.toLowerCase()));
+  for (const g of ["initial", "confirmatory", "supporting"] as const) {
+    for (const ref of group(g)) {
       const conditional = !!ref.only_if || notIndicated.has(ref.test.toLowerCase());
       roles.set(ref.test, { role: conditional ? "conditional" : "indicated", why: ref.only_if ?? ref.why });
     }
   }
-  for (const ref of profile.workup.not_indicated) {
+  for (const ref of group("not_indicated")) {
     if (!roles.has(ref.test)) roles.set(ref.test, { role: "not_indicated", why: ref.why });
   }
   for (const panel of ALWAYS_OFFERED_PANELS) if (!roles.has(panel)) roles.set(panel, { role: "neutral" });
@@ -145,29 +147,46 @@ function planTests(profile: Profile, severity: Severity, sex: Sex, age: number, 
   const panels = [...new Set(labIds.map((t) => panelFor(t)!))];
   const values = deriveValues(primaryValues(panels, profile.labs ?? [], severity, sex, rng), age, sex);
 
+  // Ids come from names; long names that share a beginning get a numbered suffix to stay unique.
+  const used = new Set<string>();
+  const uniqueId = (name: string) => {
+    let id = slug(name);
+    for (let n = 2; used.has(id); n++) id = `${slug(name).slice(0, 56)}_${n}`;
+    used.add(id);
+    return id;
+  };
+
   return [...roles.entries()].map(([test, { role, why }]) => {
     if (panelFor(test)) {
       const r = report(test, values, sex);
       const name = TESTS.get(test)?.name ?? test.toUpperCase();
-      return { id: slug(test), name, kind: "lab", result: r.text, abnormal: r.abnormal, role, why };
+      return { id: uniqueId(test), name, kind: "lab", result: r.text, abnormal: r.abnormal, role, why };
     }
     const study = profile.imaging?.find((i) => i.study.toLowerCase() === test.toLowerCase());
     const isEcg = /\b(ecg|ekg|electrocardiogram)\b/i.test(test);
     const findings = isEcg
       ? (profile.ecg?.findings ?? []).filter((f) => atLeast(severity, f.min_severity) && rng() < PRESENT_CHANCE[f.frequency]).map((f) => f.finding)
       : (study?.findings ?? []).filter((f) => rng() < PRESENT_CHANCE[f.frequency]).map((f) => f.text);
-    return { id: slug(test), name: test, kind: "study", findings, role, why };
+    return { id: uniqueId(test), name: test, kind: "study", findings, role, why };
   });
 }
 
 function slug(text: string): string {
-  return text.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "").slice(0, 40);
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "").slice(0, 60);
 }
 
-/** Names that would give the answer away; door note, facts and exam text must not contain them. */
+/** Names that would give the answer away; door note, facts and exam text must not contain them.
+ *  A name the patient must be able to say (an exposure or habit, e.g. "cannabis" for cannabis use
+ *  disorder) isn't a leak, so terms found in the patient's own history are left out. */
 export function leakTerms(profile: Profile): string[] {
   const names = [profile.triage.name, ...profile.teaching.accepted_names];
-  return [...new Set(names.map((n) => n.toLowerCase().replace(/\s*\([^)]*\)/g, "").trim()).filter((n) => n.length > 3))];
+  const history = [
+    ...profile.patient.risk_factors.map((r) => r.text), ...(profile.patient.social_history ?? []),
+    ...((profile.patient as { exposures?: string[] }).exposures ?? []), ...(profile.patient.risk_medications ?? []),
+    ...profile.presentation.chief_complaints.map((c) => c.text),
+  ].join(" ").toLowerCase();
+  const terms = names.map((n) => n.toLowerCase().replace(/\s*\([^)]*\)/g, "").trim()).filter((n) => n.length > 3);
+  return [...new Set(terms.filter((t) => !history.includes(t)))];
 }
 
 export function leaks(text: string, terms: string[]): string[] {

@@ -21,7 +21,8 @@ from common import KB, ROOT, cached_json, slug, strip_html, truncate, write_json
 
 MEDIA = "https://tools.cdc.gov/api/v2/resources/media"
 DELAY = 0.3
-PAGES_PER_CONDITION = 2
+PAGES_PER_CONDITION = 4
+SEARCH_SIZE = 100
 PAGE_BUDGET = 6000
 
 # Surveillance protocols and journal reports don't describe how a disease presents.
@@ -29,14 +30,22 @@ SKIP_PATHS = ("/mmwr/", "/nhsn/", "/nchs/", "/eid/", "/pcd/")
 
 
 def search(name: str) -> list[dict]:
-    query = urllib.parse.urlencode({"q": name, "mediatype": "html", "language": "english", "max": 20})
-    data = cached_json(f"cdc-search-{slug(name)}", f"{MEDIA}?{query}", DELAY)
+    query = urllib.parse.urlencode({"q": name, "mediatype": "html", "language": "english", "max": SEARCH_SIZE})
+    data = cached_json(f"cdc-search{SEARCH_SIZE}-{slug(name)}", f"{MEDIA}?{query}", DELAY)
     return data.get("results", [])
 
 
+def is_clinician(url: str) -> bool:
+    """CDC keeps pages written for clinicians under /hcp/ (diagnosis, testing, treatment)."""
+    return "/hcp/" in url
+
+
 def relevant(results: list[dict], names: list[str]) -> list[dict]:
-    """CDC pages whose title names the condition, "About …" overviews first, one per source URL."""
+    """CDC pages about the condition, one per source URL: clinician pages first, then "About …"
+    overviews. A page counts when its title names the condition, or it's a clinician page under a
+    path named after the condition (titles like "Clinical Testing and Diagnosis" omit the name)."""
     wanted = [n.lower() for n in names]
+    paths = {"/" + slug(n) + "/" for n in names}
     seen: set[str] = set()
     picks = []
     for r in results:
@@ -44,11 +53,12 @@ def relevant(results: list[dict], names: list[str]) -> list[dict]:
         title = strip_html(r.get("name") or "").lower()
         if not url.startswith("https://www.cdc.gov/") or any(p in url for p in SKIP_PATHS):
             continue
-        if url in seen or not any(w in title for w in wanted):
+        about_it = any(w in title for w in wanted) or (is_clinician(url) and any(p in url for p in paths))
+        if url in seen or not about_it:
             continue
         seen.add(url)
         picks.append(r)
-    picks.sort(key=lambda r: not strip_html(r["name"]).lower().startswith("about"))
+    picks.sort(key=lambda r: (not is_clinician(r["sourceUrl"]), not strip_html(r["name"]).lower().startswith("about")))
     return picks[:PAGES_PER_CONDITION]
 
 
@@ -70,6 +80,7 @@ def main() -> None:
                 "condition_id": c["id"],
                 "condition": c["name"],
                 "title": strip_html(p["name"]),
+                "audience": "clinician" if is_clinician(p["sourceUrl"]) else "public",
                 "url": p["sourceUrl"],
                 "date_published": p.get("datePublished"),
                 "text": page_text(p["id"]),
