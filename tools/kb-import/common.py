@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import html
 import json
+import os
 import re
 import subprocess
 import time
@@ -14,14 +15,33 @@ CACHE = Path(__file__).resolve().parent / ".cache"
 KB = ROOT / "knowledge-base"
 
 
-def fetch(url: str) -> bytes:
-    """GETs a URL with curl, which uses the system trust store and proxy settings."""
+ENV_FILE = Path(__file__).resolve().parent / ".env"
+
+
+def load_env() -> None:
+    """Reads KEY=value lines from .env without overriding variables already set in the shell."""
+    if not ENV_FILE.exists():
+        return
+    for line in ENV_FILE.read_text().splitlines():
+        key, sep, value = line.strip().partition("=")
+        if sep and not key.startswith("#") and value.strip():
+            os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
+
+
+load_env()
+
+
+def fetch(url: str, user: str | None = None) -> bytes:
+    """GETs a URL with curl, which uses the system trust store and proxy settings. The URL (and any
+    basic-auth `user:password`) go in through a stdin config, so keys never show in `ps`."""
+    config = f'url = "{url}"' + (f'\nuser = "{user}"' if user else "")
     result = subprocess.run(
-        ["curl", "-sSfL", "--retry", "3", "--max-time", "120", url],
-        capture_output=True,
+        ["curl", "-sSfL", "--retry", "3", "--max-time", "120", "-K", "-"],
+        input=config.encode(), capture_output=True,
     )
     if result.returncode != 0:
-        raise RuntimeError(f"GET {url} failed: {result.stderr.decode().strip()}")
+        safe = re.sub(r"(apiKey|api_key)=[^&]+", r"\1=…", url)
+        raise RuntimeError(f"GET {safe} failed: {result.stderr.decode().strip()}")
     return result.stdout
 
 
