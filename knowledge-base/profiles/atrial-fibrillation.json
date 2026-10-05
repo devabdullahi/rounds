@@ -36,66 +36,51 @@
       {
         "stage": "patient_presentation",
         "model": "deepseek/deepseek-chat",
-        "prompt_version": "7",
-        "generated_at": "2026-10-05T04:30:25Z"
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:48:24Z"
       },
       {
         "stage": "exam_vitals",
         "model": "deepseek/deepseek-chat",
-        "prompt_version": "7",
-        "generated_at": "2026-10-05T04:30:30Z"
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:48:30Z"
       },
       {
         "stage": "diagnostics",
         "model": "deepseek/deepseek-chat",
-        "prompt_version": "7",
-        "generated_at": "2026-10-05T04:30:57Z"
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:48:55Z"
       },
       {
         "stage": "differential_course",
         "model": "deepseek/deepseek-chat",
-        "prompt_version": "7",
-        "generated_at": "2026-10-05T04:31:32Z"
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:49:08Z"
       },
       {
         "stage": "teaching",
         "model": "deepseek/deepseek-chat",
-        "prompt_version": "7",
-        "generated_at": "2026-10-05T04:31:39Z"
+        "prompt_version": "8",
+        "generated_at": "2026-10-05T04:49:15Z"
       }
     ],
     "validation": {
-      "status": "failed",
-      "rule_errors": [
-        "$.differential[0].discriminators: unexpected key ecg",
-        "$.differential[10].discriminators: unexpected key ecg",
-        "$.differential[11].discriminators: unexpected key ecg",
-        "$.differential[1].discriminators: unexpected key ecg",
-        "$.differential[2].discriminators: unexpected key ecg",
-        "$.differential[3].discriminators: unexpected key ecg",
-        "$.differential[4].discriminators: unexpected key ecg",
-        "$.differential[5].discriminators: unexpected key ecg",
-        "$.differential[6].discriminators: unexpected key ecg",
-        "$.differential[7].discriminators: unexpected key ecg",
-        "$.differential[8].discriminators: unexpected key ecg",
-        "$.differential[9].discriminators: unexpected key ecg",
-        "$.ecg: unexpected key rate",
-        "workup.not_indicated: unknown test id 'ct_head_without_contrast'; use a listed id or the test's plain name",
-        "workup: 'electrocardiogram (12-lead)' appears in ['initial', 'confirmatory']; use one group, or not_indicated plus one entry with only_if"
-      ],
+      "status": "passed",
+      "rule_errors": [],
       "review_issues": [
+        "auto-repaired: workup: renamed 'ecg' to 'ECG'",
+        "auto-repaired: workup: renamed 'ecg' to 'ECG'",
+        "auto-repaired: workup: 'ecg' was in ['initial', 'confirmatory'], kept ['initial']",
+        "auto-repaired: ecg: dropped extra keys ['leads'] (findings carry their own leads)",
         "differential atrial-flutter: no profile yet",
         "differential multifocal-atrial-tachycardia: no profile yet",
-        "differential paroxysmal-supraventricular-tachycardia: no profile yet",
         "differential sinus-tachycardia: no profile yet",
+        "differential supraventricular-tachycardia: no profile yet",
         "differential ventricular-tachycardia: no profile yet",
-        "differential wolff-parkinson-white-syndrome: no profile yet",
-        "differential bundle-branch-block: no profile yet",
-        "differential hyperthyroidism: no profile yet",
-        "differential alcohol-use-disorder: no profile yet",
-        "differential pulmonary-embolism: no profile yet",
-        "differential acute-coronary-syndrome: no profile yet",
-        "differential sepsis: no profile yet"
+        "differential wolff-parkinson-white: no profile yet",
+        "differential sick-sinus-syndrome: no profile yet",
+        "differential panic-disorder: no profile yet",
+        "differential hyperthyroidism: no profile yet"
       ]
     },
     "review": {
@@ -118,7 +103,7 @@
     ],
     "risk_factors": [
       {
-        "text": "Older age, especially over 65",
+        "text": "Age over 65",
         "strength": "strong"
       },
       {
@@ -135,18 +120,18 @@
       },
       {
         "text": "Heavy alcohol use",
-        "strength": "moderate"
+        "strength": "strong"
       },
       {
         "text": "Obesity",
         "strength": "moderate"
       },
       {
-        "text": "Obstructive sleep apnea",
+        "text": "Diabetes",
         "strength": "moderate"
       },
       {
-        "text": "Diabetes",
+        "text": "Obstructive sleep apnea",
         "strength": "moderate"
       },
       {
@@ -158,7 +143,7 @@
         "strength": "moderate"
       },
       {
-        "text": "COPD and other chronic lung disease",
+        "text": "COPD or other chronic lung disease",
         "strength": "moderate"
       },
       {
@@ -175,10 +160,6 @@
       },
       {
         "text": "Stimulant drug use such as cocaine or methamphetamine",
-        "strength": "weak"
-      },
-      {
-        "text": "Smoking",
         "strength": "weak"
       },
       {
@@ -200,15 +181,15 @@
     ],
     "family_history": [
       "Atrial fibrillation in a parent or sibling",
-      "Heart disease in the family"
+      "Early heart disease in the family"
     ],
     "social_history": [
-      "Heavy or binge alcohol use",
+      "Regular or heavy alcohol use",
       "Current or past smoking",
       "Stimulant drug use"
     ],
     "exposures": [
-      "Recent cardiac, lung, or esophageal surgery",
+      "Recent cardiothoracic or esophageal surgery",
       "Acute illness or infection"
     ],
     "risk_medications": [
@@ -225,50 +206,50 @@
         "frequency": "common"
       },
       {
-        "text": "I feel worn out all the time",
+        "text": "I get tired so easily, even just walking to the mailbox",
         "frequency": "common"
       },
       {
-        "text": "I get winded just walking to the mailbox",
+        "text": "I feel like my heart is skipping beats",
         "frequency": "common"
       },
       {
-        "text": "I got lightheaded and nearly passed out",
+        "text": "I get short of breath when I do anything",
+        "frequency": "common"
+      },
+      {
+        "text": "I felt lightheaded and almost passed out",
         "frequency": "sometimes"
       },
       {
-        "text": "My chest feels tight and uncomfortable",
-        "frequency": "sometimes"
-      },
-      {
-        "text": "My doctor said my pulse was irregular at my checkup",
+        "text": "My doctor told me my pulse was irregular at my checkup",
         "frequency": "sometimes"
       }
     ],
     "hpi": {
-      "onset": "Often sudden, over seconds to minutes; sometimes noticed only when a clinician feels an irregular pulse or a monitor is reviewed",
+      "onset": "Often sudden, over seconds to minutes; sometimes noticed only when a clinician checks the pulse or on a routine ECG",
       "duration": "Episodes may last minutes to hours and stop on their own, or the rhythm may stay irregular for days, weeks, or longer",
-      "progression": "Variable: some people have brief occasional episodes, others have episodes that become longer and more frequent, and some stay in it continuously",
-      "location": "Chest, with the racing or fluttering felt behind the breastbone",
+      "progression": "Variable: some people have brief episodes that come and go, others have episodes that last longer over time, and some remain in the irregular rhythm continuously",
+      "location": "Chest, with the sensation of the heartbeat felt in the chest and sometimes the neck",
       "radiation": "Usually none",
-      "quality": "Irregular fluttering, pounding, or a sense that the heart is skipping beats",
-      "severity": "Mild to moderate for most; can be severe when the rate is very fast or when heart disease is present",
-      "timing": "Comes and goes, or constant; often worse with exertion, after alcohol, or at night",
+      "quality": "Fast, irregular, fluttering or pounding heartbeat; often described as a fish flopping or a drumroll rather than a steady beat",
+      "severity": "Mild to moderate for most; can be severe when the rate is very fast or when heart failure or low blood pressure develops",
+      "timing": "Episodes can start at any time, often at rest or at night; exercise and alcohol can bring them on",
       "aggravating": [
-        "Exertion",
         "Alcohol",
         "Caffeine",
-        "Stress or poor sleep",
+        "Exercise or exertion",
+        "Stress",
         "Dehydration or acute illness"
       ],
       "relieving": [
-        "Rest",
-        "Sitting or lying down",
-        "Nothing reliably stops an episode on its own"
+        "Resting and sitting down",
+        "Episodes may stop on their own",
+        "Rate-controlling medication"
       ],
       "associated_symptoms": [
         {
-          "text": "Tiredness or low energy",
+          "text": "Fatigue or low energy",
           "frequency": "common"
         },
         {
@@ -276,11 +257,7 @@
           "frequency": "common"
         },
         {
-          "text": "Feeling lightheaded",
-          "frequency": "sometimes"
-        },
-        {
-          "text": "Chest tightness or pressure",
+          "text": "Feeling lightheaded or dizzy",
           "frequency": "sometimes"
         },
         {
@@ -288,25 +265,34 @@
           "frequency": "sometimes"
         },
         {
+          "text": "Chest discomfort or pressure",
+          "frequency": "sometimes"
+        },
+        {
           "text": "Swelling in the ankles or legs",
           "frequency": "sometimes"
         },
         {
-          "text": "Urinating more often, especially at night",
+          "text": "Waking up at night short of breath",
           "frequency": "sometimes"
         },
         {
           "text": "Fainting",
           "frequency": "rare"
+        },
+        {
+          "text": "Sudden weakness or numbness on one side, trouble speaking, or vision loss (from a clot causing a stroke)",
+          "frequency": "rare"
         }
       ],
       "pertinent_negatives": [
-        "Crushing chest pain radiating to the arm or jaw",
+        "Crushing chest pain that radiates to the arm or jaw and comes on with exertion",
         "Fever",
         "Coughing up blood",
-        "Sudden one-sided weakness, numbness, or trouble speaking",
-        "Painful swelling in one calf",
-        "Recent long car or plane trip with leg swelling"
+        "Recent long car ride, flight, or leg surgery with one-sided leg swelling",
+        "Sudden sharp chest pain that worsens with a deep breath",
+        "Known prior heart attack with the same pain",
+        "Vomiting or diarrhea causing dehydration"
       ]
     },
     "ros": [
@@ -314,7 +300,7 @@
         "system": "constitutional",
         "positives": [
           {
-            "text": "Fatigue",
+            "text": "Tiredness or low energy",
             "frequency": "common"
           },
           {
@@ -332,30 +318,30 @@
         "system": "cardiovascular",
         "positives": [
           {
-            "text": "Palpitations",
+            "text": "Palpitations or fluttering in the chest",
             "frequency": "common"
           },
           {
-            "text": "Irregular heartbeat noticed by the patient",
+            "text": "Irregular or racing pulse",
             "frequency": "common"
-          },
-          {
-            "text": "Leg or ankle swelling",
-            "frequency": "sometimes"
           },
           {
             "text": "Chest discomfort",
             "frequency": "sometimes"
+          },
+          {
+            "text": "Swelling in the legs or ankles",
+            "frequency": "sometimes"
           }
         ],
         "negatives": [
-          "Exertional chest pain relieved by rest",
-          "Pain radiating to the jaw or arm",
-          "Calf pain or swelling"
+          "Pain that radiates to the arm or jaw",
+          "Pain brought on reliably by exertion and relieved by rest",
+          "Fainting with exertion"
         ],
         "argues_against": [
-          "Acute coronary syndrome",
-          "Deep vein thrombosis"
+          "Angina from blocked coronary arteries",
+          "Aortic dissection"
         ]
       },
       {
@@ -366,17 +352,22 @@
             "frequency": "common"
           },
           {
-            "text": "Shortness of breath lying flat",
+            "text": "Shortness of breath when lying flat",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Waking at night short of breath",
             "frequency": "sometimes"
           }
         ],
         "negatives": [
           "Coughing up blood",
           "Pleuritic chest pain",
-          "Recent immobilization"
+          "Recent immobility with leg swelling"
         ],
         "argues_against": [
-          "Pulmonary embolism"
+          "Pulmonary embolism",
+          "Pneumonia"
         ]
       },
       {
@@ -387,110 +378,74 @@
             "frequency": "sometimes"
           },
           {
-            "text": "Near-fainting",
+            "text": "Fainting",
+            "frequency": "rare"
+          },
+          {
+            "text": "Sudden one-sided weakness, numbness, or trouble speaking",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Severe sudden headache",
+          "New confusion or trouble finding words",
+          "Loss of vision in one eye"
+        ],
+        "argues_against": [
+          "Intracranial hemorrhage",
+          "Stroke as the only problem"
+        ]
+      },
+      {
+        "system": "psychiatric",
+        "positives": [
+          {
+            "text": "Anxiety or worry about the heartbeat",
             "frequency": "sometimes"
           }
         ],
         "negatives": [
-          "Sudden weakness on one side",
-          "Trouble speaking",
-          "Sudden vision loss",
-          "New severe headache"
-        ],
-        "argues_against": [
-          "Stroke or transient ischemic attack"
+          "Panic attacks that reliably precede the palpitations",
+          "Depressed mood"
         ]
       },
       {
         "system": "endocrine",
         "positives": [
           {
-            "text": "Heat intolerance or feeling jittery",
+            "text": "Heat intolerance, tremor, or weight loss",
             "frequency": "rare"
           }
         ],
         "negatives": [
-          "Weight loss with increased appetite",
-          "Tremor"
-        ],
-        "argues_against": [
-          "Hyperthyroidism as the sole driver"
-        ]
-      }
-    ],
-    "atypical": [
-      {
-        "population": "older_adults",
-        "how_it_differs": "Many have no palpitations at all and instead present with fatigue, poor exercise tolerance, confusion, falls, or worsening heart failure; the irregular pulse is found on routine exam.",
-        "missing_classic_features": [
-          "Palpitations",
-          "Racing sensation"
-        ]
-      },
-      {
-        "population": "children",
-        "how_it_differs": "Rare, and usually tied to congenital heart disease, prior cardiac surgery, or an inherited rhythm condition; palpitations and exercise intolerance are the usual clues.",
-        "missing_classic_features": [
-          "Age over 65",
-          "Hypertension as a driver"
-        ]
-      },
-      {
-        "population": "pregnancy",
-        "how_it_differs": "Uncommon; when it occurs it is often linked to hyperthyroidism, structural heart disease, or a prior ablation, and symptoms overlap heavily with normal pregnancy breathlessness.",
-        "missing_classic_features": [
-          "Older age",
-          "Chronic hypertension"
-        ]
-      },
-      {
-        "population": "obesity",
-        "how_it_differs": "Symptoms are more often exertional breathlessness and fatigue than palpitations, and episodes are more likely to become persistent.",
-        "missing_classic_features": [
-          "Clear fluttering sensation"
-        ]
-      },
-      {
-        "population": "diabetes",
-        "how_it_differs": "Silent or minimally symptomatic episodes are more common, so it is often picked up on a routine pulse check or monitor rather than from a complaint.",
-        "missing_classic_features": [
-          "Palpitations"
+          "Cold intolerance",
+          "Polyuria and polydipsia"
         ]
       }
     ]
   },
   "exam": {
     "general": {
-      "mild": "Comfortable, no distress; may appear well",
+      "mild": "Comfortable, no distress; may be unaware of the rhythm",
       "moderate": "Mildly anxious or restless, aware of the heartbeat",
-      "severe": "Dyspneic, diaphoretic, sitting upright, visibly uncomfortable",
-      "critical": "Acutely ill, hypotensive, altered mental status, signs of shock or pulmonary edema"
+      "severe": "Dyspneic at rest or with minimal effort, diaphoretic, prefers sitting upright",
+      "critical": "Ill-appearing, pale and clammy, confused or lethargic, may be hypotensive"
     },
     "findings": [
       {
         "id": "irregularly-irregular-pulse",
-        "region": "cardiac",
-        "maneuver": "Palpate the radial pulse for at least 30 seconds, assessing rate and rhythm",
-        "finding": "Irregularly irregular pulse with no repeating pattern",
+        "region": "extremities",
+        "maneuver": "Palpate the radial pulse for at least 30 seconds (or auscultate the heart)",
+        "finding": "Irregularly irregular rhythm with a variable rate and pulse deficit relative to the apical rate",
         "frequency": "almost_always",
         "significance": "strongly_supports",
         "importance": "essential"
       },
       {
-        "id": "pulse-deficit",
-        "region": "cardiac",
-        "maneuver": "Auscultate the apical rate while simultaneously palpating the radial pulse",
-        "finding": "Apical rate exceeds the radial rate (pulse deficit)",
-        "frequency": "common",
-        "min_severity": "moderate",
-        "significance": "strongly_supports",
-        "importance": "important"
-      },
-      {
         "id": "irregular-heart-sounds",
         "region": "cardiac",
         "maneuver": "Auscultate the heart at the apex and base",
-        "finding": "Irregularly irregular rhythm with variable intensity of S1",
+        "finding": "Irregularly irregular heart sounds with variable intensity of S1",
         "frequency": "almost_always",
         "significance": "strongly_supports",
         "importance": "essential"
@@ -498,17 +453,25 @@
       {
         "id": "tachycardia",
         "region": "cardiac",
-        "maneuver": "Count the heart rate by auscultation or pulse",
-        "finding": "Heart rate greater than 100/min",
+        "maneuver": "Count the heart rate by auscultation or on the monitor",
+        "finding": "Heart rate above 100/min",
         "frequency": "common",
-        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "pulse-deficit",
+        "region": "cardiac",
+        "maneuver": "Compare the apical rate by auscultation with the radial rate by palpation simultaneously",
+        "finding": "Radial rate lower than the apical rate",
+        "frequency": "common",
         "significance": "supports",
         "importance": "important"
       },
       {
         "id": "s3-gallop",
         "region": "cardiac",
-        "maneuver": "Auscultate at the apex with the bell",
+        "maneuver": "Auscultate the apex with the bell while the patient lies on the left side",
         "finding": "Third heart sound suggesting heart failure",
         "frequency": "sometimes",
         "min_severity": "moderate",
@@ -516,29 +479,20 @@
         "importance": "important"
       },
       {
-        "id": "murmur",
-        "region": "cardiac",
-        "maneuver": "Auscultate all valve areas",
-        "finding": "Murmur suggesting valvular disease (e.g., mitral regurgitation or stenosis)",
-        "frequency": "sometimes",
-        "significance": "supports",
-        "importance": "important"
-      },
-      {
-        "id": "jvd",
-        "region": "neck",
-        "maneuver": "Inspect the internal jugular vein at 45 degrees",
-        "finding": "Elevated jugular venous pressure",
+        "id": "rales",
+        "region": "lung",
+        "maneuver": "Auscultate the lung bases posteriorly",
+        "finding": "Crackles at the bases from pulmonary congestion",
         "frequency": "sometimes",
         "min_severity": "moderate",
         "significance": "supports",
         "importance": "important"
       },
       {
-        "id": "crackles",
-        "region": "lung",
-        "maneuver": "Auscultate the lung bases",
-        "finding": "Bibasilar crackles suggesting pulmonary congestion",
+        "id": "jvd",
+        "region": "neck",
+        "maneuver": "Inspect the internal jugular venous pulsation with the patient at 30–45 degrees",
+        "finding": "Elevated jugular venous pressure",
         "frequency": "sometimes",
         "min_severity": "moderate",
         "significance": "supports",
@@ -547,18 +501,27 @@
       {
         "id": "peripheral-edema",
         "region": "extremities",
-        "maneuver": "Press the pretibial area and ankles for pitting edema",
-        "finding": "Bilateral pitting edema",
+        "maneuver": "Press over the dorsum of the foot and lower shin for several seconds",
+        "finding": "Pitting edema of the lower extremities",
         "frequency": "sometimes",
         "min_severity": "moderate",
         "significance": "supports",
         "importance": "important"
       },
       {
+        "id": "murmur",
+        "region": "cardiac",
+        "maneuver": "Auscultate all valve areas for murmurs",
+        "finding": "Murmur suggesting valvular disease, such as mitral stenosis or regurgitation",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
         "id": "hypotension",
         "region": "general",
-        "maneuver": "Measure blood pressure in both arms",
-        "finding": "Systolic blood pressure below 90 mm Hg",
+        "maneuver": "Measure the blood pressure in both arms",
+        "finding": "Low blood pressure or a narrow pulse pressure",
         "frequency": "rare",
         "min_severity": "severe",
         "significance": "supports",
@@ -567,39 +530,48 @@
       {
         "id": "altered-mental-status",
         "region": "mental_status",
-        "maneuver": "Assess orientation and level of consciousness",
-        "finding": "Confusion or reduced alertness from poor perfusion",
+        "maneuver": "Assess orientation and level of alertness",
+        "finding": "Confusion or lethargy from poor perfusion",
         "frequency": "rare",
         "min_severity": "critical",
         "significance": "supports",
         "importance": "essential"
       },
       {
-        "id": "normal-thyroid",
-        "region": "neck",
-        "maneuver": "Palpate the thyroid gland",
-        "finding": "No goiter or nodule",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "optional"
-      },
-      {
-        "id": "no-calf-tenderness",
-        "region": "extremities",
-        "maneuver": "Palpate the calves for tenderness and asymmetry",
-        "finding": "No calf tenderness or swelling to suggest deep vein thrombosis",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "optional"
-      },
-      {
-        "id": "no-focal-neuro-deficit",
+        "id": "focal-neuro-deficit",
         "region": "neuro",
-        "maneuver": "Screen cranial nerves, strength, and speech",
-        "finding": "No focal neurologic deficit",
-        "frequency": "almost_always",
-        "significance": "neutral",
+        "maneuver": "Perform a focused neurologic exam including strength, speech, and facial symmetry",
+        "finding": "Focal weakness, sensory loss, or speech difficulty from a cardioembolic stroke",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "regular-pulse",
+        "region": "extremities",
+        "maneuver": "Palpate the radial pulse",
+        "finding": "Regular rhythm with a normal rate",
+        "frequency": "rare",
+        "significance": "argues_against",
         "importance": "important"
+      },
+      {
+        "id": "no-murmur",
+        "region": "cardiac",
+        "maneuver": "Auscultate the heart",
+        "finding": "No murmur or gallop",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "clear-lungs",
+        "region": "lung",
+        "maneuver": "Auscultate the lungs",
+        "finding": "Clear breath sounds without crackles or wheezing",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "optional"
       }
     ]
   },
@@ -607,59 +579,67 @@
     "hr": {
       "mild": {
         "min": 60,
-        "max": 100
+        "max": 110
       },
       "moderate": {
-        "min": 100,
+        "min": 90,
         "max": 140
       },
       "severe": {
-        "min": 130,
+        "min": 120,
         "max": 170
       },
       "critical": {
-        "min": 160,
+        "min": 150,
         "max": 220
+      }
+    },
+    "rr": {
+      "moderate": {
+        "min": 18,
+        "max": 24
+      },
+      "severe": {
+        "min": 22,
+        "max": 30
+      },
+      "critical": {
+        "min": 26,
+        "max": 36
       }
     },
     "sbp": {
       "severe": {
-        "min": 85,
-        "max": 100
+        "min": 90,
+        "max": 110
       },
       "critical": {
-        "min": 60,
-        "max": 90
+        "min": 70,
+        "max": 95
       }
     },
     "dbp": {
       "severe": {
         "min": 50,
-        "max": 65
+        "max": 70
       },
       "critical": {
-        "min": 30,
+        "min": 40,
         "max": 60
       }
     },
-    "rr": {
-      "severe": {
-        "min": 20,
-        "max": 28
-      },
-      "critical": {
-        "min": 24,
-        "max": 34
-      }
-    },
     "spo2": {
+      "moderate": {
+        "min": 92,
+        "max": 96
+      },
       "severe": {
         "min": 88,
-        "max": 94
+        "max": 93
       },
       "critical": {
-        "min": 80,
-        "max": 92
+        "min": 82,
+        "max": 90
       }
     }
   },
@@ -669,68 +649,72 @@
       "ranges": {
         "mild": {
           "min": 0.01,
-          "max": 0.4
+          "max": 0.3
         },
         "moderate": {
           "min": 0.01,
-          "max": 0.1
+          "max": 0.2
         }
       },
       "frequency": "sometimes",
       "importance": "essential",
-      "caveat": "Hyperthyroidism is a reversible driver; check in every new diagnosis, especially with weight loss, heat intolerance, or tremor."
+      "caveat": "Hyperthyroidism is a reversible cause; check in every new diagnosis. Values shown are for hyperthyroid patients; most patients with AFib have a normal TSH."
     },
     {
       "test_id": "ft4",
       "ranges": {
         "mild": {
-          "min": 1.8,
-          "max": 2.5
+          "min": 1.9,
+          "max": 2.6
         },
         "moderate": {
-          "min": 2.0,
-          "max": 4.0
+          "min": 2.2,
+          "max": 3.5
         }
       },
-      "frequency": "sometimes",
+      "frequency": "rare",
       "importance": "important",
-      "caveat": "Order with an abnormal TSH to confirm thyrotoxicosis."
+      "caveat": "Only abnormal when thyrotoxicosis is the driver."
     },
     {
       "test_id": "hgb",
       "ranges": {
         "mild": {
           "min": 10.0,
-          "max": 12.0
+          "max": 11.9
         },
         "moderate": {
-          "min": 8.0,
-          "max": 10.0
+          "min": 8.5,
+          "max": 10.5
+        },
+        "severe": {
+          "min": 7.0,
+          "max": 9.0
         }
       },
       "frequency": "sometimes",
       "importance": "important",
-      "caveat": "Anemia worsens symptoms and can be a sign of occult bleeding, which matters before starting anticoagulation."
+      "caveat": "Anemia worsens symptoms and can precipitate AFib; also matters before anticoagulation."
     },
     {
       "test_id": "plt",
       "ranges": {
         "mild": {
           "min": 100,
-          "max": 150
+          "max": 149
         },
         "moderate": {
-          "min": 50,
-          "max": 100
+          "min": 60,
+          "max": 120
         },
         "severe": {
-          "min": 20,
-          "max": 50
+          "min": 30,
+          "max": 80
         }
       },
       "frequency": "sometimes",
       "importance": "important",
-      "caveat": "Low platelets change the choice and safety of anticoagulation."
+      "caveat": "Low platelets affect the choice and safety of anticoagulation."
     },
     {
       "test_id": "cr",
@@ -741,118 +725,129 @@
         },
         "moderate": {
           "min": 1.5,
-          "max": 2.5
+          "max": 2.2
         },
         "severe": {
           "min": 2.0,
-          "max": 4.0
+          "max": 3.5
+        },
+        "critical": {
+          "min": 3.0,
+          "max": 6.0
         }
       },
       "frequency": "common",
       "importance": "essential",
-      "caveat": "Kidney function guides dosing of rate-control drugs and anticoagulants; eGFR is computed from this."
+      "caveat": "Kidney function drives anticoagulant dosing and is part of stroke and bleeding risk scores."
     },
     {
       "test_id": "k",
       "ranges": {
         "mild": {
-          "min": 3.0,
-          "max": 3.5
+          "min": 3.2,
+          "max": 3.4
         },
         "moderate": {
-          "min": 2.5,
-          "max": 3.0
+          "min": 2.8,
+          "max": 3.2
         },
         "severe": {
+          "min": 2.4,
+          "max": 2.9
+        },
+        "critical": {
           "min": 2.0,
-          "max": 2.5
+          "max": 2.6
         }
       },
       "frequency": "sometimes",
       "importance": "important",
-      "caveat": "Hypokalemia promotes atrial fibrillation and arrhythmia; correct before or during rate control."
+      "caveat": "Hypokalemia (diuretics) promotes AFib; hyperkalemia can widen the QRS and mimic other rhythms."
     },
     {
       "test_id": "mg",
       "ranges": {
         "mild": {
-          "min": 1.4,
+          "min": 1.5,
           "max": 1.7
         },
         "moderate": {
-          "min": 1.0,
-          "max": 1.4
+          "min": 1.2,
+          "max": 1.6
         }
       },
       "frequency": "sometimes",
       "importance": "important",
-      "caveat": "Low magnesium makes potassium hard to correct and lowers the threshold for arrhythmia."
+      "caveat": "Low magnesium makes rate control harder and predisposes to arrhythmia."
     },
     {
       "test_id": "hs_tnt",
       "ranges": {
         "mild": {
-          "min": 14,
+          "min": 15,
           "max": 30
         },
         "moderate": {
           "min": 25,
-          "max": 60
+          "max": 80
         },
         "severe": {
-          "min": 50,
-          "max": 200
+          "min": 60,
+          "max": 300
+        },
+        "critical": {
+          "min": 200,
+          "max": 2000
         }
       },
       "frequency": "sometimes",
       "importance": "important",
-      "caveat": "Mild elevations are common with a fast rate alone; a rising or markedly high value points to acute coronary syndrome or demand ischemia."
+      "caveat": "Mild elevations are common from demand ischemia with a fast rate; a rising pattern suggests acute coronary syndrome and changes management."
     },
     {
       "test_id": "bnp",
       "ranges": {
         "mild": {
-          "min": 100,
-          "max": 300
+          "min": 120,
+          "max": 400
         },
         "moderate": {
           "min": 300,
           "max": 900
         },
         "severe": {
-          "min": 900,
-          "max": 3000
+          "min": 700,
+          "max": 2000
         }
       },
-      "frequency": "common",
+      "frequency": "sometimes",
       "importance": "important",
-      "caveat": "Supports heart failure as the driver or consequence; higher values track with worse congestion."
+      "caveat": "Elevated in heart failure, which is both a cause and a consequence of AFib."
     },
     {
       "test_id": "nt_probnp",
       "ranges": {
         "mild": {
-          "min": 125,
-          "max": 400
+          "min": 150,
+          "max": 500
         },
         "moderate": {
           "min": 400,
           "max": 1200
         },
         "severe": {
-          "min": 1200,
-          "max": 4000
+          "min": 900,
+          "max": 3000
         }
       },
-      "frequency": "common",
-      "importance": "optional",
-      "caveat": "Interchangeable with BNP; order one, not both."
+      "frequency": "sometimes",
+      "importance": "optional"
     },
     {
       "test_id": "inr",
       "ranges": {
         "mild": {
-          "min": 1.1,
+          "min": 1.2,
           "max": 1.5
         },
         "moderate": {
@@ -866,23 +861,23 @@
       },
       "frequency": "sometimes",
       "importance": "important",
-      "caveat": "Baseline before starting warfarin; an elevated value suggests liver disease or a bleeding tendency."
+      "caveat": "Baseline before starting warfarin; therapeutic range for AFib is usually 2.0–3.0. Normal if the patient is not on warfarin."
     },
     {
       "test_id": "aptt",
       "ranges": {
         "mild": {
-          "min": 35,
+          "min": 36,
           "max": 45
         },
         "moderate": {
           "min": 45,
-          "max": 60
+          "max": 70
         }
       },
-      "frequency": "sometimes",
+      "frequency": "rare",
       "importance": "optional",
-      "caveat": "Baseline before heparin or when a bleeding disorder is suspected."
+      "caveat": "Prolonged only if the patient is on heparin or has a coagulopathy."
     },
     {
       "test_id": "a1c",
@@ -893,87 +888,59 @@
         },
         "moderate": {
           "min": 6.5,
-          "max": 9.0
+          "max": 8.0
         },
         "severe": {
-          "min": 9.0,
-          "max": 13.0
+          "min": 8.0,
+          "max": 11.0
         }
       },
       "frequency": "common",
       "importance": "important",
-      "caveat": "Diabetes is a major stroke risk factor and affects anticoagulation decisions."
-    },
-    {
-      "test_id": "chol",
-      "ranges": {
-        "mild": {
-          "min": 200,
-          "max": 240
-        },
-        "moderate": {
-          "min": 240,
-          "max": 300
-        }
-      },
-      "frequency": "sometimes",
-      "importance": "optional",
-      "caveat": "Part of vascular risk assessment, not the diagnosis."
+      "caveat": "Diabetes is common and adds to stroke risk."
     },
     {
       "test_id": "ldl",
       "ranges": {
         "mild": {
           "min": 100,
-          "max": 130
+          "max": 129
         },
         "moderate": {
           "min": 130,
-          "max": 190
+          "max": 159
+        },
+        "severe": {
+          "min": 160,
+          "max": 220
         }
       },
-      "frequency": "sometimes",
+      "frequency": "common",
       "importance": "optional",
-      "caveat": "Guides atherosclerotic risk reduction."
+      "caveat": "Guides vascular risk reduction."
     },
     {
-      "test_id": "wbc",
+      "test_id": "d_dimer",
       "ranges": {
         "mild": {
-          "min": 11.0,
-          "max": 14.0
+          "min": 0.6,
+          "max": 1.5
         },
         "moderate": {
-          "min": 14.0,
-          "max": 20.0
+          "min": 1.5,
+          "max": 4.0
         }
       },
-      "frequency": "sometimes",
-      "importance": "important",
-      "caveat": "An elevated count suggests infection or another acute trigger for the arrhythmia."
-    },
-    {
-      "test_id": "crp",
-      "ranges": {
-        "mild": {
-          "min": 1.0,
-          "max": 3.0
-        },
-        "moderate": {
-          "min": 3.0,
-          "max": 10.0
-        }
-      },
-      "frequency": "sometimes",
+      "frequency": "rare",
       "importance": "optional",
-      "caveat": "Nonspecific; supports an inflammatory or infectious trigger when the story fits."
+      "caveat": "Not part of AFib workup; only if pulmonary embolism is being considered."
     }
   ],
   "ecg": {
     "findings": [
       {
         "feature": "rhythm",
-        "finding": "Irregularly irregular ventricular response with no repeating pattern",
+        "finding": "Irregularly irregular ventricular response with no consistent pattern",
         "frequency": "almost_always"
       },
       {
@@ -983,66 +950,57 @@
       },
       {
         "feature": "rate",
-        "finding": "Ventricular rate often 100–160/min when untreated; may be normal or slow with rate-control drugs or conduction disease",
+        "finding": "Ventricular rate usually 100–160/min when untreated; may be normal or slow with rate-controlling drugs or conduction disease",
         "frequency": "common"
       },
       {
         "feature": "qrs",
-        "finding": "Narrow QRS unless there is a bundle branch block, aberrancy, or a pre-excited pathway",
-        "frequency": "common"
-      },
-      {
-        "feature": "qt",
-        "finding": "QT interval varies with the irregular cycle length; measure and correct before starting antiarrhythmic drugs",
-        "frequency": "common"
-      },
-      {
-        "feature": "st",
-        "finding": "ST depression or T-wave flattening from a fast rate (demand ischemia); resolves with rate control",
-        "frequency": "sometimes"
+        "finding": "Narrow QRS unless there is a bundle branch block or pre-excitation",
+        "frequency": "almost_always"
       },
       {
         "feature": "conduction",
-        "finding": "Coarse or fine fibrillatory waves with an irregularly irregular response; a regular wide-complex tachycardia should raise concern for ventricular tachycardia or pre-excited atrial fibrillation",
+        "finding": "Coarse or fine fibrillatory activity in V1; R-R intervals vary by more than 10%",
+        "frequency": "almost_always"
+      },
+      {
+        "feature": "other",
+        "finding": "Pre-excited AFib: irregular, very fast, wide-complex rhythm with varying QRS width (must-not-miss; avoid AV nodal blockers)",
+        "frequency": "rare"
+      },
+      {
+        "feature": "other",
+        "finding": "Left ventricular hypertrophy or prior Q waves suggesting hypertensive or ischemic heart disease",
+        "frequency": "sometimes"
+      },
+      {
+        "feature": "qt",
+        "finding": "QT interval may be prolonged by antiarrhythmic drugs; measure after rate control",
+        "frequency": "sometimes"
+      },
+      {
+        "feature": "st",
+        "finding": "ST depression or T-wave inversion from demand ischemia during rapid rates",
         "frequency": "sometimes"
       },
       {
         "feature": "other",
-        "finding": "Left ventricular hypertrophy or prior Q-wave infarction suggesting underlying structural heart disease",
-        "frequency": "sometimes"
+        "finding": "Complete heart block with a regular slow escape rhythm argues against AFib as the sole rhythm",
+        "frequency": "rare"
       }
-    ],
-    "rate": {
-      "mild": {
-        "min": 60,
-        "max": 100
-      },
-      "moderate": {
-        "min": 100,
-        "max": 140
-      },
-      "severe": {
-        "min": 130,
-        "max": 170
-      },
-      "critical": {
-        "min": 160,
-        "max": 220
-      }
-    }
+    ]
   },
   "imaging": [
     {
       "study": "Transthoracic echocardiogram",
       "modality": "echo",
-      "preferred_when": "Every new diagnosis of atrial fibrillation",
       "findings": [
         {
           "text": "Left atrial enlargement",
           "frequency": "common"
         },
         {
-          "text": "Left ventricular hypertrophy from long-standing hypertension",
+          "text": "Left ventricular hypertrophy from hypertension",
           "frequency": "common"
         },
         {
@@ -1050,23 +1008,23 @@
           "frequency": "sometimes"
         },
         {
-          "text": "Mitral regurgitation or mitral stenosis",
+          "text": "Mitral stenosis or significant mitral regurgitation",
           "frequency": "sometimes"
         },
         {
-          "text": "Normal chamber sizes and function (lone atrial fibrillation)",
-          "frequency": "sometimes"
-        },
-        {
-          "text": "Intracardiac thrombus, best seen in the left atrial appendage on transesophageal imaging",
+          "text": "Left atrial thrombus (rare on TTE; better seen on TEE)",
           "frequency": "rare"
+        },
+        {
+          "text": "Normal study",
+          "frequency": "sometimes"
         }
       ]
     },
     {
       "study": "Transesophageal echocardiogram",
       "modality": "echo",
-      "preferred_when": "Before cardioversion when the duration of atrial fibrillation is over 48 hours or unknown and anticoagulation has not been adequate",
+      "preferred_when": "Before cardioversion when the duration of AFib is over 48 hours or unknown, or when anticoagulation has been inadequate",
       "findings": [
         {
           "text": "Left atrial appendage thrombus",
@@ -1074,10 +1032,10 @@
         },
         {
           "text": "Spontaneous echo contrast (smoke) in the left atrium",
-          "frequency": "common"
+          "frequency": "sometimes"
         },
         {
-          "text": "No thrombus, allowing cardioversion to proceed",
+          "text": "No thrombus, allowing cardioversion",
           "frequency": "common"
         }
       ]
@@ -1095,46 +1053,42 @@
           "frequency": "sometimes"
         },
         {
-          "text": "Hyperinflated lungs suggesting COPD",
-          "frequency": "sometimes"
-        },
-        {
-          "text": "Usually normal",
+          "text": "Normal study",
           "frequency": "common"
         }
       ]
     },
     {
-      "study": "CT or MRI of the brain without contrast",
+      "study": "CT head without contrast",
       "modality": "ct",
-      "preferred_when": "New focal neurologic symptoms or suspected stroke",
+      "preferred_when": "New focal neurologic deficit or altered mental status",
       "findings": [
         {
-          "text": "No acute hemorrhage, allowing anticoagulation decisions",
+          "text": "No acute hemorrhage (allows consideration of anticoagulation)",
           "frequency": "common"
         },
         {
-          "text": "Acute or subacute ischemic infarct",
+          "text": "Hypodense area in a vascular territory consistent with ischemic stroke",
           "frequency": "sometimes"
         },
         {
-          "text": "Old lacunar or cortical infarcts",
-          "frequency": "sometimes"
+          "text": "Intracranial hemorrhage",
+          "frequency": "rare"
         }
       ]
     },
     {
-      "study": "Coronary angiography",
-      "modality": "other",
-      "preferred_when": "Chest pain with troponin rise suggesting acute coronary syndrome",
+      "study": "Cardiac CT or MRI",
+      "modality": "ct",
+      "preferred_when": "Planning catheter ablation or when echocardiography is inconclusive",
       "findings": [
         {
-          "text": "Obstructive coronary artery disease",
-          "frequency": "sometimes"
+          "text": "Left atrial and pulmonary vein anatomy for ablation planning",
+          "frequency": "common"
         },
         {
-          "text": "Nonobstructive disease or normal coronaries with demand ischemia from the fast rate",
-          "frequency": "common"
+          "text": "Left atrial appendage thrombus",
+          "frequency": "sometimes"
         }
       ]
     }
@@ -1142,79 +1096,83 @@
   "workup": {
     "initial": [
       {
-        "test": "Electrocardiogram (12-lead)",
+        "test": "ECG",
         "why": "Confirms the diagnosis by showing an irregularly irregular rhythm without P waves"
       },
       {
         "test": "cbc",
-        "why": "Anemia, infection, and platelet count before anticoagulation"
+        "why": "Anemia, infection, or thrombocytopenia affecting anticoagulation"
       },
       {
         "test": "bmp",
-        "why": "Potassium, magnesium, and kidney function guide rate control and anticoagulant dosing"
+        "why": "Potassium, magnesium-related electrolytes, and kidney function for drug dosing"
       },
       {
         "test": "tsh",
-        "why": "Hyperthyroidism is a reversible cause"
-      },
-      {
-        "test": "Transthoracic echocardiogram",
-        "why": "Looks for structural heart disease, left atrial size, and ejection fraction"
+        "why": "Reversible cause; hyperthyroidism must be excluded"
       },
       {
         "test": "hs_tnt",
-        "why": "Screens for acute coronary syndrome when chest pain or a very fast rate is present",
-        "only_if": "chest pain, ischemic ECG changes, or hemodynamic instability"
+        "why": "Looks for acute coronary syndrome or demand ischemia with rapid rates"
+      },
+      {
+        "test": "bnp",
+        "why": "Assesses for heart failure as a cause or consequence"
+      },
+      {
+        "test": "coag",
+        "why": "Baseline INR/aPTT before starting anticoagulation"
       },
       {
         "test": "Chest x-ray",
-        "why": "Assesses pulmonary congestion and lung disease",
-        "only_if": "dyspnea, hypoxemia, or suspected heart failure or pneumonia"
+        "why": "Heart size and pulmonary congestion",
+        "only_if": "dyspnea, heart failure signs, or suspected pulmonary disease"
       },
       {
-        "test": "Ambulatory rhythm monitor (Holter or event monitor)",
-        "why": "Captures paroxysmal episodes not seen on a single ECG",
-        "only_if": "symptoms are intermittent and the initial ECG is sinus rhythm"
+        "test": "Transthoracic echocardiogram",
+        "why": "Evaluates chamber size, valves, and ejection fraction; guides anticoagulation and rhythm strategy"
       }
     ],
     "confirmatory": [
       {
-        "test": "Electrocardiogram (12-lead)",
-        "why": "The diagnostic test; a 12-lead tracing during symptoms is definitive"
+        "test": "Holter monitor",
+        "why": "Captures paroxysmal AFib when the resting ECG is normal",
+        "only_if": "symptoms are intermittent and the ECG does not show AFib"
+      },
+      {
+        "test": "event monitor",
+        "why": "Longer monitoring for infrequent symptoms",
+        "only_if": "symptoms occur less than once a day"
       }
     ],
     "supporting": [
       {
-        "test": "bnp",
-        "why": "Supports heart failure as the driver or consequence"
+        "test": "Transesophageal echocardiogram",
+        "why": "Rules out left atrial thrombus before cardioversion",
+        "only_if": "AFib duration over 48 hours or unknown, or anticoagulation inadequate"
       },
       {
         "test": "a1c",
-        "why": "Identifies diabetes, a major stroke risk factor"
+        "why": "Diabetes adds to stroke risk and guides risk factor control"
       },
       {
-        "test": "inr",
-        "why": "Baseline before starting warfarin"
+        "test": "lipids",
+        "why": "Vascular risk reduction"
       },
       {
-        "test": "aptt",
-        "why": "Baseline before heparin or when a bleeding disorder is suspected"
+        "test": "mg",
+        "why": "Corrects magnesium before rate or rhythm control"
       },
       {
-        "test": "Transesophageal echocardiogram",
-        "why": "Rules out left atrial appendage thrombus before cardioversion",
-        "only_if": "atrial fibrillation has lasted over 48 hours or the duration is unknown and anticoagulation has not been adequate"
-      },
-      {
-        "test": "CT or MRI of the brain without contrast",
-        "why": "Evaluates for stroke",
+        "test": "CT head without contrast",
+        "why": "Evaluates for stroke or hemorrhage",
         "only_if": "new focal neurologic deficit or altered mental status"
       }
     ],
     "not_indicated": [
       {
         "test": "d_dimer",
-        "why": "No role in diagnosing atrial fibrillation; only useful if pulmonary embolism is suspected"
+        "why": "No role in diagnosing AFib; only if pulmonary embolism is suspected"
       },
       {
         "test": "lipase",
@@ -1222,33 +1180,56 @@
       },
       {
         "test": "ua",
-        "why": "Does not help diagnose or manage atrial fibrillation"
+        "why": "No role unless urinary infection is suspected as a trigger"
       },
       {
-        "test": "ct_head_without_contrast",
-        "why": "Not routine; reserve for focal neurologic symptoms or suspected stroke"
+        "test": "csf",
+        "why": "Not indicated for AFib; only if meningitis or subarachnoid hemorrhage is suspected"
       },
       {
-        "test": "Coronary angiography",
-        "why": "Not routine; reserve for acute coronary syndrome or refractory ischemia"
+        "test": "procalcitonin",
+        "why": "Not indicated unless sepsis is suspected as a trigger"
+      },
+      {
+        "test": "Cardiac CT or MRI",
+        "why": "Not part of routine workup; reserved for ablation planning",
+        "only_if": "catheter ablation is being planned"
       }
     ],
     "decision_points": [
-      "Confirm the rhythm on a 12-lead ECG before treating; a regular wide-complex tachycardia is not atrial fibrillation",
-      "Assess hemodynamic stability: hypotension, shock, pulmonary edema, or ischemic chest pain calls for urgent synchronized cardioversion rather than drugs",
-      "Estimate stroke risk to decide on anticoagulation, and bleeding risk to choose the agent",
-      "If atrial fibrillation has lasted over 48 hours or the duration is unknown, anticoagulate for at least three weeks or exclude left atrial appendage thrombus by transesophageal echocardiogram before elective cardioversion",
-      "Look for and treat reversible triggers: hyperthyroidism, infection, alcohol, hypokalemia, hypomagnesemia, and sleep apnea"
+      "Confirm AFib on ECG before starting treatment; if paroxysmal and not captured, use ambulatory monitoring",
+      "Check TSH in every new diagnosis to exclude hyperthyroidism",
+      "Assess stroke risk with CHA2DS2-VASc and bleeding risk with HAS-BLED before starting anticoagulation",
+      "If duration over 48 hours or unknown, anticoagulate for at least 3 weeks or perform TEE before cardioversion",
+      "In pre-excited AFib with a wide, fast, irregular rhythm, avoid AV nodal blockers and use electrical cardioversion",
+      "Unstable patients (hypotension, ischemia, pulmonary edema, altered mental status) get urgent synchronized cardioversion"
     ],
     "criteria": [
       {
-        "name": "ECG diagnosis of atrial fibrillation",
-        "summary": "An irregularly irregular ventricular rhythm with no consistent P waves and a chaotic fibrillatory baseline; the QRS is usually narrow unless there is conduction disease or pre-excitation.",
+        "name": "CHA2DS2-VASc stroke risk",
+        "summary": "Assigns points for heart failure, hypertension, age 75 or older, diabetes, prior stroke or transient ischemic attack, vascular disease, age 65–74, and female sex. Higher scores mean higher yearly stroke risk and support anticoagulation.",
         "items": [
-          "Irregularly irregular R-R intervals",
-          "No discrete P waves",
-          "Fibrillatory baseline best seen in V1",
-          "Narrow QRS unless bundle branch block or aberrancy"
+          "Heart failure",
+          "Hypertension",
+          "Age 75 or older",
+          "Diabetes",
+          "Prior stroke or TIA",
+          "Vascular disease",
+          "Age 65–74",
+          "Female sex"
+        ]
+      },
+      {
+        "name": "HAS-BLED bleeding risk",
+        "summary": "Estimates major bleeding risk on anticoagulation using hypertension, abnormal kidney or liver function, stroke, bleeding history, labile INR, age over 65, and drugs or alcohol. High scores prompt closer monitoring rather than withholding anticoagulation.",
+        "items": [
+          "Hypertension",
+          "Abnormal renal or liver function",
+          "Stroke",
+          "Bleeding history or predisposition",
+          "Labile INR",
+          "Age over 65",
+          "Drugs or alcohol"
         ]
       }
     ],
@@ -1261,370 +1242,237 @@
     {
       "name": "Atrial flutter",
       "slug": "atrial-flutter",
-      "why_considered": "Also causes a fast, irregular-feeling heartbeat in older patients with similar risk factors",
+      "why_considered": "Also causes a fast, irregular-feeling heartbeat in older patients with the same risk factors, and often coexists with atrial fibrillation.",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Palpitations that feel regular but fast",
-          "Often paroxysmal and stops abruptly",
-          "Similar triggers: alcohol, surgery, lung disease"
+          "Palpitations that feel rapid and steady rather than chaotic",
+          "Often paroxysmal with abrupt onset and offset"
         ],
         "exam": [
-          "Pulse may be regular at a fixed rate (e.g., 150/min) or irregular if the block varies",
-          "No pulse deficit when the response is fixed"
-        ],
-        "labs": [
-          "Same workup: TSH, BMP, CBC"
-        ],
-        "imaging": [
-          "Echocardiogram shows similar left atrial enlargement"
+          "Pulse may be regular when the conduction ratio is fixed, or irregular when it varies",
+          "Similar fatigue and dyspnea"
         ],
         "ecg": [
-          "Sawtooth flutter waves at about 300/min, often negative in the inferior leads",
-          "Regular atrial activity rather than a chaotic fibrillatory baseline",
-          "Ventricular rate often a fixed fraction of the atrial rate"
+          "Sawtooth flutter waves at about 300/min, best seen in II, III, aVF and V1",
+          "Ventricular rate often close to 150/min (2:1 conduction)",
+          "Regular atrial activity rather than a chaotic fibrillatory baseline"
         ]
       }
     },
     {
       "name": "Multifocal atrial tachycardia",
       "slug": "multifocal-atrial-tachycardia",
-      "why_considered": "Irregular fast rhythm in older patients, especially with COPD or acute illness",
+      "why_considered": "Irregular tachycardia in older patients with chronic lung disease, a group that also develops atrial fibrillation.",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Underlying severe lung disease or acute illness",
-          "Gradual onset rather than sudden"
+          "Severe COPD or another chronic lung disease",
+          "Recent respiratory infection or theophylline use"
         ],
         "exam": [
-          "Irregular pulse but rate usually under 150/min",
-          "Signs of COPD: barrel chest, prolonged expiration"
-        ],
-        "labs": [
-          "Hypoxemia, hypercapnia, theophylline or albuterol use"
-        ],
-        "imaging": [
-          "Chest x-ray shows hyperinflation or pneumonia"
+          "Tachycardia with an irregular pulse",
+          "Signs of lung disease such as wheezing or prolonged expiration"
         ],
         "ecg": [
-          "At least three distinct P-wave shapes with varying P-P intervals",
-          "Discrete P waves are present before each QRS",
-          "Rate usually 100–130/min"
-        ]
-      }
-    },
-    {
-      "name": "Paroxysmal supraventricular tachycardia",
-      "slug": "paroxysmal-supraventricular-tachycardia",
-      "why_considered": "Sudden-onset racing heartbeat in a patient without structural heart disease",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Abrupt start and stop, often with a single triggering event",
-          "Younger patients or those with a known accessory pathway",
-          "Neck pounding or a sensation of a switch flipping"
-        ],
-        "exam": [
-          "Regular, fast pulse that does not vary",
-          "No pulse deficit"
-        ],
-        "labs": [
-          "Usually normal; TSH to exclude thyrotoxicosis"
-        ],
-        "imaging": [
-          "Echocardiogram usually normal"
-        ],
-        "ecg": [
-          "Regular narrow-complex tachycardia at 150–250/min",
-          "P waves hidden in or just after the QRS",
-          "No fibrillatory baseline"
+          "Discrete P waves of at least three different morphologies",
+          "Rate over 100/min with varying P-P, P-R, and R-R intervals",
+          "P waves are present, unlike atrial fibrillation"
         ]
       }
     },
     {
       "name": "Sinus tachycardia",
       "slug": "sinus-tachycardia",
-      "why_considered": "Fast heartbeat with a clear trigger such as fever, pain, dehydration, or anxiety",
+      "why_considered": "Fast heartbeat with palpitations and dyspnea, and a common response to fever, pain, anemia, or dehydration.",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Gradual onset and offset",
-          "Obvious trigger: fever, exercise, anemia, pain, anxiety, thyroid disease"
+          "Gradual onset and offset rather than sudden",
+          "Identifiable trigger such as fever, pain, exercise, or blood loss"
         ],
         "exam": [
-          "Regular pulse that varies with respiration and activity",
-          "Signs of the underlying cause (fever, pallor, tremor)"
-        ],
-        "labs": [
-          "Anemia, hyperthyroidism, or infection on labs"
-        ],
-        "imaging": [
-          "Echocardiogram normal unless the underlying cause is cardiac"
+          "Regular pulse and regular heart sounds",
+          "Signs of the underlying cause such as fever or pallor"
         ],
         "ecg": [
-          "Regular rhythm with a normal P wave before every QRS",
-          "Rate usually under 150/min and falls with treatment of the trigger",
-          "P waves upright in lead II"
+          "Regular rhythm with a consistent P wave before every QRS",
+          "Rate typically under 150/min and varies with the trigger"
+        ]
+      }
+    },
+    {
+      "name": "Supraventricular tachycardia (AV nodal reentrant)",
+      "slug": "supraventricular-tachycardia",
+      "why_considered": "Sudden-onset rapid palpitations in a patient without structural heart disease.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Abrupt onset and abrupt termination, often with a single triggering event",
+          "Younger age and prior similar episodes"
+        ],
+        "exam": [
+          "Regular, rapid pulse",
+          "No pulse deficit"
+        ],
+        "ecg": [
+          "Regular narrow-complex tachycardia at 150–250/min",
+          "P waves hidden in or just after the QRS",
+          "Regular R-R intervals"
         ]
       }
     },
     {
       "name": "Ventricular tachycardia",
       "slug": "ventricular-tachycardia",
-      "why_considered": "Fast wide-complex rhythm that can be mistaken for atrial fibrillation with aberrancy",
+      "why_considered": "Fast rhythm causing palpitations, dyspnea, and hypotension, and can be mistaken for a rapid irregular rhythm on a monitor.",
       "must_not_miss": true,
-      "trigger": "Wide-complex tachycardia with a regular rhythm, especially with known structural heart disease or prior myocardial infarction",
+      "trigger": "Wide-complex tachycardia, especially with known coronary disease or heart failure, or any tachycardia with hemodynamic collapse",
       "discriminators": {
         "history": [
           "Prior myocardial infarction or cardiomyopathy",
-          "Syncope or near-syncope at onset",
-          "Family history of sudden cardiac death"
+          "Syncope or near-syncope at onset"
         ],
         "exam": [
-          "Signs of hemodynamic compromise: hypotension, altered mental status",
+          "May be hemodynamically unstable with hypotension or altered mental status",
           "Cannon A waves in the neck from AV dissociation"
         ],
-        "labs": [
-          "Troponin may rise with ischemia; potassium and magnesium abnormalities"
-        ],
-        "imaging": [
-          "Echocardiogram shows reduced ejection fraction or regional wall-motion abnormality"
-        ],
         "ecg": [
-          "Regular wide-complex tachycardia (QRS over 120 ms)",
-          "AV dissociation with fusion or capture beats",
-          "Concordant precordial pattern or extreme axis"
+          "Wide QRS over 120 ms with a regular or slightly irregular rhythm",
+          "AV dissociation with occasional capture or fusion beats",
+          "No fibrillatory baseline"
         ]
       }
     },
     {
-      "name": "Pre-excited atrial fibrillation (Wolff-Parkinson-White)",
-      "slug": "wolff-parkinson-white-syndrome",
-      "why_considered": "Irregular fast rhythm that can degenerate into ventricular fibrillation if AV-nodal blockers are given",
+      "name": "Wolff-Parkinson-White with pre-excited atrial fibrillation",
+      "slug": "wolff-parkinson-white",
+      "why_considered": "Irregular, very fast tachycardia that can be fatal if AV nodal blockers are given.",
       "must_not_miss": true,
-      "trigger": "Irregular wide-complex tachycardia with rates over 200/min in a younger patient or one with a known accessory pathway",
+      "trigger": "Irregular wide-complex tachycardia faster than 200/min, especially in a younger patient",
       "discriminators": {
         "history": [
-          "Prior episodes of rapid palpitations",
-          "Younger age without structural heart disease",
-          "Family history of sudden death"
+          "Prior episodes of rapid palpitations since youth",
+          "Family history of sudden cardiac death"
         ],
         "exam": [
-          "Very fast irregular pulse, often over 200/min",
-          "Signs of poor perfusion"
-        ],
-        "labs": [
-          "Usually normal; TSH to exclude thyrotoxicosis"
-        ],
-        "imaging": [
-          "Echocardiogram may be normal or show Ebstein anomaly"
+          "Very fast, irregular pulse with hemodynamic compromise",
+          "May have hypotension or syncope"
         ],
         "ecg": [
-          "Irregularly irregular wide-complex tachycardia with varying QRS width",
-          "Short PR interval and delta wave in sinus rhythm",
-          "Rates can exceed 200/min"
+          "Irregularly irregular, wide-complex tachycardia with varying QRS width",
+          "Delta wave and short PR interval on a baseline ECG in sinus rhythm"
         ]
       }
     },
     {
       "name": "Atrial fibrillation with aberrancy or bundle branch block",
-      "slug": "bundle-branch-block",
-      "why_considered": "Irregular wide-complex rhythm that can be mistaken for ventricular tachycardia",
+      "why_considered": "Irregular rhythm with wide QRS that can be confused with ventricular tachycardia.",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Known prior bundle branch block on old ECGs",
-          "No syncope at onset"
-        ],
-        "exam": [
-          "Irregularly irregular pulse",
-          "Hemodynamics usually stable"
-        ],
-        "labs": [
-          "Same workup as atrial fibrillation"
-        ],
-        "imaging": [
-          "Echocardiogram shows underlying structural disease"
+          "Known prior bundle branch block",
+          "Similar appearance on prior ECGs"
         ],
         "ecg": [
-          "Irregularly irregular rhythm with wide QRS of consistent morphology",
-          "Fibrillatory baseline in V1",
-          "QRS morphology matches a prior bundle branch block pattern"
+          "Irregularly irregular rhythm with a consistent wide QRS morphology",
+          "No AV dissociation",
+          "Fibrillatory baseline in V1"
         ]
       }
     },
     {
-      "name": "Atrial fibrillation with rapid ventricular response from thyrotoxicosis",
+      "name": "Sick sinus syndrome with tachy-brady episodes",
+      "slug": "sick-sinus-syndrome",
+      "why_considered": "Older patients with palpitations alternating with dizziness or syncope, and it frequently coexists with atrial fibrillation.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Alternating fast and slow heart rates",
+          "Syncope or near-syncope between episodes"
+        ],
+        "ecg": [
+          "Sinus bradycardia, sinus pauses, or sinoatrial exit block between episodes of tachycardia",
+          "P waves present during slow periods"
+        ]
+      }
+    },
+    {
+      "name": "Anxiety or panic attack",
+      "slug": "panic-disorder",
+      "why_considered": "Palpitations, chest discomfort, and breathlessness in a patient with a racing heartbeat.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Episodes tied to stress or specific situations",
+          "Fear of dying or losing control during episodes",
+          "Symptoms resolve with calming"
+        ],
+        "exam": [
+          "Regular pulse with normal rate between episodes",
+          "No pulse deficit or irregular heart sounds"
+        ],
+        "ecg": [
+          "Normal sinus rhythm",
+          "No fibrillatory waves"
+        ]
+      }
+    },
+    {
+      "name": "Hyperthyroidism",
       "slug": "hyperthyroidism",
-      "why_considered": "Fast irregular rhythm driven by a reversible endocrine cause",
+      "why_considered": "A reversible cause of palpitations, tachycardia, and atrial fibrillation itself.",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Weight loss, heat intolerance, tremor, diarrhea, anxiety",
-          "Recent iodine load or amiodarone use"
+          "Heat intolerance, weight loss, tremor, diarrhea",
+          "Neck swelling or prior thyroid disease"
         ],
         "exam": [
-          "Goiter, lid lag, fine tremor, warm moist skin",
-          "Wide pulse pressure"
+          "Diffuse goiter, tremor, warm moist skin, lid lag",
+          "Tachycardia that may be regular"
         ],
         "labs": [
-          "Suppressed TSH with elevated free T4 or T3"
-        ],
-        "imaging": [
-          "Thyroid ultrasound or uptake scan if a nodule is found"
-        ],
-        "ecg": [
-          "Atrial fibrillation that may be resistant to rate control until thyroid is treated"
-        ]
-      }
-    },
-    {
-      "name": "Atrial fibrillation triggered by alcohol or stimulant use",
-      "slug": "alcohol-use-disorder",
-      "why_considered": "Binge drinking or stimulant use commonly precipitates paroxysmal atrial fibrillation in otherwise healthy people",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Binge drinking or cocaine/methamphetamine use before episodes",
-          "Episodes cluster on weekends or after parties",
-          "Younger than typical atrial fibrillation patients"
-        ],
-        "exam": [
-          "Signs of intoxication or withdrawal",
-          "Tachycardia and hypertension during use"
-        ],
-        "labs": [
-          "Elevated ethanol level, positive urine drug screen, elevated AST/ALT or GGT"
-        ],
-        "imaging": [
-          "Echocardiogram often normal"
-        ],
-        "ecg": [
-          "Atrial fibrillation that often converts with abstinence and rate control"
-        ]
-      }
-    },
-    {
-      "name": "Pulmonary embolism",
-      "slug": "pulmonary-embolism",
-      "why_considered": "Sudden dyspnea, chest discomfort, and tachycardia can mimic atrial fibrillation, and PE can trigger it",
-      "must_not_miss": true,
-      "trigger": "Acute dyspnea with hypoxemia, pleuritic chest pain, or recent immobilization, surgery, or cancer",
-      "discriminators": {
-        "history": [
-          "Recent long travel, surgery, or immobility",
-          "Pleuritic chest pain and hemoptysis",
-          "Unilateral leg swelling or pain"
-        ],
-        "exam": [
-          "Tachypnea, hypoxemia, clear lungs",
-          "Unilateral calf tenderness or swelling",
-          "Signs of right heart strain: elevated JVP, loud P2"
-        ],
-        "labs": [
-          "Elevated D-dimer in low-risk patients",
-          "Troponin and BNP elevation from right heart strain"
-        ],
-        "imaging": [
-          "CT pulmonary angiography shows filling defect in pulmonary arteries",
-          "Lower-extremity ultrasound may show deep vein thrombosis"
-        ],
-        "ecg": [
-          "Sinus tachycardia most common; may show S1Q3T3, right axis deviation, or right bundle branch block",
-          "Atrial fibrillation can be present as a consequence"
-        ]
-      }
-    },
-    {
-      "name": "Acute coronary syndrome",
-      "slug": "acute-coronary-syndrome",
-      "why_considered": "Chest discomfort with a fast irregular rhythm and troponin elevation can be due to ischemia or demand",
-      "must_not_miss": true,
-      "trigger": "Chest pressure, diaphoresis, or ischemic ECG changes in a patient with vascular risk factors",
-      "discriminators": {
-        "history": [
-          "Crushing substernal chest pressure radiating to arm or jaw",
-          "Diaphoresis, nausea, exertional onset",
-          "Prior coronary disease or stents"
-        ],
-        "exam": [
-          "Diaphoresis, anxiety, S3 or new murmur",
-          "Signs of heart failure"
-        ],
-        "labs": [
-          "Rising troponin pattern (delta troponin)",
-          "BNP elevation if heart failure"
-        ],
-        "imaging": [
-          "Coronary angiography shows obstructive disease",
-          "Echocardiogram may show new regional wall-motion abnormality"
-        ],
-        "ecg": [
-          "ST depression or elevation, T-wave inversions in a coronary distribution",
-          "Ischemic changes persist after rate control, unlike demand ischemia"
-        ]
-      }
-    },
-    {
-      "name": "Sepsis or acute infection",
-      "slug": "sepsis",
-      "why_considered": "Infection is a common trigger for new atrial fibrillation in hospitalized or older patients",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Fever, cough, dysuria, or abdominal pain",
-          "Recent hospitalization or procedure",
-          "Immunosuppression"
-        ],
-        "exam": [
-          "Fever or hypothermia, hypotension, altered mental status",
-          "Focal source: crackles, abdominal tenderness, costovertebral angle tenderness"
-        ],
-        "labs": [
-          "Leukocytosis or leukopenia, elevated lactate, positive cultures",
-          "Elevated CRP or procalcitonin"
-        ],
-        "imaging": [
-          "Chest x-ray shows pneumonia",
-          "CT or ultrasound identifies the source"
-        ],
-        "ecg": [
-          "Atrial fibrillation often resolves with treatment of the infection"
+          "Low TSH with elevated free T4 or T3"
         ]
       }
     }
   ],
   "course": {
     "severity": {
-      "mild": "Paroxysmal episodes with a controlled rate, minimal symptoms, and no heart failure; often found incidentally on a routine pulse check",
-      "moderate": "Persistent or frequently symptomatic atrial fibrillation with a rate over 100/min, fatigue, exertional dyspnea, or mild congestion but stable hemodynamics",
-      "severe": "Rapid ventricular response with hypotension, pulmonary congestion, or ischemic chest pain that needs urgent rate control or cardioversion",
-      "critical": "Hemodynamic collapse, shock, pulmonary edema, or acute stroke from embolization; needs immediate synchronized cardioversion or stroke pathway activation"
+      "mild": "Paroxysmal or persistent AFib with a controlled rate, no or minimal symptoms, hemodynamically stable, no heart failure",
+      "moderate": "Symptomatic with fatigue, dyspnea on exertion, or palpitations; rate 90–140/min; may have mild pulmonary congestion or lower extremity edema",
+      "severe": "Rapid ventricular response 120–170/min with dyspnea at rest, pulmonary crackles, elevated JVP, hypotension, or new heart failure decompensation",
+      "critical": "Hemodynamic instability with hypotension, altered mental status, shock, pulmonary edema, or acute coronary ischemia; also includes pre-excited AFib with a very fast wide-complex rhythm"
     },
     "red_flags": [
       {
-        "finding": "Systolic blood pressure below 90 mm Hg or signs of shock",
-        "meaning": "Unstable atrial fibrillation; proceed to urgent synchronized cardioversion rather than drugs"
+        "finding": "Hypotension or systolic blood pressure under 90 mmHg",
+        "meaning": "Poor perfusion from the rapid rate; needs urgent synchronized cardioversion"
       },
       {
-        "finding": "Acute pulmonary edema or hypoxemia",
-        "meaning": "Loss of atrial kick and rapid rate causing heart failure; needs urgent rate control or cardioversion"
+        "finding": "Altered mental status or confusion",
+        "meaning": "Cerebral hypoperfusion or embolic stroke; urgent evaluation"
       },
       {
-        "finding": "Ischemic chest pain with ST changes",
-        "meaning": "Acute coronary syndrome or demand ischemia; treat ischemia and rate together"
+        "finding": "Chest pain with ST changes on ECG",
+        "meaning": "Demand ischemia or acute coronary syndrome; urgent cardiology involvement"
       },
       {
-        "finding": "New focal neurologic deficit, facial droop, or trouble speaking",
-        "meaning": "Cardioembolic stroke; activate the stroke pathway and image the brain"
+        "finding": "Acute pulmonary edema with crackles and hypoxia",
+        "meaning": "Rate-related heart failure; needs urgent rate control or cardioversion"
       },
       {
-        "finding": "Syncope or near-syncope",
-        "meaning": "Poor perfusion from a very fast rate, conduction disease, or another arrhythmia"
+        "finding": "Irregular wide-complex tachycardia faster than 200/min",
+        "meaning": "Pre-excited AFib; avoid AV nodal blockers and cardiovert"
       },
       {
-        "finding": "Pre-excited atrial fibrillation (irregular wide-complex tachycardia over 200/min)",
-        "meaning": "Risk of ventricular fibrillation; avoid AV-nodal blockers and use electrical cardioversion"
+        "finding": "New focal neurologic deficit or speech difficulty",
+        "meaning": "Cardioembolic stroke; activate stroke pathway and obtain urgent head imaging"
+      },
+      {
+        "finding": "Syncope",
+        "meaning": "Severe hypoperfusion or another arrhythmia such as ventricular tachycardia"
       }
     ],
     "complications": [
@@ -1632,11 +1480,11 @@
         "name": "Cardioembolic stroke",
         "timing": "any",
         "seriousness": "life_threatening",
-        "frequency": "sometimes",
+        "frequency": "common",
         "clues": [
           "Sudden focal weakness, numbness, or speech difficulty",
-          "Left atrial enlargement or thrombus on echo",
-          "High stroke risk score and no anticoagulation"
+          "No anticoagulation or subtherapeutic anticoagulation",
+          "High CHA2DS2-VASc score"
         ]
       },
       {
@@ -1645,39 +1493,30 @@
         "seriousness": "serious",
         "frequency": "sometimes",
         "clues": [
-          "Weeks to months of uncontrolled rate",
+          "Weeks to months of uncontrolled rapid rates",
           "Progressive dyspnea, edema, and reduced ejection fraction",
           "Improves with rate or rhythm control"
         ]
       },
       {
-        "name": "Systemic embolism (limb or mesenteric)",
+        "name": "Systemic arterial embolism",
         "timing": "any",
-        "seriousness": "life_threatening",
+        "seriousness": "serious",
         "frequency": "rare",
         "clues": [
-          "Sudden cold, painful limb with absent pulses",
-          "Severe abdominal pain out of proportion to exam"
+          "Sudden limb pain, pallor, or pulselessness",
+          "Acute abdominal pain from mesenteric ischemia",
+          "Left atrial thrombus on echocardiography"
         ]
       },
       {
         "name": "Acute decompensated heart failure",
         "timing": "early",
-        "seriousness": "serious",
+        "seriousness": "life_threatening",
         "frequency": "sometimes",
         "clues": [
-          "Rapid rate with crackles, elevated JVP, and edema",
-          "Orthopnea and paroxysmal nocturnal dyspnea"
-        ]
-      },
-      {
-        "name": "Bleeding from anticoagulation",
-        "timing": "any",
-        "seriousness": "serious",
-        "frequency": "sometimes",
-        "clues": [
-          "Melena, hematuria, bruising, or headache",
-          "Supratherapeutic INR or recent NSAID use"
+          "Rapid ventricular rate with crackles, orthopnea, and elevated JVP",
+          "Hypoxia and increased work of breathing"
         ]
       },
       {
@@ -1686,171 +1525,192 @@
         "seriousness": "life_threatening",
         "frequency": "rare",
         "clues": [
-          "Pre-excited atrial fibrillation with very fast rates",
-          "Severe structural heart disease or electrolyte disturbance"
+          "Collapse with no pulse",
+          "Pre-excited AFib degenerating to ventricular fibrillation",
+          "Severe underlying structural heart disease"
+        ]
+      },
+      {
+        "name": "Bleeding from anticoagulation",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Melena, hematuria, or unexplained bruising",
+          "High HAS-BLED score",
+          "Supratherapeutic INR or recent NSAID use"
+        ]
+      },
+      {
+        "name": "Cognitive impairment and dementia",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Progressive memory difficulty over years",
+          "Silent cerebral infarcts on imaging",
+          "Long-standing or inadequately treated AFib"
         ]
       }
     ],
     "special_populations": [
       {
         "population": "older_adults",
-        "differences": "Often presents without palpitations, with fatigue, falls, confusion, or worsening heart failure; higher stroke risk and higher bleeding risk, so anticoagulation decisions need careful weighing."
+        "differences": "Often present with fatigue, falls, or confusion rather than palpitations; higher stroke risk and higher bleeding risk, so anticoagulation decisions need careful weighing."
       },
       {
         "population": "pregnancy",
-        "differences": "Uncommon; when present, look for hyperthyroidism, structural heart disease, or prior ablation. Rate-control and anticoagulation choices must account for fetal safety, and delivery planning involves a multidisciplinary team."
-      },
-      {
-        "population": "children",
-        "differences": "Rare and usually linked to congenital heart disease, prior cardiac surgery, or an inherited rhythm condition; palpitations and exercise intolerance are the usual clues, and management is by pediatric cardiology."
+        "differences": "AFib is uncommon in pregnancy; when present, evaluate for structural heart disease and hyperthyroidism. Rate control and anticoagulation choices must account for fetal safety, and anticoagulation is usually with heparin rather than warfarin."
       },
       {
         "population": "renal_impairment",
-        "differences": "Kidney function guides dosing of rate-control drugs and anticoagulants; direct oral anticoagulants may be dose-adjusted or avoided, and warfarin may be preferred in advanced disease."
+        "differences": "Kidney function determines dosing of anticoagulants such as apixaban, rivaroxaban, and dabigatran; direct oral anticoagulants may be contraindicated in advanced kidney disease, and warfarin may be preferred."
+      },
+      {
+        "population": "hepatic_impairment",
+        "differences": "Coagulopathy and impaired drug metabolism increase bleeding risk; anticoagulant choice and dose need adjustment, and HAS-BLED scores are higher."
       },
       {
         "population": "obesity",
-        "differences": "Symptoms are more often exertional breathlessness and fatigue than palpitations; episodes are more likely to become persistent, and weight loss reduces burden."
+        "differences": "Obesity is a modifiable risk factor; weight loss reduces AFib burden. Direct oral anticoagulant dosing may need adjustment at higher body weights."
       },
       {
         "population": "diabetes",
-        "differences": "Silent or minimally symptomatic episodes are more common, so it is often picked up on a routine pulse check or monitor; diabetes adds to stroke risk and affects anticoagulation decisions."
+        "differences": "Diabetes adds to stroke risk and is part of the CHA2DS2-VASc score; glucose control is part of overall risk reduction."
+      },
+      {
+        "population": "children",
+        "differences": "AFib is rare in children and usually occurs with congenital heart disease, after cardiac surgery, or with hyperthyroidism; management focuses on the underlying cause."
       }
     ]
   },
   "teaching": {
     "key_questions": [
       {
-        "question": "What does the racing or fluttering feel like, and did it start suddenly or gradually?",
+        "question": "What does the racing or fluttering feel like, and did it start suddenly?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Sudden onset of an irregular fluttering or pounding; gradual onset with a clear trigger suggests sinus tachycardia"
+        "looking_for": "Fast, chaotic, fluttering or pounding heartbeat with abrupt onset, unlike a steady rapid beat"
       },
       {
-        "question": "When did it start, and is it still going on now?",
+        "question": "When did this episode start, and how long has it lasted?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Duration under or over 48 hours, which changes the cardioversion plan; ongoing versus resolved"
+        "looking_for": "Duration matters: over 48 hours or unknown duration changes cardioversion planning"
       },
       {
-        "question": "How often do these episodes happen, and how long do they last?",
+        "question": "Has this happened before, and how did those episodes end?",
         "category": "hpi",
-        "importance": "important",
-        "looking_for": "Paroxysmal brief episodes versus persistent or permanent rhythm"
+        "importance": "essential",
+        "looking_for": "Paroxysmal pattern that stops on its own versus persistent rhythm; prior episodes and prior cardioversions"
       },
       {
         "question": "What were you doing when it started?",
         "category": "hpi",
         "importance": "important",
-        "looking_for": "Onset at rest or with exertion; after alcohol, caffeine, poor sleep, or acute illness"
+        "looking_for": "Onset at rest or at night is typical; exertion or alcohol as a trigger"
       },
       {
-        "question": "Do you feel short of breath, lightheaded, or like you might pass out?",
-        "category": "associated",
-        "importance": "essential",
-        "looking_for": "Dyspnea, near-syncope, or syncope suggesting poor perfusion or instability"
-      },
-      {
-        "question": "Any chest pain or pressure?",
-        "category": "associated",
-        "importance": "essential",
-        "looking_for": "Ischemic chest discomfort that would push toward urgent cardioversion and an ACS workup"
-      },
-      {
-        "question": "How is your energy level and exercise tolerance compared with before?",
-        "category": "associated",
-        "importance": "important",
-        "looking_for": "Fatigue and reduced exercise tolerance, the most common symptoms"
-      },
-      {
-        "question": "Do you get short of breath lying flat, or wake up gasping at night?",
-        "category": "associated",
-        "importance": "important",
-        "looking_for": "Orthopnea or paroxysmal nocturnal dyspnea suggesting heart failure"
-      },
-      {
-        "question": "Have you noticed swelling in your ankles or legs?",
-        "category": "associated",
-        "importance": "important",
-        "looking_for": "Volume overload from heart failure or valve disease"
-      },
-      {
-        "question": "Have you had any sudden weakness on one side, numbness, trouble speaking, or vision loss?",
-        "category": "red_flag",
-        "importance": "essential",
-        "looking_for": "Cardioembolic stroke or TIA; activates the stroke pathway"
-      },
-      {
-        "question": "Do you have high blood pressure, heart failure, valve disease, diabetes, kidney disease, or sleep apnea?",
-        "category": "pmh",
-        "importance": "essential",
-        "looking_for": "Conditions that drive atrial fibrillation and raise stroke risk"
-      },
-      {
-        "question": "Have you ever had this rhythm before, or a cardioversion or ablation?",
-        "category": "pmh",
-        "importance": "important",
-        "looking_for": "Prior episodes and prior rhythm-control procedures"
-      },
-      {
-        "question": "Have you had recent surgery on your heart, lungs, or esophagus?",
-        "category": "pmh",
-        "importance": "important",
-        "looking_for": "Postoperative atrial fibrillation in the early days to weeks after surgery"
-      },
-      {
-        "question": "What medicines do you take, including over-the-counter ones?",
-        "category": "medications",
-        "importance": "important",
-        "looking_for": "Levothyroxine, albuterol, pseudoephedrine, or other stimulants that can trigger the rhythm"
-      },
-      {
-        "question": "Do you take any blood thinners?",
-        "category": "medications",
-        "importance": "essential",
-        "looking_for": "Current anticoagulation, which changes the urgency and safety of cardioversion"
-      },
-      {
-        "question": "How much alcohol do you drink in a typical week, and do you ever binge?",
+        "question": "How much alcohol do you drink, and how often?",
         "category": "social",
-        "importance": "important",
-        "looking_for": "Heavy or binge drinking as a trigger and a modifiable risk factor"
+        "importance": "essential",
+        "looking_for": "Heavy or binge drinking is a strong, modifiable trigger"
       },
       {
         "question": "Do you use cocaine, methamphetamine, or other stimulants?",
         "category": "social",
         "importance": "important",
-        "looking_for": "Stimulant use as a precipitant, especially in younger patients"
+        "looking_for": "Stimulant use as a precipitant"
       },
       {
-        "question": "Do you smoke?",
-        "category": "social",
-        "importance": "optional",
-        "looking_for": "Smoking as a vascular risk factor"
+        "question": "Do you have chest pain, and is it pressure that comes with exertion?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Exertional pressure radiating to arm or jaw suggests ischemia rather than AFib alone"
       },
       {
-        "question": "Does anyone in your family have atrial fibrillation or heart disease?",
+        "question": "Have you fainted or nearly fainted?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Syncope or near-syncope suggests severe hypoperfusion or another arrhythmia"
+      },
+      {
+        "question": "Any sudden weakness on one side, trouble speaking, or vision loss?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Cardioembolic stroke; activates the stroke pathway"
+      },
+      {
+        "question": "Are you more short of breath lying flat, or do you wake up at night gasping?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Orthopnea or paroxysmal nocturnal dyspnea suggests heart failure"
+      },
+      {
+        "question": "Have your ankles or legs been swelling?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Volume overload from heart failure"
+      },
+      {
+        "question": "How is your energy level compared with a few months ago?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Fatigue is the most common symptom and may be the only one"
+      },
+      {
+        "question": "Do you have high blood pressure, heart failure, valve disease, diabetes, or sleep apnea?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Conditions that cause AFib and add to stroke risk"
+      },
+      {
+        "question": "Have you ever had a stroke, TIA, or a blood clot?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Prior stroke or TIA strongly raises stroke risk and pushes toward anticoagulation"
+      },
+      {
+        "question": "Have you had heart, lung, or esophageal surgery recently?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Recent cardiothoracic surgery is a common trigger in the early postoperative weeks"
+      },
+      {
+        "question": "What medications do you take, including over-the-counter ones?",
+        "category": "medications",
+        "importance": "essential",
+        "looking_for": "Thyroid hormone, albuterol, pseudoephedrine, and diuretics that lower potassium or magnesium"
+      },
+      {
+        "question": "Do you take any blood thinners, aspirin, or NSAIDs?",
+        "category": "medications",
+        "importance": "essential",
+        "looking_for": "Current anticoagulation status and bleeding risk before starting therapy"
+      },
+      {
+        "question": "Have you ever had bleeding problems, ulcers, or a fall with a head injury?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Bleeding history that affects anticoagulant choice"
+      },
+      {
+        "question": "Does anyone in your family have atrial fibrillation or early heart disease?",
         "category": "family",
         "importance": "important",
-        "looking_for": "Family history of atrial fibrillation or inherited heart disease"
+        "looking_for": "Family history of AFib or early heart disease"
       },
       {
-        "question": "Have you had fever, cough, burning with urination, or another recent illness?",
+        "question": "Do you smoke, and have you ever smoked?",
+        "category": "social",
+        "importance": "optional",
+        "looking_for": "Tobacco use as a vascular risk factor"
+      },
+      {
+        "question": "Any fever, cough, or recent infection?",
         "category": "ros",
-        "importance": "important",
-        "looking_for": "Infection as an acute trigger for new atrial fibrillation"
-      },
-      {
-        "question": "Have you noticed weight loss, heat intolerance, jitteriness, or tremor?",
-        "category": "ros",
-        "importance": "important",
-        "looking_for": "Hyperthyroidism as a reversible driver"
-      },
-      {
-        "question": "Have you had any black or bloody stools, unusual bruising, or bleeding?",
-        "category": "red_flag",
-        "importance": "important",
-        "looking_for": "Occult bleeding that matters before starting anticoagulation"
+        "importance": "optional",
+        "looking_for": "Acute illness or infection as a precipitant"
       }
     ],
     "accepted_names": [
@@ -1860,34 +1720,34 @@
       "A-fib"
     ],
     "reasoning_points": [
-      "An irregularly irregular pulse with no repeating pattern on palpation and auscultation",
-      "A 12-lead ECG showing irregularly irregular R-R intervals with no discrete P waves and a fibrillatory baseline best seen in V1",
-      "Symptoms of palpitations, fatigue, and exertional dyspnea in a patient with typical risk factors such as older age and hypertension",
-      "Reversible triggers considered and addressed: hyperthyroidism, infection, alcohol or stimulant use, hypokalemia, hypomagnesemia, and sleep apnea",
-      "Hemodynamic stability assessed, since hypotension, pulmonary edema, or ischemic chest pain calls for urgent synchronized cardioversion",
-      "Stroke risk estimated to decide on anticoagulation, and bleeding risk weighed to choose the agent",
-      "Duration of the episode established, because over 48 hours or unknown duration requires anticoagulation or a transesophageal echocardiogram before elective cardioversion",
-      "Structural heart disease evaluated with a transthoracic echocardiogram"
+      "Palpitations with an irregularly irregular pulse and variable heart sounds",
+      "ECG shows no discrete P waves with a chaotic fibrillatory baseline and irregular R-R intervals",
+      "Symptoms of fatigue, exertional dyspnea, or lightheadedness consistent with loss of atrial kick",
+      "Risk factors such as age over 65, hypertension, heart failure, or valvular disease",
+      "Hyperthyroidism excluded with TSH as a reversible cause",
+      "Stroke risk assessed with CHA2DS2-VASc and bleeding risk with HAS-BLED before anticoagulation",
+      "Hemodynamic stability assessed; instability requires urgent synchronized cardioversion",
+      "Duration over 48 hours or unknown requires anticoagulation or TEE before cardioversion"
     ],
     "difficulty": {
       "easy": [
-        "Older adult with hypertension and palpitations",
-        "Irregularly irregular pulse on exam",
-        "ECG shows no P waves with a chaotic baseline",
-        "Symptoms improve with rate control"
+        "Older adult with hypertension and classic palpitations",
+        "Irregularly irregular pulse with a pulse deficit",
+        "ECG with no P waves and chaotic baseline",
+        "Symptoms of fatigue and exertional dyspnea"
       ],
       "medium": [
-        "Older adult with no palpitations, presenting with fatigue, falls, or confusion",
-        "Paroxysmal episodes with a normal ECG in the office, requiring an ambulatory monitor",
-        "Atrial fibrillation found during an acute infection or after surgery",
-        "Rate-controlled atrial fibrillation with a normal ventricular rate on presentation"
+        "Paroxysmal AFib with a normal ECG in the office; needs ambulatory monitoring",
+        "Patient presenting with fatigue or falls rather than palpitations",
+        "AFib with a controlled rate and few symptoms found incidentally",
+        "Coexisting heart failure where it is unclear which came first"
       ],
       "hard": [
-        "Irregular wide-complex tachycardia over 200/min suggesting pre-excited atrial fibrillation, where AV-nodal blockers are dangerous",
-        "Atrial fibrillation with aberrancy mistaken for ventricular tachycardia",
-        "Thyrotoxicosis driving the rhythm and resisting rate control until the thyroid is treated",
-        "Younger patient whose episodes are triggered by binge alcohol or stimulant use with an otherwise normal workup",
-        "Unstable atrial fibrillation with hypotension or pulmonary edema requiring immediate cardioversion"
+        "Pre-excited AFib with a fast, irregular wide-complex rhythm where AV nodal blockers must be avoided",
+        "AFib with aberrancy mistaken for ventricular tachycardia",
+        "Hyperthyroidism as the reversible driver",
+        "Postoperative AFib after cardiothoracic surgery",
+        "Patient on anticoagulation presenting with a cardioembolic stroke"
       ]
     }
   }

@@ -20,7 +20,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import llm
-from checks import PANELS, SCHEMA, TESTS, rule_errors, rule_warnings, schema_errors, section_errors
+from checks import PANELS, SCHEMA, TESTS, repair, rule_errors, rule_warnings, schema_errors, section_errors
 
 HERE = Path(__file__).resolve().parent
 KB = HERE.parents[1] / "knowledge-base"
@@ -30,7 +30,7 @@ TRIAGE = KB / "triage.jsonl"
 EXAMPLE = json.loads((KB / "schema" / "examples" / "acute-appendicitis.json").read_text())
 
 # Bump when a prompt changes so regenerated profiles can be told apart.
-PROMPT_VERSION = "7"
+PROMPT_VERSION = "8"
 TRIAGE_BATCH = 20
 BACKGROUND_LIMIT = 4000
 
@@ -160,7 +160,7 @@ def stage_schema(sections: list[str]) -> str:
     return json.dumps({"properties": {s: SCHEMA["properties"][s] for s in sections}, "$defs": SCHEMA["$defs"]})
 
 
-def run_stage(stage: str, name: str, condition: dict, profile: dict) -> tuple[dict, list[str]]:
+def run_stage(stage: str, name: str, condition: dict, profile: dict) -> tuple[dict, list[str], list[str]]:
     sections = STAGES[stage]
     previous = {k: v for k, v in profile.items() if k not in ("generation", "schema_version", "slug")}
     user = fill(prompt("stage"),
@@ -177,6 +177,7 @@ def run_stage(stage: str, name: str, condition: dict, profile: dict) -> tuple[di
     baseline = set(rule_errors(profile))
     output: dict = {}
     errors: list[str] = []
+    repairs: list[str] = []
     for attempt in range(2):
         try:
             reply = llm.complete_json(prompt("system"), user)
@@ -185,16 +186,17 @@ def run_stage(stage: str, name: str, condition: dict, profile: dict) -> tuple[di
             print(f"    {stage}: {errors[0][:120]}", file=sys.stderr)
             continue
         output = {s: reply[s] for s in sections if s in reply}
+        repairs = repair(output)  # fixes slips like made-up test ids in place, before judging
         errors = [f"missing section {s}" for s in sections if s not in output and s not in OPTIONAL_SECTIONS]
         for s, value in output.items():
             errors += section_errors(s, value)
         if not errors:
             errors = [e for e in rule_errors(profile | output) if e not in baseline]
         if not errors:
-            return output, []
+            return output, [], repairs
         print(f"    {stage}: {len(errors)} error(s){', retrying' if attempt == 0 else ''}", file=sys.stderr)
         user += "\n\nYour previous reply had these problems. Fix them and reply with the full JSON again:\n- " + "\n- ".join(errors[:30])
-    return output, errors
+    return output, errors, repairs
 
 
 def run_profile(slug: str, conditions: dict[str, dict], triage: dict[str, dict], force: bool = False) -> None:
@@ -223,11 +225,13 @@ def run_profile(slug: str, conditions: dict[str, dict], triage: dict[str, dict],
         },
     }
     all_errors: list[str] = []
+    all_repairs: list[str] = []
     print(f"{slug}:", file=sys.stderr)
     for stage in STAGES:
-        output, errors = run_stage(stage, row["triage"]["name"], condition, profile)
+        output, errors, repairs = run_stage(stage, row["triage"]["name"], condition, profile)
         profile.update(output)
         all_errors += errors
+        all_repairs += repairs
         profile["generation"]["stages"].append(
             {"stage": stage, "model": f"{provider}/{model}", "prompt_version": PROMPT_VERSION, "generated_at": now()})
         print(f"    {stage}: {'ok' if not errors else 'FAILED'}", file=sys.stderr)
@@ -235,20 +239,28 @@ def run_profile(slug: str, conditions: dict[str, dict], triage: dict[str, dict],
     for section in OPTIONAL_SECTIONS:
         if profile.get(section) in ({}, {"findings": []}):
             profile.pop(section)
-    save(profile, all_errors)
+    save(profile, all_errors, all_repairs)
+
+
+# Sections every full profile must have; the schema only requires them once generated.
+REQUIRED_SECTIONS = ["patient", "presentation", "exam", "workup", "differential", "course", "teaching"]
 
 
 def validate(profile: dict) -> list[str]:
-    return schema_errors(profile, SCHEMA) + rule_errors(profile)
+    missing = [f"missing section {s}" for s in REQUIRED_SECTIONS if s not in profile]
+    return missing + schema_errors(profile, SCHEMA) + rule_errors(profile)
 
 
-def save(profile: dict, stage_errors: list[str]) -> None:
-    errors = sorted(set(stage_errors + validate(profile)))
+def save(profile: dict, stage_errors: list[str], repairs: list[str] | None = None) -> None:
+    """Validates and writes a profile, judged on the saved content after repairs."""
+    repairs = (repairs or []) + repair(profile)
+    current = validate(profile)
+    errors = sorted(set(current))  # judged on what's saved; stage errors only explain the retries
     known = {p.stem for p in PROFILES.glob("*.json")} | {profile["slug"]}
     profile["generation"]["validation"] = {
         "status": "failed" if errors else "passed",
         "rule_errors": errors,
-        "review_issues": rule_warnings(profile, known),
+        "review_issues": [f"auto-repaired: {r}" for r in repairs] + rule_warnings(profile, known),
     }
     PROFILES.mkdir(parents=True, exist_ok=True)
     path = PROFILES / f"{profile['slug']}.json"
@@ -292,7 +304,8 @@ def main() -> None:
         paths = [PROFILES / f"{s}.json" for s in args.slugs] or sorted(PROFILES.glob("*.json"))
         for path in paths:
             profile = json.loads(path.read_text())
-            save(profile, [])
+            earlier = [i for i in profile["generation"]["validation"].get("review_issues", []) if i.startswith("auto-repaired: ")]
+            save(profile, [], [i.removeprefix("auto-repaired: ") for i in earlier])
 
 
 if __name__ == "__main__":

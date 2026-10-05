@@ -64,14 +64,13 @@
       }
     ],
     "validation": {
-      "status": "failed",
-      "rule_errors": [
-        "labs[1] ige_total: unknown test id",
-        "labs[8] cbc: unknown test id",
-        "labs[9] bmp: unknown test id",
-        "workup: 'spirometry with bronchodilator response' appears in ['initial', 'confirmatory']; use one group, or not_indicated plus one entry with only_if"
-      ],
+      "status": "passed",
+      "rule_errors": [],
       "review_issues": [
+        "auto-repaired: labs: dropped 'ige_total' (not in the reference table)",
+        "auto-repaired: labs: dropped 'cbc' (not in the reference table)",
+        "auto-repaired: labs: dropped 'bmp' (not in the reference table)",
+        "auto-repaired: workup: 'spirometry with bronchodilator response' was in ['initial', 'confirmatory'], kept ['initial']",
         "differential vocal-cord-dysfunction: no profile yet",
         "differential foreign-body-aspiration: no profile yet",
         "differential bronchiolitis: no profile yet",
@@ -687,12 +686,6 @@
       "caveat": "A modest eosinophilia supports an allergic (atopic) phenotype but is neither sensitive nor specific; a normal value does not argue against asthma."
     },
     {
-      "test_id": "ige_total",
-      "frequency": "sometimes",
-      "importance": "optional",
-      "caveat": "Not part of the reference table; if ordered it may be elevated in atopic asthma but is not diagnostic."
-    },
-    {
       "test_id": "crp",
       "ranges": {
         "moderate": {
@@ -789,18 +782,6 @@
       "frequency": "rare",
       "importance": "optional",
       "caveat": "Low bicarbonate with a rising PaCO2 suggests a prolonged severe flare with metabolic compensation."
-    },
-    {
-      "test_id": "cbc",
-      "frequency": "sometimes",
-      "importance": "optional",
-      "caveat": "Usually normal; obtained when infection or another cause of dyspnea is being considered."
-    },
-    {
-      "test_id": "bmp",
-      "frequency": "sometimes",
-      "importance": "optional",
-      "caveat": "Not routinely needed; check potassium and glucose in patients on systemic corticosteroids or beta-agonists."
     },
     {
       "test_id": "hcg",
@@ -921,10 +902,6 @@
       }
     ],
     "confirmatory": [
-      {
-        "test": "Spirometry with bronchodilator response",
-        "why": "Demonstrates reversible airflow obstruction (FEV1/FVC reduced with improvement after a short-acting beta-agonist)"
-      },
       {
         "test": "Methacholine challenge testing",
         "why": "Confirms airway hyperresponsiveness when spirometry is normal but asthma is still suspected",

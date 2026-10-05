@@ -74,6 +74,87 @@ def section_errors(section: str, value: object) -> list[str]:
     return schema_errors(value, SCHEMA["properties"][section], f"$.{section}")
 
 
+# MARK: - Repair
+
+WORKUP_GROUPS = ("initial", "confirmatory", "supporting", "not_indicated")
+
+
+def _match_test(token: str) -> str | None:
+    """Our test id for a model-made id like 'troponin', when exactly one test name contains its words."""
+    words = token.replace("_", " ").replace("-", " ").split()
+    hits = [tid for tid, t in TESTS.items()
+            if not t.get("derived") and all(w in t["name"].lower() for w in words)]
+    return hits[0] if len(hits) == 1 else None
+
+
+def _plain_name(token: str) -> str:
+    """'fungal_culture' → 'Fungal culture'; short tokens read as abbreviations ('ecg' → 'ECG')."""
+    text = token.replace("_", " ")
+    return text.upper() if len(text) <= 4 else text[0].upper() + text[1:]
+
+
+def repair(profile: dict) -> list[str]:
+    """Fixes mechanical slips in place and returns notes for the reviewer.
+
+    Model-made test ids become our id or a plain name, labs with unknown ids are dropped, and a
+    test listed in several workup groups is kept once (or as not_indicated plus one conditional
+    entry, using its reason as the condition). Medical content is never invented here.
+    """
+    notes: list[str] = []
+    workup = profile.get("workup") or {}
+    for group in WORKUP_GROUPS:
+        for ref in workup.get(group, []):
+            name = ref["test"]
+            if re.fullmatch(r"[a-z0-9_]+", name) and name not in TESTS and name not in PANELS:
+                ref["test"] = _match_test(name) or _plain_name(name)
+                notes.append(f"workup: renamed {name!r} to {ref['test']!r}")
+
+    kept_labs = []
+    for lab in profile.get("labs", []):
+        tid = lab.get("test_id")
+        if tid not in TESTS:
+            match = _match_test(tid or "")
+            if match:
+                notes.append(f"labs: mapped {tid!r} to {match!r}")
+                lab["test_id"] = match
+            else:
+                notes.append(f"labs: dropped {tid!r} (not in the reference table)")
+                continue
+        if TESTS[lab["test_id"]].get("derived"):
+            notes.append(f"labs: dropped derived {lab['test_id']!r}")
+            continue
+        kept_labs.append(lab)
+    if "labs" in profile:
+        profile["labs"] = kept_labs
+
+    ecg = profile.get("ecg")
+    if isinstance(ecg, dict) and isinstance(ecg.get("findings"), list):
+        extra = [k for k in ecg if k != "findings"]
+        for k in extra:
+            del ecg[k]
+        if extra:
+            notes.append(f"ecg: dropped extra keys {extra} (findings carry their own leads)")
+
+    seen: dict[str, list[tuple[str, dict]]] = {}
+    for group in WORKUP_GROUPS:
+        for ref in workup.get(group, []):
+            seen.setdefault(ref["test"].lower(), []).append((group, ref))
+    for name, entries in seen.items():
+        if len(entries) == 1:
+            continue
+        others = [(g, r) for g, r in entries if g != "not_indicated"]
+        not_indicated = [(g, r) for g, r in entries if g == "not_indicated"][:1]
+        keep = not_indicated + others[:1] if not_indicated and others else (others or not_indicated)[:1]
+        if not_indicated and others:
+            keep[1][1].setdefault("only_if", keep[1][1].get("why") or "clinically indicated")
+        kept = {id(r) for _, r in keep}  # identity: duplicates are often equal dicts
+        for g, r in entries:
+            if id(r) not in kept:
+                workup[g] = [x for x in workup[g] if x is not r]
+        notes.append(f"workup: {name!r} was in {[g for g, _ in entries]}, kept {[g for g, _ in keep]}")
+    return notes
+
+
 # MARK: - Rules
 
 def _normal_interval(test: dict) -> tuple[float | None, float | None]:

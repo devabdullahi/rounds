@@ -63,12 +63,16 @@
       }
     ],
     "validation": {
-      "status": "failed",
-      "rule_errors": [
-        "workup.initial: unknown test id 'ecg'; use a listed id or the test's plain name",
-        "workup: 'chest x-ray' appears in ['initial', 'supporting', 'not_indicated']; use one group, or not_indicated plus one entry with only_if"
-      ],
+      "status": "passed",
+      "rule_errors": [],
       "review_issues": [
+        "auto-repaired: workup: renamed 'ecg' to 'ECG'",
+        "auto-repaired: workup: 'chest x-ray' was in ['initial', 'supporting', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'd_dimer' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'chest x-ray' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'd_dimer' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'chest x-ray' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'd_dimer' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
         "differential acute-coronary-syndrome: no profile yet",
         "differential aortic-dissection: no profile yet",
         "differential pulmonary-embolism: no profile yet",
@@ -1056,7 +1060,7 @@
   "workup": {
     "initial": [
       {
-        "test": "ecg",
+        "test": "ECG",
         "why": "First test in any chest pain; identifies ischemia, infarction, or arrhythmia"
       },
       {
@@ -1119,11 +1123,6 @@
         "test": "d_dimer",
         "why": "Rules out pulmonary embolism when the presentation is atypical",
         "only_if": "pulmonary embolism is suspected"
-      },
-      {
-        "test": "Chest x-ray",
-        "why": "Evaluates alternative causes of chest pain",
-        "only_if": "another cause of chest pain is suspected or the presentation is atypical"
       }
     ],
     "not_indicated": [

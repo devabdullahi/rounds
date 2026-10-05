@@ -126,9 +126,12 @@ def _post(url: str, headers: list[str], body: dict) -> dict:
 
 
 def _parse_json(text: str) -> dict:
-    """Accepts a bare object or one wrapped in a ```json fence."""
-    fenced = re.search(r"```(?:json)?\s*(\{.*\})\s*```", text, re.S)
-    return json.loads(fenced.group(1) if fenced else text[text.find("{"):text.rfind("}") + 1])
+    """Reads the first JSON object in the reply, ignoring code fences and anything after it."""
+    start = text.find("{")
+    if start < 0:
+        raise ValueError("no JSON object in reply")
+    obj, _ = json.JSONDecoder().raw_decode(text[start:])
+    return obj
 
 
 def _mock(user: str) -> dict:

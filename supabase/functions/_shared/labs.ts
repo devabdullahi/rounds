@@ -150,9 +150,13 @@ export function flag(test: RefTest, value: Value, sex: Sex): Flag {
   return "";
 }
 
-/** "Mean corpuscular volume (MCV)" → "MCV", as a lab report prints it. */
+/** As a lab report prints it: "Mean corpuscular volume (MCV)" → "MCV", but
+ *  "Glucose (fasting)" → "Glucose". Only a one-word bracket of 2–6 characters is an abbreviation. */
 export function shortName(name: string): string {
-  return name.match(/\(([^)]+)\)\s*$/)?.[1] ?? name;
+  const bracket = name.match(/\s*\(([^)]+)\)\s*$/);
+  if (!bracket) return name;
+  const inner = bracket[1];
+  return /^[A-Za-z0-9₂]{2,6}$/.test(inner) && /[A-Z]/.test(inner) ? inner : name.slice(0, bracket.index).trim();
 }
 
 export type PanelResult = { text: string; abnormal: boolean };
@@ -169,7 +173,9 @@ export function report(id: string, values: Values, sex: Sex): PanelResult {
     const f = flag(test, value, sex);
     if (f) abnormal = true;
     const unit = typeof value === "number" && test.unit ? ` ${test.unit}` : "";
-    parts.push(`${shortName(test.name)} ${value}${unit}${f ? ` (${f})` : ""}`);
+    // A single test is already named on its card; a panel names each line.
+    const label = panel ? `${shortName(test.name)} ` : "";
+    parts.push(`${label}${value}${unit}${f ? ` (${f})` : ""}`);
   }
   return { text: parts.join(" · "), abnormal };
 }

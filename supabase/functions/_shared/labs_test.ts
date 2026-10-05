@@ -1,5 +1,5 @@
 import { assert, assertAlmostEquals, assertEquals } from "jsr:@std/assert@1";
-import { deriveValues, egfr, flag, primaryValues, report, seeded, TESTS } from "./labs.ts";
+import { deriveValues, egfr, flag, primaryValues, report, seeded, shortName, TESTS } from "./labs.ts";
 
 Deno.test("reference table copy matches knowledge-base", async () => {
   const shared = await Deno.readTextFile(new URL("./reference_ranges.json", import.meta.url));
@@ -46,5 +46,14 @@ Deno.test("reports flag abnormal values", () => {
   const r = report("bmp", { na: 128, k: 4.0 }, "M");
   assert(r.abnormal);
   assert(r.text.includes("Sodium 128 mmol/L (L)"));
+  assertEquals(report("crp", { crp: 3.2 }, "M").text, "3.2 mg/dL (H)");
   assert(r.text.includes("Potassium 4 mmol/L") && !r.text.includes("Potassium 4 mmol/L ("));
+});
+
+Deno.test("short names use real abbreviations only", () => {
+  assertEquals(shortName("Mean corpuscular volume (MCV)"), "MCV");
+  assertEquals(shortName("Activated partial thromboplastin time (aPTT)"), "aPTT");
+  assertEquals(shortName("Glucose (fasting)"), "Glucose");
+  assertEquals(shortName("Bicarbonate (total CO₂)"), "Bicarbonate");
+  assertEquals(shortName("Sodium"), "Sodium");
 });
