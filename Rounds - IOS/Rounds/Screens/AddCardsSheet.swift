@@ -14,7 +14,7 @@ struct AddCardsSheet: View {
                 .padding(.top, 24)
                 .accessibilityAddTraits(.isHeader)
             row(.pencil, "Write a card", "Your own question and answer", highlighted: false) { choose(.write) }
-            row(.cards, "Generate cards", "Pick topics and how many; we write them from our condition profiles", highlighted: true) {
+            row(.cards, "Generate cards", "Pick topics and a count", highlighted: true) {
                 choose(.generate)
             }
             Spacer(minLength: 0)
@@ -22,7 +22,7 @@ struct AddCardsSheet: View {
         .padding(.horizontal, 20)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Theme.surface)
-        .presentationDetents([.height(300)])
+        .presentationDetents([.height(270)])
         .presentationDragIndicator(.visible)
         .presentationBackground(Theme.surface)
     }

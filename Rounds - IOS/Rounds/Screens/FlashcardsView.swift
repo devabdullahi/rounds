@@ -105,17 +105,21 @@ struct FlashcardsView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             ScreenTitle(title: "Flashcards") {
-                Menu {
-                    Button(role: .destructive) { confirmingClear = true } label: {
-                        Label { Text("Clear all my cards") } icon: { Image(IconGlyph.trash.assetName) }
+                // Only when there's something to clear; an always-disabled menu is clutter.
+                if store.mineCount > 0 {
+                    Menu {
+                        Button(role: .destructive) { confirmingClear = true } label: {
+                            Label { Text("Clear all my cards") } icon: { Image(IconGlyph.trash.assetName) }
+                        }
+                    } label: {
+                        AppIcon(.more, size: 20)
+                            .foregroundStyle(.white)
+                            .frame(width: 40, height: 40)
+                            .glassCircle(tint: Theme.faint)
+                            .frame(width: 44, height: 44)
                     }
-                    .disabled(store.mineCount == 0)
-                } label: {
-                    AppIcon(.more, size: 20)
-                        .foregroundStyle(Theme.text)
-                        .frame(width: 44, height: 44)
+                    .accessibilityLabel("More options")
                 }
-                .accessibilityLabel("More options")
                 Button { choosingAdd = true } label: {
                     AppIcon(.plus, size: 20)
                         .foregroundStyle(.white)
@@ -129,7 +133,7 @@ struct FlashcardsView: View {
 
             if store.decks.count > 1 { deckChips }
 
-            ProgressBar(value: total == 0 ? 0 : Double(known) / Double(total), height: 4)
+            if total > 0 { ProgressBar(value: Double(known) / Double(total), height: 4) }
 
             if store.cards.isEmpty && !store.isLoading {
                 emptyState
@@ -241,22 +245,27 @@ struct FlashcardsView: View {
         .accessibilityAddTraits(on ? .isSelected : [])
     }
 
+    /// Centered, with one primary action; writing your own is the quieter alternative.
     private var emptyState: some View {
-        VStack(spacing: 14) {
-            Spacer(minLength: 60)
+        VStack(spacing: 12) {
             AppIcon(.cards, size: 44).foregroundStyle(Theme.accent)
-            Text("No cards yet").font(.system(size: 24, weight: .bold))
-            Text("Write your own, or generate a deck for the topics you're studying.")
+                .frame(width: 84, height: 84)
+                .background(Theme.accentSoft, in: Circle())
+            Text("No cards yet").font(.system(size: 24, weight: .bold)).padding(.top, 6)
+            Text("Generate a deck for the topics you're studying, or write your own.")
                 .font(.system(size: 15))
                 .foregroundStyle(Theme.muted)
                 .multilineTextAlignment(.center)
+                .padding(.horizontal, 12)
             Button("Generate cards") { generating = true }
                 .buttonStyle(PrimaryButtonStyle(height: 52))
-                .padding(.top, 8)
-            Button("Write a card") { composing = true }
-                .buttonStyle(SoftButtonStyle(height: 48, fontSize: 16))
+                .padding(.top, 14)
+            Button("Write your own card") { composing = true }
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundStyle(Theme.accentText)
+                .frame(minHeight: 44)
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     @ViewBuilder

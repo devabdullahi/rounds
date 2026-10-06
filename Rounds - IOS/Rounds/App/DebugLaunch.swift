@@ -42,6 +42,9 @@ enum DebugLaunch {
         case "patients-open": tab = .patients; expandedPatient = "R2"
         case "profile", "settings": tab = .profile
         case "home", "focus-sheet", "splash", "home-swipe-right", "home-swipe-left": tab = .today
+        case "home-empty":
+            tab = .today
+            app.debugEmptyWard = true
         case "admit":
             // Generates a live patient (DeepSeek via local Supabase) and opens its door note.
             tab = .today

@@ -8,7 +8,6 @@ struct GenerateCardsView: View {
 
     @State private var bySystem = false
     @State private var selection = FocusSelection()
-    @State private var mixChosen = false
     @State private var count = 20
     @State private var includeMisses = true
 
@@ -38,7 +37,6 @@ struct GenerateCardsView: View {
         .onAppear {
             // Start from the student's study focus.
             selection = FocusSelection(stored: focusStored)
-            mixChosen = selection.isMix
             bySystem = selection.leadsWithSystem
         }
     }
@@ -56,7 +54,14 @@ struct GenerateCardsView: View {
                             .font(.system(size: 13)).foregroundStyle(Theme.muted)
                     }
                     Segmented(options: [(false, "By rotation"), (true, "By system")], selection: $bySystem)
-                    FocusGrid(byRotation: !bySystem, counts: app.topicCounts, selection: $selection, mixChosen: $mixChosen)
+                    // Compact chips, not the onboarding tiles, so count and options stay above the fold.
+                    FlowLayout(spacing: 8) {
+                        ForEach(topics, id: \.self) { topicChip($0) }
+                    }
+                    if selection.isMix {
+                        Text("None picked: you'll get a mix of everything.")
+                            .font(.system(size: 13)).foregroundStyle(Theme.muted)
+                    }
                 }
 
                 VStack(alignment: .leading, spacing: 10) {
@@ -87,6 +92,30 @@ struct GenerateCardsView: View {
                 .padding(.vertical, 12)
                 .background(Theme.bg)
         }
+    }
+
+    private var topics: [StudyFocus] {
+        bySystem ? OrganSystem.allCases.map(StudyFocus.system) : Clerkship.allCases.map(StudyFocus.rotation)
+    }
+
+    private func topicChip(_ topic: StudyFocus) -> some View {
+        let on = selection.contains(topic)
+        return Button {
+            withAnimation(Springs.pop) { selection.toggle(topic) }
+        } label: {
+            HStack(spacing: 6) {
+                if on { AppIcon(.check, size: 14) }
+                Text(topic.label)
+            }
+            .font(.system(size: 15, weight: on ? .semibold : .regular))
+            .foregroundStyle(on ? Color.white : Theme.text)
+            .padding(.horizontal, 14)
+            .frame(minHeight: 44)
+            .background(on ? Theme.accent : Theme.surface, in: Capsule())
+            .overlay(Capsule().strokeBorder(on ? Color.clear : Theme.border))
+        }
+        .buttonStyle(PressDownStyle())
+        .accessibilityAddTraits(on ? .isSelected : [])
     }
 
     private func generate() {

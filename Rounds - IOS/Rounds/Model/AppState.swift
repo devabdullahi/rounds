@@ -35,7 +35,17 @@ final class AppState {
     var totalMisses: Int { ward.reduce(0) { $0 + $1.misses.count } }
     var revisitPatients: [WardPatient] { ward.filter { $0.status == .revisit } }
     /// Patients still to see on the deck: new or half-done, and not skipped.
-    var waiting: [WardPatient] { ward.filter { ($0.status == .new || $0.status == .resume) && !skipped.contains($0.id) } }
+    var waiting: [WardPatient] {
+        #if DEBUG
+        if debugEmptyWard { return [] }
+        #endif
+        return ward.filter { ($0.status == .new || $0.status == .resume) && !skipped.contains($0.id) }
+    }
+
+    #if DEBUG
+    /// `-screen home-empty`: shows the empty-ward card without skipping anyone for real.
+    var debugEmptyWard = false
+    #endif
 
     /// Beds the student swiped away on the deck. Kept on this device so they don't come back;
     /// the patients stay on the Patients tab.

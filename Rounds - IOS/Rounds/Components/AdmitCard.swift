@@ -40,7 +40,10 @@ struct AdmitCard: View {
                     .lineSpacing(3)
                     .padding(.top, 10)
                     .fixedSize(horizontal: false, vertical: true)
-                Spacer(minLength: 24)
+                Spacer(minLength: 16)
+                // An empty bed: the monitor sweeps, but there's no rhythm on it.
+                ECGMonitor(color: Theme.faint, flatline: true)
+                Spacer(minLength: 16)
                 Button(action: onAdmit) {
                     HStack(spacing: 10) {
                         if loading { ProgressView().tint(.white) }
