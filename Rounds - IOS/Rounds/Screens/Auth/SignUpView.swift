@@ -33,11 +33,12 @@ struct SignUpView: View {
                     }
                     .padding(.top, 8)
 
-                    // One tap with Apple or Google skips the form, same as on the welcome sheet.
-                    // Apple only allows "Sign in / Sign up / Continue with Apple" as the title.
+                    // One tap with Apple or Google skips the form. "Continue": the provider decides
+                    // whether the account is new, so the same words serve sign up, log in and the
+                    // welcome sheet (and Apple allows only Sign in / Sign up / Continue with Apple).
                     VStack(spacing: 12) {
-                        SocialButton(provider: .apple, title: "Sign up with Apple") { router.go(.focus) }
-                        SocialButton(provider: .google, title: "Sign up with Google") { router.go(.focus) }
+                        SocialButton(provider: .apple, title: "Continue with Apple") { router.go(.focus) }
+                        SocialButton(provider: .google, title: "Continue with Google") { router.go(.focus) }
                     }
                     .padding(.top, 28)
 
@@ -49,13 +50,23 @@ struct SignUpView: View {
                         AuthField(label: "Email", text: $email, placeholder: "you@school.edu",
                                   contentType: .emailAddress, keyboard: .emailAddress)
                         VStack(alignment: .leading, spacing: 8) {
-                            AuthField(label: "Password", text: $password, secure: true, contentType: .newPassword)
+                            // The rules up front, so nobody learns them by failing.
+                            AuthField(label: "Password", text: $password, placeholder: "8+ characters, a number, a symbol",
+                                      secure: true, contentType: .newPassword)
                             if !password.isEmpty {
                                 strengthMeter.transition(.opacity.combined(with: .offset(y: -4)))
                             }
                         }
                     }
                     .padding(.top, 20)
+
+                    // Right where the form ends, as on Log in; no gap between the last field and the action.
+                    Button("Create account") { router.go(.focus) }
+                        .buttonStyle(PrimaryButtonStyle(height: 52))
+                        .padding(.top, 22)
+                    legal
+                        .frame(maxWidth: .infinity)
+                        .padding(.top, 14)
                 }
                 .padding(.horizontal, 24)
                 .padding(.bottom, 16)
@@ -65,9 +76,6 @@ struct SignUpView: View {
             .scrollDismissesKeyboard(.interactively)
 
             VStack(spacing: 14) {
-                legal
-                Button("Create account") { router.go(.focus) }
-                    .buttonStyle(PrimaryButtonStyle(height: 52))
                 HStack(spacing: 4) {
                     Text("Already have an account?").foregroundStyle(Theme.muted)
                     Button("Log in") { router.path = [.signIn] }

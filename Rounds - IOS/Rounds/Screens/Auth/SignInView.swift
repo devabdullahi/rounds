@@ -9,8 +9,8 @@ import SwiftUI
  *    0ms   ECG mark draws (900ms, ease in-out)
  *  250ms   "Log in" rises, y 12 → 0
  *  330ms   subtitle rises
- *  450ms   Sign in with Apple rises
- *  510ms   Sign in with Google rises
+ *  450ms   Continue with Apple rises
+ *  510ms   Continue with Google rises
  *  570ms   "or with email" divider fades in
  *  630ms   email field rises
  *  690ms   password field rises
@@ -81,11 +81,12 @@ struct SignInView: View {
                         .rise(shown, at: TIMING.subtitle)
                 }
 
-                // Apple only allows "Sign in / Sign up / Continue with Apple" as the title.
+                // "Continue", as on sign up and the welcome sheet: the provider knows whether the
+                // account exists (Apple allows only Sign in / Sign up / Continue with Apple).
                 VStack(spacing: 12) {
-                    SocialButton(provider: .apple, title: "Sign in with Apple") { signedIn = true }
+                    SocialButton(provider: .apple, title: "Continue with Apple") { signedIn = true }
                         .rise(shown, at: TIMING.apple)
-                    SocialButton(provider: .google, title: "Sign in with Google") { signedIn = true }
+                    SocialButton(provider: .google, title: "Continue with Google") { signedIn = true }
                         .rise(shown, at: TIMING.google)
                 }
                 .padding(.top, 28)
