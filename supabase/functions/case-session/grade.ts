@@ -39,7 +39,11 @@ export type Grade = {
   rating_delta: number;
   feedback: Feedback[];
   missed_red_flags: { flag: string; why: string }[];
+  /** Points earned out of the most available, per part, so the app can show where points go. */
+  breakdown: Record<Part, { got: number; max: number }>;
 };
+
+export type Part = "diagnosis" | "history" | "exam" | "red_flags" | "tests" | "plan";
 
 // Points per part; they sum to 100.
 const POINTS = { diagnosis: 35, history: 25, exam: 15, redFlags: 10, tests: 10, plan: 5 };
@@ -58,18 +62,19 @@ export function grade(r: Rubric, act: Actions, judge: Judge): Grade {
   const feedback: Ranked[] = [];
   const missed: { flag: string; why: string }[] = [];
   let score = 0;
+  const got: Record<Part, number> = { diagnosis: 0, history: 0, exam: 0, red_flags: 0, tests: 0, plan: 0 };
 
-  if (judge.diagnosisCorrect) score += POINTS.diagnosis;
+  if (judge.diagnosisCorrect) got.diagnosis = POINTS.diagnosis;
   else feedback.push({ rank: RANK.diagnosis, tone: "miss", title: `The diagnosis was ${r.diagnosis}`, detail: r.reasoning_points.slice(0, 3).join(". ") + "." });
 
   const totalWeight = r.key_facts.reduce((s, f) => s + f.weight, 0);
   const gotWeight = r.key_facts.filter((f) => act.revealed.includes(f.id)).reduce((s, f) => s + f.weight, 0);
-  score += totalWeight ? Math.round((gotWeight / totalWeight) * POINTS.history) : POINTS.history;
+  got.history = totalWeight ? Math.round((gotWeight / totalWeight) * POINTS.history) : POINTS.history;
   const gap = [...r.key_facts].sort((a, b) => b.weight - a.weight).find((f) => !act.revealed.includes(f.id));
   if (gap) feedback.push({ rank: RANK.history, tone: "miss", title: `History gap: ${gap.label}`, detail: "You never asked about it." });
 
   const examined = r.key_maneuvers.filter((m) => act.examined.includes(m.id));
-  score += r.key_maneuvers.length ? Math.round((examined.length / r.key_maneuvers.length) * POINTS.exam) : POINTS.exam;
+  got.exam = r.key_maneuvers.length ? Math.round((examined.length / r.key_maneuvers.length) * POINTS.exam) : POINTS.exam;
   const skipped = r.key_maneuvers.find((m) => !act.examined.includes(m.id));
   if (skipped) feedback.push({ rank: RANK.exam, tone: "miss", title: `Exam gap: ${skipped.title}`, detail: "A key part of this exam was skipped." });
 
@@ -80,7 +85,7 @@ export function grade(r: Rubric, act: Actions, judge: Judge): Grade {
     flags.set(f.flag, { ...entry, screened: entry.screened || act.revealed.includes(f.fact) });
   }
   const screened = [...flags.values()].filter((f) => f.screened).length;
-  score += flags.size ? Math.round((screened / flags.size) * POINTS.redFlags) : POINTS.redFlags;
+  got.red_flags = flags.size ? Math.round((screened / flags.size) * POINTS.redFlags) : POINTS.redFlags;
   for (const [flag, f] of flags) if (!f.screened) missed.push({ flag, why: f.why });
   if (missed.length) {
     feedback.push({ rank: RANK.redFlag, tone: "miss", title: `You didn't screen for ${missed[0].flag}`, detail: missed[0].why, covers_miss: missed[0].flag });
@@ -98,16 +103,24 @@ export function grade(r: Rubric, act: Actions, judge: Judge): Grade {
   tests -= wasted.length * PENALTY.unnecessaryTest;
   if (wasted.length) feedback.push({ rank: RANK.unnecessaryTest, tone: "miss", title: `${wasted[0].name} wasn't indicated`, detail: wasted[0].why ?? "It didn't change management." });
   if (act.spent > act.budget) tests -= PENALTY.overBudget;
-  score += Math.round(tests);
+  // Penalties can push tests below zero, which still lowers the total; the breakdown floors at 0.
+  const testPoints = Math.round(tests);
+  got.tests = Math.max(0, testPoints);
 
-  if (judge.planAppropriate) score += POINTS.plan;
+  if (judge.planAppropriate) got.plan = POINTS.plan;
   else if (judge.planNote) feedback.push({ rank: RANK.plan, tone: "miss", title: "Plan needs work", detail: judge.planNote });
 
+  score = got.diagnosis + got.history + got.exam + got.red_flags + testPoints + got.plan;
   score = Math.min(100, Math.max(0, score));
+  const max: Record<Part, number> = {
+    diagnosis: POINTS.diagnosis, history: POINTS.history, exam: POINTS.exam,
+    red_flags: POINTS.redFlags, tests: POINTS.tests, plan: POINTS.plan,
+  };
   const verdict = !judge.diagnosisCorrect ? "Missed diagnosis" : score >= 85 ? "Textbook workup" : "Right diagnosis, incomplete path";
   const ordered = feedback.sort((a, b) => a.rank - b.rank).map(({ rank: _, ...f }) => f);
   return {
     score, diagnosis_correct: judge.diagnosisCorrect, diagnosis: r.diagnosis, verdict,
     rating_delta: Math.round((score - 60) / 2), feedback: ordered.slice(0, MAX_FEEDBACK), missed_red_flags: missed,
+    breakdown: Object.fromEntries((Object.keys(got) as Part[]).map((k) => [k, { got: got[k], max: max[k] }])) as Grade["breakdown"],
   };
 }

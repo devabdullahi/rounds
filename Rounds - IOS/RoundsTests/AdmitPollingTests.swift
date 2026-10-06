@@ -43,6 +43,7 @@ private actor ScriptedCases: CaseService {
     func ensureSignedIn() async throws {}
     func ward() async throws -> [WardPatient] { [] }
     func topicCounts() async throws -> [String: Int] { [:] }
+    func gradedCases() async throws -> [GradedCase] { [] }
 
     func admit(focus: StudyFocus) async throws -> AdmitOutcome {
         admitCalls += 1

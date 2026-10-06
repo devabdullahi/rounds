@@ -40,7 +40,7 @@ enum DebugLaunch {
         case "cards", "cards-flip", "cards-correct", "cards-unknown", "cards-new", "cards-new-color", "cards-new-answer",
              "cards-add", "cards-generate": tab = .cards
         case "patients-open": tab = .patients; expandedPatient = "R2"
-        case "profile", "settings": tab = .profile
+        case "profile", "settings", "profile-weakspots", "profile-badges": tab = .profile
         case "home", "focus-sheet", "splash", "home-swipe-right", "home-swipe-left": tab = .today
         case "home-empty":
             tab = .today

@@ -27,6 +27,16 @@ struct LiveCaseService: CaseService {
         return cases.map { c in c.wardPatient(latest: attempts.first { $0.case_id == c.id }) }
     }
 
+    func gradedCases() async throws -> [GradedCase] {
+        // RLS returns only the caller's attempts; the case supplies its rotation and system.
+        let rows: [GradedAttemptRow] = try await client.from("attempts")
+            .select("id, submitted_at, score, grade, cases(clerkship, organ_system)")
+            .not("submitted_at", operator: .is, value: "null")
+            .order("submitted_at", ascending: false)
+            .execute().value
+        return rows.compactMap(\.gradedCase)
+    }
+
     func topicCounts() async throws -> [String: Int] {
         let rows: [TopicCountRow] = try await client.rpc("topic_counts").execute().value
         return Dictionary(rows.map { ("\($0.kind):\($0.topic)", $0.conditions) }, uniquingKeysWith: +)
@@ -175,10 +185,47 @@ private struct AttemptRow: Decodable {
 }
 
 private struct MissRow: Decodable { let flag: String; let why: String }
+
+private struct GradedAttemptRow: Decodable {
+    struct GradeBody: Decodable {
+        struct Part: Decodable { let got: Int; let max: Int }
+        let diagnosis_correct: Bool
+        let missed_red_flags: [MissRow]
+        /// Absent on cases graded before the server recorded it.
+        let breakdown: [String: Part]?
+    }
+    struct CaseTags: Decodable { let clerkship: String?; let organ_system: String? }
+
+    let id: String
+    let submitted_at: String
+    let score: Int?
+    let grade: GradeBody?
+    let cases: CaseTags?
+
+    var gradedCase: GradedCase? {
+        guard let grade, let score, let date = Self.timestamp(submitted_at) else { return nil }
+        var breakdown: [ScoreCategory: Points] = [:]
+        for (key, part) in grade.breakdown ?? [:] {
+            if let category = ScoreCategory(rawValue: key) { breakdown[category] = Points(got: part.got, max: part.max) }
+        }
+        return GradedCase(id: id, submittedAt: date, score: score, diagnosisCorrect: grade.diagnosis_correct,
+                          missedRedFlags: grade.missed_red_flags.count,
+                          clerkship: cases?.clerkship.flatMap(Clerkship.init(rawValue:)),
+                          system: cases?.organ_system.flatMap(OrganSystem.init(rawValue:)),
+                          breakdown: breakdown)
+    }
+
+    /// Postgres timestamptz ("2026-10-05T23:12:01.123456+00:00"). Microseconds trip the ISO
+    /// parser, so the fraction is dropped; seconds are plenty for "last 7 days".
+    static func timestamp(_ text: String) -> Date? {
+        let trimmed = text.replacingOccurrences(of: #"\.\d+"#, with: "", options: .regularExpression)
+        return ISO8601DateFormatter().date(from: trimmed)
+    }
+}
 private struct TopicCountRow: Decodable { let kind: String; let topic: String; let conditions: Int }
 private struct ErrorReply: Decodable { let error: String }
-/// `{case_id}` once written, or `{status: "preparing"}` (HTTP 202) while the focus's first condition is.
 private struct DeleteBody: Encodable { let case_ids: [String]? }
+/// `{case_id}` once written, or `{status: "preparing"}` (HTTP 202) while the focus's first condition is.
 private struct AdmitReply: Decodable { let case_id: String?; let status: String? }
 private struct StartReply: Decodable { let attempt_id: String }
 private struct ExamineReply: Decodable { let finding: String }

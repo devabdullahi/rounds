@@ -21,6 +21,8 @@ final class AppState {
 
     /// The student's generated patients, newest first.
     private(set) var ward: [WardPatient] = []
+    /// Every case the student has been graded on, newest first (profile breakdown and badges).
+    private(set) var graded: [GradedCase] = []
     /// Conditions available per topic, keyed by `StudyFocus.stored`.
     private(set) var topicCounts: [String: Int] = [:]
     private(set) var isLoadingWard = false
@@ -105,8 +107,10 @@ final class AppState {
             try await cases.ensureSignedIn()
             async let ward = cases.ward()
             async let counts = cases.topicCounts()
+            async let graded = cases.gradedCases()
             self.ward = try await ward
             self.topicCounts = try await counts
+            self.graded = try await graded
             problem = nil
         } catch {
             problem = error.localizedDescription
@@ -173,6 +177,9 @@ final class AppState {
         returnToPatients = true
         activeCase = nil
     }
+
+    /// Everything badges are judged on.
+    var badgeRecord: BadgeRecord { BadgeRecord(rating: rating, bestStreak: bestStreak, cases: graded) }
 
     /// Removes patients from the student's history (every one when `beds` is nil). The ward
     /// updates synchronously, so a caller can animate it with `withAnimation`; the server delete

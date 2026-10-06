@@ -9,6 +9,10 @@ protocol CaseService: Sendable {
     /// The student's ward: generated patients, newest first, with last-attempt status.
     func ward() async throws -> [WardPatient]
 
+    /// Every submitted case the student has been graded on, newest first: what the profile's
+    /// points breakdown and badges are built from.
+    func gradedCases() async throws -> [GradedCase]
+
     /// How many conditions each topic can draw from, keyed by `StudyFocus.stored`.
     func topicCounts() async throws -> [String: Int]
 
