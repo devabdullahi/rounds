@@ -16,6 +16,8 @@ final class ReferenceAssist {
 
     /// The suggestion the student just tapped, so filling the field doesn't reopen the list.
     private var picked: String?
+    /// What the current suggestions were found for.
+    private var query = ""
 
     private enum DEBOUNCE {
         static let diagnosis: Duration = .milliseconds(250)
@@ -29,8 +31,14 @@ final class ReferenceAssist {
         guard !Task.isCancelled else { return }
         let found = (try? await reference.conditions.search(text, limit: 4)) ?? []
         guard !Task.isCancelled else { return }
+        query = text
         // Hide the list once the field already says exactly the top match.
         suggestions = found.first?.name.caseInsensitiveCompare(text) == .orderedSame ? [] : found
+    }
+
+    /// Why a suggestion matched when its name doesn't show it ("PE"), or nil.
+    func hint(for match: ConditionMatch) -> String? {
+        ReferenceMatching.matchedSynonym(query, in: match)
     }
 
     func pick(_ match: ConditionMatch) -> String {

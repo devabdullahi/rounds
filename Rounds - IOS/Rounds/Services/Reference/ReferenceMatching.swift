@@ -46,6 +46,31 @@ enum ReferenceMatching {
         return found.sorted { $0.position < $1.position }.map(\.match)
     }
 
+    /// Index-style names written the way a clinician says them: "Pneumonia - aspiration" →
+    /// "Aspiration pneumonia". The head keeps its case when it starts with an acronym ("COPD").
+    static func uninverted(_ name: String) -> String {
+        let parts = name.components(separatedBy: " - ")
+        guard parts.count == 2, !parts[0].isEmpty, !parts[1].isEmpty else { return name }
+        let head = parts[0], modifier = parts[1]
+        let firstWord = head.prefix { $0 != " " }
+        let keepCase = firstWord.count > 1 && firstWord == firstWord.uppercased()
+        let headText = keepCase ? head : head.prefix(1).lowercased() + head.dropFirst()
+        return modifier.prefix(1).uppercased() + modifier.dropFirst() + " " + headText
+    }
+
+    /// The synonym that explains a match the name doesn't ("PE" for "Pulmonary embolism"), so the
+    /// student sees why it was suggested. Nil when the name itself matches.
+    static func matchedSynonym(_ query: String, in match: ConditionMatch) -> String? {
+        let q = normalize(query)
+        guard q.count >= 2 else { return nil }
+        func hits(_ text: String) -> Bool {
+            let t = normalize(text)
+            return t.hasPrefix(q) || words(t).contains { $0.hasPrefix(q) }
+        }
+        guard !hits(match.name) else { return nil }
+        return match.synonyms.first(where: hits)
+    }
+
     // MARK: Helpers
 
     static func normalize(_ s: String) -> String {

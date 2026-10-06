@@ -58,8 +58,10 @@ struct ClinicalTablesConditionSearch: ConditionSearching {
             let codes = reply.extras.icd10cmCodes?[safe: i].flatMap { $0 } ?? ""
             guard let code = codes.split(separator: ",").first.map({ $0.trimmingCharacters(in: .whitespaces) }),
                   !code.isEmpty, seen.insert(code).inserted,
-                  let name = names.first else { continue }
-            let listed = names.dropFirst() + (reply.extras.synonyms?[safe: i].flatMap { $0 } ?? [])
+                  let listedName = names.first else { continue }
+            // The index spelling stays a synonym, so typing it still matches.
+            let name = ReferenceMatching.uninverted(listedName)
+            let listed = [listedName] + names.dropFirst() + (reply.extras.synonyms?[safe: i].flatMap { $0 } ?? [])
             var synonyms: [String] = []
             for s in listed where s.caseInsensitiveCompare(name) != .orderedSame && !synonyms.contains(s) {
                 synonyms.append(s)

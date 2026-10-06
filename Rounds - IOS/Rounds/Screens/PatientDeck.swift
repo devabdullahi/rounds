@@ -218,15 +218,17 @@ struct PatientDeck: View {
 
     private var controls: some View {
         HStack(spacing: 28) {
-            roundButton(.x, label: "Skip patient", tint: Theme.streak, size: 60) { skip() }
+            // Skip and take need a patient; with an empty ward only the dice (admit) works.
+            roundButton(.x, label: "Skip patient", tint: Theme.streak, size: 60, enabled: !queue.isEmpty) { skip() }
             roundButton(.dice, label: queue.count > 1 ? "Random patient" : "Admit a new patient", tint: Theme.shuffle, size: 50) { random() }
-            roundButton(.check, label: "Take patient", tint: Theme.correct, size: 60) { take() }
+            roundButton(.check, label: "Take patient", tint: Theme.correct, size: 60, enabled: !queue.isEmpty) { take() }
         }
         .frame(maxWidth: .infinity)
         .disabled(busy || app.isAdmitting)
     }
 
-    private func roundButton(_ glyph: IconGlyph, label: String, tint: Color, size: CGFloat, action: @escaping () -> Void) -> some View {
+    private func roundButton(_ glyph: IconGlyph, label: String, tint: Color, size: CGFloat, enabled: Bool = true,
+                             action: @escaping () -> Void) -> some View {
         Button(action: action) {
             AppIcon(glyph, size: size * 0.42)
                 .foregroundStyle(.white)
@@ -234,6 +236,9 @@ struct PatientDeck: View {
                 .glassCircle(tint: tint)
         }
         .buttonStyle(.plain)
+        .opacity(enabled ? 1 : 0.3)
+        .disabled(!enabled)
+        .animation(.easeOut(duration: 0.2), value: enabled)
         .accessibilityLabel(label)
     }
 
