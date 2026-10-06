@@ -13,6 +13,12 @@ struct PatientsView: View {
     @State private var confirming: PendingDelete?
     /// A hold just started selecting on this row; its release mustn't also count as a tap.
     @State private var heldRow: String?
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    private enum DELETE {
+        /// Rows below a deleted one move up as it collapses (Mail-like).
+        static let collapse = Animation.smooth(duration: 0.32)
+    }
 
     /// Deletions that ask first. A single swipe doesn't: the swipe and the Delete tap are the ask.
     private enum PendingDelete: Equatable {
@@ -40,8 +46,11 @@ struct PatientsView: View {
                     sectionHeader("Worth a second visit", trailing: "\(revisit.count) patient\(revisit.count == 1 ? "" : "s")", color: Theme.warn)
                     VStack(spacing: 0) {
                         ForEach(Array(revisit.enumerated()), id: \.element.id) { i, p in
-                            if i > 0 { Hairline() }
-                            revisitRow(p)
+                            VStack(spacing: 0) {
+                                if i > 0 { Hairline() }
+                                revisitRow(p)
+                            }
+                            .transition(rowExit)
                         }
                     }
                     .listSurface()
@@ -51,8 +60,11 @@ struct PatientsView: View {
                     sectionHeader(system?.label ?? "Your patients", trailing: "\(rotation.count)", color: Theme.muted)
                     VStack(spacing: 0) {
                         ForEach(Array(rotation.enumerated()), id: \.element.id) { i, p in
-                            if i > 0 { Hairline() }
-                            row(p)
+                            VStack(spacing: 0) {
+                                if i > 0 { Hairline() }
+                                row(p)
+                            }
+                            .transition(rowExit)
                         }
                     }
                     .listSurface()
@@ -180,14 +192,18 @@ struct PatientsView: View {
         }
     }
 
+    private var rowExit: AnyTransition { reduceMotion ? .opacity : .collapse }
+
     private func delete(_ pending: PendingDelete) {
         let beds: Set<String>? = if case .selected(let b) = pending { b } else { nil }
-        selection = nil
-        Task { await app.deletePatients(beds) }
+        withAnimation(DELETE.collapse) {
+            selection = nil
+            app.deletePatients(beds)
+        }
     }
 
     private func deleteOne(_ bed: String) {
-        Task { await app.deletePatients([bed]) }
+        withAnimation(DELETE.collapse) { app.deletePatients([bed]) }
     }
 
     /// Tap on a row: toggles it while selecting, otherwise does the row's own thing. A swipe's
@@ -239,6 +255,11 @@ struct PatientsView: View {
         switch app.debugPatientsMode {
         case "select": selection = Set((revisit + rotation).prefix(2).map(\.id))
         case "swipe": openRow = first.id
+        case "delete":
+            Task { @MainActor in
+                try? await Task.sleep(for: .seconds(1.5))
+                withAnimation(DELETE.collapse) { app.debugHide(bed: first.id) }
+            }
         default: break
         }
         app.debugPatientsMode = nil

@@ -1,11 +1,14 @@
 import SwiftUI
 
-/* ANIMATION STORYBOARD · Swipe to delete
+/* ANIMATION STORYBOARD · Swipe to delete (as in Mail)
  *    drag    row follows the finger, either way; red Delete shows on the side it uncovers
  *    release past ACTION.width/2 → row rests open on Delete; less → springs shut
- *    release past FULL of the row  → row slides off that side, then onDelete
+ *    release past FULL of the row, or a fling → row carries on off that side at the finger's
+ *            speed (critically damped spring seeded with the release velocity)
+ *    then    onDelete; the caller removes the row inside withAnimation and the red strip
+ *            collapses from the bottom (`.collapse`) while the rows below slide up
  *    other row opens / tap on the row → springs shut
- * Reduce Motion: same states, no spring overshoot. */
+ * Reduce Motion: no velocity spring; the row fades out instead of collapsing. */
 
 /// Swipe a row left or right to reveal Delete, or most of the way to delete at once. List's
 /// swipeActions only work inside a List; these rows live in a ScrollView.
@@ -43,7 +46,7 @@ struct SwipeToDelete: ViewModifier {
 
     func body(content: Content) -> some View {
         ZStack(alignment: fromLeading ? .leading : .trailing) {
-            Button(action: delete) {
+            Button { delete(velocity: 0) } label: {
                 // The label sits by the uncovered edge, then rides the row's edge past the
                 // full-swipe point, as in Mail.
                 ZStack(alignment: fromLeading == pastFull ? .trailing : .leading) {
@@ -96,7 +99,7 @@ struct SwipeToDelete: ViewModifier {
                 dragging = false
                 let flung = width > 0 && abs(v.predictedEndTranslation.width) > width
                 if pastFull || (flung && (v.predictedEndTranslation.width > 0) == fromLeading) {
-                    delete()
+                    delete(velocity: v.velocity.width)
                 } else if abs(offset) > ACTION.width / 2 {
                     withAnimation(spring) { offset = fromLeading ? ACTION.width : -ACTION.width }
                 } else {
@@ -110,14 +113,22 @@ struct SwipeToDelete: ViewModifier {
         release()
     }
 
-    private func delete() {
-        let side: CGFloat = fromLeading ? 1 : -1
-        withAnimation(.easeIn(duration: 0.2)) { offset = side * width }
-        Task { @MainActor in
-            try? await Task.sleep(for: .seconds(0.2))
+    /// Slides the row off its open side, keeping the finger's speed, then hands over to the caller.
+    private func delete(velocity: CGFloat) {
+        let target = (fromLeading ? 1 : -1) * width
+        let remaining = max(1, abs(target - offset))
+        // Spring velocity is in "fractions of the remaining distance per second".
+        let slide: Animation = reduceMotion
+            ? .easeOut(duration: 0.2)
+            : .interpolatingSpring(mass: 1, stiffness: 320, damping: 36, initialVelocity: abs(velocity) / remaining)
+        withAnimation(slide, completionCriteria: .logicallyComplete) {
+            offset = target
+        } completion: {
             onDelete()
-            try? await Task.sleep(for: ACTION.settle)
-            if openRow == id { openRow = nil }
+            Task { @MainActor in
+                try? await Task.sleep(for: ACTION.settle)
+                if openRow == id { openRow = nil }
+            }
         }
     }
 
@@ -137,6 +148,22 @@ extension SwipeToDelete {
     #else
     static let debugOpenSide: CGFloat = 1
     #endif
+}
+
+/// A deleted row's exit: it shrinks away from the bottom while the rows below move up into its
+/// place, instead of vanishing and letting them jump.
+struct CollapseTransition: Transition {
+    func body(content: Content, phase: TransitionPhase) -> some View {
+        content
+            .mask(alignment: .top) {
+                Rectangle().scaleEffect(x: 1, y: phase.isIdentity ? 1 : 0.001, anchor: .top)
+            }
+            .opacity(phase.isIdentity ? 1 : 0)
+    }
+}
+
+extension AnyTransition {
+    static let collapse = AnyTransition(CollapseTransition())
 }
 
 extension View {

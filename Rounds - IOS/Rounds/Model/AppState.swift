@@ -52,6 +52,11 @@ final class AppState {
     /// `-screen patients-select` / `patients-swipe`: the Patients tab opens in that state.
     var debugPatientsMode: String?
 
+    /// `-screen patients-delete`: hides a row locally to show the delete animation, no server call.
+    func debugHide(bed: String) {
+        ward.removeAll { $0.id == bed }
+    }
+
     /// `-screen home-preparing`: the admit card while a focus's first condition is written.
     func debugShowPreparing() {
         debugEmptyWard = true
@@ -170,13 +175,18 @@ final class AppState {
     }
 
     /// Removes patients from the student's history (every one when `beds` is nil). The ward
-    /// updates at once; on failure it reloads from the server and the problem is shown.
-    func deletePatients(_ beds: Set<String>?) async {
-        guard let cases else { return }
+    /// updates synchronously, so a caller can animate it with `withAnimation`; the server delete
+    /// follows. On failure the ward reloads from the server and the problem is shown.
+    func deletePatients(_ beds: Set<String>?) {
         let removed = beds ?? Set(ward.map(\.id))
         ward.removeAll { removed.contains($0.id) }
         skipped.subtract(removed)
         UserDefaults.standard.set(Array(skipped), forKey: Self.skippedStorageKey)
+        Task { await commitDelete(beds) }
+    }
+
+    private func commitDelete(_ beds: Set<String>?) async {
+        guard let cases else { return }
         do {
             _ = try await cases.deletePatients(beds.map { Array($0) })
         } catch {

@@ -45,9 +45,9 @@ enum DebugLaunch {
         case "home-empty":
             tab = .today
             app.debugEmptyWard = true
-        case "patients-select", "patients-swipe", "patients-swipe-left":
+        case "patients-select", "patients-swipe", "patients-swipe-left", "patients-delete":
             tab = .patients
-            app.debugPatientsMode = screen == "patients-select" ? "select" : "swipe"
+            app.debugPatientsMode = ["patients-select": "select", "patients-delete": "delete"][screen] ?? "swipe"
             if screen == "patients-swipe-left" { SwipeToDelete.debugOpenSide = -1 }
         case "home-preparing":
             tab = .today
