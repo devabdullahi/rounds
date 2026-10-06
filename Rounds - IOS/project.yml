@@ -28,10 +28,6 @@ targets:
       - package: Supabase
       - package: GoogleSignIn
         product: GoogleSignIn
-    entitlements:
-      path: Rounds/Rounds.entitlements
-      properties:
-        com.apple.developer.applesignin: [Default]
     scheme:
       testTargets: [RoundsTests]
     info:
@@ -54,6 +50,9 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.abdul.rounds
         # Sign in with Apple needs a signing team; this is the one set in Xcode.
         DEVELOPMENT_TEAM: 5FVTJZXNS5
+        # The Sign in with Apple capability needs a paid Apple Developer team (a free Personal
+        # Team can't sign it), so it's opt-in: ROUNDS_ENTITLEMENTS in Base/Secrets.xcconfig.
+        CODE_SIGN_ENTITLEMENTS: $(ROUNDS_ENTITLEMENTS)
         CODE_SIGN_STYLE: Automatic
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         GENERATE_INFOPLIST_FILE: YES

@@ -9,6 +9,11 @@ import UIKit
 /// The student closed the sheet. Not an error worth showing.
 struct SignInCancelled: Error {}
 
+/// This build isn't signed with the Sign in with Apple capability (free Personal Team).
+struct AppleNotAvailable: LocalizedError {
+    var errorDescription: String? { "Sign in with Apple isn't available in this build yet. Use Google or email for now." }
+}
+
 /// Google isn't set up in this build (no client ID in Secrets.xcconfig).
 struct GoogleNotConfigured: LocalizedError {
     var errorDescription: String? { "Google sign-in isn't set up in this build yet." }
@@ -53,8 +58,12 @@ final class AppleSignIn: NSObject, ASAuthorizationControllerDelegate, ASAuthoriz
 
     nonisolated func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         MainActor.assumeIsolated {
-            let cancelled = (error as? ASAuthorizationError)?.code == .canceled
-            finish(.failure(cancelled ? SignInCancelled() : error))
+            switch (error as? ASAuthorizationError)?.code {
+            case .canceled: finish(.failure(SignInCancelled()))
+            // Without the entitlement Apple answers "unknown"; say what's actually wrong.
+            case .unknown: finish(.failure(AppleNotAvailable()))
+            default: finish(.failure(error))
+            }
         }
     }
 
