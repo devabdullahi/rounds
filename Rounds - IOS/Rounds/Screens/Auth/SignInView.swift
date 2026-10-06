@@ -51,13 +51,19 @@ private enum SWEEP {
 struct SignInView: View {
     @Environment(AuthRouter.self) private var router
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @AppStorage("signedIn") private var signedIn = false
+    @Environment(AuthModel.self) private var auth
 
     @State private var email = ""
     @State private var password = ""
     @State private var drawn: CGFloat = 0
     @State private var shown = false
     @State private var appearedAt = Date.now
+
+    /// A first Apple or Google sign-in still answers the focus question; a returning one goes in.
+    private func social(_ provider: SocialProvider) async {
+        guard let account = await auth.continueWith(provider) else { return }
+        if account.isNew() { router.go(.focus) } else { auth.finishSignIn() }
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -84,9 +90,9 @@ struct SignInView: View {
                 // "Continue", as on sign up and the welcome sheet: the provider knows whether the
                 // account exists (Apple allows only Sign in / Sign up / Continue with Apple).
                 VStack(spacing: 12) {
-                    SocialButton(provider: .apple, title: "Continue with Apple") { signedIn = true }
+                    SocialButton(provider: .apple, title: "Continue with Apple") { Task { await social(.apple) } }
                         .rise(shown, at: TIMING.apple)
-                    SocialButton(provider: .google, title: "Continue with Google") { signedIn = true }
+                    SocialButton(provider: .google, title: "Continue with Google") { Task { await social(.google) } }
                         .rise(shown, at: TIMING.google)
                 }
                 .padding(.top, 28)
@@ -105,8 +111,16 @@ struct SignInView: View {
                 }
                 .padding(.top, 20)
 
-                Button("Log in") { signedIn = true }
+                Button {
+                    Task { if await auth.signIn(email: email, password: password) { auth.finishSignIn() } }
+                } label: {
+                    HStack(spacing: 8) {
+                        if auth.busy == .email { ProgressView().tint(.white) }
+                        Text("Log in")
+                    }
+                }
                     .buttonStyle(PrimaryButtonStyle(height: 52))
+                    .disabled(email.isEmpty || password.isEmpty || auth.busy != nil)
                     .padding(.top, 22)
                     .rise(shown, at: TIMING.submit)
 

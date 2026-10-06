@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ProfileView: View {
     @Environment(AppState.self) private var app
+    @Environment(AuthModel.self) private var auth
 
     // MOCK (disabled): sample weak spots, replaced by the graded-case breakdown (Performance).
     // private let weakSpots: [(String, Double, Bool)] = [
@@ -98,10 +99,11 @@ struct ProfileView: View {
                 // MOCK (disabled): sample identity until real accounts exist.
                 // Avatar(initials: "AK", size: 60, fg: Theme.accentInk, bg: Theme.accent)
                 // Text(SampleUser.name) / Text(SampleUser.training)
-                Avatar(initials: "G", size: 60, fg: Theme.accentInk, bg: Theme.accent)
+                Avatar(initials: auth.account?.initials ?? "G", size: 60, fg: Theme.accentInk, bg: Theme.accent)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Guest").font(.system(size: 20, weight: .bold))
-                    Text("Practice account on this device").font(.system(size: 15)).foregroundStyle(Theme.muted).lineLimit(2)
+                    Text(auth.account?.name ?? auth.account?.email ?? "Guest").font(.system(size: 20, weight: .bold)).lineLimit(1)
+                    Text(auth.account.map { "Signed in with \($0.providerLabel)" } ?? "Practice account on this device")
+                        .font(.system(size: 15)).foregroundStyle(Theme.muted).lineLimit(2)
                 }
                 Spacer()
                 VStack(alignment: .trailing, spacing: 0) {

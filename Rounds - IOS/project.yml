@@ -7,6 +7,10 @@ packages:
   Supabase:
     url: https://github.com/supabase/supabase-swift
     from: 2.0.0
+  # Native Google Sign-In sheet (approved dependency); Supabase verifies the ID token it returns.
+  GoogleSignIn:
+    url: https://github.com/google/GoogleSignIn-iOS
+    from: 8.0.0
 configFiles:
   Debug: Config/Base.xcconfig
   Release: Config/Base.xcconfig
@@ -22,6 +26,8 @@ targets:
     sources: [Rounds]
     dependencies:
       - package: Supabase
+      - package: GoogleSignIn
+        product: GoogleSignIn
     scheme:
       testTargets: [RoundsTests]
     info:
@@ -31,12 +37,23 @@ targets:
           UIColorName: LaunchBackground
         SupabaseURL: $(SUPABASE_URL)
         SupabaseAnonKey: $(SUPABASE_ANON_KEY)
+        GIDClientID: $(GOOGLE_IOS_CLIENT_ID)
+        # Google Sign-In returns to the reversed client ID; "rounds" receives email confirmation links.
+        CFBundleURLTypes:
+          - CFBundleURLSchemes: [$(GOOGLE_REVERSED_CLIENT_ID)]
+          - CFBundleURLSchemes: [rounds]
         # Lets the simulator reach the local Supabase over http://127.0.0.1; doesn't relax anything else.
         NSAppTransportSecurity:
           NSAllowsLocalNetworking: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.abdul.rounds
+        # Sign in with Apple needs a signing team; this is the one set in Xcode.
+        DEVELOPMENT_TEAM: 5FVTJZXNS5
+        # The Sign in with Apple capability needs a paid Apple Developer team (a free Personal
+        # Team can't sign it), so it's opt-in: ROUNDS_ENTITLEMENTS in Base/Secrets.xcconfig.
+        CODE_SIGN_ENTITLEMENTS: $(ROUNDS_ENTITLEMENTS)
+        CODE_SIGN_STYLE: Automatic
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         GENERATE_INFOPLIST_FILE: YES
         INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait

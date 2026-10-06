@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SignUpView: View {
     @Environment(AuthRouter.self) private var router
+    @Environment(AuthModel.self) private var auth
 
     @State private var name = ""
     @State private var email = ""
@@ -37,8 +38,8 @@ struct SignUpView: View {
                     // whether the account is new, so the same words serve sign up, log in and the
                     // welcome sheet (and Apple allows only Sign in / Sign up / Continue with Apple).
                     VStack(spacing: 12) {
-                        SocialButton(provider: .apple, title: "Continue with Apple") { router.go(.focus) }
-                        SocialButton(provider: .google, title: "Continue with Google") { router.go(.focus) }
+                        SocialButton(provider: .apple, title: "Continue with Apple") { Task { await social(.apple) } }
+                        SocialButton(provider: .google, title: "Continue with Google") { Task { await social(.google) } }
                     }
                     .padding(.top, 28)
 
@@ -61,9 +62,27 @@ struct SignUpView: View {
                     .padding(.top, 20)
 
                     // Right where the form ends, as on Log in; no gap between the last field and the action.
-                    Button("Create account") { router.go(.focus) }
-                        .buttonStyle(PrimaryButtonStyle(height: 52))
-                        .padding(.top, 22)
+                    if let sent = auth.pendingEmail {
+                        // Email confirmation is on: the link finishes sign-up (rounds://auth-callback).
+                        Text("We sent a link to \(sent). Open it on this iPhone to finish signing up.")
+                            .font(.system(size: 15))
+                            .foregroundStyle(Theme.accentText)
+                            .padding(14)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(Theme.accentSoft, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                            .padding(.top, 22)
+                    }
+                    Button {
+                        Task { if await auth.signUp(email: email, password: password, name: name) { router.go(.focus) } }
+                    } label: {
+                        HStack(spacing: 8) {
+                            if auth.busy == .email { ProgressView().tint(.white) }
+                            Text("Create account")
+                        }
+                    }
+                    .buttonStyle(PrimaryButtonStyle(height: 52))
+                    .disabled(!canCreate || auth.busy != nil)
+                    .padding(.top, 22)
                     legal
                         .frame(maxWidth: .infinity)
                         .padding(.top, 14)
@@ -89,6 +108,17 @@ struct SignUpView: View {
             .padding(.bottom, 4)
         }
         .background(Theme.bg.ignoresSafeArea())
+    }
+
+    /// Email shaped like an address and every password rule met.
+    private var canCreate: Bool {
+        email.contains("@") && email.contains(".") && rules.allSatisfy(\.1)
+    }
+
+    /// A brand-new account answers the focus question; an existing one goes straight in.
+    private func social(_ provider: SocialProvider) async {
+        guard let account = await auth.continueWith(provider) else { return }
+        if account.isNew() { router.go(.focus) } else { auth.finishSignIn() }
     }
 
     private var strengthMeter: some View {

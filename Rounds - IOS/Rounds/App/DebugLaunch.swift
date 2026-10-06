@@ -12,7 +12,7 @@ enum DebugLaunch {
         return v > 0 ? v : nil
     }
 
-    private static let authScreens = ["firstopen", "firstopen-auth", "signin", "signup", "onboarding", "focus-system"]
+    private static let authScreens = ["firstopen", "firstopen-auth", "signin", "signup", "onboarding", "focus-system", "google-signin"]
 
     /// Runs before the first frame so the root picks the right side (auth vs app).
     static func prepareDefaults() {
@@ -26,7 +26,7 @@ enum DebugLaunch {
 
     static var authPath: [AuthStep] {
         switch screen {
-        case "signin": [.signIn]
+        case "signin", "google-signin": [.signIn]
         case "signup": [.signUp]
         case "onboarding", "focus-system": [.signUp, .focus]
         default: []
