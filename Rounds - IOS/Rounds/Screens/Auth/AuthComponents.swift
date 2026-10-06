@@ -46,7 +46,13 @@ struct AuthFlowView: View {
             Text(auth.problem ?? "")
         }
         #if DEBUG
-        .onAppear { router.path = DebugLaunch.authPath }
+        .onAppear {
+            router.path = DebugLaunch.authPath
+            // -screen google-signin: opens Google's sheet without a tap, to check the client ID setup.
+            if DebugLaunch.screen == "google-signin" {
+                Task { try? await Task.sleep(for: .seconds(1.5)); await continueWith(.google) }   // after the push settles
+            }
+        }
         #endif
     }
 
