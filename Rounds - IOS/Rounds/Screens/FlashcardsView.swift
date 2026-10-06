@@ -461,9 +461,9 @@ struct CardFace: View {
 
     var body: some View {
         ZStack {
-            side(label: "\(card.topic) · Question", text: card.front)
+            side(text: card.front)
                 .opacity(flipped ? 0 : 1)
-            side(label: "\(card.topic) · Answer", text: card.back)
+            side(text: card.back)
                 .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
                 .opacity(flipped ? 1 : 0)
         }
@@ -487,24 +487,14 @@ struct CardFace: View {
         .accessibilityHint(flipped ? "" : "Double-tap to flip")
     }
 
-    private func side(label: String, text: String) -> some View {
+    private func side(text: String) -> some View {
         VStack(alignment: .leading, spacing: 0) {
-            Eyebrow(label, color: card.color.tint)
             Spacer()
             Text(text)
                 .font(.system(size: textSize, weight: .semibold))
                 .lineSpacing(3)
                 .minimumScaleFactor(0.8)
             Spacer()
-            // Generated cards say where their facts came from, so a reader can check them.
-            if let source = card.sourceLabel {
-                HStack(spacing: 6) {
-                    AppIcon(.bookOpen, size: 14)
-                    Text("Source: \(source)").lineLimit(1)
-                }
-                .font(.system(size: 13))
-                .foregroundStyle(Theme.muted)
-            }
         }
         .padding(24)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)

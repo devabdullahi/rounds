@@ -16,10 +16,4 @@ struct FlashcardStoreTests {
         let many = FocusSelection(stored: "rotation:internalMedicine,rotation:emergency,system:gastrointestinal,system:respiratory")
         #expect(FlashcardStore.deckName(for: many).count <= 40)
     }
-
-    @Test func sourceLabelsNameTheProfileOrTheStudentsMisses() {
-        #expect(Flashcard(topic: "t", front: "f", back: "b", source: "atrial-fibrillation").sourceLabel == "Atrial fibrillation profile")
-        #expect(Flashcard(topic: "t", front: "f", back: "b", source: "missed").sourceLabel == "Your missed red flags")
-        #expect(Flashcard(topic: "t", front: "f", back: "b").sourceLabel == nil)
-    }
 }

@@ -79,7 +79,7 @@ struct GenerateCardsView: View {
                 .background(Theme.surface, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
                 .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).strokeBorder(Theme.ring))
 
-                Text("Cards are written from our condition profiles, and each one shows its source.")
+                Text("Cards are written from our condition profiles.")
                     .font(.system(size: 13))
                     .foregroundStyle(Theme.muted)
             }

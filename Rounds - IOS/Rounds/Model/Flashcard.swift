@@ -37,13 +37,6 @@ struct Flashcard: Identifiable, Equatable, Sendable {
     func copy() -> Flashcard {
         Flashcard(serverID: serverID, deck: deck, topic: topic, front: front, back: back, color: color, source: source, isMine: isMine)
     }
-
-    /// "Atrial fibrillation profile", "Your missed red flags", or nil for hand-written cards.
-    var sourceLabel: String? {
-        guard let source else { return nil }
-        if source == "missed" { return "Your missed red flags" }
-        return source.split(separator: "-").joined(separator: " ").capitalizedFirst + " profile"
-    }
 }
 
 /// User-pickable card colours, stored by raw value. Their look lives with the flashcard views.
@@ -51,8 +44,4 @@ enum CardColor: String, CaseIterable, Identifiable, Sendable {
     case standard, teal, blue, purple, pink, red, yellow
     var id: String { rawValue }
     var name: String { self == .standard ? "Default" : rawValue.capitalized }
-}
-
-private extension String {
-    var capitalizedFirst: String { prefix(1).uppercased() + dropFirst() }
 }
