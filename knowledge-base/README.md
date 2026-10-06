@@ -4,14 +4,14 @@ Reference material for **drafting fictional cases**. Each file has one JSON reco
 
 | File | What | Built by |
 |---|---|---|
-| `conditions.jsonl` | Diseases and symptoms: summary, MeSH, ICD-10-CM candidates, differentials, PubMed refs | `build_kb.py` |
+| `conditions.jsonl` | Diseases and symptoms: summary, MeSH, ICD-10-CM candidates, differentials, PubMed refs | `build_kb/` (`python3 -m build_kb`) |
 | `drugs.jsonl` | Common prescription generics: indications, dosing, contraindications, boxed warning, interactions | `drugs.py` |
 | `reference_ranges.json` | Adult normal ranges in US units for 108 tests and vitals: sex-specific ranges, critical values, report decimals, formulas for derived values | Written by hand (teaching values, not clinical) |
-| `cdc_pages.jsonl` | CDC overview pages linked by `condition_id` (mostly infectious and chronic disease) | `cdc.py` (run after `build_kb.py`) |
+| `cdc_pages.jsonl` | CDC overview pages linked by `condition_id` (mostly infectious and chronic disease) | `cdc.py` (run after `build_kb`) |
 
 ```bash
 cd tools/kb-import
-python3 build_kb.py   # --limit 20 for a quick trial
+python3 -m build_kb  # --limit 20 for a quick trial
 python3 drugs.py      # openFDA: 1,000 requests/day without OPENFDA_API_KEY; cached, so reruns resume
 python3 cdc.py
 ```
