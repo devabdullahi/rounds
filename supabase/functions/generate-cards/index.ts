@@ -11,6 +11,7 @@ import { completeJSON } from "../_shared/llm.ts";
 import { type Profile } from "../_shared/casegen.ts";
 import { type CardFacts, cardFacts, missFacts } from "../_shared/cardfacts.ts";
 import { CARD_WRITER } from "../_shared/prompts.ts";
+import { withQuota } from "../_shared/quota.ts";
 
 type Request = { topics?: string[]; count?: number; include_misses?: boolean; deck?: string };
 type Card = { topic: string; front: string; back: string; source: string };
@@ -51,6 +52,12 @@ serve(async (req) => {
     if (misses) sets.push(misses);
   }
 
+  // A deck costs a model call, so it counts against the daily limit (refunded on failure).
+  return withQuota(userId, "cards", () => writeCards(userId, deck, count, sets));
+});
+
+/** Has the model write the cards from the fact sets, checks them, and saves them to the deck. */
+async function writeCards(userId: string, deck: string, count: number, sets: CardFacts[]): Promise<Response> {
   const sources = new Set(sets.map((s) => s.source));
   let user = `Write ${count} cards.\nFact sets:\n${JSON.stringify(sets)}`;
   let cards: Card[] = [];
@@ -78,4 +85,4 @@ serve(async (req) => {
     })))}
     returning id, topic, front, back, source, color`;
   return json({ deck, cards: saved });
-});
+}

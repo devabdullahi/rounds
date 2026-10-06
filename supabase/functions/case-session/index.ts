@@ -18,6 +18,7 @@ import { GRADER, PATIENT, REPLY_CHECKER } from "../_shared/prompts.ts";
 import { type Actions, grade, matchesDiagnosis, type Rubric } from "./grade.ts";
 import { parseFocus } from "../_shared/focus.ts";
 import { prepareNext } from "../_shared/prefetch.ts";
+import { withQuota } from "../_shared/quota.ts";
 
 type Fact = { id: string; label: string; reply: string; importance: string; screens_for: string | null };
 type Maneuver = { id: string; title: string; finding: string };
@@ -40,7 +41,8 @@ serve(async (req) => {
   const input = await body<Record<string, unknown>>(req);
   switch (input.action) {
     case "start": return json(await start(userId, input));
-    case "ask": return json(await ask(userId, input));
+    // Each question costs a model call (reply plus check): it counts against the daily limit.
+    case "ask": return json(await withQuota(userId, "question", () => ask(userId, input)));
     case "examine": return json(await examine(userId, input));
     case "order": return json(await order(userId, input));
     case "submit": return json(await submit(userId, input));
