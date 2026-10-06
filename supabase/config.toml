@@ -199,7 +199,8 @@ anonymous_users = 30
 # Number of sessions that can be refreshed in a 5 minute interval per IP address.
 token_refresh = 150
 # Number of sign up and sign-in requests that can be made in a 5 minute interval per IP address (excludes anonymous users).
-sign_in_sign_ups = 30
+# Code requests share the project's hourly email budget, so one IP gets a small slice of it.
+sign_in_sign_ups = 10
 # Number of OTP / Magic link verifications that can be made in a 5 minute interval per IP address.
 token_verifications = 30
 # Number of Web3 logins that can be made in a 5 minute interval per IP address.
@@ -223,11 +224,22 @@ enable_confirmations = true
 # If enabled, users will need to reauthenticate or have logged in recently to change their password.
 secure_password_change = false
 # Controls the minimum amount of time that must pass before sending another signup confirmation or password reset email.
-max_frequency = "1s"
+# One code per address per minute: matches the app's resend countdown and stops inbox flooding.
+max_frequency = "60s"
 # Number of characters used in the email OTP.
 otp_length = 6
-# Number of seconds before the email OTP expires (defaults to 1 hour).
-otp_expiry = 3600
+# Number of seconds before the email OTP expires (defaults to 1 hour). Rounds signs in with this
+# code instead of a password; the app tells students it works for 10 minutes.
+otp_expiry = 600
+
+# Sign-up and log-in emails both carry the 6-digit code (the app has no passwords).
+[auth.email.template.confirmation]
+subject = "Your Rounds code"
+content_path = "./supabase/templates/email-code.html"
+
+[auth.email.template.magic_link]
+subject = "Your Rounds code"
+content_path = "./supabase/templates/email-code.html"
 
 # Use a production-ready SMTP server
 # [auth.email.smtp]
@@ -466,8 +478,38 @@ verify_jwt = true
 import_map = "./functions/delete-account/deno.json"
 entrypoint = "./functions/delete-account/index.ts"
 
+[functions.send-welcome]
+enabled = true
+verify_jwt = true
+import_map = "./functions/send-welcome/deno.json"
+entrypoint = "./functions/send-welcome/index.ts"
+
 [functions.generate-cards]
 enabled = true
 verify_jwt = true
 import_map = "./functions/generate-cards/deno.json"
 entrypoint = "./functions/generate-cards/index.ts"
+
+# ─── Cloud project overrides ───
+# Settings that apply only to the hosted project (supabase config push); local dev keeps Inbucket.
+[remotes.production]
+project_id = "mpyxaefnytviwnjuqtbu"
+
+[remotes.production.auth]
+# Default redirect for any auth email link: back into the app, never the local dev URL.
+site_url = "rounds://auth-callback"
+
+# Auth emails (the 6-digit sign-in codes) go through Amazon SES. Credentials live in the
+# git-ignored supabase/cloud.env: source it before `supabase config push`.
+[remotes.production.auth.email.smtp]
+enabled = true
+host = "env(SES_SMTP_HOST)"
+port = 587
+user = "env(SES_SMTP_USER)"
+pass = "env(SES_SMTP_PASS)"
+admin_email = "env(AUTH_SENDER_EMAIL)"
+sender_name = "Rounds"
+
+[remotes.production.auth.rate_limit]
+# SES handles volume; Supabase's own cap is per hour across the project.
+email_sent = 200
