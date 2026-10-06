@@ -67,7 +67,9 @@ def fill(template: str, **values: str) -> str:
 
 
 def load_conditions() -> dict[str, dict]:
-    rows = [json.loads(line) for line in (KB / "conditions.jsonl").open()]
+    """MedlinePlus conditions plus the core conditions it lacks (tools/kb-import/clinical_tables.py)."""
+    rows = [json.loads(line) for name in ("conditions.jsonl", "conditions_core.jsonl")
+            if (KB / name).exists() for line in (KB / name).open()]
     return {slugify(r["name"]): r for r in rows}
 
 
