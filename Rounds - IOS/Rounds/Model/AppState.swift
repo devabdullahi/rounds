@@ -49,6 +49,9 @@ final class AppState {
     var debugEmptyWard = false
 
     #if DEBUG
+    /// `-screen patients-select` / `patients-swipe`: the Patients tab opens in that state.
+    var debugPatientsMode: String?
+
     /// `-screen home-preparing`: the admit card while a focus's first condition is written.
     func debugShowPreparing() {
         debugEmptyWard = true
@@ -164,6 +167,23 @@ final class AppState {
     func finishCase() {
         returnToPatients = true
         activeCase = nil
+    }
+
+    /// Removes patients from the student's history (every one when `beds` is nil). The ward
+    /// updates at once; on failure it reloads from the server and the problem is shown.
+    func deletePatients(_ beds: Set<String>?) async {
+        guard let cases else { return }
+        let removed = beds ?? Set(ward.map(\.id))
+        ward.removeAll { removed.contains($0.id) }
+        skipped.subtract(removed)
+        UserDefaults.standard.set(Array(skipped), forKey: Self.skippedStorageKey)
+        do {
+            _ = try await cases.deletePatients(beds.map { Array($0) })
+        } catch {
+            let message = error.localizedDescription
+            await refresh()   // clears `problem` on success, so set it after
+            problem = message
+        }
     }
 
     func skip(bed: String) {

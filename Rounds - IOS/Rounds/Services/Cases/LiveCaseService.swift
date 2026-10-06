@@ -39,6 +39,11 @@ struct LiveCaseService: CaseService {
         return .preparing
     }
 
+    func deletePatients(_ beds: [String]?) async throws -> Int {
+        // The database function checks ownership; a bed that isn't the caller's is skipped.
+        try await client.rpc("delete_patients", params: DeleteBody(case_ids: beds)).execute().value
+    }
+
     func loadCase(bed: String) async throws -> ClinicalCase {
         let row: CaseDetailRow = try await client.from("cases")
             .select("id, patient_name, age, sex, quote, complaint, setting, demeanor, task, vitals, budget, minutes, suggested, maneuvers, test_menu, clerkship, organ_system, key_history")
@@ -173,6 +178,7 @@ private struct MissRow: Decodable { let flag: String; let why: String }
 private struct TopicCountRow: Decodable { let kind: String; let topic: String; let conditions: Int }
 private struct ErrorReply: Decodable { let error: String }
 /// `{case_id}` once written, or `{status: "preparing"}` (HTTP 202) while the focus's first condition is.
+private struct DeleteBody: Encodable { let case_ids: [String]? }
 private struct AdmitReply: Decodable { let case_id: String?; let status: String? }
 private struct StartReply: Decodable { let attempt_id: String }
 private struct ExamineReply: Decodable { let finding: String }

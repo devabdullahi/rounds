@@ -18,6 +18,10 @@ protocol CaseService: Sendable {
 
     func loadCase(bed: String) async throws -> ClinicalCase
 
+    /// Deletes the student's own patients and their attempts (all of them when `beds` is nil).
+    /// Returns how many were removed. Ratings already earned stay.
+    func deletePatients(_ beds: [String]?) async throws -> Int
+
     func start(bed: String, examMode: Bool, timeLimitMinutes: Int?) async throws -> String
     func ask(attempt: String, question: String) async throws -> PatientAnswer
     func examine(attempt: String, maneuver: String) async throws -> String
