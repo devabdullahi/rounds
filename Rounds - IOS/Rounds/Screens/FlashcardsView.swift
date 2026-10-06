@@ -135,10 +135,16 @@ struct FlashcardsView: View {
 
             if total > 0 { ProgressBar(value: Double(known) / Double(total), height: 4) }
 
-            if store.cards.isEmpty && !store.isLoading {
+            // Nothing until the first load lands, then: no cards, a finished deck, or the deck.
+            // The summary needs answered cards, so an empty queue mid-load never reads "0 / 0".
+            if !store.hasLoaded {
+                Color.clear.frame(maxHeight: .infinity)
+            } else if store.cards.isEmpty {
                 emptyState
             } else if queue.isEmpty {
-                summary.transition(.opacity.combined(with: .scale(scale: 0.96)))
+                if known + missed > 0 {
+                    summary.transition(.opacity.combined(with: .scale(scale: 0.96)))
+                }
             } else {
                 deck
                 Text(flipped ? "How did you do?" : "Tap the card to flip")

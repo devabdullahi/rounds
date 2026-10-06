@@ -9,6 +9,8 @@ final class FlashcardStore {
 
     private(set) var cards: [Flashcard] = []
     private(set) var isLoading = false
+    /// The first load has finished (successfully or not), so "no cards" is known, not assumed.
+    private(set) var hasLoaded = false
     private(set) var isGenerating = false
     /// Deck being studied; nil studies every card.
     var selectedDeck: String?
@@ -41,7 +43,7 @@ final class FlashcardStore {
     func load() async {
         guard let service, !isLoading else { return }
         isLoading = true
-        defer { isLoading = false }
+        defer { isLoading = false; hasLoaded = true }
         do {
             cards = try await service.cards()
             if let deck = selectedDeck, !decks.contains(deck) { selectedDeck = nil }
