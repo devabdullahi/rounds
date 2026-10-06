@@ -190,9 +190,15 @@ struct PatientsView: View {
         Task { await app.deletePatients([bed]) }
     }
 
-    /// Tap on a row: toggles it while selecting, otherwise does the row's own thing.
+    /// Tap on a row: toggles it while selecting, otherwise does the row's own thing. A swipe's
+    /// lifting finger also reaches the row's button, so a row being swiped never opens; a tap on
+    /// another row just closes the open one.
     private func tapped(_ bed: String, otherwise action: () -> Void) {
         if heldRow == bed { heldRow = nil; return }
+        if let open = openRow {
+            if open != bed { openRow = nil }
+            return
+        }
         if var s = selection {
             if s.contains(bed) { s.remove(bed) } else { s.insert(bed) }
             selection = s

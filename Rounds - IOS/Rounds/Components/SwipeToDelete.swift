@@ -1,15 +1,18 @@
 import SwiftUI
 
 /* ANIMATION STORYBOARD · Swipe to delete
- *    drag    row follows the finger right; red Delete shows behind it
+ *    drag    row follows the finger, either way; red Delete shows on the side it uncovers
  *    release past ACTION.width/2 → row rests open on Delete; less → springs shut
- *    release past FULL of the row  → row slides off, then onDelete
- *    other row opens / scroll starts / tap on the row → springs shut
+ *    release past FULL of the row  → row slides off that side, then onDelete
+ *    other row opens / tap on the row → springs shut
  * Reduce Motion: same states, no spring overshoot. */
 
-/// Swipe a row right to reveal Delete, or swipe it most of the way to delete at once. List's
-/// swipeActions only work inside a List; these rows live in a ScrollView. One row is open at a
-/// time through `openRow`.
+/// Swipe a row left or right to reveal Delete, or most of the way to delete at once. List's
+/// swipeActions only work inside a List; these rows live in a ScrollView.
+///
+/// `openRow` names the row being swiped or resting open, and stays set a moment after a swipe
+/// ends: the row's own button sees the finger lift too, so callers treat a tap on that row as
+/// nothing while it's set, instead of opening it.
 struct SwipeToDelete: ViewModifier {
     let id: String
     @Binding var openRow: String?
@@ -19,7 +22,7 @@ struct SwipeToDelete: ViewModifier {
     @State private var offset: CGFloat = 0
     @State private var width: CGFloat = 0
     @State private var dragging = false
-    /// Where the row sat when the drag began (0, or open on Delete).
+    /// Where the row sat when the drag began (0, or open on Delete either side).
     @State private var dragStart: CGFloat = 0
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
@@ -29,16 +32,21 @@ struct SwipeToDelete: ViewModifier {
         static let full: CGFloat = 0.6
         /// Horizontal travel before the row takes the drag from the scroll view.
         static let start: CGFloat = 14
+        /// How long a finished swipe keeps swallowing the row's tap.
+        static let settle: Duration = .milliseconds(350)
     }
 
     private var spring: Animation { reduceMotion ? .easeOut(duration: 0.2) : .spring(response: 0.32, dampingFraction: 0.86) }
-    private var pastFull: Bool { width > 0 && offset > width * ACTION.full }
+    private var pastFull: Bool { width > 0 && abs(offset) > width * ACTION.full }
+    /// The row moved right, so Delete shows on the leading side.
+    private var fromLeading: Bool { offset >= 0 }
 
     func body(content: Content) -> some View {
-        ZStack(alignment: .leading) {
+        ZStack(alignment: fromLeading ? .leading : .trailing) {
             Button(action: delete) {
-                // Past the full-swipe point the label rides the row's edge, as in Mail.
-                ZStack(alignment: pastFull ? .trailing : .leading) {
+                // The label sits by the uncovered edge, then rides the row's edge past the
+                // full-swipe point, as in Mail.
+                ZStack(alignment: fromLeading == pastFull ? .trailing : .leading) {
                     Theme.wrong
                     VStack(spacing: 4) {
                         AppIcon(.trash, size: 20)
@@ -47,7 +55,7 @@ struct SwipeToDelete: ViewModifier {
                     .foregroundStyle(.white)
                     .frame(width: ACTION.width)
                 }
-                .frame(width: max(offset, 0))
+                .frame(width: abs(offset))
                 .frame(maxHeight: .infinity)
                 .clipped()
                 .animation(spring, value: pastFull)
@@ -58,9 +66,9 @@ struct SwipeToDelete: ViewModifier {
             content
                 .background(Theme.surface)
                 .offset(x: offset)
-                // While open, a tap on the row closes it instead of opening the patient.
+                // While open, a tap on the row closes it.
                 .overlay {
-                    if offset > 0 && !dragging {
+                    if offset != 0 && !dragging {
                         Color.clear.contentShape(Rectangle()).onTapGesture { close() }
                     }
                 }
@@ -71,7 +79,7 @@ struct SwipeToDelete: ViewModifier {
         .sensoryFeedback(.impact(weight: .medium), trigger: pastFull) { _, now in now }
         .onChange(of: openRow) { _, now in if now != id && offset != 0 { close() } }
         .onChange(of: enabled) { _, on in if !on { close() } }
-        .onAppear { if openRow == id { offset = ACTION.width } }
+        .onAppear { if openRow == id { offset = Self.debugOpenSide * ACTION.width } }
         .accessibilityAction(named: "Delete") { onDelete() }
     }
 
@@ -81,15 +89,16 @@ struct SwipeToDelete: ViewModifier {
                 // Vertical drags belong to the scroll view.
                 guard dragging || abs(v.translation.width) > abs(v.translation.height) * 1.5 else { return }
                 if !dragging { dragging = true; dragStart = offset; openRow = id }
-                offset = max(0, dragStart + v.translation.width)
+                offset = min(width, max(-width, dragStart + v.translation.width))
             }
             .onEnded { v in
                 guard dragging else { return }
                 dragging = false
-                if pastFull || (width > 0 && v.predictedEndTranslation.width > width) {
+                let flung = width > 0 && abs(v.predictedEndTranslation.width) > width
+                if pastFull || (flung && (v.predictedEndTranslation.width > 0) == fromLeading) {
                     delete()
-                } else if offset > ACTION.width / 2 {
-                    withAnimation(spring) { offset = ACTION.width }
+                } else if abs(offset) > ACTION.width / 2 {
+                    withAnimation(spring) { offset = fromLeading ? ACTION.width : -ACTION.width }
                 } else {
                     close()
                 }
@@ -98,17 +107,36 @@ struct SwipeToDelete: ViewModifier {
 
     private func close() {
         withAnimation(spring) { offset = 0 }
-        if openRow == id { openRow = nil }
+        release()
     }
 
     private func delete() {
-        withAnimation(.easeIn(duration: 0.2)) { offset = width }
+        let side: CGFloat = fromLeading ? 1 : -1
+        withAnimation(.easeIn(duration: 0.2)) { offset = side * width }
         Task { @MainActor in
             try? await Task.sleep(for: .seconds(0.2))
-            openRow = nil
             onDelete()
+            try? await Task.sleep(for: ACTION.settle)
+            if openRow == id { openRow = nil }
         }
     }
+
+    /// Clears `openRow` once the lifting finger's tap has passed, unless another row took it.
+    private func release() {
+        Task { @MainActor in
+            try? await Task.sleep(for: ACTION.settle)
+            if openRow == id && offset == 0 { openRow = nil }
+        }
+    }
+}
+
+extension SwipeToDelete {
+    #if DEBUG
+    /// `-screen patients-swipe-left` opens the debug row on the trailing side (-1).
+    nonisolated(unsafe) static var debugOpenSide: CGFloat = 1
+    #else
+    static let debugOpenSide: CGFloat = 1
+    #endif
 }
 
 extension View {
