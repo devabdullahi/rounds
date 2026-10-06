@@ -49,6 +49,9 @@ enum DebugLaunch {
             tab = .patients
             app.debugPatientsMode = ["patients-select": "select", "patients-delete": "delete"][screen] ?? "swipe"
             if screen == "patients-swipe-left" { SwipeToDelete.debugOpenSide = -1 }
+        case "badge-unlock":
+            tab = .profile
+            app.debugUnlockRandomBadge()
         case "home-preparing":
             tab = .today
             app.debugShowPreparing()

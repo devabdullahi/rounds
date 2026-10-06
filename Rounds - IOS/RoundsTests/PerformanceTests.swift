@@ -72,6 +72,31 @@ struct BadgeTests {
         #expect(BadgeCatalog.longestCorrectRun(mixed + [graded("6", daysAgo: 0)]) == 3)
     }
 
+    @Test func newUnlocksSkipSeenOnesAndPlayRarestFirst() {
+        let record = BadgeRecord(rating: 2100, bestStreak: 0, cases: [])
+        let statuses = BadgeCatalog.status(for: record)
+        let new = BadgeCatalog.newlyUnlocked(statuses, seen: ["bronze", "silver"])
+        #expect(new.map(\.badge.id) == ["platinum", "gold"])
+    }
+
+    @Test func cardsKnowTheirPlaceInTheSet() {
+        let record = BadgeRecord(rating: 1000, bestStreak: 0, cases: [])
+        #expect(status("hat-trick", record)?.setNumber == "SKL 04/04")
+        #expect(status("bronze", record)?.setNumber == "TIER 01/04")
+    }
+
+    @Test func smallCardsShowBigGoalsAsAPercentage() {
+        let record = BadgeRecord(rating: 1482, bestStreak: 4, cases: [])
+        #expect(status("gold", record)?.compactProgressLabel == "92%")
+        #expect(status("week-streak", record)?.compactProgressLabel == "4/7")
+    }
+
+    @Test func aTestUnlockShowsTheCardAsEarned() {
+        let locked = status("perfect", BadgeRecord(rating: 1000, bestStreak: 0, cases: []))
+        #expect(locked?.unlocked == false)
+        #expect(locked?.asUnlocked().unlocked == true)
+    }
+
     @Test func rangeCountsDistinctRotations() {
         let cases = [graded("1", daysAgo: 1, clerkship: .surgery), graded("2", daysAgo: 1, clerkship: .surgery),
                      graded("3", daysAgo: 1, clerkship: .pediatrics)]

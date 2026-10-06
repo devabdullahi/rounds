@@ -112,6 +112,7 @@ final class AppState {
             self.topicCounts = try await counts
             self.graded = try await graded
             problem = nil
+            checkUnlocks()
         } catch {
             problem = error.localizedDescription
         }
@@ -176,10 +177,55 @@ final class AppState {
     func finishCase() {
         returnToPatients = true
         activeCase = nil
+        // The graded case may have unlocked a badge; the refresh queues its moment.
+        Task { await refresh() }
     }
 
     /// Everything badges are judged on.
     var badgeRecord: BadgeRecord { BadgeRecord(rating: rating, bestStreak: bestStreak, cases: graded) }
+
+    // MARK: Badge unlocks
+
+    /// Badges whose unlock has been shown, so each card's moment plays once. Nil until the first
+    /// check, which records what's already earned without celebrating it.
+    private var seenBadges: Set<String>? = UserDefaults.standard.stringArray(forKey: AppState.seenBadgesStorageKey).map(Set.init)
+    static let seenBadgesStorageKey = "seenBadges"
+    /// Unlocks waiting to be shown, biggest first.
+    private(set) var pendingUnlocks: [BadgeStatus] = []
+
+    /// Queues any badge that unlocked since the last check.
+    func checkUnlocks() {
+        let statuses = BadgeCatalog.status(for: badgeRecord)
+        guard let seen = seenBadges else {
+            markSeen(statuses.filter(\.unlocked).map(\.id))
+            return
+        }
+        let new = BadgeCatalog.newlyUnlocked(statuses, seen: seen)
+        pendingUnlocks += new.filter { n in !pendingUnlocks.contains { $0.id == n.id } }
+    }
+
+    /// The student has seen this unlock. Only real unlocks are remembered, so a test run never
+    /// spends the moment a badge will have when it's actually earned.
+    func celebrated(_ status: BadgeStatus) {
+        pendingUnlocks.removeAll { $0.id == status.id }
+        let earned = BadgeCatalog.status(for: badgeRecord).contains { $0.id == status.id && $0.unlocked }
+        if earned { markSeen([status.id]) }
+    }
+
+    private func markSeen(_ ids: [String]) {
+        let all = (seenBadges ?? []).union(ids)
+        seenBadges = all
+        UserDefaults.standard.set(Array(all), forKey: Self.seenBadgesStorageKey)
+    }
+
+    #if DEBUG
+    /// Badges page test button: plays the unlock for a random locked badge (nothing is earned).
+    func debugUnlockRandomBadge() {
+        let locked = BadgeCatalog.status(for: badgeRecord).filter { !$0.unlocked }
+        guard let pick = (locked.isEmpty ? BadgeCatalog.status(for: badgeRecord) : locked).randomElement() else { return }
+        pendingUnlocks.append(pick.asUnlocked())
+    }
+    #endif
 
     /// Removes patients from the student's history (every one when `beds` is nil). The ward
     /// updates synchronously, so a caller can animate it with `withAnimation`; the server delete
