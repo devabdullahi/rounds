@@ -6,7 +6,7 @@ government work (public domain); CDC asks that syndicated pages not be republish
 form, so this text is background for authoring only and is never shown to students.
 
 Coverage is mostly infectious and chronic disease; most surgical and many specialty conditions
-have no CDC page. Run after build_kb.py, since it reads conditions.jsonl.
+have no CDC page. Run after build_kb (python3 -m build_kb), since it reads conditions.jsonl.
 
     python3 tools/kb-import/cdc.py
 """

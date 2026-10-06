@@ -96,7 +96,7 @@ def main() -> None:
     print("MeSH descriptors…", file=sys.stderr)
     mesh = load_mesh(2026)
     mesh_by_name = mesh_index(mesh)
-    # Conditions under the same MeSH parent are look-alikes, as in build_kb.py.
+    # Conditions under the same MeSH parent are look-alikes, as in build_kb/assemble.py.
     by_parent: dict[str, set[str]] = {}
     for c in existing:
         for m in c["mesh"]:
