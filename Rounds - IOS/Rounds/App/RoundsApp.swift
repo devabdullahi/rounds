@@ -115,6 +115,12 @@ struct MainTabsView: View {
         } message: {
             Text(app.problem ?? "")
         }
+        // A graded case ends on the ward, where the student picks their next patient.
+        .onChange(of: app.returnToPatients) { _, go in
+            guard go else { return }
+            tab = .patients
+            app.returnToPatients = false
+        }
         .fullScreenCover(item: $app.activeCase) { session in
             CaseFlowView(session: session)
                 .environment(app)
@@ -163,6 +169,9 @@ struct CaseFlowView: View {
                 .toolbar(.hidden, for: .navigationBar)
         }
         .environment(router)
+        // Once the diagnosis is submitted (handoff onward), there's no going back to change it.
+        .onChange(of: router.path) { _, path in NavLock.isLocked = path.contains(.handoff) || path.contains(.debrief) }
+        .onDisappear { NavLock.isLocked = false }
         .onAppear {
             if !app.debugInitialPath.isEmpty {
                 var t = Transaction(); t.disablesAnimations = true
@@ -179,6 +188,8 @@ extension UINavigationController: @retroactive UIGestureRecognizerDelegate {
     override open func viewDidLoad() {
         super.viewDidLoad()
         interactivePopGestureRecognizer?.delegate = self
+        // iOS 26 also pops on a swipe anywhere in the content, not just from the edge.
+        if #available(iOS 26.0, *) { interactiveContentPopGestureRecognizer?.delegate = self }
     }
 
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -186,14 +197,9 @@ extension UINavigationController: @retroactive UIGestureRecognizerDelegate {
     }
 }
 
-/// Screens past a point of no return (submitted diagnosis) switch off edge-swipe back.
+/// Past a point of no return (submitted diagnosis) swipe-back is off. Set from the case's
+/// navigation path, not per screen: per-screen appear/disappear pairs overlap during a push, and
+/// the screen being left would unlock the one arriving.
 enum NavLock {
     nonisolated(unsafe) static var isLocked = false
-}
-
-extension View {
-    func lockSwipeBack() -> some View {
-        onAppear { NavLock.isLocked = true }
-            .onDisappear { NavLock.isLocked = false }
-    }
 }

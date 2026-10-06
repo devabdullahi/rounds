@@ -45,7 +45,7 @@ struct DebriefView: View {
     var body: some View {
         VStack(spacing: 0) {
             NavHeader(title: "Debrief") {
-                IconButton(glyph: .x, label: "Close") { app.activeCase = nil }
+                IconButton(glyph: .x, label: "Close") { app.finishCase() }
             } trailing: {
                 ShareLink(item: shareText) {
                     AppIcon(.share, size: 18)
@@ -95,7 +95,7 @@ struct DebriefView: View {
             HStack(spacing: 10) {
                 Button("Retry case") { restart() }
                     .buttonStyle(SoftButtonStyle())
-                Button("Next patient") { app.activeCase = nil }
+                Button("Next patient") { app.finishCase() }
                     .buttonStyle(PrimaryButtonStyle())
             }
             .padding(.horizontal, 20)
@@ -104,7 +104,6 @@ struct DebriefView: View {
         }
         .background(Theme.bg)
         .navigationBarBackButtonHidden()
-        .lockSwipeBack()
         .task { await play() }
         .task { assist.reference = reference }
     }

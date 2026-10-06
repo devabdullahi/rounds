@@ -157,6 +157,15 @@ final class AppState {
         }
     }
 
+    /// Set when a graded case closes; the tab view switches to Patients and clears it.
+    var returnToPatients = false
+
+    /// Closes a graded case and lands on the ward.
+    func finishCase() {
+        returnToPatients = true
+        activeCase = nil
+    }
+
     func skip(bed: String) {
         skipped.insert(bed)
         UserDefaults.standard.set(Array(skipped), forKey: Self.skippedStorageKey)
