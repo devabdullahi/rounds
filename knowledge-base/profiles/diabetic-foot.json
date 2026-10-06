@@ -1,0 +1,1640 @@
+{
+  "schema_version": "0.2",
+  "slug": "diabetic-foot",
+  "triage": {
+    "name": "Diabetic Foot",
+    "case_suitable": true,
+    "reason": "Ulcer with neuropathy and vascular disease; rich history, exam and imaging workup with infection and osteomyelitis differential.",
+    "kind": "disease",
+    "category": "microvascular and infectious complication",
+    "organ_systems": [
+      "musculoskeletal",
+      "endocrine"
+    ],
+    "primary_clerkship": "surgery",
+    "secondary_clerkships": [
+      "internalMedicine",
+      "emergency",
+      "familyMedicine"
+    ],
+    "commonness": "common",
+    "settings": [
+      "clinic",
+      "emergency",
+      "inpatient"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:16:59Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:51:05Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:51:11Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:51:25Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:51:36Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:51:43Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "differential osteomyelitis: no profile yet",
+        "differential necrotizing-soft-tissue-infection: no profile yet",
+        "differential peripheral-arterial-disease: no profile yet",
+        "differential charcot-foot: no profile yet",
+        "differential gout: no profile yet",
+        "differential venous-stasis-ulcer: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 45,
+      "typical_max": 85,
+      "peak": "55–75",
+      "possible_min": 18,
+      "possible_max": 100
+    },
+    "sex": "male_predominant",
+    "demographics": [
+      "More common in men than women",
+      "More common in Black, Hispanic, and Native American populations, reflecting higher rates of diabetes and its complications",
+      "More common in people with lower income and less access to routine foot care",
+      "More common in regions with higher diabetes prevalence"
+    ],
+    "risk_factors": [
+      {
+        "text": "Long-standing diabetes (usually more than 10 years)",
+        "strength": "strong"
+      },
+      {
+        "text": "Peripheral neuropathy with loss of protective sensation",
+        "strength": "strong"
+      },
+      {
+        "text": "Peripheral arterial disease or prior lower-extremity revascularization",
+        "strength": "strong"
+      },
+      {
+        "text": "Prior foot ulcer or amputation",
+        "strength": "strong"
+      },
+      {
+        "text": "Poor glycemic control (high A1c)",
+        "strength": "strong"
+      },
+      {
+        "text": "Foot deformity (Charcot foot, hammer toes, prominent metatarsal heads, bunions)",
+        "strength": "moderate"
+      },
+      {
+        "text": "Ill-fitting shoes or walking barefoot",
+        "strength": "moderate"
+      },
+      {
+        "text": "Calluses, corns, or dry cracked skin",
+        "strength": "moderate"
+      },
+      {
+        "text": "Smoking",
+        "strength": "moderate"
+      },
+      {
+        "text": "Male sex",
+        "strength": "weak"
+      },
+      {
+        "text": "Older age",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Type 1 or type 2 diabetes mellitus",
+      "Peripheral neuropathy",
+      "Peripheral arterial disease",
+      "Chronic kidney disease",
+      "Retinopathy",
+      "Obesity",
+      "Hypertension",
+      "Hyperlipidemia"
+    ],
+    "family_history": [
+      "Diabetes mellitus in a first-degree relative"
+    ],
+    "social_history": [
+      "Limited access to routine foot care or podiatry",
+      "Low health literacy or difficulty performing daily foot checks",
+      "Tobacco use",
+      "Alcohol use",
+      "Sedentary lifestyle"
+    ],
+    "exposures": [
+      "Walking barefoot, including indoors",
+      "Ill-fitting or worn-out shoes",
+      "Foreign bodies in shoes (pebbles, seams)",
+      "Heat or cold exposure to the feet (heaters, hot water bottles, walking on hot surfaces)"
+    ],
+    "risk_medications": [
+      "insulin",
+      "metformin",
+      "glipizide",
+      "prednisone",
+      "warfarin"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "There's a sore on my foot that won't heal",
+        "frequency": "almost_always"
+      },
+      {
+        "text": "My feet feel numb and tingly",
+        "frequency": "common"
+      },
+      {
+        "text": "I didn't even know I had a wound until I saw it",
+        "frequency": "common"
+      },
+      {
+        "text": "My foot is red, warm, and swollen",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "There's a bad smell coming from my foot",
+        "frequency": "sometimes"
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual; a wound that may have started days to weeks earlier, often unnoticed because of numbness",
+      "duration": "Usually days to weeks, sometimes months for a chronic ulcer",
+      "progression": "Slowly enlarging wound that fails to heal; may become infected, drain pus, or turn black if blood flow is poor",
+      "location": "Most often the plantar surface of the foot under the metatarsal heads or the heel; also toes, between toes, or over bony prominences",
+      "radiation": "Pain, if present, may radiate up the leg; numbness is usually in a stocking distribution",
+      "quality": "Painless or minimally painful open sore; burning, tingling, or sharp shooting pains from neuropathy; deep aching if infection or ischemia is present",
+      "severity": "Variable; often painless because of neuropathy, but can be severe if infection or ischemia develops",
+      "timing": "Constant wound; neuropathic pain often worse at night",
+      "aggravating": [
+        "Walking or standing",
+        "Tight or ill-fitting shoes",
+        "Bearing weight on the affected foot"
+      ],
+      "relieving": [
+        "Taking weight off the foot",
+        "Resting",
+        "Loose footwear or offloading"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Numbness or loss of feeling in the feet",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Tingling or burning in the feet",
+          "frequency": "common"
+        },
+        {
+          "text": "Callus or thickened skin near the wound",
+          "frequency": "common"
+        },
+        {
+          "text": "Drainage or pus from the wound",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Redness, warmth, or swelling of the foot",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Foul odor from the wound",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Fever or chills",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Black or dead tissue at the wound edges",
+          "frequency": "rare"
+        },
+        {
+          "text": "Shaking chills or feeling very unwell",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Severe pain out of proportion to the wound",
+        "Rapidly spreading redness or streaks up the leg",
+        "Sudden onset of a hot, swollen joint",
+        "History of a tick bite or rash",
+        "Recent trauma with an open fracture",
+        "Known venous stasis ulcer history",
+        "Claudication that resolves completely with rest and no wound"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Feeling tired",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Feeling warm or feverish",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Unintentional weight loss",
+          "Night sweats"
+        ],
+        "argues_against": [
+          "Systemic illness without a foot source"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [
+          {
+            "text": "Open sore on the foot",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Dry, cracked skin on the feet",
+            "frequency": "common"
+          },
+          {
+            "text": "Calluses or corns",
+            "frequency": "common"
+          },
+          {
+            "text": "Redness or warmth around the wound",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Drainage or pus",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Black or dead tissue",
+            "frequency": "rare"
+          }
+        ],
+        "negatives": [
+          "Rash elsewhere on the body",
+          "Itching all over"
+        ],
+        "argues_against": [
+          "Primary dermatologic condition causing the wound"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Foot deformity or prominent bones",
+            "frequency": "common"
+          },
+          {
+            "text": "Swelling of the foot or ankle",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Difficulty walking",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Joint locking or instability",
+          "Muscle weakness in the arms"
+        ],
+        "argues_against": [
+          "Primary arthritis or acute crystal arthropathy"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Numbness in the feet",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "Tingling or pins and needles",
+            "frequency": "common"
+          },
+          {
+            "text": "Burning pain in the feet, worse at night",
+            "frequency": "common"
+          },
+          {
+            "text": "Loss of balance or unsteady walking",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Sudden weakness on one side of the body",
+          "Loss of bowel or bladder control"
+        ],
+        "argues_against": [
+          "Spinal cord compression or stroke"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [
+          {
+            "text": "Leg pain with walking that goes away with rest",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Cold feet",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Chest pain",
+          "Shortness of breath at rest",
+          "Swelling in both legs up to the knees"
+        ],
+        "argues_against": [
+          "Heart failure as the cause of leg swelling"
+        ]
+      },
+      {
+        "system": "endocrine",
+        "positives": [
+          {
+            "text": "High blood sugar readings",
+            "frequency": "common"
+          },
+          {
+            "text": "Increased thirst and urination",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Heat intolerance",
+          "Unexplained weight gain"
+        ],
+        "argues_against": [
+          "Thyroid disease as the cause of neuropathy"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "older_adults",
+        "how_it_differs": "May present with a painless, deep ulcer and little or no fever despite serious infection; confusion or falls may be the first sign.",
+        "missing_classic_features": [
+          "Fever",
+          "Pain",
+          "Redness"
+        ]
+      },
+      {
+        "population": "renal_impairment",
+        "how_it_differs": "More severe neuropathy and vascular calcification; wounds heal poorly and infection risk is higher.",
+        "missing_classic_features": [
+          "Palpable foot pulses"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "Blunted inflammatory response with minimal redness, warmth, or pus despite deep infection.",
+        "missing_classic_features": [
+          "Purulent drainage",
+          "Marked erythema"
+        ]
+      },
+      {
+        "population": "obesity",
+        "how_it_differs": "Increased pressure on the plantar foot and difficulty seeing or reaching the feet, so wounds are found later.",
+        "missing_classic_features": [
+          "Early detection of the wound"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Well-appearing, ambulatory, in no distress; may be unaware of the wound",
+      "moderate": "Uncomfortable, limping or favoring the foot, but not toxic-appearing",
+      "severe": "Ill-appearing, febrile, reluctant to bear weight, foot swollen and draining",
+      "critical": "Toxic-appearing, diaphoretic, confused or lethargic, with spreading infection or gangrene"
+    },
+    "findings": [
+      {
+        "id": "plantar-ulcer",
+        "region": "extremities",
+        "maneuver": "Inspect the entire foot, including the plantar surface, between the toes, and the heel",
+        "finding": "Open ulcer, most often over a metatarsal head or the heel, with callus at the margins",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "loss-protective-sensation",
+        "region": "neuro",
+        "maneuver": "Test sensation with a 10-g monofilament at multiple plantar sites, plus vibration with a 128-Hz tuning fork and pinprick",
+        "finding": "Reduced or absent protective sensation in a stocking distribution",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "diminished-pulses",
+        "region": "extremities",
+        "maneuver": "Palpate the dorsalis pedis and posterior tibial pulses",
+        "finding": "Diminished or absent foot pulses",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "probe-to-bone",
+        "region": "extremities",
+        "maneuver": "Gently probe the ulcer base with a sterile blunt probe",
+        "finding": "Probe reaches bone, suggesting osteomyelitis",
+        "frequency": "sometimes",
+        "significance": "strongly_supports",
+        "importance": "important"
+      },
+      {
+        "id": "erythema-warmth",
+        "region": "skin",
+        "maneuver": "Inspect and palpate the skin around the wound",
+        "finding": "Erythema, warmth, and induration extending from the ulcer",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "purulent-drainage",
+        "region": "extremities",
+        "maneuver": "Inspect and gently express the wound",
+        "finding": "Purulent or foul-smelling drainage",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "crepitus",
+        "region": "extremities",
+        "maneuver": "Palpate the soft tissues of the foot and leg",
+        "finding": "Crepitus or gas in the tissues, suggesting necrotizing infection",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "gangrene",
+        "region": "extremities",
+        "maneuver": "Inspect the toes and wound edges",
+        "finding": "Black, dry or wet necrotic tissue (gangrene)",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "foot-deformity",
+        "region": "musculoskeletal",
+        "maneuver": "Inspect the foot for bony prominences, hammer toes, and Charcot changes",
+        "finding": "Foot deformity with prominent metatarsal heads or rocker-bottom midfoot",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "dry-cracked-skin",
+        "region": "skin",
+        "maneuver": "Inspect the skin of both feet",
+        "finding": "Dry, fissured skin and calluses",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-joint-exam",
+        "region": "musculoskeletal",
+        "maneuver": "Assess the affected joint for swelling, warmth, and range of motion",
+        "finding": "No acute monoarticular swelling or hot joint",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "no-proximal-spread",
+        "region": "extremities",
+        "maneuver": "Inspect the leg for ascending erythema or lymphangitic streaking",
+        "finding": "No erythema or tenderness extending above the ankle",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 98.0,
+        "max": 99.5
+      },
+      "moderate": {
+        "min": 99.0,
+        "max": 100.8
+      },
+      "severe": {
+        "min": 100.4,
+        "max": 102.5
+      },
+      "critical": {
+        "min": 101.0,
+        "max": 104.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 95
+      },
+      "moderate": {
+        "min": 80,
+        "max": 105
+      },
+      "severe": {
+        "min": 95,
+        "max": 125
+      },
+      "critical": {
+        "min": 110,
+        "max": 140
+      }
+    },
+    "rr": {
+      "severe": {
+        "min": 18,
+        "max": 24
+      },
+      "critical": {
+        "min": 22,
+        "max": 32
+      }
+    },
+    "sbp": {
+      "severe": {
+        "min": 95,
+        "max": 115
+      },
+      "critical": {
+        "min": 75,
+        "max": 95
+      }
+    },
+    "dbp": {
+      "severe": {
+        "min": 55,
+        "max": 75
+      },
+      "critical": {
+        "min": 40,
+        "max": 60
+      }
+    },
+    "spo2": {
+      "critical": {
+        "min": 88,
+        "max": 94
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "mild": {
+          "min": 10.5,
+          "max": 13.0
+        },
+        "moderate": {
+          "min": 12.0,
+          "max": 16.0
+        },
+        "severe": {
+          "min": 15.0,
+          "max": 22.0
+        },
+        "critical": {
+          "min": 18.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "A normal white count does not exclude a deep foot infection, especially in older or immunocompromised patients."
+    },
+    {
+      "test_id": "neut_pct",
+      "ranges": {
+        "mild": {
+          "min": 70,
+          "max": 80
+        },
+        "moderate": {
+          "min": 75,
+          "max": 86
+        },
+        "severe": {
+          "min": 80,
+          "max": 90
+        },
+        "critical": {
+          "min": 82,
+          "max": 94
+        }
+      },
+      "frequency": "common",
+      "importance": "important"
+    },
+    {
+      "test_id": "bands_pct",
+      "ranges": {
+        "severe": {
+          "min": 5,
+          "max": 12
+        },
+        "critical": {
+          "min": 8,
+          "max": 20
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "esr",
+      "ranges": {
+        "moderate": {
+          "min": 30,
+          "max": 60
+        },
+        "severe": {
+          "min": 50,
+          "max": 90
+        },
+        "critical": {
+          "min": 60,
+          "max": 110
+        }
+      },
+      "frequency": "common",
+      "importance": "optional",
+      "caveat": "Nonspecific; useful mainly when osteomyelitis is suspected."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "moderate": {
+          "min": 2.0,
+          "max": 8.0
+        },
+        "severe": {
+          "min": 6.0,
+          "max": 20.0
+        },
+        "critical": {
+          "min": 12.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "common",
+      "importance": "optional",
+      "caveat": "Rises early in infection and falls with treatment; helps track response."
+    },
+    {
+      "test_id": "procalcitonin",
+      "ranges": {
+        "severe": {
+          "min": 0.5,
+          "max": 2.0
+        },
+        "critical": {
+          "min": 1.5,
+          "max": 10.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Supports a bacterial cause and systemic involvement but does not localize the infection."
+    },
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "mild": {
+          "min": 110,
+          "max": 180
+        },
+        "moderate": {
+          "min": 150,
+          "max": 250
+        },
+        "severe": {
+          "min": 200,
+          "max": 350
+        },
+        "critical": {
+          "min": 250,
+          "max": 500
+        }
+      },
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Infection worsens hyperglycemia; poor control impairs wound healing."
+    },
+    {
+      "test_id": "a1c",
+      "ranges": {
+        "mild": {
+          "min": 6.5,
+          "max": 8.0
+        },
+        "moderate": {
+          "min": 7.5,
+          "max": 9.5
+        },
+        "severe": {
+          "min": 8.5,
+          "max": 11.0
+        },
+        "critical": {
+          "min": 9.5,
+          "max": 14.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Reflects chronic glycemic control and risk of poor healing."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "moderate": {
+          "min": 1.2,
+          "max": 1.8
+        },
+        "severe": {
+          "min": 1.6,
+          "max": 2.5
+        },
+        "critical": {
+          "min": 2.0,
+          "max": 4.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Diabetic nephropathy is common; affects antibiotic dosing."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "moderate": {
+          "min": 20,
+          "max": 30
+        },
+        "severe": {
+          "min": 28,
+          "max": 45
+        },
+        "critical": {
+          "min": 35,
+          "max": 60
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Rises with dehydration and renal impairment."
+    },
+    {
+      "test_id": "albumin",
+      "ranges": {
+        "moderate": {
+          "min": 2.8,
+          "max": 3.4
+        },
+        "severe": {
+          "min": 2.2,
+          "max": 3.0
+        },
+        "critical": {
+          "min": 1.8,
+          "max": 2.5
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Low albumin predicts poor wound healing and higher amputation risk."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "severe": {
+          "min": 2.2,
+          "max": 4.0
+        },
+        "critical": {
+          "min": 3.0,
+          "max": 8.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "important",
+      "caveat": "Elevation suggests systemic sepsis or necrotizing infection and warrants urgent surgical evaluation."
+    },
+    {
+      "test_id": "pt",
+      "ranges": {
+        "severe": {
+          "min": 14.0,
+          "max": 18.0
+        },
+        "critical": {
+          "min": 16.0,
+          "max": 24.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Prolonged in malnutrition, liver disease, or with warfarin."
+    },
+    {
+      "test_id": "inr",
+      "ranges": {
+        "severe": {
+          "min": 1.2,
+          "max": 1.8
+        },
+        "critical": {
+          "min": 1.5,
+          "max": 2.5
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Relevant before debridement or amputation."
+    }
+  ],
+  "imaging": [
+    {
+      "study": "Weight-bearing foot x-ray",
+      "modality": "xray",
+      "preferred_when": "First-line imaging for any diabetic foot ulcer or suspected bone infection",
+      "findings": [
+        {
+          "text": "Soft tissue swelling and loss of the normal soft tissue planes",
+          "frequency": "common"
+        },
+        {
+          "text": "Cortical erosion or periosteal reaction at the ulcer margin",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Focal lucency or mottled bone destruction suggesting osteomyelitis",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Gas in the soft tissues",
+          "frequency": "rare"
+        },
+        {
+          "text": "Vascular calcification of the foot arteries",
+          "frequency": "common"
+        },
+        {
+          "text": "Bone destruction, subluxation, or a rocker-bottom deformity suggesting Charcot foot",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Normal-appearing bone early in osteomyelitis (plain films lag 10 to 14 days)",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "MRI of the foot without and with IV contrast",
+      "modality": "mri",
+      "preferred_when": "Suspected osteomyelitis when plain films are negative or nondiagnostic, or to plan surgery",
+      "findings": [
+        {
+          "text": "Bone marrow edema with low signal on T1 and high signal on fluid-sensitive sequences",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Bone marrow enhancement after contrast",
+          "frequency": "common"
+        },
+        {
+          "text": "Adjacent soft tissue abscess or sinus tract extending to bone",
+          "frequency": "common"
+        },
+        {
+          "text": "Cortical destruction and periosteal reaction",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Reactive marrow edema from a nearby ulcer without true infection (false positive)",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Three-phase bone scan with technetium-99m",
+      "modality": "nuclear",
+      "preferred_when": "When MRI is contraindicated or unavailable",
+      "findings": [
+        {
+          "text": "Focally increased radiotracer uptake on all three phases in the region of the ulcer",
+          "frequency": "common"
+        },
+        {
+          "text": "Diffusely increased uptake from Charcot or recent surgery (false positive)",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Labeled leukocyte scan with or without SPECT/CT",
+      "modality": "nuclear",
+      "preferred_when": "When osteomyelitis is suspected but MRI or bone scan is equivocal, especially with Charcot foot",
+      "findings": [
+        {
+          "text": "Focal accumulation of labeled leukocytes in bone, indicating infection",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "Arterial duplex ultrasound of the lower extremities",
+      "modality": "ultrasound",
+      "preferred_when": "Assessing peripheral arterial disease when pulses are diminished or the ulcer is not healing",
+      "findings": [
+        {
+          "text": "Focal stenosis or occlusion in the tibial or pedal arteries",
+          "frequency": "common"
+        },
+        {
+          "text": "Dampened or monophasic Doppler waveforms distal to a stenosis",
+          "frequency": "common"
+        },
+        {
+          "text": "Diffuse calcification of the arterial wall",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "CT angiography of the lower extremities",
+      "modality": "ct",
+      "preferred_when": "Planning revascularization when duplex is inconclusive and renal function permits contrast",
+      "findings": [
+        {
+          "text": "Multilevel arterial stenoses or occlusions in the femoropopliteal and tibial vessels",
+          "frequency": "common"
+        },
+        {
+          "text": "Heavy medial arterial calcification",
+          "frequency": "common"
+        },
+        {
+          "text": "Distal runoff vessels suitable for bypass or angioplasty",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "CT of the foot without contrast",
+      "modality": "ct",
+      "preferred_when": "When MRI is contraindicated and bone detail is needed",
+      "findings": [
+        {
+          "text": "Cortical destruction and sequestrum formation in osteomyelitis",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Soft tissue gas or abscess",
+          "frequency": "sometimes"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Looks for leukocytosis and anemia; guides severity assessment"
+      },
+      {
+        "test": "bmp",
+        "why": "Assesses renal function, electrolytes, and glucose before antibiotics and possible surgery"
+      },
+      {
+        "test": "glucose",
+        "why": "Hyperglycemia impairs healing and worsens infection"
+      },
+      {
+        "test": "a1c",
+        "why": "Documents chronic glycemic control and healing prognosis"
+      },
+      {
+        "test": "Weight-bearing foot x-ray",
+        "why": "First-line imaging for any diabetic foot ulcer; looks for osteomyelitis, gas, and Charcot changes"
+      },
+      {
+        "test": "Wound culture from deep tissue or curettage",
+        "why": "Identifies the pathogen and guides antibiotic choice",
+        "only_if": "infection is suspected (purulent drainage, erythema, or systemic signs)"
+      },
+      {
+        "test": "Arterial duplex ultrasound of the lower extremities",
+        "why": "Assesses perfusion when pulses are diminished or the ulcer is not healing",
+        "only_if": "peripheral arterial disease is suspected (absent pulses, claudication, or a nonhealing ulcer)"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "MRI of the foot without and with IV contrast",
+        "why": "Most accurate test for osteomyelitis when plain films are negative or equivocal",
+        "only_if": "osteomyelitis is suspected (probe-to-bone, visible bone, or a deep nonhealing ulcer)"
+      },
+      {
+        "test": "Bone biopsy with histology and culture",
+        "why": "Definitive diagnosis of osteomyelitis and the only reliable way to identify the causative organism",
+        "only_if": "osteomyelitis is suspected and the diagnosis remains uncertain or the patient is not responding to antibiotics"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "crp",
+        "why": "Tracks the inflammatory response and treatment effect"
+      },
+      {
+        "test": "esr",
+        "why": "Supports the diagnosis of bone infection and monitors response"
+      },
+      {
+        "test": "procalcitonin",
+        "why": "Helps distinguish bacterial infection and systemic involvement",
+        "only_if": "sepsis or a deep infection is a concern"
+      },
+      {
+        "test": "lactate",
+        "why": "Screens for sepsis or necrotizing infection",
+        "only_if": "systemic signs are present (fever, hypotension, tachycardia, or confusion)"
+      },
+      {
+        "test": "albumin",
+        "why": "Low values predict poor wound healing and higher amputation risk"
+      },
+      {
+        "test": "Three-phase bone scan with technetium-99m",
+        "why": "Alternative when MRI is contraindicated or unavailable",
+        "only_if": "MRI cannot be performed"
+      },
+      {
+        "test": "Labeled leukocyte scan with or without SPECT/CT",
+        "why": "Helps separate osteomyelitis from Charcot foot when other imaging is equivocal",
+        "only_if": "Charcot foot is present or MRI is equivocal"
+      },
+      {
+        "test": "CT angiography of the lower extremities",
+        "why": "Maps arterial disease before revascularization",
+        "only_if": "revascularization is being planned and renal function permits contrast"
+      },
+      {
+        "test": "pt",
+        "why": "Assesses coagulation before debridement or amputation",
+        "only_if": "surgery is planned or the patient takes warfarin"
+      },
+      {
+        "test": "inr",
+        "why": "Assesses coagulation before debridement or amputation",
+        "only_if": "surgery is planned or the patient takes warfarin"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "d_dimer",
+        "why": "No role in the evaluation of a diabetic foot ulcer or infection"
+      },
+      {
+        "test": "lipase",
+        "why": "Not needed unless abdominal pain suggests pancreatitis"
+      },
+      {
+        "test": "tsh",
+        "why": "Not part of the acute foot workup; neuropathy is usually diabetic"
+      },
+      {
+        "test": "ua",
+        "why": "Not routinely needed unless a urinary infection is suspected"
+      },
+      {
+        "test": "CT of the foot without contrast",
+        "why": "Inferior to MRI for osteomyelitis and not routinely needed"
+      },
+      {
+        "test": "Abdominal x-ray",
+        "why": "Unrelated to the foot complaint"
+      }
+    ],
+    "decision_points": [
+      "Assess perfusion early: absent pulses or a nonhealing ulcer should prompt vascular imaging and revascularization referral",
+      "Probe the ulcer to bone and obtain plain films; if osteomyelitis is suspected and films are negative, proceed to MRI",
+      "Obtain deep tissue culture, not a superficial swab, before starting antibiotics when infection is present",
+      "Look for systemic signs (fever, hypotension, tachycardia, confusion) and elevated lactate, which suggest sepsis or necrotizing infection and need urgent surgical debridement",
+      "Check renal function before contrast imaging and adjust antibiotic doses accordingly"
+    ],
+    "criteria": [],
+    "scores": [
+      "wagner_ulcer_classification",
+      "texas_ulcer_classification",
+      "infectious_diseases_society_of_america_osteomyelitis"
+    ]
+  },
+  "differential": [
+    {
+      "name": "Osteomyelitis",
+      "slug": "osteomyelitis",
+      "why_considered": "A deep diabetic foot ulcer can extend to bone, and infection of the underlying bone is the main complication that changes management.",
+      "must_not_miss": true,
+      "trigger": "A deep or nonhealing ulcer, visible bone, or a probe that reaches bone",
+      "discriminators": {
+        "history": [
+          "Ulcer present for weeks to months despite offloading",
+          "Persistent or worsening pain even at rest",
+          "Prior foot infection or amputation"
+        ],
+        "exam": [
+          "Probe-to-bone positive",
+          "Visible bone in the wound base",
+          "Ulcer over a bony prominence with surrounding cellulitis"
+        ],
+        "labs": [
+          "Elevated ESR and CRP",
+          "Leukocytosis (may be normal in chronic infection)"
+        ],
+        "imaging": [
+          "Cortical erosion, periosteal reaction, or focal lucency on plain films",
+          "Bone marrow edema with low T1 and high fluid-sensitive signal on MRI",
+          "Focal labeled leukocyte uptake in bone"
+        ]
+      }
+    },
+    {
+      "name": "Necrotizing soft tissue infection",
+      "slug": "necrotizing-soft-tissue-infection",
+      "why_considered": "A diabetic foot infection can spread rapidly through the deep fascia and is a surgical emergency.",
+      "must_not_miss": true,
+      "trigger": "Pain out of proportion to the wound, rapidly spreading erythema, crepitus, or systemic toxicity",
+      "discriminators": {
+        "history": [
+          "Rapid progression over hours to days",
+          "Severe pain despite a small wound",
+          "Feeling very unwell with fever and chills"
+        ],
+        "exam": [
+          "Crepitus or gas in the tissues",
+          "Skin anesthesia or dusky, bullous, or necrotic skin",
+          "Tachycardia and hypotension"
+        ],
+        "labs": [
+          "Marked leukocytosis",
+          "Elevated lactate",
+          "Elevated CRP"
+        ],
+        "imaging": [
+          "Soft tissue gas on plain films or CT",
+          "Fascial thickening and fluid tracking on MRI or CT"
+        ]
+      }
+    },
+    {
+      "name": "Peripheral arterial disease with ischemic ulcer",
+      "slug": "peripheral-arterial-disease",
+      "why_considered": "Poor perfusion alone can cause a nonhealing foot wound and mimics an infected diabetic ulcer.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Claudication or rest pain",
+          "Painful ulcer, often worse at night",
+          "Smoking history"
+        ],
+        "exam": [
+          "Absent dorsalis pedis and posterior tibial pulses",
+          "Cool, hairless, shiny skin",
+          "Ulcer at the toe tips or over the lateral malleolus"
+        ],
+        "labs": [
+          "Elevated A1c and creatinine reflecting chronic vascular risk"
+        ],
+        "imaging": [
+          "Focal tibial or pedal artery stenosis or occlusion on duplex",
+          "Multilevel disease on CT angiography"
+        ]
+      }
+    },
+    {
+      "name": "Charcot neuroarthropathy",
+      "slug": "charcot-foot",
+      "why_considered": "A warm, swollen, erythematous foot in a patient with neuropathy can be mistaken for infection.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Gradual swelling without an open wound",
+          "No fever or systemic symptoms",
+          "Long-standing diabetes with severe neuropathy"
+        ],
+        "exam": [
+          "Warm, swollen foot with intact skin",
+          "Rocker-bottom or collapsed midfoot deformity",
+          "Preserved or bounding pulses"
+        ],
+        "labs": [
+          "Normal or only mildly elevated inflammatory markers"
+        ],
+        "imaging": [
+          "Bone destruction, subluxation, or fracture on plain films",
+          "Marrow edema on MRI without a sinus tract to bone"
+        ]
+      }
+    },
+    {
+      "name": "Cellulitis",
+      "slug": "cellulitis",
+      "why_considered": "Erythema, warmth, and swelling around a foot wound are common in both cellulitis and deeper diabetic foot infection.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Recent skin break, insect bite, or minor trauma",
+          "Pain and redness developing over days",
+          "No deep ulcer or exposed bone"
+        ],
+        "exam": [
+          "Spreading erythema with a defined border",
+          "No crepitus or gangrene",
+          "Tenderness limited to the skin and subcutaneous tissue"
+        ],
+        "labs": [
+          "Mild leukocytosis",
+          "Normal or mildly elevated CRP"
+        ],
+        "imaging": [
+          "No bone or deep soft tissue involvement on imaging"
+        ]
+      }
+    },
+    {
+      "name": "Gout or septic arthritis",
+      "slug": "gout",
+      "why_considered": "An acutely hot, swollen, painful foot or ankle in a diabetic patient can suggest crystal or joint infection.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Sudden onset of severe joint pain over hours",
+          "Prior attacks of podagra",
+          "No open wound"
+        ],
+        "exam": [
+          "Acute monoarticular swelling and warmth",
+          "Severe pain on passive range of motion",
+          "Intact skin without ulceration"
+        ],
+        "labs": [
+          "Elevated uric acid (may be normal during an attack)",
+          "Joint aspirate with monosodium urate crystals"
+        ],
+        "imaging": [
+          "Joint effusion without bone destruction on plain films",
+          "Punched-out erosions in chronic gout"
+        ]
+      }
+    },
+    {
+      "name": "Venous stasis ulcer",
+      "slug": "venous-stasis-ulcer",
+      "why_considered": "A chronic lower extremity ulcer can occur in diabetic patients with venous insufficiency.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Long-standing leg swelling and varicose veins",
+          "Ulcer near the medial malleolus",
+          "Less pain than an arterial ulcer"
+        ],
+        "exam": [
+          "Brown hemosiderin staining and lipodermatosclerosis",
+          "Palpable foot pulses",
+          "Ulcer with irregular, shallow margins"
+        ],
+        "labs": [
+          "No leukocytosis or elevated inflammatory markers"
+        ],
+        "imaging": [
+          "Venous reflux on duplex ultrasound",
+          "No bone involvement"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Superficial ulcer limited to the skin or subcutaneous tissue, no signs of infection, adequate perfusion, and the patient is systemically well.",
+      "moderate": "Ulcer extending to tendon, muscle, or joint with local infection (erythema, warmth, purulent drainage) but no systemic illness.",
+      "severe": "Deep ulcer with extensive local infection, osteomyelitis, or critical limb ischemia; fever and leukocytosis may be present.",
+      "critical": "Life-threatening infection such as necrotizing fasciitis or sepsis, or wet gangrene with systemic toxicity requiring urgent surgery."
+    },
+    "red_flags": [
+      {
+        "finding": "Crepitus, gas in the tissues, or rapidly spreading erythema",
+        "meaning": "Necrotizing soft tissue infection; needs urgent surgical debridement"
+      },
+      {
+        "finding": "Hypotension, tachycardia, confusion, or elevated lactate",
+        "meaning": "Sepsis or systemic infection; resuscitate and treat emergently"
+      },
+      {
+        "finding": "Probe-to-bone positive or visible bone in the wound",
+        "meaning": "Osteomyelitis; requires prolonged antibiotics and possible surgical removal of infected bone"
+      },
+      {
+        "finding": "Absent foot pulses or rest pain",
+        "meaning": "Critical limb ischemia; needs urgent vascular evaluation and revascularization"
+      },
+      {
+        "finding": "Black, foul-smelling, or wet gangrene",
+        "meaning": "Tissue necrosis; risk of amputation and systemic spread"
+      },
+      {
+        "finding": "New fever or chills in a patient with a foot ulcer",
+        "meaning": "Deep or systemic infection until proven otherwise"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Osteomyelitis",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Nonhealing ulcer despite offloading",
+          "Probe-to-bone positive",
+          "Elevated ESR and CRP",
+          "Bone changes on plain films or MRI"
+        ]
+      },
+      {
+        "name": "Necrotizing soft tissue infection",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Pain out of proportion to the wound",
+          "Crepitus or gas in tissues",
+          "Rapidly spreading erythema",
+          "Systemic toxicity"
+        ]
+      },
+      {
+        "name": "Sepsis",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Fever and chills",
+          "Hypotension and tachycardia",
+          "Elevated lactate",
+          "Confusion"
+        ]
+      },
+      {
+        "name": "Gangrene",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Black, dry or wet necrotic tissue",
+          "Foul odor",
+          "Absent pulses"
+        ]
+      },
+      {
+        "name": "Amputation",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Extensive tissue loss",
+          "Uncontrolled infection",
+          "Critical limb ischemia"
+        ]
+      },
+      {
+        "name": "Charcot neuroarthropathy",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Warm, swollen foot without infection",
+          "Rocker-bottom deformity",
+          "Bone destruction on imaging"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "older_adults",
+        "differences": "May have a painless, deep ulcer with little or no fever despite serious infection; confusion or falls may be the first sign."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "More severe neuropathy and vascular calcification; wounds heal poorly, infection risk is higher, and antibiotic doses need adjustment."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Blunted inflammatory response with minimal redness, warmth, or pus despite deep infection."
+      },
+      {
+        "population": "obesity",
+        "differences": "Increased plantar pressure and difficulty seeing or reaching the feet, so wounds are found later."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Preexisting or gestational diabetes can accelerate neuropathy and vascular disease; management must balance glycemic control with fetal safety."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "When did you first notice the sore, and how long has it been there?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Days to weeks or longer; a chronic nonhealing ulcer suggests deep infection or poor perfusion"
+      },
+      {
+        "question": "Did you feel pain when the wound first appeared?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Painless or minimally painful wound, indicating loss of protective sensation from neuropathy"
+      },
+      {
+        "question": "How did the wound start — did you have a blister, cut, callus, or did it appear on its own?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Minor trauma, ill-fitting shoes, or a callus that broke down; spontaneous ulcer suggests pressure or ischemia"
+      },
+      {
+        "question": "Is the wound getting bigger, draining, or smelling bad?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Progression, purulent or foul drainage suggesting infection"
+      },
+      {
+        "question": "Have you had a foot ulcer or amputation before?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Prior ulcer or amputation, a strong risk factor for recurrence"
+      },
+      {
+        "question": "How long have you had diabetes, and what are your recent blood sugar readings or A1c?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Long-standing diabetes (often more than 10 years) with poor glycemic control"
+      },
+      {
+        "question": "Do your feet feel numb, tingly, or burning, especially at night?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Stocking-distribution sensory symptoms of peripheral neuropathy"
+      },
+      {
+        "question": "Do your legs hurt when you walk and feel better with rest?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Claudication suggesting peripheral arterial disease and poor perfusion"
+      },
+      {
+        "question": "Have you had fever, chills, or felt generally unwell?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Systemic signs suggesting deep or spreading infection"
+      },
+      {
+        "question": "What do you take for your diabetes, and have you ever taken steroids?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Insulin or oral agents; steroids worsen hyperglycemia and impair healing"
+      },
+      {
+        "question": "Do you smoke or use tobacco?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Tobacco use, which worsens peripheral arterial disease and healing"
+      },
+      {
+        "question": "Do you check your feet daily, and do you walk barefoot or wear well-fitting shoes?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Lack of daily foot checks, barefoot walking, or ill-fitting shoes as the cause"
+      },
+      {
+        "question": "Have you noticed black or dead tissue, or a bad smell from the foot?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Gangrene or necrotizing infection requiring urgent surgical evaluation"
+      },
+      {
+        "question": "Is the pain much worse than the wound looks, or is the redness spreading quickly?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Pain out of proportion or rapidly spreading erythema suggesting necrotizing soft tissue infection"
+      }
+    ],
+    "accepted_names": [
+      "Diabetic foot",
+      "Diabetic foot ulcer",
+      "Diabetic foot infection",
+      "Neuropathic foot ulcer",
+      "Mal perforans",
+      "Diabetic foot syndrome"
+    ],
+    "reasoning_points": [
+      "Long-standing diabetes with peripheral neuropathy causing loss of protective sensation",
+      "A painless or minimally painful plantar ulcer over a metatarsal head or the heel, often with surrounding callus",
+      "Evidence of peripheral arterial disease such as diminished foot pulses or claudication",
+      "Signs of local infection (erythema, warmth, purulent drainage) or systemic infection (fever, leukocytosis)",
+      "Probe-to-bone positive or visible bone raising concern for osteomyelitis",
+      "Poor glycemic control (elevated glucose and A1c) impairing wound healing",
+      "Plain films and MRI used to evaluate for osteomyelitis and Charcot changes",
+      "Deep tissue culture rather than a superficial swab to guide antibiotic choice"
+    ],
+    "difficulty": {
+      "easy": [
+        "Long-standing diabetes with classic painless plantar ulcer over a metatarsal head",
+        "Obvious loss of protective sensation on monofilament testing",
+        "Callus at the ulcer margin and a history of ill-fitting shoes",
+        "Elevated glucose and A1c with mild leukocytosis"
+      ],
+      "medium": [
+        "Ulcer with surrounding cellulitis but no systemic signs",
+        "Diminished foot pulses with claudication suggesting coexisting peripheral arterial disease",
+        "Probe-to-bone positive with a normal plain film, requiring MRI",
+        "Warm, swollen foot where Charcot neuroarthropathy must be distinguished from infection"
+      ],
+      "hard": [
+        "Older adult with a deep painless ulcer and no fever despite serious infection",
+        "Immunocompromised or renal impairment patient with minimal redness or pus",
+        "Necrotizing soft tissue infection with pain out of proportion and crepitus",
+        "Chronic nonhealing ulcer with osteomyelitis and negative plain films",
+        "Wet gangrene with sepsis requiring urgent debridement and amputation discussion"
+      ]
+    }
+  }
+}
