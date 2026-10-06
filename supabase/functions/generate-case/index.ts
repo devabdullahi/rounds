@@ -17,6 +17,7 @@ import { type CasePlan, leakTerms, planCase, type Profile } from "../_shared/cas
 import { flag, type Patient, TESTS } from "../_shared/labs.ts";
 import { type Focus, parseFocus } from "../_shared/focus.ts";
 import { prepareNext } from "../_shared/prefetch.ts";
+import { withQuota } from "../_shared/quota.ts";
 import { buildRubric, checkWriting, neutralIds, type Writing, writerPrompt } from "./writer.ts";
 
 type Request = { focus?: string };
@@ -39,6 +40,12 @@ serve(async (req) => {
   }
   const profile = rows[0].profile;
 
+  // A new patient costs a model call, so it counts against the daily limit (refunded on failure).
+  return withQuota(userId, "case", () => writeCase(userId, profile, focus));
+});
+
+/** Plans the patient in code, has the model write them, checks the writing, and saves the case. */
+async function writeCase(userId: string, profile: Profile, focus: Focus): Promise<Response> {
   // Clinical psychology is a focus like any rotation; its cases are written as a psychologist's intake.
   const psychology = focus.kind === "rotation" && focus.value === "clinicalPsychology";
   const dermatology = focus.kind === "rotation" && focus.value === "dermatology";
@@ -64,7 +71,7 @@ serve(async (req) => {
 
   const caseId = await save(userId, profile, plan, neutralIds(writing), focus);
   return json({ case_id: caseId, model: currentModel() });
-});
+}
 
 /** The rotation a case files under: the one the student picked, when the condition belongs to it
  *  (a depression case made for Clinical psychology is a psychology case), else the condition's own. */
