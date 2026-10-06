@@ -43,6 +43,12 @@ const SEVERITY_WEIGHT: Record<Severity, number> = { mild: 0.35, moderate: 0.4, s
 const PRESENT_CHANCE: Record<Frequency, number> = { almost_always: 0.95, common: 0.7, sometimes: 0.3, rare: 0.05 };
 const VITAL_IDS = ["temp", "hr", "rr", "sbp", "dbp", "spo2"];
 const ALWAYS_OFFERED_PANELS = ["cbc", "bmp"];
+/** Standardized questionnaires (reference_ranges.json): the test menu of a psychology case. */
+const ASSESSMENT_PANEL = "assessments";
+
+/** How a case is framed. A clinical psychology case is an outpatient intake: the same screens, with
+ *  mental status observations for the exam and questionnaires for the tests. */
+export type PlanOptions = { psychology?: boolean };
 
 export type PlannedTest = {
   id: string;
@@ -70,6 +76,8 @@ export type CasePlan = {
   exam: (ExamFinding & { present: boolean })[];
   vitals: Values;
   tests: PlannedTest[];
+  /** Written as a psychologist's intake (see PlanOptions). */
+  psychology: boolean;
 };
 
 function pick<T>(items: T[], rng: () => number): T {
@@ -117,7 +125,7 @@ function forPatient(id: string, value: number, patient: Patient): number {
 
 const atLeast = (severity: Severity, min?: Severity) => !min || SEVERITY_ORDER.indexOf(severity) >= SEVERITY_ORDER.indexOf(min);
 
-export function planCase(profile: Profile, rng: () => number): CasePlan {
+export function planCase(profile: Profile, rng: () => number, options: PlanOptions = {}): CasePlan {
   const severities = SEVERITY_ORDER.filter((s) => profile.course.severity[s]);
   const severity = weighted(severities.map((s) => [s, SEVERITY_WEIGHT[s]] as [Severity, number]), rng);
   const sex = sexFor(profile.patient.sex, rng);
@@ -147,12 +155,12 @@ export function planCase(profile: Profile, rng: () => number): CasePlan {
 
   return { slug: profile.slug, condition: profile.triage.name, severity, severityText: profile.course.severity[severity] ?? "", age, sex,
     pregnant: patient.pregnant, symptomsPresent: present, symptomsAbsent: absent, exam, vitals,
-    tests: planTests(profile, severity, patient, rng) };
+    tests: planTests(profile, severity, patient, rng, !!options.psychology), psychology: !!options.psychology };
 }
 
 /** The test menu: everything the profile's workup mentions plus routine panels, with lab results filled in. */
-function planTests(profile: Profile, severity: Severity, patient: Patient, rng: () => number): PlannedTest[] {
-  const roles = new Map<string, { role: PlannedTest["role"]; why?: string }>();
+function planTests(profile: Profile, severity: Severity, patient: Patient, rng: () => number, psychology: boolean): PlannedTest[] {
+  let roles = new Map<string, { role: PlannedTest["role"]; why?: string }>();
   const group = (g: WorkupGroup) => profile.workup?.[g] ?? [];
   const notIndicated = new Set(group("not_indicated").map((t) => t.test.toLowerCase()));
   for (const g of ["initial", "confirmatory", "supporting"] as const) {
@@ -164,7 +172,9 @@ function planTests(profile: Profile, severity: Severity, patient: Patient, rng: 
   for (const ref of group("not_indicated")) {
     if (!roles.has(ref.test)) roles.set(ref.test, { role: "not_indicated", why: ref.why });
   }
-  for (const panel of ALWAYS_OFFERED_PANELS) if (!roles.has(panel)) roles.set(panel, { role: "neutral" });
+  const assessments = psychology ? assessmentRoles(profile, roles) : null;
+  if (assessments) roles = assessments;
+  else for (const panel of ALWAYS_OFFERED_PANELS) if (!roles.has(panel)) roles.set(panel, { role: "neutral" });
 
   // Lab panels share one set of values so overlapping tests agree.
   const labIds = [...roles.keys()].filter((t) => panelFor(t));
@@ -194,6 +204,23 @@ function planTests(profile: Profile, severity: Severity, patient: Patient, rng: 
     return { id: uniqueId(test), name: test, kind: "study", findings, role, why };
   });
 }
+
+/** A psychology case's menu: the questionnaires the profile scores, then the rest as optional ones
+ *  with normal scores. Nil when the profile scores none (written before assessments existed): a
+ *  menu of normal scores would mislead, so the case keeps its usual tests. */
+function assessmentRoles(profile: Profile, roles: Map<string, { role: PlannedTest["role"]; why?: string }>) {
+  const isAssessment = (id: string) => panelFor(id) === ASSESSMENT_PANEL && id !== ASSESSMENT_PANEL;
+  const scored = (profile.labs ?? []).map((l) => l.test_id).filter(isAssessment);
+  const named = [...roles.keys()].filter(isAssessment);
+  if (!scored.length && !named.length) return null;
+  const menu = new Map<string, { role: PlannedTest["role"]; why?: string }>();
+  for (const id of named) menu.set(id, roles.get(id)!);
+  for (const id of scored) if (!menu.has(id)) menu.set(id, { role: "indicated" });
+  for (const id of ASSESSMENT_TESTS) if (!menu.has(id)) menu.set(id, { role: "neutral" });
+  return menu;
+}
+
+const ASSESSMENT_TESTS = [...TESTS.values()].filter((t) => panelFor(t.id) === ASSESSMENT_PANEL).map((t) => t.id);
 
 function slug(text: string): string {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "").slice(0, 60);

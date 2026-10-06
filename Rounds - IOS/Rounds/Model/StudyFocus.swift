@@ -3,10 +3,11 @@ import Foundation
 /// What the student wants to practice. US schools each run their own curriculum, so cases
 /// are tagged by topics every school shares: the core clerkships (each with an NBME shelf
 /// exam) and the USMLE organ systems. Anyone can pick any mix of both; training year
-/// plays no part.
+/// plays no part. Clinical psychology sits with the rotations: its cases use the same screens,
+/// written as a psychologist's intake (mental status exam, questionnaires).
 
 enum Clerkship: String, CaseIterable, Identifiable {
-    case internalMedicine, surgery, pediatrics, obgyn, psychiatry, familyMedicine, neurology, emergency
+    case internalMedicine, surgery, pediatrics, obgyn, psychiatry, familyMedicine, neurology, emergency, clinicalPsychology
     var id: String { rawValue }
 
     var label: String {
@@ -19,6 +20,7 @@ enum Clerkship: String, CaseIterable, Identifiable {
         case .familyMedicine: "Family medicine"
         case .neurology: "Neurology"
         case .emergency: "Emergency medicine"
+        case .clinicalPsychology: "Clinical psychology"
         }
     }
 
@@ -32,6 +34,7 @@ enum Clerkship: String, CaseIterable, Identifiable {
         case .familyMedicine: "Cough, back pain, check-ups"
         case .neurology: "Headache, weakness, seizures"
         case .emergency: "Undifferentiated, time-critical"
+        case .clinicalPsychology: "Intake, assessment, therapy plan"
         }
     }
 }

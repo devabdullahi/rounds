@@ -50,3 +50,22 @@ Deno.test("a child's vitals are judged against child norms", () => {
     assert((plan.vitals.hr as number) > 60, `${profile.slug} child HR ${plan.vitals.hr}`);
   }
 });
+
+Deno.test("a psychology case offers questionnaires instead of blood work", () => {
+  const base = profiles.find((p) => p.slug === "major-depressive-disorder") ?? profiles[0];
+  const scored = structuredClone(base);
+  scored.labs = [{ test_id: "phq9", ranges: { mild: { min: 5, max: 9 }, moderate: { min: 10, max: 14 }, severe: { min: 15, max: 19 }, critical: { min: 20, max: 27 } } }];
+  const plan = planCase(scored, seeded(7), { psychology: true });
+  assert(plan.psychology);
+  assertEquals(plan.tests.map((t) => t.id).sort(), ["audit", "gad7", "pcl5", "phq9"]);
+  const phq = plan.tests.find((t) => t.id === "phq9")!;
+  assertEquals(phq.role, "indicated");
+  assert(phq.abnormal, "a depressed patient's PHQ-9 is out of the normal range");
+});
+
+Deno.test("a psychology case keeps the usual tests when its profile scores no questionnaire", () => {
+  const plain = structuredClone(profiles[0]);
+  plain.labs = (plain.labs ?? []).filter((l) => !["phq9", "gad7", "audit", "pcl5"].includes(l.test_id));
+  const plan = planCase(plain, seeded(7), { psychology: true });
+  assert(plan.tests.some((t) => t.id === "cbc"));
+});

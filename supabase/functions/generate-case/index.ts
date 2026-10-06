@@ -39,7 +39,9 @@ serve(async (req) => {
   }
   const profile = rows[0].profile;
 
-  const plan = planCase(profile, Math.random);
+  // Clinical psychology is a focus like any rotation; its cases are written as a psychologist's intake.
+  const psychology = focus.kind === "rotation" && focus.value === "clinicalPsychology";
+  const plan = planCase(profile, Math.random, { psychology });
   const terms = leakTerms(profile);
   let user = writerPrompt(profile, plan);
   let writing: Writing | null = null;
@@ -62,6 +64,13 @@ serve(async (req) => {
   const caseId = await save(userId, profile, plan, neutralIds(writing), focus);
   return json({ case_id: caseId, model: currentModel() });
 });
+
+/** The rotation a case files under: the one the student picked, when the condition belongs to it
+ *  (a depression case made for Clinical psychology is a psychology case), else the condition's own. */
+function caseClerkship(profile: Profile, focus: Focus): string {
+  const tags = [profile.triage.primary_clerkship, ...((profile.triage as { secondary_clerkships?: string[] }).secondary_clerkships ?? [])];
+  return focus.kind === "rotation" && tags.includes(focus.value) ? focus.value : profile.triage.primary_clerkship;
+}
 
 function bedCode(): string {
   const letters = "ABCDEFGHJKLMNPRSTUVWXYZ";
@@ -113,7 +122,7 @@ async function save(userId: string, profile: Profile, plan: CasePlan, w: Writing
           values (${id}, ${profile.triage.primary_clerkship}, ${w.patient.name}, ${plan.age}, ${plan.sex},
             ${w.patient.quote}, ${w.patient.complaint}, ${tx.json(doorVitals(plan))}, ${budget}, 10,
             false, ${userId}, ${w.patient.setting}, ${w.patient.demeanor}, ${profile.triage.organ_systems[0]},
-            ${profile.triage.primary_clerkship}, ${tx.json(w.suggested)},
+            ${caseClerkship(profile, focus)}, ${tx.json(w.suggested)},
             ${tx.json(w.maneuvers.map(({ id, title }) => ({ id, title })))},
             ${tx.json(tests.map(({ id, name, detail, cost, turnaround_s, delays_care_min }) =>
               ({ id, name, detail, cost, turnaround_s, delays_care_min })))},

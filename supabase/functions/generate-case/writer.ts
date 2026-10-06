@@ -12,10 +12,17 @@ export type Writing = {
   test_meta: { test_id: string; detail: string; cost: number; turnaround_s: number; delays_care_min?: number }[];
 };
 
+/** A clinical psychology case: same screens and JSON, written as a psychologist's intake. */
+const PSYCHOLOGY_FRAME = `Clinician: a clinical psychology trainee doing a 50-minute outpatient intake. The setting is an outpatient psychology clinic and the door note is the referral (who referred them and why), not a triage note.
+Maneuvers are mental status exam observations a psychologist makes by watching and talking (appearance, behavior, speech, mood, affect, thought process, thought content, perception, cognition, insight and judgment). Write each exam finding below as that kind of observation, titled like "Observe affect" or "Assess thought content"; a finding that needs touch or instruments becomes what can be seen or reported (e.g. "Appears tremulous"). The 2–3 routine maneuvers are other mental status domains. No physical exam maneuvers.
+Tests are standardized questionnaires the patient fills in: in test_meta use cost 0, detail like "Questionnaire · 3 min", turnaround_s 3–6 and delays_care_min 0.
+
+`;
+
 export function writerPrompt(profile: Profile, plan: CasePlan): string {
   const studies = plan.tests.filter((t) => t.kind === "study");
   const mustNotMiss = profile.differential.filter((d) => d.must_not_miss).map((d) => ({ name: d.name, trigger: d.trigger ?? d.why_considered }));
-  return `Hidden diagnosis (never reveal): ${plan.condition}
+  return `${plan.psychology ? PSYCHOLOGY_FRAME : ""}Hidden diagnosis (never reveal): ${plan.condition}
 Severity: ${plan.severity}: ${plan.severityText}
 Patient: ${plan.age}-year-old ${plan.age < 18 ? (plan.sex === "F" ? "girl" : "boy") : plan.sex === "F" ? "woman" : "man"}${plan.pregnant ? ", pregnant (choose a gestational age that fits the condition and say it in her facts)" : ""}. Typical setting: ${profile.triage.settings.join(", ")}.${plan.age < 13 ? " A child this age answers simply; a parent or guardian is present and can answer for them, so write facts as the child or the parent would say them." : ""}
 Vitals (already decided): ${JSON.stringify(plan.vitals)}
