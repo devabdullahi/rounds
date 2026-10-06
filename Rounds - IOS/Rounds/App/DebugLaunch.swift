@@ -2,7 +2,9 @@
 import SwiftUI
 
 /// Dev-only deep link for screenshots: launch with `-screen <name>`.
-/// Names: firstopen, firstopen-auth, signin, signup, onboarding, focus-system, focus-sheet, home, patients, patients-open, profile, brief, interview, examine, workup, diagnosis, debrief, diagnosis-suggest.
+/// Names: firstopen, firstopen-auth, signin, signup, onboarding (focus), onboarding-intro, onboarding-graded,
+/// onboarding-promise, onboarding-graph, onboarding-goal, onboarding-heart, onboarding-promised, email-code,
+/// email-code-error, focus-system, focus-sheet, home, patients, patients-open, profile, brief, interview, examine, workup, diagnosis, debrief, diagnosis-suggest.
 enum DebugLaunch {
     static var screen: String? { UserDefaults.standard.string(forKey: "screen") }
 
@@ -12,13 +14,20 @@ enum DebugLaunch {
         return v > 0 ? v : nil
     }
 
-    private static let authScreens = ["firstopen", "firstopen-auth", "signin", "signup", "onboarding", "focus-system", "google-signin"]
+    private static let authScreens = ["firstopen", "firstopen-auth", "signin", "signup", "onboarding", "focus-system", "google-signin",
+                                      "onboarding-intro", "onboarding-graded", "onboarding-promise", "onboarding-graph",
+                                      "onboarding-goal", "onboarding-heart", "onboarding-promised",
+                                      "email-code", "email-code-error"]
 
     /// Runs before the first frame so the root picks the right side (auth vs app).
     static func prepareDefaults() {
         guard let screen else { return }
         let d = UserDefaults.standard
         d.set(!authScreens.contains(screen), forKey: "signedIn")
+        if ["onboarding-heart", "onboarding-promised"].contains(screen) {
+            d.set(StudyGoal.step2CK.rawValue, forKey: StudyGoal.storageKey)
+            d.set(StudyFocus.rotation(.internalMedicine).stored, forKey: StudyFocus.storageKey)
+        }
         if ["focus-sheet", "home", "settings"].contains(screen) {
             d.set(StudyFocus.rotation(.internalMedicine).stored, forKey: StudyFocus.storageKey)
         }
@@ -28,7 +37,11 @@ enum DebugLaunch {
         switch screen {
         case "signin", "google-signin": [.signIn]
         case "signup": [.signUp]
-        case "onboarding", "focus-system": [.signUp, .focus]
+        case "email-code", "email-code-error": [.signIn, .code(email: "maya@school.edu")]
+        case "onboarding", "focus-system": [.signUp, .intro, .studyGoal, .focus]
+        case "onboarding-intro", "onboarding-graded", "onboarding-promise", "onboarding-graph": [.signUp, .intro]
+        case "onboarding-goal": [.signUp, .intro, .studyGoal]
+        case "onboarding-heart", "onboarding-promised": [.signUp, .intro, .studyGoal, .focus, .promise]
         default: []
         }
     }

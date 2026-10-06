@@ -12,6 +12,8 @@ final class AuthModel {
     /// The app shows its tabs when this is true (read with @AppStorage by RootView).
     static let signedInKey = "signedIn"
 
+    static let codeRejectedMessage = "That code isn\u{2019}t right or has expired. Check the newest email, or send a new code."
+
     enum Busy: Equatable { case email, apple, google, signOut, delete }
 
     private let service: (any AuthService)?
@@ -21,8 +23,12 @@ final class AuthModel {
     private(set) var busy: Busy?
     /// Shown as an alert by the screen that started the action.
     var problem: String?
-    /// Sign-up sent a confirmation link here; the account is ready once it's tapped.
-    private(set) var pendingEmail: String?
+    /// When the last code was emailed, and to whom: drives the resend countdown, which also holds
+    /// if the student goes back and asks again for the same address.
+    private(set) var codeSentAt: Date?
+    private var codeSentTo: String?
+    /// The code screen's inline message after a wrong or expired code.
+    private(set) var codeProblem: String?
 
     init(service: (any AuthService)?, defaults: UserDefaults = .standard) {
         self.service = service
@@ -34,29 +40,55 @@ final class AuthModel {
         account = await service?.currentAccount()
     }
 
-    /// True when the student is signed in straight away (no confirmation needed).
-    func signUp(email: String, password: String, name: String) async -> Bool {
-        await run(.email) { service in
-            switch try await service.signUp(email: email.trimmed, password: password, name: name.trimmed) {
-            case .signedIn(let account):
-                self.account = account
-                return true
-            case .confirmEmail(let address):
-                self.pendingEmail = address
-                return false
+    /// Emails a sign-in code. Pass `name` when creating an account (sign up); leave it nil to log in.
+    /// Returns the normalized address the code went to (the code screen's key), or nil when it
+    /// wasn't sent. Within the resend wait for the same address, the code already on its way counts.
+    func sendCode(email: String, name: String? = nil) async -> String? {
+        let address = EmailAddress.normalized(email)
+        if address == codeSentTo && resendWait() > 0 { return address }
+        var sentAt = Date.now
+        let sent = await run(.email) { service in
+            do {
+                try await service.sendCode(email: address, name: name?.trimmed)
+            } catch let recent as CodeRecentlySent {
+                // Sent within the last minute (another tap, or before the app restarted).
+                sentAt = .now.addingTimeInterval(recent.wait - EmailCode.resendAfter)
             }
-        } ?? false
-    }
-
-    func signIn(email: String, password: String) async -> Bool {
-        await run(.email) { service in
-            self.account = try await service.signIn(email: email.trimmed, password: password)
             return true
         } ?? false
+        guard sent else { return nil }
+        codeSentAt = sentAt
+        codeSentTo = address
+        codeProblem = nil
+        return address
+    }
+
+    /// Whole seconds before another code can be sent.
+    func resendWait(now: Date = .now) -> Int { EmailCode.resendWait(sentAt: codeSentAt, now: now) }
+
+    /// The student started typing a new code: the old error no longer applies.
+    func clearCodeProblem() { codeProblem = nil }
+
+    /// Signs in with the emailed code. Nil when it failed: a wrong or expired code is explained in
+    /// `codeProblem` (shown on the code screen), anything else in `problem`.
+    func verifyCode(email: String, code: String) async -> Account? {
+        guard EmailCode.isComplete(code), EmailCode.clean(code) == code else { return nil }
+        codeProblem = nil
+        return await run(.email) { service in
+            do {
+                let account = try await service.verifyCode(email: email.trimmed, code: code)
+                self.account = account
+                self.welcome()
+                return account
+            } catch is CodeRejected {
+                self.codeProblem = Self.codeRejectedMessage
+                return nil
+            }
+        } ?? nil
     }
 
     /// Apple's or Google's sheet, then Supabase. Nil when cancelled or failed (the failure is in
-    /// `problem`). A brand-new account still needs onboarding: see `Account.isNew`.
+    /// `problem`). An account that hasn't finished onboarding still needs it: see `Account.onboarded`.
     func continueWith(_ provider: SocialProvider) async -> Account? {
         await run(provider == .apple ? .apple : .google) { service in
             let account: Account
@@ -69,18 +101,19 @@ final class AuthModel {
                 account = try await service.signInWithGoogle(idToken: google.idToken, accessToken: google.accessToken)
             }
             self.account = account
+            self.welcome()
             return account
         }
     }
 
-    /// A link the app was opened with: Google's sheet returning, or an email confirmation.
+    /// A link the app was opened with: Google's sheet returning, or an email link.
     /// True when it finished signing in.
     func open(_ url: URL) async -> Bool {
         if GoogleAuth.handle(url) { return false }
         let account = await run(.email) { service in try await service.handle(url: url) } ?? nil
         guard let account else { return false }
         self.account = account
-        pendingEmail = nil
+        welcome()
         finishSignIn()
         return true
     }
@@ -88,6 +121,22 @@ final class AuthModel {
     /// Into the app (after onboarding, for a new account).
     func finishSignIn() {
         defaults.set(true, forKey: Self.signedInKey)
+    }
+
+    /// End of onboarding: recorded on the account (so no device asks again), then into the app.
+    /// Recording is best effort; if it fails, the student simply sees onboarding again next time.
+    func finishOnboarding() {
+        if let service { Task { try? await service.markOnboarded() } }
+        if let account { self.account = account.markedOnboarded() }
+        finishSignIn()
+    }
+
+    /// Asks for the welcome email after every sign-in, whatever the provider. The server sends it
+    /// only once per account, so returning students get nothing new. It's a courtesy: a failure
+    /// never holds the student up or shows an error.
+    private func welcome() {
+        guard let service else { return }
+        Task { try? await service.sendWelcome() }
     }
 
     func signOut() async {
@@ -104,7 +153,8 @@ final class AuthModel {
 
     private func leave() {
         account = nil
-        pendingEmail = nil
+        codeSentAt = nil
+        codeSentTo = nil
         defaults.set(false, forKey: Self.signedInKey)
     }
 
@@ -127,3 +177,18 @@ final class AuthModel {
 private extension String {
     var trimmed: String { trimmingCharacters(in: .whitespacesAndNewlines) }
 }
+
+private extension Account {
+    func markedOnboarded() -> Account {
+        var copy = self
+        copy.onboarded = true
+        return copy
+    }
+}
+
+#if DEBUG
+extension AuthModel {
+    /// `-screen email-code-error`: shows the wrong-code state without a server.
+    func debugRejectCode() { codeProblem = Self.codeRejectedMessage }
+}
+#endif

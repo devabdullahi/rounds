@@ -13,8 +13,8 @@ import SwiftUI
  *  510ms   Continue with Google rises
  *  570ms   "or with email" divider fades in
  *  630ms   email field rises
- *  690ms   password field rises
- *  750ms   Log in button rises
+ *  690ms   "we'll email you a code" note fades in
+ *  750ms   Send code button rises
  *  880ms   footer link fades in
  * 1200ms   bright pulse sweeps the mark, every 2.4s, forever
  *
@@ -30,7 +30,7 @@ private enum TIMING {
     static let google   = 0.51
     static let divider  = 0.57
     static let email    = 0.63
-    static let password = 0.69
+    static let note     = 0.69
     static let submit   = 0.75
     static let footer   = 0.88
 }
@@ -54,15 +54,14 @@ struct SignInView: View {
     @Environment(AuthModel.self) private var auth
 
     @State private var email = ""
-    @State private var password = ""
     @State private var drawn: CGFloat = 0
     @State private var shown = false
     @State private var appearedAt = Date.now
 
-    /// A first Apple or Google sign-in still answers the focus question; a returning one goes in.
+    /// A first Apple or Google sign-in still goes through onboarding; a returning one goes in.
     private func social(_ provider: SocialProvider) async {
         guard let account = await auth.continueWith(provider) else { return }
-        if account.isNew() { router.go(.focus) } else { auth.finishSignIn() }
+        router.enter(account, auth: auth)
     }
 
     var body: some View {
@@ -101,26 +100,27 @@ struct SignInView: View {
                     .padding(.top, 20)
                     .rise(shown, at: TIMING.divider, fadeOnly: true)
 
-                VStack(spacing: 14) {
-                    AuthField(label: "Email", text: $email, placeholder: "you@school.edu",
-                              contentType: .emailAddress, keyboard: .emailAddress)
-                        .rise(shown, at: TIMING.email)
-                    AuthField(label: "Password", text: $password, secure: true, contentType: .password,
-                              accessoryTitle: "Forgot password?")
-                        .rise(shown, at: TIMING.password)
-                }
-                .padding(.top, 20)
+                // No passwords: a 6-digit code goes to this address (EmailCodeView takes it from there).
+                AuthField(label: "Email", text: $email, placeholder: "you@school.edu",
+                          contentType: .emailAddress, keyboard: .emailAddress)
+                    .rise(shown, at: TIMING.email)
+                    .padding(.top, 20)
+                AuthNote(text: "We\u{2019}ll email you a \(EmailCode.length)-digit code. No password needed.")
+                    .padding(.top, 10)
+                    .rise(shown, at: TIMING.note, fadeOnly: true)
 
                 Button {
-                    Task { if await auth.signIn(email: email, password: password) { auth.finishSignIn() } }
+                    Task {
+                        if let address = await auth.sendCode(email: email) { router.go(.code(email: address)) }
+                    }
                 } label: {
                     HStack(spacing: 8) {
                         if auth.busy == .email { ProgressView().tint(.white) }
-                        Text("Log in")
+                        Text("Send code")
                     }
                 }
                     .buttonStyle(PrimaryButtonStyle(height: 52))
-                    .disabled(email.isEmpty || password.isEmpty || auth.busy != nil)
+                    .disabled(!EmailAddress.looksValid(email) || auth.busy != nil)
                     .padding(.top, 22)
                     .rise(shown, at: TIMING.submit)
 

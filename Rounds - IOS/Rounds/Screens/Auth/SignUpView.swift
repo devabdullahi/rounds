@@ -6,13 +6,6 @@ struct SignUpView: View {
 
     @State private var name = ""
     @State private var email = ""
-    @State private var password = ""
-
-    private var rules: [(String, Bool)] {
-        [("8+ characters", password.count >= 8),
-         ("A number", password.contains(where: \.isNumber)),
-         ("A symbol", password.contains(where: { !$0.isLetter && !$0.isNumber && !$0.isWhitespace }))]
-    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -50,34 +43,21 @@ struct SignUpView: View {
                         AuthField(label: "Name", text: $name, placeholder: "What should Dr. Okafor call you?", contentType: .name)
                         AuthField(label: "Email", text: $email, placeholder: "you@school.edu",
                                   contentType: .emailAddress, keyboard: .emailAddress)
-                        VStack(alignment: .leading, spacing: 8) {
-                            // The rules up front, so nobody learns them by failing.
-                            AuthField(label: "Password", text: $password, placeholder: "8+ characters, a number, a symbol",
-                                      secure: true, contentType: .newPassword)
-                            if !password.isEmpty {
-                                strengthMeter.transition(.opacity.combined(with: .offset(y: -4)))
-                            }
-                        }
                     }
                     .padding(.top, 20)
+                    // No passwords: the emailed code confirms the address and signs them in at once.
+                    AuthNote(text: "We\u{2019}ll email you a \(EmailCode.length)-digit code to confirm it\u{2019}s you.")
+                        .padding(.top, 10)
 
                     // Right where the form ends, as on Log in; no gap between the last field and the action.
-                    if let sent = auth.pendingEmail {
-                        // Email confirmation is on: the link finishes sign-up (rounds://auth-callback).
-                        Text("We sent a link to \(sent). Open it on this iPhone to finish signing up.")
-                            .font(.system(size: 15))
-                            .foregroundStyle(Theme.accentText)
-                            .padding(14)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .background(Theme.accentSoft, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
-                            .padding(.top, 22)
-                    }
                     Button {
-                        Task { if await auth.signUp(email: email, password: password, name: name) { router.go(.focus) } }
+                        Task {
+                            if let address = await auth.sendCode(email: email, name: name) { router.go(.code(email: address)) }
+                        }
                     } label: {
                         HStack(spacing: 8) {
                             if auth.busy == .email { ProgressView().tint(.white) }
-                            Text("Create account")
+                            Text("Send code")
                         }
                     }
                     .buttonStyle(PrimaryButtonStyle(height: 52))
@@ -89,7 +69,6 @@ struct SignUpView: View {
                 }
                 .padding(.horizontal, 24)
                 .padding(.bottom, 16)
-                .animation(.easeOut(duration: 0.2), value: password.isEmpty)
             }
             .scrollIndicators(.hidden)
             .scrollDismissesKeyboard(.interactively)
@@ -110,41 +89,15 @@ struct SignUpView: View {
         .background(Theme.bg.ignoresSafeArea())
     }
 
-    /// Email shaped like an address and every password rule met.
+    /// A name and an email shaped like an address.
     private var canCreate: Bool {
-        email.contains("@") && email.contains(".") && rules.allSatisfy(\.1)
+        !name.trimmingCharacters(in: .whitespaces).isEmpty && EmailAddress.looksValid(email)
     }
 
-    /// A brand-new account answers the focus question; an existing one goes straight in.
+    /// A brand-new account goes through onboarding; an existing one goes straight in.
     private func social(_ provider: SocialProvider) async {
         guard let account = await auth.continueWith(provider) else { return }
-        if account.isNew() { router.go(.focus) } else { auth.finishSignIn() }
-    }
-
-    private var strengthMeter: some View {
-        let met = rules.filter(\.1).count
-        return VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 6) {
-                ForEach(0..<rules.count, id: \.self) { i in
-                    Capsule()
-                        .fill(i < met ? Theme.accent : Theme.text.opacity(0.10))
-                        .frame(height: 4)
-                }
-            }
-            .animation(Springs.pop, value: met)
-            HStack(spacing: 14) {
-                ForEach(rules, id: \.0) { rule, ok in
-                    HStack(spacing: 4) {
-                        AppIcon(ok ? .check : .circle, size: 13)
-                        Text(rule)
-                    }
-                    .font(.system(size: 13))
-                    .foregroundStyle(ok ? Theme.good : Theme.muted)
-                    .animation(.easeOut(duration: 0.15), value: ok)
-                }
-            }
-        }
-        .accessibilityElement(children: .combine)
+        router.enter(account, auth: auth)
     }
 
     private var legal: some View {
