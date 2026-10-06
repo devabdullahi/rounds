@@ -5,15 +5,16 @@ import Foundation
 //
 // | Protocol                 | Live source (later)                    | Used by                 |
 // |--------------------------|----------------------------------------|-------------------------|
-// | ConditionSearching       | NLM Clinical Table Search (ICD-10-CM)  | Diagnosis autocomplete  |
+// | ConditionSearching       | NLM Clinical Table Search (live)       | Diagnosis autocomplete  |
 // | DrugRecognizing          | NLM RxNorm / RxNav                     | Plan: recognised drugs  |
 // | HealthTopicLinking       | MedlinePlus Connect                    | Debrief: "Learn more"   |
 // | DiseaseFactProviding     | Disease Ontology, Wikidata P780        | Case authoring only     |
 // | SyntheticPatientMaking   | Synthea                                | Case authoring only     |
 // | DifferentialChecking     | EndlessMedical (check terms first)     | Case QA only            |
 //
-// Every implementation is mock for now (Services/Reference/Mock). Live ones must cache results
-// (NLM asks for ≤ 20 requests/s per IP and 12–24 h caching).
+// Condition search is live (ClinicalTablesConditionSearch); the rest are mock for now
+// (MockReferenceServices). Live ones must cache results (NLM asks for ≤ 20 requests/s per IP and
+// 12–24 h caching).
 
 protocol ConditionSearching: Sendable {
     /// Best matches for what the student has typed so far, most relevant first.
@@ -52,7 +53,17 @@ struct ReferenceServices: Sendable {
     var syntheticPatients: any SyntheticPatientMaking
     var differentials: any DifferentialChecking
 
-    /// Offline, deterministic data. The only option until the live clients exist.
+    /// What the app runs on: live clients where they exist, mock for the rest.
+    static let live = ReferenceServices(
+        conditions: ClinicalTablesConditionSearch(),
+        drugs: MockDrugRecognizer(),
+        topics: MockHealthTopics(),
+        diseaseFacts: MockDiseaseFacts(),
+        syntheticPatients: MockSyntheticPatients(),
+        differentials: MockDifferentialChecker()
+    )
+
+    /// Offline, deterministic data, for previews and tests.
     static let mock = ReferenceServices(
         conditions: MockConditionSearch(),
         drugs: MockDrugRecognizer(),

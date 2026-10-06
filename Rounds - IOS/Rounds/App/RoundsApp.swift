@@ -18,6 +18,7 @@ struct RoundsApp: App {
         WindowGroup {
             RootView()
                 .environment(app)
+                .environment(\.reference, .live)
                 // Signed-out screens (welcome, sign up, onboarding) are designed for light mode.
                 .preferredColorScheme(!signedIn || appearance == 1 ? .light : appearance == 2 ? .dark : nil)
                 .tint(Theme.accent)
