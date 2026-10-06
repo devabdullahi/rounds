@@ -50,7 +50,7 @@ enum Theme {
     static let faint      = Color.adaptive(dark: 0x76787E, light: 0x9B9EA8)
     static let accent     = Color.adaptive(dark: 0x226DFF, light: 0x029957)
     static let accentInk  = Color.adaptive(dark: 0xFFFFFF, light: 0xFFFFFF)
-    static let accentText = Color.adaptive(dark: 0xA5BFEC, light: 0x028B4F)
+    static let accentText = Color.adaptive(dark: 0xA5BFEC, light: 0x017A45)   // light: 5.0:1 on bg, 4.7:1 on heroMint
     static let accentSoft = Color.adaptive(dark: 0x226DFF, light: 0x029957, darkOpacity: 0.12, lightOpacity: 0.10)
     static let warn       = Color.adaptive(dark: 0xFC968B, light: 0xE5011A)
     static let warnText   = Color.adaptive(dark: 0xFC968B, light: 0xE5011A)
@@ -67,6 +67,8 @@ enum Theme {
     static let hairline   = Color.adaptive(dark: 0xEDEEF3, light: 0x161929, darkOpacity: 0.07, lightOpacity: 0.08)
     static let ring       = Color.adaptive(dark: 0xEDEEF3, light: 0x161929, darkOpacity: 0.08, lightOpacity: 0.07)
     static let border     = Color.adaptive(dark: 0xEDEEF3, light: 0x161929, darkOpacity: 0.16, lightOpacity: 0.16)
+    /// Edges that identify a control (empty code boxes, unfilled progress): 3:1 against the page.
+    static let control    = Color.adaptive(dark: 0xEDEEF3, light: 0x161929, darkOpacity: 0.45, lightOpacity: 0.5)
     static let track      = Color.adaptive(dark: 0xEDEEF3, light: 0x161929, darkOpacity: 0.07, lightOpacity: 0.06)
     /// Segmented-control thumb: lifts off the track in both modes.
     static let thumb      = Color.adaptive(dark: 0x2C2C2F, light: 0xFFFFFF)
@@ -103,6 +105,42 @@ enum Theme {
 
     /// Monitor sweep highlight (Sign in mark).
     static let sweep      = Color.adaptive(dark: 0xE1E5EB, light: 0x01B568)
+
+    /// Onboarding illustration, used only on signed-out screens (always light mode), so these
+    /// deliberately hold one value: a mint wash behind the hero art, a blush wash behind the
+    /// promise heart, and sparkle tints. Give them dark values before using them signed in.
+    static let heroMint    = Color.adaptive(dark: 0xDDF3E8, light: 0xDDF3E8)
+    static let heroBlush   = Color.adaptive(dark: 0xFDE7EA, light: 0xFDE7EA)
+    static let sparkleBlue = Color.adaptive(dark: 0x9CC3FF, light: 0x9CC3FF)
+    static let sparkleMint = Color.adaptive(dark: 0x8DDBB6, light: 0x8DDBB6)
+}
+
+/// Fictional patients' avatar tints in the onboarding art: pastel fill with a deep ink of the
+/// same hue (initials clear 7:1 on every fill). Signed-out only, like the hero tokens above.
+enum AvatarTint: CaseIterable {
+    case blue, pink, yellow, purple, mint, rose
+
+    var fill: Color {
+        switch self {
+        case .blue: Color.adaptive(dark: 0xCFE4FF, light: 0xCFE4FF)
+        case .pink: Color.adaptive(dark: 0xF5D5EC, light: 0xF5D5EC)
+        case .yellow: Color.adaptive(dark: 0xFFF0B8, light: 0xFFF0B8)
+        case .purple: Color.adaptive(dark: 0xD9D2FF, light: 0xD9D2FF)
+        case .mint: Color.adaptive(dark: 0xCFF3E2, light: 0xCFF3E2)
+        case .rose: Color.adaptive(dark: 0xFFD6DA, light: 0xFFD6DA)
+        }
+    }
+
+    var ink: Color {
+        switch self {
+        case .blue: Color.adaptive(dark: 0x1C3F7A, light: 0x1C3F7A)
+        case .pink: Color.adaptive(dark: 0x6A2457, light: 0x6A2457)
+        case .yellow: Color.adaptive(dark: 0x5C4A00, light: 0x5C4A00)
+        case .purple: Color.adaptive(dark: 0x35277A, light: 0x35277A)
+        case .mint: Color.adaptive(dark: 0x0B4F31, light: 0x0B4F31)
+        case .rose: Color.adaptive(dark: 0x7A1320, light: 0x7A1320)
+        }
+    }
 }
 
 extension Font {

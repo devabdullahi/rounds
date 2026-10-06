@@ -1,11 +1,10 @@
 import SwiftUI
 
-/// "Before your first shift": the one onboarding question, what to practice.
+/// "Before your first shift": what to practice. Comes after the study goal; the promise follows.
 /// Topics, not training year: anyone can pick rotations, systems, or both (the tabs only
 /// switch the list; picks on both tabs are kept), or mix it up.
 struct FocusOnboardingView: View {
     @Environment(AppState.self) private var app
-    @AppStorage("signedIn") private var signedIn = false
     @AppStorage(StudyFocus.storageKey) private var focusStored = ""
     @Environment(AuthRouter.self) private var router
     @State private var pick = FocusSelection()
@@ -14,8 +13,8 @@ struct FocusOnboardingView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            IconButton(glyph: .chevronLeft, label: "Back", quiet: true) { router.back() }
-                .padding(.leading, -17)   // chevron edge on the 24pt margin
+            OnboardingTopBar(total: OnboardingStep.total, current: OnboardingStep.focus) { router.back() }
+                .padding(.leading, -7)   // chevron edge on the 24pt margin
 
             VStack(alignment: .leading, spacing: 6) {
                 Eyebrow("Before your first shift")
@@ -40,9 +39,9 @@ struct FocusOnboardingView: View {
             }
             .scrollIndicators(.hidden)
 
-            Button("Start my shift") {
+            Button("Continue") {
                 focusStored = pick.stored
-                signedIn = true
+                router.go(.promise)
             }
             .disabled(pick.isMix && !mixChosen)
             .buttonStyle(PrimaryButtonStyle(height: 52))

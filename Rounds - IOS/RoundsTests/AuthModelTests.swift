@@ -12,48 +12,100 @@ struct AuthModelTests {
     /// A private store per test, so the app host's own launch can't touch the flag under test.
     private let defaults = UserDefaults(suiteName: "AuthModelTests.\(UUID().uuidString)")!
 
-    @Test func emailSignInSucceeds() async {
-        let auth = AuthModel(service: ScriptedAuth(signIn: .success(account)), defaults: defaults)
-        #expect(await auth.signIn(email: " sam@school.edu ", password: "pw") == true)
-        #expect(auth.account == account)
+    @Test func sendingACodeStartsTheResendClock() async {
+        let auth = AuthModel(service: ScriptedAuth(), defaults: defaults)
+        #expect(await auth.sendCode(email: " Sam@School.edu ") == "sam@school.edu")
+        #expect(auth.codeSentAt != nil)
+        #expect(auth.resendWait() > 0)
         #expect(auth.problem == nil)
     }
 
-    @Test func aFailedSignInExplainsWhy() async {
-        let failing = ScriptedAuth(signIn: .failure(CaseServiceError(message: "Invalid login credentials")))
-        let auth = AuthModel(service: failing, defaults: defaults)
-        #expect(await auth.signIn(email: "sam@school.edu", password: "nope") == false)
-        #expect(auth.account == nil)
-        #expect(auth.problem == "Invalid login credentials")
+    @Test func askingAgainDuringTheWaitDoesNotSendAnotherCode() async {
+        let service = ScriptedAuth()
+        let auth = AuthModel(service: service, defaults: defaults)
+        _ = await auth.sendCode(email: "sam@school.edu")
+        #expect(await auth.sendCode(email: "SAM@school.edu") == "sam@school.edu")   // same address, still waiting
+        _ = await auth.sendCode(email: "other@school.edu")                        // a different address goes out
+        #expect(await service.sent.count == 2)
     }
 
-    @Test func signUpWithConfirmationWaitsForTheLink() async {
-        let auth = AuthModel(service: ScriptedAuth(signUp: .confirmEmail("sam@school.edu")), defaults: defaults)
-        #expect(await auth.signUp(email: "sam@school.edu", password: "Passw0rd!", name: "Sam") == false)
-        #expect(auth.pendingEmail == "sam@school.edu")
+    @Test func aCodeSentMomentsAgoStillLeadsToTheCodeScreen() async {
+        let auth = AuthModel(service: ScriptedAuth(send: .failure(CodeRecentlySent(wait: 41))), defaults: defaults)
+        #expect(await auth.sendCode(email: "sam@school.edu") == "sam@school.edu")
+        #expect(auth.problem == nil)
+        #expect((40...41).contains(auth.resendWait()))
+    }
+
+    @Test func aRefusedCodeRequestExplainsWhy() async {
+        let failing = ScriptedAuth(send: .failure(CaseServiceError(message: "There's no Rounds account for that email.")))
+        let auth = AuthModel(service: failing, defaults: defaults)
+        #expect(await auth.sendCode(email: "new@school.edu") == nil)
+        #expect(auth.codeSentAt == nil)
+        #expect(auth.problem == "There's no Rounds account for that email.")
+    }
+
+    @Test func theRightCodeSignsIn() async {
+        let auth = AuthModel(service: ScriptedAuth(signIn: .success(account)), defaults: defaults)
+        #expect(await auth.verifyCode(email: "sam@school.edu", code: "123456") == account)
+        #expect(auth.account == account)
+        #expect(auth.codeProblem == nil)
+        #expect(defaults.bool(forKey: AuthModel.signedInKey) == false)   // onboarding decides when to enter
+    }
+
+    @Test func otherVerifyFailuresAreAlertsNotCodeErrors() async {
+        let auth = AuthModel(service: ScriptedAuth(signIn: .failure(URLError(.notConnectedToInternet))), defaults: defaults)
+        #expect(await auth.verifyCode(email: "sam@school.edu", code: "123456") == nil)
+        #expect(auth.codeProblem == nil)
+        #expect(auth.problem != nil)
+    }
+
+    @Test func finishingOnboardingIsRecordedOnTheAccount() async {
+        let service = ScriptedAuth(signIn: .success(account))
+        let auth = AuthModel(service: service, defaults: defaults)
+        _ = await auth.verifyCode(email: "sam@school.edu", code: "123456")
+        auth.finishOnboarding()
+        #expect(auth.account?.onboarded == true)
+        #expect(defaults.bool(forKey: AuthModel.signedInKey) == true)
+        await service.onboarded.waitFor(1)
+        #expect(await service.onboarded.count == 1)
+    }
+
+    @Test func aWrongCodeStaysOnTheCodeScreen() async {
+        let auth = AuthModel(service: ScriptedAuth(signIn: .failure(CodeRejected())), defaults: defaults)
+        #expect(await auth.verifyCode(email: "sam@school.edu", code: "000000") == nil)
+        #expect(auth.codeProblem == AuthModel.codeRejectedMessage)
+        #expect(auth.problem == nil)   // inline, not an alert
         #expect(defaults.bool(forKey: AuthModel.signedInKey) == false)
+    }
+
+    @Test(arguments: ["123", "abcdef", "12 456"])
+    func malformedCodesAreNotSent(code: String) async {
+        let auth = AuthModel(service: ScriptedAuth(signIn: .success(account)), defaults: defaults)
+        #expect(await auth.verifyCode(email: "sam@school.edu", code: code) == nil)
+        #expect(auth.account == nil)
     }
 
     @Test func deletingTheAccountSignsOut() async {
         defaults.set(true, forKey: AuthModel.signedInKey)
         let auth = AuthModel(service: ScriptedAuth(signIn: .success(account)), defaults: defaults)
-        _ = await auth.signIn(email: "sam@school.edu", password: "pw")
+        _ = await auth.verifyCode(email: "sam@school.edu", code: "123456")
         #expect(await auth.deleteAccount() == true)
         #expect(auth.account == nil)
         #expect(defaults.bool(forKey: AuthModel.signedInKey) == false)
     }
 
-    @Test func noBackendMeansNothingHappens() async {
-        let auth = AuthModel(service: nil, defaults: defaults)
-        #expect(await auth.signIn(email: "a@b.co", password: "x") == false)
-        #expect(auth.problem == nil)
+    @Test func everySignInAsksForTheWelcomeEmail() async {
+        let service = ScriptedAuth(signIn: .success(account))
+        let auth = AuthModel(service: service, defaults: defaults)
+        _ = await auth.verifyCode(email: "sam@school.edu", code: "123456")
+        await service.welcomes.waitFor(1)
+        #expect(await service.welcomes.count == 1)
     }
 
-    @Test(arguments: [(10.0, true), (600.0, false)])
-    func onlyAFreshAccountNeedsOnboarding(secondsAgo: Double, isNew: Bool) {
-        let now = Date(timeIntervalSince1970: 10_000)
-        let made = Account(id: "u", email: nil, name: nil, provider: "apple", createdAt: now.addingTimeInterval(-secondsAgo))
-        #expect(made.isNew(now: now) == isNew)
+    @Test func noBackendMeansNothingHappens() async {
+        let auth = AuthModel(service: nil, defaults: defaults)
+        #expect(await auth.sendCode(email: "a@b.co") == nil)
+        #expect(auth.problem == nil)
     }
 
     @Test(arguments: [("Sam Rivera", nil, "SR"), (nil, "sam.rivera@school.edu", "SR"), (nil, nil, "?")])
@@ -62,17 +114,31 @@ struct AuthModelTests {
     }
 }
 
+/// Counts welcome requests; the model sends them from a background task, so tests wait for it.
+private actor Counter {
+    private(set) var count = 0
+    func increment() { count += 1 }
+    func waitFor(_ n: Int) async {
+        for _ in 0..<100 where count < n { try? await Task.sleep(for: .milliseconds(10)) }
+    }
+}
+
 /// An auth service that answers from a script.
 private struct ScriptedAuth: AuthService {
+    let welcomes = Counter()
+    let onboarded = Counter()
+    let sent = Counter()
     var signIn: Result<Account, Error> = .failure(URLError(.notConnectedToInternet))
-    var signUp: SignUpOutcome = .confirmEmail("")
+    var send: Result<Void, Error> = .success(())
 
     func currentAccount() async -> Account? { nil }
-    func signUp(email: String, password: String, name: String) async throws -> SignUpOutcome { signUp }
-    func signIn(email: String, password: String) async throws -> Account { try signIn.get() }
+    func sendCode(email: String, name: String?) async throws { try send.get(); await sent.increment() }
+    func verifyCode(email: String, code: String) async throws -> Account { try signIn.get() }
     func signInWithApple(idToken: String, nonce: String, name: String?) async throws -> Account { try signIn.get() }
     func signInWithGoogle(idToken: String, accessToken: String) async throws -> Account { try signIn.get() }
     func handle(url: URL) async throws -> Account? { nil }
     func signOut() async throws {}
     func deleteAccount() async throws {}
+    func sendWelcome() async throws { await welcomes.increment() }
+    func markOnboarded() async throws { await onboarded.increment() }
 }

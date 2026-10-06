@@ -1,67 +1,4 @@
 import SwiftUI
-import Observation
-
-// MARK: - Flow
-
-enum AuthStep: Hashable { case signIn, signUp, focus }
-
-@Observable
-final class AuthRouter {
-    var path: [AuthStep] = []
-    func go(_ step: AuthStep) { path.append(step) }
-    func back() { if !path.isEmpty { path.removeLast() } }
-}
-
-/// Signed-out shell: welcome, sign up, log in and the focus question, over real accounts
-/// (AuthModel). A new account goes through the focus question; a returning one goes straight in.
-struct AuthFlowView: View {
-    @Environment(AuthModel.self) private var auth
-    @State private var router = AuthRouter()
-
-    var body: some View {
-        NavigationStack(path: $router.path) {
-            // Everyone signed out lands on the welcome screen; its sheet branches to
-            // sign up, email log in, or Apple/Google (straight to the year question).
-            FirstOpenView(
-                onSignUp: { router.go(.signUp) },
-                onLogIn: { router.go(.signIn) },
-                onSocial: { provider in Task { await continueWith(provider) } }
-            )
-            .toolbar(.hidden, for: .navigationBar)
-            .navigationDestination(for: AuthStep.self) { step in
-                Group {
-                    switch step {
-                    case .signIn: SignInView()
-                    case .signUp: SignUpView()
-                    case .focus: FocusOnboardingView()
-                    }
-                }
-                .toolbar(.hidden, for: .navigationBar)
-            }
-        }
-        .environment(router)
-        .alert("Couldn't sign in", isPresented: Binding(get: { auth.problem != nil }, set: { if !$0 { auth.problem = nil } })) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text(auth.problem ?? "")
-        }
-        #if DEBUG
-        .onAppear {
-            router.path = DebugLaunch.authPath
-            // -screen google-signin: opens Google's sheet without a tap, to check the client ID setup.
-            if DebugLaunch.screen == "google-signin" {
-                Task { try? await Task.sleep(for: .seconds(1.5)); await continueWith(.google) }   // after the push settles
-            }
-        }
-        #endif
-    }
-
-    /// Apple or Google: a new account answers the focus question first; a returning one goes in.
-    private func continueWith(_ provider: SocialProvider) async {
-        guard let account = await auth.continueWith(provider) else { return }
-        if account.isNew() { router.go(.focus) } else { auth.finishSignIn() }
-    }
-}
 
 // MARK: - ECG marks
 
@@ -145,6 +82,17 @@ struct AuthField: View {
             )
             .animation(.easeOut(duration: 0.18), value: focused)
         }
+    }
+}
+
+/// Small grey note under a form field.
+struct AuthNote: View {
+    let text: String
+    var body: some View {
+        Text(text)
+            .font(.system(size: 13))
+            .foregroundStyle(Theme.muted)
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 

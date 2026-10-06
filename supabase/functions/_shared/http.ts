@@ -24,8 +24,16 @@ export function serve(handler: (req: Request) => Promise<Response>): void {
   });
 }
 
-/** Verifies the bearer token with Supabase Auth and returns the user id. */
-export async function callerId(req: Request): Promise<string> {
+/** The verified caller, as Supabase Auth reports it. */
+export interface Caller {
+  id: string;
+  email?: string;
+  is_anonymous?: boolean;
+  user_metadata?: Record<string, unknown>;
+}
+
+/** Verifies the bearer token with Supabase Auth and returns the user. */
+export async function caller(req: Request): Promise<Caller> {
   const auth = req.headers.get("Authorization");
   if (!auth?.startsWith("Bearer ")) throw new HttpError(401, "missing token");
   const res = await fetch(`${Deno.env.get("SUPABASE_URL")}/auth/v1/user`, {
@@ -34,7 +42,12 @@ export async function callerId(req: Request): Promise<string> {
   if (!res.ok) throw new HttpError(401, "invalid token");
   const user = await res.json();
   if (typeof user?.id !== "string") throw new HttpError(401, "invalid token");
-  return user.id;
+  return user as Caller;
+}
+
+/** Verifies the bearer token with Supabase Auth and returns the user id. */
+export async function callerId(req: Request): Promise<string> {
+  return (await caller(req)).id;
 }
 
 export async function body<T>(req: Request): Promise<T> {
