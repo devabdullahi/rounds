@@ -96,7 +96,7 @@ private let answerY: CGFloat = 218
 struct FirstOpenView: View {
     var onSignUp: () -> Void
     var onLogIn: () -> Void
-    var onSocial: () -> Void
+    var onSocial: (SocialProvider) -> Void
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var drawn: CGFloat = 0
@@ -232,14 +232,14 @@ struct FirstOpenView: View {
 
             OrDivider(text: "or").padding(.vertical, 4)
 
-            Button(action: onSocial) {
+            Button { onSocial(.apple) } label: {
                 providerLabel("Continue with Apple") {
                     Image(systemName: "apple.logo").font(.system(size: 19, weight: .medium)).offset(y: -1)
                 }
             }
             .modifier(OutlineCapsule())
 
-            Button(action: onSocial) {
+            Button { onSocial(.google) } label: {
                 providerLabel("Continue with Google") { GoogleLogo(size: 18) }
             }
             .modifier(OutlineCapsule())

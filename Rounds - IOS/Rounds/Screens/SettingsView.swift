@@ -35,7 +35,8 @@ struct SettingsView: View {
     @State private var dailyReminder = true
     @State private var streakAlerts = true
     @State private var confirmSignOut = false
-    @AppStorage("signedIn") private var signedIn = true
+    @Environment(AuthModel.self) private var auth
+    @State private var confirmDelete = false
     @AppStorage(StudyFocus.storageKey) private var focusStored = ""
     @State private var editingFocus = false
 
@@ -51,10 +52,9 @@ struct SettingsView: View {
                 VStack(alignment: .leading, spacing: 24) {
                     // Identity lives on Profile; Settings only holds account mechanics.
                     section("Account") {
-                        // MOCK (disabled): navRow(.mail, "Email", value: SampleUser.email)
-                        navRow(.mail, "Email", value: "Not set")
+                        navRow(.mail, "Email", value: auth.account?.email ?? "Guest session")
                         Hairline()
-                        navRow(.keyRound, "Signed in with", value: "Apple")
+                        navRow(.keyRound, "Signed in with", value: auth.account?.providerLabel ?? "Not signed in")
                     }
 
                     section("Practice") {
@@ -139,6 +139,14 @@ struct SettingsView: View {
                             .glassCapsule(tint: Theme.wrong)   // true red fill in both modes
                         }
                         .buttonStyle(PressDownStyle())
+                        .disabled(auth.busy != nil)
+
+                        // Apple requires in-app deletion for apps with accounts.
+                        Button("Delete account", role: .destructive) { confirmDelete = true }
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundStyle(Theme.warnText)
+                            .frame(maxWidth: .infinity, minHeight: 44)
+                            .disabled(auth.busy != nil)
 
                         Text("Rounds 0.1.0\nFor training only. Not for clinical use.")
                             .font(.system(size: 12))
@@ -157,10 +165,21 @@ struct SettingsView: View {
         .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $editingFocus) { FocusSheet(counts: app.topicCounts) }
         .confirmationDialog("Sign out of Rounds?", isPresented: $confirmSignOut, titleVisibility: .visible) {
-            Button("Sign out", role: .destructive) { signedIn = false }
+            Button("Sign out", role: .destructive) { Task { await auth.signOut() } }
             Button("Cancel", role: .cancel) {}
         } message: {
             Text("Your streak and casebook stay saved to your account.")
+        }
+        .confirmationDialog("Delete your account?", isPresented: $confirmDelete, titleVisibility: .visible) {
+            Button("Delete account and data", role: .destructive) { Task { await auth.deleteAccount() } }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("Your patients, grades, flashcards and badges are deleted for good. This can't be undone.")
+        }
+        .alert("Something went wrong", isPresented: Binding(get: { auth.problem != nil }, set: { if !$0 { auth.problem = nil } })) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(auth.problem ?? "")
         }
     }
 
