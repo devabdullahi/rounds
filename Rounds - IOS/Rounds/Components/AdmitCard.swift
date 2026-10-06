@@ -2,9 +2,11 @@ import SwiftUI
 
 /// Sits where the patient deck would be when nobody is waiting: admits a newly written patient.
 /// While one is being written, organs draw themselves in turn (`AnatomyLoader`), since generation
-/// takes 10–30 s and a bare spinner reads as stuck.
+/// takes 10–30 s and a bare spinner reads as stuck. The first case in a topic takes minutes, since
+/// the condition itself is written first; the copy says so.
 struct AdmitCard: View {
     let admitting: Bool
+    var preparing = false
     /// The ward is still loading, so "nobody waiting" isn't known yet.
     let loading: Bool
     let onAdmit: () -> Void
@@ -18,10 +20,12 @@ struct AdmitCard: View {
                     .frame(maxWidth: .infinity)
                 Spacer(minLength: 8)
                 VStack(spacing: 6) {
-                    Text("Finding your patient…")
+                    Text(preparing ? "Preparing a new condition…" : "Finding your patient…")
                         .font(.system(size: 24, weight: .bold))
                         .tracking(-0.3)
-                    Text("A new case is being written. About 15 seconds.")
+                    Text(preparing
+                         ? "First case in this topic. The condition is being written up, about 3 minutes. Later cases take seconds."
+                         : "A new case is being written. About 15 seconds.")
                         .font(.system(size: 15))
                         .foregroundStyle(Theme.muted)
                 }

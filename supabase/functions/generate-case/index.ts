@@ -1,7 +1,9 @@
 // generate-case: makes a new fictional patient for the calling student.
 //
 //   1. Verify the caller.
-//   2. Pick a validated condition profile that matches their study focus.
+//   2. Pick a validated condition profile that matches their study focus, and queue one new
+//      condition in that focus for prepare-profile to write in the background (prefetch.ts). When
+//      the focus has no profile at all yet, reply 202 "preparing" and the app asks again shortly.
 //   3. Plan the patient in code (severity, age, sex, findings, vitals, lab values).
 //   4. Have the LLM write the person around that plan: door note, voice, facts, exam findings,
 //      study reports, test prices. It never chooses numbers or the diagnosis.
@@ -13,25 +15,28 @@ import { completeJSON, currentModel } from "../_shared/llm.ts";
 import { CASE_WRITER, PROMPT_VERSION } from "../_shared/prompts.ts";
 import { type CasePlan, leakTerms, planCase, type Profile } from "../_shared/casegen.ts";
 import { flag, type Patient, TESTS } from "../_shared/labs.ts";
+import { type Focus, parseFocus } from "../_shared/focus.ts";
+import { prepareNext } from "../_shared/prefetch.ts";
 import { buildRubric, checkWriting, neutralIds, type Writing, writerPrompt } from "./writer.ts";
 
 type Request = { focus?: string };
 
 serve(async (req) => {
   const userId = await callerId(req);
-  const { focus = "" } = await body<Request>(req);
-  const [kind, value] = focus.split(":");
-  if (focus && !(["rotation", "system"].includes(kind) && /^[a-zA-Z]+$/.test(value ?? ""))) {
-    throw new HttpError(400, "focus must be '', 'rotation:<clerkship>' or 'system:<organ system>'");
-  }
+  const { focus: requested = "" } = await body<Request>(req);
+  const focus = parseFocus(requested);
 
   const rows = await sql<{ profile: Profile }[]>`
     select profile from private.condition_profiles
     where validation = 'passed' and review <> 'rejected'
-      and (${kind !== "rotation"} or ${value ?? ""} = any(clerkships))
-      and (${kind !== "system"} or ${value ?? ""} = any(organ_systems))
+      and (${focus.kind !== "rotation"} or ${focus.value} = any(clerkships))
+      and (${focus.kind !== "system"} or ${focus.value} = any(organ_systems))
     order by random() limit 1`;
-  if (rows.length === 0) throw new HttpError(404, "no conditions available for this focus yet");
+  const queued = await prepareNext(focus);
+  if (rows.length === 0) {
+    if (queued.inFlight) return json({ status: "preparing" }, 202);
+    throw new HttpError(404, "no conditions available for this focus yet");
+  }
   const profile = rows[0].profile;
 
   const plan = planCase(profile, Math.random);
@@ -54,7 +59,7 @@ serve(async (req) => {
     throw new HttpError(502, "the patient couldn't be written; try again");
   }
 
-  const caseId = await save(userId, profile, plan, neutralIds(writing));
+  const caseId = await save(userId, profile, plan, neutralIds(writing), focus);
   return json({ case_id: caseId, model: currentModel() });
 });
 
@@ -81,7 +86,7 @@ function doorVitals(plan: CasePlan) {
   return out.map((x) => ({ ...x, label: VITAL_LABELS[x.id] }));
 }
 
-async function save(userId: string, profile: Profile, plan: CasePlan, w: Writing): Promise<string> {
+async function save(userId: string, profile: Profile, plan: CasePlan, w: Writing, focus: Focus): Promise<string> {
   const meta = new Map(w.test_meta.map((m) => [m.test_id, m]));
   const reports = new Map(w.studies.map((s) => [s.test_id, s]));
   const tests = plan.tests.map((t) => {
@@ -114,11 +119,11 @@ async function save(userId: string, profile: Profile, plan: CasePlan, w: Writing
               ({ id, name, detail, cost, turnaround_s, delays_care_min })))},
             ${w.facts.filter((f) => f.importance !== "optional").length})`;
         await tx`
-          insert into private.case_content (case_id, facts, exam, tests, answer_key, condition_slug, severity, persona, rubric)
+          insert into private.case_content (case_id, facts, exam, tests, answer_key, condition_slug, severity, persona, rubric, focus)
           values (${id}, ${tx.json(w.facts)}, ${tx.json(w.maneuvers)}, ${tx.json(tests)},
             ${tx.json({ diagnosis: profile.triage.name, accepted: profile.teaching.accepted_names })},
             ${profile.slug}, ${plan.severity}, ${tx.json({ ...w.persona, name: w.patient.name, age: plan.age, sex: plan.sex, pregnant: plan.pregnant, model: currentModel(), prompt_version: PROMPT_VERSION })},
-            ${tx.json(buildRubric(profile, plan, w, tests))})`;
+            ${tx.json(buildRubric(profile, plan, w, tests))}, ${focus.stored})`;
       });
       return id;
     } catch (error) {

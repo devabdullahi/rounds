@@ -4,7 +4,8 @@
 //   ask      {attempt_id, question}                    → {reply, revealed[], coverage}
 //   examine  {attempt_id, maneuver_id}                 → {finding}
 //   order    {attempt_id, test_id}                     → {result, abnormal, turnaround_s}
-//   submit   {attempt_id, diagnosis, differential, plan} → grade
+//   submit   {attempt_id, diagnosis, differential, plan} → grade (and queues the next condition
+//            in the case's focus, see _shared/prefetch.ts)
 //
 // Every action verifies the caller, then loads the attempt only if it belongs to them. The patient
 // LLM sees the persona and revealable facts, never the diagnosis or rubric; its reply is checked for
@@ -15,6 +16,8 @@ import { completeJSON } from "../_shared/llm.ts";
 import { leaks } from "../_shared/casegen.ts";
 import { GRADER, PATIENT, REPLY_CHECKER } from "../_shared/prompts.ts";
 import { type Actions, grade, matchesDiagnosis, type Rubric } from "./grade.ts";
+import { parseFocus } from "../_shared/focus.ts";
+import { prepareNext } from "../_shared/prefetch.ts";
 
 type Fact = { id: string; label: string; reply: string; importance: string; screens_for: string | null };
 type Maneuver = { id: string; title: string; finding: string };
@@ -27,6 +30,7 @@ type Attempt = {
 type Content = {
   facts: Fact[]; exam: Maneuver[]; tests: Test[]; persona: Record<string, string | number>;
   answer_key: { diagnosis: string; accepted: string[] }; rubric: Rubric;
+  focus: string; // study focus the case was generated for
 };
 
 const LIMITS = { question: 500, diagnosis: 200, plan: 2000, differential: 10, transcriptTurns: 12 };
@@ -54,13 +58,13 @@ async function loadAttempt(userId: string, attemptId: unknown, open = true): Pro
   if (typeof attemptId !== "string" || !/^[0-9a-f-]{36}$/.test(attemptId)) throw new HttpError(400, "attempt_id required");
   const rows = await sql<(Attempt & Content)[]>`
     select a.id, a.case_id, a.exam_mode, a.submitted_at, a.transcript, a.revealed_facts, a.examined, a.ordered_tests,
-           c.facts, c.exam, c.tests, c.persona, c.answer_key, c.rubric
+           c.facts, c.exam, c.tests, c.persona, c.answer_key, c.rubric, c.focus
     from public.attempts a join private.case_content c on c.case_id = a.case_id
     where a.id = ${attemptId} and a.user_id = ${userId}`;
   if (rows.length === 0) throw new HttpError(404, "attempt not found");
   if (open && rows[0].submitted_at) throw new HttpError(409, "attempt already submitted");
-  const { facts, exam, tests, persona, answer_key, rubric, ...attempt } = rows[0];
-  return { attempt, content: { facts, exam, tests, persona, answer_key, rubric } };
+  const { facts, exam, tests, persona, answer_key, rubric, focus, ...attempt } = rows[0];
+  return { attempt, content: { facts, exam, tests, persona, answer_key, rubric, focus } };
 }
 
 // MARK: - start
@@ -194,6 +198,13 @@ async function submit(userId: string, input: Record<string, unknown>) {
     from graded where p.id = graded.user_id
     returning p.rating`;
   if (!profile) throw new HttpError(409, "attempt already submitted");
+  // The student's next case in this topic should find a fresh condition ready. A failure here
+  // must not cost them their grade.
+  try {
+    await prepareNext(parseFocus(content.focus));
+  } catch (error) {
+    console.error("prepare next after grading", error);
+  }
   return { ...result, rating: profile.rating };
 }
 

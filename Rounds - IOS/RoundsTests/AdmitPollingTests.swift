@@ -1,0 +1,62 @@
+import Foundation
+import Testing
+@testable import Rounds
+
+/// Admitting when the focus's first condition is still being written: the app asks again until a
+/// patient is ready.
+@MainActor
+struct AdmitPollingTests {
+    @Test func asksAgainWhilePreparingThenOpensThePatient() async {
+        let service = ScriptedCases(replies: [.preparing, .preparing, .admitted(bed: "A12")])
+        let app = AppState(cases: service, cards: nil)
+        app.preparingPoll = .milliseconds(1)
+
+        await app.admit(focus: FocusSelection())
+
+        #expect(await service.admitCalls == 3)
+        #expect(await service.loadedBeds == ["A12"])
+        #expect(!app.isAdmitting)
+        #expect(!app.isPreparingCondition)
+    }
+
+    @Test func aReadyPatientIsOpenedWithoutWaiting() async {
+        let service = ScriptedCases(replies: [.admitted(bed: "B7")])
+        let app = AppState(cases: service, cards: nil)
+
+        await app.admit(focus: FocusSelection())
+
+        #expect(await service.admitCalls == 1)
+        #expect(await service.loadedBeds == ["B7"])
+    }
+}
+
+/// A case service that answers `admit` from a script and records which beds were opened.
+private actor ScriptedCases: CaseService {
+    private var replies: [AdmitOutcome]
+    private(set) var admitCalls = 0
+    private(set) var loadedBeds: [String] = []
+
+    init(replies: [AdmitOutcome]) { self.replies = replies }
+
+    struct Unused: Error {}
+
+    func ensureSignedIn() async throws {}
+    func ward() async throws -> [WardPatient] { [] }
+    func topicCounts() async throws -> [String: Int] { [:] }
+
+    func admit(focus: StudyFocus) async throws -> AdmitOutcome {
+        admitCalls += 1
+        return replies.isEmpty ? .preparing : replies.removeFirst()
+    }
+
+    func loadCase(bed: String) async throws -> ClinicalCase {
+        loadedBeds.append(bed)
+        throw Unused() // opening the case isn't under test
+    }
+
+    func start(bed: String, examMode: Bool, timeLimitMinutes: Int?) async throws -> String { throw Unused() }
+    func ask(attempt: String, question: String) async throws -> PatientAnswer { throw Unused() }
+    func examine(attempt: String, maneuver: String) async throws -> String { throw Unused() }
+    func order(attempt: String, test: String) async throws -> TestResult { throw Unused() }
+    func submit(attempt: String, diagnosis: String, differential: [String], plan: String) async throws -> Grade { throw Unused() }
+}

@@ -116,7 +116,8 @@ struct PatientDeck: View {
                 // Also covers the deck while a patient is being written, so the shuffle button's
                 // "admit a new patient" shows progress even with others waiting.
                 if queue.isEmpty || app.isAdmitting {
-                    AdmitCard(admitting: app.isAdmitting, loading: app.isLoadingWard && app.ward.isEmpty) { admit() }
+                    AdmitCard(admitting: app.isAdmitting, preparing: app.isPreparingCondition,
+                              loading: app.isLoadingWard && app.ward.isEmpty) { admit() }
                         .zIndex(Double(STACK.visible + 1))
                         .transition(.opacity)
                 }

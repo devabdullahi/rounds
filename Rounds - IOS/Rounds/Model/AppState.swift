@@ -26,6 +26,8 @@ final class AppState {
     private(set) var isLoadingWard = false
     /// A new patient is being generated (takes 10–30 s).
     private(set) var isAdmitting = false
+    /// The focus had no condition ready, so the server is writing its first one (a few minutes).
+    private(set) var isPreparingCondition = false
     /// A patient's case is being fetched to open.
     private(set) var openingBed: String?
     var problem: String?
@@ -45,6 +47,15 @@ final class AppState {
     #if DEBUG
     /// `-screen home-empty`: shows the empty-ward card without skipping anyone for real.
     var debugEmptyWard = false
+
+    #if DEBUG
+    /// `-screen home-preparing`: the admit card while a focus's first condition is written.
+    func debugShowPreparing() {
+        debugEmptyWard = true
+        isAdmitting = true
+        isPreparingCondition = true
+    }
+    #endif
     #endif
 
     /// Beds the student swiped away on the deck. Kept on this device so they don't come back;
@@ -94,18 +105,41 @@ final class AppState {
         }
     }
 
+    /// How often to ask again while the server writes a focus's first condition. Tests shorten it.
+    var preparingPoll: Duration = .seconds(15)
+    /// Generation takes 2–4 minutes; past this, something went wrong on the server.
+    private static let preparingGiveUp: Duration = .seconds(8 * 60)
+
     /// Generates a new patient for the focus (a random pick when several are chosen) and opens it.
+    /// When the focus has no condition ready, waits while the server writes one, asking again.
     func admit(focus: FocusSelection) async {
         guard let cases, !isAdmitting else { return }
         isAdmitting = true
-        defer { isAdmitting = false }
+        defer { isAdmitting = false; isPreparingCondition = false }
         do {
             try await cases.ensureSignedIn()
-            // Topics with no conditions yet would fail, so draw from the ones that have some.
+            // Topics with no conditions would fail, so draw from the ones that have some.
             let available = focus.items.filter { (conditionCount(for: $0) ?? 1) > 0 }
-            let bed = try await cases.admit(focus: available.randomElement() ?? .mix)
-            await refresh()
-            await open(bed: bed)
+            let pick = available.randomElement() ?? .mix
+            let clock = ContinuousClock()
+            let deadline = clock.now + Self.preparingGiveUp
+            while true {
+                switch try await cases.admit(focus: pick) {
+                case .admitted(let bed):
+                    await refresh()
+                    await open(bed: bed)
+                    return
+                case .preparing:
+                    isPreparingCondition = true
+                    guard clock.now < deadline else {
+                        problem = "The first case for this topic is taking longer than usual. Try again in a few minutes."
+                        return
+                    }
+                    try await Task.sleep(for: preparingPoll)
+                }
+            }
+        } catch is CancellationError {
+            return
         } catch {
             problem = error.localizedDescription
         }

@@ -45,6 +45,9 @@ enum DebugLaunch {
         case "home-empty":
             tab = .today
             app.debugEmptyWard = true
+        case "home-preparing":
+            tab = .today
+            app.debugShowPreparing()
         case "admit":
             // Generates a live patient (DeepSeek via local Supabase) and opens its door note.
             tab = .today
