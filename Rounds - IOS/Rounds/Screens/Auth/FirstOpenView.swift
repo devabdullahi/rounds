@@ -226,7 +226,7 @@ struct FirstOpenView: View {
                 .buttonStyle(PrimaryButtonStyle(height: 54, tint: welcomeGreen))
 
             Button(action: onLogIn) {
-                Text("Log in to Rounds").frame(maxWidth: .infinity, minHeight: 54)
+                Text("Log in").frame(maxWidth: .infinity, minHeight: 54)
             }
             .modifier(OutlineCapsule())
 

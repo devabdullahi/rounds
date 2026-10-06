@@ -33,7 +33,17 @@ struct SignUpView: View {
                     }
                     .padding(.top, 8)
 
-                    // Email only: Apple and Google are one tap away on the welcome sheet.
+                    // One tap with Apple or Google skips the form, same as on the welcome sheet.
+                    // Apple only allows "Sign in / Sign up / Continue with Apple" as the title.
+                    VStack(spacing: 12) {
+                        SocialButton(provider: .apple, title: "Sign up with Apple") { router.go(.focus) }
+                        SocialButton(provider: .google, title: "Sign up with Google") { router.go(.focus) }
+                    }
+                    .padding(.top, 28)
+
+                    OrDivider(text: "or with email")
+                        .padding(.top, 20)
+
                     VStack(spacing: 12) {
                         AuthField(label: "Name", text: $name, placeholder: "What should Dr. Okafor call you?", contentType: .name)
                         AuthField(label: "Email", text: $email, placeholder: "you@school.edu",
@@ -45,7 +55,7 @@ struct SignUpView: View {
                             }
                         }
                     }
-                    .padding(.top, 28)
+                    .padding(.top, 20)
                 }
                 .padding(.horizontal, 24)
                 .padding(.bottom, 16)

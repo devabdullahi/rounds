@@ -3,7 +3,7 @@ import SwiftUI
 /* ─────────────────────────────────────────────────────────
  * ANIMATION STORYBOARD · Log in (email)
  *
- * Pushed from the welcome sheet's "Log in to Rounds". Apple and Google live on that
+ * Pushed from the welcome sheet's "Log in". Apple and Google live on that
  * sheet, so this screen is email only.
  *
  *    0ms   ECG mark draws (900ms, ease in-out)
