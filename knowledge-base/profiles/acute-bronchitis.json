@@ -35,32 +35,32 @@
       {
         "stage": "patient_presentation",
         "model": "deepseek/deepseek-chat",
-        "prompt_version": "6",
-        "generated_at": "2026-10-05T04:11:21Z"
+        "prompt_version": "11",
+        "generated_at": "2026-10-06T01:11:40Z"
       },
       {
         "stage": "exam_vitals",
         "model": "deepseek/deepseek-chat",
-        "prompt_version": "6",
-        "generated_at": "2026-10-05T04:11:27Z"
+        "prompt_version": "11",
+        "generated_at": "2026-10-06T01:12:05Z"
       },
       {
         "stage": "diagnostics",
         "model": "deepseek/deepseek-chat",
-        "prompt_version": "6",
-        "generated_at": "2026-10-05T04:11:38Z"
+        "prompt_version": "11",
+        "generated_at": "2026-10-06T01:12:12Z"
       },
       {
         "stage": "differential_course",
         "model": "deepseek/deepseek-chat",
-        "prompt_version": "6",
-        "generated_at": "2026-10-05T04:11:48Z"
+        "prompt_version": "11",
+        "generated_at": "2026-10-06T01:12:30Z"
       },
       {
         "stage": "teaching",
         "model": "deepseek/deepseek-chat",
-        "prompt_version": "6",
-        "generated_at": "2026-10-05T04:11:54Z"
+        "prompt_version": "11",
+        "generated_at": "2026-10-06T01:12:38Z"
       }
     ],
     "validation": {
@@ -68,14 +68,22 @@
       "rule_errors": [],
       "review_issues": [
         "auto-repaired: workup: 'chest x-ray, posteroanterior and lateral' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'procalcitonin' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'rapid influenza test' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'sputum gram stain and culture' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
         "auto-repaired: workup: 'chest x-ray, posteroanterior and lateral' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
-        "auto-repaired: workup: 'chest x-ray, posteroanterior and lateral' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'procalcitonin' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'rapid influenza test' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'sputum gram stain and culture' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "exam: term 'Tonsillar exudate' not found in SNOMED CT",
+        "exam: term 'Accessory muscle use' not found in SNOMED CT",
+        "exam: term 'Dullness to percussion' not found in SNOMED CT",
         "differential community-acquired-pneumonia: no profile yet",
         "differential influenza: no profile yet",
-        "differential common-cold: no profile yet",
-        "differential copd: no profile yet",
         "differential pertussis: no profile yet",
-        "differential tuberculosis: no profile yet"
+        "differential tuberculosis: no profile yet",
+        "differential gastroesophageal-reflux-disease: no profile yet",
+        "differential upper-airway-cough-syndrome: no profile yet"
       ]
     },
     "review": {
@@ -84,41 +92,37 @@
   },
   "patient": {
     "age": {
-      "typical_min": 1,
-      "typical_max": 90,
-      "peak": "all ages; young children and older adults most often seen",
-      "possible_min": 0,
-      "possible_max": 110
+      "typical_min": 18,
+      "typical_max": 70,
+      "peak": "adults, all ages",
+      "possible_min": 1,
+      "possible_max": 100
     },
     "sex": "either",
     "demographics": [
-      "Occurs in all ages; most common in young children and older adults",
-      "More frequent in winter and early spring",
-      "Often follows a recent upper respiratory infection in the household or community"
+      "Common in adults of all ages; one of the most frequent reasons for outpatient visits for cough",
+      "More frequent in winter and early spring, following the seasonal pattern of viral respiratory infections",
+      "Children are affected too, but the diagnosis is made less often because other causes of cough are more common in that age group"
     ],
     "risk_factors": [
       {
-        "text": "Recent viral upper respiratory infection",
+        "text": "Recent viral upper respiratory infection or close contact with someone who has one",
         "strength": "strong"
       },
       {
-        "text": "Tobacco smoke exposure (active or secondhand)",
+        "text": "Cigarette smoking or exposure to secondhand smoke",
         "strength": "strong"
       },
       {
-        "text": "Air pollution, dust, vapors, or fumes exposure",
+        "text": "Exposure to air pollution, dust, fumes or vapors",
         "strength": "moderate"
       },
       {
-        "text": "Chronic lung disease (asthma, COPD)",
+        "text": "Winter season",
         "strength": "moderate"
       },
       {
-        "text": "Immunocompromised state",
-        "strength": "weak"
-      },
-      {
-        "text": "Close contact with someone who has a respiratory infection",
+        "text": "Crowded settings such as daycare, school, military barracks or dormitories",
         "strength": "weak"
       }
     ],
@@ -126,50 +130,67 @@
       "Asthma",
       "COPD",
       "Chronic sinusitis",
-      "Immunocompromising conditions"
+      "Gastroesophageal reflux disease"
     ],
     "family_history": [],
     "social_history": [
-      "Smoking or living with a smoker",
-      "Daycare or school attendance",
-      "Crowded living conditions"
+      "Cigarette smoking",
+      "Secondhand smoke exposure at home or work",
+      "Occupational exposure to dust, fumes or vapors"
     ],
     "exposures": [
       "Tobacco smoke",
       "Air pollution",
-      "Dust, vapors, or fumes",
-      "Recent viral illness in the community"
+      "Dust, vapors or fumes",
+      "Sick contacts with cough or cold symptoms"
     ],
-    "risk_medications": []
+    "risk_medications": [
+      "prednisone",
+      "albuterol"
+    ]
   },
   "presentation": {
     "chief_complaints": [
       {
-        "text": "I have a cough that won't go away",
-        "frequency": "almost_always"
+        "text": "I've had a cough that won't go away",
+        "frequency": "almost_always",
+        "term": "Cough",
+        "snomed_verified": true
       },
       {
-        "text": "I'm coughing up mucus",
-        "frequency": "common"
+        "text": "I'm coughing up yellow-green phlegm",
+        "frequency": "common",
+        "term": "Productive cough",
+        "snomed_verified": true
       },
       {
-        "text": "My chest feels tight and I'm wheezing",
-        "frequency": "sometimes"
+        "text": "My chest feels sore and tight when I cough",
+        "frequency": "common",
+        "term": "Chest pain",
+        "snomed_verified": true
       },
       {
-        "text": "I have a low fever and feel run down",
-        "frequency": "sometimes"
+        "text": "I've been wheezing and short of breath",
+        "frequency": "sometimes",
+        "term": "Wheezing",
+        "snomed_verified": true
+      },
+      {
+        "text": "I feel like I have a bad cold that moved into my chest",
+        "frequency": "common",
+        "term": "Upper respiratory tract infection",
+        "snomed_verified": true
       }
     ],
     "hpi": {
-      "onset": "Gradual, often starting a few days after a cold or sore throat",
-      "duration": "Cough may last 1–3 weeks; sometimes up to 4–6 weeks",
-      "progression": "Starts as a dry cough, then becomes productive with clear, white, yellow, or green sputum; gradually improves over days to weeks",
+      "onset": "Gradual, starting a few days after a cold or sore throat",
+      "duration": "Cough present for about 1–3 weeks at presentation; often lasts 3–8 weeks total",
+      "progression": "Begins as a dry, hacking cough, then becomes productive of clear, white or colored sputum; the cough is most bothersome in the first week and slowly improves, though it may linger for several weeks after other symptoms resolve",
       "location": "Chest, behind the breastbone",
-      "radiation": "None",
-      "quality": "Dry or productive cough; may be hacking or barking",
-      "severity": "Mild to moderate; cough can be disruptive to sleep and daily activities",
-      "timing": "Cough occurs throughout the day, often worse at night",
+      "radiation": "Usually none",
+      "quality": "Scratchy and dry at first, then loose and productive; may be paroxysmal",
+      "severity": "Mild to moderate; cough is annoying and disrupts sleep but does not limit daily activity",
+      "timing": "Present throughout the day, often worse at night and on waking",
       "aggravating": [
         "Deep breathing",
         "Coughing",
@@ -178,55 +199,70 @@
         "Smoke or strong odors"
       ],
       "relieving": [
+        "Sipping warm fluids",
+        "Honey",
         "Rest",
-        "Fluids",
-        "Honey or cough drops",
-        "Humidified air",
-        "Acetaminophen or ibuprofen for fever"
+        "Humidified air"
       ],
       "associated_symptoms": [
         {
           "text": "Sore throat",
-          "frequency": "common"
+          "frequency": "common",
+          "term": "Sore throat",
+          "snomed_verified": true
         },
         {
           "text": "Runny or stuffy nose",
-          "frequency": "common"
+          "frequency": "common",
+          "term": "Nasal congestion",
+          "snomed_verified": true
         },
         {
-          "text": "Low-grade fever (usually <100.4°F)",
-          "frequency": "sometimes"
+          "text": "Low-grade fever",
+          "frequency": "sometimes",
+          "term": "Fever",
+          "snomed_verified": true
         },
         {
-          "text": "Chest tightness or discomfort",
-          "frequency": "sometimes"
+          "text": "Feeling tired and achy",
+          "frequency": "common",
+          "term": "Fatigue",
+          "snomed_verified": true
+        },
+        {
+          "text": "Hoarse voice",
+          "frequency": "sometimes",
+          "term": "Hoarseness",
+          "snomed_verified": true
+        },
+        {
+          "text": "Burning or soreness in the chest with coughing",
+          "frequency": "common",
+          "term": "Chest pain",
+          "snomed_verified": true
         },
         {
           "text": "Wheezing",
-          "frequency": "sometimes"
+          "frequency": "sometimes",
+          "term": "Wheezing",
+          "snomed_verified": true
         },
         {
-          "text": "Shortness of breath with activity",
-          "frequency": "sometimes"
-        },
-        {
-          "text": "Fatigue",
-          "frequency": "common"
-        },
-        {
-          "text": "Body aches",
-          "frequency": "sometimes"
+          "text": "Headache",
+          "frequency": "sometimes",
+          "term": "Headache",
+          "snomed_verified": true
         }
       ],
       "pertinent_negatives": [
-        "High fever (≥100.4°F) or shaking chills",
+        "High fever or shaking chills",
         "Coughing up blood",
-        "Severe shortness of breath at rest",
-        "Chest pain that worsens with breathing",
+        "Shortness of breath at rest",
+        "Chest pain that is sharp and worse with deep breath or lying flat",
         "Night sweats or weight loss",
-        "Recent hospitalization or antibiotic use",
-        "Known exposure to tuberculosis",
-        "History of recurrent pneumonia"
+        "Cough lasting more than 8 weeks",
+        "Recurrent episodes of wheeze and cough since childhood",
+        "Recent hospitalization or antibiotic use"
       ]
     },
     "ros": [
@@ -234,19 +270,28 @@
         "system": "constitutional",
         "positives": [
           {
-            "text": "Feeling tired",
-            "frequency": "common"
+            "text": "Low-grade fever",
+            "frequency": "sometimes",
+            "term": "Fever",
+            "snomed_verified": true
           },
           {
-            "text": "Low-grade fever",
-            "frequency": "sometimes"
+            "text": "Feeling tired",
+            "frequency": "common",
+            "term": "Fatigue",
+            "snomed_verified": true
+          },
+          {
+            "text": "Chills",
+            "frequency": "sometimes",
+            "term": "Chills",
+            "snomed_verified": true
           }
         ],
         "negatives": [
           "High fever",
-          "Chills",
-          "Night sweats",
-          "Weight loss"
+          "Weight loss",
+          "Night sweats"
         ],
         "argues_against": [
           "Pneumonia",
@@ -258,56 +303,83 @@
         "positives": [
           {
             "text": "Sore throat",
-            "frequency": "common"
+            "frequency": "common",
+            "term": "Sore throat",
+            "snomed_verified": true
           },
           {
-            "text": "Runny or stuffy nose",
-            "frequency": "common"
+            "text": "Runny nose",
+            "frequency": "common",
+            "term": "Rhinorrhea",
+            "snomed_verified": true
+          },
+          {
+            "text": "Nasal congestion",
+            "frequency": "common",
+            "term": "Nasal congestion",
+            "snomed_verified": true
+          },
+          {
+            "text": "Hoarse voice",
+            "frequency": "sometimes",
+            "term": "Hoarseness",
+            "snomed_verified": true
           }
         ],
         "negatives": [
-          "Ear pain",
           "Facial pain or pressure",
-          "Loss of smell"
+          "Loss of smell",
+          "Ear pain"
         ],
         "argues_against": [
-          "Sinusitis",
-          "Otitis media"
+          "Bacterial sinusitis"
         ]
       },
       {
         "system": "respiratory",
         "positives": [
           {
-            "text": "Cough, dry or productive",
-            "frequency": "almost_always"
+            "text": "Cough",
+            "frequency": "almost_always",
+            "term": "Cough",
+            "snomed_verified": true
           },
           {
-            "text": "Sputum production",
-            "frequency": "common"
+            "text": "Coughing up sputum",
+            "frequency": "common",
+            "term": "Productive cough",
+            "snomed_verified": true
           },
           {
             "text": "Wheezing",
-            "frequency": "sometimes"
-          },
-          {
-            "text": "Chest tightness",
-            "frequency": "sometimes"
+            "frequency": "sometimes",
+            "term": "Wheezing",
+            "snomed_verified": true
           },
           {
             "text": "Shortness of breath with activity",
-            "frequency": "sometimes"
+            "frequency": "sometimes",
+            "term": "Dyspnea",
+            "snomed_verified": true
+          },
+          {
+            "text": "Chest tightness",
+            "frequency": "common",
+            "term": "Chest tightness",
+            "snomed_verified": true
           }
         ],
         "negatives": [
           "Hemoptysis",
           "Pleuritic chest pain",
-          "Severe dyspnea at rest"
+          "Dyspnea at rest",
+          "Cough lasting more than 8 weeks"
         ],
         "argues_against": [
           "Pneumonia",
           "Pulmonary embolism",
-          "Pneumothorax"
+          "Lung cancer",
+          "Tuberculosis"
         ]
       },
       {
@@ -315,22 +387,22 @@
         "positives": [],
         "negatives": [
           "Chest pain with exertion",
-          "Palpitations",
-          "Leg swelling"
+          "Orthopnea",
+          "Leg swelling",
+          "Palpitations"
         ],
         "argues_against": [
           "Heart failure",
-          "Myocardial ischemia"
+          "Acute coronary syndrome"
         ]
       },
       {
         "system": "gastrointestinal",
         "positives": [],
         "negatives": [
-          "Nausea",
-          "Vomiting",
-          "Diarrhea",
-          "Abdominal pain"
+          "Heartburn",
+          "Regurgitation",
+          "Vomiting"
         ],
         "argues_against": [
           "Gastroesophageal reflux disease"
@@ -338,221 +410,250 @@
       },
       {
         "system": "musculoskeletal",
-        "positives": [],
+        "positives": [
+          {
+            "text": "Muscle aches",
+            "frequency": "sometimes",
+            "term": "Myalgia",
+            "snomed_verified": true
+          }
+        ],
         "negatives": [
-          "Muscle aches",
-          "Joint pain"
+          "Chest wall tenderness",
+          "Focal back pain"
         ],
         "argues_against": [
-          "Influenza"
+          "Costochondritis"
+        ]
+      },
+      {
+        "system": "allergic_immunologic",
+        "positives": [],
+        "negatives": [
+          "Seasonal sneezing and itchy eyes",
+          "Known allergies"
+        ],
+        "argues_against": [
+          "Allergic rhinitis"
         ]
       }
     ],
     "atypical": [
       {
         "population": "children",
-        "how_it_differs": "Young children may not cough up sputum and instead swallow it; they may have more prominent nasal congestion, vomiting after coughing, and irritability.",
+        "how_it_differs": "Young children cannot describe sputum or chest tightness; they present with a lingering cough after a cold, sometimes with vomiting after coughing spells. Wheezing is more prominent, and the cough may be mistaken for asthma or a foreign body.",
         "missing_classic_features": [
-          "Productive cough with sputum",
+          "Productive cough described as sputum",
           "Chest tightness"
         ]
       },
       {
         "population": "older_adults",
-        "how_it_differs": "May present with less fever and more confusion or general weakness; cough may be less forceful and sputum production minimal.",
+        "how_it_differs": "Fever may be blunted or absent, and the cough can be less forceful. Symptoms overlap more with pneumonia, heart failure and COPD, so the threshold for chest imaging is lower.",
         "missing_classic_features": [
           "Fever",
-          "Prominent cough"
+          "Prominent sputum production"
         ]
       },
       {
         "population": "immunocompromised",
-        "how_it_differs": "Symptoms may be more severe and prolonged; higher risk of progression to pneumonia and atypical pathogens.",
+        "how_it_differs": "The same symptoms can progress to pneumonia or be caused by unusual organisms; fever and systemic symptoms may be more prominent and the course more prolonged.",
         "missing_classic_features": [
-          "Typical self-limited course"
+          "Self-limited course"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Presentation is similar, but cough and shortness of breath are more alarming because of the risk to the fetus; treatment choices are limited and pertussis should be considered.",
+        "missing_classic_features": [
+          "Mild, self-limited course"
         ]
       }
     ]
   },
   "exam": {
     "general": {
-      "mild": "Well-appearing, alert, speaking in full sentences, comfortable at rest",
-      "moderate": "Mildly ill-appearing, occasional cough interrupting speech, no respiratory distress",
-      "severe": "Ill-appearing, tachypneic, using accessory muscles, speaking in short phrases",
-      "critical": "Toxic-appearing, in respiratory distress, diaphoretic, unable to speak in full sentences"
+      "mild": "Comfortable, alert, speaking in full sentences; coughs intermittently during the visit",
+      "moderate": "Mildly ill-appearing, coughs frequently and has to pause mid-sentence; no respiratory distress at rest",
+      "severe": "Ill-appearing, flushed, tachypneic with visible effort on coughing; still able to speak in phrases",
+      "critical": "Toxic-appearing, diaphoretic, in respiratory distress; not expected in uncomplicated acute bronchitis and should prompt reassessment for pneumonia or another cause"
     },
     "findings": [
       {
-        "id": "posttussive-chest-wall-tenderness",
+        "id": "cough-on-exam",
         "region": "general",
-        "maneuver": "Palpate the chest wall and ask the patient to cough",
-        "finding": "Reproducible chest wall tenderness after coughing",
-        "frequency": "sometimes",
-        "significance": "supports",
-        "importance": "optional"
+        "maneuver": "Observe the patient during the interview and ask them to take a deep breath",
+        "finding": "Frequent cough, often productive of clear, white or colored sputum",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Cough",
+        "snomed_verified": true
       },
       {
-        "id": "pharyngeal-erythema",
+        "id": "throat-redness",
         "region": "heent",
         "maneuver": "Inspect the oropharynx with a light and tongue blade",
-        "finding": "Mild pharyngeal erythema without exudate",
+        "finding": "Redness of the posterior pharynx without exudate",
         "frequency": "common",
         "significance": "supports",
-        "importance": "important"
+        "importance": "optional",
+        "term": "Redness of throat",
+        "snomed_verified": true
       },
       {
-        "id": "nasal-congestion",
+        "id": "nasal-congestion-exam",
         "region": "heent",
         "maneuver": "Inspect the nasal passages",
-        "finding": "Clear or mucoid nasal discharge with mucosal swelling",
+        "finding": "Swollen, congested nasal mucosa with clear or mucoid discharge",
         "frequency": "common",
         "significance": "supports",
-        "importance": "important"
+        "importance": "optional",
+        "term": "Nasal congestion",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-tonsillar-exudate",
+        "region": "heent",
+        "maneuver": "Inspect the tonsils and posterior pharynx",
+        "finding": "No tonsillar exudate or swelling",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Tonsillar exudate",
+        "snomed_verified": false
       },
       {
         "id": "no-cervical-lymphadenopathy",
-        "region": "neck",
-        "maneuver": "Palpate the cervical lymph node chains",
-        "finding": "No tender or enlarged cervical lymph nodes",
+        "region": "lymph",
+        "maneuver": "Palpate the anterior and posterior cervical chains",
+        "finding": "No tender cervical lymphadenopathy",
         "frequency": "common",
         "significance": "neutral",
-        "importance": "optional"
+        "importance": "optional",
+        "term": "Cervical lymphadenopathy",
+        "snomed_verified": true
       },
       {
         "id": "no-jvd",
         "region": "neck",
-        "maneuver": "Assess the jugular venous pulse with the patient at 45 degrees",
-        "finding": "Jugular venous pressure not elevated",
+        "maneuver": "Inspect the neck with the patient at 45 degrees for jugular venous distension",
+        "finding": "No jugular venous distension",
         "frequency": "almost_always",
         "significance": "neutral",
-        "importance": "optional"
-      },
-      {
-        "id": "tachycardia",
-        "region": "cardiac",
-        "maneuver": "Auscultate the heart and count the rate",
-        "finding": "Regular tachycardia without murmur or gallop",
-        "frequency": "sometimes",
-        "min_severity": "moderate",
-        "significance": "supports",
-        "importance": "optional"
-      },
-      {
-        "id": "no-murmur-gallop",
-        "region": "cardiac",
-        "maneuver": "Auscultate the cardiac apex and base",
-        "finding": "No murmur, rub, or S3 gallop",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "optional"
-      },
-      {
-        "id": "diffuse-ronchi",
-        "region": "lung",
-        "maneuver": "Auscultate all lung fields during quiet and deep breathing",
-        "finding": "Diffuse coarse crackles or rhonchi that clear with coughing",
-        "frequency": "common",
-        "significance": "supports",
-        "importance": "essential"
-      },
-      {
-        "id": "wheezing",
-        "region": "lung",
-        "maneuver": "Auscultate the lung fields during forced expiration",
-        "finding": "Diffuse expiratory wheezing",
-        "frequency": "sometimes",
-        "significance": "supports",
-        "importance": "important"
-      },
-      {
-        "id": "prolonged-expiration",
-        "region": "lung",
-        "maneuver": "Auscultate while the patient exhales fully",
-        "finding": "Prolonged expiratory phase",
-        "frequency": "sometimes",
-        "significance": "supports",
-        "importance": "optional"
-      },
-      {
-        "id": "no-crackles",
-        "region": "lung",
-        "maneuver": "Auscultate the lung bases during deep inspiration",
-        "finding": "No focal or fine inspiratory crackles",
-        "frequency": "common",
-        "significance": "argues_against",
-        "importance": "essential"
-      },
-      {
-        "id": "no-egophony",
-        "region": "lung",
-        "maneuver": "Ask the patient to say 'ee' while auscultating the posterior lung fields",
-        "finding": "No egophony or bronchial breath sounds",
-        "frequency": "almost_always",
-        "significance": "argues_against",
-        "importance": "important"
-      },
-      {
-        "id": "no-dullness",
-        "region": "lung",
-        "maneuver": "Percuss the posterior lung fields",
-        "finding": "Resonant percussion without focal dullness",
-        "frequency": "almost_always",
-        "significance": "argues_against",
-        "importance": "important"
-      },
-      {
-        "id": "no-tactile-fremitus",
-        "region": "lung",
-        "maneuver": "Palpate tactile fremitus over the posterior chest",
-        "finding": "Symmetric, normal tactile fremitus",
-        "frequency": "almost_always",
-        "significance": "argues_against",
-        "importance": "optional"
+        "importance": "important",
+        "term": "Jugular venous distension",
+        "snomed_verified": true
       },
       {
         "id": "no-accessory-muscle-use",
         "region": "lung",
-        "maneuver": "Observe the patient's breathing at rest",
-        "finding": "No use of accessory muscles or intercostal retractions",
-        "frequency": "common",
-        "significance": "argues_against",
-        "importance": "important"
-      },
-      {
-        "id": "no-costovertebral-tenderness",
-        "region": "abdomen",
-        "maneuver": "Percuss the costovertebral angles",
-        "finding": "No costovertebral angle tenderness",
+        "maneuver": "Observe the patient's breathing at rest for use of the sternocleidomastoid and intercostal muscles",
+        "finding": "No use of accessory muscles of respiration",
         "frequency": "almost_always",
         "significance": "neutral",
-        "importance": "optional"
+        "importance": "important",
+        "term": "Accessory muscle use",
+        "snomed_verified": false
+      },
+      {
+        "id": "wheezing",
+        "region": "lung",
+        "maneuver": "Auscultate all lung fields during quiet and deep breathing",
+        "finding": "Wheezing, often diffuse and expiratory",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Wheezing",
+        "snomed_verified": true
+      },
+      {
+        "id": "rhonchi",
+        "region": "lung",
+        "maneuver": "Auscultate the lung fields and ask the patient to cough",
+        "finding": "Rhonchi that clear or shift with coughing",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Rhonchi",
+        "snomed_verified": true
+      },
+      {
+        "id": "crackles",
+        "region": "lung",
+        "maneuver": "Auscultate the lung bases",
+        "finding": "Crackles (rales) at the lung bases",
+        "frequency": "rare",
+        "significance": "argues_against",
+        "importance": "essential",
+        "term": "Rales",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-dullness-to-percussion",
+        "region": "lung",
+        "maneuver": "Percuss the posterior lung fields",
+        "finding": "No focal dullness to percussion",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Dullness to percussion",
+        "snomed_verified": false
+      },
+      {
+        "id": "no-egophony",
+        "region": "lung",
+        "maneuver": "Auscultate while the patient says 'E'",
+        "finding": "No egophony",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Egophony",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-tactile-fremitus-increase",
+        "region": "lung",
+        "maneuver": "Palpate the chest while the patient speaks",
+        "finding": "No increase in tactile fremitus",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Tactile fremitus",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-chest-wall-tenderness",
+        "region": "musculoskeletal",
+        "maneuver": "Palpate the anterior chest wall and costochondral junctions",
+        "finding": "No reproducible chest wall tenderness",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Chest wall tenderness",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-hepatomegaly",
+        "region": "abdomen",
+        "maneuver": "Palpate the right upper quadrant and percuss the liver span",
+        "finding": "No hepatomegaly or right upper quadrant tenderness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Hepatomegaly",
+        "snomed_verified": true
       },
       {
         "id": "no-peripheral-edema",
         "region": "extremities",
-        "maneuver": "Press the dorsum of each foot and inspect the ankles",
+        "maneuver": "Press over the dorsum of each foot and the pretibial area",
         "finding": "No pitting edema",
         "frequency": "almost_always",
         "significance": "neutral",
-        "importance": "optional"
-      },
-      {
-        "id": "no-cyanosis",
-        "region": "skin",
-        "maneuver": "Inspect the lips, nail beds, and fingertips",
-        "finding": "No central or peripheral cyanosis",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "optional"
-      },
-      {
-        "id": "alert-mental-status",
-        "region": "mental_status",
-        "maneuver": "Assess orientation and level of consciousness",
-        "finding": "Alert and oriented, no confusion",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "important"
+        "importance": "important",
+        "term": "Edema",
+        "snomed_verified": true
       }
     ]
   },
@@ -564,39 +665,35 @@
       },
       "moderate": {
         "min": 99.0,
-        "max": 100.4
+        "max": 100.8
       },
       "severe": {
         "min": 100.0,
-        "max": 101.5
+        "max": 101.8
       }
     },
     "hr": {
       "mild": {
         "min": 60,
-        "max": 100
+        "max": 95
       },
       "moderate": {
         "min": 80,
-        "max": 110
+        "max": 105
       },
       "severe": {
-        "min": 100,
-        "max": 125
+        "min": 95,
+        "max": 120
       }
     },
     "rr": {
-      "mild": {
-        "min": 12,
-        "max": 20
-      },
       "moderate": {
         "min": 16,
-        "max": 24
+        "max": 22
       },
       "severe": {
-        "min": 22,
-        "max": 30
+        "min": 20,
+        "max": 26
       }
     },
     "spo2": {
@@ -606,15 +703,47 @@
       },
       "moderate": {
         "min": 94,
-        "max": 98
+        "max": 99
       },
       "severe": {
-        "min": 90,
-        "max": 94
+        "min": 92,
+        "max": 97
       }
     }
   },
   "labs": [
+    {
+      "test_id": "procalcitonin",
+      "ranges": {
+        "mild": {
+          "min": 0.0,
+          "max": 0.1
+        },
+        "moderate": {
+          "min": 0.05,
+          "max": 0.25
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Low values support a viral cause and argue against bacterial pneumonia; a value above 0.25–0.5 ng/mL should prompt reconsideration of pneumonia. Not required for diagnosis."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "mild": {
+          "min": 0.5,
+          "max": 3.0
+        },
+        "moderate": {
+          "min": 2.0,
+          "max": 8.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Mildly elevated or normal; marked elevation suggests pneumonia rather than simple acute bronchitis."
+    },
     {
       "test_id": "wbc",
       "ranges": {
@@ -623,125 +752,59 @@
           "max": 11.0
         },
         "moderate": {
-          "min": 6.0,
-          "max": 12.5
-        },
-        "severe": {
-          "min": 8.0,
-          "max": 15.0
+          "min": 10.0,
+          "max": 13.0
         }
       },
       "frequency": "sometimes",
       "importance": "optional",
-      "caveat": "The white count is usually normal in uncomplicated viral bronchitis; a marked rise should raise concern for pneumonia or another bacterial process."
+      "caveat": "Usually normal; mild leukocytosis can occur with viral illness and does not by itself indicate bacterial infection."
     },
     {
       "test_id": "lymph_pct",
       "ranges": {
-        "mild": {
-          "min": 30,
-          "max": 45
-        },
         "moderate": {
-          "min": 32,
-          "max": 50
+          "min": 40,
+          "max": 55
         }
       },
       "frequency": "sometimes",
       "importance": "optional",
-      "caveat": "A relative lymphocytosis is common with viral causes and is not specific."
-    },
-    {
-      "test_id": "crp",
-      "ranges": {
-        "mild": {
-          "min": 1.0,
-          "max": 3.0
-        },
-        "moderate": {
-          "min": 2.0,
-          "max": 6.0
-        },
-        "severe": {
-          "min": 4.0,
-          "max": 10.0
-        }
-      },
-      "frequency": "sometimes",
-      "importance": "optional",
-      "caveat": "Mild elevations are typical; values above about 10 mg/dL are more consistent with pneumonia."
-    },
-    {
-      "test_id": "procalcitonin",
-      "ranges": {
-        "mild": {
-          "min": 0.1,
-          "max": 0.25
-        },
-        "moderate": {
-          "min": 0.1,
-          "max": 0.25
-        }
-      },
-      "frequency": "sometimes",
-      "importance": "optional",
-      "caveat": "Low values support a viral cause and argue against bacterial pneumonia; useful mainly when pneumonia is being considered."
+      "caveat": "Relative lymphocytosis favors a viral cause."
     }
   ],
-  "ecg": {
-    "findings": [
-      {
-        "feature": "rhythm",
-        "finding": "Sinus rhythm",
-        "frequency": "almost_always"
-      },
-      {
-        "feature": "rate",
-        "finding": "Sinus tachycardia",
-        "frequency": "sometimes",
-        "min_severity": "moderate"
-      },
-      {
-        "feature": "other",
-        "finding": "No ischemic ST-T changes; ECG is typically normal and is not needed for uncomplicated acute bronchitis",
-        "frequency": "almost_always"
-      }
-    ]
-  },
   "imaging": [
     {
       "study": "Chest x-ray, posteroanterior and lateral",
       "modality": "xray",
+      "preferred_when": "When pneumonia is suspected (abnormal vital signs, focal lung findings, hypoxemia, or an older or immunocompromised patient)",
       "findings": [
         {
-          "text": "Normal lungs without focal consolidation, effusion, or infiltrate",
+          "text": "Normal lungs without consolidation, infiltrate or pleural effusion",
           "frequency": "almost_always"
         },
         {
-          "text": "Possible mild peribronchial thickening or prominence of bronchovascular markings",
+          "text": "Hyperinflation with flattened diaphragms in a patient with underlying COPD",
           "frequency": "sometimes"
         },
         {
-          "text": "Hyperinflation suggesting underlying obstructive lung disease",
-          "frequency": "rare"
+          "text": "Peribronchial thickening or increased bronchovascular markings (nonspecific)",
+          "frequency": "sometimes"
         }
       ]
     },
     {
       "study": "CT chest without IV contrast",
       "modality": "ct",
+      "preferred_when": "Not routine; only when the chest x-ray is nondiagnostic or another process such as a mass, bronchiectasis or interstitial disease is suspected",
       "findings": [
         {
-          "text": "Normal lung parenchyma without consolidation",
-          "frequency": "almost_always"
+          "text": "Bronchial wall thickening without consolidation",
+          "frequency": "common"
         },
         {
-          "text": "Bronchial wall thickening",
-          "frequency": "sometimes"
-        },
-        {
-          "text": "Not indicated for uncomplicated acute bronchitis",
-          "frequency": "almost_always"
+          "text": "No focal consolidation or mass",
+          "frequency": "common"
         }
       ]
     }
@@ -750,51 +813,70 @@
     "initial": [
       {
         "test": "Chest x-ray, posteroanterior and lateral",
-        "why": "Distinguishes acute bronchitis from pneumonia when the history or exam raises concern",
-        "only_if": "pneumonia is suspected (fever, tachypnea, focal crackles, hypoxemia, or abnormal vitals)"
-      },
-      {
-        "test": "Rapid influenza test",
-        "why": "Identifies influenza when antiviral treatment would be considered",
-        "only_if": "influenza is circulating and the patient presents within the first few days of illness"
-      },
-      {
-        "test": "cbc",
-        "why": "Not routinely needed; helps assess for a bacterial process when pneumonia is being considered",
-        "only_if": "pneumonia or another bacterial infection is suspected"
+        "why": "Distinguishes acute bronchitis from pneumonia; the main reason to image in a cough illness",
+        "only_if": "pneumonia is suspected (fever, tachypnea, hypoxemia, focal crackles or dullness, or an older or immunocompromised patient)"
       }
     ],
     "confirmatory": [],
     "supporting": [
       {
-        "test": "crp",
-        "why": "Low values support a viral cause and make pneumonia less likely",
-        "only_if": "the diagnosis is uncertain or pneumonia is being considered"
-      },
-      {
         "test": "procalcitonin",
-        "why": "Low values support a viral cause and argue against bacterial pneumonia",
-        "only_if": "pneumonia is being considered and the decision to use antibiotics is unclear"
+        "why": "Low value supports a viral cause and can help avoid antibiotics",
+        "only_if": "the diagnosis is uncertain or antibiotic use is being considered"
       },
       {
-        "test": "Sputum culture",
-        "why": "Identifies a bacterial pathogen when a bacterial cause is suspected",
-        "only_if": "the patient is immunocompromised, has failed initial management, or has a suspected bacterial process"
+        "test": "Rapid influenza test",
+        "why": "Identifies influenza when antiviral treatment would change management",
+        "only_if": "influenza is circulating and the patient presents within the treatment window"
       },
       {
-        "test": "Pulse oximetry",
-        "why": "Detects hypoxemia that would suggest pneumonia or another serious process",
-        "only_if": "respiratory distress, hypoxemia, or severe illness is present"
+        "test": "Nasopharyngeal swab for respiratory viruses (multiplex PCR)",
+        "why": "Identifies a specific viral cause when the result would change management",
+        "only_if": "severe illness, immunocompromised patient, or an outbreak setting"
+      },
+      {
+        "test": "Pertussis PCR or culture (nasopharyngeal swab)",
+        "why": "Confirms whooping cough when paroxysmal cough, post-tussive vomiting or a prolonged cough suggests it",
+        "only_if": "pertussis is suspected"
+      },
+      {
+        "test": "Sputum Gram stain and culture",
+        "why": "Looks for a bacterial cause when bacterial infection is a real consideration",
+        "only_if": "purulent sputum with a toxic appearance or a suspected bacterial pathogen"
       }
     ],
     "not_indicated": [
+      {
+        "test": "cbc",
+        "why": "Rarely changes management in an uncomplicated cough illness"
+      },
+      {
+        "test": "bmp",
+        "why": "Not needed unless the patient is dehydrated or severely ill"
+      },
+      {
+        "test": "crp",
+        "why": "Not required for diagnosis; does not reliably separate viral bronchitis from pneumonia"
+      },
+      {
+        "test": "procalcitonin",
+        "why": "Not routine; reserve for uncertain cases or antibiotic decisions"
+      },
       {
         "test": "Chest x-ray, posteroanterior and lateral",
         "why": "Not needed when the presentation is typical and pneumonia is not suspected"
       },
       {
         "test": "CT chest without IV contrast",
-        "why": "No role in uncomplicated acute bronchitis"
+        "why": "Not indicated for uncomplicated acute bronchitis"
+      },
+      {
+        "test": "Sputum Gram stain and culture",
+        "why": "Not routine; most cases are viral"
+      },
+      {
+        "test": "Rapid influenza test",
+        "why": "Not routine outside influenza season or when antivirals would not be used"
       },
       {
         "test": "d_dimer",
@@ -803,25 +885,13 @@
       {
         "test": "bnp",
         "why": "No role unless heart failure is being considered"
-      },
-      {
-        "test": "hs_tnt",
-        "why": "No role unless cardiac ischemia is being considered"
-      },
-      {
-        "test": "tsh",
-        "why": "No role in the acute evaluation of a cough illness"
-      },
-      {
-        "test": "a1c",
-        "why": "Not part of the acute evaluation"
       }
     ],
     "decision_points": [
-      "Do not order antibiotics for uncomplicated acute bronchitis; it is usually viral",
-      "Order a chest x-ray when pneumonia is suspected (fever, tachypnea, focal crackles, hypoxemia, or abnormal vitals)",
-      "Consider influenza testing and antivirals during influenza season or in high-risk patients",
-      "Consider asthma or COPD when wheezing or a prolonged cough is prominent"
+      "The diagnosis is clinical; imaging is only needed when pneumonia or another process is suspected",
+      "A normal chest x-ray in a patient with a compatible history supports acute bronchitis",
+      "Antibiotics are not indicated for viral acute bronchitis; reserve them for a confirmed or strongly suspected bacterial cause such as pertussis",
+      "Consider pertussis when the cough is paroxysmal, lasts more than 2 weeks, or is accompanied by post-tussive vomiting"
     ],
     "criteria": [],
     "scores": []
@@ -830,77 +900,53 @@
     {
       "name": "Community-acquired pneumonia",
       "slug": "community-acquired-pneumonia",
-      "why_considered": "Cough, fever, and chest symptoms overlap; the key task is to avoid missing a lung infection that needs antibiotics.",
+      "why_considered": "The single most important look-alike: cough, fever, sputum and chest discomfort overlap completely with acute bronchitis.",
       "must_not_miss": true,
-      "trigger": "Fever of 100.4°F or higher, tachypnea, focal crackles, hypoxemia, or abnormal vitals",
+      "trigger": "Fever above 100.4°F, tachypnea, hypoxemia, focal crackles, dullness to percussion or egophony",
       "discriminators": {
         "history": [
           "Higher fever with shaking chills",
-          "Pleuritic chest pain",
-          "Shortness of breath at rest",
-          "Feeling more severely ill"
+          "Shortness of breath at rest or with minimal activity",
+          "Pleuritic chest pain worse with deep breath",
+          "Feeling systemically very unwell rather than just a bad cold"
         ],
         "exam": [
-          "Focal crackles or bronchial breath sounds",
+          "Focal crackles over one area",
           "Dullness to percussion",
-          "Increased tactile fremitus",
-          "Tachypnea or hypoxemia"
+          "Increased tactile fremitus and egophony",
+          "Tachypnea and use of accessory muscles"
         ],
         "labs": [
-          "Leukocytosis with left shift",
-          "Elevated CRP or procalcitonin",
-          "Hypoxemia on pulse oximetry"
+          "Leukocytosis with neutrophilia",
+          "Elevated procalcitonin (above 0.25–0.5 ng/mL)",
+          "Hypoxemia on pulse oximetry or arterial blood gas"
         ],
         "imaging": [
-          "Focal consolidation or infiltrate on chest x-ray",
+          "Lobar or segmental consolidation on chest x-ray",
           "Air bronchograms or pleural effusion"
-        ]
-      }
-    },
-    {
-      "name": "Asthma exacerbation",
-      "slug": "asthma",
-      "why_considered": "Wheezing, chest tightness, and cough are prominent in both; asthma may be triggered by the same viral illness.",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Recurrent episodes of wheeze and cough",
-          "Known asthma or prior inhaler use",
-          "Symptoms triggered by allergens, exercise, or cold air",
-          "Nighttime awakening with cough or wheeze"
-        ],
-        "exam": [
-          "Diffuse expiratory wheezing",
-          "Prolonged expiratory phase",
-          "Improvement after bronchodilator"
-        ],
-        "labs": [
-          "Eosinophilia may be present",
-          "Allergy testing or IgE elevation if atopic"
-        ],
-        "imaging": [
-          "Chest x-ray usually normal or hyperinflated"
         ]
       }
     },
     {
       "name": "Influenza",
       "slug": "influenza",
-      "why_considered": "Cough, fever, and body aches overlap; influenza can cause bronchitis and is treatable with antivirals.",
+      "why_considered": "A leading viral cause of acute bronchitis; presents with cough plus systemic symptoms, especially in winter.",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Abrupt onset of high fever, severe myalgias, and headache",
-          "Influenza circulating in the community",
-          "Presentation within the first few days of illness"
+          "Abrupt onset over hours rather than days",
+          "High fever, severe myalgias, headache and prostration",
+          "Cough may be dry and non-productive early",
+          "Known community outbreak or sick contacts"
         ],
         "exam": [
-          "High fever",
-          "Diffuse muscle tenderness",
-          "Cough may be dry initially"
+          "High fever and toxic appearance",
+          "Diffuse pharyngeal redness without exudate",
+          "Lung exam often clear or with minimal findings"
         ],
         "labs": [
-          "Positive rapid influenza test or PCR"
+          "Positive rapid influenza antigen or molecular test",
+          "Leukopenia or lymphopenia"
         ],
         "imaging": [
           "Chest x-ray normal unless complicated by pneumonia"
@@ -908,74 +954,79 @@
       }
     },
     {
-      "name": "Common cold",
-      "slug": "common-cold",
-      "why_considered": "Both are viral upper respiratory illnesses with cough, but a cold is milder and more focused on the nose and throat.",
+      "name": "Asthma exacerbation",
+      "slug": "asthma",
+      "why_considered": "Cough, wheeze and chest tightness are shared, and viral infections commonly trigger asthma attacks.",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Prominent nasal congestion and sneezing",
-          "Sore throat early",
-          "Cough is mild and not the main complaint",
-          "Low-grade or no fever"
+          "Recurrent episodes of wheeze and cough since childhood",
+          "Known asthma diagnosis or prior inhaler use",
+          "Symptoms triggered by allergens, exercise or cold air",
+          "Nocturnal cough and wheeze"
         ],
         "exam": [
-          "Nasal mucosal swelling and clear discharge",
-          "Pharyngeal erythema without exudate",
-          "Lungs clear to auscultation"
+          "Diffuse expiratory wheezing",
+          "Prolonged expiratory phase",
+          "Signs of atopy such as allergic rhinitis"
         ],
         "labs": [
-          "Not routinely needed"
+          "Peripheral eosinophilia",
+          "Elevated total IgE"
         ],
         "imaging": [
-          "Not indicated"
+          "Chest x-ray normal or hyperinflated"
         ]
       }
     },
     {
-      "name": "Chronic obstructive pulmonary disease exacerbation",
+      "name": "COPD exacerbation",
       "slug": "copd",
-      "why_considered": "Productive cough, wheezing, and dyspnea can occur in both, especially in smokers.",
+      "why_considered": "Chronic productive cough with acute worsening, common in smokers and older adults.",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Long-standing daily cough and sputum production",
-          "Progressive dyspnea over years",
+          "Long-standing daily cough and sputum for years",
+          "Progressive exertional dyspnea",
           "Heavy smoking history",
           "Prior COPD diagnosis or inhaler use"
         ],
         "exam": [
           "Barrel chest, prolonged expiration",
-          "Diffuse wheezing and decreased breath sounds",
-          "Use of accessory muscles"
+          "Diffuse wheeze and distant breath sounds",
+          "Use of accessory muscles at baseline"
         ],
         "labs": [
-          "Elevated CO2 on blood gas if severe",
-          "Polycythemia may be present"
+          "Elevated CO2 on blood gas in advanced disease",
+          "Polycythemia in chronic hypoxemia"
         ],
         "imaging": [
-          "Hyperinflation and flattened diaphragms on chest x-ray"
+          "Hyperinflation with flattened diaphragms",
+          "Increased anteroposterior chest diameter"
         ]
       }
     },
     {
-      "name": "Pertussis",
+      "name": "Pertussis (whooping cough)",
       "slug": "pertussis",
-      "why_considered": "Prolonged cough illness that can be mistaken for bronchitis, especially when cough lasts weeks.",
-      "must_not_miss": false,
+      "why_considered": "Prolonged cough illness that can be mistaken for viral bronchitis, especially when the cough lingers for weeks.",
+      "must_not_miss": true,
+      "trigger": "Paroxysmal cough lasting more than 2 weeks, post-tussive vomiting or inspiratory whoop",
       "discriminators": {
         "history": [
-          "Paroxysmal coughing fits followed by a whoop or post-tussive vomiting",
+          "Cough comes in violent paroxysms",
+          "Post-tussive vomiting or whoop",
           "Cough lasting more than 2 weeks",
-          "Close contact with someone with similar cough",
-          "Incomplete vaccination"
+          "Close contact with a person who has a prolonged cough",
+          "Incomplete or unknown vaccination"
         ],
         "exam": [
-          "Cough paroxysms during exam",
-          "Conjunctival hemorrhage or petechiae from coughing"
+          "Coughing spells during the visit",
+          "Conjunctival hemorrhage or facial petechiae from coughing",
+          "Lung exam often normal between spells"
         ],
         "labs": [
-          "Lymphocytosis",
+          "Lymphocytosis with markedly elevated lymphocyte count",
           "Positive pertussis PCR or culture from nasopharyngeal swab"
         ],
         "imaging": [
@@ -986,62 +1037,118 @@
     {
       "name": "Tuberculosis",
       "slug": "tuberculosis",
-      "why_considered": "Chronic cough with sputum can mimic bronchitis when symptoms persist beyond the usual course.",
+      "why_considered": "Chronic cough with sputum can mimic a prolonged bronchitis, particularly in higher-risk patients.",
       "must_not_miss": true,
-      "trigger": "Cough lasting more than 3 weeks with night sweats, weight loss, hemoptysis, or known exposure",
+      "trigger": "Cough lasting more than 3 weeks with night sweats, weight loss, hemoptysis or a compatible exposure history",
       "discriminators": {
         "history": [
-          "Cough lasting weeks to months",
-          "Night sweats, fever, weight loss",
+          "Cough for weeks to months",
+          "Night sweats, fever and weight loss",
           "Hemoptysis",
-          "Born in or travel to a high-prevalence country",
-          "Known exposure to tuberculosis"
+          "Born in or travel to a high-prevalence country, incarceration, homelessness or HIV infection"
         ],
         "exam": [
-          "Cachexia",
-          "Cervical lymphadenopathy",
-          "Focal crackles or cavitary breath sounds"
+          "Cachexia and general wasting",
+          "Upper-lobe crackles or amphoric breath sounds",
+          "Lymphadenopathy"
         ],
         "labs": [
           "Positive interferon-gamma release assay or tuberculin skin test",
-          "Acid-fast bacilli on sputum smear or positive culture"
+          "Acid-fast bacilli on sputum smear",
+          "Positive nucleic acid amplification test for Mycobacterium tuberculosis"
         ],
         "imaging": [
-          "Upper lobe infiltrates, cavitation, or miliary pattern on chest x-ray"
+          "Upper-lobe infiltrates, cavitation or hilar adenopathy on chest x-ray"
+        ]
+      }
+    },
+    {
+      "name": "Gastroesophageal reflux disease",
+      "slug": "gastroesophageal-reflux-disease",
+      "why_considered": "Chronic cough can be caused by reflux, and patients may report chest burning that is attributed to bronchitis.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Heartburn, regurgitation or water brash",
+          "Cough worse after meals or when lying down",
+          "No preceding viral illness",
+          "Symptoms improve with acid suppression"
+        ],
+        "exam": [
+          "Often normal chest exam",
+          "No fever or systemic symptoms"
+        ],
+        "labs": [
+          "No specific laboratory abnormality"
+        ],
+        "imaging": [
+          "Chest x-ray normal",
+          "Ambulatory pH monitoring shows reflux if performed"
+        ]
+      }
+    },
+    {
+      "name": "Postnasal drip syndrome (upper airway cough syndrome)",
+      "slug": "upper-airway-cough-syndrome",
+      "why_considered": "A common cause of persistent cough that can follow or accompany a cold.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Constant need to clear the throat",
+          "Nasal congestion and discharge",
+          "Cough worse at night or on waking",
+          "No fever or chest pain"
+        ],
+        "exam": [
+          "Cobblestone appearance of the posterior pharynx",
+          "Mucoid or purulent nasal discharge",
+          "Normal lung exam"
+        ],
+        "labs": [
+          "No specific laboratory abnormality"
+        ],
+        "imaging": [
+          "Chest x-ray normal",
+          "Sinus imaging shows mucosal thickening if sinusitis is present"
         ]
       }
     }
   ],
   "course": {
     "severity": {
-      "mild": "Cough without fever, normal vital signs, no dyspnea, able to perform daily activities; lungs may have scattered rhonchi that clear with cough.",
-      "moderate": "Low-grade fever, mild tachypnea, cough interfering with sleep, wheezing or chest tightness; no hypoxemia at rest.",
-      "severe": "Fever, tachypnea, use of accessory muscles, hypoxemia (SpO2 90–94%), and significant functional impairment; consider pneumonia or another diagnosis."
+      "mild": "Cough with clear or white sputum, no fever or low-grade fever, normal vital signs, no dyspnea at rest, able to carry out daily activities",
+      "moderate": "More frequent cough with colored sputum, low-grade fever, mild tachypnea, chest tightness and wheeze, some disruption of sleep and work",
+      "severe": "Persistent cough with significant chest discomfort, fever up to about 101.8°F, tachypnea, wheezing and reduced activity, but no hypoxemia or respiratory distress at rest",
+      "critical": "Not a feature of uncomplicated acute bronchitis; respiratory failure, marked hypoxemia or toxic appearance should prompt reassessment for pneumonia, sepsis or another diagnosis"
     },
     "red_flags": [
       {
-        "finding": "Fever of 100.4°F or higher with shaking chills",
-        "meaning": "Suggests pneumonia or another bacterial infection rather than simple viral bronchitis"
+        "finding": "Shortness of breath at rest or hypoxemia (SpO2 below 92%)",
+        "meaning": "Suggests pneumonia, pulmonary embolism or another serious cause rather than simple acute bronchitis"
       },
       {
-        "finding": "Tachypnea or hypoxemia (SpO2 < 94%)",
-        "meaning": "Suggests pneumonia, pulmonary embolism, or another serious process"
-      },
-      {
-        "finding": "Focal crackles, dullness, or bronchial breath sounds",
-        "meaning": "Suggests pneumonia or another focal lung process"
+        "finding": "High fever above 101.8°F with shaking chills",
+        "meaning": "Points to pneumonia or another bacterial infection"
       },
       {
         "finding": "Hemoptysis",
-        "meaning": "Suggests pneumonia, tuberculosis, malignancy, or pulmonary embolism"
+        "meaning": "Requires evaluation for tuberculosis, malignancy, bronchiectasis or pulmonary embolism"
       },
       {
-        "finding": "Cough lasting more than 3 weeks with weight loss or night sweats",
-        "meaning": "Suggests tuberculosis or another chronic infection"
+        "finding": "Cough lasting more than 8 weeks",
+        "meaning": "No longer acute bronchitis; evaluate for pertussis, asthma, reflux, postnasal drip or other chronic causes"
       },
       {
-        "finding": "Severe dyspnea at rest or inability to speak in full sentences",
-        "meaning": "Suggests respiratory failure or a serious alternative diagnosis"
+        "finding": "Night sweats and weight loss",
+        "meaning": "Raises concern for tuberculosis or malignancy"
+      },
+      {
+        "finding": "Focal crackles, dullness to percussion or egophony",
+        "meaning": "Suggests consolidation from pneumonia"
+      },
+      {
+        "finding": "Toxic appearance or altered mental status",
+        "meaning": "Suggests sepsis or severe pneumonia; needs urgent evaluation"
       }
     ],
     "complications": [
@@ -1051,184 +1158,199 @@
         "seriousness": "serious",
         "frequency": "rare",
         "clues": [
-          "New fever after initial improvement",
-          "Focal crackles",
-          "Productive cough with purulent sputum",
-          "Leukocytosis"
+          "Recurrent fever after initial improvement",
+          "New focal crackles or dullness",
+          "Worsening dyspnea",
+          "New consolidation on chest x-ray"
         ]
       },
       {
-        "name": "Exacerbation of underlying asthma or COPD",
-        "timing": "any",
-        "seriousness": "serious",
+        "name": "Post-tussive vomiting and rib pain",
+        "timing": "early",
+        "seriousness": "minor",
         "frequency": "sometimes",
         "clues": [
-          "Worsening wheezing",
-          "Increased dyspnea",
-          "Poor response to bronchodilators"
-        ]
-      },
-      {
-        "name": "Post-tussive syncope",
-        "timing": "any",
-        "seriousness": "minor",
-        "frequency": "rare",
-        "clues": [
-          "Fainting immediately after a coughing fit"
+          "Vomiting immediately after coughing spells",
+          "Chest wall soreness reproducible on palpation"
         ]
       },
       {
         "name": "Rib fracture from severe coughing",
         "timing": "any",
-        "seriousness": "minor",
+        "seriousness": "serious",
         "frequency": "rare",
         "clues": [
-          "Focal chest wall pain",
-          "Point tenderness over a rib"
+          "Focal chest wall pain worse with deep breath or movement",
+          "Point tenderness over a rib",
+          "Radiographic rib fracture"
+        ]
+      },
+      {
+        "name": "Exacerbation of underlying asthma or COPD",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Increasing wheeze and dyspnea",
+          "Reduced response to rescue inhaler",
+          "Decline in peak expiratory flow"
+        ]
+      },
+      {
+        "name": "Syncope with coughing",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Loss of consciousness immediately after a coughing paroxysm",
+          "Rapid recovery without confusion"
         ]
       }
     ],
     "special_populations": [
       {
         "population": "children",
-        "differences": "Young children may not produce sputum and instead swallow it; nasal congestion, vomiting after coughing, and irritability may be more prominent. Wheezing is common."
+        "differences": "Young children cannot describe sputum or chest tightness; they present with a lingering cough after a cold, sometimes with vomiting after coughing spells. Wheezing is more prominent and the cough may be mistaken for asthma or a foreign body."
       },
       {
         "population": "older_adults",
-        "differences": "May present with less fever and more confusion or general weakness; cough may be less forceful and sputum production minimal. Higher risk of pneumonia."
+        "differences": "Fever may be blunted or absent and the cough can be less forceful. Symptoms overlap more with pneumonia, heart failure and COPD, so the threshold for chest imaging is lower."
       },
       {
         "population": "immunocompromised",
-        "differences": "Symptoms may be more severe and prolonged; higher risk of progression to pneumonia and atypical pathogens. Lower threshold for chest imaging and cultures."
+        "differences": "The same symptoms can progress to pneumonia or be caused by unusual organisms; fever and systemic symptoms may be more prominent and the course more prolonged."
       },
       {
         "population": "pregnancy",
-        "differences": "Management focuses on supportive care; avoid unnecessary antibiotics. Influenza testing and treatment are important because pregnancy increases risk of complications."
+        "differences": "Presentation is similar, but cough and shortness of breath are more alarming because of the risk to the fetus; treatment choices are limited and pertussis should be considered."
       }
     ]
   },
   "teaching": {
     "key_questions": [
       {
-        "question": "How long have you had the cough?",
+        "question": "How long have you had the cough, and how did it start?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Days to about 3 weeks; under 3 weeks fits acute bronchitis, longer raises concern for pertussis, tuberculosis, or another chronic cause"
-      },
-      {
-        "question": "Did it start with a cold or sore throat?",
-        "category": "hpi",
-        "importance": "important",
-        "looking_for": "Gradual onset a few days after an upper respiratory infection"
+        "looking_for": "Gradual onset a few days after a cold; cough present for about 1–3 weeks, not more than 8 weeks"
       },
       {
         "question": "Are you coughing anything up, and what does it look like?",
         "category": "hpi",
-        "importance": "important",
-        "looking_for": "Clear, white, yellow, or green sputum; color alone does not prove a bacterial cause"
+        "importance": "essential",
+        "looking_for": "Clear, white or colored sputum; purulent sputum alone does not mean bacterial infection"
       },
       {
-        "question": "Have you had any fever, and how high did it get?",
+        "question": "Have you had a fever, and how high did it get?",
         "category": "associated",
         "importance": "essential",
-        "looking_for": "Low-grade or no fever; fever of 100.4°F or higher with chills suggests pneumonia"
+        "looking_for": "Absent or low-grade fever; high fever with shaking chills suggests pneumonia"
       },
       {
-        "question": "Are you short of breath, and is it only with activity or also at rest?",
-        "category": "associated",
+        "question": "Are you short of breath at rest or with minimal activity?",
+        "category": "red_flag",
         "importance": "essential",
-        "looking_for": "No dyspnea or only mild exertional dyspnea; dyspnea at rest suggests pneumonia or another serious process"
+        "looking_for": "Absent; dyspnea at rest or hypoxemia points away from simple acute bronchitis"
       },
       {
         "question": "Have you coughed up any blood?",
         "category": "red_flag",
         "importance": "essential",
-        "looking_for": "Absent; hemoptysis suggests pneumonia, tuberculosis, malignancy, or pulmonary embolism"
+        "looking_for": "Absent; hemoptysis requires evaluation for tuberculosis, malignancy, bronchiectasis or pulmonary embolism"
       },
       {
-        "question": "Do you have chest pain, and does it hurt more when you breathe in deeply?",
+        "question": "Does the chest pain get worse when you take a deep breath or lie flat?",
         "category": "associated",
         "importance": "important",
-        "looking_for": "Chest tightness or soreness from coughing; pleuritic pain suggests pneumonia or pulmonary embolism"
+        "looking_for": "Chest soreness from coughing rather than pleuritic pain; pleuritic pain suggests pneumonia or pulmonary embolism"
       },
       {
-        "question": "Any wheezing or chest tightness?",
+        "question": "Have you had a runny or stuffy nose, sore throat or hoarse voice?",
         "category": "associated",
         "importance": "important",
-        "looking_for": "Mild wheezing may occur; prominent or recurrent wheeze suggests asthma or COPD"
+        "looking_for": "Recent or current upper respiratory symptoms supporting a viral cause"
       },
       {
-        "question": "Any night sweats, weight loss, or cough lasting weeks?",
+        "question": "Have you been wheezing, or do you have a history of asthma or COPD?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Wheeze can occur with bronchitis; known asthma or COPD raises concern for an exacerbation instead"
+      },
+      {
+        "question": "Do you smoke, or are you around secondhand smoke, dust, fumes or vapors?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Smoking or irritant exposure as a risk factor and a reason for a prolonged cough"
+      },
+      {
+        "question": "Have you had night sweats, weight loss or a cough lasting more than 3 weeks?",
         "category": "red_flag",
         "importance": "important",
-        "looking_for": "Absent; present suggests tuberculosis or another chronic infection"
+        "looking_for": "Absent; present raises concern for tuberculosis or malignancy"
       },
       {
-        "question": "Do you smoke, or does anyone in your home smoke?",
+        "question": "Has anyone around you had a similar cough, or has anyone been diagnosed with whooping cough?",
         "category": "social",
         "importance": "important",
-        "looking_for": "Tobacco smoke exposure is a common trigger and risk factor"
+        "looking_for": "Sick contacts; a contact with prolonged cough suggests pertussis"
       },
       {
-        "question": "Do you have asthma, COPD, or another chronic lung condition?",
-        "category": "pmh",
+        "question": "Does the cough come in violent spells, and do you vomit or make a whooping sound afterward?",
+        "category": "red_flag",
         "importance": "important",
-        "looking_for": "Underlying lung disease that may be exacerbated or that changes the differential"
+        "looking_for": "Paroxysmal cough with post-tussive vomiting or whoop suggests pertussis"
       },
       {
-        "question": "Have you been around anyone with a similar cough, or is there illness going around at work, school, or daycare?",
-        "category": "social",
+        "question": "Have you been hospitalized recently or taken antibiotics?",
+        "category": "medications",
         "importance": "optional",
-        "looking_for": "Community or household viral illness; whooping cough contacts if the cough is prolonged"
+        "looking_for": "Recent healthcare exposure or antibiotics, which would broaden the differential"
       },
       {
-        "question": "Have you been hospitalized recently or taken antibiotics in the past few months?",
-        "category": "pmh",
+        "question": "Do you have heartburn or a cough that is worse after meals or when lying down?",
+        "category": "ros",
         "importance": "optional",
-        "looking_for": "Recent healthcare exposure raises concern for pneumonia or resistant organisms"
-      },
-      {
-        "question": "Have you ever been exposed to tuberculosis, or were you born or have you traveled in a country where it is common?",
-        "category": "social",
-        "importance": "optional",
-        "looking_for": "Risk factors that would prompt testing when the cough is chronic"
+        "looking_for": "Reflux symptoms that would suggest gastroesophageal reflux as the cause of cough"
       }
     ],
     "accepted_names": [
       "Acute bronchitis",
+      "Bronchitis",
       "Chest cold",
-      "Viral bronchitis",
-      "Acute viral bronchitis",
-      "Bronchitis"
+      "Acute chest cold",
+      "Viral bronchitis"
     ],
     "reasoning_points": [
-      "Cough is the dominant symptom, often productive, lasting days to a few weeks",
-      "Onset typically follows a viral upper respiratory infection",
-      "Low-grade or no fever, and the patient is not toxic-appearing",
-      "Lung exam shows diffuse rhonchi or coarse crackles that clear with coughing, without focal findings",
-      "No focal crackles, dullness, egophony, or tachypnea to suggest pneumonia",
-      "Vital signs and oxygen saturation are reassuring",
-      "Chest x-ray is not needed when the presentation is typical and pneumonia is not suspected",
-      "Antibiotics are not indicated because the cause is usually viral"
+      "A cough that began gradually after a cold and has lasted about 1–3 weeks, often productive of clear, white or colored sputum",
+      "Low-grade or no fever with sore throat, nasal congestion, hoarseness and fatigue supporting a viral upper respiratory illness",
+      "Chest soreness or tightness from coughing rather than pleuritic pain, and no dyspnea at rest",
+      "Lung exam with wheezing or rhonchi that clears with coughing, and no focal crackles, dullness to percussion or egophony",
+      "Normal or near-normal vital signs without hypoxemia, tachypnea or high fever",
+      "Chest x-ray not required when the presentation is typical; when obtained it is normal without consolidation",
+      "Pneumonia excluded by the absence of high fever, focal lung findings, hypoxemia and systemic toxicity",
+      "Pertussis considered and excluded when the cough is not paroxysmal and there is no post-tussive vomiting or whoop",
+      "Asthma or COPD exacerbation considered and excluded by the absence of a compatible chronic history",
+      "Antibiotics are not indicated for viral acute bronchitis; treatment is supportive"
     ],
     "difficulty": {
       "easy": [
-        "Young or middle-aged adult with a cough for about a week after a cold",
-        "Low-grade or no fever, mild sputum production",
-        "Diffuse rhonchi that clear with coughing",
-        "Normal vital signs and oxygen saturation"
+        "Young or middle-aged adult with a cough for 1–2 weeks after a cold",
+        "Clear or white sputum, low-grade or no fever, normal vital signs",
+        "Diffuse wheeze or rhonchi that clears with coughing and no focal crackles",
+        "No dyspnea at rest and no hypoxemia"
       ],
       "medium": [
-        "Patient with asthma or COPD where wheezing and cough could be an exacerbation rather than simple bronchitis",
-        "Fever up to 100.4°F with a mildly elevated white count, requiring a decision about chest imaging",
-        "Older adult with a weaker cough and less fever, where pneumonia must be excluded",
-        "Cough lasting 2 to 3 weeks, raising the question of pertussis"
+        "Patient with purulent yellow-green sputum and mild fever, raising the question of antibiotics",
+        "Wheezing in a patient with no prior asthma history",
+        "Cough persisting 3–6 weeks after other cold symptoms have resolved",
+        "Older adult or smoker with overlapping COPD symptoms"
       ],
       "hard": [
-        "Older adult with confusion or general weakness and minimal cough",
-        "Immunocompromised patient with prolonged or severe symptoms and risk of atypical pathogens",
-        "Patient with cough for more than 3 weeks plus night sweats or weight loss, suggesting tuberculosis",
-        "Presentation with wheezing and hypoxemia that turns out to be pneumonia or an asthma exacerbation"
+        "Older adult with blunted fever and a less forceful cough, where pneumonia must be excluded",
+        "Patient with underlying asthma or COPD where an exacerbation is the more likely diagnosis",
+        "Prolonged cough with post-tussive vomiting or whoop suggesting pertussis",
+        "Cough lasting more than 8 weeks, which is no longer acute bronchitis",
+        "Immunocompromised or pregnant patient with cough and dyspnea, where the threshold for imaging is lower"
       ]
     }
   }

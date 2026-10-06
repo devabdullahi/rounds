@@ -21,6 +21,7 @@ from pathlib import Path
 
 import llm
 from checks import PANELS, SCHEMA, TESTS, repair, rule_errors, rule_warnings, schema_errors, section_errors
+from terminology import check_terms, term_summary
 
 HERE = Path(__file__).resolve().parent
 KB = HERE.parents[1] / "knowledge-base"
@@ -30,7 +31,7 @@ TRIAGE = KB / "triage.jsonl"
 EXAMPLE = json.loads((KB / "schema" / "examples" / "acute-appendicitis.json").read_text())
 
 # Bump when a prompt changes so regenerated profiles can be told apart.
-PROMPT_VERSION = "9"
+PROMPT_VERSION = "11"
 TRIAGE_BATCH = 20
 BACKGROUND_LIMIT = 9000
 
@@ -66,7 +67,9 @@ def fill(template: str, **values: str) -> str:
 
 
 def load_conditions() -> dict[str, dict]:
-    rows = [json.loads(line) for line in (KB / "conditions.jsonl").open()]
+    """MedlinePlus conditions plus the core conditions it lacks (tools/kb-import/clinical_tables.py)."""
+    rows = [json.loads(line) for name in ("conditions.jsonl", "conditions_core.jsonl")
+            if (KB / name).exists() for line in (KB / name).open()]
     return {slugify(r["name"]): r for r in rows}
 
 
@@ -209,6 +212,9 @@ def run_stage(stage: str, name: str, condition: dict, profile: dict) -> tuple[di
             errors += section_errors(s, value)
         if not errors:
             errors = [e for e in rule_errors(profile | output) if e not in baseline]
+        # Findings must be SNOMED CT concepts and drugs RxNorm drugs (UMLS / RxNav, cached).
+        # A failed retry still keeps the output; save() decides whether too many terms are unverified.
+        errors += check_terms(output)
         if not errors:
             return output, [], repairs
         print(f"    {stage}: {len(errors)} error(s){', retrying' if attempt == 0 else ''}", file=sys.stderr)
@@ -276,12 +282,13 @@ def save(profile: dict, stage_errors: list[str], repairs: list[str] | None = Non
     """Validates and writes a profile, judged on the saved content after repairs."""
     repairs = (repairs or []) + repair(profile)
     current = validate(profile)
-    errors = sorted(set(current))  # judged on what's saved; stage errors only explain the retries
+    term_errors, term_notes = term_summary(profile)
+    errors = sorted(set(current + term_errors))  # judged on what's saved; stage errors only explain the retries
     known = {p.stem for p in PROFILES.glob("*.json")} | {profile["slug"]}
     profile["generation"]["validation"] = {
         "status": "failed" if errors else "passed",
         "rule_errors": errors,
-        "review_issues": [f"auto-repaired: {r}" for r in repairs] + rule_warnings(profile, known),
+        "review_issues": [f"auto-repaired: {r}" for r in repairs] + term_notes + rule_warnings(profile, known),
     }
     PROFILES.mkdir(parents=True, exist_ok=True)
     path = PROFILES / f"{profile['slug']}.json"

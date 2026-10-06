@@ -37,10 +37,17 @@ enum DebugLaunch {
         guard let screen else { return }
         switch screen {
         case "patients": tab = .patients
-        case "cards", "cards-flip", "cards-correct", "cards-unknown", "cards-new", "cards-new-color", "cards-new-answer": tab = .cards
+        case "cards", "cards-flip", "cards-correct", "cards-unknown", "cards-new", "cards-new-color", "cards-new-answer",
+             "cards-add", "cards-generate": tab = .cards
         case "patients-open": tab = .patients; expandedPatient = "R2"
         case "profile", "settings": tab = .profile
         case "home", "focus-sheet", "splash", "home-swipe-right", "home-swipe-left": tab = .today
+        case "home-empty":
+            tab = .today
+            app.debugEmptyWard = true
+        case "home-preparing":
+            tab = .today
+            app.debugShowPreparing()
         case "admit":
             // Generates a live patient (DeepSeek via local Supabase) and opens its door note.
             tab = .today

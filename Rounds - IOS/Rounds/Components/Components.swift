@@ -413,12 +413,19 @@ enum ECG {
 
 /// Lead II trace: `beats` evenly spaced PQRST complexes across a 354×40 grid.
 /// `stElevation` lifts the ST segment into a tombstone T wave, as in inferior leads of an STEMI.
+/// Zero beats draws a flatline (asystole).
 struct ECGShape: Shape {
     var beats: Int = 3
     var stElevation = false
 
     func path(in rect: CGRect) -> Path {
         let sx = rect.width / 354, sy = rect.height / 40
+        guard beats > 0 else {
+            var flat = Path()
+            flat.move(to: CGPoint(x: 0, y: 26 * sy))
+            flat.addLine(to: CGPoint(x: rect.width, y: 26 * sy))
+            return flat
+        }
         let cell = 354 / CGFloat(beats)
         let k = ECG.complexScale(cell)
         var p = Path()
@@ -468,11 +475,13 @@ struct ECGPaperGrid: View {
     }
 }
 
-/// Monitor-style sweep at a given heart rate.
+/// Monitor-style sweep at a given heart rate. `flatline` keeps the sweep moving over a flat trace,
+/// a monitor with nobody on it.
 struct ECGMonitor: View {
     var bpm: Double = 104
     var color: Color = Theme.accent
     var stElevation = false
+    var flatline = false
     var height: CGFloat = 40
 
     @Environment(\.colorScheme) private var scheme
@@ -482,7 +491,7 @@ struct ECGMonitor: View {
         let color = paper ? Theme.text : color      // paper ECGs are printed in black ink
         let beats = ECG.beatsPerSweep(bpm)
         let window = ECG.window(bpm)
-        let shape = ECGShape(beats: beats, stElevation: stElevation)
+        let shape = ECGShape(beats: flatline ? 0 : beats, stElevation: stElevation)
         let style = StrokeStyle(lineWidth: ECG.lineWidth, lineCap: .round, lineJoin: .round)
 
         GeometryReader { geo in

@@ -11,7 +11,7 @@ final class ReferenceAssist {
     private(set) var drugs: [DrugMatch] = []
     private(set) var topics: [HealthTopic] = []
 
-    /// Set by the view from `@Environment(\.reference)`; mock until live services exist.
+    /// Set by the view from `@Environment(\.reference)`.
     var reference: ReferenceServices = .mock
 
     /// The suggestion the student just tapped, so filling the field doesn't reopen the list.

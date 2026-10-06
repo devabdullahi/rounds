@@ -62,7 +62,7 @@ schema_paths = []
 enabled = true
 # Specifies an ordered list of seed files to load during db reset.
 # Supports glob patterns relative to supabase directory: "./seeds/*.sql"
-sql_paths = ["./seed.sql", "./seed_profiles.sql"]
+sql_paths = ["./seed.sql", "./seed_conditions.sql", "./seed_profiles.sql"]
 
 [db.network_restrictions]
 # Enable management of network restrictions.
@@ -438,3 +438,16 @@ enabled = true
 verify_jwt = true
 import_map = "./functions/case-session/deno.json"
 entrypoint = "./functions/case-session/index.ts"
+
+[functions.prepare-profile]
+enabled = true
+# Internal: called only by other functions with the service role key, which index.ts checks itself.
+verify_jwt = false
+import_map = "./functions/prepare-profile/deno.json"
+entrypoint = "./functions/prepare-profile/index.ts"
+
+[functions.generate-cards]
+enabled = true
+verify_jwt = true
+import_map = "./functions/generate-cards/deno.json"
+entrypoint = "./functions/generate-cards/index.ts"

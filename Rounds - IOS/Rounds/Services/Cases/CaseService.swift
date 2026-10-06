@@ -12,8 +12,9 @@ protocol CaseService: Sendable {
     /// How many conditions each topic can draw from, keyed by `StudyFocus.stored`.
     func topicCounts() async throws -> [String: Int]
 
-    /// Generates a new fictional patient for the focus and returns its bed code.
-    func admit(focus: StudyFocus) async throws -> String
+    /// Generates a new fictional patient for the focus. `.preparing` means the focus has no
+    /// condition ready yet and the server is writing one; ask again shortly.
+    func admit(focus: StudyFocus) async throws -> AdmitOutcome
 
     func loadCase(bed: String) async throws -> ClinicalCase
 
@@ -22,6 +23,11 @@ protocol CaseService: Sendable {
     func examine(attempt: String, maneuver: String) async throws -> String
     func order(attempt: String, test: String) async throws -> TestResult
     func submit(attempt: String, diagnosis: String, differential: [String], plan: String) async throws -> Grade
+}
+
+enum AdmitOutcome: Sendable, Equatable {
+    case admitted(bed: String)
+    case preparing
 }
 
 /// The patient's reply to one question.

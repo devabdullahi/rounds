@@ -1,0 +1,81 @@
+// generate-cards: writes a deck of flashcards for the calling student.
+//
+//   1. Verify the caller and validate the request (topics, count, deck name).
+//   2. Pick validated condition profiles matching the topics, and pull card facts from them in code.
+//   3. Optionally add the student's own missed red flags from graded attempts.
+//   4. Have the LLM word cards from those facts only; check each cites a given source.
+//   5. Save the cards as the student's own (they can clear them) and return them.
+import { body, callerId, HttpError, json, serve } from "../_shared/http.ts";
+import { sql } from "../_shared/db.ts";
+import { completeJSON } from "../_shared/llm.ts";
+import { type Profile } from "../_shared/casegen.ts";
+import { type CardFacts, cardFacts, missFacts } from "../_shared/cardfacts.ts";
+import { CARD_WRITER } from "../_shared/prompts.ts";
+
+type Request = { topics?: string[]; count?: number; include_misses?: boolean; deck?: string };
+type Card = { topic: string; front: string; back: string; source: string };
+
+const COUNTS = [10, 20, 30, 50];
+const TOPIC = /^(rotation|system):[a-zA-Z]+$/;
+const MAX_CONDITIONS = 25;
+
+serve(async (req) => {
+  const userId = await callerId(req);
+  const input = await body<Request>(req);
+  const topics = input.topics ?? [];
+  const count = input.count ?? 0;
+  const deck = (input.deck ?? "").trim();
+  if (!Array.isArray(topics) || topics.length > 18 || !topics.every((t) => typeof t === "string" && TOPIC.test(t))) {
+    throw new HttpError(400, "topics must be 'rotation:<clerkship>' or 'system:<organ system>' values");
+  }
+  if (!COUNTS.includes(count)) throw new HttpError(400, `count must be one of ${COUNTS.join(", ")}`);
+  if (!deck || deck.length > 40) throw new HttpError(400, "deck name required, up to 40 characters");
+
+  const rotations = topics.filter((t) => t.startsWith("rotation:")).map((t) => t.split(":")[1]);
+  const systems = topics.filter((t) => t.startsWith("system:")).map((t) => t.split(":")[1]);
+  const rows = await sql<{ profile: Profile }[]>`
+    select profile from private.condition_profiles
+    where validation = 'passed' and review <> 'rejected'
+      and (${topics.length === 0} or clerkships && ${rotations}::text[] or organ_systems && ${systems}::text[])
+    order by random() limit ${Math.min(MAX_CONDITIONS, count)}`;
+  if (rows.length === 0) throw new HttpError(404, "no conditions available for these topics yet");
+
+  const sets: CardFacts[] = rows.map((r) => cardFacts(r.profile)).filter((s) => s.facts.length > 0);
+  if (input.include_misses) {
+    const graded = await sql<{ misses: { flag: string; why: string }[] }[]>`
+      select coalesce(grade -> 'missed_red_flags', '[]'::jsonb) as misses from public.attempts
+      where user_id = ${userId} and submitted_at is not null
+      order by submitted_at desc limit 20`;
+    const unique = new Map(graded.flatMap((g) => g.misses).map((m) => [m.flag, m]));
+    const misses = missFacts([...unique.values()]);
+    if (misses) sets.push(misses);
+  }
+
+  const sources = new Set(sets.map((s) => s.source));
+  let user = `Write ${count} cards.\nFact sets:\n${JSON.stringify(sets)}`;
+  let cards: Card[] = [];
+  for (let attempt = 0; attempt < 2; attempt++) {
+    let problems: string[] = [];
+    try {
+      const reply = await completeJSON<{ cards: Card[] }>(CARD_WRITER, user, 8000);
+      cards = (reply.cards ?? []).filter((c) =>
+        typeof c.front === "string" && typeof c.back === "string" && c.front.trim() && c.back.trim() &&
+        c.front.length <= 400 && c.back.length <= 300 && sources.has(c.source)
+      ).slice(0, count);
+      if (cards.length < Math.ceil(count * 0.7)) problems = [`only ${cards.length} usable cards; every card needs front, back and a source from the list`];
+    } catch (error) {
+      problems = [`reply unusable: ${(error as Error).message.slice(0, 200)}`];
+    }
+    if (problems.length === 0) break;
+    user += `\n\nYour previous reply had these problems. Fix them and reply with the full JSON again:\n- ${problems.join("\n- ")}`;
+  }
+  if (cards.length === 0) throw new HttpError(502, "the cards couldn't be written; try again");
+
+  const saved = await sql<{ id: string; topic: string; front: string; back: string; source: string | null; color: string }[]>`
+    insert into public.flashcards ${sql(cards.map((c) => ({
+      user_id: userId, deck, topic: (c.topic || "General").slice(0, 40), front: c.front.trim(), back: c.back.trim(),
+      color: "standard", source: c.source,
+    })))}
+    returning id, topic, front, back, source, color`;
+  return json({ deck, cards: saved });
+});

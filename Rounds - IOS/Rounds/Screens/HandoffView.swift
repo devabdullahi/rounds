@@ -137,7 +137,6 @@ struct HandoffView: View {
         .padding(.horizontal, 24)
         .background(Theme.bg.ignoresSafeArea())
         .navigationBarBackButtonHidden()
-        .lockSwipeBack()
         .task { await play() }
     }
 

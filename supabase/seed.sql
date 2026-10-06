@@ -1,4 +1,4 @@
--- Local development seed: one scripted case (Bed B4) and a sample flashcard deck.
+-- Local development seed. Cases and flashcards are generated per student; nothing is seeded here.
 -- Sample content written for the screens phase; clinician review pending.
 
 -- MOCK (disabled): the scripted B4 case below predates generated cases; kept for reference.
@@ -48,13 +48,3 @@
 --     "differential": ["Aortic dissection", "Pulmonary embolism", "Pericarditis"]
 --   }'
 -- );
-
-insert into public.flashcards (user_id, deck, topic, front, back) values
-  (null, 'Cardiology', 'ECG', 'ST elevation in II, III and aVF points to which territory?', 'Inferior wall. Usually the right coronary artery.'),
-  (null, 'Cardiology', 'Red flags', 'Tearing chest pain radiating to the back. What must you rule out?', 'Aortic dissection. Compare arm blood pressures before giving antiplatelets.'),
-  (null, 'Cardiology', 'Biomarkers', 'Which troponin rise defines myocardial injury?', 'Any value above the 99th percentile upper reference limit.'),
-  (null, 'Cardiology', 'Management', 'First-line reperfusion for STEMI within 12 hours?', 'Primary PCI, if it can be done within 120 minutes of first medical contact.'),
-  (null, 'Cardiology', 'Exam', 'Pericardial friction rub is best heard how?', 'Patient leaning forward, breath held in expiration, left sternal edge.'),
-  (null, 'Cardiology', 'Pharmacology', 'Why avoid beta-blockers in cocaine chest pain?', 'Unopposed alpha stimulation can worsen coronary vasospasm.'),
-  (null, 'Cardiology', 'PE', 'Wells score above 4 for PE. Next test?', 'CT pulmonary angiogram (D-dimer only helps when probability is low).'),
-  (null, 'Cardiology', 'Heart failure', 'Four drug pillars for HFrEF?', 'ACE-I/ARNI, beta-blocker, MRA, SGLT2 inhibitor.');
