@@ -54,6 +54,18 @@ enum IconGlyph: String, CaseIterable {
     case more = "dots-three"
     case trash = "trash"
     case pencil = "pencil-simple"
+    case lock = "lock-simple"
+    // Badges
+    case crown = "crown"
+    case stethoscope = "stethoscope"
+    case firstAid = "first-aid"
+    case sealCheck = "seal-check"
+    case star = "star"
+    case siren = "siren"
+    case lightning = "lightning"
+    case calendarCheck = "calendar-check"
+    case compass = "compass"
+    case heartbeat = "heartbeat"
 
     /// Asset catalog name ("Icons" folder provides the namespace).
     var assetName: String { "Icons/\(rawValue)" }

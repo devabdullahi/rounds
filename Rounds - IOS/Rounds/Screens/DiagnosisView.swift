@@ -178,7 +178,10 @@ struct DiagnosisView: View {
                     HStack(spacing: 12) {
                         Text(match.name).font(.system(size: 16)).foregroundStyle(Theme.text)
                         Spacer(minLength: 8)
-                        Text(match.code).font(.mono(13, weight: .medium)).foregroundStyle(Theme.faint)
+                        // Why it matched, when the name doesn't show it: teaches the abbreviation.
+                        if let hint = assist.hint(for: match) {
+                            Text(hint).font(.system(size: 14)).foregroundStyle(Theme.muted).lineLimit(1)
+                        }
                     }
                     .padding(.horizontal, 16)
                     .frame(minHeight: 46)

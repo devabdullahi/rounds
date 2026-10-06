@@ -21,6 +21,8 @@ final class AppState {
 
     /// The student's generated patients, newest first.
     private(set) var ward: [WardPatient] = []
+    /// Every case the student has been graded on, newest first (profile breakdown and badges).
+    private(set) var graded: [GradedCase] = []
     /// Conditions available per topic, keyed by `StudyFocus.stored`.
     private(set) var topicCounts: [String: Int] = [:]
     private(set) var isLoadingWard = false
@@ -49,6 +51,14 @@ final class AppState {
     var debugEmptyWard = false
 
     #if DEBUG
+    /// `-screen patients-select` / `patients-swipe`: the Patients tab opens in that state.
+    var debugPatientsMode: String?
+
+    /// `-screen patients-delete`: hides a row locally to show the delete animation, no server call.
+    func debugHide(bed: String) {
+        ward.removeAll { $0.id == bed }
+    }
+
     /// `-screen home-preparing`: the admit card while a focus's first condition is written.
     func debugShowPreparing() {
         debugEmptyWard = true
@@ -97,9 +107,12 @@ final class AppState {
             try await cases.ensureSignedIn()
             async let ward = cases.ward()
             async let counts = cases.topicCounts()
+            async let graded = cases.gradedCases()
             self.ward = try await ward
             self.topicCounts = try await counts
+            self.graded = try await graded
             problem = nil
+            checkUnlocks()
         } catch {
             problem = error.localizedDescription
         }
@@ -164,6 +177,76 @@ final class AppState {
     func finishCase() {
         returnToPatients = true
         activeCase = nil
+        // The graded case may have unlocked a badge; the refresh queues its moment.
+        Task { await refresh() }
+    }
+
+    /// Everything badges are judged on.
+    var badgeRecord: BadgeRecord { BadgeRecord(rating: rating, bestStreak: bestStreak, cases: graded) }
+
+    // MARK: Badge unlocks
+
+    /// Badges whose unlock has been shown, so each card's moment plays once. Nil until the first
+    /// check, which records what's already earned without celebrating it.
+    private var seenBadges: Set<String>? = UserDefaults.standard.stringArray(forKey: AppState.seenBadgesStorageKey).map(Set.init)
+    static let seenBadgesStorageKey = "seenBadges"
+    /// Unlocks waiting to be shown, biggest first.
+    private(set) var pendingUnlocks: [BadgeStatus] = []
+
+    /// Queues any badge that unlocked since the last check.
+    func checkUnlocks() {
+        let statuses = BadgeCatalog.status(for: badgeRecord)
+        guard let seen = seenBadges else {
+            markSeen(statuses.filter(\.unlocked).map(\.id))
+            return
+        }
+        let new = BadgeCatalog.newlyUnlocked(statuses, seen: seen)
+        pendingUnlocks += new.filter { n in !pendingUnlocks.contains { $0.id == n.id } }
+    }
+
+    /// The student has seen this unlock. Only real unlocks are remembered, so a test run never
+    /// spends the moment a badge will have when it's actually earned.
+    func celebrated(_ status: BadgeStatus) {
+        pendingUnlocks.removeAll { $0.id == status.id }
+        let earned = BadgeCatalog.status(for: badgeRecord).contains { $0.id == status.id && $0.unlocked }
+        if earned { markSeen([status.id]) }
+    }
+
+    private func markSeen(_ ids: [String]) {
+        let all = (seenBadges ?? []).union(ids)
+        seenBadges = all
+        UserDefaults.standard.set(Array(all), forKey: Self.seenBadgesStorageKey)
+    }
+
+    #if DEBUG
+    /// Badges page test button: plays the unlock for a random locked badge (nothing is earned).
+    func debugUnlockRandomBadge() {
+        let locked = BadgeCatalog.status(for: badgeRecord).filter { !$0.unlocked }
+        guard let pick = (locked.isEmpty ? BadgeCatalog.status(for: badgeRecord) : locked).randomElement() else { return }
+        pendingUnlocks.append(pick.asUnlocked())
+    }
+    #endif
+
+    /// Removes patients from the student's history (every one when `beds` is nil). The ward
+    /// updates synchronously, so a caller can animate it with `withAnimation`; the server delete
+    /// follows. On failure the ward reloads from the server and the problem is shown.
+    func deletePatients(_ beds: Set<String>?) {
+        let removed = beds ?? Set(ward.map(\.id))
+        ward.removeAll { removed.contains($0.id) }
+        skipped.subtract(removed)
+        UserDefaults.standard.set(Array(skipped), forKey: Self.skippedStorageKey)
+        Task { await commitDelete(beds) }
+    }
+
+    private func commitDelete(_ beds: Set<String>?) async {
+        guard let cases else { return }
+        do {
+            _ = try await cases.deletePatients(beds.map { Array($0) })
+        } catch {
+            let message = error.localizedDescription
+            await refresh()   // clears `problem` on success, so set it after
+            problem = message
+        }
     }
 
     func skip(bed: String) {

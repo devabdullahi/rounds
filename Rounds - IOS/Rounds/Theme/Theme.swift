@@ -73,6 +73,15 @@ enum Theme {
     /// Streak flame, Later button, LATER stamp: true red (no orange in the app).
     static let streak     = Color.adaptive(dark: 0xE5011A, light: 0xE5011A)
     static let streakSoft = Color.adaptive(dark: 0xE5011A, light: 0xE5011A, darkOpacity: 0.12, lightOpacity: 0.10)
+    /// Badge cards read as physical trading cards: dark stock and rarity inks, the same in both
+    /// modes. Every rarity ink clears 4.5:1 on the card stock (lowest: common, about 5.6:1).
+    static let cardStock       = Color.adaptive(dark: 0x14161E, light: 0x14161E)
+    static let cardBack        = Color.adaptive(dark: 0x10131C, light: 0x10131C)
+    static let cardInk         = Color.adaptive(dark: 0xD3D5DB, light: 0xD3D5DB)
+    static let rarityCommon    = Color.adaptive(dark: 0x8A93A6, light: 0x8A93A6)
+    static let rarityRare      = Color.adaptive(dark: 0x4B8BFF, light: 0x4B8BFF)
+    static let rarityEpic      = Color.adaptive(dark: 0xA585FF, light: 0xA585FF)
+    static let rarityLegendary = Color.adaptive(dark: 0xE8C547, light: 0xE8C547)
 
     /// Home backdrop glows: soft colour fields behind the deck (and behind the glass buttons).
     static let glowA = Color.adaptive(dark: 0x0C59E9, light: 0x5CE295)

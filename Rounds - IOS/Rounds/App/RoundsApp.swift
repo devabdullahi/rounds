@@ -121,6 +121,14 @@ struct MainTabsView: View {
             tab = .patients
             app.returnToPatients = false
         }
+        // A newly earned badge gets its moment over everything, once, outside a case.
+        .overlay {
+            if let unlock = app.pendingUnlocks.first, app.activeCase == nil {
+                BadgeUnlockView(status: unlock) { withAnimation(.easeOut(duration: 0.25)) { app.celebrated(unlock) } }
+                    .id(unlock.id)
+                    .transition(.opacity)
+            }
+        }
         .fullScreenCover(item: $app.activeCase) { session in
             CaseFlowView(session: session)
                 .environment(app)

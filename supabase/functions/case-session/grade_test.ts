@@ -46,3 +46,20 @@ Deno.test("diagnosis matching accepts names inside longer answers only on word b
   assert(matchesDiagnosis("APPENDICITIS", ["Appendicitis"]));
   assert(!matchesDiagnosis("Mesenteric adenitis", ["Appendicitis"]));
 });
+
+Deno.test("the breakdown shows where points went and adds up to the score", () => {
+  const full = grade(rubric, { revealed: ["onset", "migration", "appetite", "lmp"], examined: ["rlq"], ordered: ["hcg", "cbc"], spent: 50, budget: 300 }, right);
+  for (const part of Object.values(full.breakdown)) assertEquals(part.got, part.max);
+  assertEquals(Object.values(full.breakdown).reduce((s, p) => s + p.max, 0), 100);
+
+  const partial = grade(rubric, { revealed: ["onset"], examined: [], ordered: ["cbc"], spent: 30, budget: 300 }, right);
+  assertEquals(partial.breakdown.exam, { got: 0, max: 15 });
+  assertEquals(partial.breakdown.diagnosis, { got: 35, max: 35 });
+  assertEquals(Object.values(partial.breakdown).reduce((s, p) => s + p.got, 0), partial.score);
+});
+
+Deno.test("test penalties never show as negative points", () => {
+  const g = grade(rubric, { revealed: [], examined: [], ordered: ["abdominal_x_ray"], spent: 500, budget: 300 },
+    { diagnosisCorrect: false, planAppropriate: false, planNote: "" });
+  assertEquals(g.breakdown.tests.got, 0);
+});

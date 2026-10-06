@@ -9,6 +9,10 @@ protocol CaseService: Sendable {
     /// The student's ward: generated patients, newest first, with last-attempt status.
     func ward() async throws -> [WardPatient]
 
+    /// Every submitted case the student has been graded on, newest first: what the profile's
+    /// points breakdown and badges are built from.
+    func gradedCases() async throws -> [GradedCase]
+
     /// How many conditions each topic can draw from, keyed by `StudyFocus.stored`.
     func topicCounts() async throws -> [String: Int]
 
@@ -17,6 +21,10 @@ protocol CaseService: Sendable {
     func admit(focus: StudyFocus) async throws -> AdmitOutcome
 
     func loadCase(bed: String) async throws -> ClinicalCase
+
+    /// Deletes the student's own patients and their attempts (all of them when `beds` is nil).
+    /// Returns how many were removed. Ratings already earned stay.
+    func deletePatients(_ beds: [String]?) async throws -> Int
 
     func start(bed: String, examMode: Bool, timeLimitMinutes: Int?) async throws -> String
     func ask(attempt: String, question: String) async throws -> PatientAnswer

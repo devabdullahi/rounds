@@ -1,28 +1,42 @@
 import SwiftUI
 
 struct ProfileView: View {
-    @AppStorage(StudyFocus.storageKey) private var focusStored = ""
     @Environment(AppState.self) private var app
 
-    private let weakSpots: [(String, Double, Bool)] = [
-        ("Social history", 0.42, true),
-        ("Red-flag questions", 0.55, false),
-        ("Examination", 0.64, false),
-        ("Test selection", 0.78, false),
-    ]
+    // MOCK (disabled): sample weak spots, replaced by the graded-case breakdown (Performance).
+    // private let weakSpots: [(String, Double, Bool)] = [
+    //     ("Social history", 0.42, true), ("Red-flag questions", 0.55, false),
+    //     ("Examination", 0.64, false), ("Test selection", 0.78, false),
+    // ]
 
-    @State private var showSettings = false
+    /// Pages pushed from Profile.
+    enum Route: Hashable { case settings, weakSpots, badges }
+
+    @State private var path: [Route] = []
     @State private var showInventoryHelp = false
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             content
                 .toolbar(.hidden, for: .navigationBar)
-                .navigationDestination(isPresented: $showSettings) { SettingsView() }
+                .navigationDestination(for: Route.self) { route in
+                    switch route {
+                    case .settings: SettingsView()
+                    case .weakSpots: WeakSpotsView()
+                    case .badges: BadgesView()
+                    }
+                }
                 .sheet(isPresented: $showInventoryHelp) { inventoryHelp }
         }
         #if DEBUG
-        .onAppear { if DebugLaunch.screen == "settings" { showSettings = true } }
+        .onAppear {
+            switch DebugLaunch.screen {
+            case "settings": path = [.settings]
+            case "profile-weakspots": path = [.weakSpots]
+            case "profile-badges": path = [.badges]
+            default: break
+            }
+        }
         #endif
     }
 
@@ -30,7 +44,7 @@ struct ProfileView: View {
         ScrimScrollView {
             VStack(alignment: .leading, spacing: 14) {
                 ScreenTitle(title: "Profile") {
-                    Button { showSettings = true } label: {
+                    Button { path.append(.settings) } label: {
                         AppIcon(.settings, size: 20).foregroundStyle(.white)
                             .frame(width: 40, height: 40)
                             .glassCircle(tint: Theme.accent)
@@ -66,15 +80,7 @@ struct ProfileView: View {
                     .buttonStyle(PressableStyle())
                     .accessibilityHint("Explains consults and streak freezes")
 
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Badges").font(.system(size: 13)).foregroundStyle(Theme.muted)
-                        HStack(spacing: 6) {
-                            badge("Bronze", tint: Theme.text, earned: true)
-                            badge("Silver", tint: Theme.accent, earned: true)
-                            badge("Gold", tint: Theme.faint, earned: false)
-                        }
-                    }
-                    .card(padding: 14, fillHeight: true)
+                    badgesCard
                 }
                 .fixedSize(horizontal: false, vertical: true)
             }
@@ -125,47 +131,73 @@ struct ProfileView: View {
         .card(padding: 14, fillHeight: true)
     }
 
+    /// The four categories losing the most points over the last 30 days; the whole card opens
+    /// the full breakdown with its time filter.
     private var weakSpotsCard: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack(alignment: .firstTextBaseline) {
-                Text("Where you lose points").font(.system(size: 17, weight: .semibold))
-                Spacer()
-                Text("Last 30 cases").font(.system(size: 13)).foregroundStyle(Theme.muted)
-            }
-            VStack(spacing: 9) {
-                ForEach(weakSpots, id: \.0) { name, value, weakest in
-                    HStack(spacing: 10) {
-                        Text(name)
-                            .font(.system(size: 14, weight: weakest ? .semibold : .regular))
-                            .foregroundStyle(weakest ? Theme.warnText : Theme.text)
-                            .frame(width: 128, alignment: .leading)
-                        ProgressBar(value: value, color: weakest ? Theme.warn : Theme.faint)
-                        Text("\(Int(value * 100))%").font(.mono(14, weight: .medium)).frame(width: 40, alignment: .trailing)
+        let result = Performance.stats(app.graded, in: .month)
+        return Button { path.append(.weakSpots) } label: {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack(alignment: .firstTextBaseline) {
+                    Text("Where you lose points").font(.system(size: 17, weight: .semibold))
+                    Spacer()
+                    Text("Last 30 days").font(.system(size: 13)).foregroundStyle(Theme.muted)
+                    AppIcon(.chevronRight, size: 14).foregroundStyle(Theme.faint)
+                }
+                if result.cases == 0 {
+                    Text("Finish a case to see where your points go.")
+                        .font(.system(size: 15))
+                        .foregroundStyle(Theme.muted)
+                } else {
+                    VStack(spacing: 9) {
+                        ForEach(Array(result.stats.prefix(4).enumerated()), id: \.element.id) { i, stat in
+                            let weakest = i == 0 && stat.lost > 0
+                            HStack(spacing: 10) {
+                                Text(stat.category.label)
+                                    .font(.system(size: 14, weight: weakest ? .semibold : .regular))
+                                    .foregroundStyle(weakest ? Theme.warnText : Theme.text)
+                                    .frame(width: 128, alignment: .leading)
+                                ProgressBar(value: stat.share, color: weakest ? Theme.warn : Theme.faint)
+                                Text("\(Int((stat.share * 100).rounded()))%")
+                                    .font(.mono(14, weight: .medium))
+                                    .frame(width: 40, alignment: .trailing)
+                            }
+                        }
                     }
                 }
             }
-            Button(app.isAdmitting ? "Preparing patient…" : "Practice a new patient") {
-                Task { await app.admit(focus: FocusSelection(stored: focusStored)) }
-            }
-            .disabled(app.isAdmitting)
-                .buttonStyle(SoftButtonStyle(height: 44, fontSize: 16))
+            .foregroundStyle(Theme.text)
+            .card()
         }
-        .card()
+        .buttonStyle(PressableStyle())
+        .accessibilityHint("Shows every category, with a time filter")
     }
 
-    private func badge(_ name: String, tint: Color, earned: Bool) -> some View {
-        VStack(spacing: 4) {
-            AppIcon(.award, size: 18)
-                .foregroundStyle(tint)
-                .frame(width: 34, height: 34)
-                .background(tint.opacity(earned ? 0.14 : 0.08), in: Circle())
-            Text(name)
-                .font(.system(size: 11, weight: earned ? .semibold : .regular))
-                .foregroundStyle(earned ? Theme.text : Theme.faint)
+    /// Three badges and the unlocked count; opens the full list. Shows the latest earned ones,
+    /// then the locked one closest to unlocking.
+    private var badgesCard: some View {
+        let statuses = BadgeCatalog.status(for: app.badgeRecord)
+        let unlocked = statuses.filter(\.unlocked)
+        let earned = Array(unlocked.suffix(2))
+        let next = statuses.filter { !$0.unlocked }.sorted { $0.progress > $1.progress }.prefix(3 - earned.count)
+        return Button { path.append(.badges) } label: {
+            VStack(alignment: .leading, spacing: 8) {
+                HStack(spacing: 4) {
+                    Text("Badges").font(.system(size: 13)).foregroundStyle(Theme.muted)
+                    Spacer(minLength: 4)
+                    Text("\(unlocked.count)/\(statuses.count)").font(.mono(12, weight: .medium)).foregroundStyle(Theme.muted)
+                }
+                HStack(spacing: 6) {
+                    ForEach(earned + next) { status in
+                        BadgeMedallion(status: status, size: 34).frame(maxWidth: .infinity)
+                    }
+                }
+            }
+            .foregroundStyle(Theme.text)
+            .card(padding: 14, fillHeight: true)
         }
-        .frame(maxWidth: .infinity)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(earned ? "\(name) tier badge, earned" : "\(name) tier badge, locked")
+        .buttonStyle(PressableStyle())
+        .accessibilityLabel("Badges, \(unlocked.count) of \(statuses.count) unlocked")
+        .accessibilityHint("Shows every badge")
     }
 
     private var inventoryHelp: some View {
