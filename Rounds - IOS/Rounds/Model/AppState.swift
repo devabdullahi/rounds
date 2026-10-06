@@ -6,6 +6,8 @@ import Observation
 @Observable
 final class AppState {
     let cases: (any CaseService)?
+    /// Flashcard decks: built-in plus the student's own and generated ones.
+    let flashcards: FlashcardStore
 
     // Sample stats until the profile screen reads them from the server.
     var rating = 1482
@@ -49,8 +51,9 @@ final class AppState {
     static let fellowThreshold = 1600
     static let residentFloor = 1200
 
-    init(cases: (any CaseService)?) {
+    init(cases: (any CaseService)?, cards: (any CardService)?) {
         self.cases = cases
+        self.flashcards = FlashcardStore(service: cards)
     }
 
     var tierProgress: Double {

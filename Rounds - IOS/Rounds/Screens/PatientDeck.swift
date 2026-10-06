@@ -16,7 +16,7 @@ import SwiftUI
  *   left   card leaves the deck for good (skipped); the next one rises
  *   short  springs back to centre
  *
- * BUTTONS  (skip ⟵ · random · ⟶ take) — Liquid Glass on iOS 26+,
+ * BUTTONS  (skip ⟵ · random (dice) · ⟶ take) — Liquid Glass on iOS 26+,
  *          interactive: they flex and shimmer under the finger
  *   skip / take    same fly-off as a swipe
  *   random         deck riffles (3 quick shuffles, 90ms apart),
@@ -218,7 +218,7 @@ struct PatientDeck: View {
     private var controls: some View {
         HStack(spacing: 28) {
             roundButton(.x, label: "Skip patient", tint: Theme.streak, size: 60) { skip() }
-            roundButton(.shuffle, label: queue.count > 1 ? "Random patient" : "Admit a new patient", tint: Theme.shuffle, size: 50) { random() }
+            roundButton(.dice, label: queue.count > 1 ? "Random patient" : "Admit a new patient", tint: Theme.shuffle, size: 50) { random() }
             roundButton(.check, label: "Take patient", tint: Theme.correct, size: 60) { take() }
         }
         .frame(maxWidth: .infinity)

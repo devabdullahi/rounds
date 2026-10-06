@@ -2,7 +2,8 @@ import SwiftUI
 
 @main
 struct RoundsApp: App {
-    @State private var app = AppState(cases: SupabaseService.client.map { LiveCaseService(client: $0) })
+    @State private var app = AppState(cases: SupabaseService.client.map { LiveCaseService(client: $0) },
+                                      cards: SupabaseService.client.map { LiveCardService(client: $0) })
     /// 0 = follow the system, 1 = light, 2 = dark.
     @AppStorage("appearance") private var appearance = 0
     @AppStorage("signedIn") private var signedIn = false

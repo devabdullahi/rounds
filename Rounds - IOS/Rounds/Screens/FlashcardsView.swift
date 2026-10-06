@@ -53,26 +53,10 @@ private enum FLIP {
     static let spring = Animation.spring(response: 0.5, dampingFraction: 0.8)
 }
 
-// MARK: - Placeholder deck (screens-only phase)
+// MARK: - Card colours
 
-struct Flashcard: Identifiable, Equatable {
-    let id = UUID()
-    let topic: String
-    let front: String
-    let back: String
-    var color: CardColor = .standard
-
-    /// Same content, new identity (for re-queuing a missed card).
-    func copy() -> Flashcard { Flashcard(topic: topic, front: front, back: back, color: color) }
-}
-
-/// User-pickable card colours. `tint` drives the wash, border and label; light values are deepened for contrast.
-enum CardColor: String, CaseIterable, Identifiable {
-    case standard, teal, blue, purple, pink, red, yellow
-    var id: String { rawValue }
-
-    var name: String { self == .standard ? "Default" : rawValue.capitalized }
-
+/// The look of each `CardColor`: `tint` drives the wash, border and label; light values are deepened for contrast.
+extension CardColor {
     var tint: Color {
         switch self {
         case .standard: Theme.accent
@@ -89,26 +73,27 @@ enum CardColor: String, CaseIterable, Identifiable {
     var wash: Double { self == .standard ? 0 : 0.12 }
 }
 
-enum SampleDeck {
-    static let cardiology: [Flashcard] = [
-        Flashcard(topic: "ECG", front: "ST elevation in II, III and aVF points to which territory?",
-                  back: "Inferior wall. Usually the right coronary artery."),
-        Flashcard(topic: "Red flags", front: "Tearing chest pain radiating to the back. What must you rule out?",
-                  back: "Aortic dissection. Compare arm blood pressures before giving antiplatelets."),
-        Flashcard(topic: "Biomarkers", front: "Which troponin rise defines myocardial injury?",
-                  back: "Any value above the 99th percentile upper reference limit."),
-        Flashcard(topic: "Management", front: "First-line reperfusion for STEMI within 12 hours?",
-                  back: "Primary PCI, if it can be done within 120 minutes of first medical contact."),
-        Flashcard(topic: "Exam", front: "Pericardial friction rub is best heard how?",
-                  back: "Patient leaning forward, breath held in expiration, left sternal edge."),
-        Flashcard(topic: "Pharmacology", front: "Why avoid beta-blockers in cocaine chest pain?",
-                  back: "Unopposed alpha stimulation can worsen coronary vasospasm."),
-        Flashcard(topic: "PE", front: "Wells score above 4 for PE. Next test?",
-                  back: "CT pulmonary angiogram (D-dimer only helps when probability is low)."),
-        Flashcard(topic: "Heart failure", front: "Four drug pillars for HFrEF?",
-                  back: "ACE-I/ARNI, beta-blocker, MRA, SGLT2 inhibitor."),
-    ]
-}
+// MOCK (disabled): the screens-phase sample deck; cards now come from the database.
+// enum SampleDeck {
+//     static let cardiology: [Flashcard] = [
+//         Flashcard(topic: "ECG", front: "ST elevation in II, III and aVF points to which territory?",
+//                   back: "Inferior wall. Usually the right coronary artery."),
+//         Flashcard(topic: "Red flags", front: "Tearing chest pain radiating to the back. What must you rule out?",
+//                   back: "Aortic dissection. Compare arm blood pressures before giving antiplatelets."),
+//         Flashcard(topic: "Biomarkers", front: "Which troponin rise defines myocardial injury?",
+//                   back: "Any value above the 99th percentile upper reference limit."),
+//         Flashcard(topic: "Management", front: "First-line reperfusion for STEMI within 12 hours?",
+//                   back: "Primary PCI, if it can be done within 120 minutes of first medical contact."),
+//         Flashcard(topic: "Exam", front: "Pericardial friction rub is best heard how?",
+//                   back: "Patient leaning forward, breath held in expiration, left sternal edge."),
+//         Flashcard(topic: "Pharmacology", front: "Why avoid beta-blockers in cocaine chest pain?",
+//                   back: "Unopposed alpha stimulation can worsen coronary vasospasm."),
+//         Flashcard(topic: "PE", front: "Wells score above 4 for PE. Next test?",
+//                   back: "CT pulmonary angiogram (D-dimer only helps when probability is low)."),
+//         Flashcard(topic: "Heart failure", front: "Four drug pillars for HFrEF?",
+//                   back: "ACE-I/ARNI, beta-blocker, MRA, SGLT2 inhibitor."),
+//     ]
+// }
 
 // MARK: - Screen
 
@@ -118,8 +103,9 @@ private var flashcardsHaveDealt = false
 struct FlashcardsView: View {
     private enum Verdict { case correct, unknown }
 
+    @Environment(AppState.self) private var app
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var queue: [Flashcard] = SampleDeck.cardiology
+    @State private var queue: [Flashcard] = []
     @State private var known = 0
     @State private var missed = 0
     @State private var flipped = false
@@ -129,14 +115,30 @@ struct FlashcardsView: View {
     @State private var hintShown = flashcardsHaveDealt
     @State private var busy = false
     @State private var composing = false
-    @State private var custom: [Flashcard] = []   // cards the user added this session
+    @State private var choosingAdd = false
+    @State private var generating = false
+    @State private var confirmingClear = false
+    /// Set by the add sheet; the matching sheet opens once it has closed.
+    @State private var pendingAdd: AddCardsSheet.Choice?
 
-    private var total: Int { SampleDeck.cardiology.count + custom.count }
+    private var store: FlashcardStore { app.flashcards }
+    private var total: Int { store.studying.count }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             ScreenTitle(title: "Flashcards") {
-                Button { composing = true } label: {
+                Menu {
+                    Button(role: .destructive) { confirmingClear = true } label: {
+                        Label { Text("Clear all my cards") } icon: { Image(IconGlyph.trash.assetName) }
+                    }
+                    .disabled(store.mineCount == 0)
+                } label: {
+                    AppIcon(.more, size: 20)
+                        .foregroundStyle(Theme.text)
+                        .frame(width: 44, height: 44)
+                }
+                .accessibilityLabel("More options")
+                Button { choosingAdd = true } label: {
                     AppIcon(.plus, size: 20)
                         .foregroundStyle(.white)
                         .frame(width: 40, height: 40)
@@ -144,12 +146,16 @@ struct FlashcardsView: View {
                         .frame(width: 44, height: 44)
                 }
                 .buttonStyle(PressDownStyle())
-                .accessibilityLabel("Add a card")
+                .accessibilityLabel("Add cards")
             }
 
-            ProgressBar(value: Double(known) / Double(total), height: 4)
+            if store.decks.count > 1 { deckChips }
 
-            if queue.isEmpty {
+            ProgressBar(value: total == 0 ? 0 : Double(known) / Double(total), height: 4)
+
+            if store.cards.isEmpty && !store.isLoading {
+                emptyState
+            } else if queue.isEmpty {
                 summary.transition(.opacity.combined(with: .scale(scale: 0.96)))
             } else {
                 deck
@@ -171,13 +177,43 @@ struct FlashcardsView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Theme.bg)
         .clipped()   // cards rise from the bottom edge, never over the tab bar
+        .sheet(isPresented: $choosingAdd, onDismiss: openPendingAdd) {
+            AddCardsSheet { pendingAdd = $0 }
+        }
         .sheet(isPresented: $composing) {
             NewCardSheet { card in
-                custom.append(card)
-                withAnimation(FLIGHT.spring) { queue.insert(card, at: 0); flipped = false }
+                Task {
+                    var draft = card
+                    draft.deck = Flashcard.myDeck
+                    guard let saved = await store.add(draft) else { return }
+                    if store.selectedDeck == nil || store.selectedDeck == saved.deck {
+                        withAnimation(FLIGHT.spring) { queue.insert(saved, at: 0); flipped = false }
+                    }
+                }
             }
         }
+        .sheet(isPresented: $generating) {
+            GenerateCardsView()
+        }
+        .alert("Clear all your flashcards?", isPresented: $confirmingClear) {
+            Button("Clear \(store.mineCount) cards", role: .destructive) {
+                Task { await store.clearMine(); resetQueue() }
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("This deletes every card you wrote or generated. It can't be undone. Built-in decks stay.")
+        }
+        .alert("Something went wrong", isPresented: Binding(get: { store.problem != nil }, set: { if !$0 { store.problem = nil } })) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(store.problem ?? "")
+        }
+        .overlay(alignment: .bottom) { noticeToast }
+        .onChange(of: store.selectedDeck) { resetQueue() }
+        .onChange(of: store.cards.count) { if queue.isEmpty { resetQueue() } }
         .task {
+            await store.load()
+            resetQueue()
             await dealIn()
             #if DEBUG
             switch DebugLaunch.screen {
@@ -185,9 +221,81 @@ struct FlashcardsView: View {
             case "cards-correct": flipped = true; verdict = .correct
             case "cards-unknown": flipped = true; verdict = .unknown
             case "cards-new", "cards-new-color", "cards-new-answer": composing = true
+            case "cards-add": choosingAdd = true
+            case "cards-generate": generating = true
             default: break
             }
             #endif
+        }
+    }
+
+    // MARK: Decks and states
+
+    private var deckChips: some View {
+        ScrollView(.horizontal) {
+            HStack(spacing: 8) {
+                chip("All", count: store.cards.count, on: store.selectedDeck == nil) { store.selectedDeck = nil }
+                ForEach(store.decks, id: \.self) { deck in
+                    chip(deck, count: store.cards.filter { $0.deck == deck }.count, on: store.selectedDeck == deck) {
+                        store.selectedDeck = deck
+                    }
+                }
+            }
+            .padding(.horizontal, 20)
+        }
+        .scrollIndicators(.hidden)
+        .trailingFade()
+        .padding(.horizontal, -20)
+    }
+
+    private func chip(_ title: String, count: Int, on: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Text("\(title) · \(count)")
+                .font(.system(size: 15, weight: on ? .semibold : .regular))
+                .foregroundStyle(.white)
+                .lineLimit(1)
+                .padding(.horizontal, 14)
+                .frame(minHeight: 36)
+                // Static glass: interactive glass flares white while held, too bright for a filter chip.
+                .glassFill(on ? Theme.accent : Theme.faint, in: Capsule(), strength: on ? 1 : 0.7, interactive: false)
+        }
+        .buttonStyle(PressDownStyle())
+        .accessibilityAddTraits(on ? .isSelected : [])
+    }
+
+    private var emptyState: some View {
+        VStack(spacing: 14) {
+            Spacer(minLength: 60)
+            AppIcon(.cards, size: 44).foregroundStyle(Theme.accent)
+            Text("No cards yet").font(.system(size: 24, weight: .bold))
+            Text("Write your own, or generate a deck for the topics you're studying.")
+                .font(.system(size: 15))
+                .foregroundStyle(Theme.muted)
+                .multilineTextAlignment(.center)
+            Button("Generate cards") { generating = true }
+                .buttonStyle(PrimaryButtonStyle(height: 52))
+                .padding(.top, 8)
+            Button("Write a card") { composing = true }
+                .buttonStyle(SoftButtonStyle(height: 48, fontSize: 16))
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    @ViewBuilder
+    private var noticeToast: some View {
+        if let notice = store.notice {
+            Text(notice)
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundStyle(Theme.good)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 10)
+                .background(Theme.goodSoft, in: Capsule())
+                .padding(.bottom, 16)
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+                .task {
+                    try? await Task.sleep(for: .seconds(2.5))
+                    withAnimation(.easeOut(duration: 0.3)) { store.notice = nil }
+                }
         }
     }
 
@@ -314,9 +422,24 @@ struct FlashcardsView: View {
         }
     }
 
+    /// Starts the selected deck from its first card.
+    private func resetQueue() {
+        queue = store.studying.map { $0.copy() }
+        known = 0; missed = 0; flipped = false
+    }
+
+    private func openPendingAdd() {
+        switch pendingAdd {
+        case .write?: composing = true
+        case .generate?: generating = true
+        case nil: break
+        }
+        pendingAdd = nil
+    }
+
     private func restart() {
         withAnimation(Springs.card) {
-            queue = (custom + SampleDeck.cardiology).map { $0.copy() }
+            queue = store.studying.map { $0.copy() }
             known = 0; missed = 0; flipped = false
             dealt = false; controlsShown = false; hintShown = false
         }
@@ -380,6 +503,15 @@ struct CardFace: View {
                 .lineSpacing(3)
                 .minimumScaleFactor(0.8)
             Spacer()
+            // Generated cards say where their facts came from, so a reader can check them.
+            if let source = card.sourceLabel {
+                HStack(spacing: 6) {
+                    AppIcon(.bookOpen, size: 14)
+                    Text("Source: \(source)").lineLimit(1)
+                }
+                .font(.system(size: 13))
+                .foregroundStyle(Theme.muted)
+            }
         }
         .padding(24)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
