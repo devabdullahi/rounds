@@ -24,7 +24,7 @@ from snomed import concept, icd10cm, key
 CORE = Path(__file__).resolve().parent / "core_conditions.json"
 CLERKSHIP_LABELS = {
     "internalMedicine": "Internal medicine", "surgery": "Surgery", "pediatrics": "Pediatrics", "obgyn": "OB/GYN",
-    "psychiatry": "Psychiatry", "familyMedicine": "Family medicine", "neurology": "Neurology", "emergency": "Emergency medicine",
+    "psychiatry": "Psychiatry", "familyMedicine": "Family medicine", "neurology": "Neurology", "emergency": "Emergency medicine", "dermatology": "Dermatology",
 }
 
 

@@ -48,7 +48,7 @@ const ASSESSMENT_PANEL = "assessments";
 
 /** How a case is framed. A clinical psychology case is an outpatient intake: the same screens, with
  *  mental status observations for the exam and questionnaires for the tests. */
-export type PlanOptions = { psychology?: boolean };
+export type PlanOptions = { psychology?: boolean; dermatology?: boolean };
 
 export type PlannedTest = {
   id: string;
@@ -78,6 +78,8 @@ export type CasePlan = {
   tests: PlannedTest[];
   /** Written as a psychologist's intake (see PlanOptions). */
   psychology: boolean;
+  /** Exam written as a full skin exam with lesion morphology. */
+  dermatology: boolean;
 };
 
 function pick<T>(items: T[], rng: () => number): T {
@@ -155,7 +157,8 @@ export function planCase(profile: Profile, rng: () => number, options: PlanOptio
 
   return { slug: profile.slug, condition: profile.triage.name, severity, severityText: profile.course.severity[severity] ?? "", age, sex,
     pregnant: patient.pregnant, symptomsPresent: present, symptomsAbsent: absent, exam, vitals,
-    tests: planTests(profile, severity, patient, rng, !!options.psychology), psychology: !!options.psychology };
+    tests: planTests(profile, severity, patient, rng, !!options.psychology), psychology: !!options.psychology,
+    dermatology: !!options.dermatology };
 }
 
 /** The test menu: everything the profile's workup mentions plus routine panels, with lab results filled in. */

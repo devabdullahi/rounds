@@ -69,3 +69,9 @@ Deno.test("a psychology case keeps the usual tests when its profile scores no qu
   const plan = planCase(plain, seeded(7), { psychology: true });
   assert(plan.tests.some((t) => t.id === "cbc"));
 });
+
+Deno.test("a dermatology plan keeps the usual tests and is flagged for a skin exam", () => {
+  const plan = planCase(profiles[0], seeded(3), { dermatology: true });
+  assert(plan.dermatology && !plan.psychology);
+  assert(plan.tests.some((t) => t.id === "cbc"));
+});

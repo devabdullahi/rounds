@@ -41,7 +41,8 @@ serve(async (req) => {
 
   // Clinical psychology is a focus like any rotation; its cases are written as a psychologist's intake.
   const psychology = focus.kind === "rotation" && focus.value === "clinicalPsychology";
-  const plan = planCase(profile, Math.random, { psychology });
+  const dermatology = focus.kind === "rotation" && focus.value === "dermatology";
+  const plan = planCase(profile, Math.random, { psychology, dermatology });
   const terms = leakTerms(profile);
   let user = writerPrompt(profile, plan);
   let writing: Writing | null = null;

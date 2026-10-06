@@ -19,10 +19,16 @@ Tests are standardized questionnaires the patient fills in: in test_meta use cos
 
 `;
 
+/** A dermatology case: same screens; the exam is a skin exam charted the way a dermatologist does. */
+const DERMATOLOGY_FRAME = `Clinician: a student on a dermatology clinic rotation. The setting is an outpatient dermatology clinic.
+Maneuvers center on the skin, hair, nails and mucosa (e.g. "Inspect the rash", "Palpate the lesion", "Examine the scalp and nails", "Dermoscopy of the lesion"). Write every skin finding with its morphology as a dermatologist charts it: primary lesion type, size, color, shape and border, distribution and arrangement, and secondary changes (scale, crust, erosion). The student can't see a photo, so the words must carry the picture without naming the diagnosis.
+
+`;
+
 export function writerPrompt(profile: Profile, plan: CasePlan): string {
   const studies = plan.tests.filter((t) => t.kind === "study");
   const mustNotMiss = profile.differential.filter((d) => d.must_not_miss).map((d) => ({ name: d.name, trigger: d.trigger ?? d.why_considered }));
-  return `${plan.psychology ? PSYCHOLOGY_FRAME : ""}Hidden diagnosis (never reveal): ${plan.condition}
+  return `${plan.psychology ? PSYCHOLOGY_FRAME : ""}${plan.dermatology ? DERMATOLOGY_FRAME : ""}Hidden diagnosis (never reveal): ${plan.condition}
 Severity: ${plan.severity}: ${plan.severityText}
 Patient: ${plan.age}-year-old ${plan.age < 18 ? (plan.sex === "F" ? "girl" : "boy") : plan.sex === "F" ? "woman" : "man"}${plan.pregnant ? ", pregnant (choose a gestational age that fits the condition and say it in her facts)" : ""}. Typical setting: ${profile.triage.settings.join(", ")}.${plan.age < 13 ? " A child this age answers simply; a parent or guardian is present and can answer for them, so write facts as the child or the parent would say them." : ""}
 Vitals (already decided): ${JSON.stringify(plan.vitals)}

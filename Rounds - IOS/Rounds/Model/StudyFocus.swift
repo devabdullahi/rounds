@@ -4,10 +4,11 @@ import Foundation
 /// are tagged by topics every school shares: the core clerkships (each with an NBME shelf
 /// exam) and the USMLE organ systems. Anyone can pick any mix of both; training year
 /// plays no part. Clinical psychology sits with the rotations: its cases use the same screens,
-/// written as a psychologist's intake (mental status exam, questionnaires).
+/// written as a psychologist's intake (mental status exam, questionnaires). Dermatology is there
+/// too: its exam is charted as a skin exam with lesion morphology (Rounds has no photos).
 
 enum Clerkship: String, CaseIterable, Identifiable {
-    case internalMedicine, surgery, pediatrics, obgyn, psychiatry, familyMedicine, neurology, emergency, clinicalPsychology
+    case internalMedicine, surgery, pediatrics, obgyn, psychiatry, familyMedicine, neurology, emergency, clinicalPsychology, dermatology
     var id: String { rawValue }
 
     var label: String {
@@ -21,6 +22,7 @@ enum Clerkship: String, CaseIterable, Identifiable {
         case .neurology: "Neurology"
         case .emergency: "Emergency medicine"
         case .clinicalPsychology: "Clinical psychology"
+        case .dermatology: "Dermatology"
         }
     }
 
@@ -35,6 +37,7 @@ enum Clerkship: String, CaseIterable, Identifiable {
         case .neurology: "Headache, weakness, seizures"
         case .emergency: "Undifferentiated, time-critical"
         case .clinicalPsychology: "Intake, assessment, therapy plan"
+        case .dermatology: "Rash, lesions, itch"
         }
     }
 }
