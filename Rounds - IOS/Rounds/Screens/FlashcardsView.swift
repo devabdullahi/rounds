@@ -73,28 +73,6 @@ extension CardColor {
     var wash: Double { self == .standard ? 0 : 0.12 }
 }
 
-// MOCK (disabled): the screens-phase sample deck; cards now come from the database.
-// enum SampleDeck {
-//     static let cardiology: [Flashcard] = [
-//         Flashcard(topic: "ECG", front: "ST elevation in II, III and aVF points to which territory?",
-//                   back: "Inferior wall. Usually the right coronary artery."),
-//         Flashcard(topic: "Red flags", front: "Tearing chest pain radiating to the back. What must you rule out?",
-//                   back: "Aortic dissection. Compare arm blood pressures before giving antiplatelets."),
-//         Flashcard(topic: "Biomarkers", front: "Which troponin rise defines myocardial injury?",
-//                   back: "Any value above the 99th percentile upper reference limit."),
-//         Flashcard(topic: "Management", front: "First-line reperfusion for STEMI within 12 hours?",
-//                   back: "Primary PCI, if it can be done within 120 minutes of first medical contact."),
-//         Flashcard(topic: "Exam", front: "Pericardial friction rub is best heard how?",
-//                   back: "Patient leaning forward, breath held in expiration, left sternal edge."),
-//         Flashcard(topic: "Pharmacology", front: "Why avoid beta-blockers in cocaine chest pain?",
-//                   back: "Unopposed alpha stimulation can worsen coronary vasospasm."),
-//         Flashcard(topic: "PE", front: "Wells score above 4 for PE. Next test?",
-//                   back: "CT pulmonary angiogram (D-dimer only helps when probability is low)."),
-//         Flashcard(topic: "Heart failure", front: "Four drug pillars for HFrEF?",
-//                   back: "ACE-I/ARNI, beta-blocker, MRA, SGLT2 inhibitor."),
-//     ]
-// }
-
 // MARK: - Screen
 
 /// True after the first deal-in this app session (resets when the app is closed).
@@ -201,7 +179,7 @@ struct FlashcardsView: View {
             }
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("This deletes every card you wrote or generated. It can't be undone. Built-in decks stay.")
+            Text("This deletes every card you wrote or generated. It can't be undone.")
         }
         .alert("Something went wrong", isPresented: Binding(get: { store.problem != nil }, set: { if !$0 { store.problem = nil } })) {
             Button("OK", role: .cancel) {}
