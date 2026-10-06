@@ -1,0 +1,1242 @@
+{
+  "schema_version": "0.2",
+  "slug": "diabetic-eye-problems",
+  "triage": {
+    "name": "Diabetic Eye Problems",
+    "case_suitable": true,
+    "reason": "Vision changes in a diabetic patient with a clear screening and exam-based diagnosis; limited but real interview findings.",
+    "kind": "disease",
+    "category": "microvascular complication",
+    "organ_systems": [
+      "endocrine"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "familyMedicine"
+    ],
+    "commonness": "common",
+    "settings": [
+      "clinic"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:16:59Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:50:22Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:50:29Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:50:38Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:50:48Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "9",
+        "generated_at": "2026-10-05T07:50:54Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "differential retinal-detachment: no profile yet",
+        "differential acute-angle-closure-glaucoma: no profile yet",
+        "differential hypertensive-retinopathy: no profile yet",
+        "differential central-retinal-vein-occlusion: no profile yet",
+        "differential vitreous-hemorrhage: no profile yet",
+        "differential age-related-macular-degeneration: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 30,
+      "typical_max": 75,
+      "peak": "40–65",
+      "possible_min": 5,
+      "possible_max": 90
+    },
+    "sex": "either",
+    "demographics": [
+      "More common in people with longer duration of diabetes; prevalence rises with years since diagnosis",
+      "More common in racial and ethnic minority groups with higher diabetes prevalence and less access to eye screening",
+      "More common in people with type 1 diabetes, who often develop retinopathy earlier in life"
+    ],
+    "risk_factors": [
+      {
+        "text": "Long duration of diabetes (especially more than 10 years)",
+        "strength": "strong"
+      },
+      {
+        "text": "Poor glycemic control (high HbA1c)",
+        "strength": "strong"
+      },
+      {
+        "text": "High blood pressure",
+        "strength": "strong"
+      },
+      {
+        "text": "High blood cholesterol",
+        "strength": "moderate"
+      },
+      {
+        "text": "Pregnancy in a person with diabetes",
+        "strength": "moderate"
+      },
+      {
+        "text": "Tobacco smoking",
+        "strength": "moderate"
+      },
+      {
+        "text": "Type 1 diabetes",
+        "strength": "moderate"
+      },
+      {
+        "text": "Male sex",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Type 1 or type 2 diabetes mellitus",
+      "Hypertension",
+      "Hyperlipidemia",
+      "Chronic kidney disease",
+      "Obesity"
+    ],
+    "family_history": [
+      "Diabetes in a first-degree relative"
+    ],
+    "social_history": [
+      "Tobacco use",
+      "Limited access to regular eye care"
+    ],
+    "exposures": [],
+    "risk_medications": []
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My vision has gotten blurry",
+        "frequency": "common"
+      },
+      {
+        "text": "I see spots or dark wavy strings floating in my vision",
+        "frequency": "common"
+      },
+      {
+        "text": "I have trouble seeing at night or in dim light",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "My vision changes a lot from day to day",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "I have a dark shadow over part of my vision, like a curtain",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "I see flashes of light",
+        "frequency": "sometimes"
+      },
+      {
+        "text": "My eyes hurt and look red",
+        "frequency": "rare"
+      }
+    ],
+    "hpi": {
+      "onset": "Usually gradual and painless; often no symptoms at all until the disease is advanced. Sudden onset suggests a complication such as vitreous hemorrhage or retinal detachment.",
+      "duration": "Develops over years of diabetes; symptoms may be present for weeks to months before presentation, or noticed only on a routine eye exam.",
+      "progression": "Slowly progressive blurring and floaters as retinal blood vessels leak and new vessels grow; can suddenly worsen with bleeding into the eye or macular swelling.",
+      "location": "Both eyes, though one eye may be worse than the other",
+      "radiation": "Not applicable",
+      "quality": "Blurred or wavy vision, floaters, missing patches, or a curtain-like shadow",
+      "severity": "Mild to severe; can progress to significant vision loss if untreated",
+      "timing": "Often constant once present; floaters and flashes may come and go early on",
+      "aggravating": [
+        "High blood sugar",
+        "High blood pressure",
+        "Straining or heavy lifting (can trigger bleeding)"
+      ],
+      "relieving": [
+        "Better blood sugar control",
+        "Resting the eyes"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Blurred or wavy vision",
+          "frequency": "common"
+        },
+        {
+          "text": "Floaters (spots or dark wavy strings)",
+          "frequency": "common"
+        },
+        {
+          "text": "Difficulty seeing colors",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Flashes of light",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Dark shadow or curtain over part of vision",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Eye pain or redness",
+          "frequency": "rare"
+        }
+      ],
+      "pertinent_negatives": [
+        "Eye pain",
+        "Redness of the eye",
+        "Sudden complete vision loss",
+        "Headache with nausea and vomiting",
+        "Halos around lights",
+        "Recent eye trauma",
+        "Contact lens use"
+      ]
+    },
+    "ros": [
+      {
+        "system": "eyes",
+        "positives": [
+          {
+            "text": "Blurred vision",
+            "frequency": "common"
+          },
+          {
+            "text": "Floaters",
+            "frequency": "common"
+          },
+          {
+            "text": "Flashes of light",
+            "frequency": "sometimes"
+          },
+          {
+            "text": "Curtain-like shadow",
+            "frequency": "sometimes"
+          }
+        ],
+        "negatives": [
+          "Eye pain",
+          "Redness",
+          "Double vision",
+          "Sudden complete vision loss"
+        ],
+        "argues_against": [
+          "Acute angle-closure glaucoma",
+          "Retinal detachment"
+        ]
+      },
+      {
+        "system": "endocrine",
+        "positives": [
+          {
+            "text": "Long-standing diabetes",
+            "frequency": "almost_always"
+          },
+          {
+            "text": "High blood sugar levels",
+            "frequency": "common"
+          }
+        ],
+        "negatives": [
+          "Weight loss",
+          "Heat intolerance"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [],
+        "negatives": [
+          "Focal weakness",
+          "Numbness",
+          "Headache"
+        ],
+        "argues_against": [
+          "Stroke",
+          "Brain tumor"
+        ]
+      },
+      {
+        "system": "constitutional",
+        "positives": [],
+        "negatives": [
+          "Fever",
+          "Weight loss",
+          "Malaise"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Diabetic retinopathy can worsen rapidly during pregnancy, and symptoms may appear earlier than expected; close monitoring is needed.",
+        "missing_classic_features": [
+          "Long duration of diabetes"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "Symptoms may be attributed to aging or cataracts, and diabetic eye disease may be discovered only on routine exam.",
+        "missing_classic_features": [
+          "Acute vision changes"
+        ]
+      },
+      {
+        "population": "children",
+        "how_it_differs": "Children with type 1 diabetes rarely have retinopathy before puberty or within the first few years of diagnosis, but it can occur if diabetes is long-standing and poorly controlled.",
+        "missing_classic_features": [
+          "Long duration of diabetes"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Well-appearing, no distress; may have no visual complaints at all",
+      "moderate": "Well-appearing but reports or shows reduced central vision; no eye redness or pain",
+      "severe": "Reduced vision affecting function; may squint or hold objects closer; no acute distress",
+      "critical": "Marked vision loss or a new curtain-like visual field defect; may be anxious but not toxic"
+    },
+    "findings": [
+      {
+        "id": "reduced-visual-acuity",
+        "region": "heent",
+        "maneuver": "Check visual acuity in each eye separately with a Snellen chart (with correction)",
+        "finding": "Reduced best-corrected visual acuity, worse in one eye or both",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "essential"
+      },
+      {
+        "id": "normal-visual-acuity",
+        "region": "heent",
+        "maneuver": "Check visual acuity in each eye separately with a Snellen chart",
+        "finding": "Normal visual acuity, which does not exclude early retinopathy",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "dilated-fundus-microaneurysms",
+        "region": "heent",
+        "maneuver": "Perform a dilated fundoscopic exam and look at the retinal periphery and posterior pole",
+        "finding": "Dot-and-blot hemorrhages, microaneurysms, hard exudates, or cotton-wool spots",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "macular-edema",
+        "region": "heent",
+        "maneuver": "On dilated fundoscopy, inspect the macula for thickening, exudates, or loss of the foveal light reflex",
+        "finding": "Retinal thickening or hard exudates at the macula, suggesting diabetic macular edema",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "neovascularization",
+        "region": "heent",
+        "maneuver": "On dilated fundoscopy, examine the optic disc, retinal vessels, and iris for new vessel growth",
+        "finding": "New vessels on the disc, elsewhere on the retina, or at the iris (rubeosis iridis)",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "essential"
+      },
+      {
+        "id": "vitreous-hemorrhage",
+        "region": "heent",
+        "maneuver": "On dilated fundoscopy, look for blood obscuring the retina; assess for a relative afferent pupillary defect",
+        "finding": "Blood in the vitreous obscuring retinal details, or a relative afferent pupillary defect",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "important"
+      },
+      {
+        "id": "elevated-intraocular-pressure",
+        "region": "heent",
+        "maneuver": "Measure intraocular pressure with a tonometer",
+        "finding": "Elevated intraocular pressure, suggesting neovascular glaucoma",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important"
+      },
+      {
+        "id": "lens-opacity",
+        "region": "heent",
+        "maneuver": "Inspect the lens with a slit lamp or ophthalmoscope",
+        "finding": "Cloudy lens consistent with cataract",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional"
+      },
+      {
+        "id": "no-eye-redness",
+        "region": "heent",
+        "maneuver": "Inspect the conjunctiva and sclera in room light",
+        "finding": "White, non-injected conjunctiva without discharge",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "no-eye-pain",
+        "region": "heent",
+        "maneuver": "Ask about and assess for ocular pain on palpation or eye movement",
+        "finding": "No eye pain or tenderness",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "no-proptosis",
+        "region": "heent",
+        "maneuver": "Inspect the eyes from the front and above for proptosis or lid retraction",
+        "finding": "No proptosis or lid lag",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional"
+      },
+      {
+        "id": "normal-pupils",
+        "region": "heent",
+        "maneuver": "Test pupillary light reflexes and look for a relative afferent pupillary defect",
+        "finding": "Equal, reactive pupils without an afferent pupillary defect",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "important"
+      },
+      {
+        "id": "normal-visual-fields",
+        "region": "neuro",
+        "maneuver": "Confrontational visual fields in each eye",
+        "finding": "Full visual fields without a curtain-like defect",
+        "frequency": "common",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "normal-neurologic-exam",
+        "region": "neuro",
+        "maneuver": "Screen cranial nerves, strength, sensation, and coordination",
+        "finding": "No focal neurologic deficits",
+        "frequency": "almost_always",
+        "significance": "argues_against",
+        "importance": "important"
+      },
+      {
+        "id": "diabetic-foot-exam",
+        "region": "extremities",
+        "maneuver": "Inspect the feet and test monofilament sensation and pedal pulses",
+        "finding": "Signs of peripheral neuropathy or peripheral arterial disease, reflecting microvascular complications",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "optional"
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {},
+    "hr": {},
+    "rr": {},
+    "sbp": {
+      "mild": {
+        "min": 110,
+        "max": 139
+      },
+      "moderate": {
+        "min": 120,
+        "max": 149
+      },
+      "severe": {
+        "min": 130,
+        "max": 169
+      },
+      "critical": {
+        "min": 140,
+        "max": 190
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 70,
+        "max": 89
+      },
+      "moderate": {
+        "min": 75,
+        "max": 94
+      },
+      "severe": {
+        "min": 80,
+        "max": 104
+      },
+      "critical": {
+        "min": 90,
+        "max": 115
+      }
+    },
+    "spo2": {}
+  },
+  "labs": [
+    {
+      "test_id": "a1c",
+      "ranges": {
+        "mild": {
+          "min": 6.5,
+          "max": 7.5
+        },
+        "moderate": {
+          "min": 7.5,
+          "max": 9.0
+        },
+        "severe": {
+          "min": 9.0,
+          "max": 12.0
+        },
+        "critical": {
+          "min": 11.0,
+          "max": 15.0
+        }
+      },
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Reflects glycemic control over the past 2-3 months; higher values track with retinopathy severity and progression."
+    },
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "mild": {
+          "min": 100,
+          "max": 160
+        },
+        "moderate": {
+          "min": 140,
+          "max": 220
+        },
+        "severe": {
+          "min": 180,
+          "max": 300
+        },
+        "critical": {
+          "min": 250,
+          "max": 400
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Fasting glucose; hyperglycemia drives microvascular injury but a single value is less informative than HbA1c."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "mild": {
+          "min": 1.0,
+          "max": 1.3
+        },
+        "moderate": {
+          "min": 1.2,
+          "max": 1.8
+        },
+        "severe": {
+          "min": 1.6,
+          "max": 3.0
+        },
+        "critical": {
+          "min": 2.5,
+          "max": 6.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Diabetic nephropathy often coexists with retinopathy; renal function affects contrast and medication choices."
+    },
+    {
+      "test_id": "chol",
+      "ranges": {
+        "mild": {
+          "min": 200,
+          "max": 239
+        },
+        "moderate": {
+          "min": 220,
+          "max": 279
+        },
+        "severe": {
+          "min": 260,
+          "max": 350
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Hyperlipidemia is a modifiable risk factor for progression of diabetic eye disease."
+    },
+    {
+      "test_id": "ldl",
+      "ranges": {
+        "mild": {
+          "min": 100,
+          "max": 129
+        },
+        "moderate": {
+          "min": 130,
+          "max": 159
+        },
+        "severe": {
+          "min": 160,
+          "max": 250
+        }
+      },
+      "frequency": "common",
+      "importance": "optional"
+    },
+    {
+      "test_id": "tg",
+      "ranges": {
+        "mild": {
+          "min": 150,
+          "max": 199
+        },
+        "moderate": {
+          "min": 200,
+          "max": 499
+        },
+        "severe": {
+          "min": 500,
+          "max": 1000
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "ua_protein",
+      "qualitative": {
+        "mild": "Trace",
+        "moderate": "1+",
+        "severe": "2+"
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Proteinuria suggests concurrent diabetic nephropathy, another microvascular complication."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Pregnancy can accelerate diabetic retinopathy; check in anyone who could be pregnant before planning imaging or treatment."
+    }
+  ],
+  "imaging": [
+    {
+      "study": "Color fundus photography",
+      "modality": "other",
+      "preferred_when": "Screening and staging of diabetic retinopathy",
+      "findings": [
+        {
+          "text": "Microaneurysms and dot-and-blot hemorrhages",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Hard exudates and cotton-wool spots",
+          "frequency": "common"
+        },
+        {
+          "text": "Venous beading and intraretinal microvascular abnormalities",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Neovascularization of the disc or elsewhere",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Vitreous or preretinal hemorrhage",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "No retinopathy (normal study)",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Optical coherence tomography (OCT) of the macula",
+      "modality": "other",
+      "preferred_when": "Suspected diabetic macular edema or unexplained vision loss",
+      "findings": [
+        {
+          "text": "Retinal thickening with intraretinal cystoid spaces at the macula",
+          "frequency": "common"
+        },
+        {
+          "text": "Hyperreflective foci and subretinal fluid",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Normal macular contour",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Optical coherence tomography angiography (OCTA)",
+      "modality": "other",
+      "preferred_when": "When dye-based angiography is not available or is contraindicated",
+      "findings": [
+        {
+          "text": "Capillary nonperfusion and enlargement of the foveal avascular zone",
+          "frequency": "common"
+        },
+        {
+          "text": "Microaneurysms and neovascular networks",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Fluorescein angiography",
+      "modality": "other",
+      "preferred_when": "Planning laser treatment or evaluating suspected neovascularization",
+      "findings": [
+        {
+          "text": "Leaking microaneurysms and capillary dropout",
+          "frequency": "common"
+        },
+        {
+          "text": "Diffuse or focal leakage at the macula",
+          "frequency": "common"
+        },
+        {
+          "text": "Neovascularization with leakage",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "B-scan ocular ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "Vitreous hemorrhage obscuring the retina",
+      "findings": [
+        {
+          "text": "Vitreous opacities consistent with hemorrhage",
+          "frequency": "common"
+        },
+        {
+          "text": "Tractional retinal detachment or posterior vitreous detachment",
+          "frequency": "sometimes"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "a1c",
+        "why": "Documents glycemic control, which drives retinopathy progression"
+      },
+      {
+        "test": "bmp",
+        "why": "Assesses renal function and electrolytes, relevant to coexisting nephropathy and treatment planning"
+      },
+      {
+        "test": "lipids",
+        "why": "Identifies a modifiable vascular risk factor"
+      },
+      {
+        "test": "Dilated fundoscopic exam",
+        "why": "The primary diagnostic test; detects microaneurysms, hemorrhages, exudates, and neovascularization"
+      },
+      {
+        "test": "Color fundus photography",
+        "why": "Documents and stages retinopathy for monitoring and referral"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Optical coherence tomography (OCT) of the macula",
+        "why": "Confirms and quantifies diabetic macular edema when vision is reduced or the macula looks abnormal"
+      },
+      {
+        "test": "Fluorescein angiography",
+        "why": "Maps leaking vessels and neovascularization before laser or anti-VEGF treatment",
+        "only_if": "neovascularization or macular edema is suspected and treatment is being planned"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "ua",
+        "why": "Screens for proteinuria suggesting concurrent diabetic nephropathy"
+      },
+      {
+        "test": "hcg",
+        "why": "Pregnancy can accelerate retinopathy and affects treatment choices",
+        "only_if": "the patient could be pregnant"
+      },
+      {
+        "test": "B-scan ocular ultrasound",
+        "why": "Evaluates the retina when vitreous hemorrhage prevents direct visualization",
+        "only_if": "vitreous hemorrhage obscures the fundus"
+      },
+      {
+        "test": "Optical coherence tomography angiography (OCTA)",
+        "why": "Noninvasive assessment of retinal perfusion",
+        "only_if": "dye angiography is unavailable or contraindicated"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "cbc",
+        "why": "No role in the diagnosis or staging of diabetic eye disease"
+      },
+      {
+        "test": "hs_tnt",
+        "why": "Not indicated unless acute coronary syndrome is suspected"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in vision loss from diabetic eye disease"
+      },
+      {
+        "test": "esr",
+        "why": "Not useful; inflammatory markers do not diagnose diabetic retinopathy"
+      },
+      {
+        "test": "Head CT without contrast",
+        "why": "Not indicated for isolated visual symptoms without focal neurologic findings"
+      },
+      {
+        "test": "MRI brain with and without contrast",
+        "why": "Not indicated unless a central neurologic cause of vision loss is suspected"
+      }
+    ],
+    "decision_points": [
+      "Any sudden floaters, flashes, curtain-like visual field loss, or vision loss needs urgent ophthalmology evaluation to exclude retinal detachment or vitreous hemorrhage",
+      "Pregnancy test before planning imaging or treatment in anyone who could be pregnant",
+      "Poorly controlled blood pressure and glucose should be addressed alongside eye treatment to slow progression"
+    ],
+    "criteria": [
+      {
+        "name": "Diabetic retinopathy severity scale (ETDRS-based)",
+        "summary": "Retinopathy is graded from no apparent retinopathy through mild, moderate, and severe nonproliferative stages to proliferative retinopathy, based on the number and extent of microaneurysms, hemorrhages, venous beading, and intraretinal microvascular abnormalities; diabetic macular edema is graded separately as present or absent and by central involvement.",
+        "items": [
+          "No apparent retinopathy: no abnormalities",
+          "Mild nonproliferative: microaneurysms only",
+          "Moderate nonproliferative: more than microaneurysms but less than severe",
+          "Severe nonproliferative: extensive hemorrhages in all four quadrants, venous beading in two or more quadrants, or intraretinal microvascular abnormalities in one or more quadrants",
+          "Proliferative: neovascularization or vitreous/preretinal hemorrhage",
+          "Diabetic macular edema graded separately by central involvement"
+        ]
+      }
+    ],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Retinal detachment",
+      "slug": "retinal-detachment",
+      "why_considered": "Sudden floaters, flashes of light, and a curtain-like shadow over part of the vision are classic for retinal detachment and can also occur with diabetic tractional detachment or vitreous hemorrhage.",
+      "must_not_miss": true,
+      "trigger": "Sudden onset of flashes, a shower of floaters, or a curtain-like visual field defect",
+      "discriminators": {
+        "history": [
+          "Abrupt onset over hours to days rather than gradual",
+          "Curtain or shade descending over the vision",
+          "Recent eye trauma or eye surgery"
+        ],
+        "exam": [
+          "Visual field defect corresponding to the detached retina",
+          "Relative afferent pupillary defect",
+          "Retina visibly elevated or folded on dilated fundoscopy"
+        ],
+        "imaging": [
+          "B-scan ocular ultrasound showing a retinal membrane tethered to the optic disc",
+          "OCT showing separation of the neurosensory retina from the retinal pigment epithelium"
+        ]
+      }
+    },
+    {
+      "name": "Acute angle-closure glaucoma",
+      "slug": "acute-angle-closure-glaucoma",
+      "why_considered": "Diabetes raises the risk of glaucoma, and both can present with vision loss; acute angle closure is a sight-threatening emergency that must be excluded.",
+      "must_not_miss": true,
+      "trigger": "Severe eye pain, headache, nausea and vomiting, red eye, and halos around lights",
+      "discriminators": {
+        "history": [
+          "Sudden severe eye pain with headache and vomiting",
+          "Halos or colored rings around lights",
+          "Recent dim light exposure or use of anticholinergic medications"
+        ],
+        "exam": [
+          "Red, injected eye with a fixed mid-dilated pupil",
+          "Corneal haze and a hard eye on palpation",
+          "Markedly elevated intraocular pressure on tonometry"
+        ],
+        "labs": [
+          "No specific laboratory finding; diagnosis is clinical and tonometric"
+        ]
+      }
+    },
+    {
+      "name": "Cataract",
+      "slug": "cataract",
+      "why_considered": "Painless, gradual blurring and glare are common in diabetes, and cataracts develop earlier and faster in people with diabetes.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Slowly progressive blurring and glare, especially at night",
+          "Difficulty with night driving",
+          "No floaters or flashes"
+        ],
+        "exam": [
+          "Cloudy or opacified lens on slit lamp examination",
+          "Normal retina on dilated fundoscopy",
+          "Reduced visual acuity that improves with refraction or pinhole"
+        ]
+      }
+    },
+    {
+      "name": "Hypertensive retinopathy",
+      "slug": "hypertensive-retinopathy",
+      "why_considered": "Hypertension commonly coexists with diabetes and produces retinal hemorrhages, exudates, and cotton-wool spots that can mimic diabetic retinopathy.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Known poorly controlled hypertension",
+          "Headaches or visual symptoms in the setting of very high blood pressure"
+        ],
+        "exam": [
+          "Arteriolar narrowing, arteriovenous nicking, and flame hemorrhages",
+          "Absence of microaneurysms, which are the hallmark of diabetic retinopathy"
+        ],
+        "labs": [
+          "Elevated blood pressure readings",
+          "Renal function abnormalities suggesting hypertensive end-organ damage"
+        ]
+      }
+    },
+    {
+      "name": "Central retinal vein occlusion",
+      "slug": "central-retinal-vein-occlusion",
+      "why_considered": "Sudden painless vision loss with retinal hemorrhages in a patient with diabetes and vascular risk factors.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Sudden painless loss of vision in one eye",
+          "Often in older patients with hypertension or glaucoma"
+        ],
+        "exam": [
+          "Diffuse flame hemorrhages in all four quadrants ('blood and thunder' fundus)",
+          "Dilated, tortuous retinal veins",
+          "Disc edema and macular edema"
+        ],
+        "imaging": [
+          "Fluorescein angiography showing delayed venous filling and widespread leakage",
+          "OCT showing macular edema"
+        ]
+      }
+    },
+    {
+      "name": "Vitreous hemorrhage from other causes",
+      "slug": "vitreous-hemorrhage",
+      "why_considered": "Sudden floaters and vision loss from blood in the vitreous can occur with diabetic proliferative retinopathy but also from trauma, retinal tear, or other vascular disease.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Sudden onset of floaters or vision loss",
+          "Recent eye trauma or eye surgery",
+          "Known bleeding disorder or anticoagulant use"
+        ],
+        "exam": [
+          "Blood obscuring the retina on fundoscopy",
+          "Reduced red reflex",
+          "Relative afferent pupillary defect if severe"
+        ],
+        "imaging": [
+          "B-scan ocular ultrasound showing vitreous opacities and assessing for retinal detachment"
+        ]
+      }
+    },
+    {
+      "name": "Age-related macular degeneration",
+      "slug": "age-related-macular-degeneration",
+      "why_considered": "Central vision loss with drusen and pigmentary changes in older adults can resemble diabetic macular edema.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Central blurring or distortion (metamorphopsia)",
+          "Older age, often over 60",
+          "No history of diabetes or long-standing diabetes"
+        ],
+        "exam": [
+          "Drusen, pigmentary changes, or geographic atrophy at the macula",
+          "No microaneurysms or diabetic hemorrhages"
+        ],
+        "imaging": [
+          "OCT showing drusen, subretinal fluid, or choroidal neovascular membrane",
+          "Fluorescein angiography showing choroidal neovascular leakage"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "No apparent or mild nonproliferative retinopathy; normal or near-normal visual acuity; no macular edema; asymptomatic",
+      "moderate": "Moderate nonproliferative retinopathy or non-center-involving diabetic macular edema; mild to moderate blurring or floaters; vision still functional",
+      "severe": "Severe nonproliferative or proliferative retinopathy, center-involving macular edema, or vitreous hemorrhage; significant vision loss affecting daily activities",
+      "critical": "Not applicable; diabetic eye disease itself is not immediately life-threatening, though sudden severe vision loss requires urgent ophthalmology evaluation"
+    },
+    "red_flags": [
+      {
+        "finding": "Sudden shower of new floaters or flashes of light",
+        "meaning": "Possible vitreous hemorrhage or retinal tear/detachment; needs urgent ophthalmology evaluation"
+      },
+      {
+        "finding": "Curtain-like shadow or dark shadow over part of the vision",
+        "meaning": "Possible retinal detachment; sight-threatening emergency"
+      },
+      {
+        "finding": "Sudden painless vision loss in one eye",
+        "meaning": "Vitreous hemorrhage, retinal detachment, or vascular occlusion; urgent evaluation needed"
+      },
+      {
+        "finding": "Severe eye pain with redness, headache, nausea, and halos around lights",
+        "meaning": "Possible acute angle-closure glaucoma or neovascular glaucoma; sight-threatening emergency"
+      },
+      {
+        "finding": "New vessels on the iris (rubeosis iridis) or elevated intraocular pressure",
+        "meaning": "Neovascular glaucoma; requires urgent treatment to prevent irreversible vision loss"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Diabetic macular edema",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Blurred or wavy central vision",
+          "Hard exudates or retinal thickening at the macula on fundoscopy",
+          "OCT showing intraretinal cystoid spaces"
+        ]
+      },
+      {
+        "name": "Vitreous hemorrhage",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Sudden floaters or vision loss",
+          "Blood obscuring the retina on fundoscopy",
+          "Reduced red reflex"
+        ]
+      },
+      {
+        "name": "Tractional retinal detachment",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Curtain-like visual field defect",
+          "Retina elevated or folded on ultrasound",
+          "Severe proliferative retinopathy"
+        ]
+      },
+      {
+        "name": "Neovascular glaucoma",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Eye pain and redness",
+          "Elevated intraocular pressure",
+          "New vessels on the iris"
+        ]
+      },
+      {
+        "name": "Cataract",
+        "timing": "any",
+        "seriousness": "minor",
+        "frequency": "common",
+        "clues": [
+          "Gradual painless blurring and glare",
+          "Cloudy lens on slit lamp examination"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "pregnancy",
+        "differences": "Diabetic retinopathy can worsen rapidly during pregnancy; screening and monitoring should be more frequent, and treatment may be needed earlier."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Symptoms may be attributed to aging or cataracts; diabetic eye disease may be found only on routine dilated eye examination."
+      },
+      {
+        "population": "children",
+        "differences": "Children with type 1 diabetes rarely develop retinopathy before puberty or within the first few years of diagnosis, but it can occur with long-standing poorly controlled diabetes; screening begins after puberty or 5 years of diabetes."
+      },
+      {
+        "population": "diabetes",
+        "differences": "The underlying condition itself; duration of diabetes and glycemic control are the strongest predictors of retinopathy progression."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "How long have you had diabetes, and what type?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Long duration (especially more than 10 years) and type 1 diabetes, both of which raise the risk of retinopathy"
+      },
+      {
+        "question": "What is your vision like now compared with before, and is it blurry, wavy, or missing patches?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Gradual painless blurring or wavy central vision suggesting macular edema"
+      },
+      {
+        "question": "Do you see new spots or dark wavy strings floating in your vision?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Floaters, which suggest vitreous hemorrhage or retinal tear"
+      },
+      {
+        "question": "Have you noticed flashes of light or a dark shadow like a curtain over part of your vision?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Flashes or a curtain-like defect, which suggest retinal detachment and need urgent ophthalmology evaluation"
+      },
+      {
+        "question": "When was your last dilated eye exam?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "No recent screening; early retinopathy is usually asymptomatic and found only on dilated exam"
+      },
+      {
+        "question": "What have your blood sugar and HbA1c readings been like lately?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Poor glycemic control, which drives retinopathy progression"
+      },
+      {
+        "question": "How well controlled is your blood pressure, and do you take medication for it?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Uncontrolled hypertension, a strong modifiable risk factor"
+      },
+      {
+        "question": "Do you have high cholesterol, and are you on a statin?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Hyperlipidemia, another modifiable vascular risk factor"
+      },
+      {
+        "question": "Do you smoke or use tobacco?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Tobacco use, which raises the risk of progression"
+      },
+      {
+        "question": "Does your vision change a lot from day to day, or do you have trouble seeing colors?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Fluctuating vision and color difficulty, which occur with diabetic eye disease"
+      },
+      {
+        "question": "Do you have eye pain, redness, or halos around lights?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Pain, redness, or halos, which suggest acute angle-closure or neovascular glaucoma rather than retinopathy"
+      },
+      {
+        "question": "Could you be pregnant? When was your last period?",
+        "category": "obstetric",
+        "importance": "important",
+        "looking_for": "Pregnancy, which can accelerate retinopathy and affects treatment choices"
+      },
+      {
+        "question": "Have you had any recent eye trauma, eye surgery, or bleeding problems?",
+        "category": "ros",
+        "importance": "optional",
+        "looking_for": "Other causes of vitreous hemorrhage or retinal detachment"
+      }
+    ],
+    "accepted_names": [
+      "Diabetic eye problems",
+      "Diabetic eye disease",
+      "Diabetic retinopathy",
+      "Diabetic macular edema",
+      "DME",
+      "Proliferative diabetic retinopathy",
+      "Nonproliferative diabetic retinopathy"
+    ],
+    "reasoning_points": [
+      "Long-standing diabetes with poor glycemic control and hypertension as the main risk factors",
+      "Gradual painless blurring, floaters, or fluctuating vision in a patient with diabetes",
+      "Dilated fundoscopic exam showing microaneurysms, dot-and-blot hemorrhages, hard exudates, or cotton-wool spots",
+      "Macular thickening or exudates explaining reduced central vision (diabetic macular edema)",
+      "Neovascularization or vitreous hemorrhage indicating proliferative disease",
+      "Red flags such as flashes, a curtain-like shadow, or sudden vision loss prompting urgent ophthalmology referral",
+      "Pregnancy, blood pressure, and lipid control considered because they modify progression and treatment",
+      "Look-alikes such as retinal detachment, acute angle-closure glaucoma, cataract, and hypertensive retinopathy excluded"
+    ],
+    "difficulty": {
+      "easy": [
+        "Long-standing diabetes with classic floaters and blurred vision",
+        "Dilated fundoscopy shows microaneurysms and dot-and-blot hemorrhages",
+        "Poorly controlled HbA1c and hypertension",
+        "No eye pain or redness"
+      ],
+      "medium": [
+        "Asymptomatic patient found only on routine dilated screening exam",
+        "Reduced central vision with macular edema on OCT",
+        "Vision changes attributed to aging or cataract in an older adult",
+        "Coexisting diabetic nephropathy or neuropathy suggesting microvascular disease"
+      ],
+      "hard": [
+        "Sudden floaters and vision loss from vitreous hemorrhage obscuring the retina",
+        "Curtain-like visual field defect suggesting tractional retinal detachment",
+        "Pregnant patient with rapidly worsening retinopathy",
+        "Eye pain and redness with elevated pressure suggesting neovascular glaucoma",
+        "Normal visual acuity despite significant retinopathy"
+      ]
+    }
+  }
+}

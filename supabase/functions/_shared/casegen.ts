@@ -1,7 +1,7 @@
 // Case planning: samples one patient from a condition profile (severity, age, sex, which symptoms
 // and findings are present, vital signs, lab values). Pure and seeded, so it's testable; the LLM
 // only writes words around this plan, it never picks numbers.
-import { deriveValues, panelFor, primaryValues, report, type Severity, type Sex, TESTS, type Values } from "./labs.ts";
+import { adultOf, deriveValues, interval, panelFor, type Patient, primaryValues, report, type Severity, type Sex, TESTS, type Values } from "./labs.ts";
 
 type Range = { min: number; max: number };
 type Frequency = "almost_always" | "common" | "sometimes" | "rare";
@@ -63,6 +63,8 @@ export type CasePlan = {
   severityText: string;
   age: number;
   sex: Sex;
+  /** Pregnancy changes normal ranges and must be in the patient's story. */
+  pregnant: boolean;
   symptomsPresent: string[];
   symptomsAbsent: string[];
   exam: (ExamFinding & { present: boolean })[];
@@ -94,6 +96,25 @@ function sexFor(rule: string, rng: () => number): Sex {
   }
 }
 
+/** Conditions that only happen in pregnancy, judged from the profile's name and category. Profiles
+ *  don't yet say so explicitly; a schema field would replace this. */
+const PREGNANCY_CONDITION = /pregnan|preeclampsia|eclampsia|ectopic|gestational|placent|miscarriage|hyperemesis|preterm labor|labor and delivery/i;
+
+export function isPregnant(profile: Profile, sex: Sex, age: number): boolean {
+  const text = `${profile.triage.name} ${(profile.triage as { category?: string }).category ?? ""}`;
+  return sex === "F" && age >= 14 && PREGNANCY_CONDITION.test(text);
+}
+
+/** Vital ranges in profiles are written for adults. For a child, shift them by the gap between the
+ *  child's and an adult's normal midpoint, so "severe tachycardia" stays severe for a toddler. */
+function forPatient(id: string, value: number, patient: Patient): number {
+  if (patient.age >= 18 || id === "temp" || id === "spo2") return value;
+  const test = TESTS.get(id);
+  if (!test) return value;
+  const mid = ([lo, hi]: [number | null, number | null]) => ((lo ?? 0) + (hi ?? 0)) / 2;
+  return Math.round(value + mid(interval(test, patient)) - mid(interval(test, adultOf(patient))));
+}
+
 const atLeast = (severity: Severity, min?: Severity) => !min || SEVERITY_ORDER.indexOf(severity) >= SEVERITY_ORDER.indexOf(min);
 
 export function planCase(profile: Profile, rng: () => number): CasePlan {
@@ -102,6 +123,7 @@ export function planCase(profile: Profile, rng: () => number): CasePlan {
   const sex = sexFor(profile.patient.sex, rng);
   const { typical_min, typical_max } = profile.patient.age;
   const age = Math.round(typical_min + (typical_max - typical_min) * rng());
+  const patient: Patient = { sex, age, pregnant: isPregnant(profile, sex, age) };
 
   const symptoms = [...profile.presentation.hpi.associated_symptoms, ...profile.presentation.ros.flatMap((r) => r.positives)];
   const present = symptoms.filter((s) => rng() < PRESENT_CHANCE[s.frequency]).map((s) => s.text);
@@ -117,17 +139,19 @@ export function planCase(profile: Profile, rng: () => number): CasePlan {
   const vitals: Values = {};
   for (const id of VITAL_IDS) {
     const range = profile.vitals?.[id]?.[severity];
-    vitals[id] = range ? Math.round((range.min + (range.max - range.min) * rng()) * (id === "temp" ? 10 : 1)) / (id === "temp" ? 10 : 1) : NaN;
+    const raw = range ? range.min + (range.max - range.min) * rng() : NaN;
+    vitals[id] = id === "temp" ? Math.round(raw * 10) / 10 : forPatient(id, Math.round(raw), patient);
   }
-  const normalVitals = primaryValues(["vitals"], [], severity, sex, rng);
+  const normalVitals = primaryValues(["vitals"], [], severity, patient, rng);
   for (const id of VITAL_IDS) if (Number.isNaN(vitals[id])) vitals[id] = normalVitals[id];
 
   return { slug: profile.slug, condition: profile.triage.name, severity, severityText: profile.course.severity[severity] ?? "", age, sex,
-    symptomsPresent: present, symptomsAbsent: absent, exam, vitals, tests: planTests(profile, severity, sex, age, rng) };
+    pregnant: patient.pregnant, symptomsPresent: present, symptomsAbsent: absent, exam, vitals,
+    tests: planTests(profile, severity, patient, rng) };
 }
 
 /** The test menu: everything the profile's workup mentions plus routine panels, with lab results filled in. */
-function planTests(profile: Profile, severity: Severity, sex: Sex, age: number, rng: () => number): PlannedTest[] {
+function planTests(profile: Profile, severity: Severity, patient: Patient, rng: () => number): PlannedTest[] {
   const roles = new Map<string, { role: PlannedTest["role"]; why?: string }>();
   const group = (g: WorkupGroup) => profile.workup?.[g] ?? [];
   const notIndicated = new Set(group("not_indicated").map((t) => t.test.toLowerCase()));
@@ -145,7 +169,7 @@ function planTests(profile: Profile, severity: Severity, sex: Sex, age: number, 
   // Lab panels share one set of values so overlapping tests agree.
   const labIds = [...roles.keys()].filter((t) => panelFor(t));
   const panels = [...new Set(labIds.map((t) => panelFor(t)!))];
-  const values = deriveValues(primaryValues(panels, profile.labs ?? [], severity, sex, rng), age, sex);
+  const values = deriveValues(primaryValues(panels, profile.labs ?? [], severity, patient, rng), patient);
 
   // Ids come from names; long names that share a beginning get a numbered suffix to stay unique.
   const used = new Set<string>();
@@ -158,7 +182,7 @@ function planTests(profile: Profile, severity: Severity, sex: Sex, age: number, 
 
   return [...roles.entries()].map(([test, { role, why }]) => {
     if (panelFor(test)) {
-      const r = report(test, values, sex);
+      const r = report(test, values, patient);
       const name = TESTS.get(test)?.name ?? test.toUpperCase();
       return { id: uniqueId(test), name, kind: "lab", result: r.text, abnormal: r.abnormal, role, why };
     }

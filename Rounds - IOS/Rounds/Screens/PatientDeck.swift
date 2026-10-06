@@ -108,14 +108,17 @@ struct PatientDeck: View {
     var body: some View {
         VStack(spacing: 14) {
             ZStack {
-                // The admit card also covers the deck while a patient is being written, so the
-                // shuffle button's "admit a new patient" shows progress even with others waiting.
+                // Cards and the admit card are separate layers, not an if/else: swapping branches
+                // would fade the whole deck, pulling a swiped-off last card back into view.
+                ForEach(Array(queue.prefix(STACK.visible).enumerated()).reversed(), id: \.element.id) { depth, p in
+                    card(p, depth: depth)
+                }
+                // Also covers the deck while a patient is being written, so the shuffle button's
+                // "admit a new patient" shows progress even with others waiting.
                 if queue.isEmpty || app.isAdmitting {
                     AdmitCard(admitting: app.isAdmitting, loading: app.isLoadingWard && app.ward.isEmpty) { admit() }
-                } else {
-                    ForEach(Array(queue.prefix(STACK.visible).enumerated()).reversed(), id: \.element.id) { depth, p in
-                        card(p, depth: depth)
-                    }
+                        .zIndex(Double(STACK.visible + 1))
+                        .transition(.opacity)
                 }
             }
             .padding(.bottom, STACK.depthOffset * CGFloat(STACK.visible - 1))
