@@ -115,6 +115,7 @@ Prefer springs. Drive sequences with stage state from one `.task`, and continuou
 
 - Match the surrounding code: doc comments on types and non-obvious properties, explaining *why*. No commented-out code, no `print` left behind, no force unwraps outside previews and debug code.
 - Debug-only code goes inside `#if DEBUG` (see `DebugLaunch`). Add a `-screen` name for every new screen or state you build.
+- **One shared type per Swift file**, named after it (struct, class, enum, actor or protocol): anything other files use, including wire DTOs, test doubles and test suites. A `private` helper used only by that file may stay in it. Extensions of the file's type may stay. Some older files still hold several shared types; don't add to them.
 - Small, focused files; extract a component once it's used twice.
 - No new dependencies without asking.
 
