@@ -20,7 +20,12 @@ struct RoundsApp: App {
             RootView()
                 .environment(app)
                 .environment(auth)
-                .task { await auth.restore() }
+                .task {
+                    await auth.restore()
+                    #if DEBUG
+                    if ["settings", "profile", "profile-edit"].contains(DebugLaunch.screen) { auth.debugUse(DebugLaunch.sampleAccount) }
+                    #endif
+                }
                 // Google's sheet returning, and email confirmation links (rounds://auth-callback).
                 .onOpenURL { url in Task { await auth.open(url) } }
                 .environment(\.reference, .live)

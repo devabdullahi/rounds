@@ -9,27 +9,20 @@ import SwiftUI
  *  900ms   (page 4) "With Rounds" label pops
  *
  * Pages swipe like a carousel; Next and Back move one page. Reduce Motion: final state.
+ * The last page is the study-goal picker: Next stays off until a goal is picked, then
+ * moves on to the focus screen.
  * ───────────────────────────────────────────────────────── */
-
-/// The four intro pages a new student sees right after creating an account.
-enum IntroPage: Int, CaseIterable {
-    case patients, graded, promise, examReady
-
-    var headline: String {
-        switch self {
-        case .patients: "Patients Who\nTalk Back"
-        case .graded: "Graded On\nEvery Move"
-        case .promise: "Think Like\na Doctor"
-        case .examReady: "Walk Into Your\nExam Ready"
-        }
-    }
-}
 
 struct OnboardingIntroView: View {
     @Environment(AuthRouter.self) private var router
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var page = IntroPage.patients
+    /// The page in view. A paging scroll view, not a page-style TabView: TabView swaps pages
+    /// instantly when Next sets the selection, so Next and a swipe would move differently.
+    @State private var visible: IntroPage? = .patients
     @State private var seen: Set<IntroPage> = []
+    @AppStorage(StudyGoal.storageKey) private var goalStored = ""
+
+    private var page: IntroPage { visible ?? .patients }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -37,22 +30,28 @@ struct OnboardingIntroView: View {
                              onBack: page == .patients ? nil : { step(-1) })
                 .padding(.horizontal, 20)
 
-            TabView(selection: $page) {
-                ForEach(IntroPage.allCases, id: \.self) { p in
-                    VStack(spacing: 14) {
-                        hero(p).frame(maxHeight: 420)
-                        OnboardingHeadline(text: p.headline)
-                        Spacer(minLength: 0)
+            ScrollView(.horizontal) {
+                HStack(spacing: 0) {
+                    ForEach(IntroPage.allCases, id: \.self) { p in
+                        VStack(spacing: 14) {
+                            hero(p).frame(maxHeight: 420)
+                            OnboardingHeadline(text: p.headline)
+                            Spacer(minLength: 0)
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.top, 12)
+                        .containerRelativeFrame(.horizontal)
+                        .id(p)
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 12)
-                    .tag(p)
                 }
+                .scrollTargetLayout()
             }
-            .tabViewStyle(.page(indexDisplayMode: .never))
+            .scrollTargetBehavior(.paging)
+            .scrollIndicators(.hidden)
+            .scrollPosition(id: $visible)
 
-            OnboardingNextButton {
-                if page == .examReady { router.go(.studyGoal) } else { step(1) }
+            OnboardingNextButton(enabled: page != .studyGoal || StudyGoal(stored: goalStored) != nil) {
+                if page == .studyGoal { router.go(.focus) } else { step(1) }
             }
             .padding(.bottom, 12)
         }
@@ -61,9 +60,17 @@ struct OnboardingIntroView: View {
         #if DEBUG
         .onAppear {
             switch DebugLaunch.screen {
-            case "onboarding-graded": page = .graded
-            case "onboarding-promise": page = .promise
-            case "onboarding-graph": page = .examReady
+            case "onboarding-graded": visible = .graded
+            case "onboarding-promise": visible = .promise
+            case "onboarding-graph": visible = .examReady
+            case "onboarding-goal": visible = .studyGoal
+            case "onboarding-to-goal":
+                // Next twice: into the last intro page, then the goal picker, to watch the slides.
+                visible = .promise
+                Task {
+                    try? await Task.sleep(for: .seconds(2)); step(1)
+                    try? await Task.sleep(for: .seconds(2)); step(1)
+                }
             default: break
             }
         }
@@ -78,12 +85,13 @@ struct OnboardingIntroView: View {
         case .graded: GradedHero(shown: shown)
         case .promise: PromiseHero(shown: shown)
         case .examReady: ExamReadyHero(shown: shown)
+        case .studyGoal: StudyGoalHero(shown: shown)
         }
     }
 
     /// One page on or back; slides like a swipe, or switches instantly with Reduce Motion.
     private func step(_ by: Int) {
         guard let next = IntroPage(rawValue: page.rawValue + by) else { return }
-        withAnimation(reduceMotion ? nil : Springs.slide) { page = next }
+        withAnimation(reduceMotion ? nil : Springs.slide) { visible = next }
     }
 }

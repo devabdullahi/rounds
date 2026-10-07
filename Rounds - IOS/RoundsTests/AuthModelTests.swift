@@ -102,6 +102,36 @@ struct AuthModelTests {
         #expect(await service.welcomes.count == 1)
     }
 
+    @Test func renamingSavesTheCleanedName() async {
+        let auth = AuthModel(service: ScriptedAuth(signIn: .success(account)), defaults: defaults)
+        _ = await auth.verifyCode(email: "sam@school.edu", code: "123456")
+        #expect(await auth.rename("  Samira   Rivera ") == true)
+        #expect(auth.account?.name == "Samira Rivera")
+    }
+
+    @Test func savingTheProfileUpdatesNameAndSpecialty() async {
+        let auth = AuthModel(service: ScriptedAuth(signIn: .success(account)), defaults: defaults)
+        _ = await auth.verifyCode(email: "sam@school.edu", code: "123456")
+        #expect(await auth.saveProfile(name: " Sam  R ", specialty: .pediatrics) == true)
+        #expect(auth.account?.name == "Sam R")
+        #expect(auth.account?.specialty == .pediatrics)
+    }
+
+    @Test func theProfileNeedsAName() async {
+        let auth = AuthModel(service: ScriptedAuth(signIn: .success(account)), defaults: defaults)
+        _ = await auth.verifyCode(email: "sam@school.edu", code: "123456")
+        #expect(await auth.saveProfile(name: "  ", specialty: .pediatrics) == false)
+        #expect(auth.problem == "Add your name.")
+        #expect(auth.account?.specialty == nil)
+    }
+
+    @Test func aBlankNameIsNotSaved() async {
+        let auth = AuthModel(service: ScriptedAuth(signIn: .success(account)), defaults: defaults)
+        _ = await auth.verifyCode(email: "sam@school.edu", code: "123456")
+        #expect(await auth.rename("   ") == false)
+        #expect(auth.account?.name == "Sam Rivera")
+    }
+
     @Test func noBackendMeansNothingHappens() async {
         let auth = AuthModel(service: nil, defaults: defaults)
         #expect(await auth.sendCode(email: "a@b.co") == nil)
@@ -128,6 +158,7 @@ private struct ScriptedAuth: AuthService {
     let welcomes = Counter()
     let onboarded = Counter()
     let sent = Counter()
+    let profile = SavedProfile()
     var signIn: Result<Account, Error> = .failure(URLError(.notConnectedToInternet))
     var send: Result<Void, Error> = .success(())
 
@@ -141,4 +172,13 @@ private struct ScriptedAuth: AuthService {
     func deleteAccount() async throws {}
     func sendWelcome() async throws { await welcomes.increment() }
     func markOnboarded() async throws { await onboarded.increment() }
+    func updateName(_ name: String) async throws -> Account {
+        await profile.set(name: name)
+        return await profile.applied(to: try signIn.get())
+    }
+    func updatePhoto(_ picked: Data) async throws -> Account { try signIn.get() }
+    func updateSpecialty(_ specialty: Specialty?) async throws -> Account {
+        await profile.set(specialty: specialty)
+        return await profile.applied(to: try signIn.get())
+    }
 }

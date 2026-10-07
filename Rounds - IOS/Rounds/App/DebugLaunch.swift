@@ -3,7 +3,7 @@ import SwiftUI
 
 /// Dev-only deep link for screenshots: launch with `-screen <name>`.
 /// Names: firstopen, firstopen-auth, signin, signup, onboarding (focus), onboarding-intro, onboarding-graded,
-/// onboarding-promise, onboarding-graph, onboarding-goal, onboarding-heart, onboarding-promised, email-code,
+/// onboarding-promise, onboarding-graph, onboarding-goal, onboarding-to-goal, onboarding-heart, onboarding-promised, email-code,
 /// email-code-error, focus-system, focus-sheet, home, patients, patients-open, profile, brief, interview, examine, workup, diagnosis, debrief, diagnosis-suggest.
 enum DebugLaunch {
     static var screen: String? { UserDefaults.standard.string(forKey: "screen") }
@@ -16,7 +16,7 @@ enum DebugLaunch {
 
     private static let authScreens = ["firstopen", "firstopen-auth", "signin", "signup", "onboarding", "focus-system", "google-signin",
                                       "onboarding-intro", "onboarding-graded", "onboarding-promise", "onboarding-graph",
-                                      "onboarding-goal", "onboarding-heart", "onboarding-promised",
+                                      "onboarding-goal", "onboarding-to-goal", "onboarding-heart", "onboarding-promised",
                                       "email-code", "email-code-error"]
 
     /// Runs before the first frame so the root picks the right side (auth vs app).
@@ -33,15 +33,20 @@ enum DebugLaunch {
         }
     }
 
+    /// Fictional signed-in student for screenshots of account screens.
+    static let sampleAccount = Account(id: "debug", email: "maya.patel@school.edu", name: "Maya Patel",
+                                       provider: "google", createdAt: .now,
+                                       specialty: .emergencyMedicine, onboarded: true)
+
     static var authPath: [AuthStep] {
         switch screen {
         case "signin", "google-signin": [.signIn]
         case "signup": [.signUp]
         case "email-code", "email-code-error": [.signIn, .code(email: "maya@school.edu")]
-        case "onboarding", "focus-system": [.signUp, .intro, .studyGoal, .focus]
-        case "onboarding-intro", "onboarding-graded", "onboarding-promise", "onboarding-graph": [.signUp, .intro]
-        case "onboarding-goal": [.signUp, .intro, .studyGoal]
-        case "onboarding-heart", "onboarding-promised": [.signUp, .intro, .studyGoal, .focus, .promise]
+        case "onboarding", "focus-system": [.signUp, .intro, .focus]
+        case "onboarding-intro", "onboarding-graded", "onboarding-promise", "onboarding-graph",
+             "onboarding-goal", "onboarding-to-goal": [.signUp, .intro]
+        case "onboarding-heart", "onboarding-promised": [.signUp, .intro, .focus, .promise]
         default: []
         }
     }
@@ -51,9 +56,9 @@ enum DebugLaunch {
         switch screen {
         case "patients": tab = .patients
         case "cards", "cards-flip", "cards-correct", "cards-unknown", "cards-new", "cards-new-color", "cards-new-answer",
-             "cards-add", "cards-generate": tab = .cards
+             "cards-add", "cards-generate", "cards-generate-notes": tab = .cards
         case "patients-open": tab = .patients; expandedPatient = "R2"
-        case "profile", "settings", "profile-weakspots", "profile-badges": tab = .profile
+        case "profile", "settings", "profile-weakspots", "profile-badges", "profile-edit": tab = .profile
         case "home", "focus-sheet", "splash", "home-swipe-right", "home-swipe-left": tab = .today
         case "home-empty":
             tab = .today

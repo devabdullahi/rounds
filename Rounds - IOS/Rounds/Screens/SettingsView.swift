@@ -39,6 +39,7 @@ struct SettingsView: View {
     @State private var confirmDelete = false
     @AppStorage(StudyFocus.storageKey) private var focusStored = ""
     @State private var editingFocus = false
+    @State private var editingProfile = false
 
     private let limits: [(Int, String)] = [(5, "5 min"), (10, "10"), (15, "15"), (20, "20"), (0, "Off")]
 
@@ -50,11 +51,16 @@ struct SettingsView: View {
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
-                    // Identity lives on Profile; Settings only holds account mechanics.
+                    // Profile (photo, name, specialty) is the student's to change; email and provider come from how
+                    // they signed in, so they read as plain facts (no chevron, not tappable).
                     section("Account") {
-                        navRow(.mail, "Email", value: auth.account?.email ?? "Guest session")
+                        if let account = auth.account {
+                            navRow(.user, "Profile", value: account.name ?? "Add your name") { editingProfile = true }
+                            Hairline()
+                        }
+                        infoRow(.mail, "Email", value: auth.account?.email ?? "Guest session")
                         Hairline()
-                        navRow(.keyRound, "Signed in with", value: auth.account?.providerLabel ?? "Not signed in")
+                        infoRow(.keyRound, "Signed in with", value: auth.account?.providerLabel ?? "Not signed in")
                     }
 
                     section("Practice") {
@@ -176,6 +182,7 @@ struct SettingsView: View {
         } message: {
             Text("Your patients, grades, flashcards and badges are deleted for good. This can't be undone.")
         }
+        .sheet(isPresented: $editingProfile) { EditProfileView() }
         .alert("Something went wrong", isPresented: Binding(get: { auth.problem != nil }, set: { if !$0 { auth.problem = nil } })) {
             Button("OK", role: .cancel) {}
         } message: {
@@ -228,6 +235,24 @@ struct SettingsView: View {
     private var focusSummary: String {
         let focus = FocusSelection(stored: focusStored)
         return focus.items.count > 1 ? "\(focus.items.count) picked" : focus.label
+    }
+
+    /// A read-only fact: same look as a row, without the chevron or a tap target.
+    private func infoRow(_ glyph: IconGlyph, _ title: String, value: String) -> some View {
+        HStack(spacing: 12) {
+            iconTile(glyph)
+            Text(title).font(.system(size: 16))
+            Spacer(minLength: 12)
+            Text(value)
+                .font(.system(size: 15))
+                .foregroundStyle(Theme.muted)
+                .lineLimit(1)
+                .truncationMode(.middle)
+        }
+        .foregroundStyle(Theme.text)
+        .padding(.horizontal, 16)
+        .frame(minHeight: 56)
+        .accessibilityElement(children: .combine)
     }
 
     private func navRow(_ glyph: IconGlyph, _ title: String, value: String? = nil, detail: String? = nil, action: @escaping () -> Void = {}) -> some View {

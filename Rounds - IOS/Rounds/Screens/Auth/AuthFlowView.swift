@@ -4,7 +4,7 @@ import Observation
 /// Signed-out steps. Email sign-up and log in go through `code`; an account that hasn't finished
 /// onboarding then runs intro → studyGoal → focus → promise before entering the app.
 enum AuthStep: Hashable {
-    case signIn, signUp, intro, studyGoal, focus, promise
+    case signIn, signUp, intro, focus, promise
     case code(email: String)
 }
 
@@ -44,7 +44,6 @@ struct AuthFlowView: View {
                     case .signIn: SignInView()
                     case .signUp: SignUpView()
                     case .intro: OnboardingIntroView()
-                    case .studyGoal: StudyGoalView()
                     case .focus: FocusOnboardingView()
                     case .promise: PromiseView()
                     case .code(let email): EmailCodeView(email: email)

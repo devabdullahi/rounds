@@ -15,6 +15,7 @@ struct ProfileView: View {
 
     @State private var path: [Route] = []
     @State private var showInventoryHelp = false
+    @State private var editingProfile = false
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -28,6 +29,7 @@ struct ProfileView: View {
                     }
                 }
                 .sheet(isPresented: $showInventoryHelp) { inventoryHelp }
+                .sheet(isPresented: $editingProfile) { EditProfileView() }
         }
         #if DEBUG
         .onAppear {
@@ -35,6 +37,7 @@ struct ProfileView: View {
             case "settings": path = [.settings]
             case "profile-weakspots": path = [.weakSpots]
             case "profile-badges": path = [.badges]
+            case "profile-edit": editingProfile = true
             default: break
             }
         }
@@ -96,15 +99,29 @@ struct ProfileView: View {
     private var identityCard: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 14) {
-                // MOCK (disabled): sample identity until real accounts exist.
-                // Avatar(initials: "AK", size: 60, fg: Theme.accentInk, bg: Theme.accent)
-                // Text(SampleUser.name) / Text(SampleUser.training)
-                Avatar(initials: auth.account?.initials ?? "G", size: 60, fg: Theme.accentInk, bg: Theme.accent)
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(auth.account?.name ?? auth.account?.email ?? "Guest").font(.system(size: 20, weight: .bold)).lineLimit(1)
-                    Text(auth.account.map { "Signed in with \($0.providerLabel)" } ?? "Practice account on this device")
-                        .font(.system(size: 15)).foregroundStyle(Theme.muted).lineLimit(2)
+                // Only the identity (photo, name, specialty) opens the editor, not the rating beside it.
+                // Guests have no account to edit.
+                Button { editingProfile = true } label: {
+                    HStack(spacing: 14) {
+                        Avatar(initials: auth.account?.initials ?? "G", size: 60, fg: Theme.accentInk, bg: Theme.accent,
+                               imageURL: auth.account?.avatarURL)
+                        VStack(alignment: .leading, spacing: 2) {
+                            HStack(spacing: 6) {
+                                Text(auth.account?.name ?? auth.account?.email ?? "Guest")
+                                    .font(.system(size: 20, weight: .bold)).lineLimit(1)
+                                if auth.account != nil {
+                                    AppIcon(.pencil, size: 14).foregroundStyle(Theme.faint)
+                                }
+                            }
+                            subtitle
+                        }
+                    }
+                    .foregroundStyle(Theme.text)
+                    .contentShape(Rectangle())
                 }
+                .buttonStyle(PressableStyle())
+                .disabled(auth.account == nil)
+                .accessibilityHint(auth.account == nil ? "" : "Edit your name, photo and specialty")
                 Spacer()
                 VStack(alignment: .trailing, spacing: 0) {
                     Text(app.rating.formatted()).font(.score(22)).contentTransition(.numericText())
@@ -123,6 +140,19 @@ struct ProfileView: View {
             }
         }
         .card(radius: 20)
+    }
+
+    /// Their specialty, or a prompt to add one; guests see what kind of account they're on.
+    @ViewBuilder private var subtitle: some View {
+        if let account = auth.account {
+            Text(account.specialty?.label ?? "Add your specialty")
+                .font(.system(size: 15))
+                .foregroundStyle(account.specialty == nil ? Theme.accent : Theme.muted)
+                .lineLimit(1)
+        } else {
+            Text("Practice account on this device")
+                .font(.system(size: 15)).foregroundStyle(Theme.muted).lineLimit(2)
+        }
     }
 
     private func statTile(_ value: String, _ label: String) -> some View {

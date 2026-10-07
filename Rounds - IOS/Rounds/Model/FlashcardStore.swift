@@ -12,6 +12,8 @@ final class FlashcardStore {
     /// The first load has finished (successfully or not), so "no cards" is known, not assumed.
     private(set) var hasLoaded = false
     private(set) var isGenerating = false
+    /// Text is being read out of picked notes (on the device).
+    private(set) var isReadingNotes = false
     /// Deck being studied; nil studies every card.
     var selectedDeck: String?
     var problem: String?
@@ -76,6 +78,48 @@ final class FlashcardStore {
             cards.append(contentsOf: new)
             selectedDeck = deck
             notice = "\(new.count) cards added to \(deck)"
+            return true
+        } catch {
+            problem = error.localizedDescription
+            return false
+        }
+    }
+
+    /// Reads a picked PDF. Nil, with `problem` set, when it has too little readable text.
+    func readNotes(pdf url: URL) async -> StudyNotes? {
+        let title = url.deletingPathExtension().lastPathComponent
+        isReadingNotes = true
+        defer { isReadingNotes = false }
+        let read = await NotesReader.text(fromPDF: url)
+        return notes(title: title, amount: StudyNotes.count(read.pages, "page"), raw: read.text)
+    }
+
+    /// Reads picked photos of notes. Nil, with `problem` set, when they have too little readable text.
+    func readNotes(photos: [Data]) async -> StudyNotes? {
+        let amount = StudyNotes.count(min(photos.count, NotesReader.maxPhotos), "photo")
+        isReadingNotes = true
+        defer { isReadingNotes = false }
+        return notes(title: amount, amount: amount, raw: await NotesReader.text(fromPhotos: photos))
+    }
+
+    private func notes(title: String, amount: String, raw: String) -> StudyNotes? {
+        guard let notes = StudyNotes(title: title, amount: amount, raw: raw) else {
+            problem = "We couldn\u{2019}t read enough text in that. Try a clearer photo, or a PDF with selectable text."
+            return nil
+        }
+        return notes
+    }
+
+    /// Generates a deck from the student's notes and switches to it. Returns false if it failed.
+    func generate(notes: StudyNotes, count: Int) async -> Bool {
+        guard let service, !isGenerating else { return false }
+        isGenerating = true
+        defer { isGenerating = false }
+        do {
+            let new = try await service.generate(notes: notes.text, count: count, deck: notes.deckName)
+            cards.append(contentsOf: new)
+            selectedDeck = notes.deckName
+            notice = "\(new.count) cards added to \(notes.deckName)"
             return true
         } catch {
             problem = error.localizedDescription
