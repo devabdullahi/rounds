@@ -11,6 +11,11 @@ struct RoundsShortcuts: AppShortcutsProvider {
             "Start a \(\.$topic) patient in \(.applicationName)",
             "Give me a \(\.$topic) patient in \(.applicationName)",
         ], shortTitle: "Next Patient", systemImageName: "stethoscope")
+        AppShortcut(intent: QueuePatientIntent(), phrases: [
+            "Queue my next patient in \(.applicationName)",
+            "Queue a patient in \(.applicationName)",
+            "Queue a \(\.$topic) patient in \(.applicationName)",
+        ], shortTitle: "Queue Patient", systemImageName: "bed.double")
         AppShortcut(intent: MakeCardsIntent(), phrases: [
             "Make flashcards in \(.applicationName)",
             "Generate my cards in \(.applicationName)",

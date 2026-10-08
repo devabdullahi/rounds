@@ -199,9 +199,7 @@ final class AppState {
         defer { isAdmitting = false; isPreparingCondition = false }
         do {
             try await cases.ensureSignedIn()
-            // Topics with no conditions would fail, so draw from the ones that have some.
-            let available = focus.items.filter { (conditionCount(for: $0) ?? 1) > 0 }
-            let pick = available.randomElement() ?? .mix
+            let pick = pickTopic(from: focus)
             let clock = ContinuousClock()
             let deadline = clock.now + Self.preparingGiveUp
             while true {
@@ -224,6 +222,30 @@ final class AppState {
         } catch {
             problem = error.localizedDescription
         }
+    }
+
+    /// Admits a patient onto the ward without opening the case, for Shortcuts and Siri. One try: a
+    /// topic whose first case is still being written answers `.preparing` rather than waiting minutes.
+    func queuePatient(focus: FocusSelection) async -> QueueOutcome {
+        guard let cases else { return .failed("Rounds isn't connected to its server.") }
+        do {
+            try await cases.ensureSignedIn()
+            switch try await cases.admit(focus: pickTopic(from: focus)) {
+            case .admitted(let bed):
+                await refresh()
+                return .ready(ward.first { $0.id == bed })
+            case .preparing:
+                return .preparing
+            }
+        } catch {
+            return .failed(error.localizedDescription)
+        }
+    }
+
+    /// One topic from the focus (a random pick when several are chosen). Topics with no conditions
+    /// would fail, so it draws from the ones that have some.
+    private func pickTopic(from focus: FocusSelection) -> StudyFocus {
+        focus.items.filter { (conditionCount(for: $0) ?? 1) > 0 }.randomElement() ?? .mix
     }
 
     func open(bed: String) async {
