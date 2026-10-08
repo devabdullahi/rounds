@@ -20,6 +20,11 @@ final class FlashcardStore {
     /// Shown briefly after a deck is generated ("20 cards added to …").
     var notice: String?
 
+    /// Decks left today, once a generation has reported it.
+    private(set) var allowance: DeckAllowance?
+    /// The allowance if it still describes today.
+    var allowanceToday: DeckAllowance? { allowance.flatMap { $0.isCurrent() ? $0 : nil } }
+
     /// How many cards the generate screen offers.
     static let generateCounts = [10, 20, 30, 50]
 
@@ -73,8 +78,10 @@ final class FlashcardStore {
         defer { isGenerating = false }
         let deck = Self.deckName(for: focus)
         do {
-            let new = try await service.generate(topics: focus.items.map(\.stored), count: count,
+            let generated = try await service.generate(topics: focus.items.map(\.stored), count: count,
                                                  includeMisses: includeMisses, deck: deck)
+            let new = generated.cards
+            if let left = generated.allowance { allowance = left }
             cards.append(contentsOf: new)
             selectedDeck = deck
             notice = "\(new.count) cards added to \(deck)"
@@ -124,7 +131,9 @@ final class FlashcardStore {
         isGenerating = true
         defer { isGenerating = false }
         do {
-            let new = try await service.generate(notes: notes.text, count: count, deck: notes.deckName)
+            let generated = try await service.generate(notes: notes.text, count: count, deck: notes.deckName)
+            let new = generated.cards
+            if let left = generated.allowance { allowance = left }
             cards.append(contentsOf: new)
             selectedDeck = notes.deckName
             notice = "\(new.count) cards added to \(notes.deckName)"

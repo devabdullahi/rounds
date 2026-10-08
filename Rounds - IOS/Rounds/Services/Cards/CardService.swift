@@ -8,9 +8,9 @@ protocol CardService: Sendable {
     /// Saves a hand-written card and returns it with its row id.
     func add(_ card: Flashcard) async throws -> Flashcard
     /// Writes a deck from condition profiles for the topics (`StudyFocus.stored` values).
-    func generate(topics: [String], count: Int, includeMisses: Bool, deck: String) async throws -> [Flashcard]
+    func generate(topics: [String], count: Int, includeMisses: Bool, deck: String) async throws -> GeneratedDeck
     /// Writes a deck from text read out of the student's own notes (early preview).
-    func generate(notes: String, count: Int, deck: String) async throws -> [Flashcard]
+    func generate(notes: String, count: Int, deck: String) async throws -> GeneratedDeck
     /// Deletes every card the student wrote or generated. Built-in decks stay.
     func clearMine() async throws
 }

@@ -24,6 +24,15 @@ export async function takeQuota(userId: string, kind: QuotaKind): Promise<void> 
   if (!ok) throw new HttpError(429, `you've reached today's limit of ${cap} ${LIMITS[kind].noun}; it resets at midnight UTC`);
 }
 
+/** Units of today's allowance still free, for showing "2 of 3 left today". */
+export async function remainingToday(userId: string, kind: QuotaKind): Promise<{ remaining: number; limit: number }> {
+  const limit = dailyLimit(kind);
+  const [row] = await sql<{ used: number }[]>`
+    select used from private.usage
+    where user_id = ${userId} and day = (now() at time zone 'utc')::date and kind = ${kind}`;
+  return { remaining: Math.max(0, limit - (row?.used ?? 0)), limit };
+}
+
 /** Gives a unit back when the action it paid for failed, so a model error costs the student nothing. */
 export async function refundQuota(userId: string, kind: QuotaKind): Promise<void> {
   await sql`select private.refund_quota(${userId}, ${kind})`.catch((error) => console.error("quota refund failed", error));

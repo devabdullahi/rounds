@@ -28,20 +28,22 @@ struct LiveCardService: CardService {
         return row.flashcard(me: me)
     }
 
-    func generate(topics: [String], count: Int, includeMisses: Bool, deck: String) async throws -> [Flashcard] {
+    func generate(topics: [String], count: Int, includeMisses: Bool, deck: String) async throws -> GeneratedDeck {
         try await generate(GenerateBody(topics: topics, count: count, include_misses: includeMisses, deck: deck, notes: nil))
     }
 
-    func generate(notes: String, count: Int, deck: String) async throws -> [Flashcard] {
+    func generate(notes: String, count: Int, deck: String) async throws -> GeneratedDeck {
         try await generate(GenerateBody(topics: [], count: count, include_misses: false, deck: deck, notes: notes))
     }
 
-    private func generate(_ body: GenerateBody) async throws -> [Flashcard] {
+    private func generate(_ body: GenerateBody) async throws -> GeneratedDeck {
         let me = try await userID()
         do {
             let reply: GenerateReply = try await client.functions.invoke("generate-cards", options: FunctionInvokeOptions(body: body))
-            return reply.cards.map { CardRow(id: $0.id, user_id: me, deck: reply.deck, topic: $0.topic, front: $0.front,
-                                             back: $0.back, color: $0.color, source: $0.source).flashcard(me: me) }
+            let cards = reply.cards.map { CardRow(id: $0.id, user_id: me, deck: reply.deck, topic: $0.topic, front: $0.front,
+                                                  back: $0.back, color: $0.color, source: $0.source).flashcard(me: me) }
+            let allowance = reply.remaining_today.flatMap { left in reply.daily_limit.map { DeckAllowance(remaining: left, limit: $0) } }
+            return GeneratedDeck(cards: cards, allowance: allowance)
         } catch let FunctionsError.httpError(code, data) {
             let message = (try? JSONDecoder().decode(ErrorReply.self, from: data))?.error
             throw CaseServiceError(message: message.map { "\($0.prefix(1).uppercased())\($0.dropFirst())." } ?? "The server returned \(code).")
@@ -92,6 +94,8 @@ private struct GenerateReply: Decodable {
     struct Card: Decodable { let id: String; let topic: String; let front: String; let back: String; let source: String?; let color: String }
     let deck: String
     let cards: [Card]
+    let remaining_today: Int?
+    let daily_limit: Int?
 }
 
 private struct ErrorReply: Decodable { let error: String }

@@ -15,7 +15,7 @@ import { completeJSON } from "../_shared/llm.ts";
 import { type Profile } from "../_shared/casegen.ts";
 import { type CardFacts, cardFacts, missFacts } from "../_shared/cardfacts.ts";
 import { CARD_WRITER, NOTES_CARD_WRITER } from "../_shared/prompts.ts";
-import { withQuota } from "../_shared/quota.ts";
+import { remainingToday, withQuota } from "../_shared/quota.ts";
 
 type Request = { topics?: string[]; count?: number; include_misses?: boolean; deck?: string; notes?: string };
 type Card = { topic: string; front: string; back: string; source: string };
@@ -112,5 +112,7 @@ async function writeCards(
       color: "standard", source: c.source,
     })))}
     returning id, topic, front, back, source, color`;
-  return json({ deck, cards: saved });
+  // Lets the app show how many decks are left today; a failed lookup just leaves it out.
+  const left = await remainingToday(userId, "cards").catch(() => null);
+  return json({ deck, cards: saved, ...(left ? { remaining_today: left.remaining, daily_limit: left.limit } : {}) });
 }
