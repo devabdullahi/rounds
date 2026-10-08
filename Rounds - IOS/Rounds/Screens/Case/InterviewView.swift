@@ -34,6 +34,7 @@ struct InterviewView: View {
     let session: CaseSession
 
     @State private var tab: InterviewTab = .history
+    @State private var showingFindings = false
     @State private var draft = ""
     @FocusState private var inputFocused: Bool
     @State private var voice = VoiceController()
@@ -45,7 +46,7 @@ struct InterviewView: View {
             topBar
             Group {
                 switch tab {
-                case .history, .tests: chat
+                case .history: chat
                 case .examine: examine
                 }
             }
@@ -79,14 +80,17 @@ struct InterviewView: View {
             tab = .history
             #if DEBUG
             if DebugLaunch.screen == "examine" { tab = .examine }
-            if DebugLaunch.screen == "interview-exam" { session.examMode = true }
+            if DebugLaunch.screen == "interview-exam" || DebugLaunch.screen == "interview-exam-chat" { session.examMode = true }
+            if ["interview-chat", "interview-exam-chat", "interview-findings"].contains(DebugLaunch.screen) { session.debugSeedChat() }
+            if DebugLaunch.screen == "interview-findings" {
+                Task { try? await Task.sleep(for: .seconds(1)); showingFindings = true }
+            }
             if DebugLaunch.screen == "voice-listen" { voice.debugPin(.listening, level: 0.75, transcript: "Any sweating or feeling sick?") }
             if DebugLaunch.screen == "voice-patient" { voice.debugPin(.patientSpeaking, level: 0.5) }
             #endif
         }
         .onChange(of: tab) { _, new in
             if new != .history { voice.end() }
-            if new == .tests { router.go(.workup) }
         }
     }
 
@@ -100,15 +104,50 @@ struct InterviewView: View {
                     .padding(.leading, -9)   // chevron edge on the 20pt margin
                 Spacer()
                 VStack(spacing: 0) {
-                    Text("\(c.name), \(c.age)").font(.system(size: 17, weight: .semibold))
-                    Text(c.demeanor).font(.system(size: 13)).foregroundStyle(Theme.muted)
+                    HStack(spacing: 6) {
+                        Text("\(c.name), \(c.age)").font(.system(size: 17, weight: .semibold))
+                        // Says why the screen is bare: no suggestions, no findings until the debrief.
+                        if session.examMode {
+                            Text("Exam")
+                                .font(.system(size: 11, weight: .bold))
+                                .foregroundStyle(Theme.text)
+                                .padding(.horizontal, 7)
+                                .padding(.vertical, 2)
+                                .background(Theme.track, in: Capsule())
+                                .accessibilityLabel("Exam mode")
+                        }
+                    }
+                    // One line: the demeanor is a cue, not a paragraph.
+                    Text(c.demeanor)
+                        .font(.system(size: 13)).foregroundStyle(Theme.muted)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
                 }
                 Spacer()
                 CountdownLabel(session: session).frame(width: 64, alignment: .trailing)
             }
-            Segmented(options: [(InterviewTab.history, "History"), (.examine, "Examine"), (.tests, "Tests")], selection: $tab)
-                .padding(.horizontal, 8)
-            if !session.examMode { coverageMeter.padding(.horizontal, 8) }
+            HStack(spacing: 8) {
+                Segmented(options: [(InterviewTab.history, "History"), (.examine, "Examine")], selection: $tab)
+                // Tests open their own screen, so they're a way forward, not a third tab.
+                Button { router.go(.workup) } label: {
+                    HStack(spacing: 4) {
+                        Text("Tests")
+                        AppIcon(.arrowRight, size: 14)
+                    }
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(Theme.accentText)
+                    .padding(.horizontal, 12)
+                    .frame(minHeight: 44)
+                    .background(Theme.accentSoft, in: Capsule())
+                }
+                .buttonStyle(PressDownStyle())
+                .accessibilityHint("Opens tests to order")
+            }
+            .padding(.horizontal, 8)
+            Group {
+                if session.examMode { questionCount } else { coverageMeter }
+            }
+            .padding(.horizontal, 8)
         }
         .padding(.horizontal, 12)
         .padding(.top, 4)
@@ -117,7 +156,45 @@ struct InterviewView: View {
         .overlay(alignment: .bottom) { Rectangle().fill(Theme.text.opacity(0.10)).frame(height: 1) }
     }
 
+    /// Exam mode's sense of pace: how much has been asked, saying nothing about coverage.
+    private var questionCount: some View {
+        let asked = session.messages.filter { $0.kind == .doctor }.count
+        return Text(asked == 1 ? "1 question asked" : "\(asked) questions asked")
+            .font(.system(size: 13)).foregroundStyle(Theme.muted)
+            .contentTransition(.numericText())
+            .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    /// Facts found so far, in the order they turned up (the reveal chips in the chat).
+    private var findings: [String] { session.messages.filter { $0.kind == .reveal }.map(\.text) }
+
+    /// Tapping the meter lists what's been found, so a long chat needn't be scrolled back through.
     private var coverageMeter: some View {
+        Button { showingFindings = true } label: { coverageBar }
+            .buttonStyle(PressableStyle())
+            .accessibilityHint("Shows the findings so far")
+            .popover(isPresented: $showingFindings, arrowEdge: .top) {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Found so far").font(.system(size: 15, weight: .semibold))
+                    if findings.isEmpty {
+                        Text("Nothing yet. Findings appear as the patient tells you.")
+                            .font(.system(size: 14)).foregroundStyle(Theme.muted)
+                    } else {
+                        ForEach(findings, id: \.self) { f in
+                            HStack(spacing: 8) {
+                                AppIcon(.check, size: 14).foregroundStyle(Theme.accent)
+                                Text(f).font(.system(size: 15))
+                            }
+                        }
+                    }
+                }
+                .padding(16)
+                .frame(minWidth: 240, alignment: .leading)
+                .presentationCompactAdaptation(.popover)
+            }
+    }
+
+    private var coverageBar: some View {
         let (got, total) = session.historyCoverage
         return HStack(spacing: 10) {
             Text("Key history").font(.system(size: 13)).foregroundStyle(Theme.muted)
@@ -220,12 +297,15 @@ struct InterviewView: View {
                 ScrollView(.horizontal) {
                     HStack(spacing: 8) {
                         ForEach(unaskedSuggestions, id: \.self) { s in
+                            // Outlined, not filled: a fallback when stuck, quieter than the student's own question.
                             Button(s) { session.ask(s) }
                                 .font(.system(size: 14))
-                                .foregroundStyle(.white)
+                                .foregroundStyle(Theme.accentText)
+                                .lineLimit(1)
                                 .padding(.horizontal, 12)
                                 .frame(minHeight: 36)
-                                .glassCapsule(tint: Theme.accent)
+                                .background(Theme.surface, in: Capsule())
+                                .overlay(Capsule().strokeBorder(Theme.accent.opacity(0.5)))
                                 .buttonStyle(.plain)
                                 .disabled(session.isPatientTyping)
                         }

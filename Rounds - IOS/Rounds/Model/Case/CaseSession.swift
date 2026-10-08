@@ -172,3 +172,23 @@ final class CaseSession {
         return g
     }
 }
+
+#if DEBUG
+extension CaseSession {
+    /// `-screen interview-chat` / `interview-exam-chat`: a short fictional exchange for screenshots,
+    /// with reveal chips only in practice mode (as in a real case).
+    func debugSeedChat() {
+        let lines: [(ChatMessage.Kind, String)] = [
+            (.doctor, "Hi, I'm a student doctor. What brings you in today?"),
+            (.patient, "I've had this painful sore inside my mouth for about four days. It hurts to eat."),
+            (.reveal, "Onset: 4 days"),
+            (.doctor, "Have you had sores like this before?"),
+            (.patient, "A few times a year, usually when I'm stressed. They go away on their own."),
+            (.reveal, "Recurrent episodes"),
+            (.doctor, "Any fever, rash, or sores anywhere else?"),
+            (.patient, "No fever. Nothing anywhere else that I've noticed."),
+        ]
+        messages = lines.filter { !examMode || $0.0 != .reveal }.map { ChatMessage(kind: $0.0, text: $0.1) }
+    }
+}
+#endif
