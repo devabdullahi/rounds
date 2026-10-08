@@ -13,7 +13,11 @@ enum SupabaseService {
             !urlString.isEmpty, !key.isEmpty,
             let url = URL(string: urlString)
         else { return nil }
-        return SupabaseClient(supabaseURL: url, supabaseKey: key)
+        // Opt in to the SDK's next-major behaviour (supabase-swift#822): the stored session is
+        // emitted as the initial session as-is, even if expired. Nothing here listens to auth
+        // events; every call goes through `auth.session`, which refreshes an expired session.
+        return SupabaseClient(supabaseURL: url, supabaseKey: key,
+                              options: SupabaseClientOptions(auth: .init(emitLocalSessionAsInitialSession: true)))
     }()
 
     static var isConfigured: Bool { client != nil }
