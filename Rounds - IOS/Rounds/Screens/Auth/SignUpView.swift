@@ -13,7 +13,7 @@ struct SignUpView: View {
                 IconButton(glyph: .chevronLeft, label: "Back to welcome", quiet: true) { router.back() }
                 Spacer()
             }
-            .padding(.leading, 7)   // chevron edge on the 24pt auth margin
+            .padding(.leading, 21)   // circle edge on the 24pt auth margin (3pt inset in the hit box)
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {

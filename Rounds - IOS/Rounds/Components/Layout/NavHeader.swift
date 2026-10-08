@@ -17,8 +17,8 @@ struct NavHeader<Leading: View, Trailing: View>: View {
                 Spacer()
                 trailing.frame(width: 64, alignment: .trailing)
             }
-            // A 22pt Phosphor caret in a 44pt hit box starts ~17pt in; 3pt lead puts its edge on the 20pt margin.
-            .padding(.leading, 3)
+            // The 38pt back circle sits 3pt inside its 44pt hit box: 17pt lead puts its edge on the 20pt margin.
+            .padding(.leading, 17)
             .padding(.trailing, 12)
         }
         .frame(maxWidth: .infinity)

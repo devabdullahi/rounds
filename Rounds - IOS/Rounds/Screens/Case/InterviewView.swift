@@ -101,7 +101,7 @@ struct InterviewView: View {
             HStack {
                 IconButton(glyph: .chevronLeft, label: "Back to door note") { router.back() }
                     .frame(width: 64, alignment: .leading)
-                    .padding(.leading, -9)   // chevron edge on the 20pt margin
+                    .padding(.leading, 5)   // circle edge on the 20pt margin (12 bar padding + 5 + 3pt inset)
                 Spacer()
                 VStack(spacing: 0) {
                     HStack(spacing: 6) {
