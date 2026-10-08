@@ -43,3 +43,15 @@ struct CommandKeywordsTests {
         #expect(CommandKeywords.topic(in: "I'm ready for a patient") == nil)
     }
 }
+
+@Suite("Siri commands guide")
+struct SiriCommandGuideTests {
+    /// Every example in the guide must do what its row says, read by the keyword fallback.
+    @Test func askExamplesAreUnderstood() {
+        #expect(SiriCommand.ask.phrases.allSatisfy { CommandKeywords.parse($0) != .unclear })
+    }
+
+    @Test func everyTopicIsListed() {
+        #expect(SiriCommand.topicNames.count == CommandKeywords.topics.count)
+    }
+}
