@@ -135,8 +135,9 @@ final class FlashcardStore {
             let new = generated.cards
             if let left = generated.allowance { allowance = left }
             cards.append(contentsOf: new)
-            selectedDeck = notes.deckName
-            notice = "\(new.count) cards added to \(notes.deckName)"
+            // The server names notes decks after their topic ("Heart failure"), so use its name.
+            selectedDeck = generated.deck
+            notice = "\(new.count) cards added to \(generated.deck)"
             return true
         } catch {
             problem = error.localizedDescription

@@ -2,7 +2,7 @@
 // (ROLE … QUALITY STANDARD). Bump PROMPT_VERSION when any of them changes so stored cases
 // record which prompts produced them.
 
-export const PROMPT_VERSION = "5";
+export const PROMPT_VERSION = "6";
 
 /** generate-case: writes a fictional patient around a plan made by code. */
 export const CASE_WRITER = `# ROLE
@@ -341,6 +341,8 @@ You have access to:
 - Skip text that isn't study material (shopping lists, messages, schedules).
 - One idea per card. Questions under 220 characters, answers under 160, answers start with the answer itself.
 - Use US wording and units (°F, mg/dL); don't name exams or question banks.
+- Ask about the topic itself, never about the notes. Don't write "according to your notes", "what do the notes say", "in the lecture", "the slides", "the text" or similar: a card should read the same as if no notes existed.
+- Give the deck a short title naming the topic the notes cover (for example "Heart failure" or "Asthma management"), not the file, the class or the word "notes".
 
 # ERROR HANDLING
 If information is missing:
@@ -354,10 +356,11 @@ If the task cannot be completed:
 
 # OUTPUT
 Return:
-JSON only: {"cards": [{"topic": "short topic from the notes, e.g. 'Heart failure'", "front": "question", "back": "answer", "source": "the source id given"}]}
+JSON only: {"title": "the topic the notes cover, e.g. 'Heart failure'", "cards": [{"topic": "short topic, e.g. 'Heart failure'", "front": "question", "back": "answer", "source": "the source id given"}]}
 
 # QUALITY STANDARD
 Before responding, verify:
 - Every answer is supported by the notes.
 - No card identifies a real person.
+- No card mentions the notes, a lecture, slides or any other source.
 - Each card tests one idea a student would want to remember.`;
