@@ -11,10 +11,6 @@ final class AppState {
 
     /// The server's rating, loaded on refresh and updated by each grade; every account starts at 1200.
     var rating = AppState.residentFloor
-    // Sample stats until the screens that show them read from the server.
-    var redFlagRate = 0.72
-    var rotationDone = 9
-    let rotationTotal = 20
 
     /// The student's generated patients, newest first.
     private(set) var ward: [WardPatient] = []
@@ -147,6 +143,11 @@ final class AppState {
     }
     /// "71%", or a dash before the first graded case.
     var rightDiagnosisText: String { rightDiagnosisRate.map { "\(Int(($0 * 100).rounded()))%" } ?? "–" }
+
+    /// Progress through a focus, from graded cases; nil before the condition counts load.
+    func focusProgress(_ selection: FocusSelection) -> FocusProgress? {
+        .of(graded, in: selection, counts: topicCounts)
+    }
 
     /// Conditions a focus can draw from; nil before the counts load.
     func conditionCount(for focus: StudyFocus) -> Int? {
@@ -335,7 +336,6 @@ final class AppState {
         checkUnlocks()
         lastGrade = grade
         rating = grade.rating
-        rotationDone = min(rotationTotal, rotationDone + 1)
         if let i = ward.firstIndex(where: { $0.id == patient }) {
             ward[i].misses = grade.missedRedFlags
             ward[i].lastScore = grade.score
