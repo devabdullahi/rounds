@@ -43,10 +43,9 @@ enum DebugLaunch {
         case "signin", "google-signin": [.signIn]
         case "signup": [.signUp]
         case "email-code", "email-code-error": [.signIn, .code(email: "maya@school.edu")]
-        case "onboarding", "focus-system": [.signUp, .intro, .focus]
         case "onboarding-intro", "onboarding-graded", "onboarding-promise", "onboarding-graph",
-             "onboarding-goal", "onboarding-to-goal": [.signUp, .intro]
-        case "onboarding-heart", "onboarding-promised": [.signUp, .intro, .focus, .promise]
+             "onboarding-goal", "onboarding-to-goal", "onboarding", "focus-system",
+             "onboarding-heart", "onboarding-promised": [.signUp, .onboarding]
         default: []
         }
     }

@@ -6,16 +6,6 @@ import SwiftUI
 
 // MARK: - Chrome
 
-/// Where each onboarding screen sits on the shared progress bar: the four intro pages, then
-/// study goal, focus and the promise.
-enum OnboardingStep {
-    static let introPages = 4
-    static let studyGoal = introPages + 1
-    static let focus = introPages + 2
-    static let promise = introPages + 3
-    static let total = promise
-}
-
 /// Back button plus a segmented progress bar, filled up to `current` (1-based).
 struct OnboardingTopBar: View {
     let total: Int

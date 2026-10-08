@@ -21,71 +21,49 @@ private enum HEART {
     static let tick = Duration.milliseconds(16)
 }
 
-/// Last onboarding step: the student promises to show up by holding the heart until it fills.
-struct PromiseView: View {
-    @Environment(AuthRouter.self) private var router
-    @Environment(AuthModel.self) private var auth
+/// Last onboarding page: the student promises to show up by holding the heart until it fills.
+/// The carousel (`OnboardingView`) owns the heart's state, since its bottom control and back
+/// button change once the promise is made.
+struct PledgePage: View {
+    @Binding var heart: HoldToCommit
+    /// Mirrors the press, so the carousel's hint can say "Keep holding…".
+    @Binding var isHolding: Bool
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @AppStorage(StudyGoal.storageKey) private var goalStored = ""
     @AppStorage(StudyFocus.storageKey) private var focusStored = ""
 
-    @State private var heart = HoldToCommit()
     /// Resets by itself when the touch ends *or* the system cancels it (a call, Control Center),
     /// so the heart can never keep filling with no finger on it.
     @GestureState private var pressing = false
     private var holding: Bool { pressing && !heart.isDone }
 
     var body: some View {
-        VStack(spacing: 0) {
-            OnboardingTopBar(total: OnboardingStep.total, current: OnboardingStep.promise,
-                             onBack: heart.isDone ? nil : { router.back() })
-                .padding(.horizontal, 20)
-
-            VStack(spacing: 14) {
-                HeroCanvas {
-                    Ellipse().stroke(Theme.wrong.opacity(0.12)).frame(width: 320, height: 300).at(15, 50)
-                    Ellipse().stroke(Theme.wrong.opacity(0.10)).frame(width: 240, height: 220).at(55, 90)
-                    Sparkle().fill(Theme.surface).frame(width: 28, height: 28).at(24, 40)
-                    Sparkle().fill(Theme.surface).frame(width: 24, height: 40).at(300, 290)
-                    if let goal = StudyGoal(stored: goalStored) { HeroTag(text: goal.label).at(4, 270) }
-                    HeroTag(text: FocusSelection(stored: focusStored).label).at(196, 70)
-                }
-                .overlay { heartButton }
-                .frame(maxHeight: 420)
-
-                OnboardingHeadline(text: heart.isDone ? "Promise Made" : "I Promise to Show Up\nfor My Patients")
-                    .contentTransition(.opacity)
-                    .animation(.easeOut(duration: 0.25), value: heart.isDone)
+        VStack(spacing: 14) {
+            HeroCanvas {
+                Ellipse().stroke(Theme.wrong.opacity(0.12)).frame(width: 320, height: 300).at(15, 50)
+                Ellipse().stroke(Theme.wrong.opacity(0.10)).frame(width: 240, height: 220).at(55, 90)
+                Sparkle().fill(Theme.surface).frame(width: 28, height: 28).at(24, 40)
+                Sparkle().fill(Theme.surface).frame(width: 24, height: 40).at(300, 290)
+                if let goal = StudyGoal(stored: goalStored) { HeroTag(text: goal.label).at(4, 270) }
+                HeroTag(text: FocusSelection(stored: focusStored).label).at(196, 70)
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 12)
+            .overlay { heartButton }
+            .frame(maxHeight: 420)
 
+            OnboardingHeadline(text: heart.isDone ? "Promise Made" : "I Promise to Show Up\nfor My Patients")
+                .contentTransition(.opacity)
+                .animation(.easeOut(duration: 0.25), value: heart.isDone)
             Spacer(minLength: 0)
-            Group {
-                if heart.isDone {
-                    OnboardingNextButton(title: "Get Started") { auth.finishOnboarding() }
-                        .transition(reduceMotion ? .opacity : .opacity.combined(with: .scale(scale: 0.95)))
-                } else {
-                    Text(holding ? "Keep holding\u{2026}" : "Press and hold")
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundStyle(Theme.warnText)
-                        .frame(height: 60)
-                        .accessibilityHidden(true)   // the heart's own hint covers it
-                }
-            }
-            .padding(.bottom, 12)
-            .animation(.easeOut(duration: 0.25), value: heart.isDone)
         }
-        .background(HeroWash(tint: Theme.heroBlush))
+        .padding(.horizontal, 20)
+        .padding(.top, 12)
         .sensoryFeedback(.impact(weight: .light), trigger: heart.quarter) { old, new in new > old && new < 4 }
         .sensoryFeedback(.success, trigger: heart.isDone) { _, done in done }
         .onChange(of: heart.isDone) { _, done in
             if done { AccessibilityNotification.Announcement("Promise made").post() }
         }
         .task(id: holding) { await run() }
-        #if DEBUG
-        .onAppear { if DebugLaunch.screen == "onboarding-promised" { heart.complete() } }
-        #endif
+        .onChange(of: holding) { _, now in isHolding = now }
     }
 
     private var heartButton: some View {
