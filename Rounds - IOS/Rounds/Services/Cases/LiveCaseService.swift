@@ -37,10 +37,11 @@ struct LiveCaseService: CaseService {
         return rows.compactMap(\.gradedCase)
     }
 
-    func rating() async throws -> Int {
+    func rating() async throws -> Int? {
         let user = try await client.auth.session.user.id
-        let row: RatingRow = try await client.from("profiles").select("rating").eq("id", value: user).single().execute().value
-        return row.rating
+        let rows: [RatingRow] = try await client.from("profiles").select("rating").eq("id", value: user)
+            .limit(1).execute().value
+        return rows.first?.rating
     }
 
     func topicCounts() async throws -> [String: Int] {

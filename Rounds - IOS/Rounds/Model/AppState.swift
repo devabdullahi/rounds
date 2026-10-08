@@ -163,7 +163,7 @@ final class AppState {
             self.ward = try await ward
             self.topicCounts = try await counts
             self.graded = try await graded
-            self.rating = try await rating
+            self.rating = try await rating ?? Self.residentFloor
             problem = nil
             checkUnlocks()
         } catch {
