@@ -52,7 +52,7 @@ struct BadgesView: View {
                             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: GRID.spacing), count: GRID.columns),
                                       spacing: GRID.spacing) {
                                 ForEach(items) { status in
-                                    Button { shown = status } label: { BadgeCard(status: status, scale: cardScale) }
+                                    Button { shown = status } label: { BadgeCard(status: status, scale: cardScale, compact: true) }
                                         .buttonStyle(PressDownStyle())
                                         .accessibilityHint("Shows how to earn it")
                                 }

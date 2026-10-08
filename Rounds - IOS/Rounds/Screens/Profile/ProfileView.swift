@@ -61,7 +61,7 @@ struct ProfileView: View {
 
                 HStack(alignment: .top, spacing: 10) {
                     statTile("\(app.patientsSeen)", "Patients seen")
-                    statTile("\(Int(app.rightDiagnosisRate * 100))%", "Correct diagnosis")
+                    statTile(app.rightDiagnosisText, "Correct diagnosis")
                     statTile("\(app.bestStreak)", "Best streak")
                 }
                 .fixedSize(horizontal: false, vertical: true)
@@ -125,13 +125,13 @@ struct ProfileView: View {
                 Spacer()
                 VStack(alignment: .trailing, spacing: 0) {
                     Text(app.rating.formatted()).font(.score(22)).contentTransition(.numericText())
-                    Text("Silver tier").font(.system(size: 13)).foregroundStyle(Theme.muted)
+                    Text(app.tier.label).font(.system(size: 13)).foregroundStyle(Theme.muted)
                 }
             }
             VStack(spacing: 4) {
                 ProgressBar(value: app.tierProgress)
                 HStack {
-                    Text("\(app.toNextTier) to Gold")
+                    Text(app.tier.toNextLabel(app.rating))
                     Spacer()
                     Text("Season ends Dec 1")
                 }

@@ -90,7 +90,7 @@ enum DebugLaunch {
             case "workup": path = [.interview, .workup]
             case "diagnosis", "diagnosis-suggest", "diagnosis-ddx", "diagnosis-ddx-add": path = [.interview, .workup, .diagnosis]
             case "handoff": path = [.interview, .workup, .diagnosis, .handoff]
-            case "debrief": path = [.interview, .workup, .diagnosis, .handoff, .debrief]
+            case "debrief", "debrief-graded": path = [.interview, .workup, .diagnosis, .handoff, .debrief]
             default: path = []
             }
             app.debugInitialPath = path

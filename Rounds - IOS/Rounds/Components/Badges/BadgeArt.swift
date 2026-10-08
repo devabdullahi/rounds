@@ -3,7 +3,7 @@ import SwiftUI
 /// Badge artwork from game-icons.net (CC BY 3.0), white template images in `Assets.xcassets/Badges`.
 /// Each icon's artist is credited in Settings › Acknowledgements (`credits`).
 enum BadgeArt: String, CaseIterable, Sendable {
-    case podiumThird = "badge-podium-third", podiumSecond = "badge-podium-second"
+    case podiumSecond = "badge-podium-second"
     case podiumWinner = "badge-podium-winner", jewelCrown = "badge-jewel-crown"
     case returnArrow = "badge-return-arrow"
     // Set cards

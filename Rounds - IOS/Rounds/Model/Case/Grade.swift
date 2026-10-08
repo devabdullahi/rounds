@@ -14,3 +14,15 @@ struct Grade {
     let feedback: [Feedback]
     let missedRedFlags: [Miss]
 }
+
+#if DEBUG
+extension Grade {
+    /// A fictional, partly wrong grade for the `debrief-graded` screen.
+    static let debugSample = Grade(
+        score: 64, diagnosisCorrect: false, diagnosis: "Acute cholecystitis",
+        verdict: "Close, but the fever and Murphy sign pointed past biliary colic.", ratingDelta: -8, rating: 1292,
+        feedback: [Feedback(tone: .good, title: "Focused history", detail: "You pinned down the pain's timing and its link to meals."),
+                   Feedback(tone: .miss, title: "Fever not followed up", detail: "A fever with right upper quadrant pain calls for a CBC and an ultrasound.", coversMiss: "Fever with RUQ pain")],
+        missedRedFlags: [Miss(flag: "Fever with RUQ pain", why: "Suggests inflammation or infection, not simple colic.")])
+}
+#endif

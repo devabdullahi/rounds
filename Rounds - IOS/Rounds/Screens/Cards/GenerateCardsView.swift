@@ -14,8 +14,12 @@ struct GenerateCardsView: View {
     @State private var includeMisses = true
     /// The grid's "mix it up" row; nothing picked already means a mix here.
     @State private var mixChosen = true
-    @State private var source = DeckSource.topics
+    @State private var source: DeckSource
     private var fromNotes: Bool { source == .notes }
+
+    init(startWithMistakes: Bool = false) {
+        _source = State(initialValue: startWithMistakes ? .mistakes : .topics)
+    }
     @State private var notes: StudyNotes?
     @State private var photoItems: [PhotosPickerItem] = []
     @State private var pickingPDF = false
@@ -140,10 +144,12 @@ struct GenerateCardsView: View {
     private var bottomBar: some View {
         VStack(spacing: 8) {
             if source == .mistakes && !hasMistakes {
-                Text("Nothing to review yet")
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(Theme.muted)
-                    .frame(maxWidth: .infinity, minHeight: 54)
+                // Nothing to review: the way forward is a case.
+                Button("See your patients") {
+                    dismiss()
+                    app.returnToPatients = true
+                }
+                .buttonStyle(PrimaryButtonStyle(height: 54))
             } else if fromNotes && notes == nil {
                 Text(store.isReadingNotes ? "Reading your notes…" : "Add notes to continue")
                     .font(.system(size: 16, weight: .semibold))
@@ -198,7 +204,7 @@ struct GenerateCardsView: View {
                 Text("Cards focus on what tells each condition apart and what you can't miss.")
                     .font(.system(size: 13)).foregroundStyle(Theme.muted)
             } else {
-                Text("No mistakes yet. Once a graded case has a wrong diagnosis or a missed red flag, you can review it here.")
+                Text("No mistakes yet. Wrong diagnoses and missed red flags land here.")
                     .font(.system(size: 15)).foregroundStyle(Theme.muted)
                     .fixedSize(horizontal: false, vertical: true)
             }

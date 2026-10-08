@@ -5,13 +5,15 @@ import SwiftUI
 struct BadgeCard: View {
     let status: BadgeStatus
     var scale: CGFloat = 1
+    /// Name and art only, for small sizes where the small print can't be read.
+    var compact = false
 
     static let size = CGSize(width: 180, height: 252)
 
     var body: some View {
         Group {
             if status.unlocked {
-                BadgeCardFront(status: status)
+                BadgeCardFront(status: status, compact: compact)
             } else if status.hidden {
                 BadgeCardBack(progress: nil, secret: true)
             } else {

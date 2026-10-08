@@ -46,6 +46,9 @@ struct MainTabsView: View {
             tab = .patients
             app.returnToPatients = false
         }
+        .onChange(of: app.reviewMistakesRequested) { _, go in
+            if go { tab = .cards }
+        }
         // The streak, big and centred, over the tabs.
         .overlay {
             if app.showingStreak {

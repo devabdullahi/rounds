@@ -460,8 +460,7 @@ struct PatientsView: View {
             HStack(alignment: .top, spacing: 12) {
                 VStack(alignment: .leading, spacing: 0) {
                     Text("Correct diagnosis").font(.system(size: 13)).foregroundStyle(Theme.muted)
-                    Text("\(Int(app.rightDiagnosisRate * 100))%").font(.mono(26))
-                    Text("up from 64%").font(.system(size: 13)).foregroundStyle(Theme.good)
+                    Text(app.rightDiagnosisText).font(.mono(26))
                 }
                 .card(padding: 14, fillHeight: true)
                 VStack(alignment: .leading, spacing: 0) {

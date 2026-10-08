@@ -85,6 +85,8 @@ struct FlashcardsView: View {
     @State private var composing = false
     @State private var choosingAdd = false
     @State private var generating = false
+    /// Opens the Generate sheet on Mistakes (from a debrief) instead of Topics.
+    @State private var generateFromMistakes = false
     @State private var confirmingClear = false
     /// Set by the add sheet; the matching sheet opens once it has closed.
     @State private var pendingAdd: AddCardsSheet.Choice?
@@ -170,8 +172,15 @@ struct FlashcardsView: View {
                 }
             }
         }
+        .onChange(of: app.reviewMistakesRequested, initial: true) { _, go in
+            guard go else { return }
+            app.reviewMistakesRequested = false
+            generateFromMistakes = true
+            generating = true
+        }
+        .onChange(of: generating) { _, open in if !open { generateFromMistakes = false } }
         .sheet(isPresented: $generating) {
-            GenerateCardsView()
+            GenerateCardsView(startWithMistakes: generateFromMistakes)
         }
         .alert("Clear all your flashcards?", isPresented: $confirmingClear) {
             Button("Clear \(store.mineCount) cards", role: .destructive) {

@@ -8,10 +8,9 @@ struct BadgeTests {
         BadgeCatalog.status(for: record).first { $0.badge.id == id }
     }
 
-    @Test func everyoneHasBronzeAndNoOneStartsWithMore() {
-        let fresh = BadgeRecord(rating: 1000, bestStreak: 0, cases: [])
-        let unlocked = BadgeCatalog.status(for: fresh).filter(\.unlocked).map(\.badge.id)
-        #expect(unlocked == ["bronze"])
+    @Test func noOneStartsWithABadge() {
+        let fresh = BadgeRecord(rating: AppState.residentFloor, bestStreak: 0, cases: [])
+        #expect(BadgeCatalog.status(for: fresh).filter(\.unlocked).isEmpty)
     }
 
     @Test func lockedBadgesShowProgress() {
@@ -37,7 +36,7 @@ struct BadgeTests {
     @Test func newUnlocksSkipSeenOnesAndPlayRarestFirst() {
         let record = BadgeRecord(rating: 2100, bestStreak: 0, cases: [])
         let statuses = BadgeCatalog.status(for: record)
-        let new = BadgeCatalog.newlyUnlocked(statuses, seen: ["bronze", "silver"])
+        let new = BadgeCatalog.newlyUnlocked(statuses, seen: ["silver"])
         // Platinum also completes the rating-tiers set; legendary cards play before the epic Gold.
         #expect(Set(new.prefix(2).map(\.badge.id)) == ["platinum", "set-tier"])
         #expect(new.last?.badge.id == "gold")
@@ -46,7 +45,7 @@ struct BadgeTests {
     @Test func cardsKnowTheirPlaceInTheSet() {
         let record = BadgeRecord(rating: 1000, bestStreak: 0, cases: [])
         #expect(status("hat-trick", record)?.setNumber == "SKL 08/14")
-        #expect(status("bronze", record)?.setNumber == "TIER 01/04")
+        #expect(status("silver", record)?.setNumber == "TIER 01/03")
     }
 
     @Test func smallCardsShowBigGoalsAsAPercentage() {
@@ -67,10 +66,10 @@ struct BadgeTests {
         #expect(status("rotation-tour", BadgeRecord(rating: 1000, bestStreak: 0, cases: cases))?.current == 2)
     }
 
-    @Test func thereAre55CardsWithUniqueIDs() {
-        #expect(BadgeCatalog.individual.count == 48)
-        #expect(BadgeCatalog.all.count == 55)
-        #expect(Set(BadgeCatalog.all.map(\.id)).count == 55)
+    @Test func thereAre54CardsWithUniqueIDs() {
+        #expect(BadgeCatalog.individual.count == 47)
+        #expect(BadgeCatalog.all.count == 54)
+        #expect(Set(BadgeCatalog.all.map(\.id)).count == 54)
         for group in Badge.Group.allCases {
             #expect(BadgeCatalog.all.contains { $0.group == group }, "\(group) has badges")
         }

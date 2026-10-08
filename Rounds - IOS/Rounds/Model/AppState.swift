@@ -9,10 +9,9 @@ final class AppState {
     /// Flashcard decks: built-in plus the student's own and generated ones.
     let flashcards: FlashcardStore
 
-    // Sample stats until the profile screen reads them from the server.
-    var rating = 1482
-    var patientsSeen = 216
-    var rightDiagnosisRate = 0.71
+    /// The server's rating, loaded on refresh and updated by each grade; every account starts at 1200.
+    var rating = AppState.residentFloor
+    // Sample stats until the screens that show them read from the server.
     var redFlagRate = 0.72
     var rotationDone = 9
     let rotationTotal = 20
@@ -130,7 +129,6 @@ final class AppState {
     var activeCase: CaseSession?
     var debugInitialPath: [CaseStep] = []
 
-    nonisolated static let fellowThreshold = 1600
     nonisolated static let residentFloor = 1200
 
     init(cases: (any CaseService)?, cards: (any CardService)?) {
@@ -138,10 +136,17 @@ final class AppState {
         self.flashcards = FlashcardStore(service: cards)
     }
 
-    var tierProgress: Double {
-        Double(rating - Self.residentFloor) / Double(Self.fellowThreshold - Self.residentFloor)
+    var tier: RatingTier { .of(rating) }
+    var tierProgress: Double { tier.progress(rating) }
+
+    /// Graded cases, counting one just finished before the server's copy arrives.
+    var patientsSeen: Int { graded.count }
+    /// Share of graded cases with the right diagnosis; nil before the first one.
+    var rightDiagnosisRate: Double? {
+        graded.isEmpty ? nil : Double(graded.filter(\.diagnosisCorrect).count) / Double(graded.count)
     }
-    var toNextTier: Int { max(0, Self.fellowThreshold - rating) }
+    /// "71%", or a dash before the first graded case.
+    var rightDiagnosisText: String { rightDiagnosisRate.map { "\(Int(($0 * 100).rounded()))%" } ?? "–" }
 
     /// Conditions a focus can draw from; nil before the counts load.
     func conditionCount(for focus: StudyFocus) -> Int? {
@@ -225,11 +230,14 @@ final class AppState {
 
     /// Set when a graded case closes; the tab view switches to Patients and clears it.
     var returnToPatients = false
+    /// Set from the debrief's "Make cards"; the tab view opens Cards, whose Generate sheet starts on
+    /// Mistakes and clears it.
+    var reviewMistakesRequested = false
 
-    /// Closes a graded case and lands on the ward.
-    func finishCase() {
+    /// Closes a graded case and lands on the ward, or on a mistakes deck when the student asked for one.
+    func finishCase(reviewingMistakes: Bool = false) {
         debriefSettled = false
-        returnToPatients = true
+        if reviewingMistakes { reviewMistakesRequested = true } else { returnToPatients = true }
         activeCase = nil
         // The graded case may have unlocked a badge; the refresh queues its moment.
         Task { await refresh() }
@@ -327,7 +335,6 @@ final class AppState {
         checkUnlocks()
         lastGrade = grade
         rating = grade.rating
-        patientsSeen += 1
         rotationDone = min(rotationTotal, rotationDone + 1)
         if let i = ward.firstIndex(where: { $0.id == patient }) {
             ward[i].misses = grade.missedRedFlags

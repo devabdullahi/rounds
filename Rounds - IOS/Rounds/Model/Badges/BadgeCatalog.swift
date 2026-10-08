@@ -1,10 +1,10 @@
 import Foundation
 
 enum BadgeCatalog {
-    /// Rating floors for the tier badges (the identity card's "to Gold" uses the same Gold floor).
+    /// Rating floors for the tier badges; `RatingTier` names the profile's bands after them.
     /// Every account starts at the resident floor (1200), so Silver sits above it: earned, not given.
     static let silverRating = 1300
-    static let goldRating = AppState.fellowThreshold
+    static let goldRating = 1600
     static let platinumRating = 2000
 
     /// Every badge: the individual ones, then a set card per group that completes when the whole group does.
@@ -23,7 +23,6 @@ enum BadgeCatalog {
 
     /// What the student did, said as a clinical accomplishment once the card is earned.
     static let achieved: [String: String] = [
-        "bronze": "Started your residency in Rounds.",
         "silver": "Reached a \(silverRating) rating.",
         "gold": "Reached a \(goldRating) rating.",
         "platinum": "Reached a \(platinumRating) rating. Top of the ward.",
@@ -90,8 +89,6 @@ enum BadgeCatalog {
 
     private static let base: [Badge] = [
         // Rating tiers
-        Badge(id: "bronze", name: "Bronze", detail: "Every new student starts here.", art: .podiumThird,
-              group: .tier, rarity: .common, goal: 1, measure: { _ in 1 }),
         Badge(id: "silver", name: "Silver", detail: "Reach a \(silverRating) rating.", art: .podiumSecond,
               group: .tier, rarity: .rare, goal: silverRating, measure: { $0.rating }),
         Badge(id: "gold", name: "Gold", detail: "Reach a \(goldRating) rating.", art: .podiumWinner,
