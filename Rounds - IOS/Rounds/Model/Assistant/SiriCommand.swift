@@ -22,10 +22,11 @@ struct SiriCommand: Identifiable, Sendable {
                     phrases: ["What's my streak in Rounds", "Check my Rounds streak"]),
     ]
 
-    /// Ask Rounds: Siri asks what to do, and any wording works.
+    /// Ask Rounds: Siri asks what to do, and the student answers in their own words, for the same
+    /// actions as above.
     static let ask = SiriCommand(
         id: "ask", title: "Say it your way",
-        detail: "Say \"Ask Rounds\". When Siri asks what to do, answer in your own words.",
+        detail: "Say \"Ask Rounds\". When Siri asks what to do, ask for any of the above in your own words.",
         phrases: ["Get a kidney patient ready for after dinner", "Drill me on 30 lung flashcards",
                   "Go over the stuff I messed up", "How many days in a row have I done this?"])
 

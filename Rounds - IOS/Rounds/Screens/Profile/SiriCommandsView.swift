@@ -24,7 +24,7 @@ struct SiriCommandsView: View {
                     }
 
                     VStack(alignment: .leading, spacing: 8) {
-                        Eyebrow("Say anything")
+                        Eyebrow("In your own words")
                         commandRow(SiriCommand.ask, quoted: true).listSurface()
                     }
 
