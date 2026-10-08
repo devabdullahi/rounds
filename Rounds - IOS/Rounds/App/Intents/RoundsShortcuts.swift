@@ -1,9 +1,16 @@
 import AppIntents
 
-/// The phrases Siri knows without any setup. Apple requires the app's name in each one, and at
-/// most one parameter per phrase.
+/// The phrases Siri knows without any setup. Apple requires the app's name in each one, at most one
+/// parameter per phrase, and only fixed-choice parameters, so free-form requests go through Ask
+/// Rounds, where Siri asks for them.
 struct RoundsShortcuts: AppShortcutsProvider {
     static var appShortcuts: [AppShortcut] {
+        AppShortcut(intent: AskRoundsIntent(), phrases: [
+            "Ask \(.applicationName)",
+            "Talk to \(.applicationName)",
+            "Tell \(.applicationName) something",
+            "Hey \(.applicationName)",
+        ], shortTitle: "Ask Rounds", systemImageName: "text.bubble")
         AppShortcut(intent: StartPatientIntent(), phrases: [
             "Start my next patient in \(.applicationName)",
             "Next patient in \(.applicationName)",

@@ -15,13 +15,6 @@ struct StartPatientIntent: AppIntent {
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
         guard IntentSupport.isSignedIn else { return .result(dialog: IntentSupport.signInFirst) }
-        // A case already open is the next patient; don't stack another on top.
-        guard app.activeCase == nil else { return .result(dialog: "Your current patient is still waiting.") }
-        let focus = IntentSupport.focus(topic)
-        app.showTodayRequested = true
-        // Admitting can take minutes for a new topic; the Today tab shows the progress, so Siri
-        // doesn't wait on it.
-        Task { await app.admit(focus: focus) }
-        return .result(dialog: focus.isMix ? "Admitting your next patient." : "Admitting a patient from \(focus.label).")
+        return .result(dialog: IntentActions.startPatient(app, focus: IntentSupport.focus(topic)))
     }
 }
