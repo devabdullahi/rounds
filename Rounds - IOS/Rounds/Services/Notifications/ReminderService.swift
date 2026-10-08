@@ -7,4 +7,6 @@ protocol ReminderService: Sendable {
     func requestPermission() async -> Bool
     /// Replaces any pending streak reminder with this one, or clears it when nil.
     func schedule(_ reminder: StreakReminder?) async
+    /// Posts a notification now, for work that finished after Siri stopped waiting.
+    func announce(title: String, body: String) async
 }

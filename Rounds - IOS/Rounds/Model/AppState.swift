@@ -243,6 +243,8 @@ final class AppState {
     /// Set from the debrief's "Make cards"; the tab view opens Cards, whose Generate sheet starts on
     /// Mistakes and clears it.
     var reviewMistakesRequested = false
+    /// Set by Siri's "next patient"; the tab view shows Today, where the admission plays out.
+    var showTodayRequested = false
 
     /// Closes a graded case and lands on the ward, or on a mistakes deck when the student asked for one.
     func finishCase(reviewingMistakes: Bool = false) {
@@ -256,6 +258,11 @@ final class AppState {
             // The graded case may have unlocked a badge; the refresh queues its moment.
             await refresh()
         }
+    }
+
+    /// Tells the student something finished while the app wasn't watching (a deck made from Siri).
+    func announce(title: String, body: String) async {
+        await reminders?.announce(title: title, body: body)
     }
 
     /// Moves the reminder to two hours before the streak resets, or clears it with no streak.

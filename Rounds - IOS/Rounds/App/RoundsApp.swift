@@ -1,16 +1,21 @@
+import AppIntents
 import SwiftUI
 
 @main
 struct RoundsApp: App {
-    @State private var app = AppState(cases: SupabaseService.client.map { LiveCaseService(client: $0) },
-                                      cards: SupabaseService.client.map { LiveCardService(client: $0) },
-                                      reminders: LocalReminderService())
+    @State private var app: AppState
     @State private var auth = AuthModel(service: SupabaseService.client.map { LiveAuthService(client: $0) })
     /// 0 = follow the system, 1 = light, 2 = dark.
     @AppStorage("appearance") private var appearance = 0
     @AppStorage("signedIn") private var signedIn = false
 
     init() {
+        let app = AppState(cases: SupabaseService.client.map { LiveCaseService(client: $0) },
+                           cards: SupabaseService.client.map { LiveCardService(client: $0) },
+                           reminders: LocalReminderService())
+        _app = State(initialValue: app)
+        // Siri and Shortcuts act on the same app state the screens show.
+        AppDependencyManager.shared.add { app }
         #if DEBUG
         DebugLaunch.prepareDefaults()
         #endif
