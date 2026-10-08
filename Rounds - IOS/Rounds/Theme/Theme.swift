@@ -75,6 +75,15 @@ enum Theme {
     /// Streak flame, Later button, LATER stamp: true red (no orange in the app).
     static let streak     = Color.adaptive(dark: 0xE5011A, light: 0xE5011A)
     static let streakSoft = Color.adaptive(dark: 0xE5011A, light: 0xE5011A, darkOpacity: 0.12, lightOpacity: 0.10)
+    /// The streak pill's colour for each week of a streak (days 0–6, 7–13, …), then repeating.
+    /// Each carries white text at 4.8:1 or better. Indexed by `Streak.weekColorIndex`.
+    static let streakWeeks: [Color] = [
+        streak,                                            // red
+        Color.adaptive(dark: 0xC4166F, light: 0xC4166F),   // magenta, 5.7:1
+        Color.adaptive(dark: 0x7B3FE4, light: 0x7B3FE4),   // purple, 5.7:1
+        Color.adaptive(dark: 0x1D5FE6, light: 0x1D5FE6),   // blue, 5.5:1
+        Color.adaptive(dark: 0x0B7C86, light: 0x0B7C86),   // teal, 5.0:1
+    ]
     /// Badge cards read as physical trading cards: dark stock and rarity inks, the same in both
     /// modes. Every rarity ink clears 4.5:1 on the card stock (lowest: common, about 5.6:1).
     static let cardStock       = Color.adaptive(dark: 0x14161E, light: 0x14161E)

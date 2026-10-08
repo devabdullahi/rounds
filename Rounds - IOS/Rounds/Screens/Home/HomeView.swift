@@ -118,7 +118,9 @@ struct HomeView: View {
                     .foregroundStyle(.white)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 6)
-                    .glassCapsule(tint: Theme.streak)
+                    // A new colour every 7 days of streak.
+                    .glassCapsule(tint: Theme.streakWeeks[Streak.weekColorIndex(app.streak)])
+                    .animation(.easeInOut(duration: 0.4), value: Streak.weekColorIndex(app.streak))
                 }
                 .buttonStyle(PressableStyle())
                 .accessibilityLabel("\(app.streak) day streak")

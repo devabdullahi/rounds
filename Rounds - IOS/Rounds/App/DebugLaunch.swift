@@ -69,6 +69,9 @@ enum DebugLaunch {
         case "badge-unlock":
             tab = .profile
             app.debugUnlockRandomBadge()
+        case let name where name.hasPrefix("home-streak-"):
+            tab = .today
+            app.debugStreak = Int(name.dropFirst("home-streak-".count))
         case "home-preparing":
             tab = .today
             app.debugShowPreparing()
