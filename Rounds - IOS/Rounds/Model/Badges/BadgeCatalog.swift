@@ -9,7 +9,7 @@ enum BadgeCatalog {
     /// Every badge: the individual ones, then a set card per group that completes when the whole group does.
     static let all: [Badge] = individual + setCards
 
-    /// The 35 individual badges, with their achievement lines and secret flags filled in.
+    /// The individual badges, with their achievement lines and secret flags filled in.
     static let individual: [Badge] = base.map { badge in
         var badge = badge
         badge.achieved = achieved[badge.id] ?? badge.detail
@@ -50,6 +50,19 @@ enum BadgeCatalog {
         "specialist": "Averaged 80+ over 10 cases in one rotation.",
         "systems-check": "Saw a case in every organ system.",
         "comeback": "Came back to a patient you'd missed and got it right.",
+        "five-patients": "Worked up 5 patients.",
+        "right-call": "Made your first right diagnosis.",
+        "solid-score": "Scored 70+ on a case.",
+        "all-clear": "Screened every red flag on a case.",
+        "full-history": "Took a complete history.",
+        "clean-workup": "Ordered only the tests that mattered.",
+        "double": "Made 2 right diagnoses in a row.",
+        "back-again": "Came back for a second day.",
+        "weekend-rounds": "Practiced on a weekend.",
+        "second-rotation": "Worked in a second rotation.",
+        "body-tour": "Saw cases in 3 organ systems.",
+        "ten-known": "Knew 10 flashcards.",
+        "on-the-clock": "Finished a case against the clock.",
         "first-deck": "Built your first flashcard deck.",
         "note-taker": "Turned your own notes into a deck.",
         "learn-from-misses": "Made cards from red flags you'd missed.",
@@ -59,11 +72,11 @@ enum BadgeCatalog {
         "exam-ready": "Scored 85+ in exam mode.",
     ]
 
-    /// One card per group, earned when every badge in it is.
+    /// One card per group, earned when every badge in it is, as rare as the group's hardest card.
     static let setCards: [Badge] = Badge.Group.allCases.filter { $0 != .sets }.map { group in
         let members = base.filter { $0.group == group }
         return Badge(id: "set-\(group.rawValue)", name: "\(group.label) set", detail: "Earn every \(group.label.lowercased()) card.",
-                     art: setArt[group] ?? .crown, group: .sets, rarity: .legendary, goal: members.count,
+                     art: setArt[group] ?? .crown, group: .sets, rarity: members.map(\.rarity).max() ?? .rare, goal: members.count,
                      measure: { record in members.filter { $0.measure(record) >= $0.goal }.count },
                      achieved: "Completed the \(group.label.lowercased()) set.")
     }
@@ -88,16 +101,30 @@ enum BadgeCatalog {
         // Patients seen
         Badge(id: "first-patient", name: "First patient", detail: "Finish your first case.", art: .stethoscope,
               group: .volume, rarity: .common, goal: 1, measure: { $0.cases.count }),
+        Badge(id: "five-patients", name: "Five patients", detail: "Finish 5 cases.", art: .hospital,
+              group: .volume, rarity: .common, goal: 5, measure: { $0.cases.count }),
         Badge(id: "ten-patients", name: "Ten patients", detail: "Finish 10 cases.", art: .personInBed,
-              group: .volume, rarity: .rare, goal: 10, measure: { $0.cases.count }),
+              group: .volume, rarity: .common, goal: 10, measure: { $0.cases.count }),
         Badge(id: "fifty-patients", name: "Fifty patients", detail: "Finish 50 cases.", art: .threeFriends,
-              group: .volume, rarity: .epic, goal: 50, measure: { $0.cases.count }),
+              group: .volume, rarity: .rare, goal: 50, measure: { $0.cases.count }),
         Badge(id: "full-census", name: "Full census", detail: "Finish 100 cases.", art: .hospitalCross,
-              group: .volume, rarity: .legendary, goal: 100, measure: { $0.cases.count }),
+              group: .volume, rarity: .epic, goal: 100, measure: { $0.cases.count }),
 
         // Clinical skill
+        Badge(id: "right-call", name: "Right call", detail: "Get a diagnosis right.", art: .onTarget,
+              group: .skill, rarity: .common, goal: 1, measure: { $0.cases.filter(\.diagnosisCorrect).count }),
+        Badge(id: "solid-score", name: "Solid score", detail: "Score 70 or more on a case.", art: .thumbUp,
+              group: .skill, rarity: .common, goal: 1, measure: { $0.cases.filter { $0.score >= 70 }.count }),
+        Badge(id: "all-clear", name: "All clear", detail: "Finish a case without missing a red flag.", art: .checklist,
+              group: .skill, rarity: .common, goal: 1, measure: { $0.cases.filter { $0.missedRedFlags == 0 }.count }),
+        Badge(id: "full-history", name: "Full history", detail: "Uncover every key history point on a case.", art: .notebook,
+              group: .skill, rarity: .common, goal: 1, measure: { fullMarks(.history, in: $0.cases) }),
+        Badge(id: "clean-workup", name: "Clean workup", detail: "Order only the tests that matter on a case.", art: .testTubes,
+              group: .skill, rarity: .common, goal: 1, measure: { fullMarks(.tests, in: $0.cases) }),
+        Badge(id: "double", name: "Double", detail: "Get 2 diagnoses right in a row.", art: .doubleShot,
+              group: .skill, rarity: .common, goal: 2, measure: { longestCorrectRun($0.cases) }),
         Badge(id: "textbook", name: "Textbook workup", detail: "Score 85 or more with the right diagnosis.", art: .ruleBook,
-              group: .skill, rarity: .rare, goal: 1, measure: { $0.cases.filter { $0.diagnosisCorrect && $0.score >= 85 }.count }),
+              group: .skill, rarity: .common, goal: 1, measure: { $0.cases.filter { $0.diagnosisCorrect && $0.score >= 85 }.count }),
         Badge(id: "hat-trick", name: "Hat trick", detail: "Get 3 diagnoses right in a row.", art: .targetArrows,
               group: .skill, rarity: .rare, goal: 3, measure: { longestCorrectRun($0.cases) }),
         Badge(id: "sharp-history", name: "Sharp history", detail: "Uncover every key history point on 10 cases.", art: .magnifyingGlass,
@@ -107,21 +134,25 @@ enum BadgeCatalog {
         Badge(id: "on-a-roll", name: "On a roll", detail: "Get 5 diagnoses right in a row.", art: .focusedLightning,
               group: .skill, rarity: .epic, goal: 5, measure: { longestCorrectRun($0.cases) }),
         Badge(id: "red-flag-hunter", name: "Red-flag hunter", detail: "Finish 10 cases without missing a can't-miss condition.", art: .siren,
-              group: .skill, rarity: .epic, goal: 10, measure: { $0.cases.filter { $0.missedRedFlags == 0 }.count }),
+              group: .skill, rarity: .rare, goal: 10, measure: { $0.cases.filter { $0.missedRedFlags == 0 }.count }),
         Badge(id: "safety-net", name: "Safety net", detail: "Screen for every red flag on 25 cases.", art: .healingShield,
-              group: .skill, rarity: .legendary, goal: 25, measure: { $0.cases.filter { $0.missedRedFlags == 0 }.count }),
+              group: .skill, rarity: .epic, goal: 25, measure: { $0.cases.filter { $0.missedRedFlags == 0 }.count }),
         Badge(id: "perfect", name: "Perfect score", detail: "Score 100 on a case.", art: .laurelCrown,
               group: .skill, rarity: .legendary, goal: 1, measure: { $0.cases.filter { $0.score >= 100 }.count }),
 
         // Habits
         Badge(id: "warming-up", name: "Warming up", detail: "Keep a 3-day streak.", art: .flame,
               group: .habit, rarity: .common, goal: 3, measure: { $0.bestStreak }),
+        Badge(id: "back-again", name: "Back again", detail: "Practice on 2 different days.", art: .calendar,
+              group: .habit, rarity: .common, goal: 2, measure: { practiceDays($0.cases) }),
+        Badge(id: "weekend-rounds", name: "Weekend rounds", detail: "Finish a case on a Saturday or Sunday.", art: .sunset,
+              group: .habit, rarity: .common, goal: 1, measure: { weekendCases($0.cases) }),
         Badge(id: "night-shift", name: "Night shift", detail: "Finish a case after 10 pm.", art: .nightSky,
               group: .habit, rarity: .common, goal: 1, measure: { finished($0.cases, hours: 22..<24) }),
         Badge(id: "early-rounds", name: "Early rounds", detail: "Finish a case before 7 am.", art: .sunrise,
               group: .habit, rarity: .common, goal: 1, measure: { finished($0.cases, hours: 4..<7) }),
         Badge(id: "week-streak", name: "Week streak", detail: "Keep a 7-day streak.", art: .fluffyFlame,
-              group: .habit, rarity: .rare, goal: 7, measure: { $0.bestStreak }),
+              group: .habit, rarity: .common, goal: 7, measure: { $0.bestStreak }),
         Badge(id: "two-weeks", name: "Two weeks", detail: "Keep a 14-day streak.", art: .fireGem,
               group: .habit, rarity: .rare, goal: 14, measure: { $0.bestStreak }),
         Badge(id: "month-streak", name: "Month streak", detail: "Keep a 30-day streak.", art: .flameSpin,
@@ -130,16 +161,20 @@ enum BadgeCatalog {
               group: .habit, rarity: .legendary, goal: 100, measure: { $0.bestStreak }),
 
         // Range
+        Badge(id: "second-rotation", name: "Second rotation", detail: "Finish cases in 2 different rotations.", art: .flagObjective,
+              group: .range, rarity: .common, goal: 2, measure: { Set($0.cases.compactMap(\.clerkship)).count }),
+        Badge(id: "body-tour", name: "Body tour", detail: "Finish cases in 3 organ systems.", art: .heartOrgan,
+              group: .range, rarity: .common, goal: 3, measure: { Set($0.cases.compactMap(\.system)).count }),
         Badge(id: "explorer", name: "Explorer", detail: "Finish cases in 5 different rotations.", art: .compass,
-              group: .range, rarity: .rare, goal: 5, measure: { Set($0.cases.compactMap(\.clerkship)).count }),
+              group: .range, rarity: .common, goal: 5, measure: { Set($0.cases.compactMap(\.clerkship)).count }),
         Badge(id: "rotation-tour", name: "Rotation tour", detail: "Finish a case in every rotation.", art: .treasureMap,
-              group: .range, rarity: .epic, goal: Clerkship.allCases.count, measure: { Set($0.cases.compactMap(\.clerkship)).count }),
+              group: .range, rarity: .rare, goal: Clerkship.allCases.count, measure: { Set($0.cases.compactMap(\.clerkship)).count }),
         Badge(id: "specialist", name: "Specialist", detail: "Finish 10 cases in one rotation, averaging 80 or more.", art: .targetPrize,
               group: .range, rarity: .epic, goal: 10, measure: { specialistCases($0.cases) }),
         Badge(id: "comeback", name: "Comeback", detail: "Score 85 or more on a patient you previously missed.", art: .returnArrow,
-              group: .range, rarity: .epic, goal: 1, measure: { comebacks($0.cases) }),
+              group: .range, rarity: .rare, goal: 1, measure: { comebacks($0.cases) }),
         Badge(id: "systems-check", name: "Systems check", detail: "Finish a case in every organ system.", art: .dna,
-              group: .range, rarity: .legendary, goal: OrganSystem.allCases.count, measure: { Set($0.cases.compactMap(\.system)).count }),
+              group: .range, rarity: .rare, goal: OrganSystem.allCases.count, measure: { Set($0.cases.compactMap(\.system)).count }),
 
         // Study
         Badge(id: "first-deck", name: "First deck", detail: "Generate your first flashcard deck.", art: .tiedScroll,
@@ -147,17 +182,21 @@ enum BadgeCatalog {
         Badge(id: "note-taker", name: "Note taker", detail: "Make a deck from your own notes.", art: .scrollQuill,
               group: .study, rarity: .common, goal: 1, measure: { $0.notesDecks }),
         Badge(id: "learn-from-misses", name: "Learn from misses", detail: "Generate a deck that includes red flags you missed.", art: .eyeTarget,
-              group: .study, rarity: .rare, goal: 1, measure: { $0.missDecks }),
+              group: .study, rarity: .common, goal: 1, measure: { $0.missDecks }),
+        Badge(id: "ten-known", name: "Ten known", detail: "Mark 10 flashcards as known.", art: .upCard,
+              group: .study, rarity: .common, goal: 10, measure: { $0.cardsKnown }),
         Badge(id: "card-shark", name: "Card shark", detail: "Mark 100 flashcards as known.", art: .brainstorm,
-              group: .study, rarity: .epic, goal: 100, measure: { $0.cardsKnown }),
+              group: .study, rarity: .rare, goal: 100, measure: { $0.cardsKnown }),
 
         // Exam mode
+        Badge(id: "on-the-clock", name: "On the clock", detail: "Finish a case with a time limit on.", art: .hourglass,
+              group: .exam, rarity: .common, goal: 1, measure: { $0.cases.filter(\.timed).count }),
         Badge(id: "no-hints", name: "No hints", detail: "Finish a case in exam mode.", art: .nightVision,
               group: .exam, rarity: .common, goal: 1, measure: { $0.cases.filter(\.examMode).count }),
         Badge(id: "beat-the-clock", name: "Beat the clock", detail: "Get the diagnosis right with a time limit on.", art: .stopwatch,
-              group: .exam, rarity: .rare, goal: 1, measure: { $0.cases.filter { $0.timed && $0.diagnosisCorrect }.count }),
+              group: .exam, rarity: .common, goal: 1, measure: { $0.cases.filter { $0.timed && $0.diagnosisCorrect }.count }),
         Badge(id: "exam-ready", name: "Exam ready", detail: "Score 85 or more in exam mode.", art: .starMedal,
-              group: .exam, rarity: .epic, goal: 1, measure: { $0.cases.filter { $0.examMode && $0.score >= 85 }.count }),
+              group: .exam, rarity: .rare, goal: 1, measure: { $0.cases.filter { $0.examMode && $0.score >= 85 }.count }),
     ]
 
     static func status(for record: BadgeRecord) -> [BadgeStatus] {
@@ -228,6 +267,16 @@ enum BadgeCatalog {
     /// Cases finished in an hour range of the student's own day (22..<24 is 10 pm to midnight).
     static func finished(_ cases: [GradedCase], hours: Range<Int>, calendar: Calendar = .current) -> Int {
         cases.filter { hours.contains(calendar.component(.hour, from: $0.submittedAt)) }.count
+    }
+
+    /// Distinct days with a graded case, in the student's calendar.
+    static func practiceDays(_ cases: [GradedCase], calendar: Calendar = .current) -> Int {
+        Set(cases.map { calendar.startOfDay(for: $0.submittedAt) }).count
+    }
+
+    /// Cases finished on a Saturday or Sunday.
+    static func weekendCases(_ cases: [GradedCase], calendar: Calendar = .current) -> Int {
+        cases.filter { calendar.isDateInWeekend($0.submittedAt) }.count
     }
 
     /// Most cases in a single rotation whose average score is 80 or more.

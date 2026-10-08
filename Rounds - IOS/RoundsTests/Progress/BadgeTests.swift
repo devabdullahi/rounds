@@ -45,7 +45,7 @@ struct BadgeTests {
 
     @Test func cardsKnowTheirPlaceInTheSet() {
         let record = BadgeRecord(rating: 1000, bestStreak: 0, cases: [])
-        #expect(status("hat-trick", record)?.setNumber == "SKL 02/08")
+        #expect(status("hat-trick", record)?.setNumber == "SKL 08/14")
         #expect(status("bronze", record)?.setNumber == "TIER 01/04")
     }
 
@@ -67,10 +67,10 @@ struct BadgeTests {
         #expect(status("rotation-tour", BadgeRecord(rating: 1000, bestStreak: 0, cases: cases))?.current == 2)
     }
 
-    @Test func thereAre42CardsWithUniqueIDs() {
-        #expect(BadgeCatalog.individual.count == 35)
-        #expect(BadgeCatalog.all.count == 42)
-        #expect(Set(BadgeCatalog.all.map(\.id)).count == 42)
+    @Test func thereAre55CardsWithUniqueIDs() {
+        #expect(BadgeCatalog.individual.count == 48)
+        #expect(BadgeCatalog.all.count == 55)
+        #expect(Set(BadgeCatalog.all.map(\.id)).count == 55)
         for group in Badge.Group.allCases {
             #expect(BadgeCatalog.all.contains { $0.group == group }, "\(group) has badges")
         }
@@ -184,5 +184,30 @@ struct BadgeTests {
         let record = BadgeRecord(rating: 2100, bestStreak: 0, cases: [])
         #expect(status("set-tier", record)?.unlocked == true)
         #expect(status("set-volume", record)?.unlocked == false)
+    }
+
+    @Test func commonCardsOutnumberRareOnesAndSoOn() {
+        let count = { (r: Badge.Rarity) in BadgeCatalog.all.filter { $0.rarity == r }.count }
+        #expect(count(.common) > count(.rare))
+        #expect(count(.rare) > count(.epic))
+        #expect(count(.epic) > count(.legendary))
+    }
+
+    @Test func aSetIsAsRareAsItsHardestCard() {
+        let rarity = { (id: String) in BadgeCatalog.all.first { $0.id == id }?.rarity }
+        #expect(rarity("set-study") == .rare)
+        #expect(rarity("set-tier") == .legendary)
+    }
+
+    @Test func practiceDaysAndWeekendsCount() {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(identifier: "America/Chicago") ?? .gmt
+        func on(_ day: Int) -> GradedCase {   // Oct 2026: the 10th is a Saturday
+            let date = calendar.date(from: DateComponents(year: 2026, month: 10, day: day, hour: 12)) ?? .now
+            return GradedCase(id: "\(day)", submittedAt: date, score: 80, diagnosisCorrect: true, missedRedFlags: 0,
+                              clerkship: nil, system: nil, breakdown: [:])
+        }
+        #expect(BadgeCatalog.practiceDays([on(8), on(8), on(9)], calendar: calendar) == 2)
+        #expect(BadgeCatalog.weekendCases([on(9), on(10), on(11)], calendar: calendar) == 2)
     }
 }

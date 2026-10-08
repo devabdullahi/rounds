@@ -10,6 +10,12 @@ enum BadgeArt: String, CaseIterable, Sendable {
     case crown = "badge-crown", trophyCup = "badge-trophy-cup", laurelsTrophy = "badge-laurels-trophy"
     case mountaintop = "badge-mountaintop", summits = "badge-summits", bookPile = "badge-book-pile"
     case diamondTrophy = "badge-diamond-trophy"
+    // First-time commons
+    case hospital = "badge-hospital", onTarget = "badge-on-target", checklist = "badge-checklist"
+    case notebook = "badge-notebook", testTubes = "badge-test-tubes", doubleShot = "badge-double-shot"
+    case calendar = "badge-calendar", sunset = "badge-sunset", flagObjective = "badge-flag-objective"
+    case heartOrgan = "badge-heart-organ", upCard = "badge-up-card", hourglass = "badge-hourglass"
+    case thumbUp = "badge-thumb-up"
     case stethoscope = "badge-stethoscope", personInBed = "badge-person-in-bed"
     case threeFriends = "badge-three-friends", hospitalCross = "badge-hospital-cross"
     case ruleBook = "badge-rule-book", targetArrows = "badge-target-arrows"
@@ -32,7 +38,7 @@ enum BadgeArt: String, CaseIterable, Sendable {
         case .siren: "Skoll"
         case .hospitalCross, .targetArrows, .magnifyingGlass, .focusedLightning, .laurelCrown, .nightSky,
              .fluffyFlame, .flameSpin, .trophy, .compass, .treasureMap, .dna, .tiedScroll, .brainstorm, .stopwatch,
-             .returnArrow, .crown, .mountaintop:
+             .returnArrow, .crown, .mountaintop, .onTarget, .testTubes, .doubleShot, .heartOrgan, .hourglass:
             "Lorc"
         default: "Delapouite"
         }
