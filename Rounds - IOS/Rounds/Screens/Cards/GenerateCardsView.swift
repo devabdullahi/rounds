@@ -16,6 +16,9 @@ struct GenerateCardsView: View {
     @State private var notes: StudyNotes?
     @State private var photoItems: [PhotosPickerItem] = []
     @State private var pickingPDF = false
+    @State private var scanning = false
+    /// The camera tile shows only where the document scanner works (not in the simulator).
+    @State private var canScan = DocumentScanner.isAvailable
 
     private var store: FlashcardStore { app.flashcards }
 
@@ -45,11 +48,25 @@ struct GenerateCardsView: View {
             selection = FocusSelection(stored: focusStored)
             bySystem = selection.leadsWithSystem
             #if DEBUG
+            if DebugLaunch.screen == "cards-generate-notes-pick" {
+                fromNotes = true
+                canScan = true   // shows the tile for screenshots; tapping it needs a real camera
+            }
             if DebugLaunch.screen == "cards-generate-notes" {
                 fromNotes = true
                 notes = StudyNotes(title: "Heart failure lecture", amount: "3 pages", raw: String(repeating: "Sample notes line for screenshots.\n", count: 12))
             }
             #endif
+        }
+        .fullScreenCover(isPresented: $scanning) {
+            DocumentScanner(
+                onScan: { pages in
+                    scanning = false
+                    Task { notes = await store.readNotes(scans: pages) }
+                },
+                onCancel: { scanning = false }
+            )
+            .ignoresSafeArea()
         }
         .fileImporter(isPresented: $pickingPDF, allowedContentTypes: [.pdf]) { result in
             guard case .success(let url) = result else { return }
@@ -157,12 +174,18 @@ struct GenerateCardsView: View {
             // Once notes are picked the choice is made: removing them brings the buttons back.
             if notes == nil && !store.isReadingNotes {
                 HStack(spacing: 10) {
-                    Button { pickingPDF = true } label: { sourceTile(.filePDF, "PDF") }
-                        .buttonStyle(PressDownStyle())
+                    if canScan {
+                        Button { scanning = true } label: { sourceTile(.camera, "Camera") }
+                            .buttonStyle(PressDownStyle())
+                            .accessibilityHint("Scan pages of your notes with the camera")
+                    }
                     PhotosPicker(selection: $photoItems, maxSelectionCount: NotesReader.maxPhotos, matching: .images) {
                         sourceTile(.images, "Photos")
                     }
                     .buttonStyle(PressDownStyle())
+                    .accessibilityHint("Choose photos of your notes from your library")
+                    Button { pickingPDF = true } label: { sourceTile(.filePDF, "PDF") }
+                        .buttonStyle(PressDownStyle())
                 }
             }
 

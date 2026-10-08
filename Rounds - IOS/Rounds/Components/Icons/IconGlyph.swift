@@ -41,6 +41,7 @@ enum IconGlyph: String, CaseIterable {
     case fileText = "file-text"
     case filePDF = "file-pdf"
     case images = "images"
+    case camera = "camera"
     case logOut = "sign-out"
     case circle = "circle"
     case brandMark = "brand-mark"   // the app icon's cross, for in-app branding
