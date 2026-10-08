@@ -188,7 +188,6 @@ struct DiagnosisView: View {
     /// The last row of the differential: type a diagnosis, Return adds it and stays ready for the next.
     private var addDifferentialRow: some View {
         HStack(spacing: 12) {
-            AppIcon(.plus, size: 16).foregroundStyle(Theme.accent).frame(width: 16)
             TextField("", text: $newDifferential, prompt: Text("Add a diagnosis").foregroundStyle(Theme.faint))
                 .font(.system(size: 16))
                 .focused($focus, equals: .ddx)
