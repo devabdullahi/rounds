@@ -127,9 +127,14 @@ final class AppState {
 
     nonisolated static let residentFloor = 1200
 
-    init(cases: (any CaseService)?, cards: (any CardService)?) {
+    /// The streak reminder on this device; nil in tests and previews.
+    private let reminders: (any ReminderService)?
+
+    init(cases: (any CaseService)?, cards: (any CardService)?, reminders: (any ReminderService)? = nil) {
         self.cases = cases
+        self.reminders = reminders
         self.flashcards = FlashcardStore(service: cards)
+        flashcards.onProgress = { [weak self] in self?.checkUnlocks() }
     }
 
     var tier: RatingTier { .of(rating) }
@@ -166,12 +171,16 @@ final class AppState {
             async let counts = cases.topicCounts()
             async let graded = cases.gradedCases()
             async let rating = cases.rating()
+            // Decks count toward badges too, so they load before the first unlock check.
+            await flashcards.load()
             self.ward = try await ward
             self.topicCounts = try await counts
             self.graded = try await graded
             self.rating = try await rating ?? Self.residentFloor
             problem = nil
+            hasLoadedRecord = true
             checkUnlocks()
+            await updateReminder()
         } catch {
             problem = error.localizedDescription
         }
@@ -240,8 +249,19 @@ final class AppState {
         debriefSettled = false
         if reviewingMistakes { reviewMistakesRequested = true } else { returnToPatients = true }
         activeCase = nil
-        // The graded case may have unlocked a badge; the refresh queues its moment.
-        Task { await refresh() }
+        Task {
+            // Right after a finished case is when a streak reminder makes sense to ask about; the
+            // system prompts only the first time.
+            _ = await reminders?.requestPermission()
+            // The graded case may have unlocked a badge; the refresh queues its moment.
+            await refresh()
+        }
+    }
+
+    /// Moves the reminder to two hours before the streak resets, or clears it with no streak.
+    private func updateReminder() async {
+        let reminder = showcasing ? nil : StreakReminder.plan(days: streak, timeLeft: streakTimeLeft)
+        await reminders?.schedule(reminder)
     }
 
     /// Everything badges are judged on.
@@ -264,8 +284,9 @@ final class AppState {
 
     /// Queues any badge that unlocked since the last check.
     func checkUnlocks() {
-        // Nothing was earned in the showcase, so nothing is celebrated.
-        guard !showcasing else { return }
+        // Nothing was earned in the showcase, so nothing is celebrated. Before the first load the
+        // record is incomplete, and judging it would celebrate old badges as new.
+        guard !showcasing, hasLoadedRecord else { return }
         let statuses = BadgeCatalog.status(for: badgeRecord)
         guard let seen = seenBadges else {
             markSeen(statuses.filter(\.unlocked).map(\.id))
@@ -274,6 +295,9 @@ final class AppState {
         let new = BadgeCatalog.newlyUnlocked(statuses, seen: seen)
         pendingUnlocks += new.filter { n in !pendingUnlocks.contains { $0.id == n.id } }
     }
+
+    /// Set once cases and decks have loaded, so unlock checks see the whole record.
+    private var hasLoadedRecord = false
 
     /// The student has seen this unlock. Only real unlocks are remembered, so a test run never
     /// spends the moment a badge will have when it's actually earned.

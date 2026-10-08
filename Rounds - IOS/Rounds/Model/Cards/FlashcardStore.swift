@@ -7,7 +7,10 @@ import Observation
 final class FlashcardStore {
     private let service: (any CardService)?
 
-    private(set) var cards: [Flashcard] = []
+    private(set) var cards: [Flashcard] = [] { didSet { onProgress?() } }
+    /// Called when study progress changes (a card known, a deck added), so badges it earns unlock
+    /// in the moment instead of at the next refresh.
+    @ObservationIgnored var onProgress: (() -> Void)?
     private(set) var isLoading = false
     /// The first load has finished (successfully or not), so "no cards" is known, not assumed.
     private(set) var hasLoaded = false
@@ -33,6 +36,7 @@ final class FlashcardStore {
     func recordKnown() {
         knownTotal += 1
         UserDefaults.standard.set(knownTotal, forKey: Self.knownTotalKey)
+        onProgress?()
     }
 
     /// Decks the student generated (cards with a source), for the study badges.
