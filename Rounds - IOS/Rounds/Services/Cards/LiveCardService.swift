@@ -43,7 +43,7 @@ struct LiveCardService: CardService {
     private func generate(_ body: GenerateBody) async throws -> GeneratedDeck {
         let me = try await userID()
         do {
-            let reply: GenerateReply = try await client.functions.invoke("generate-cards", options: FunctionInvokeOptions(body: body))
+            let reply: GenerateReply = try await client.invokeSigned("generate-cards", body: body)
             let cards = reply.cards.map { CardRow(id: $0.id, user_id: me, deck: reply.deck, topic: $0.topic, front: $0.front,
                                                   back: $0.back, color: $0.color, source: $0.source).flashcard(me: me) }
             let allowance = reply.remaining_today.flatMap { left in reply.daily_limit.map { DeckAllowance(remaining: left, limit: $0) } }
