@@ -75,6 +75,8 @@ enum Theme {
     /// Streak flame, Later button, LATER stamp: true red (no orange in the app).
     static let streak     = Color.adaptive(dark: 0xE5011A, light: 0xE5011A)
     static let streakSoft = Color.adaptive(dark: 0xE5011A, light: 0xE5011A, darkOpacity: 0.12, lightOpacity: 0.10)
+    /// The streak pill at 0 days: a cold slate, white text at 5.5:1.
+    static let streakCold = Color.adaptive(dark: 0x4F6B8A, light: 0x4F6B8A)
     /// The streak pill's colour for each week of a streak (days 0–6, 7–13, …), then repeating.
     /// Each carries white text at 4.8:1 or better. Indexed by `Streak.weekColorIndex`.
     static let streakWeeks: [Color] = [
