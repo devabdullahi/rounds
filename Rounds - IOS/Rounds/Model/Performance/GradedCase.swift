@@ -1,0 +1,14 @@
+import Foundation
+
+/// One submitted, graded case, as the profile's stats and badges read it.
+struct GradedCase: Identifiable, Hashable, Sendable {
+    let id: String
+    let submittedAt: Date
+    let score: Int
+    let diagnosisCorrect: Bool
+    let missedRedFlags: Int
+    let clerkship: Clerkship?
+    let system: OrganSystem?
+    /// Empty for cases graded before the server recorded a breakdown.
+    let breakdown: [ScoreCategory: Points]
+}

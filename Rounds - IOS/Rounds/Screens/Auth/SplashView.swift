@@ -25,10 +25,6 @@ private enum TRACE {
     static let lineWidth: CGFloat = 1.8
 }
 
-enum SPLASH {
-    static let exit = Animation.easeInOut(duration: 0.35)
-}
-
 struct SplashView: View {
     var onFinish: () -> Void
 
