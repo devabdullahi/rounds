@@ -6,10 +6,11 @@ struct DiagnosisView: View {
 
     @Environment(\.reference) private var reference
     @State private var assist = ReferenceAssist()
-    @State private var addingDifferential = false
+    /// Suggestions for the differential's add field, kept apart from the working diagnosis's.
+    @State private var ddxAssist = ReferenceAssist()
     @State private var newDifferential = ""
     @FocusState private var focus: Field?
-    private enum Field { case dx, plan }
+    private enum Field { case dx, ddx, plan }
 
     private let rowHeight: CGFloat = 52
 
@@ -37,25 +38,20 @@ struct DiagnosisView: View {
                             .accessibilityLabel("Working diagnosis")
 
                         if focus == .dx, !assist.suggestions.isEmpty {
-                            suggestionList.transition(.opacity.combined(with: .offset(y: -4)))
+                            suggestionList(assist) { match in
+                                session.diagnosis = assist.pick(match)
+                                focus = .plan
+                            }
+                            .transition(.opacity.combined(with: .offset(y: -4)))
                         }
                     }
                     .animation(.easeOut(duration: 0.15), value: assist.suggestions)
                     .task(id: session.diagnosis) { await assist.diagnosisChanged(session.diagnosis) }
 
-                    VStack(alignment: .leading, spacing: 4) {
-                        HStack {
-                            FieldLabel("Differential")
-                                .accessibilityHint("Drag to rank. Long-press a diagnosis to remove it.")
-                            Spacer()
-                            Button("Add") { addingDifferential = true }
-                                .font(.system(size: 15, weight: .semibold))
-                                .foregroundStyle(.white)
-                                .padding(.horizontal, 14)
-                                .frame(minHeight: 32)
-                                .glassCapsule(tint: Theme.accent)
-                                .frame(minHeight: 44)
-                        }
+                    VStack(alignment: .leading, spacing: 6) {
+                        FieldLabel("Differential")
+                            .accessibilityHint("Drag to rank. Long-press a diagnosis to remove it.")
+                        VStack(spacing: 0) {
                         List {
                             ForEach(Array(session.differential.enumerated()), id: \.element) { i, item in
                                 HStack(spacing: 12) {
@@ -91,10 +87,26 @@ struct DiagnosisView: View {
                         .environment(\.defaultMinListRowHeight, rowHeight)
                         .contentMargins(.vertical, 0, for: .scrollContent)
                         .scrollDisabled(true)
-                        .frame(height: CGFloat(max(session.differential.count, 1)) * rowHeight)
-                        .listSurface()
+                        .scrollContentBackground(.hidden)
+                        .frame(height: CGFloat(session.differential.count) * rowHeight)
                         .animation(Springs.slide, value: session.differential)
+
+                        if !session.differential.isEmpty { Hairline().padding(.leading, 16) }
+                        addDifferentialRow
+                        }
+                        .listSurface()
+                        .overlay(RoundedRectangle(cornerRadius: 14).strokeBorder(focus == .ddx ? Theme.accent : Theme.border))
+
+                        if focus == .ddx, !ddxAssist.suggestions.isEmpty {
+                            suggestionList(ddxAssist) { match in
+                                newDifferential = ddxAssist.pick(match)
+                                addDifferential()
+                            }
+                            .transition(.opacity.combined(with: .offset(y: -4)))
+                        }
                     }
+                    .animation(.easeOut(duration: 0.15), value: ddxAssist.suggestions)
+                    .task(id: newDifferential) { await ddxAssist.diagnosisChanged(newDifferential) }
 
                     VStack(alignment: .leading, spacing: 6) {
                         FieldLabel("Immediate plan")
@@ -145,35 +157,77 @@ struct DiagnosisView: View {
             .padding(.bottom, 8)
         }
         .background(Theme.bg)
-        .onAppear { assist.reference = reference }
+        .onAppear {
+            assist.reference = reference
+            ddxAssist.reference = reference
+        }
         #if DEBUG
         .task {
-            guard DebugLaunch.screen == "diagnosis-suggest" else { return }
-            session.diagnosis = "pulm"
-            focus = .dx
+            switch DebugLaunch.screen {
+            case "diagnosis-suggest":
+                session.diagnosis = "pulm"
+                focus = .dx
+            case "diagnosis-ddx", "diagnosis-ddx-add":
+                session.differential = ["Pulmonary embolism", "Pneumonia", "Acute coronary syndrome"]
+                if DebugLaunch.screen == "diagnosis-ddx-add" {
+                    newDifferential = "pne"
+                    focus = .ddx
+                }
+            default: break
+            }
         }
         #endif
-        .onChange(of: focus) { if focus != .dx { assist.dismissSuggestions() } }
-        .alert("Add to differential", isPresented: $addingDifferential) {
-            TextField("Diagnosis", text: $newDifferential)
-            Button("Add") {
-                let d = newDifferential.trimmingCharacters(in: .whitespaces)
-                if !d.isEmpty && !session.differential.contains(d) { session.differential.append(d) }
-                newDifferential = ""
-            }
-            Button("Cancel", role: .cancel) { newDifferential = "" }
+        .onChange(of: focus) {
+            if focus != .dx { assist.dismissSuggestions() }
+            if focus != .ddx { ddxAssist.dismissSuggestions() }
         }
+    }
+
+    // MARK: Differential
+
+    /// The last row of the differential: type a diagnosis, Return adds it and stays ready for the next.
+    private var addDifferentialRow: some View {
+        HStack(spacing: 12) {
+            AppIcon(.plus, size: 16).foregroundStyle(Theme.accent).frame(width: 16)
+            TextField("", text: $newDifferential, prompt: Text("Add a diagnosis").foregroundStyle(Theme.faint))
+                .font(.system(size: 16))
+                .focused($focus, equals: .ddx)
+                .submitLabel(.done)
+                .onSubmit(addDifferential)
+                .accessibilityLabel("Add to differential")
+            if !newDifferential.trimmingCharacters(in: .whitespaces).isEmpty {
+                Button("Add", action: addDifferential)
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(Theme.accent)
+                    .frame(minWidth: 44, minHeight: 44)
+            }
+        }
+        .padding(.horizontal, 16)
+        .frame(minHeight: rowHeight)
+        .contentShape(Rectangle())
+        .onTapGesture { focus = .ddx }
+    }
+
+    /// Adds the typed diagnosis (once) and keeps the field focused for the next one.
+    private func addDifferential() {
+        let d = newDifferential.trimmingCharacters(in: .whitespaces)
+        guard !d.isEmpty else { return }
+        if !session.differential.contains(where: { $0.caseInsensitiveCompare(d) == .orderedSame }) {
+            withAnimation(Springs.slide) { session.differential.append(d) }
+        }
+        newDifferential = ""
+        ddxAssist.dismissSuggestions()
+        focus = .ddx
     }
 
     // MARK: Reference helpers
 
-    /// Standard condition names as the student types; tapping one fills the field.
-    private var suggestionList: some View {
+    /// Standard condition names as the student types; tapping one uses it.
+    private func suggestionList(_ assist: ReferenceAssist, onPick: @escaping (ConditionMatch) -> Void) -> some View {
         VStack(spacing: 0) {
             ForEach(Array(assist.suggestions.enumerated()), id: \.element.id) { i, match in
                 Button {
-                    session.diagnosis = assist.pick(match)
-                    focus = .plan
+                    onPick(match)
                 } label: {
                     HStack(spacing: 12) {
                         Text(match.name).font(.system(size: 16)).foregroundStyle(Theme.text)
