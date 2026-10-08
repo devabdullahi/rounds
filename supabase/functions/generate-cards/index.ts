@@ -16,6 +16,7 @@ import { type Profile } from "../_shared/casegen.ts";
 import { type CardFacts, cardFacts, missFacts } from "../_shared/cardfacts.ts";
 import { CARD_WRITER, NOTES_CARD_WRITER } from "../_shared/prompts.ts";
 import { remainingToday, withQuota } from "../_shared/quota.ts";
+import { deckTitle, mentionsSource } from "../_shared/notescards.ts";
 
 type Request = { topics?: string[]; count?: number; include_misses?: boolean; deck?: string; notes?: string };
 type Card = { topic: string; front: string; back: string; source: string };
@@ -50,6 +51,7 @@ serve(async (req) => {
       writeCards(userId, deck, count, NOTES_CARD_WRITER, user, new Set([NOTES_SOURCE]), {
         minShare: 0,
         empty: new HttpError(422, "we couldn't find study material to make cards from in these notes"),
+        fromNotes: true,
       }));
   }
 
@@ -80,22 +82,30 @@ serve(async (req) => {
 
 /** Has the model write the cards, checks each cites an allowed source, and saves them to the deck. */
 async function writeCards(
-  userId: string, deck: string, count: number, system: string, request: string, sources: Set<string>,
-  { minShare = 0.7, empty = new HttpError(502, "the cards couldn't be written; try again") } = {},
+  userId: string, requestedDeck: string, count: number, system: string, request: string, sources: Set<string>,
+  { minShare = 0.7, empty = new HttpError(502, "the cards couldn't be written; try again"), fromNotes = false } = {},
 ): Promise<Response> {
   let user = request;
+  let deck = requestedDeck;
+  let title: unknown;
   let cards: Card[] = [];
   let unreadable = false;
   for (let attempt = 0; attempt < 2; attempt++) {
     let problems: string[] = [];
     unreadable = false;
     try {
-      const reply = await completeJSON<{ cards: Card[] }>(system, user, 8000);
-      cards = (reply.cards ?? []).filter((c) =>
+      const reply = await completeJSON<{ title?: unknown; cards: Card[] }>(system, user, 8000);
+      title = reply.title;
+      const usable = (reply.cards ?? []).filter((c) =>
         typeof c.front === "string" && typeof c.back === "string" && c.front.trim() && c.back.trim() &&
         c.front.length <= 400 && c.back.length <= 300 && sources.has(c.source)
-      ).slice(0, count);
-      if (cards.length < Math.max(1, Math.ceil(count * minShare))) problems = [`only ${cards.length} usable cards; every card needs front, back and a source from the list`];
+      );
+      // From notes, a card that talks about the notes instead of the topic is dropped.
+      cards = (fromNotes ? usable.filter((c) => !mentionsSource(c.front) && !mentionsSource(c.back)) : usable).slice(0, count);
+      if (fromNotes && cards.length < usable.length) {
+        problems.push(`${usable.length - cards.length} cards mentioned the notes, a lecture or slides; ask about the topic itself`);
+      }
+      if (cards.length < Math.max(1, Math.ceil(count * minShare))) problems.push(`only ${cards.length} usable cards; every card needs front, back and a source from the list`);
     } catch (error) {
       unreadable = true;
       problems = [`reply unusable: ${(error as Error).message.slice(0, 200)}`];
@@ -105,6 +115,9 @@ async function writeCards(
   }
   // A model that never replied usably is a server problem, not a verdict on the input.
   if (cards.length === 0) throw unreadable ? new HttpError(502, "the cards couldn't be written; try again") : empty;
+
+  // Notes decks are named after their topic, not the file they came from.
+  if (fromNotes) deck = deckTitle(title, deck);
 
   const saved = await sql<{ id: string; topic: string; front: string; back: string; source: string | null; color: string }[]>`
     insert into public.flashcards ${sql(cards.map((c) => ({

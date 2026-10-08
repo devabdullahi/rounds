@@ -161,7 +161,7 @@ struct GenerateCardsView: View {
 
     /// The deck this will make, so a student can tap Generate without choosing anything.
     private var summary: String {
-        if fromNotes, let notes { return "Saved as \(notes.deckName)" }
+        if fromNotes { return "The deck is named after the topic your notes cover" }
         return selection.isMix ? "A mix of every topic · saved as Mixed topics"
                                : "Saved as \(FlashcardStore.deckName(for: selection))"
     }
@@ -302,7 +302,7 @@ struct GenerateCardsView: View {
             Text("Writing \(count) cards")
                 .font(.system(size: 24, weight: .bold))
                 .padding(.top, 10)
-            Text("\(fromNotes ? notes?.deckName ?? "" : FlashcardStore.deckName(for: selection)). Usually under 30 seconds.")
+            Text(fromNotes ? "Usually under 30 seconds." : "\(FlashcardStore.deckName(for: selection)). Usually under 30 seconds.")
                 .font(.system(size: 15))
                 .foregroundStyle(Theme.muted)
                 .multilineTextAlignment(.center)

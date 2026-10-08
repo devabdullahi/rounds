@@ -44,7 +44,8 @@ struct StudyNotes: Equatable, Sendable {
         "\(n) \(singular)\(n == 1 ? "" : "s")"
     }
 
-    /// "Notes · Cardio lecture", kept within the server's 40 characters.
+    /// "Notes · Cardio lecture", kept within the server's 40 characters. Only a fallback: the server
+    /// names the deck after the topic it finds in the notes.
     var deckName: String {
         let name = "Notes · " + title
         return name.count <= 40 ? name : String(name.prefix(39)) + "…"
