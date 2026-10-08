@@ -32,8 +32,17 @@ enum NotesReader {
 
     /// Photos in the order picked, each recognized on the device.
     static func text(fromPhotos photos: [Data]) async -> String {
+        await text(fromImages: photos, limit: maxPhotos)
+    }
+
+    /// Pages from the document scanner, in order; a scan may run as long as a PDF.
+    static func text(fromScans pages: [Data]) async -> String {
+        await text(fromImages: pages, limit: maxPages)
+    }
+
+    private static func text(fromImages images: [Data], limit: Int) async -> String {
         await Task.detached(priority: .userInitiated) {
-            photos.prefix(maxPhotos).compactMap { data -> String? in
+            images.prefix(limit).compactMap { data -> String? in
                 guard !Task.isCancelled, let image = UIImage(data: data)?.cgImage else { return nil }
                 return recognize(image)
             }.joined(separator: "\n")

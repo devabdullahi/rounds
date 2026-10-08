@@ -102,6 +102,14 @@ final class FlashcardStore {
         return notes(title: amount, amount: amount, raw: await NotesReader.text(fromPhotos: photos))
     }
 
+    /// Reads pages from the document scanner. Nil, with `problem` set, when they have too little readable text.
+    func readNotes(scans: [Data]) async -> StudyNotes? {
+        let amount = StudyNotes.count(min(scans.count, NotesReader.maxPages), "page")
+        isReadingNotes = true
+        defer { isReadingNotes = false }
+        return notes(title: "Scanned notes", amount: amount, raw: await NotesReader.text(fromScans: scans))
+    }
+
     private func notes(title: String, amount: String, raw: String) -> StudyNotes? {
         guard let notes = StudyNotes(title: title, amount: amount, raw: raw) else {
             problem = "We couldn\u{2019}t read enough text in that. Try a clearer photo, or a PDF with selectable text."
