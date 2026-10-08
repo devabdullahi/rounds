@@ -22,20 +22,10 @@ struct SiriCommand: Identifiable, Sendable {
                     phrases: ["What's my streak in Rounds", "Check my Rounds streak"]),
     ]
 
-    /// Ask Rounds: Siri asks what to do, and the student answers in their own words, for the same
-    /// actions as above.
-    static let ask = SiriCommand(
-        id: "ask", title: "Say it your way",
-        detail: "Say \"Ask Rounds\". When Siri asks what to do, ask for any of the above in your own words.",
-        phrases: ["Get a kidney patient ready for after dinner", "Drill me on 30 lung flashcards",
-                  "Go over the stuff I messed up", "How many days in a row have I done this?"])
-
-    /// Topic names Siri understands, one per topic, plus the shorthand students use.
+    /// Topic names Siri understands: every rotation and organ system. Siri also knows common
+    /// shorthand for them (peds, GI, heme), registered with `IntentTopic`.
     static var topicNames: [String] {
-        CommandKeywords.topics.map { topic in
-            let short = topic.words.first { $0.count <= 5 && $0 != topic.focus.label.lowercased() }
-            return short.map { "\(topic.focus.label) (\($0))" } ?? topic.focus.label
-        }
+        Clerkship.allCases.map { StudyFocus.rotation($0).label } + OrganSystem.allCases.map { StudyFocus.system($0).label }
     }
 
     /// Setting up "every day at 6 PM, queue a patient" in the Shortcuts app.
@@ -43,6 +33,6 @@ struct SiriCommand: Identifiable, Sendable {
         "Open the Shortcuts app and go to Automation.",
         "Tap +, choose Time of Day, and set 6:00 PM, daily.",
         "Choose Run Immediately.",
-        "Add the Rounds action Queue Patient, or Ask Rounds with what you want.",
+        "Add the Rounds action Queue Patient, and pick a topic if you like.",
     ]
 }

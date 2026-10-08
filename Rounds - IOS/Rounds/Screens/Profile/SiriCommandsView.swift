@@ -1,7 +1,7 @@
 import SwiftUI
 
-/// Every way to use Rounds through Siri and Shortcuts: one-breath phrases, Ask Rounds for any
-/// wording, the topics Siri knows, and how to automate a daily patient.
+/// Every way to use Rounds through Siri and Shortcuts: the phrases per action, the topics Siri
+/// knows, and how to automate a daily patient.
 struct SiriCommandsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
@@ -13,7 +13,7 @@ struct SiriCommandsView: View {
                     tip
 
                     VStack(alignment: .leading, spacing: 8) {
-                        Eyebrow("Say it in one go")
+                        Eyebrow("Commands")
                         VStack(spacing: 0) {
                             ForEach(Array(SiriCommand.direct.enumerated()), id: \.element.id) { i, command in
                                 if i > 0 { Hairline() }
@@ -21,11 +21,6 @@ struct SiriCommandsView: View {
                             }
                         }
                         .listSurface()
-                    }
-
-                    VStack(alignment: .leading, spacing: 8) {
-                        Eyebrow("In your own words")
-                        commandRow(SiriCommand.ask, quoted: true).listSurface()
                     }
 
                     VStack(alignment: .leading, spacing: 8) {
@@ -89,14 +84,14 @@ struct SiriCommandsView: View {
         .listSurface()
     }
 
-    private func commandRow(_ command: SiriCommand, quoted: Bool = false) -> some View {
+    private func commandRow(_ command: SiriCommand) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(command.title).font(.system(size: 16, weight: .semibold))
             Text(command.detail).font(.system(size: 14)).foregroundStyle(Theme.muted)
                 .fixedSize(horizontal: false, vertical: true)
             VStack(alignment: .leading, spacing: 4) {
                 ForEach(command.phrases, id: \.self) { phrase in
-                    Text(quoted ? "“\(phrase)”" : "“Hey Siri, \(phrase.prefix(1).lowercased() + phrase.dropFirst())”")
+                    Text("“Hey Siri, \(phrase.prefix(1).lowercased() + phrase.dropFirst())”")
                         .font(.system(size: 15, weight: .medium))
                         .foregroundStyle(Theme.accentText)
                         .fixedSize(horizontal: false, vertical: true)

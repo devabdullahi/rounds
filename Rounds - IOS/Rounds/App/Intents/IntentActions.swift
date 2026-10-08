@@ -1,7 +1,7 @@
 import AppIntents
 
-/// What each Rounds action does and says, shared by its own Siri phrase and by Ask Rounds, so the
-/// two never drift apart.
+/// What each Rounds action does and says, kept apart from the intent types so the actions stay
+/// small and their wording lives in one place.
 @MainActor
 enum IntentActions {
     /// Needs the app in front: a case is interactive.
