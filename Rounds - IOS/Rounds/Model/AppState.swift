@@ -82,6 +82,16 @@ final class AppState {
     /// `-screen home-streak-N`: shows an N-day streak, to check the weekly colours.
     var debugStreak: Int?
     #endif
+    /// Time before the streak resets, while there is one.
+    var streakTimeLeft: TimeInterval? {
+        #if DEBUG
+        if let debugStreak { return debugStreak > 0 ? 18.5 * 3600 : nil }
+        #endif
+        return streak > 0 ? Streak.timeLeft(graded.map(\.submittedAt)) : nil
+    }
+    /// The streak spotlight is open (tapped from Home's streak pill; shown over the tabs).
+    var showingStreak = false
+
     /// The longest such run so far.
     var bestStreak: Int { Streak.best(graded.map(\.submittedAt)) }
 

@@ -36,6 +36,24 @@ enum Streak {
         return best
     }
 
+    /// Seconds left before the streak resets: 24 hours after the latest case. Nil with no streak.
+    static func timeLeft(_ dates: [Date], now: Date = .now) -> TimeInterval? {
+        guard let latest = dates.max() else { return nil }
+        let left = window - now.timeIntervalSince(latest)
+        return left > 0 ? left : nil
+    }
+
+    /// "18 hours left to keep it going", rounded down so it never promises more time than there is.
+    static func timeLeftText(_ seconds: TimeInterval) -> String {
+        let hours = Int(seconds / 3600)
+        if hours >= 1 { return "\(hours) hour\(hours == 1 ? "" : "s") left to keep it going" }
+        let minutes = max(1, Int(seconds / 60))
+        return "\(minutes) minute\(minutes == 1 ? "" : "s") left to keep it going"
+    }
+
+    /// "1 day", "12 days".
+    static func daysText(_ days: Int) -> String { "\(days) day\(days == 1 ? "" : "s")" }
+
     /// Which colour a streak shows: 0 for days 0–6, 1 for 7–13 …, cycling after the last.
     static func weekColorIndex(_ days: Int) -> Int { (max(0, days) / 7) % weekColorCount }
 

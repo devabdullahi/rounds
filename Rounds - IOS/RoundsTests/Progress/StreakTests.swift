@@ -51,6 +51,24 @@ struct StreakTests {
         #expect(abs(Streak.heat(days) - heat) < 0.0001)
     }
 
+    @Test func timeLeftCountsFromTheLatestCase() throws {
+        let left = try #require(Streak.timeLeft([hoursAgo(5), hoursAgo(20)], now: now))
+        #expect(abs(left - 19 * 3600) < 1)
+        #expect(Streak.timeLeft([hoursAgo(25)], now: now) == nil)
+        #expect(Streak.timeLeft([], now: now) == nil)
+    }
+
+    @Test(arguments: [(19.9 * 3600, "19 hours left to keep it going"), (3600.0, "1 hour left to keep it going"),
+                      (45 * 60.0, "45 minutes left to keep it going"), (20.0, "1 minute left to keep it going")])
+    func timeLeftReadsNaturally(seconds: Double, text: String) {
+        #expect(Streak.timeLeftText(seconds) == text)
+    }
+
+    @Test(arguments: [(0, "0 days"), (1, "1 day"), (12, "12 days")])
+    func dayCounts(days: Int, text: String) {
+        #expect(Streak.daysText(days) == text)
+    }
+
     @Test @MainActor func everyWeekHasAColour() {
         #expect(Theme.streakWeeks.count == Streak.weekColorCount)
     }

@@ -33,7 +33,6 @@ private var homeHasPlayed = false
 
 struct HomeView: View {
     @Environment(AppState.self) private var app
-    var openProfile: () -> Void
 
     @State private var stage = homeHasPlayed ? 4 : -1
     @State private var editingFocus = false
@@ -110,7 +109,7 @@ struct HomeView: View {
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("Rounds")
                 Spacer()
-                Button(action: openProfile) {
+                Button { withAnimation(.easeOut(duration: 0.25)) { app.showingStreak = true } } label: {
                     HStack(spacing: 6) {
                         // No streak: cold. Then the flame lights small and grows a little each day.
                         if app.streak == 0 {
@@ -129,6 +128,7 @@ struct HomeView: View {
                 }
                 .buttonStyle(PressableStyle())
                 .accessibilityLabel("\(app.streak) day streak")
+                .accessibilityHint("Shows your streak")
             }
 
             VStack(alignment: .leading, spacing: 10) {
