@@ -32,6 +32,7 @@ struct AdmitPollingTests {
 
 /// A case service that answers `admit` from a script and records which beds were opened.
 private actor ScriptedCases: CaseService {
+    func rating() async throws -> Int { 1200 }
     private var replies: [AdmitOutcome]
     private(set) var admitCalls = 0
     private(set) var loadedBeds: [String] = []

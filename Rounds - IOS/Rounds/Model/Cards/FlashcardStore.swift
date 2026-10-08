@@ -39,8 +39,10 @@ final class FlashcardStore {
     var generatedDecks: Int { Set(cards.filter { $0.isMine && $0.source != nil }.map(\.deck)).count }
     /// Decks made from the student's notes.
     var notesDecks: Int { Set(cards.filter { $0.isMine && $0.source == "notes" }.map(\.deck)).count }
-    /// Decks that include cards on the student's missed red flags.
-    var missDecks: Int { Set(cards.filter { $0.isMine && $0.source == "missed" }.map(\.deck)).count }
+    /// Decks built from the student's mistakes: a mistakes review, or any deck with missed-red-flag cards.
+    var missDecks: Int {
+        Set(cards.filter { $0.isMine && ($0.source == "missed" || $0.deck == Self.mistakesDeck) }.map(\.deck)).count
+    }
 
     /// How many cards the generate screen offers.
     static let generateCounts = [10, 20, 30, 50]
@@ -140,6 +142,27 @@ final class FlashcardStore {
             return nil
         }
         return notes
+    }
+
+    /// The deck a mistakes review is saved to.
+    static let mistakesDeck = "My mistakes"
+
+    /// Generates a deck from the student's mistakes and switches to it. Returns false if it failed.
+    func generateFromMistakes(count: Int) async -> Bool {
+        guard let service, !isGenerating else { return false }
+        isGenerating = true
+        defer { isGenerating = false }
+        do {
+            let generated = try await service.generateFromMistakes(count: count, deck: Self.mistakesDeck)
+            if let left = generated.allowance { allowance = left }
+            cards.append(contentsOf: generated.cards)
+            selectedDeck = generated.deck
+            notice = "\(generated.cards.count) cards added to \(generated.deck)"
+            return true
+        } catch {
+            problem = error.localizedDescription
+            return false
+        }
     }
 
     /// Generates a deck from the student's notes and switches to it. Returns false if it failed.

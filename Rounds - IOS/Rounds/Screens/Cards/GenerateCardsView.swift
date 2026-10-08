@@ -14,7 +14,8 @@ struct GenerateCardsView: View {
     @State private var includeMisses = true
     /// The grid's "mix it up" row; nothing picked already means a mix here.
     @State private var mixChosen = true
-    @State private var fromNotes = false
+    @State private var source = DeckSource.topics
+    private var fromNotes: Bool { source == .notes }
     @State private var notes: StudyNotes?
     @State private var photoItems: [PhotosPickerItem] = []
     @State private var pickingPDF = false
@@ -51,12 +52,13 @@ struct GenerateCardsView: View {
             mixChosen = selection.isMix
             bySystem = selection.leadsWithSystem
             #if DEBUG
+            if DebugLaunch.screen == "cards-generate-mistakes" { source = .mistakes }
             if DebugLaunch.screen == "cards-generate-notes-pick" {
-                fromNotes = true
+                source = .notes
                 canScan = true   // shows the tile for screenshots; tapping it needs a real camera
             }
             if DebugLaunch.screen == "cards-generate-notes" {
-                fromNotes = true
+                source = .notes
                 notes = StudyNotes(title: "Heart failure lecture", amount: "3 pages", raw: String(repeating: "Sample notes line for screenshots.\n", count: 12))
             }
             #endif
@@ -99,17 +101,20 @@ struct GenerateCardsView: View {
     private var form: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
-                Segmented(options: [(false, "Topics"), (true, "My notes")], selection: $fromNotes)
+                Segmented(options: [(DeckSource.topics, "Topics"), (.notes, "My notes"), (.mistakes, "Mistakes")], selection: $source)
 
                 if fromNotes { notesPicker }
+                if source == .mistakes { mistakesPanel }
 
-                VStack(alignment: .leading, spacing: 10) {
-                    FieldLabel("How many cards")
-                    Segmented(options: FlashcardStore.generateCounts.map { ($0, "\($0)") }, selection: $count)
+                if source != .mistakes || hasMistakes {
+                    VStack(alignment: .leading, spacing: 10) {
+                        FieldLabel("How many cards")
+                        Segmented(options: FlashcardStore.generateCounts.map { ($0, "\($0)") }, selection: $count)
+                    }
                 }
 
                 // Only when there's something to include: a new student has no misses yet.
-                if !fromNotes && app.missedRedFlagCount > 0 {
+                if source == .topics && app.missedRedFlagCount > 0 {
                     Toggle(isOn: $includeMisses) {
                         VStack(alignment: .leading, spacing: 2) {
                             Text("Include what I missed").font(.system(size: 16, weight: .semibold))
@@ -123,7 +128,7 @@ struct GenerateCardsView: View {
                     .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).strokeBorder(Theme.ring))
                 }
 
-                if !fromNotes { topicsPicker }
+                if source == .topics { topicsPicker }
             }
             .padding(20)
         }
@@ -134,7 +139,12 @@ struct GenerateCardsView: View {
     /// nothing to make yet, so it says so instead of showing a dead button.
     private var bottomBar: some View {
         VStack(spacing: 8) {
-            if fromNotes && notes == nil {
+            if source == .mistakes && !hasMistakes {
+                Text("Nothing to review yet")
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundStyle(Theme.muted)
+                    .frame(maxWidth: .infinity, minHeight: 54)
+            } else if fromNotes && notes == nil {
                 Text(store.isReadingNotes ? "Reading your notes…" : "Add notes to continue")
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundStyle(Theme.muted)
@@ -146,7 +156,8 @@ struct GenerateCardsView: View {
                     .lineLimit(1)
                     .truncationMode(.middle)
                 // From notes the count is a ceiling: short notes support fewer good cards.
-                Button(fromNotes ? "Generate up to \(count) cards" : "Generate \(count) cards", action: generate)
+                // From notes or mistakes the count is a ceiling: a short source supports fewer good cards.
+                Button(source == .topics ? "Generate \(count) cards" : "Generate up to \(count) cards", action: generate)
                     .buttonStyle(PrimaryButtonStyle(height: 54))
                     .disabled(store.isReadingNotes)
             }
@@ -162,8 +173,46 @@ struct GenerateCardsView: View {
     /// The deck this will make, so a student can tap Generate without choosing anything.
     private var summary: String {
         if fromNotes { return "The deck is named after the topic your notes cover" }
+        if source == .mistakes { return "Saved as \(FlashcardStore.mistakesDeck)" }
         return selection.isMix ? "A mix of every topic · saved as Mixed topics"
                                : "Saved as \(FlashcardStore.deckName(for: selection))"
+    }
+
+    // MARK: Mistakes
+
+    /// Graded cases with a wrong diagnosis (the server reviews the 20 most recent).
+    private var wrongDiagnoses: Int { min(20, app.graded.filter { !$0.diagnosisCorrect }.count) }
+    private var hasMistakes: Bool { wrongDiagnoses > 0 || app.missedRedFlagCount > 0 }
+
+    /// What a mistakes deck will cover, or that there's nothing yet.
+    private var mistakesPanel: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            FieldLabel("From your mistakes")
+            if hasMistakes {
+                VStack(spacing: 0) {
+                    mistakeRow(.target, wrongDiagnoses == 1 ? "1 diagnosis you got wrong" : "\(wrongDiagnoses) diagnoses you got wrong")
+                    Hairline()
+                    mistakeRow(.siren, app.missedRedFlagCount == 1 ? "1 red flag you missed" : "\(app.missedRedFlagCount) red flags you missed")
+                }
+                .listSurface()
+                Text("Cards focus on what tells each condition apart and what you can't miss.")
+                    .font(.system(size: 13)).foregroundStyle(Theme.muted)
+            } else {
+                Text("No mistakes yet. Once a graded case has a wrong diagnosis or a missed red flag, you can review it here.")
+                    .font(.system(size: 15)).foregroundStyle(Theme.muted)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+    }
+
+    private func mistakeRow(_ glyph: IconGlyph, _ text: String) -> some View {
+        HStack(spacing: 12) {
+            AppIcon(glyph, size: 18).foregroundStyle(Theme.accent)
+            Text(text).font(.system(size: 16))
+            Spacer(minLength: 0)
+        }
+        .padding(.horizontal, 16)
+        .frame(minHeight: 48)
     }
 
     private var topicsPicker: some View {
@@ -284,6 +333,8 @@ struct GenerateCardsView: View {
         Task {
             let done = if fromNotes, let notes {
                 await store.generate(notes: notes, count: count)
+            } else if source == .mistakes {
+                await store.generateFromMistakes(count: count)
             } else {
                 await store.generate(focus: selection, count: count, includeMisses: includeMisses)
             }
@@ -302,7 +353,7 @@ struct GenerateCardsView: View {
             Text("Writing \(count) cards")
                 .font(.system(size: 24, weight: .bold))
                 .padding(.top, 10)
-            Text(fromNotes ? "Usually under 30 seconds." : "\(FlashcardStore.deckName(for: selection)). Usually under 30 seconds.")
+            Text(source == .topics ? "\(FlashcardStore.deckName(for: selection)). Usually under 30 seconds." : "Usually under 30 seconds.")
                 .font(.system(size: 15))
                 .foregroundStyle(Theme.muted)
                 .multilineTextAlignment(.center)
@@ -377,3 +428,6 @@ private struct CardsDealing: View {
         .opacity(enter * (1 - exit))
     }
 }
+
+/// Where a generated deck comes from.
+private enum DeckSource: Hashable { case topics, notes, mistakes }

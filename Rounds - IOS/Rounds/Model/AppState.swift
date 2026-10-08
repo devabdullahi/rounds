@@ -159,9 +159,11 @@ final class AppState {
             async let ward = cases.ward()
             async let counts = cases.topicCounts()
             async let graded = cases.gradedCases()
+            async let rating = cases.rating()
             self.ward = try await ward
             self.topicCounts = try await counts
             self.graded = try await graded
+            self.rating = try await rating
             problem = nil
             checkUnlocks()
         } catch {

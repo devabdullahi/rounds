@@ -2,7 +2,8 @@ import Foundation
 
 enum BadgeCatalog {
     /// Rating floors for the tier badges (the identity card's "to Gold" uses the same Gold floor).
-    static let silverRating = AppState.residentFloor
+    /// Every account starts at the resident floor (1200), so Silver sits above it: earned, not given.
+    static let silverRating = 1300
     static let goldRating = AppState.fellowThreshold
     static let platinumRating = 2000
 
@@ -65,7 +66,7 @@ enum BadgeCatalog {
         "on-the-clock": "Finished a case against the clock.",
         "first-deck": "Built your first flashcard deck.",
         "note-taker": "Turned your own notes into a deck.",
-        "learn-from-misses": "Made cards from red flags you'd missed.",
+        "learn-from-misses": "Turned your mistakes into a deck.",
         "card-shark": "Knew 100 flashcards.",
         "no-hints": "Finished a case with no hints.",
         "beat-the-clock": "Got the diagnosis right against the clock.",
@@ -181,7 +182,7 @@ enum BadgeCatalog {
               group: .study, rarity: .common, goal: 1, measure: { $0.decksGenerated }),
         Badge(id: "note-taker", name: "Note taker", detail: "Make a deck from your own notes.", art: .scrollQuill,
               group: .study, rarity: .common, goal: 1, measure: { $0.notesDecks }),
-        Badge(id: "learn-from-misses", name: "Learn from misses", detail: "Generate a deck that includes red flags you missed.", art: .eyeTarget,
+        Badge(id: "learn-from-misses", name: "Learn from misses", detail: "Make a deck from your mistakes.", art: .eyeTarget,
               group: .study, rarity: .common, goal: 1, measure: { $0.missDecks }),
         Badge(id: "ten-known", name: "Ten known", detail: "Mark 10 flashcards as known.", art: .upCard,
               group: .study, rarity: .common, goal: 10, measure: { $0.cardsKnown }),

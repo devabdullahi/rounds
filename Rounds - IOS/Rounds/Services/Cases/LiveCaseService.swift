@@ -37,6 +37,12 @@ struct LiveCaseService: CaseService {
         return rows.compactMap(\.gradedCase)
     }
 
+    func rating() async throws -> Int {
+        let user = try await client.auth.session.user.id
+        let row: RatingRow = try await client.from("profiles").select("rating").eq("id", value: user).single().execute().value
+        return row.rating
+    }
+
     func topicCounts() async throws -> [String: Int] {
         let rows: [TopicCountRow] = try await client.rpc("topic_counts").execute().value
         return Dictionary(rows.map { ("\($0.kind):\($0.topic)", $0.conditions) }, uniquingKeysWith: +)
@@ -226,6 +232,7 @@ private struct GradedAttemptRow: Decodable {
         return ISO8601DateFormatter().date(from: trimmed)
     }
 }
+private struct RatingRow: Decodable { let rating: Int }
 private struct TopicCountRow: Decodable { let kind: String; let topic: String; let conditions: Int }
 private struct ErrorReply: Decodable { let error: String }
 private struct DeleteBody: Encodable { let case_ids: [String]? }

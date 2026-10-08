@@ -36,6 +36,10 @@ struct LiveCardService: CardService {
         try await generate(GenerateBody(topics: [], count: count, include_misses: false, deck: deck, notes: notes))
     }
 
+    func generateFromMistakes(count: Int, deck: String) async throws -> GeneratedDeck {
+        try await generate(GenerateBody(topics: [], count: count, include_misses: false, deck: deck, notes: nil, mistakes: true))
+    }
+
     private func generate(_ body: GenerateBody) async throws -> GeneratedDeck {
         let me = try await userID()
         do {
@@ -88,6 +92,8 @@ private struct GenerateBody: Encodable {
     let deck: String
     /// Set only for cards from the student's notes; left out of the JSON otherwise.
     let notes: String?
+    /// Set only for a deck from the student's mistakes.
+    var mistakes: Bool? = nil
 }
 
 private struct GenerateReply: Decodable {
