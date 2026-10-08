@@ -7,7 +7,7 @@ AI roleplay practice app for **US medical students**: the student interviews a f
 | `Rounds - IOS/` | SwiftUI app, iOS 17+, XcodeGen (`project.yml` is the source of truth) |
 | `supabase/` | Postgres schema + RLS (`migrations/`), `seed.sql`, edge functions (`functions/`) |
 
-Current phase: **screens use mock data.** Supabase is set up but not connected. Don't wire screens to the backend, create cloud projects, or add real keys unless asked.
+Current phase: **live backend, pre-launch.** The app talks to the cloud Supabase project (`mpyxaefnytviwnjuqtbu`, linked; `supabase/cloud.env` holds the DB password, git-ignored): accounts (email code, Apple, Google), cases and patient chat, grading, flashcards, profile photos. Edge functions are deployed with `supabase functions deploy <name>`, migrations with `supabase db push --linked`. Reference data (`Services/Reference/`) is still mock. Changes to cloud data, deploys and pushes affect the real project: say what you'll change first. Don't create new cloud projects or add keys unless asked.
 
 ## Commands
 
@@ -19,7 +19,9 @@ xcodebuild -project Rounds.xcodeproj -scheme Rounds \
   -derivedDataPath build -quiet build
 xcodebuild … test                        # same flags as build; runs RoundsTests (Swift Testing)
 xcrun simctl launch booted com.abdul.rounds -screen <name>   # names listed in App/DebugLaunch.swift
-supabase db reset                        # local DB from migrations + seed (needs Docker)
+supabase db reset                        # local DB from migrations + seed (needs Docker; optional)
+supabase db push --linked -p "$SUPABASE_DB_PASSWORD"   # apply new migrations to the cloud
+supabase functions deploy <name> --project-ref mpyxaefnytviwnjuqtbu
 ```
 
 Never edit `Rounds.xcodeproj` by hand; change `project.yml` and regenerate.
