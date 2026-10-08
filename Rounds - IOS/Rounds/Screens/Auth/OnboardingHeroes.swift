@@ -1,7 +1,7 @@
 import SwiftUI
 
 // Hero art for the four intro pages, laid out on HeroCanvas's 350×400 board. Each takes `shown`
-// and pops its parts in with a short stagger (see OnboardingIntroView's storyboard).
+// and pops its parts in with a short stagger (see OnboardingView's storyboard).
 
 /// Page 1: a ring of fictional patients around "Diagnosis, nailed".
 struct PatientsHero: View {

@@ -9,6 +9,10 @@ struct Account: Equatable, Sendable {
     /// "email", "apple" or "google".
     let provider: String
     let createdAt: Date
+    /// Profile photo: one the student uploaded, else the one Google shares. Nil shows initials.
+    var avatarURL: URL?
+    /// The specialty they're aiming for; nil until they pick one.
+    var specialty: Specialty?
     /// Finished onboarding (the promise). Kept on the account, not the device, so every way of
     /// signing in (code, Apple, Google, a new phone) routes the same way.
     var onboarded = false
@@ -51,6 +55,12 @@ protocol AuthService: Sendable {
     func sendWelcome() async throws
     /// Records on the account that onboarding is done.
     func markOnboarded() async throws
+    /// Saves the name the student goes by (already cleaned by `ProfileName`).
+    func updateName(_ name: String) async throws -> Account
+    /// Saves the specialty they're aiming for; nil clears it.
+    func updateSpecialty(_ specialty: Specialty?) async throws -> Account
+    /// Uses a picked image as the profile photo (shrunk to a small JPEG before upload).
+    func updatePhoto(_ picked: Data) async throws -> Account
 }
 
 /// An account action failed for a reason the student can act on; the message is shown as is.
@@ -99,7 +109,8 @@ struct LiveAuthService: AuthService {
         if let name, !name.isEmpty, account.name == nil {
             _ = try? await client.auth.update(user: UserAttributes(data: ["full_name": .string(name)]))
             return Account(id: account.id, email: account.email, name: name, provider: account.provider,
-                           createdAt: account.createdAt, onboarded: account.onboarded)
+                           createdAt: account.createdAt, avatarURL: account.avatarURL, specialty: account.specialty,
+                           onboarded: account.onboarded)
         }
         return account
     }
@@ -136,6 +147,33 @@ struct LiveAuthService: AuthService {
         _ = try await client.auth.update(user: UserAttributes(data: ["onboarded": .bool(true)]))
     }
 
+    func updateName(_ name: String) async throws -> Account {
+        let user = try await client.auth.update(user: UserAttributes(data: ["full_name": .string(name)]))
+        // The profiles row keeps the same name for server-side features; the account metadata is
+        // what the app reads, so a failure here doesn't undo the rename.
+        _ = try? await client.from("profiles").update(["name": name]).eq("id", value: user.id).execute()
+        return Self.account(user)
+    }
+
+    func updateSpecialty(_ specialty: Specialty?) async throws -> Account {
+        let value: AnyJSON = specialty.map { .string($0.rawValue) } ?? .null
+        return Self.account(try await client.auth.update(user: UserAttributes(data: ["specialty": value])))
+    }
+
+    func updatePhoto(_ picked: Data) async throws -> Account {
+        guard let jpeg = AvatarImage.jpeg(from: picked) else {
+            throw AuthServiceError(message: "That photo couldn\u{2019}t be read. Try another one.")
+        }
+        let id = try await client.auth.session.user.id.uuidString.lowercased()
+        let path = "\(id)/avatar.jpg"
+        let avatars = client.storage.from("avatars")
+        try await avatars.upload(path, data: jpeg, options: FileOptions(cacheControl: "60", contentType: "image/jpeg", upsert: true))
+        // Same path every time, so the URL carries a version: apps and the CDN fetch the new photo.
+        let url = try avatars.getPublicURL(path: path, cacheNonce: String(Int(Date.now.timeIntervalSince1970)))
+        let user = try await client.auth.update(user: UserAttributes(data: ["avatar_url": .string(url.absoluteString)]))
+        return Self.account(user)
+    }
+
     /// A guest (anonymous) session links the new identity, so the student's patients and cards
     /// carry over; anyone else signs in normally. An identity that already belongs to another
     /// account can't be linked: then it's a plain sign-in to that account.
@@ -154,7 +192,9 @@ struct LiveAuthService: AuthService {
         let metadata = user.userMetadata
         let name = metadata["full_name"]?.stringValue ?? metadata["name"]?.stringValue
         let provider = user.appMetadata["provider"]?.stringValue ?? "email"
+        let photo = (metadata["avatar_url"] ?? metadata["picture"])?.stringValue.flatMap(URL.init(string:))
         return Account(id: user.id.uuidString, email: user.email, name: name, provider: provider, createdAt: user.createdAt,
+                       avatarURL: photo, specialty: metadata["specialty"]?.stringValue.flatMap(Specialty.init(rawValue:)),
                        onboarded: metadata["onboarded"]?.boolValue ?? false)
     }
 }

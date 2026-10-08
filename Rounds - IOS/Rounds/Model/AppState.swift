@@ -79,8 +79,8 @@ final class AppState {
     var activeCase: CaseSession?
     var debugInitialPath: [CaseStep] = []
 
-    static let fellowThreshold = 1600
-    static let residentFloor = 1200
+    nonisolated static let fellowThreshold = 1600
+    nonisolated static let residentFloor = 1200
 
     init(cases: (any CaseService)?, cards: (any CardService)?) {
         self.cases = cases

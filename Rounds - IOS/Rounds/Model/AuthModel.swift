@@ -14,7 +14,7 @@ final class AuthModel {
 
     static let codeRejectedMessage = "That code isn\u{2019}t right or has expired. Check the newest email, or send a new code."
 
-    enum Busy: Equatable { case email, apple, google, signOut, delete }
+    enum Busy: Equatable { case email, apple, google, signOut, delete, name, photo }
 
     private let service: (any AuthService)?
     /// Where the signed-in flag lives: standard in the app, a private store in tests.
@@ -123,6 +123,39 @@ final class AuthModel {
         defaults.set(true, forKey: Self.signedInKey)
     }
 
+    /// Saves a new name. False when there was nothing to save or it failed (the reason is in `problem`).
+    func rename(_ typed: String) async -> Bool {
+        guard account != nil, let name = ProfileName.clean(typed) else { return false }
+        guard name != account?.name else { return true }
+        return await run(.name) { service in
+            self.account = try await service.updateName(name)
+            return true
+        } ?? false
+    }
+
+    /// Saves the profile sheet: name (required) and specialty. Only what changed is sent.
+    func saveProfile(name typed: String, specialty: Specialty?) async -> Bool {
+        guard account != nil else { return false }
+        guard let name = ProfileName.clean(typed) else {
+            problem = "Add your name."
+            return false
+        }
+        return await run(.name) { service in
+            if name != self.account?.name { self.account = try await service.updateName(name) }
+            if specialty != self.account?.specialty { self.account = try await service.updateSpecialty(specialty) }
+            return true
+        } ?? false
+    }
+
+    /// Sets the profile photo from a picked image. False when it couldn't be read or uploaded.
+    func setPhoto(_ picked: Data) async -> Bool {
+        guard account != nil else { return false }
+        return await run(.photo) { service in
+            self.account = try await service.updatePhoto(picked)
+            return true
+        } ?? false
+    }
+
     /// End of onboarding: recorded on the account (so no device asks again), then into the app.
     /// Recording is best effort; if it fails, the student simply sees onboarding again next time.
     func finishOnboarding() {
@@ -190,5 +223,8 @@ private extension Account {
 extension AuthModel {
     /// `-screen email-code-error`: shows the wrong-code state without a server.
     func debugRejectCode() { codeProblem = Self.codeRejectedMessage }
+
+    /// `-screen settings`: a signed-in account for screenshots, without a server.
+    func debugUse(_ sample: Account) { account = sample }
 }
 #endif

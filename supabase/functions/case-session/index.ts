@@ -10,6 +10,7 @@
 // Every action verifies the caller, then loads the attempt only if it belongs to them. The patient
 // LLM sees the persona and revealable facts, never the diagnosis or rubric; its reply is checked for
 // diagnosis names, and replies that match no fact get a second check for invented facts.
+// Off-topic and inappropriate questions get a fixed reply and reveal nothing (_shared/conduct.ts).
 import { body, callerId, HttpError, json, serve } from "../_shared/http.ts";
 import { sql } from "../_shared/db.ts";
 import { completeJSON } from "../_shared/llm.ts";
@@ -19,11 +20,12 @@ import { type Actions, grade, matchesDiagnosis, type Rubric } from "./grade.ts";
 import { parseFocus } from "../_shared/focus.ts";
 import { prepareNext } from "../_shared/prefetch.ts";
 import { withQuota } from "../_shared/quota.ts";
+import { type Conduct, conductReply, isProfane, MAX_INAPPROPRIATE, parseConduct, strikes } from "../_shared/conduct.ts";
 
 type Fact = { id: string; label: string; reply: string; importance: string; screens_for: string | null };
 type Maneuver = { id: string; title: string; finding: string };
 type Test = { id: string; name: string; cost: number; turnaround_s: number; delays_care_min: number; result: string; abnormal: boolean };
-type Turn = { role: "student" | "patient"; text: string; facts?: string[] };
+type Turn = { role: "student" | "patient"; text: string; facts?: string[]; conduct?: Conduct };
 type Attempt = {
   id: string; case_id: string; exam_mode: boolean; submitted_at: string | null; transcript: Turn[];
   revealed_facts: string[]; examined: string[]; ordered_tests: { id: string; at: string }[];
@@ -91,6 +93,10 @@ async function start(userId: string, input: Record<string, unknown>) {
 async function ask(userId: string, input: Record<string, unknown>) {
   const question = text(input.question, "question", LIMITS.question);
   const { attempt, content } = await loadAttempt(userId, input.attempt_id);
+  // Refused before any model call; throwing also hands back the question's quota.
+  if (strikes(attempt.transcript) >= MAX_INAPPROPRIATE) {
+    throw new HttpError(403, "the patient has stopped answering questions; you can still examine, order tests and submit");
+  }
   const recent = attempt.transcript.slice(-LIMITS.transcriptTurns);
   const persona = content.persona;
   const prompt = `You are ${persona.name}, ${persona.age}, ${persona.sex === "F" ? "female" : "male"}.
@@ -103,12 +109,19 @@ Student's latest message: ${JSON.stringify(question)}`;
   const known = new Map(content.facts.map((f) => [f.id, f]));
   let reply = String(persona.fallback ?? "");
   let used: string[] = [];
+  let conduct: Conduct = isProfane(question) ? "inappropriate" : "clinical";
   try {
-    const answer = await completeJSON<{ fact_ids: string[]; reply: string }>(PATIENT, prompt, 400);
-    used = (answer.fact_ids ?? []).filter((id) => known.has(id));
-    reply = (answer.reply ?? "").trim() || reply;
+    if (conduct === "clinical") {
+      const answer = await completeJSON<{ conduct: string; fact_ids: string[]; reply: string }>(PATIENT, prompt, 400);
+      conduct = parseConduct(answer.conduct);
+      used = (answer.fact_ids ?? []).filter((id) => known.has(id));
+      reply = (answer.reply ?? "").trim() || reply;
+    }
     const terms = [content.answer_key.diagnosis, ...content.answer_key.accepted].map((t) => t.toLowerCase()).filter((t) => t.length > 3);
-    if (leaks(reply, terms).length > 0) {
+    if (conduct !== "clinical") {
+      used = [];
+      reply = conductReply(conduct, strikes(attempt.transcript) + (conduct === "inappropriate" ? 1 : 0));
+    } else if (leaks(reply, terms).length > 0) {
       // Never let the patient name the diagnosis: fall back to the scripted wording.
       reply = used.length ? used.map((id) => known.get(id)!.reply).join(" ") : String(persona.fallback);
     } else if (used.length === 0 && await addsFacts(reply)) {
@@ -121,13 +134,15 @@ Student's latest message: ${JSON.stringify(question)}`;
 
   const fresh = used.filter((id) => !attempt.revealed_facts.includes(id));
   const revealed = [...attempt.revealed_facts, ...fresh];
-  const transcript = [...attempt.transcript, { role: "student", text: question }, { role: "patient", text: reply, facts: used }];
+  const asked: Turn = conduct === "clinical" ? { role: "student", text: question } : { role: "student", text: question, conduct };
+  const transcript = [...attempt.transcript, asked, { role: "patient", text: reply, facts: used }];
   await sql`update public.attempts set transcript = ${sql.json(transcript)}, revealed_facts = ${revealed}
             where id = ${attempt.id} and submitted_at is null`;
 
   const key = content.rubric.key_facts;
   return {
     reply,
+    conduct,
     revealed: attempt.exam_mode ? [] : fresh.map((id) => ({ id, label: known.get(id)!.label })),
     revealed_ids: revealed,
     coverage: { got: key.filter((f) => revealed.includes(f.id)).length, total: key.length },

@@ -4,7 +4,7 @@ import Observation
 /// Signed-out steps. Email sign-up and log in go through `code`; an account that hasn't finished
 /// onboarding then runs intro → studyGoal → focus → promise before entering the app.
 enum AuthStep: Hashable {
-    case signIn, signUp, intro, studyGoal, focus, promise
+    case signIn, signUp, onboarding
     case code(email: String)
 }
 
@@ -18,7 +18,7 @@ final class AuthRouter {
     /// After any sign-in (code, Apple, Google): onboarding until the account has made its promise,
     /// then the app. One rule for every path, decided by the account, not the screen it came from.
     func enter(_ account: Account, auth: AuthModel) {
-        if account.onboarded { auth.finishSignIn() } else { go(.intro) }
+        if account.onboarded { auth.finishSignIn() } else { go(.onboarding) }
     }
 }
 
@@ -43,10 +43,7 @@ struct AuthFlowView: View {
                     switch step {
                     case .signIn: SignInView()
                     case .signUp: SignUpView()
-                    case .intro: OnboardingIntroView()
-                    case .studyGoal: StudyGoalView()
-                    case .focus: FocusOnboardingView()
-                    case .promise: PromiseView()
+                    case .onboarding: OnboardingView()
                     case .code(let email): EmailCodeView(email: email)
                     }
                 }

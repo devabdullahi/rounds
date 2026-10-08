@@ -210,7 +210,7 @@ struct FlashcardsView: View {
             case "cards-unknown": flipped = true; verdict = .unknown
             case "cards-new", "cards-new-color", "cards-new-answer": composing = true
             case "cards-add": choosingAdd = true
-            case "cards-generate": generating = true
+            case "cards-generate", "cards-generate-notes": generating = true
             default: break
             }
             #endif
