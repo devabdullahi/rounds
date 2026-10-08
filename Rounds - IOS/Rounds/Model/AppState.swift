@@ -73,6 +73,7 @@ final class AppState {
     /// Organ systems that have patients on the ward, for filter chips.
     /// Days in a row with a graded case, ending today or yesterday (see `Streak`).
     var streak: Int {
+        if showcasing { return Self.showcaseStreak }
         #if DEBUG
         if let debugStreak { return debugStreak }
         #endif
@@ -84,6 +85,7 @@ final class AppState {
     #endif
     /// Time before the streak resets, while there is one.
     var streakTimeLeft: TimeInterval? {
+        if showcasing { return 23 * 3600 }
         #if DEBUG
         if let debugStreak { return debugStreak > 0 ? 18.5 * 3600 : nil }
         #endif
@@ -93,7 +95,31 @@ final class AppState {
     var showingStreak = false
 
     /// The longest such run so far.
-    var bestStreak: Int { Streak.best(graded.map(\.submittedAt)) }
+    var bestStreak: Int { showcasing ? Self.showcaseStreak : Streak.best(graded.map(\.submittedAt)) }
+
+    // MARK: Guest showcase
+
+    #if DEBUG
+    /// Development builds, signed out: every badge shows as earned and the streak is maxed, to show
+    /// the whole collection. Set by the tab view from the sign-in state. Never in release builds.
+    var guestShowcase = false
+    #endif
+    /// The guest showcase is on (development builds only).
+    var showcasing: Bool {
+        #if DEBUG
+        guestShowcase
+        #else
+        false
+        #endif
+    }
+    /// The longest streak any badge asks for, with the flame at full heat.
+    static let showcaseStreak = 100
+
+    /// Badges as the screens show them: the real record, or all earned in the guest showcase.
+    var badgeStatuses: [BadgeStatus] {
+        let statuses = BadgeCatalog.status(for: badgeRecord)
+        return showcasing ? statuses.map { $0.unlocked ? $0 : $0.asUnlocked() } : statuses
+    }
 
     /// Distinct red flags missed on the latest graded attempts, which "Include what I missed" turns into cards.
     var missedRedFlagCount: Int { Set(ward.flatMap { $0.misses.map(\.flag) }).count }
@@ -227,6 +253,8 @@ final class AppState {
 
     /// Queues any badge that unlocked since the last check.
     func checkUnlocks() {
+        // Nothing was earned in the showcase, so nothing is celebrated.
+        guard !showcasing else { return }
         let statuses = BadgeCatalog.status(for: badgeRecord)
         guard let seen = seenBadges else {
             markSeen(statuses.filter(\.unlocked).map(\.id))

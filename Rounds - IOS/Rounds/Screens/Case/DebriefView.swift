@@ -275,7 +275,7 @@ struct DebriefView: View {
             Hairline()
             summaryRow("Casebook", "Patient #\(app.patientsSeen) added")
             // Almost there: the badge closest to done, so the next case has a target.
-            if let next = BadgeCatalog.nearest(BadgeCatalog.status(for: app.badgeRecord), limit: 1).first {
+            if let next = BadgeCatalog.nearest(app.badgeStatuses, limit: 1).first {
                 Hairline()
                 summaryRow("Next badge", next.nudge)
             }

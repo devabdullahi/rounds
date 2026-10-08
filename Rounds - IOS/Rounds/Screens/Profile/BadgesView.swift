@@ -15,7 +15,7 @@ struct BadgesView: View {
     }
 
     var body: some View {
-        let all = BadgeCatalog.status(for: app.badgeRecord)
+        let all = app.badgeStatuses
         let unlocked = all.filter(\.unlocked).count
         VStack(spacing: 0) {
             NavHeader(title: "Badges") {

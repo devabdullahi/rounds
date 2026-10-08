@@ -207,7 +207,7 @@ struct ProfileView: View {
     /// Three badges and the unlocked count; opens the full list. Shows the latest earned ones,
     /// then the locked one closest to unlocking.
     private var badgesCard: some View {
-        let statuses = BadgeCatalog.status(for: app.badgeRecord)
+        let statuses = app.badgeStatuses
         let unlocked = statuses.filter(\.unlocked)
         let earned = Array(unlocked.suffix(2))
         let next = statuses.filter { !$0.unlocked }.sorted { $0.progress > $1.progress }.prefix(3 - earned.count)
