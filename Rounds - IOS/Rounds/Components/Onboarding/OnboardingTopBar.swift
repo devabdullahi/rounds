@@ -10,7 +10,7 @@ struct OnboardingTopBar: View {
         HStack(spacing: 10) {
             if let onBack {
                 IconButton(glyph: .chevronLeft, label: "Back", quiet: true, action: onBack)
-                    .padding(.leading, -10)
+                    .padding(.leading, -3)   // circle edge on the page's 20pt margin (3pt inset in the hit box)
             }
             HStack(spacing: 6) {
                 ForEach(1...total, id: \.self) { i in
