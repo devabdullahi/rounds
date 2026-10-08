@@ -126,6 +126,11 @@ struct BadgeTests {
         #expect(status("card-shark", record)?.progressLabel == "40 / 100")
     }
 
+    @Test func noTwoCardsShareASymbol() {
+        let art = BadgeCatalog.all.map(\.art)
+        #expect(Set(art).count == art.count)
+    }
+
     @Test func everyBadgeHasArtWithAnArtist() {
         for badge in BadgeCatalog.all { #expect(!badge.art.artist.isEmpty) }
         #expect(BadgeArt.credits == ["Carl Olsen", "Delapouite", "Lorc", "Lord Berandas", "Skoll"])

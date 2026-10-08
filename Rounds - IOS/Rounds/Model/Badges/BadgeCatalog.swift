@@ -63,18 +63,24 @@ enum BadgeCatalog {
     static let setCards: [Badge] = Badge.Group.allCases.filter { $0 != .sets }.map { group in
         let members = base.filter { $0.group == group }
         return Badge(id: "set-\(group.rawValue)", name: "\(group.label) set", detail: "Earn every \(group.label.lowercased()) card.",
-                     art: .laurelCrown, group: .sets, rarity: .legendary, goal: members.count,
+                     art: setArt[group] ?? .crown, group: .sets, rarity: .legendary, goal: members.count,
                      measure: { record in members.filter { $0.measure(record) >= $0.goal }.count },
                      achieved: "Completed the \(group.label.lowercased()) set.")
     }
 
+    /// Each set card's own art, so no two cards share a symbol.
+    private static let setArt: [Badge.Group: BadgeArt] = [
+        .tier: .crown, .volume: .trophyCup, .skill: .laurelsTrophy, .habit: .mountaintop,
+        .range: .summits, .study: .bookPile, .exam: .diamondTrophy,
+    ]
+
     private static let base: [Badge] = [
         // Rating tiers
-        Badge(id: "bronze", name: "Bronze", detail: "Every new student starts here.", art: .sportMedal,
+        Badge(id: "bronze", name: "Bronze", detail: "Every new student starts here.", art: .podiumThird,
               group: .tier, rarity: .common, goal: 1, measure: { _ in 1 }),
-        Badge(id: "silver", name: "Silver", detail: "Reach a \(silverRating) rating.", art: .sportMedal,
+        Badge(id: "silver", name: "Silver", detail: "Reach a \(silverRating) rating.", art: .podiumSecond,
               group: .tier, rarity: .rare, goal: silverRating, measure: { $0.rating }),
-        Badge(id: "gold", name: "Gold", detail: "Reach a \(goldRating) rating.", art: .sportMedal,
+        Badge(id: "gold", name: "Gold", detail: "Reach a \(goldRating) rating.", art: .podiumWinner,
               group: .tier, rarity: .epic, goal: goldRating, measure: { $0.rating }),
         Badge(id: "platinum", name: "Platinum", detail: "Reach a \(platinumRating) rating. The top of the ward.", art: .jewelCrown,
               group: .tier, rarity: .legendary, goal: platinumRating, measure: { $0.rating }),
@@ -130,7 +136,7 @@ enum BadgeCatalog {
               group: .range, rarity: .epic, goal: Clerkship.allCases.count, measure: { Set($0.cases.compactMap(\.clerkship)).count }),
         Badge(id: "specialist", name: "Specialist", detail: "Finish 10 cases in one rotation, averaging 80 or more.", art: .targetPrize,
               group: .range, rarity: .epic, goal: 10, measure: { specialistCases($0.cases) }),
-        Badge(id: "comeback", name: "Comeback", detail: "Score 85 or more on a patient you previously missed.", art: .focusedLightning,
+        Badge(id: "comeback", name: "Comeback", detail: "Score 85 or more on a patient you previously missed.", art: .returnArrow,
               group: .range, rarity: .epic, goal: 1, measure: { comebacks($0.cases) }),
         Badge(id: "systems-check", name: "Systems check", detail: "Finish a case in every organ system.", art: .dna,
               group: .range, rarity: .legendary, goal: OrganSystem.allCases.count, measure: { Set($0.cases.compactMap(\.system)).count }),

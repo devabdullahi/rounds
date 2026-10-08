@@ -3,7 +3,13 @@ import SwiftUI
 /// Badge artwork from game-icons.net (CC BY 3.0), white template images in `Assets.xcassets/Badges`.
 /// Each icon's artist is credited in Settings › Acknowledgements (`credits`).
 enum BadgeArt: String, CaseIterable, Sendable {
-    case sportMedal = "badge-sport-medal", jewelCrown = "badge-jewel-crown"
+    case podiumThird = "badge-podium-third", podiumSecond = "badge-podium-second"
+    case podiumWinner = "badge-podium-winner", jewelCrown = "badge-jewel-crown"
+    case returnArrow = "badge-return-arrow"
+    // Set cards
+    case crown = "badge-crown", trophyCup = "badge-trophy-cup", laurelsTrophy = "badge-laurels-trophy"
+    case mountaintop = "badge-mountaintop", summits = "badge-summits", bookPile = "badge-book-pile"
+    case diamondTrophy = "badge-diamond-trophy"
     case stethoscope = "badge-stethoscope", personInBed = "badge-person-in-bed"
     case threeFriends = "badge-three-friends", hospitalCross = "badge-hospital-cross"
     case ruleBook = "badge-rule-book", targetArrows = "badge-target-arrows"
@@ -25,7 +31,8 @@ enum BadgeArt: String, CaseIterable, Sendable {
         case .microscope: "Lord Berandas"
         case .siren: "Skoll"
         case .hospitalCross, .targetArrows, .magnifyingGlass, .focusedLightning, .laurelCrown, .nightSky,
-             .fluffyFlame, .flameSpin, .trophy, .compass, .treasureMap, .dna, .tiedScroll, .brainstorm, .stopwatch:
+             .fluffyFlame, .flameSpin, .trophy, .compass, .treasureMap, .dna, .tiedScroll, .brainstorm, .stopwatch,
+             .returnArrow, .crown, .mountaintop:
             "Lorc"
         default: "Delapouite"
         }
