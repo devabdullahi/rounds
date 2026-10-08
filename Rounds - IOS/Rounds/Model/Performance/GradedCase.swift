@@ -11,4 +11,10 @@ struct GradedCase: Identifiable, Hashable, Sendable {
     let system: OrganSystem?
     /// Empty for cases graded before the server recorded a breakdown.
     let breakdown: [ScoreCategory: Points]
+    /// Played in exam mode (no hints, findings hidden until the debrief).
+    var examMode = false
+    /// Played against a time limit.
+    var timed = false
+    /// The patient (case) this attempt was on, so a later attempt on the same patient can be found.
+    var caseID: String?
 }

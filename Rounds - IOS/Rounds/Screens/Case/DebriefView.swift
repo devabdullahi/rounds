@@ -163,8 +163,11 @@ struct DebriefView: View {
             try? await Task.sleep(for: .seconds(at - elapsed))
             elapsed = at
             withAnimation(.easeOut(duration: 0.3)) { stage = i }
-            if i == 2 { withAnimation(.snappy(duration: 0.8)) { app.record(g, patient: session.clinical.bed) } }
+            if i == 2 { withAnimation(.snappy(duration: 0.8)) { app.record(g, session: session) } }
         }
+        // Once the grade has fully landed, any badge it earned gets its moment here, at the peak.
+        try? await Task.sleep(for: .seconds(0.6))
+        app.debriefSettled = true
     }
 
     /// Closes this debrief and opens the same patient again as a fresh attempt.
@@ -271,6 +274,11 @@ struct DebriefView: View {
             missesRow(g)
             Hairline()
             summaryRow("Casebook", "Patient #\(app.patientsSeen) added")
+            // Almost there: the badge closest to done, so the next case has a target.
+            if let next = BadgeCatalog.nearest(BadgeCatalog.status(for: app.badgeRecord), limit: 1).first {
+                Hairline()
+                summaryRow("Next badge", next.nudge)
+            }
         }
         .listSurface()
         .opacity(stage >= 4 ? 1 : 0)

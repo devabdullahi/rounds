@@ -26,7 +26,7 @@ struct BadgeCardFront: View {
                     .stroke(ink.opacity(0.35), lineWidth: 1.5)
                     .frame(height: 26)
                     .offset(y: 26)
-                AppIcon(status.badge.glyph, size: 54)
+                Image(badge: status.badge.art).resizable().scaledToFit().frame(width: 58, height: 58)
                     .foregroundStyle(.white)
                     .shadow(color: ink, radius: 8)
             }
@@ -44,7 +44,7 @@ struct BadgeCardFront: View {
             .foregroundStyle(ink)
             .padding(.horizontal, 4)
 
-            Text(status.badge.detail)
+            Text(status.badge.achieved)
                 .font(.system(size: 10.5))
                 .lineSpacing(2)
                 .foregroundStyle(Theme.cardInk)
@@ -56,7 +56,8 @@ struct BadgeCardFront: View {
             HStack {
                 Text(status.setNumber)
                 Spacer()
-                Text("ROUNDS")
+                // The day it was earned, where graded cases show it.
+                Text(status.earnedAt.map { $0.formatted(.dateTime.month(.abbreviated).day()).uppercased() } ?? "ROUNDS")
             }
             .font(.mono(9, weight: .medium))
             .foregroundStyle(Theme.rarityCommon)

@@ -25,6 +25,23 @@ final class FlashcardStore {
     /// The allowance if it still describes today.
     var allowanceToday: DeckAllowance? { allowance.flatMap { $0.isCurrent() ? $0 : nil } }
 
+    /// Cards marked "Knew it", all time, on this device (the Card shark badge).
+    static let knownTotalKey = "flashcardsKnownTotal"
+    private(set) var knownTotal = UserDefaults.standard.integer(forKey: FlashcardStore.knownTotalKey)
+
+    /// Counts one more card the student knew.
+    func recordKnown() {
+        knownTotal += 1
+        UserDefaults.standard.set(knownTotal, forKey: Self.knownTotalKey)
+    }
+
+    /// Decks the student generated (cards with a source), for the study badges.
+    var generatedDecks: Int { Set(cards.filter { $0.isMine && $0.source != nil }.map(\.deck)).count }
+    /// Decks made from the student's notes.
+    var notesDecks: Int { Set(cards.filter { $0.isMine && $0.source == "notes" }.map(\.deck)).count }
+    /// Decks that include cards on the student's missed red flags.
+    var missDecks: Int { Set(cards.filter { $0.isMine && $0.source == "missed" }.map(\.deck)).count }
+
     /// How many cards the generate screen offers.
     static let generateCounts = [10, 20, 30, 50]
 

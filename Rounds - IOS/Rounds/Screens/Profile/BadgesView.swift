@@ -37,6 +37,7 @@ struct BadgesView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 22) {
                     summary(all, unlocked: unlocked)
+                    closest(all)
 
                     ForEach(Badge.Group.allCases, id: \.self) { group in
                         let items = all.filter { $0.badge.group == group }
@@ -78,6 +79,36 @@ struct BadgesView: View {
         }
     }
 
+    /// The few locked cards nearest to done, with what's left: the next targets.
+    @ViewBuilder
+    private func closest(_ all: [BadgeStatus]) -> some View {
+        let near = BadgeCatalog.nearest(all)
+        if !near.isEmpty {
+            VStack(alignment: .leading, spacing: 10) {
+                Eyebrow("Almost there")
+                VStack(spacing: 0) {
+                    ForEach(Array(near.enumerated()), id: \.element.id) { i, status in
+                        if i > 0 { Hairline() }
+                        Button { shown = status } label: {
+                            HStack(spacing: 12) {
+                                BadgeMedallion(status: status, size: 40)
+                                VStack(alignment: .leading, spacing: 6) {
+                                    Text(status.nudge).font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.text)
+                                    ProgressBar(value: status.progress, color: status.badge.rarity.ink, height: 5)
+                                }
+                            }
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 10)
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(PressableStyle())
+                    }
+                }
+                .listSurface()
+            }
+        }
+    }
+
     /// Collected count, then how many of each rarity.
     private func summary(_ all: [BadgeStatus], unlocked: Int) -> some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -115,13 +146,14 @@ private struct BadgeDetail: View {
         VStack(spacing: 12) {
             BadgeCard(status: status, scale: 1.1)
                 .padding(.top, 24)
-            Text(status.badge.detail)
+            Text(status.hidden ? "A secret card. Keep practicing to find it." : status.unlocked ? status.badge.achieved : status.badge.detail)
                 .font(.system(size: 16))
                 .foregroundStyle(Theme.muted)
                 .multilineTextAlignment(.center)
             if status.unlocked {
-                Text("In your collection").font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.accentText)
-            } else {
+                Text(status.earnedAt.map { "Earned \($0.formatted(.dateTime.month(.wide).day()))" } ?? "In your collection")
+                    .font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.accentText)
+            } else if !status.hidden {
                 VStack(spacing: 6) {
                     ProgressBar(value: status.progress)
                     Text(status.progressLabel).font(.mono(13, weight: .medium)).foregroundStyle(Theme.muted)

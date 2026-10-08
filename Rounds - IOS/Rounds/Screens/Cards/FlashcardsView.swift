@@ -393,7 +393,7 @@ struct FlashcardsView: View {
             try? await Task.sleep(for: .seconds(TIMING.verdictHold))
             withAnimation(FLIGHT.spring) {
                 queue.removeFirst()
-                if v == .correct { known += 1 } else {
+                if v == .correct { known += 1; store.recordKnown() } else {
                     missed += 1
                     queue.append(card.copy())  // comes back later
                 }

@@ -6,6 +6,8 @@ struct BadgeCardBack: View {
     /// 0…1 toward the goal; nil shows a plain back (the unlock animation's first face).
     var progress: Double?
     var label: String = ""
+    /// A secret card: a question mark instead of the Rounds mark, and no progress.
+    var secret = false
 
     var body: some View {
         ZStack {
@@ -21,12 +23,17 @@ struct BadgeCardBack: View {
                 context.stroke(path, with: .color(.white.opacity(0.035)), lineWidth: 2)
             }
             VStack(spacing: 10) {
-                AppIcon(.brandMark, size: 34)
-                    .foregroundStyle(Theme.faint)
-                    .frame(width: 74, height: 74)
-                    .background(Theme.cardBack, in: Circle())
-                    .overlay(Circle().strokeBorder(Color.white.opacity(0.12), lineWidth: 2))
-                Text("ROUNDS").font(.system(size: 11, weight: .bold)).tracking(2).foregroundStyle(Theme.faint)
+                Group {
+                    if secret {
+                        Text("?").font(.system(size: 38, weight: .heavy, design: .rounded)).foregroundStyle(Theme.cardInk)
+                    } else {
+                        AppIcon(.brandMark, size: 34).foregroundStyle(Theme.faint)
+                    }
+                }
+                .frame(width: 74, height: 74)
+                .background(Theme.cardBack, in: Circle())
+                .overlay(Circle().strokeBorder(Color.white.opacity(secret ? 0.3 : 0.12), lineWidth: 2))
+                Text(secret ? "SECRET" : "ROUNDS").font(.system(size: 11, weight: .bold)).tracking(2).foregroundStyle(Theme.faint)
             }
             if let progress {
                 VStack {

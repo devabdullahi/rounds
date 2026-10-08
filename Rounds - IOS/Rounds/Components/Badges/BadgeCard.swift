@@ -12,15 +12,18 @@ struct BadgeCard: View {
         Group {
             if status.unlocked {
                 BadgeCardFront(status: status)
+            } else if status.hidden {
+                BadgeCardBack(progress: nil, secret: true)
             } else {
-                BadgeCardBack(progress: status.progress, label: status.compactProgressLabel)
+                BadgeCardBack(progress: status.progress, label: status.toGoLabel)
             }
         }
         .scaleEffect(scale, anchor: .topLeading)
         .frame(width: Self.size.width * scale, height: Self.size.height * scale, alignment: .topLeading)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(status.badge.name), \(status.badge.rarity.label) card, "
-                            + (status.unlocked ? "collected" : "locked, \(status.progressLabel)"))
+        .accessibilityLabel(status.hidden ? "Secret card, locked"
+                            : "\(status.badge.name), \(status.badge.rarity.label) card, "
+                            + (status.unlocked ? "collected" : "locked, \(status.toGoLabel)"))
     }
 }
 

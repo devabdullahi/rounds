@@ -23,6 +23,14 @@ struct CaseFlowView: View {
                 .toolbar(.hidden, for: .navigationBar)
         }
         .environment(router)
+        // A badge earned by this case unlocks on the debrief, once the grade has landed.
+        .overlay {
+            if app.debriefSettled, router.path.last == .debrief, let unlock = app.pendingUnlocks.first {
+                BadgeUnlockView(status: unlock) { withAnimation(.easeOut(duration: 0.25)) { app.celebrated(unlock) } }
+                    .id(unlock.id)
+                    .transition(.opacity)
+            }
+        }
         // Once the diagnosis is submitted (handoff onward), there's no going back to change it.
         .onChange(of: router.path) { _, path in NavLock.isLocked = path.contains(.handoff) || path.contains(.debrief) }
         .onDisappear { NavLock.isLocked = false }

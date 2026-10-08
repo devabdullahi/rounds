@@ -95,6 +95,11 @@ enum Theme {
     static let rarityRare      = Color.adaptive(dark: 0x4B8BFF, light: 0x4B8BFF)
     static let rarityEpic      = Color.adaptive(dark: 0xA585FF, light: 0xA585FF)
     static let rarityLegendary = Color.adaptive(dark: 0xE8C547, light: 0xE8C547)
+    /// The lower end of each rarity's card art gradient: deep enough for white artwork on top.
+    static let rarityCommonDeep    = Color.adaptive(dark: 0x4E5566, light: 0x4E5566)
+    static let rarityRareDeep      = Color.adaptive(dark: 0x1D5FE6, light: 0x1D5FE6)
+    static let rarityEpicDeep      = Color.adaptive(dark: 0x6A33D1, light: 0x6A33D1)
+    static let rarityLegendaryDeep = Color.adaptive(dark: 0x8A6A00, light: 0x8A6A00)
 
     /// Home backdrop glows: soft colour fields behind the deck (and behind the glass buttons).
     static let glowA = Color.adaptive(dark: 0x0C59E9, light: 0x5CE295)

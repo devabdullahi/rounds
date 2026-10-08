@@ -200,6 +200,7 @@ final class AppState {
 
     /// Closes a graded case and lands on the ward.
     func finishCase() {
+        debriefSettled = false
         returnToPatients = true
         activeCase = nil
         // The graded case may have unlocked a badge; the refresh queues its moment.
@@ -207,7 +208,11 @@ final class AppState {
     }
 
     /// Everything badges are judged on.
-    var badgeRecord: BadgeRecord { BadgeRecord(rating: rating, bestStreak: bestStreak, cases: graded) }
+    var badgeRecord: BadgeRecord {
+        BadgeRecord(rating: rating, bestStreak: bestStreak, cases: graded,
+                    decksGenerated: flashcards.generatedDecks, notesDecks: flashcards.notesDecks,
+                    missDecks: flashcards.missDecks, cardsKnown: flashcards.knownTotal)
+    }
 
     // MARK: Badge unlocks
 
@@ -215,6 +220,8 @@ final class AppState {
     /// check, which records what's already earned without celebrating it.
     private var seenBadges: Set<String>? = UserDefaults.standard.stringArray(forKey: AppState.seenBadgesStorageKey).map(Set.init)
     static let seenBadgesStorageKey = "seenBadges"
+    /// The debrief has finished revealing the grade, so a badge unlock can take the stage.
+    var debriefSettled = false
     /// Unlocks waiting to be shown, biggest first.
     private(set) var pendingUnlocks: [BadgeStatus] = []
 
@@ -279,7 +286,15 @@ final class AppState {
         UserDefaults.standard.set(Array(skipped), forKey: Self.skippedStorageKey)
     }
 
-    func record(_ grade: Grade, patient: String) {
+    /// Takes a fresh grade into the record at once, so badges it earns unlock on the debrief, at the
+    /// moment of success, not later on another tab. The next refresh replaces it with the server's copy.
+    func record(_ grade: Grade, session: CaseSession) {
+        let patient = session.clinical.bed
+        graded.insert(GradedCase(id: "local-\(UUID().uuidString)", submittedAt: .now, score: grade.score,
+                                 diagnosisCorrect: grade.diagnosisCorrect, missedRedFlags: grade.missedRedFlags.count,
+                                 clerkship: session.clinical.clerkship, system: session.clinical.system, breakdown: [:],
+                                 examMode: session.examMode, timed: session.isTimed, caseID: patient), at: 0)
+        checkUnlocks()
         lastGrade = grade
         rating = grade.rating
         patientsSeen += 1

@@ -30,7 +30,7 @@ struct LiveCaseService: CaseService {
     func gradedCases() async throws -> [GradedCase] {
         // RLS returns only the caller's attempts; the case supplies its rotation and system.
         let rows: [GradedAttemptRow] = try await client.from("attempts")
-            .select("id, submitted_at, score, grade, cases(clerkship, organ_system)")
+            .select("id, case_id, submitted_at, score, grade, exam_mode, time_limit_minutes, cases(clerkship, organ_system)")
             .not("submitted_at", operator: .is, value: "null")
             .order("submitted_at", ascending: false)
             .execute().value
@@ -197,9 +197,12 @@ private struct GradedAttemptRow: Decodable {
     struct CaseTags: Decodable { let clerkship: String?; let organ_system: String? }
 
     let id: String
+    let case_id: String?
     let submitted_at: String
     let score: Int?
     let grade: GradeBody?
+    let exam_mode: Bool?
+    let time_limit_minutes: Int?
     let cases: CaseTags?
 
     var gradedCase: GradedCase? {
@@ -212,7 +215,8 @@ private struct GradedAttemptRow: Decodable {
                           missedRedFlags: grade.missed_red_flags.count,
                           clerkship: cases?.clerkship.flatMap(Clerkship.init(rawValue:)),
                           system: cases?.organ_system.flatMap(OrganSystem.init(rawValue:)),
-                          breakdown: breakdown)
+                          breakdown: breakdown, examMode: exam_mode ?? false, timed: time_limit_minutes != nil,
+                          caseID: case_id)
     }
 
     /// Postgres timestamptz ("2026-10-05T23:12:01.123456+00:00"). Microseconds trip the ISO
