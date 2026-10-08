@@ -73,6 +73,9 @@ final class AppState {
     private(set) var skipped: Set<String> = Set(UserDefaults.standard.stringArray(forKey: AppState.skippedStorageKey) ?? [])
     static let skippedStorageKey = "skippedBeds"
     /// Organ systems that have patients on the ward, for filter chips.
+    /// Distinct red flags missed on the latest graded attempts, which "Include what I missed" turns into cards.
+    var missedRedFlagCount: Int { Set(ward.flatMap { $0.misses.map(\.flag) }).count }
+
     var wardSystems: [OrganSystem] { OrganSystem.allCases.filter { s in ward.contains { $0.system == s } } }
 
     var lastGrade: Grade?

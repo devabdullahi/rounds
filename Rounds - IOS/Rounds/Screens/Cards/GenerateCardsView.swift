@@ -12,6 +12,8 @@ struct GenerateCardsView: View {
     @State private var selection = FocusSelection()
     @State private var count = 20
     @State private var includeMisses = true
+    /// The grid's "mix it up" row; nothing picked already means a mix here.
+    @State private var mixChosen = true
     @State private var fromNotes = false
     @State private var notes: StudyNotes?
     @State private var photoItems: [PhotosPickerItem] = []
@@ -46,6 +48,7 @@ struct GenerateCardsView: View {
         .onAppear {
             // Start from the student's study focus.
             selection = FocusSelection(stored: focusStored)
+            mixChosen = selection.isMix
             bySystem = selection.leadsWithSystem
             #if DEBUG
             if DebugLaunch.screen == "cards-generate-notes-pick" {
@@ -98,63 +101,95 @@ struct GenerateCardsView: View {
             VStack(alignment: .leading, spacing: 22) {
                 Segmented(options: [(false, "Topics"), (true, "My notes")], selection: $fromNotes)
 
-                if fromNotes {
-                    notesPicker
-                } else {
-                    topicsPicker
-                }
+                if fromNotes { notesPicker }
 
                 VStack(alignment: .leading, spacing: 10) {
                     FieldLabel("How many cards")
                     Segmented(options: FlashcardStore.generateCounts.map { ($0, "\($0)") }, selection: $count)
                 }
 
-                if !fromNotes {
+                // Only when there's something to include: a new student has no misses yet.
+                if !fromNotes && app.missedRedFlagCount > 0 {
                     Toggle(isOn: $includeMisses) {
                         VStack(alignment: .leading, spacing: 2) {
                             Text("Include what I missed").font(.system(size: 16, weight: .semibold))
-                            Text("Red flags from your graded cases").font(.system(size: 13)).foregroundStyle(Theme.muted)
+                            Text(app.missedRedFlagCount == 1 ? "1 red flag from your graded cases"
+                                                             : "\(app.missedRedFlagCount) red flags from your graded cases")
+                                .font(.system(size: 13)).foregroundStyle(Theme.muted)
                         }
                     }
                     .padding(16)
                     .background(Theme.surface, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).strokeBorder(Theme.ring))
-
-                    Text("Cards are written from our condition profiles.")
-                        .font(.system(size: 13))
-                        .foregroundStyle(Theme.muted)
                 }
+
+                if !fromNotes { topicsPicker }
             }
             .padding(20)
         }
-        .safeAreaInset(edge: .bottom) {
-            // From notes the count is a ceiling: short notes support fewer good cards.
-            Button(fromNotes ? "Generate up to \(count) cards" : "Generate \(count) cards", action: generate)
-                .buttonStyle(PrimaryButtonStyle(height: 54))
-                .disabled(fromNotes && (notes == nil || store.isReadingNotes))
-                .padding(.horizontal, 20)
-                .padding(.vertical, 12)
-                .background(Theme.bg)
+        .safeAreaInset(edge: .bottom) { bottomBar }
+    }
+
+    /// What will be made, the button, and today's allowance once known. Without notes there's
+    /// nothing to make yet, so it says so instead of showing a dead button.
+    private var bottomBar: some View {
+        VStack(spacing: 8) {
+            if fromNotes && notes == nil {
+                Text(store.isReadingNotes ? "Reading your notes…" : "Add notes to continue")
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundStyle(Theme.muted)
+                    .frame(maxWidth: .infinity, minHeight: 54)
+            } else {
+                Text(summary)
+                    .font(.system(size: 13))
+                    .foregroundStyle(Theme.muted)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+                // From notes the count is a ceiling: short notes support fewer good cards.
+                Button(fromNotes ? "Generate up to \(count) cards" : "Generate \(count) cards", action: generate)
+                    .buttonStyle(PrimaryButtonStyle(height: 54))
+                    .disabled(store.isReadingNotes)
+            }
+            if let left = store.allowanceToday {
+                Text(left.label).font(.system(size: 12)).foregroundStyle(Theme.faint)
+            }
         }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 12)
+        .background(Theme.bg)
+    }
+
+    /// The deck this will make, so a student can tap Generate without choosing anything.
+    private var summary: String {
+        if fromNotes, let notes { return "Saved as \(notes.deckName)" }
+        return selection.isMix ? "A mix of every topic · saved as Mixed topics"
+                               : "Saved as \(FlashcardStore.deckName(for: selection))"
     }
 
     private var topicsPicker: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(alignment: .firstTextBaseline) {
-                FieldLabel("Topics")
-                Spacer()
                 Text(selection.isMix ? "Mixed topics" : "\(selection.items.count) selected")
-                    .font(.system(size: 13)).foregroundStyle(Theme.muted)
+                    .font(.system(size: 13, weight: .semibold)).foregroundStyle(Theme.muted)
+                Spacer()
+                // A choice inside Topics, so a quiet menu rather than a second segmented control.
+                Menu {
+                    Picker("Group by", selection: $bySystem) {
+                        Text("By rotation").tag(false)
+                        Text("By system").tag(true)
+                    }
+                } label: {
+                    HStack(spacing: 4) {
+                        Text(bySystem ? "By system" : "By rotation")
+                        AppIcon(.chevronDown, size: 14)
+                    }
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(Theme.accent)
+                    .frame(minHeight: 44)
+                }
             }
-            Segmented(options: [(false, "By rotation"), (true, "By system")], selection: $bySystem)
-            // Compact chips, not the onboarding tiles, so count and options stay above the fold.
-            FlowLayout(spacing: 8) {
-                ForEach(topics, id: \.self) { topicChip($0) }
-            }
-            if selection.isMix {
-                Text("None picked: you'll get a mix of everything.")
-                    .font(.system(size: 13)).foregroundStyle(Theme.muted)
-            }
+            // The same topic tiles as onboarding and the study focus sheet.
+            FocusGrid(byRotation: !bySystem, counts: app.topicCounts, selection: $selection, mixChosen: $mixChosen)
         }
     }
 
@@ -243,30 +278,6 @@ struct GenerateCardsView: View {
         .padding(.vertical, 6)
         .background(Theme.surface, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).strokeBorder(Theme.ring))
-    }
-
-    private var topics: [StudyFocus] {
-        bySystem ? OrganSystem.allCases.map(StudyFocus.system) : Clerkship.allCases.map(StudyFocus.rotation)
-    }
-
-    private func topicChip(_ topic: StudyFocus) -> some View {
-        let on = selection.contains(topic)
-        return Button {
-            withAnimation(Springs.pop) { selection.toggle(topic) }
-        } label: {
-            HStack(spacing: 6) {
-                if on { AppIcon(.check, size: 14) }
-                Text(topic.label)
-            }
-            .font(.system(size: 15, weight: on ? .semibold : .regular))
-            .foregroundStyle(on ? Color.white : Theme.text)
-            .padding(.horizontal, 14)
-            .frame(minHeight: 44)
-            .background(on ? Theme.accent : Theme.surface, in: Capsule())
-            .overlay(Capsule().strokeBorder(on ? Color.clear : Theme.border))
-        }
-        .buttonStyle(PressDownStyle())
-        .accessibilityAddTraits(on ? .isSelected : [])
     }
 
     private func generate() {
