@@ -79,6 +79,7 @@ struct InterviewView: View {
             tab = .history
             #if DEBUG
             if DebugLaunch.screen == "examine" { tab = .examine }
+            if DebugLaunch.screen == "interview-exam" { session.examMode = true }
             if DebugLaunch.screen == "voice-listen" { voice.debugPin(.listening, level: 0.75, transcript: "Any sweating or feeling sick?") }
             if DebugLaunch.screen == "voice-patient" { voice.debugPin(.patientSpeaking, level: 0.5) }
             #endif
@@ -142,7 +143,8 @@ struct InterviewView: View {
             ScrollView {
                 LazyVStack(spacing: 10) {
                     if session.messages.isEmpty {
-                        Text("Introduce yourself, then take a focused history. Type or tap a suggestion.")
+                        Text(session.examMode ? "Introduce yourself, then take a focused history."
+                                              : "Introduce yourself, then take a focused history. Type or tap a suggestion.")
                             .font(.system(size: 15))
                             .foregroundStyle(Theme.muted)
                             .multilineTextAlignment(.center)
@@ -213,7 +215,8 @@ struct InterviewView: View {
 
     private var composer: some View {
         VStack(spacing: 8) {
-            if !inputFocused || draft.isEmpty {
+            // Exam mode is unassisted: no suggested questions.
+            if !session.examMode && (!inputFocused || draft.isEmpty) {
                 ScrollView(.horizontal) {
                     HStack(spacing: 8) {
                         ForEach(unaskedSuggestions, id: \.self) { s in
