@@ -1,27 +1,6 @@
 import SwiftUI
 import Observation
 
-/// Signed-out steps. Email sign-up and log in go through `code`; an account that hasn't finished
-/// onboarding then runs intro → studyGoal → focus → promise before entering the app.
-enum AuthStep: Hashable {
-    case signIn, signUp, onboarding
-    case code(email: String)
-}
-
-@MainActor
-@Observable
-final class AuthRouter {
-    var path: [AuthStep] = []
-    func go(_ step: AuthStep) { path.append(step) }
-    func back() { if !path.isEmpty { path.removeLast() } }
-
-    /// After any sign-in (code, Apple, Google): onboarding until the account has made its promise,
-    /// then the app. One rule for every path, decided by the account, not the screen it came from.
-    func enter(_ account: Account, auth: AuthModel) {
-        if account.onboarded { auth.finishSignIn() } else { go(.onboarding) }
-    }
-}
-
 /// Signed-out shell: welcome, sign up, log in and onboarding, over real accounts (AuthModel).
 /// A new account goes through onboarding (intro pages, study goal, focus, promise); a returning one goes straight in.
 struct AuthFlowView: View {

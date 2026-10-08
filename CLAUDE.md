@@ -58,6 +58,7 @@ Rules that follow from this:
 - **MV first.** Views read `@Observable` models (`AppState`, `CaseSession`) via `@Environment` or `@State`. Add a per-screen view model only when a screen owns real async work or logic worth testing.
 - Navigation is value-based: `NavigationStack(path:)` with `Hashable` step enums (`AuthStep`, `CaseStep`). Don't use string routes.
 - One screen per file in `Screens/`; shared pieces in `Components/`; tokens in `Theme/Theme.swift`.
+- Inside each layer, files sit in feature folders: `Screens/{Auth,Onboarding,Home,Case,Patients,Cards,Profile}`, `Model/{Account,Study,Case,Performance,Badges,Cards}`, `Components/{Buttons,Layout,Indicators,Icons,ECG,Onboarding,Focus,Badges,Case}`, `Services/{Auth,Cards,Cases,Reference}` (with `Errors/`, `Providers/`, `Protocols/`, `Models/`, `Mocks/` where they help), `App/Navigation`, and matching `RoundsTests/` folders. Put a new file in the folder of its feature; add a folder only when a feature has no home.
 - Persist small user preferences with `@AppStorage` keys declared as `static let storageKey` on the owning type (see `StudyFocus`).
 
 ## Concurrency (Swift 6 rules, even in Swift 5 mode)
