@@ -204,6 +204,12 @@ final class VoiceController: NSObject, AVSpeechSynthesizerDelegate {
     func speak(_ text: String) {
         guard isActive else { return }
         stopAudio()
+        // While listening the session is in call mode (playAndRecord), which on Bluetooth headphones
+        // plays through the low-quality hands-free channel and makes any voice sound robotic. The
+        // patient speaks through plain playback instead; startListening switches back for your turn.
+        let s = AVAudioSession.sharedInstance()
+        try? s.setCategory(.playback, mode: .spokenAudio, options: [.duckOthers])
+        try? s.setActive(true, options: .notifyOthersOnDeactivation)
         let u = AVSpeechUtterance(string: text)
         u.voice = patientVoice ?? AVSpeechSynthesisVoice(language: "en-US")
         u.rate = VOICE.slowestRate + (VOICE.fastestRate - VOICE.slowestRate) * Float(Preferences.voiceSpeed)
