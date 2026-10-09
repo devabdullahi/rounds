@@ -7,6 +7,7 @@ enum Clerkship: String, CaseIterable, Identifiable {
     case internalMedicine, surgery, pediatrics, obgyn, psychiatry, familyMedicine, neurology, emergency, clinicalPsychology, dermatology
     case allergyImmunology, cardiology, endocrinology, geriatrics, hematologyOncology, infectiousDisease
     case nephrology, ophthalmology, orthopedicSurgery, otolaryngology, rehabilitation, rheumatology, urology
+    case neonatology, nutrition
     var id: String { rawValue }
 
     /// The core clerkship rotations, the original ten. Badges that ask for "every specialty" use these,
@@ -39,6 +40,8 @@ enum Clerkship: String, CaseIterable, Identifiable {
         case .rehabilitation: "Physical medicine & rehab"
         case .rheumatology: "Rheumatology"
         case .urology: "Urology"
+        case .neonatology: "Neonatal/perinatal"
+        case .nutrition: "Health nutrition"
         }
     }
 
@@ -67,6 +70,8 @@ enum Clerkship: String, CaseIterable, Identifiable {
         case .rehabilitation: "Stroke recovery, spinal injury"
         case .rheumatology: "Joint pain, lupus, gout"
         case .urology: "Kidney stones, prostate, blood in urine"
+        case .neonatology: "Jaundice, breathing trouble, sepsis"
+        case .nutrition: "Malnutrition, vitamin deficiencies"
         }
     }
 }

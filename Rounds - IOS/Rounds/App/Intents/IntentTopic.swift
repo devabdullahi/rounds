@@ -7,6 +7,7 @@ enum IntentTopic: String, AppEnum {
     case clinicalPsychology, dermatology
     case allergyImmunology, cardiology, endocrinology, geriatrics, hematologyOncology, infectiousDisease
     case nephrology, ophthalmology, orthopedicSurgery, otolaryngology, rehabilitation, rheumatology, urology
+    case neonatology, nutrition
     case cardiovascular, respiratory, gastrointestinal, renal, nervous, endocrine, blood, musculoskeletal
     case reproductive, behavioral
 
@@ -36,6 +37,8 @@ enum IntentTopic: String, AppEnum {
         .rehabilitation: DisplayRepresentation(title: "Physical medicine and rehab", synonyms: ["PM&R", "rehab", "rehabilitation"]),
         .rheumatology: DisplayRepresentation(title: "Rheumatology", synonyms: ["rheum", "rheumatology"]),
         .urology: DisplayRepresentation(title: "Urology", synonyms: ["uro", "urologic"]),
+        .neonatology: DisplayRepresentation(title: "Neonatal", synonyms: ["neonatology", "newborn", "NICU", "perinatal"]),
+        .nutrition: DisplayRepresentation(title: "Nutrition", synonyms: ["health nutrition", "vitamins", "malnutrition"]),
         .cardiovascular: DisplayRepresentation(title: "Cardiovascular", synonyms: ["cardiac", "heart", "circulation"]),
         .respiratory: DisplayRepresentation(title: "Respiratory", synonyms: ["pulmonology", "pulmonary", "lungs"]),
         .gastrointestinal: DisplayRepresentation(title: "Gastrointestinal", synonyms: ["GI", "gastroenterology", "gut"]),

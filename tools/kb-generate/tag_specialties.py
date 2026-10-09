@@ -48,11 +48,13 @@ SPECIALTIES: dict[str, tuple[str, str]] = {
 }
 
 # Specialties students can pick today: enough case-suitable conditions to practice on (15 or more)
-# and a fit for diagnosis practice. Held back: Neonatal/perinatal and Health nutrition (too few
-# conditions), Radiation oncology (its cases would be the same cancers, and the app trains diagnosis,
-# not radiation planning). load_conditions.py adds only these to each condition's topics.
+# and a fit for diagnosis practice. Held back: Radiation oncology (its cases would be the same
+# cancers, and the app trains diagnosis, not radiation planning). Neonatal/perinatal and Health
+# nutrition went live once UMLS-verified conditions were added (tools/kb-import/clinical_tables.py).
+# load_conditions.py adds only these to each condition's topics.
 LIVE = ["cardiology", "allergyImmunology", "endocrinology", "geriatrics", "hematologyOncology", "infectiousDisease",
-        "nephrology", "rheumatology", "ophthalmology", "orthopedicSurgery", "otolaryngology", "urology", "rehabilitation"]
+        "nephrology", "rheumatology", "ophthalmology", "orthopedicSurgery", "otolaryngology", "urology", "rehabilitation",
+        "neonatology", "nutrition"]
 
 SYSTEM = "You are a US attending physician assigning medical conditions to the specialties that manage them. Reply with JSON only."
 
