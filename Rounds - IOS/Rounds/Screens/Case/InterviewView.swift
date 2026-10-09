@@ -95,6 +95,9 @@ struct InterviewView: View {
             if DebugLaunch.screen == "examine" { tab = .examine }
             if DebugLaunch.screen == "interview-exam" || DebugLaunch.screen == "interview-exam-chat" { session.examMode = true }
             if ["interview-chat", "interview-exam-chat", "interview-findings"].contains(DebugLaunch.screen) { session.debugSeedChat() }
+            if DebugLaunch.screen == "demo-interview" {
+                Task { try? await Task.sleep(for: .seconds(1.5)); await session.debugPlayChat() }
+            }
             if DebugLaunch.screen == "interview-findings" {
                 Task { try? await Task.sleep(for: .seconds(1)); showingFindings = true }
             }

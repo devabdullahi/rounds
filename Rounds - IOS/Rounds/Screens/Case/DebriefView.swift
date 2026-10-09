@@ -151,7 +151,12 @@ struct DebriefView: View {
         do {
             #if DEBUG
             // A fixed, partly wrong grade, so the debrief can be checked without grading a real case.
-            g = DebugLaunch.screen == "debrief-graded" ? .debugSample : try await session.submit()
+            if DebugLaunch.screen == "debrief-graded" {
+                session.diagnosis = Grade.debugSample.diagnosis   // as if the student had submitted it
+                g = .debugSample
+            } else {
+                g = try await session.submit()
+            }
             #else
             g = try await session.submit()
             #endif
