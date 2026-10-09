@@ -7,7 +7,7 @@ struct StartPatientIntent: AppIntent {
     static let description = IntentDescription("Admits a new fictional patient and opens the case.")
     static let openAppWhenRun = true
 
-    @Parameter(title: "Topic", description: "A rotation or organ system. Leave empty for your saved focus.")
+    @Parameter(title: "Topic", description: "A specialty or organ system. Leave empty for your saved focus.")
     var topic: IntentTopic?
 
     @Dependency private var app: AppState

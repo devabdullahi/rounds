@@ -133,7 +133,9 @@ async function finish(slug: string, profile: Json, repairs: string[]): Promise<v
     review_issues: [...repairs.map((r) => `auto-repaired: ${r}`), ...terms.notes, ...ruleWarnings(profile, known)],
   };
   const t = profile.triage;
-  const clerkships = [...new Set([t.primary_clerkship, ...(t.secondary_clerkships ?? [])])];
+  // Study topics come from the catalog: triage rotations plus tagged specialties (tag_specialties.py).
+  const [catalog] = await sql<{ clerkships: string[] }[]>`select clerkships from private.conditions where slug = ${slug}`;
+  const clerkships = [...new Set([t.primary_clerkship, ...(t.secondary_clerkships ?? []), ...(catalog?.clerkships ?? [])])];
   await sql.begin(async (tx) => {
     await tx`
       insert into private.condition_profiles (slug, name, primary_clerkship, clerkships, organ_systems, validation, review, profile)

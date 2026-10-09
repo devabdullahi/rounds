@@ -22,7 +22,7 @@ struct SiriCommand: Identifiable, Sendable {
                     phrases: ["What's my streak in Rounds", "Check my Rounds streak"]),
     ]
 
-    /// Topic names Siri understands: every rotation and organ system. Siri also knows common
+    /// Topic names Siri understands: every specialty and organ system. Siri also knows common
     /// shorthand for them (peds, GI, heme), registered with `IntentTopic`.
     static var topicNames: [String] {
         Clerkship.allCases.map { StudyFocus.rotation($0).label } + OrganSystem.allCases.map { StudyFocus.system($0).label }

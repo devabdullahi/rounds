@@ -27,8 +27,8 @@ serve(async (req) => {
   const { focus: requested = "" } = await body<Request>(req);
   const focus = parseFocus(requested);
 
-  const rows = await sql<{ profile: Profile }[]>`
-    select profile from private.condition_profiles
+  const rows = await sql<{ profile: Profile; clerkships: string[] }[]>`
+    select profile, clerkships from private.condition_profiles
     where validation = 'passed' and review <> 'rejected'
       and (${focus.kind !== "rotation"} or ${focus.value} = any(clerkships))
       and (${focus.kind !== "system"} or ${focus.value} = any(organ_systems))
@@ -38,14 +38,14 @@ serve(async (req) => {
     if (queued.inFlight) return json({ status: "preparing" }, 202);
     throw new HttpError(404, "no conditions available for this focus yet");
   }
-  const profile = rows[0].profile;
+  const { profile, clerkships } = rows[0];
 
   // A new patient costs a model call, so it counts against the daily limit (refunded on failure).
-  return withQuota(userId, "case", () => writeCase(userId, profile, focus));
+  return withQuota(userId, "case", () => writeCase(userId, profile, clerkships, focus));
 });
 
 /** Plans the patient in code, has the model write them, checks the writing, and saves the case. */
-async function writeCase(userId: string, profile: Profile, focus: Focus): Promise<Response> {
+async function writeCase(userId: string, profile: Profile, clerkships: string[], focus: Focus): Promise<Response> {
   // Clinical psychology is a focus like any rotation; its cases are written as a psychologist's intake.
   const psychology = focus.kind === "rotation" && focus.value === "clinicalPsychology";
   const dermatology = focus.kind === "rotation" && focus.value === "dermatology";
@@ -69,15 +69,15 @@ async function writeCase(userId: string, profile: Profile, focus: Focus): Promis
     throw new HttpError(502, "the patient couldn't be written; try again");
   }
 
-  const caseId = await save(userId, profile, plan, neutralIds(writing), focus);
+  const caseId = await save(userId, profile, clerkships, plan, neutralIds(writing), focus);
   return json({ case_id: caseId, model: currentModel() });
 }
 
-/** The rotation a case files under: the one the student picked, when the condition belongs to it
- *  (a depression case made for Clinical psychology is a psychology case), else the condition's own. */
-function caseClerkship(profile: Profile, focus: Focus): string {
-  const tags = [profile.triage.primary_clerkship, ...((profile.triage as { secondary_clerkships?: string[] }).secondary_clerkships ?? [])];
-  return focus.kind === "rotation" && tags.includes(focus.value) ? focus.value : profile.triage.primary_clerkship;
+/** The specialty a case files under: the one the student picked, when the condition belongs to it
+ *  (a depression case made for Clinical psychology is a psychology case; a heart failure case made
+ *  for Cardiology is a cardiology case), else the condition's own primary rotation. */
+function caseClerkship(profile: Profile, topics: string[], focus: Focus): string {
+  return focus.kind === "rotation" && topics.includes(focus.value) ? focus.value : profile.triage.primary_clerkship;
 }
 
 function bedCode(): string {
@@ -103,7 +103,7 @@ function doorVitals(plan: CasePlan) {
   return out.map((x) => ({ ...x, label: VITAL_LABELS[x.id] }));
 }
 
-async function save(userId: string, profile: Profile, plan: CasePlan, w: Writing, focus: Focus): Promise<string> {
+async function save(userId: string, profile: Profile, clerkships: string[], plan: CasePlan, w: Writing, focus: Focus): Promise<string> {
   const meta = new Map(w.test_meta.map((m) => [m.test_id, m]));
   const reports = new Map(w.studies.map((s) => [s.test_id, s]));
   const tests = plan.tests.map((t) => {
@@ -130,7 +130,7 @@ async function save(userId: string, profile: Profile, plan: CasePlan, w: Writing
           values (${id}, ${profile.triage.primary_clerkship}, ${w.patient.name}, ${plan.age}, ${plan.sex},
             ${w.patient.quote}, ${w.patient.complaint}, ${tx.json(doorVitals(plan))}, ${budget}, 10,
             false, ${userId}, ${w.patient.setting}, ${w.patient.demeanor}, ${profile.triage.organ_systems[0]},
-            ${caseClerkship(profile, focus)}, ${tx.json(w.suggested)},
+            ${caseClerkship(profile, clerkships, focus)}, ${tx.json(w.suggested)},
             ${tx.json(w.maneuvers.map(({ id, title }) => ({ id, title })))},
             ${tx.json(tests.map(({ id, name, detail, cost, turnaround_s, delays_care_min }) =>
               ({ id, name, detail, cost, turnaround_s, delays_care_min })))},

@@ -230,12 +230,12 @@ struct GenerateCardsView: View {
                 // A choice inside Topics, so a quiet menu rather than a second segmented control.
                 Menu {
                     Picker("Group by", selection: $bySystem) {
-                        Text("By rotation").tag(false)
+                        Text("By specialty").tag(false)
                         Text("By system").tag(true)
                     }
                 } label: {
                     HStack(spacing: 4) {
-                        Text(bySystem ? "By system" : "By rotation")
+                        Text(bySystem ? "By system" : "By specialty")
                         AppIcon(.chevronDown, size: 14)
                     }
                     .font(.system(size: 15, weight: .semibold))
