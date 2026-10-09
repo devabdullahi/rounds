@@ -13,7 +13,7 @@ import { body, callerId, HttpError, json, serve } from "../_shared/http.ts";
 import { sql } from "../_shared/db.ts";
 import { completeJSON, currentModel } from "../_shared/llm.ts";
 import { CASE_WRITER, PROMPT_VERSION } from "../_shared/prompts.ts";
-import { caseBudget, type CasePlan, leakTerms, planCase, type Profile } from "../_shared/casegen.ts";
+import { acceptedNames, caseBudget, type CasePlan, leakTerms, planCase, type Profile } from "../_shared/casegen.ts";
 import { flag, type Patient, TESTS } from "../_shared/labs.ts";
 import { type Focus, parseFocus } from "../_shared/focus.ts";
 import { prepareNext } from "../_shared/prefetch.ts";
@@ -27,8 +27,11 @@ serve(async (req) => {
   const { focus: requested = "" } = await body<Request>(req);
   const focus = parseFocus(requested);
 
-  const rows = await sql<{ profile: Profile; clerkships: string[] }[]>`
-    select profile, clerkships from private.condition_profiles
+  const rows = await sql<{ profile: Profile; clerkships: string[]; synonyms: string[] }[]>`
+    select profile, clerkships,
+      coalesce((select array(select jsonb_array_elements_text(c.terms -> 'snomed' -> 'synonyms'))
+                from private.conditions c where c.slug = condition_profiles.slug), '{}') as synonyms
+    from private.condition_profiles
     where validation = 'passed' and review <> 'rejected'
       and (${focus.kind !== "rotation"} or ${focus.value} = any(clerkships))
       and (${focus.kind !== "system"} or ${focus.value} = any(organ_systems))
@@ -38,14 +41,14 @@ serve(async (req) => {
     if (queued.inFlight) return json({ status: "preparing" }, 202);
     throw new HttpError(404, "no conditions available for this focus yet");
   }
-  const { profile, clerkships } = rows[0];
+  const { profile, clerkships, synonyms } = rows[0];
 
   // A new patient costs a model call, so it counts against the daily limit (refunded on failure).
-  return withQuota(userId, "case", () => writeCase(userId, profile, clerkships, focus));
+  return withQuota(userId, "case", () => writeCase(userId, profile, clerkships, synonyms, focus));
 });
 
 /** Plans the patient in code, has the model write them, checks the writing, and saves the case. */
-async function writeCase(userId: string, profile: Profile, clerkships: string[], focus: Focus): Promise<Response> {
+async function writeCase(userId: string, profile: Profile, clerkships: string[], synonyms: string[], focus: Focus): Promise<Response> {
   // Clinical psychology is a focus like any rotation; its cases are written as a psychologist's intake.
   const psychology = focus.kind === "rotation" && focus.value === "clinicalPsychology";
   const dermatology = focus.kind === "rotation" && focus.value === "dermatology";
@@ -69,7 +72,7 @@ async function writeCase(userId: string, profile: Profile, clerkships: string[],
     throw new HttpError(502, "the patient couldn't be written; try again");
   }
 
-  const caseId = await save(userId, profile, clerkships, plan, neutralIds(writing), focus);
+  const caseId = await save(userId, profile, clerkships, synonyms, plan, neutralIds(writing), focus);
   return json({ case_id: caseId, model: currentModel() });
 }
 
@@ -103,7 +106,7 @@ function doorVitals(plan: CasePlan) {
   return out.map((x) => ({ ...x, label: VITAL_LABELS[x.id] }));
 }
 
-async function save(userId: string, profile: Profile, clerkships: string[], plan: CasePlan, w: Writing, focus: Focus): Promise<string> {
+async function save(userId: string, profile: Profile, clerkships: string[], synonyms: string[], plan: CasePlan, w: Writing, focus: Focus): Promise<string> {
   const meta = new Map(w.test_meta.map((m) => [m.test_id, m]));
   const reports = new Map(w.studies.map((s) => [s.test_id, s]));
   const tests = plan.tests.map((t) => {
@@ -138,7 +141,7 @@ async function save(userId: string, profile: Profile, clerkships: string[], plan
         await tx`
           insert into private.case_content (case_id, facts, exam, tests, answer_key, condition_slug, severity, persona, rubric, focus)
           values (${id}, ${tx.json(w.facts)}, ${tx.json(w.maneuvers)}, ${tx.json(tests)},
-            ${tx.json({ diagnosis: profile.triage.name, accepted: profile.teaching.accepted_names })},
+            ${tx.json({ diagnosis: profile.triage.name, accepted: acceptedNames(profile.teaching.accepted_names, synonyms) })},
             ${profile.slug}, ${plan.severity}, ${tx.json({ ...w.persona, name: w.patient.name, age: plan.age, sex: plan.sex, pregnant: plan.pregnant, model: currentModel(), prompt_version: PROMPT_VERSION })},
             ${tx.json(buildRubric(profile, plan, w, tests))}, ${focus.stored})`;
       });
