@@ -16,6 +16,7 @@ import { sql } from "../_shared/db.ts";
 import { completeJSON } from "../_shared/llm.ts";
 import { leaks } from "../_shared/casegen.ts";
 import { GRADER, PATIENT, REPLY_CHECKER } from "../_shared/prompts.ts";
+import { patientPrompt } from "../_shared/patientprompt.ts";
 import { type Actions, grade, matchesDiagnosis, type Rubric } from "./grade.ts";
 import { parseFocus } from "../_shared/focus.ts";
 import { prepareNext } from "../_shared/prefetch.ts";
@@ -99,22 +100,22 @@ async function ask(userId: string, input: Record<string, unknown>) {
   }
   const recent = attempt.transcript.slice(-LIMITS.transcriptTurns);
   const persona = content.persona;
-  const prompt = `You are ${persona.name}, ${persona.age}, ${persona.sex === "F" ? "female" : "male"}.
-Voice: ${persona.voice}
-Background: ${persona.background}
-Facts you may reveal: ${JSON.stringify(content.facts.map(({ id, reply }) => ({ id, content: reply })))}
-Conversation so far: ${JSON.stringify(recent.map(({ role, text }) => ({ role, text })))}
-Student's latest message: ${JSON.stringify(question)}`;
+  const prompt = patientPrompt(
+    { name: String(persona.name), age: persona.age, sex: String(persona.sex), voice: String(persona.voice), background: String(persona.background) },
+    content.facts, content.exam, recent, question,
+  );
 
   const known = new Map(content.facts.map((f) => [f.id, f]));
   let reply = String(persona.fallback ?? "");
   let used: string[] = [];
+  let looked: string[] = [];   // exam findings described as what anyone could see (no chip)
   let conduct: Conduct = isProfane(question) ? "inappropriate" : "clinical";
   try {
     if (conduct === "clinical") {
-      const answer = await completeJSON<{ conduct: string; fact_ids: string[]; reply: string }>(PATIENT, prompt, 400);
+      const answer = await completeJSON<{ conduct: string; fact_ids: string[]; seen_ids?: string[]; reply: string }>(PATIENT, prompt, 400);
       conduct = parseConduct(answer.conduct);
       used = (answer.fact_ids ?? []).filter((id) => known.has(id));
+      looked = (answer.seen_ids ?? []).filter((id) => content.exam.some((m) => m.id === id));
       reply = (answer.reply ?? "").trim() || reply;
     }
     const terms = [content.answer_key.diagnosis, ...content.answer_key.accepted].map((t) => t.toLowerCase()).filter((t) => t.length > 3);
@@ -124,7 +125,8 @@ Student's latest message: ${JSON.stringify(question)}`;
     } else if (leaks(reply, terms).length > 0) {
       // Never let the patient name the diagnosis: fall back to the scripted wording.
       reply = used.length ? used.map((id) => known.get(id)!.reply).join(" ") : String(persona.fallback);
-    } else if (used.length === 0 && await addsFacts(reply)) {
+    } else if (used.length === 0 && looked.length === 0 && await addsFacts(reply)) {
+      // Grounded replies (a fact or a visible finding) skip this; only free-floating ones are checked.
       reply = String(persona.fallback);
     }
   } catch (error) {
