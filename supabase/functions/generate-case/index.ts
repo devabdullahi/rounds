@@ -13,7 +13,7 @@ import { body, callerId, HttpError, json, serve } from "../_shared/http.ts";
 import { sql } from "../_shared/db.ts";
 import { completeJSON, currentModel } from "../_shared/llm.ts";
 import { CASE_WRITER, PROMPT_VERSION } from "../_shared/prompts.ts";
-import { type CasePlan, leakTerms, planCase, type Profile } from "../_shared/casegen.ts";
+import { caseBudget, type CasePlan, leakTerms, planCase, type Profile } from "../_shared/casegen.ts";
 import { flag, type Patient, TESTS } from "../_shared/labs.ts";
 import { type Focus, parseFocus } from "../_shared/focus.ts";
 import { prepareNext } from "../_shared/prefetch.ts";
@@ -118,7 +118,7 @@ async function save(userId: string, profile: Profile, plan: CasePlan, w: Writing
     };
   });
   const indicatedCost = tests.filter((t) => t.role === "indicated").reduce((s, t) => s + t.cost, 0);
-  const budget = Math.max(200, Math.ceil((indicatedCost * 1.5) / 50) * 50);
+  const budget = caseBudget(indicatedCost);
 
   for (let attempt = 0; attempt < 5; attempt++) {
     const id = bedCode();
