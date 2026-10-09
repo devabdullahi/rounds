@@ -10,7 +10,7 @@ struct MixRow: View {
         Button(action: action) {
             HStack(spacing: 10) {
                 AppIcon(.shuffle, size: 20).foregroundStyle(Theme.accentText)
-                Text(byRotation ? "Between rotations · mix it up" : "Not sure · mix it up")
+                Text(byRotation ? "Between specialties · mix it up" : "Not sure · mix it up")
                     .font(.system(size: 16, weight: .semibold))
                 Spacer()
                 if on { FocusCheck(size: 20) }

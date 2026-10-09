@@ -26,7 +26,7 @@ struct FocusPage: View {
             }
             .padding(.top, 4)
 
-            Segmented(options: [(false, "Rotation"), (true, "System")], selection: $bySystem)
+            Segmented(options: [(false, "Specialty"), (true, "System")], selection: $bySystem)
                 .padding(.top, 18)
 
             ScrollView {

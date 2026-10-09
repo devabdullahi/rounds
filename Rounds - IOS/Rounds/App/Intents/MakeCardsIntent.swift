@@ -6,7 +6,7 @@ struct MakeCardsIntent: AppIntent {
     static let title: LocalizedStringResource = "Make Flashcards"
     static let description = IntentDescription("Writes a new flashcard deck on a topic.")
 
-    @Parameter(title: "Topic", description: "A rotation or organ system. Leave empty for your saved focus.")
+    @Parameter(title: "Topic", description: "A specialty or organ system. Leave empty for your saved focus.")
     var topic: IntentTopic?
 
     @Parameter(title: "Cards", default: .twenty)
