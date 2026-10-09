@@ -110,6 +110,32 @@ function sexFor(rule: string, rng: () => number): Sex {
  *  don't yet say so explicitly; a schema field would replace this. */
 const PREGNANCY_CONDITION = /pregnan|preeclampsia|eclampsia|ectopic|gestational|placent|miscarriage|hyperemesis|preterm labor|labor and delivery/i;
 
+/** Abbreviations that are also ordinary words: "an" would match "an infection". */
+const WORD_ABBREVIATIONS = new Set(["an", "as", "at", "be", "do", "go", "he", "if", "in", "is", "it", "me", "my", "no", "of", "on", "or", "so", "to", "up", "us", "we", "all", "and", "are", "can", "for", "had", "has", "her", "him", "his", "its", "not", "one", "our", "the", "was", "who", "you"]);
+
+/**
+ * A case's accepted diagnosis names: the profile's own, plus standard synonyms from UMLS (SNOMED CT).
+ * Grading accepts an answer that contains one as whole words, so terms that would match ordinary
+ * sentences are dropped: "AN - Acoustic neuroma" keeps only "Acoustic neuroma", and short terms
+ * survive only as real all-caps abbreviations (MI, CVA, DKA) that aren't also English words.
+ */
+export function acceptedNames(profileNames: string[], synonyms: string[]): string[] {
+  const out = new Map<string, string>();
+  const add = (name: string) => {
+    const key = name.trim().toLowerCase();
+    if (key && !out.has(key)) out.set(key, name.trim());
+  };
+  profileNames.forEach(add);
+  for (const raw of synonyms) {
+    for (const part of raw.split(/\s+-\s+/)) {
+      const term = part.trim().replace(/\s*\[[^\]]*\]$/, "").replace(/\s*\((disorder|finding)\)$/, "");
+      if (term.length >= 4 && !/\bNOS\b|, unspecified/i.test(term)) add(term);
+      else if (/^[A-Z][A-Z0-9]{1,4}$/.test(term) && !WORD_ABBREVIATIONS.has(term.toLowerCase())) add(term);
+    }
+  }
+  return [...out.values()];
+}
+
 /** The least a case's test budget can be: enough for a realistic US workup with imaging, so the
  * budget teaches cost awareness rather than forcing the student to skip a test that's needed. */
 export const MIN_BUDGET = 1000;
