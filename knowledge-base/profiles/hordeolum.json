@@ -1,0 +1,874 @@
+{
+  "schema_version": "0.2",
+  "slug": "hordeolum",
+  "triage": {
+    "name": "Hordeolum",
+    "case_suitable": true,
+    "reason": "Focal painful eyelid swelling diagnosed by inspection and history; good dermatology/primary care case with chalazion as the main look-alike.",
+    "kind": "disease",
+    "category": "eyelid infection",
+    "organ_systems": [
+      "musculoskeletal"
+    ],
+    "primary_clerkship": "familyMedicine",
+    "secondary_clerkships": [
+      "dermatology",
+      "pediatrics",
+      "emergency"
+    ],
+    "commonness": "common",
+    "settings": [
+      "clinic",
+      "pediatric_clinic"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:24:14Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:46:49Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:47:06Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:47:09Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:47:18Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:47:24Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "presentation: term 'Pain on blinking' not found in SNOMED CT",
+        "exam: term 'Eyelid tenderness' not found in SNOMED CT",
+        "exam: term 'Extraocular movements normal' not found in SNOMED CT",
+        "differential chalazion: no profile yet",
+        "differential preseptal-cellulitis: no profile yet",
+        "differential orbital-cellulitis: no profile yet",
+        "differential blepharitis: no profile yet",
+        "differential herpes-zoster-ophthalmicus: no profile yet",
+        "differential basal-cell-carcinoma: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 5,
+      "typical_max": 65,
+      "peak": "children and young adults",
+      "possible_min": 0,
+      "possible_max": 90
+    },
+    "sex": "either",
+    "demographics": [
+      "Common in children and young adults",
+      "Occurs in all ethnic groups",
+      "More frequent in contact lens wearers"
+    ],
+    "risk_factors": [
+      {
+        "text": "Contact lens wear",
+        "strength": "moderate"
+      },
+      {
+        "text": "Poor eyelid hygiene",
+        "strength": "moderate"
+      },
+      {
+        "text": "Prior hordeolum or chalazion",
+        "strength": "moderate"
+      },
+      {
+        "text": "Rosacea",
+        "strength": "weak"
+      },
+      {
+        "text": "Seborrheic dermatitis",
+        "strength": "weak"
+      },
+      {
+        "text": "Diabetes mellitus",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Rosacea",
+      "Seborrheic dermatitis",
+      "Diabetes mellitus"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Contact lens use",
+      "Cosmetic eye makeup use"
+    ],
+    "exposures": [
+      "Contact lens wear",
+      "Eye makeup",
+      "Touching or rubbing the eyelids with unclean hands"
+    ],
+    "risk_medications": []
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My eyelid is swollen and sore",
+        "frequency": "almost_always",
+        "term": "Eyelid swelling",
+        "snomed_verified": true
+      },
+      {
+        "text": "There is a tender bump on my eyelid",
+        "frequency": "common",
+        "term": "Eyelid lump",
+        "snomed_verified": true
+      },
+      {
+        "text": "My eye is red and watery",
+        "frequency": "common",
+        "term": "Red eye",
+        "snomed_verified": true
+      },
+      {
+        "text": "It hurts when I blink",
+        "frequency": "sometimes",
+        "term": "Pain on blinking",
+        "snomed_verified": false
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual over 1–2 days",
+      "duration": "Usually 2–5 days at presentation",
+      "progression": "Starts as a localized tender area on the eyelid margin, then becomes a red, swollen bump that may point and drain",
+      "location": "Eyelid margin, either upper or lower eyelid",
+      "radiation": "None",
+      "quality": "Tender, warm, swollen bump; may feel like a small pimple",
+      "severity": "Mild to moderate; 3–6/10",
+      "timing": "Constant, worse with blinking",
+      "aggravating": [
+        "Blinking",
+        "Touching the eyelid",
+        "Bright light"
+      ],
+      "relieving": [
+        "Warm compresses",
+        "Resting the eye"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Tearing",
+          "frequency": "common",
+          "term": "Tearing",
+          "snomed_verified": true
+        },
+        {
+          "text": "Foreign body sensation",
+          "frequency": "sometimes",
+          "term": "Foreign body sensation in eye",
+          "snomed_verified": true
+        },
+        {
+          "text": "Mild blurred vision",
+          "frequency": "sometimes",
+          "term": "Blurred vision",
+          "snomed_verified": true
+        },
+        {
+          "text": "Photophobia",
+          "frequency": "rare",
+          "term": "Photophobia",
+          "snomed_verified": true
+        }
+      ],
+      "pertinent_negatives": [
+        "Vision loss",
+        "Severe eye pain",
+        "Purulent discharge from the eye",
+        "Fever",
+        "Proptosis",
+        "Diplopia",
+        "Recent eye surgery or trauma"
+      ]
+    },
+    "ros": [
+      {
+        "system": "eyes",
+        "positives": [
+          {
+            "text": "Eyelid swelling",
+            "frequency": "almost_always",
+            "term": "Eyelid swelling",
+            "snomed_verified": true
+          },
+          {
+            "text": "Erythema of skin of eyelid",
+            "frequency": "common",
+            "term": "Erythema of skin of eyelid",
+            "snomed_verified": true
+          },
+          {
+            "text": "Tearing",
+            "frequency": "common",
+            "term": "Tearing",
+            "snomed_verified": true
+          },
+          {
+            "text": "Blurred vision",
+            "frequency": "sometimes",
+            "term": "Blurred vision",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Vision loss",
+          "Severe eye pain",
+          "Proptosis",
+          "Diplopia"
+        ],
+        "argues_against": [
+          "Orbital cellulitis",
+          "Cavernous sinus thrombosis"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [
+          {
+            "text": "Eyelid lump",
+            "frequency": "common",
+            "term": "Eyelid lump",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Rash elsewhere",
+          "Ulceration"
+        ],
+        "argues_against": [
+          "Herpes zoster ophthalmicus",
+          "Impetigo"
+        ]
+      },
+      {
+        "system": "constitutional",
+        "positives": [],
+        "negatives": [
+          "Fever",
+          "Weight loss",
+          "Malaise"
+        ],
+        "argues_against": [
+          "Systemic infection"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Young children may not localize the pain and present with eyelid swelling, irritability, and refusal to open the eye.",
+        "missing_classic_features": [
+          "Clear description of a tender bump"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "May have less pain and more chronic eyelid margin inflammation; consider chalazion or malignancy if persistent.",
+        "missing_classic_features": [
+          "Acute severe tenderness"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "Can progress rapidly to preseptal or orbital cellulitis with fever and systemic symptoms.",
+        "missing_classic_features": [
+          "Self-limited course"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Comfortable, no systemic symptoms, eyelid slightly swollen",
+      "moderate": "Mild discomfort, keeps eye partially closed, no systemic symptoms",
+      "severe": "Ill-appearing with marked eyelid swelling, may have fever or systemic symptoms",
+      "critical": "Toxic-appearing with fever, proptosis, or inability to open the eye"
+    },
+    "findings": [
+      {
+        "id": "eyelid-swelling",
+        "region": "heent",
+        "maneuver": "Inspect the eyelids with the patient looking straight ahead",
+        "finding": "Localized swelling of the eyelid margin",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Eyelid swelling",
+        "snomed_verified": true
+      },
+      {
+        "id": "eyelid-erythema",
+        "region": "heent",
+        "maneuver": "Inspect the eyelid skin and margin",
+        "finding": "Erythema of the skin of the eyelid",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Erythema of skin of eyelid",
+        "snomed_verified": true
+      },
+      {
+        "id": "eyelid-tenderness",
+        "region": "heent",
+        "maneuver": "Gently palpate the eyelid margin",
+        "finding": "Tenderness over the eyelid margin",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Eyelid tenderness",
+        "snomed_verified": false
+      },
+      {
+        "id": "eyelid-nodule",
+        "region": "heent",
+        "maneuver": "Palpate the eyelid margin with a finger",
+        "finding": "A small, firm, tender nodule at the eyelid margin",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Eyelid lump",
+        "snomed_verified": true
+      },
+      {
+        "id": "pustule",
+        "region": "heent",
+        "maneuver": "Inspect the eyelid margin with a light and magnification",
+        "finding": "A small pustule or yellow-white head at the eyelid margin",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Pustule",
+        "snomed_verified": true
+      },
+      {
+        "id": "conjunctival-injection",
+        "region": "heent",
+        "maneuver": "Inspect the bulbar and palpebral conjunctiva",
+        "finding": "Conjunctival injection",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Conjunctival injection",
+        "snomed_verified": true
+      },
+      {
+        "id": "tearing",
+        "region": "heent",
+        "maneuver": "Observe the eye for excessive tearing",
+        "finding": "Tearing",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Tearing",
+        "snomed_verified": true
+      },
+      {
+        "id": "visual-acuity-normal",
+        "region": "heent",
+        "maneuver": "Check visual acuity with a Snellen chart",
+        "finding": "Visual acuity is normal",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Visual acuity normal",
+        "snomed_verified": true
+      },
+      {
+        "id": "pupillary-reflex",
+        "region": "heent",
+        "maneuver": "Shine a light into each eye and observe the pupillary response",
+        "finding": "Pupils are equal, round, and reactive to light",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Indirect light pupillary reflex",
+        "snomed_verified": true
+      },
+      {
+        "id": "extraocular-movements",
+        "region": "heent",
+        "maneuver": "Ask the patient to follow your finger in all directions of gaze",
+        "finding": "Extraocular movements are full and painless",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Extraocular movements normal",
+        "snomed_verified": false
+      },
+      {
+        "id": "proptosis",
+        "region": "heent",
+        "maneuver": "Inspect the eyes from above and below for forward displacement of the globe",
+        "finding": "Proptosis",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "argues_against",
+        "importance": "essential",
+        "term": "Proptosis",
+        "snomed_verified": true
+      },
+      {
+        "id": "fever",
+        "region": "general",
+        "maneuver": "Measure the temperature",
+        "finding": "Fever",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "argues_against",
+        "importance": "important",
+        "term": "Fever",
+        "snomed_verified": true
+      },
+      {
+        "id": "lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the preauricular, submandibular, and cervical lymph nodes",
+        "finding": "Regional lymphadenopathy",
+        "frequency": "rare",
+        "min_severity": "moderate",
+        "significance": "argues_against",
+        "importance": "optional",
+        "term": "Lymphadenopathy",
+        "snomed_verified": true
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "severe": {
+        "min": 100.4,
+        "max": 102.2
+      }
+    },
+    "hr": {
+      "severe": {
+        "min": 90,
+        "max": 110
+      }
+    }
+  },
+  "labs": [],
+  "imaging": [],
+  "workup": {
+    "initial": [],
+    "confirmatory": [],
+    "supporting": [],
+    "not_indicated": [
+      {
+        "test": "cbc",
+        "why": "No systemic symptoms; a white count does not change management of a simple hordeolum"
+      },
+      {
+        "test": "crp",
+        "why": "Inflammatory markers are not needed for a focal eyelid infection"
+      },
+      {
+        "test": "esr",
+        "why": "Not useful in a self-limited eyelid infection"
+      },
+      {
+        "test": "skin_culture",
+        "why": "Routine culture of a draining stye does not change management"
+      },
+      {
+        "test": "CT orbits with contrast",
+        "why": "Not needed unless orbital or preseptal cellulitis is suspected"
+      },
+      {
+        "test": "MRI orbits with contrast",
+        "why": "Reserved for suspected orbital extension or an atypical mass"
+      },
+      {
+        "test": "Orbital ultrasound",
+        "why": "Not required for a typical eyelid margin lesion"
+      }
+    ],
+    "decision_points": [
+      "Diagnosis is clinical; no laboratory or imaging test is required for a typical hordeolum",
+      "Check visual acuity, pupils, and extraocular movements to separate a simple hordeolum from preseptal or orbital cellulitis",
+      "Consider imaging and systemic antibiotics if there is fever, proptosis, painful or limited eye movements, or vision loss",
+      "Refer or biopsy a persistent eyelid margin lesion that does not resolve, to exclude chalazion or malignancy"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Chalazion",
+      "slug": "chalazion",
+      "why_considered": "Both cause a focal eyelid lump; chalazion is the most common look-alike and is often confused with an internal hordeolum.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Gradual, painless swelling over weeks rather than days",
+          "No acute tenderness or redness at onset",
+          "May have had a prior stye that resolved"
+        ],
+        "exam": [
+          "Firm, non-tender nodule within the eyelid away from the margin",
+          "No pustule or pointing head",
+          "Overlying skin is normal or only mildly erythematous"
+        ],
+        "labs": [],
+        "imaging": []
+      }
+    },
+    {
+      "name": "Preseptal cellulitis",
+      "slug": "preseptal-cellulitis",
+      "why_considered": "Eyelid swelling and redness can mimic a hordeolum, but preseptal cellulitis is a spreading infection that needs systemic antibiotics.",
+      "must_not_miss": true,
+      "trigger": "Diffuse, not focal, eyelid swelling with fever or a recent skin break or sinus infection",
+      "discriminators": {
+        "history": [
+          "Rapidly progressive swelling over hours to a day",
+          "Fever, malaise, or recent upper respiratory infection or eyelid trauma",
+          "Pain is diffuse rather than a single tender point"
+        ],
+        "exam": [
+          "Diffuse erythema and edema of the entire eyelid, not a discrete margin nodule",
+          "No proptosis, normal extraocular movements, and normal visual acuity",
+          "Fever may be present"
+        ],
+        "labs": [
+          "CBC may show leukocytosis if systemic symptoms are present"
+        ],
+        "imaging": [
+          "CT orbits with contrast if orbital extension is suspected"
+        ]
+      }
+    },
+    {
+      "name": "Orbital cellulitis",
+      "slug": "orbital-cellulitis",
+      "why_considered": "A severe eyelid infection can extend behind the orbital septum; this is the most dangerous look-alike and must be excluded.",
+      "must_not_miss": true,
+      "trigger": "Proptosis, painful or limited eye movements, vision loss, or a toxic-appearing patient",
+      "discriminators": {
+        "history": [
+          "Rapidly worsening eye pain and swelling",
+          "Fever, headache, or systemic illness",
+          "Recent sinusitis, dental infection, or eyelid trauma"
+        ],
+        "exam": [
+          "Proptosis",
+          "Painful or restricted extraocular movements",
+          "Decreased visual acuity or an afferent pupillary defect",
+          "Fever and toxic appearance"
+        ],
+        "labs": [
+          "CBC with leukocytosis",
+          "Blood cultures if systemically unwell"
+        ],
+        "imaging": [
+          "CT orbits with contrast showing orbital fat stranding, abscess, or sinusitis",
+          "MRI orbits with contrast if intracranial extension is suspected"
+        ]
+      }
+    },
+    {
+      "name": "Blepharitis",
+      "slug": "blepharitis",
+      "why_considered": "Chronic eyelid margin inflammation can cause redness, crusting, and irritation that may be mistaken for a recurrent stye.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Chronic, bilateral, burning or itchy eyelid margins",
+          "Crusting or flaking along the lashes, worse in the morning",
+          "Recurrent episodes rather than a single acute tender bump"
+        ],
+        "exam": [
+          "Diffuse eyelid margin erythema and scaling or collarettes around the lashes",
+          "No discrete tender nodule or pustule"
+        ],
+        "labs": [],
+        "imaging": []
+      }
+    },
+    {
+      "name": "Herpes zoster ophthalmicus",
+      "slug": "herpes-zoster-ophthalmicus",
+      "why_considered": "Can cause painful eyelid swelling and redness, but the vesicular rash and dermatomal distribution distinguish it.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Burning or tingling pain preceding a rash",
+          "Vesicular rash in the V1 dermatome",
+          "May have had chickenpox"
+        ],
+        "exam": [
+          "Grouped vesicles on an erythematous base respecting the midline",
+          "Hutchinson sign (vesicles on the nose tip) suggests ocular involvement",
+          "May have corneal involvement on slit lamp"
+        ],
+        "labs": [
+          "PCR of vesicle fluid for varicella-zoster virus if diagnosis is unclear"
+        ],
+        "imaging": []
+      }
+    },
+    {
+      "name": "Eyelid malignancy (e.g., basal cell carcinoma)",
+      "slug": "basal-cell-carcinoma",
+      "why_considered": "A persistent eyelid lesion that does not resolve can be a malignancy rather than a stye.",
+      "must_not_miss": true,
+      "trigger": "An eyelid lesion that persists beyond 4–6 weeks, ulcerates, or bleeds",
+      "discriminators": {
+        "history": [
+          "Slowly enlarging lesion over months",
+          "Painless or minimally tender",
+          "May bleed or crust intermittently"
+        ],
+        "exam": [
+          "Pearl-like nodule with telangiectasias, central ulceration, or loss of lashes",
+          "No acute tenderness or pustule"
+        ],
+        "labs": [],
+        "imaging": [
+          "Biopsy is required for diagnosis"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Small, localized tender eyelid margin bump with minimal redness and no visual symptoms; resolves with warm compresses.",
+      "moderate": "Larger, more painful swelling with erythema and tearing; may have a visible pustule but no systemic symptoms.",
+      "severe": "Marked eyelid swelling with fever, diffuse erythema, or inability to open the eye; consider preseptal or orbital cellulitis.",
+      "critical": "Proptosis, painful or limited eye movements, vision loss, or toxic appearance suggesting orbital cellulitis or cavernous sinus thrombosis."
+    },
+    "red_flags": [
+      {
+        "finding": "Proptosis",
+        "meaning": "Suggests orbital cellulitis or another orbital process; needs urgent imaging and antibiotics."
+      },
+      {
+        "finding": "Painful or limited extraocular movements",
+        "meaning": "Orbital involvement; requires urgent ophthalmology evaluation."
+      },
+      {
+        "finding": "Decreased visual acuity or afferent pupillary defect",
+        "meaning": "Optic nerve or orbital involvement; sight-threatening emergency."
+      },
+      {
+        "finding": "Fever with diffuse eyelid swelling",
+        "meaning": "Preseptal or orbital cellulitis rather than a simple hordeolum."
+      },
+      {
+        "finding": "Lesion persisting beyond 4–6 weeks or ulcerating",
+        "meaning": "Consider chalazion or malignancy; biopsy or refer."
+      }
+    ],
+    "complications": [
+      {
+        "name": "Progression to preseptal cellulitis",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Diffuse eyelid swelling",
+          "Fever",
+          "Increasing pain and redness"
+        ]
+      },
+      {
+        "name": "Progression to orbital cellulitis",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Proptosis",
+          "Painful or limited eye movements",
+          "Vision changes",
+          "Fever and toxic appearance"
+        ]
+      },
+      {
+        "name": "Chalazion formation",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Persistent firm, non-tender eyelid nodule after acute inflammation resolves"
+        ]
+      },
+      {
+        "name": "Recurrent hordeola",
+        "timing": "any",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Multiple episodes over months",
+          "Associated blepharitis or rosacea"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Young children may not localize pain and present with eyelid swelling, irritability, and refusal to open the eye; monitor for rapid progression to cellulitis."
+      },
+      {
+        "population": "older_adults",
+        "differences": "May have less pain and more chronic eyelid margin inflammation; persistent lesions should raise concern for chalazion or malignancy."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Higher risk of rapid progression to preseptal or orbital cellulitis; lower threshold for systemic antibiotics and imaging."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Increased risk of recurrent styes and more severe infections; optimize glycemic control and monitor closely."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "When did the eyelid swelling start, and how quickly has it changed?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Gradual onset over 1–2 days; rapid progression over hours suggests preseptal or orbital cellulitis"
+      },
+      {
+        "question": "Is the swelling a single tender spot or the whole eyelid?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "A focal, tender bump at the eyelid margin rather than diffuse swelling"
+      },
+      {
+        "question": "Does it hurt, and does it hurt when you blink?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Tenderness and pain with blinking; painless nodule suggests chalazion"
+      },
+      {
+        "question": "Is your vision normal, or is it blurry or lost?",
+        "category": "ros",
+        "importance": "essential",
+        "looking_for": "Normal or only mildly blurry vision; vision loss is a red flag for orbital involvement"
+      },
+      {
+        "question": "Do you have a fever, chills, or feel generally unwell?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Absent in a simple hordeolum; fever suggests preseptal or orbital cellulitis"
+      },
+      {
+        "question": "Does your eye bulge out, or is it painful or hard to move your eye?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Absent; proptosis or painful or limited eye movements suggests orbital cellulitis"
+      },
+      {
+        "question": "Have you had a stye or chalazion before?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Prior episodes suggest recurrent hordeola, blepharitis, or rosacea"
+      },
+      {
+        "question": "Do you wear contact lenses, and do you sleep or swim in them?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Contact lens wear is a risk factor and raises concern for a corneal process"
+      },
+      {
+        "question": "Do you use eye makeup, and do you remove it before bed?",
+        "category": "social",
+        "importance": "optional",
+        "looking_for": "Eye makeup use and poor eyelid hygiene are risk factors"
+      },
+      {
+        "question": "Do you have rosacea, seborrheic dermatitis, or diabetes?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Associated conditions that predispose to eyelid margin inflammation and recurrent styes"
+      },
+      {
+        "question": "Have you had any recent eye surgery, trauma, or sinus infection?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Absent; present raises concern for preseptal or orbital cellulitis"
+      },
+      {
+        "question": "Any discharge from the eye, or does it feel like something is in it?",
+        "category": "associated",
+        "importance": "optional",
+        "looking_for": "Tearing and foreign body sensation are common; purulent discharge suggests another cause"
+      }
+    ],
+    "accepted_names": [
+      "Hordeolum",
+      "Stye",
+      "Sty",
+      "External hordeolum",
+      "Internal hordeolum"
+    ],
+    "reasoning_points": [
+      "A focal, tender, red swelling at the eyelid margin that developed over 1–2 days",
+      "Pain with blinking and tenderness over the eyelid margin",
+      "Possible small pustule or yellow-white head at the eyelid margin",
+      "Vision, pupils, and extraocular movements are normal",
+      "No fever, proptosis, or systemic symptoms",
+      "Distinguished from chalazion (painless, firm, chronic nodule) and from preseptal or orbital cellulitis (diffuse swelling, fever, proptosis, vision changes)"
+    ],
+    "difficulty": {
+      "easy": [
+        "Young adult or child with a classic tender red bump at the eyelid margin",
+        "Onset over 1–2 days with pain on blinking",
+        "Normal vision and no systemic symptoms",
+        "Visible pustule at the eyelid margin"
+      ],
+      "medium": [
+        "Internal hordeolum with a tender nodule on the conjunctival side of the eyelid",
+        "Recurrent styes with underlying blepharitis or rosacea",
+        "Contact lens wearer with tearing and foreign body sensation",
+        "Mild conjunctival injection and blurred vision that resolves with blinking"
+      ],
+      "hard": [
+        "Young child who cannot localize pain and presents with eyelid swelling and irritability",
+        "Older adult with a less painful, more chronic eyelid margin lesion that could be a chalazion or malignancy",
+        "Patient with diabetes or immunocompromise and rapidly worsening swelling concerning for cellulitis",
+        "Lesion that persists beyond 4–6 weeks and needs referral or biopsy"
+      ]
+    }
+  }
+}

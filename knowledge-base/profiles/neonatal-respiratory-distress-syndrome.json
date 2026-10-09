@@ -1,0 +1,1449 @@
+{
+  "schema_version": "0.2",
+  "slug": "neonatal-respiratory-distress-syndrome",
+  "triage": {
+    "name": "Neonatal respiratory distress syndrome",
+    "case_suitable": true,
+    "reason": "Premature infant with grunting, retractions and cyanosis; diagnosis reachable from history, exam, blood gas and chest x-ray, with important look-alikes such as sepsis and transient tachypnea.",
+    "kind": "disease",
+    "category": "neonatal respiratory failure",
+    "organ_systems": [
+      "respiratory"
+    ],
+    "primary_clerkship": "pediatrics",
+    "secondary_clerkships": [
+      "obgyn",
+      "familyMedicine"
+    ],
+    "commonness": "common",
+    "settings": [
+      "inpatient",
+      "icu",
+      "labor_delivery"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:23:53Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:40:42Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:41:11Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:41:21Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:41:31Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:41:37Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'chest x-ray (anteroposterior, portable)' was in ['initial', 'confirmatory'], kept ['initial']",
+        "auto-repaired: workup: 'echocardiogram' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'lung ultrasound' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'echocardiogram' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'lung ultrasound' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "exam: term 'Head bobbing' not found in SNOMED CT",
+        "differential neonatal-sepsis: no profile yet",
+        "differential meconium-aspiration-syndrome: no profile yet",
+        "differential congenital-pneumonia: no profile yet",
+        "differential congenital-heart-disease: no profile yet",
+        "differential persistent-pulmonary-hypertension-of-the-newborn: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 0,
+      "typical_max": 0,
+      "peak": "0 (newborn; risk falls as gestational age rises, greatest below 28 weeks)",
+      "possible_min": 0,
+      "possible_max": 0
+    },
+    "sex": "either",
+    "demographics": [
+      "Risk is inversely related to gestational age and birth weight; it is uncommon at term",
+      "More common in infants of diabetic mothers and in those delivered by cesarean section without labor",
+      "Male infants are affected somewhat more often than female infants",
+      "Occurs in all racial and ethnic groups"
+    ],
+    "risk_factors": [
+      {
+        "text": "Prematurity (especially before 28–30 weeks gestation)",
+        "strength": "strong"
+      },
+      {
+        "text": "Low birth weight for gestational age",
+        "strength": "strong"
+      },
+      {
+        "text": "Infant of a diabetic mother",
+        "strength": "strong"
+      },
+      {
+        "text": "Cesarean delivery without preceding labor",
+        "strength": "moderate"
+      },
+      {
+        "text": "Male sex",
+        "strength": "weak"
+      },
+      {
+        "text": "Family history of respiratory distress syndrome in a sibling",
+        "strength": "weak"
+      },
+      {
+        "text": "Perinatal asphyxia or cold stress",
+        "strength": "moderate"
+      }
+    ],
+    "comorbidities": [
+      "Prematurity with immature lung structure",
+      "Perinatal asphyxia",
+      "Neonatal sepsis",
+      "Patent ductus arteriosus"
+    ],
+    "family_history": [
+      "Respiratory distress syndrome in a previous sibling"
+    ],
+    "social_history": [],
+    "exposures": [],
+    "risk_medications": []
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "He's breathing fast and making a grunting noise",
+        "frequency": "almost_always",
+        "term": "Grunting respiration",
+        "snomed_verified": true
+      },
+      {
+        "text": "His chest is pulling in when he breathes",
+        "frequency": "almost_always",
+        "term": "Intercostal retraction",
+        "snomed_verified": true
+      },
+      {
+        "text": "He looks blue around the lips",
+        "frequency": "common",
+        "term": "Cyanosis",
+        "snomed_verified": true
+      },
+      {
+        "text": "He was born early and is having trouble breathing",
+        "frequency": "almost_always",
+        "term": "Dyspnea",
+        "snomed_verified": true
+      }
+    ],
+    "hpi": {
+      "onset": "Within minutes to the first few hours after birth; symptoms are present by 6 hours of age in nearly all affected infants",
+      "duration": "Progressive over the first 24–72 hours, then gradually improves with treatment",
+      "progression": "Starts as rapid breathing and nasal flaring shortly after delivery, then worsens over the first day with grunting, retractions and worsening cyanosis; peaks around 48–72 hours and slowly resolves over days to weeks depending on gestational age",
+      "location": "Chest and lungs",
+      "quality": "Labored breathing with audible grunting on expiration and visible pulling in of the chest wall",
+      "severity": "Moderate to severe; often requires supplemental oxygen and respiratory support",
+      "timing": "Continuous and worsening over the first 2–3 days of life",
+      "aggravating": [
+        "Feeding",
+        "Handling or stimulation"
+      ],
+      "relieving": [
+        "Supplemental oxygen",
+        "Positive pressure respiratory support",
+        "Surfactant therapy"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Rapid breathing",
+          "frequency": "almost_always",
+          "term": "Tachypnea",
+          "snomed_verified": true
+        },
+        {
+          "text": "Nasal flaring",
+          "frequency": "almost_always",
+          "term": "Nasal flaring",
+          "snomed_verified": true
+        },
+        {
+          "text": "Pulling in of the chest wall between and below the ribs",
+          "frequency": "almost_always",
+          "term": "Intercostal retraction",
+          "snomed_verified": true
+        },
+        {
+          "text": "Grunting sound with each breath",
+          "frequency": "almost_always",
+          "term": "Grunting respiration",
+          "snomed_verified": true
+        },
+        {
+          "text": "Bluish color of the lips and skin",
+          "frequency": "common",
+          "term": "Cyanosis",
+          "snomed_verified": true
+        },
+        {
+          "text": "Low oxygen level on the monitor",
+          "frequency": "almost_always",
+          "term": "Hypoxemia",
+          "snomed_verified": true
+        },
+        {
+          "text": "Poor feeding and low energy",
+          "frequency": "common",
+          "term": "Lethargy",
+          "snomed_verified": true
+        },
+        {
+          "text": "Cool, mottled skin",
+          "frequency": "sometimes",
+          "term": "Mottled skin",
+          "snomed_verified": true
+        }
+      ],
+      "pertinent_negatives": [
+        "Fever or temperature instability suggesting infection",
+        "Meconium-stained amniotic fluid or meconium aspiration at delivery",
+        "Prolonged rupture of membranes or maternal chorioamnionitis",
+        "Foul-smelling or purulent amniotic fluid",
+        "Cough or runny nose in the mother or household contacts",
+        "Congenital heart murmur or known cardiac defect",
+        "Air leak (pneumothorax) at delivery"
+      ]
+    },
+    "ros": [
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "Rapid breathing",
+            "frequency": "almost_always",
+            "term": "Tachypnea",
+            "snomed_verified": true
+          },
+          {
+            "text": "Grunting with each breath",
+            "frequency": "almost_always",
+            "term": "Grunting respiration",
+            "snomed_verified": true
+          },
+          {
+            "text": "Nasal flaring",
+            "frequency": "almost_always",
+            "term": "Nasal flaring",
+            "snomed_verified": true
+          },
+          {
+            "text": "Chest wall retractions",
+            "frequency": "almost_always",
+            "term": "Intercostal retraction",
+            "snomed_verified": true
+          },
+          {
+            "text": "Low oxygen saturation",
+            "frequency": "almost_always",
+            "term": "Hypoxemia",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Cough",
+          "Wheezing",
+          "Stridor",
+          "Hemoptysis"
+        ],
+        "argues_against": [
+          "Meconium aspiration",
+          "Congenital pneumonia",
+          "Airway obstruction"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [
+          {
+            "text": "Bluish discoloration of lips and skin",
+            "frequency": "common",
+            "term": "Cyanosis",
+            "snomed_verified": true
+          },
+          {
+            "text": "Cool, mottled skin",
+            "frequency": "sometimes",
+            "term": "Mottled skin",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Murmur",
+          "Weak pulses",
+          "Hepatomegaly",
+          "Difference in blood pressure between arms and legs"
+        ],
+        "argues_against": [
+          "Congenital heart disease",
+          "Persistent pulmonary hypertension of the newborn"
+        ]
+      },
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Low energy and poor feeding",
+            "frequency": "common",
+            "term": "Lethargy",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Fever",
+          "Hypothermia",
+          "Weight loss"
+        ],
+        "argues_against": [
+          "Neonatal sepsis"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [],
+        "negatives": [
+          "Vomiting",
+          "Abdominal distension",
+          "Blood in stool"
+        ],
+        "argues_against": [
+          "Necrotizing enterocolitis",
+          "Gastrointestinal obstruction"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "infants",
+        "how_it_differs": "Late preterm and near-term infants may have milder or delayed symptoms, sometimes presenting after 6 hours of age with only tachypnea and mild retractions.",
+        "missing_classic_features": [
+          "Severe grunting",
+          "Marked cyanosis"
+        ]
+      },
+      {
+        "population": "diabetes",
+        "how_it_differs": "Infants of diabetic mothers may develop respiratory distress despite being near term or term, and may have macrosomia and hypoglycemia.",
+        "missing_classic_features": [
+          "Prematurity"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Alert, pink, breathing comfortably fast with mild nasal flaring; tolerates handling",
+      "moderate": "Tachypneic with audible grunting and visible retractions; startles and desaturates with handling",
+      "severe": "Ill-appearing, dusky, marked grunting and retractions, poor tone; desaturates without support",
+      "critical": "Toxic-appearing, cyanotic, apneic or gasping, flaccid, unresponsive to stimulation"
+    },
+    "findings": [
+      {
+        "id": "tachypnea",
+        "region": "general",
+        "maneuver": "Count the respiratory rate over a full minute while the infant is calm",
+        "finding": "Respiratory rate above 60/min",
+        "frequency": "almost_always",
+        "significance": "supports",
+        "importance": "essential",
+        "term": "Tachypnea",
+        "snomed_verified": true
+      },
+      {
+        "id": "grunting",
+        "region": "general",
+        "maneuver": "Listen at the mouth and nose with the infant undisturbed",
+        "finding": "Audible expiratory grunting with each breath",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Grunting respiration",
+        "snomed_verified": true
+      },
+      {
+        "id": "nasal-flaring",
+        "region": "heent",
+        "maneuver": "Observe the nares during quiet breathing",
+        "finding": "Flaring of the alae nasi with inspiration",
+        "frequency": "almost_always",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Nasal flaring",
+        "snomed_verified": true
+      },
+      {
+        "id": "intercostal-retractions",
+        "region": "general",
+        "maneuver": "Inspect the chest wall during inspiration",
+        "finding": "Inward pulling of the intercostal spaces",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Intercostal retraction",
+        "snomed_verified": true
+      },
+      {
+        "id": "subcostal-retractions",
+        "region": "general",
+        "maneuver": "Inspect the lower chest and upper abdomen during inspiration",
+        "finding": "Inward pulling below the costal margin",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Subcostal recession",
+        "snomed_verified": true
+      },
+      {
+        "id": "suprasternal-retractions",
+        "region": "neck",
+        "maneuver": "Inspect the suprasternal notch during inspiration",
+        "finding": "Inward pulling of the suprasternal notch",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Suprasternal recession",
+        "snomed_verified": true
+      },
+      {
+        "id": "cyanosis",
+        "region": "skin",
+        "maneuver": "Inspect the lips, tongue and nail beds in good light",
+        "finding": "Bluish discoloration of the lips and mucous membranes",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Cyanosis",
+        "snomed_verified": true
+      },
+      {
+        "id": "decreased-breath-sounds",
+        "region": "lung",
+        "maneuver": "Auscultate both lung fields with a small-bore stethoscope",
+        "finding": "Breath sounds are diminished bilaterally, especially at the bases",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Decreased breath sounds",
+        "snomed_verified": true
+      },
+      {
+        "id": "respiratory-crackles",
+        "region": "lung",
+        "maneuver": "Auscultate the lung bases during inspiration",
+        "finding": "Fine inspiratory crackles at the bases",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Respiratory crackles",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-heart-murmur",
+        "region": "cardiac",
+        "maneuver": "Auscultate the precordium for murmurs",
+        "finding": "No heart murmur",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Heart murmur",
+        "snomed_verified": true
+      },
+      {
+        "id": "normal-precordium",
+        "region": "cardiac",
+        "maneuver": "Palpate the precordium and auscultate heart sounds",
+        "finding": "Normal S1 and S2 with no gallop or thrill",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Normal heart sounds",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-hepatomegaly",
+        "region": "abdomen",
+        "maneuver": "Palpate the right upper quadrant and liver edge",
+        "finding": "Liver edge not enlarged for age",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Hepatomegaly",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-meconium-staining",
+        "region": "skin",
+        "maneuver": "Inspect the skin, nails and umbilical cord for meconium staining",
+        "finding": "No meconium staining of skin or nails",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Fresh meconium staining liquor",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-fever",
+        "region": "general",
+        "maneuver": "Measure axillary temperature and assess for temperature instability",
+        "finding": "No fever or hypothermia",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Fever",
+        "snomed_verified": true
+      },
+      {
+        "id": "lethargy",
+        "region": "mental_status",
+        "maneuver": "Observe the infant's level of alertness and response to handling",
+        "finding": "Reduced spontaneous activity and poor feeding",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Lethargy",
+        "snomed_verified": true
+      },
+      {
+        "id": "mottled-skin",
+        "region": "skin",
+        "maneuver": "Inspect the skin color and perfusion",
+        "finding": "Cool, mottled skin with prolonged capillary refill",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Mottled skin",
+        "snomed_verified": true
+      },
+      {
+        "id": "apnea",
+        "region": "general",
+        "maneuver": "Observe breathing continuously on the monitor",
+        "finding": "Pauses in breathing lasting more than 20 seconds",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Apnea",
+        "snomed_verified": true
+      },
+      {
+        "id": "head-bobbing",
+        "region": "general",
+        "maneuver": "Observe the head and neck during breathing",
+        "finding": "Head bobbing with each breath",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Head bobbing",
+        "snomed_verified": false
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 97.7,
+        "max": 99.0
+      },
+      "moderate": {
+        "min": 97.5,
+        "max": 99.0
+      },
+      "severe": {
+        "min": 97.0,
+        "max": 99.0
+      },
+      "critical": {
+        "min": 96.5,
+        "max": 99.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 120,
+        "max": 160
+      },
+      "moderate": {
+        "min": 140,
+        "max": 180
+      },
+      "severe": {
+        "min": 160,
+        "max": 200
+      },
+      "critical": {
+        "min": 100,
+        "max": 220
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 60,
+        "max": 80
+      },
+      "moderate": {
+        "min": 70,
+        "max": 100
+      },
+      "severe": {
+        "min": 80,
+        "max": 120
+      },
+      "critical": {
+        "min": 20,
+        "max": 120
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 55,
+        "max": 75
+      },
+      "moderate": {
+        "min": 50,
+        "max": 70
+      },
+      "severe": {
+        "min": 45,
+        "max": 65
+      },
+      "critical": {
+        "min": 35,
+        "max": 55
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 30,
+        "max": 45
+      },
+      "moderate": {
+        "min": 25,
+        "max": 40
+      },
+      "severe": {
+        "min": 20,
+        "max": 35
+      },
+      "critical": {
+        "min": 15,
+        "max": 30
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 90,
+        "max": 95
+      },
+      "moderate": {
+        "min": 85,
+        "max": 92
+      },
+      "severe": {
+        "min": 75,
+        "max": 88
+      },
+      "critical": {
+        "min": 60,
+        "max": 80
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "ph",
+      "ranges": {
+        "mild": {
+          "min": 7.3,
+          "max": 7.35
+        },
+        "moderate": {
+          "min": 7.2,
+          "max": 7.3
+        },
+        "severe": {
+          "min": 7.05,
+          "max": 7.2
+        },
+        "critical": {
+          "min": 6.9,
+          "max": 7.05
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "Respiratory acidosis from alveolar collapse and CO2 retention; a normal pH does not exclude the diagnosis early on."
+    },
+    {
+      "test_id": "paco2",
+      "ranges": {
+        "mild": {
+          "min": 45,
+          "max": 55
+        },
+        "moderate": {
+          "min": 50,
+          "max": 65
+        },
+        "severe": {
+          "min": 60,
+          "max": 80
+        },
+        "critical": {
+          "min": 70,
+          "max": 100
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "Rising PaCO2 signals fatigue and impending respiratory failure."
+    },
+    {
+      "test_id": "pao2",
+      "ranges": {
+        "mild": {
+          "min": 50,
+          "max": 70
+        },
+        "moderate": {
+          "min": 40,
+          "max": 55
+        },
+        "severe": {
+          "min": 30,
+          "max": 45
+        },
+        "critical": {
+          "min": 20,
+          "max": 35
+        }
+      },
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Hypoxemia that improves with supplemental oxygen but often requires positive pressure; a large alveolar-arterial gradient is typical."
+    },
+    {
+      "test_id": "sao2",
+      "ranges": {
+        "mild": {
+          "min": 88,
+          "max": 94
+        },
+        "moderate": {
+          "min": 80,
+          "max": 90
+        },
+        "severe": {
+          "min": 65,
+          "max": 85
+        },
+        "critical": {
+          "min": 50,
+          "max": 75
+        }
+      },
+      "frequency": "almost_always",
+      "importance": "essential"
+    },
+    {
+      "test_id": "base_excess",
+      "ranges": {
+        "moderate": {
+          "min": -8,
+          "max": -2
+        },
+        "severe": {
+          "min": -14,
+          "max": -4
+        },
+        "critical": {
+          "min": -20,
+          "max": -8
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Metabolic acidosis from tissue hypoperfusion or lactic acid; a negative base excess suggests a mixed picture."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "moderate": {
+          "min": 2.0,
+          "max": 4.0
+        },
+        "severe": {
+          "min": 3.0,
+          "max": 7.0
+        },
+        "critical": {
+          "min": 5.0,
+          "max": 12.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Elevated with hypoperfusion or sepsis; helps distinguish from transient tachypnea."
+    },
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "moderate": {
+          "min": 30,
+          "max": 50
+        },
+        "severe": {
+          "min": 20,
+          "max": 45
+        },
+        "critical": {
+          "min": 10,
+          "max": 40
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "Hypoglycemia is common in premature and growth-restricted infants and can worsen respiratory distress; treat promptly."
+    },
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "moderate": {
+          "min": 3.0,
+          "max": 5.0
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 4.5
+        },
+        "critical": {
+          "min": 1.5,
+          "max": 4.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Leukopenia or neutropenia may reflect sepsis rather than RDS itself; a normal or elevated count does not exclude infection."
+    },
+    {
+      "test_id": "plt",
+      "ranges": {
+        "moderate": {
+          "min": 100,
+          "max": 150
+        },
+        "severe": {
+          "min": 50,
+          "max": 120
+        },
+        "critical": {
+          "min": 20,
+          "max": 100
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Thrombocytopenia may accompany sepsis, asphyxia or disseminated intravascular coagulation."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "moderate": {
+          "min": 1.0,
+          "max": 5.0
+        },
+        "severe": {
+          "min": 3.0,
+          "max": 15.0
+        },
+        "critical": {
+          "min": 8.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Nonspecific; a rise over 24–48 hours supports infection but does not rule out RDS."
+    }
+  ],
+  "imaging": [
+    {
+      "study": "Chest x-ray (anteroposterior, portable)",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Diffuse, fine reticulogranular (ground-glass) opacities throughout both lungs",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Air bronchograms extending beyond the perihilar region",
+          "frequency": "common"
+        },
+        {
+          "text": "Low lung volumes with a small, bell-shaped thorax",
+          "frequency": "common"
+        },
+        {
+          "text": "Whiteout of both lungs (complete opacification) in severe disease",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Pleural effusion",
+          "frequency": "rare"
+        },
+        {
+          "text": "Pneumothorax or pneumomediastinum (air leak from positive pressure ventilation)",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Lung ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "Bedside assessment when transfer for x-ray is undesirable",
+      "findings": [
+        {
+          "text": "Bilateral confluent B-lines with a white lung appearance",
+          "frequency": "common"
+        },
+        {
+          "text": "Thickened pleura with a double lung point",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Subpleural consolidations",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Echocardiogram",
+      "modality": "echo",
+      "findings": [
+        {
+          "text": "Normal cardiac anatomy with no structural defect",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Right-to-left or bidirectional shunt across a patent ductus arteriosus or foramen ovale",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Elevated pulmonary artery pressure suggesting persistent pulmonary hypertension",
+          "frequency": "sometimes"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "abg",
+        "why": "Confirms hypoxemia and respiratory acidosis and guides oxygen and ventilation support"
+      },
+      {
+        "test": "glucose",
+        "why": "Detects hypoglycemia, which is common in premature infants and worsens distress"
+      },
+      {
+        "test": "cbc",
+        "why": "Baseline blood count and looks for leukopenia or thrombocytopenia suggesting sepsis"
+      },
+      {
+        "test": "Chest x-ray (anteroposterior, portable)",
+        "why": "Shows the classic ground-glass pattern and air bronchograms and excludes other causes of distress"
+      },
+      {
+        "test": "bmp",
+        "why": "Assesses electrolytes, calcium and renal function in a premature infant"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "crp",
+        "why": "Supports or argues against concurrent infection when sepsis is a concern"
+      },
+      {
+        "test": "lactate",
+        "why": "Assesses perfusion and helps distinguish from transient tachypnea"
+      },
+      {
+        "test": "Echocardiogram",
+        "why": "Evaluates for congenital heart disease or persistent pulmonary hypertension",
+        "only_if": "cyanosis is disproportionate to the lung findings, a murmur is heard, or hypoxemia persists despite adequate ventilation"
+      },
+      {
+        "test": "Lung ultrasound",
+        "why": "Bedside alternative when x-ray is not immediately available",
+        "only_if": "the infant is too unstable to leave the unit for imaging"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Echocardiogram",
+        "why": "Not routine; reserved for suspected cardiac disease or persistent pulmonary hypertension",
+        "only_if": "cyanosis is disproportionate to the lung findings, a murmur is heard, or hypoxemia persists despite adequate ventilation"
+      },
+      {
+        "test": "Lung ultrasound",
+        "why": "Not routine when chest x-ray is available",
+        "only_if": "the infant is too unstable to leave the unit for imaging"
+      },
+      {
+        "test": "csf",
+        "why": "Lumbar puncture is not part of the RDS workup; reserved for suspected meningitis"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in neonatal respiratory distress"
+      },
+      {
+        "test": "bnp",
+        "why": "Not indicated in the initial evaluation of RDS"
+      },
+      {
+        "test": "tsh",
+        "why": "Not part of the acute respiratory distress workup"
+      }
+    ],
+    "decision_points": [
+      "Blood gas and chest x-ray are the key initial tests; the diagnosis is clinical and radiographic",
+      "If the infant is unstable or has apnea, support ventilation before completing the workup",
+      "Consider sepsis and start antibiotics if there are risk factors for infection, since it can mimic RDS",
+      "Echocardiography is reserved for suspected congenital heart disease or persistent pulmonary hypertension"
+    ],
+    "criteria": [],
+    "scores": [
+      "downes_score",
+      "silverman_andersen_score"
+    ]
+  },
+  "differential": [
+    {
+      "name": "Neonatal sepsis",
+      "slug": "neonatal-sepsis",
+      "why_considered": "Presents with respiratory distress, tachypnea, grunting, temperature instability and lethargy in a newborn, and can coexist with or mimic RDS.",
+      "must_not_miss": true,
+      "trigger": "Fever or temperature instability, maternal chorioamnionitis, prolonged rupture of membranes, or an infant who is more ill than the lung findings suggest",
+      "discriminators": {
+        "history": [
+          "Maternal fever or chorioamnionitis",
+          "Prolonged rupture of membranes",
+          "Foul-smelling amniotic fluid",
+          "Onset may be later than the first few hours"
+        ],
+        "exam": [
+          "Temperature instability (fever or hypothermia)",
+          "Lethargy and poor perfusion out of proportion to lung findings",
+          "Abdominal distension or vomiting"
+        ],
+        "labs": [
+          "Leukopenia or neutropenia",
+          "Thrombocytopenia",
+          "Elevated CRP that rises over 24-48 hours",
+          "Positive blood culture"
+        ],
+        "imaging": [
+          "Chest x-ray may be normal or show patchy infiltrates rather than diffuse ground-glass"
+        ]
+      }
+    },
+    {
+      "name": "Transient tachypnea of the newborn",
+      "slug": "transient-tachypnea-of-the-newborn",
+      "why_considered": "Most common cause of early respiratory distress in near-term and term infants, with tachypnea and mild retractions shortly after birth.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Term or late preterm infant",
+          "Cesarean delivery without labor",
+          "Symptoms begin within hours of birth and resolve within 24-72 hours"
+        ],
+        "exam": [
+          "Tachypnea with minimal grunting or retractions",
+          "Usually pink on room air or low-flow oxygen"
+        ],
+        "labs": [
+          "Mild or no respiratory acidosis",
+          "Normal or near-normal blood gas"
+        ],
+        "imaging": [
+          "Perihilar streaking and fluid in the interlobar fissures",
+          "Normal to increased lung volumes",
+          "No diffuse ground-glass pattern"
+        ]
+      }
+    },
+    {
+      "name": "Meconium aspiration syndrome",
+      "slug": "meconium-aspiration-syndrome",
+      "why_considered": "Respiratory distress in a newborn with tachypnea, grunting and hypoxemia, often in term or post-term infants.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Meconium-stained amniotic fluid",
+          "Term or post-term infant",
+          "Perinatal asphyxia"
+        ],
+        "exam": [
+          "Meconium staining of skin, nails and umbilical cord",
+          "Barrel-shaped chest"
+        ],
+        "labs": [
+          "Respiratory acidosis with hypoxemia"
+        ],
+        "imaging": [
+          "Patchy, coarse infiltrates with areas of hyperinflation",
+          "Air leak (pneumothorax or pneumomediastinum) may be present"
+        ]
+      }
+    },
+    {
+      "name": "Congenital pneumonia",
+      "slug": "congenital-pneumonia",
+      "why_considered": "Respiratory distress with tachypnea, grunting and hypoxemia in a newborn, often with risk factors for infection.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Maternal infection or chorioamnionitis",
+          "Prolonged rupture of membranes",
+          "May present at or shortly after birth"
+        ],
+        "exam": [
+          "Temperature instability",
+          "Lethargy",
+          "Crackles or decreased breath sounds"
+        ],
+        "labs": [
+          "Elevated inflammatory markers",
+          "Positive blood culture or tracheal aspirate culture"
+        ],
+        "imaging": [
+          "Patchy or lobar consolidation",
+          "Pleural effusion may be present"
+        ]
+      }
+    },
+    {
+      "name": "Congenital heart disease (cyanotic)",
+      "slug": "congenital-heart-disease",
+      "why_considered": "Cyanosis and respiratory distress in a newborn that can mimic RDS, especially with hypoxemia.",
+      "must_not_miss": true,
+      "trigger": "Cyanosis disproportionate to lung findings, a heart murmur, or hypoxemia that does not improve with supplemental oxygen",
+      "discriminators": {
+        "history": [
+          "Prenatal diagnosis or family history of congenital heart disease",
+          "Cyanosis present from birth",
+          "No or minimal respiratory distress despite marked cyanosis"
+        ],
+        "exam": [
+          "Heart murmur",
+          "Weak or absent femoral pulses",
+          "Difference in blood pressure or oxygen saturation between arms and legs",
+          "Hepatomegaly"
+        ],
+        "labs": [
+          "Hypoxemia that does not improve with supplemental oxygen",
+          "Normal or near-normal PaCO2"
+        ],
+        "imaging": [
+          "Chest x-ray may show abnormal cardiac silhouette or pulmonary vascularity",
+          "Echocardiogram confirms structural defect"
+        ]
+      }
+    },
+    {
+      "name": "Persistent pulmonary hypertension of the newborn",
+      "slug": "persistent-pulmonary-hypertension-of-the-newborn",
+      "why_considered": "Severe hypoxemia and cyanosis in a newborn, often with respiratory distress, that can mimic or complicate RDS.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Perinatal asphyxia",
+          "Meconium aspiration",
+          "Sepsis",
+          "Term or near-term infant"
+        ],
+        "exam": [
+          "Labile oxygen saturations",
+          "Cyanosis",
+          "Normal or mildly abnormal lung exam"
+        ],
+        "labs": [
+          "Severe hypoxemia with a large alveolar-arterial gradient",
+          "Pre- and postductal oxygen saturation difference"
+        ],
+        "imaging": [
+          "Echocardiogram shows elevated pulmonary artery pressure and right-to-left or bidirectional shunt"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Tachypnea and mild retractions with oxygen requirement less than 30% and no apnea; resolves over 2-3 days",
+      "moderate": "Marked grunting, retractions and cyanosis requiring supplemental oxygen and nasal CPAP; respiratory acidosis on blood gas",
+      "severe": "Severe distress with apnea, requiring mechanical ventilation and surfactant; chest x-ray shows diffuse ground-glass opacities or whiteout",
+      "critical": "Respiratory failure with refractory hypoxemia, shock, or air leak syndrome; may require high-frequency ventilation or ECMO"
+    },
+    "red_flags": [
+      {
+        "finding": "Apnea or gasping",
+        "meaning": "Impending respiratory failure; needs immediate ventilation"
+      },
+      {
+        "finding": "Rising PaCO2 with respiratory acidosis",
+        "meaning": "Respiratory muscle fatigue; consider mechanical ventilation"
+      },
+      {
+        "finding": "Hypoxemia refractory to supplemental oxygen",
+        "meaning": "Suggests persistent pulmonary hypertension or congenital heart disease"
+      },
+      {
+        "finding": "Sudden deterioration with asymmetric breath sounds",
+        "meaning": "Pneumothorax; needs urgent decompression"
+      },
+      {
+        "finding": "Hypotension or poor perfusion",
+        "meaning": "Sepsis or shock; start antibiotics and volume resuscitation"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Pneumothorax",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Sudden worsening of respiratory status",
+          "Asymmetric breath sounds",
+          "Transillumination or x-ray showing air outside the lung"
+        ]
+      },
+      {
+        "name": "Persistent pulmonary hypertension of the newborn",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Labile oxygen saturations",
+          "Pre- and postductal saturation difference",
+          "Echocardiogram showing elevated pulmonary pressures"
+        ]
+      },
+      {
+        "name": "Bronchopulmonary dysplasia",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Ongoing oxygen requirement beyond 28 days of life",
+          "Chronic lung disease on chest x-ray"
+        ]
+      },
+      {
+        "name": "Intraventricular hemorrhage",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Prematurity",
+          "Sudden drop in hematocrit",
+          "Seizures or lethargy",
+          "Cranial ultrasound showing hemorrhage"
+        ]
+      },
+      {
+        "name": "Patent ductus arteriosus",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Bounding pulses",
+          "Wide pulse pressure",
+          "Murmur",
+          "Echocardiogram showing ductal flow"
+        ]
+      },
+      {
+        "name": "Retinopathy of prematurity",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Prematurity",
+          "Prolonged oxygen therapy",
+          "Abnormal retinal vascularization on screening exam"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "infants",
+        "differences": "Late preterm and near-term infants may have milder or delayed symptoms, sometimes presenting after 6 hours of age with only tachypnea and mild retractions."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Infants of diabetic mothers may develop respiratory distress despite being near term or term, and may have macrosomia and hypoglycemia."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "How many weeks pregnant were you when you delivered, and what was the baby's birth weight?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Prematurity, especially before 28-30 weeks; lower gestational age and birth weight mean higher risk"
+      },
+      {
+        "question": "When did the breathing trouble start after birth?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Within minutes to the first few hours; present by 6 hours of age in nearly all affected infants"
+      },
+      {
+        "question": "What does the breathing look like - is there grunting, flaring, or pulling in of the chest?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Grunting, nasal flaring and retractions that worsen over the first day"
+      },
+      {
+        "question": "Has the breathing gotten worse, stayed the same, or improved since it started?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Progressive worsening over the first 24-72 hours, then gradual improvement with treatment"
+      },
+      {
+        "question": "Was the delivery vaginal or cesarean, and was there labor before the cesarean?",
+        "category": "obstetric",
+        "importance": "important",
+        "looking_for": "Cesarean delivery without preceding labor increases risk"
+      },
+      {
+        "question": "Do you have diabetes, including gestational diabetes?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Infant of a diabetic mother is at higher risk even near term"
+      },
+      {
+        "question": "Was the amniotic fluid meconium-stained, foul-smelling, or was there prolonged rupture of membranes?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Meconium aspiration or chorioamnionitis as alternative or coexisting causes"
+      },
+      {
+        "question": "Did you have any fever, infection, or chorioamnionitis around the time of delivery?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Maternal infection raising concern for neonatal sepsis or congenital pneumonia"
+      },
+      {
+        "question": "Did the baby need any resuscitation, suctioning, or oxygen in the delivery room?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Perinatal asphyxia or need for positive pressure ventilation"
+      },
+      {
+        "question": "Is the baby feeding, and how is his energy level?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Poor feeding and lethargy, which may be from distress or suggest sepsis"
+      },
+      {
+        "question": "Has the baby had a fever, low temperature, or been unusually floppy?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Temperature instability or lethargy suggesting sepsis rather than RDS alone"
+      },
+      {
+        "question": "Did a previous baby have breathing problems or respiratory distress syndrome after birth?",
+        "category": "family",
+        "importance": "optional",
+        "looking_for": "Family history of RDS in a sibling"
+      }
+    ],
+    "accepted_names": [
+      "Neonatal respiratory distress syndrome",
+      "Respiratory distress syndrome of the newborn",
+      "RDS",
+      "Hyaline membrane disease",
+      "HMD",
+      "Surfactant deficiency disorder"
+    ],
+    "reasoning_points": [
+      "Premature infant with onset of tachypnea, grunting, nasal flaring and retractions within the first few hours of life",
+      "Progressive worsening over the first 24-72 hours consistent with surfactant deficiency and alveolar collapse",
+      "Risk factors such as prematurity, low birth weight, infant of a diabetic mother, or cesarean delivery without labor",
+      "Hypoxemia with respiratory acidosis on blood gas and an elevated alveolar-arterial gradient",
+      "Chest x-ray showing diffuse fine reticulogranular (ground-glass) opacities, air bronchograms and low lung volumes",
+      "No fever, no meconium staining, no murmur and no hepatomegaly, arguing against sepsis, meconium aspiration and congenital heart disease",
+      "Improvement with supplemental oxygen, positive pressure support and surfactant therapy"
+    ],
+    "difficulty": {
+      "easy": [
+        "Very premature infant (before 30 weeks) with immediate grunting, retractions and nasal flaring after delivery",
+        "Classic chest x-ray with diffuse ground-glass opacities and air bronchograms",
+        "Clear prematurity risk factors and no signs of infection"
+      ],
+      "medium": [
+        "Late preterm infant with milder or delayed symptoms appearing after 6 hours of age",
+        "Infant of a diabetic mother who is near term but develops distress",
+        "Concurrent concern for sepsis requiring antibiotics while RDS is also treated",
+        "Chest x-ray with findings that overlap with transient tachypnea of the newborn"
+      ],
+      "hard": [
+        "Term infant with respiratory distress where congenital heart disease or persistent pulmonary hypertension must be excluded",
+        "Infant with meconium-stained fluid and patchy infiltrates rather than classic ground-glass",
+        "Sudden deterioration from pneumothorax or air leak complicating the picture",
+        "Infant with hypoxemia refractory to oxygen suggesting persistent pulmonary hypertension or a cardiac lesion"
+      ]
+    }
+  }
+}

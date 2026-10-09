@@ -1,0 +1,1632 @@
+{
+  "schema_version": "0.2",
+  "slug": "orbital-cellulitis",
+  "triage": {
+    "name": "Orbital cellulitis",
+    "case_suitable": true,
+    "reason": "Serious orbital infection with proptosis, pain with eye movement and vision change; high-stakes emergency case distinguished from preseptal cellulitis by exam and imaging.",
+    "kind": "disease",
+    "category": "orbital infection",
+    "organ_systems": [
+      "musculoskeletal",
+      "nervous"
+    ],
+    "primary_clerkship": "emergency",
+    "secondary_clerkships": [
+      "pediatrics",
+      "internalMedicine",
+      "familyMedicine"
+    ],
+    "commonness": "uncommon",
+    "settings": [
+      "emergency",
+      "inpatient"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:24:14Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:47:10Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:47:35Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:47:45Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:48:01Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:48:07Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'ct orbits and sinuses with iv contrast' was in ['initial', 'confirmatory'], kept ['initial']",
+        "auto-repaired: workup: 'mri orbits and brain with and without iv contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'mri orbits and brain with and without iv contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "presentation: term 'Vision loss' not found in SNOMED CT",
+        "exam: term 'Sinus tenderness' not found in SNOMED CT",
+        "exam: term 'Cranial nerve deficit' not found in SNOMED CT",
+        "differential preseptal-cellulitis: no profile yet",
+        "differential cavernous-sinus-thrombosis: no profile yet",
+        "differential orbital-inflammatory-disease: no profile yet",
+        "differential thyroid-eye-disease: no profile yet",
+        "differential orbital-tumor: no profile yet",
+        "differential mucormycosis: no profile yet",
+        "differential allergic-conjunctivitis: no profile yet",
+        "differential orbital-hematoma: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 2,
+      "typical_max": 60,
+      "peak": "children and older adults",
+      "possible_min": 0,
+      "possible_max": 90
+    },
+    "sex": "either",
+    "demographics": [
+      "More common in children, especially under 10 years",
+      "Also occurs in older adults, often after sinusitis or dental infection",
+      "No clear sex predominance"
+    ],
+    "risk_factors": [
+      {
+        "text": "Recent or current sinusitis",
+        "strength": "strong"
+      },
+      {
+        "text": "Recent upper respiratory infection",
+        "strength": "moderate"
+      },
+      {
+        "text": "Dental infection or recent dental procedure",
+        "strength": "moderate"
+      },
+      {
+        "text": "Eyelid or facial skin infection",
+        "strength": "moderate"
+      },
+      {
+        "text": "Orbital or facial trauma",
+        "strength": "moderate"
+      },
+      {
+        "text": "Recent eye surgery or orbital injection",
+        "strength": "weak"
+      },
+      {
+        "text": "Immunocompromising condition or immunosuppressive therapy",
+        "strength": "moderate"
+      },
+      {
+        "text": "Young age (children)",
+        "strength": "moderate"
+      }
+    ],
+    "comorbidities": [
+      "Sinusitis",
+      "Diabetes mellitus",
+      "Immunosuppression",
+      "Recent dental infection"
+    ],
+    "family_history": [],
+    "social_history": [],
+    "exposures": [
+      "Recent upper respiratory infection in the household or community"
+    ],
+    "risk_medications": [
+      "prednisone",
+      "methotrexate",
+      "cyclosporine",
+      "tacrolimus",
+      "infliximab",
+      "rituximab"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My eye is swollen and bulging out",
+        "term": "Proptosis",
+        "frequency": "almost_always",
+        "snomed_verified": true
+      },
+      {
+        "text": "My eye hurts and it hurts to move it",
+        "term": "Eye pain",
+        "frequency": "almost_always",
+        "snomed_verified": true
+      },
+      {
+        "text": "My vision is blurry",
+        "term": "Blurred vision",
+        "frequency": "common",
+        "snomed_verified": true
+      },
+      {
+        "text": "My eye is red and swollen shut",
+        "term": "Eyelid swelling",
+        "frequency": "common",
+        "snomed_verified": true
+      },
+      {
+        "text": "I have a fever and feel awful",
+        "term": "Fever",
+        "frequency": "common",
+        "snomed_verified": true
+      }
+    ],
+    "hpi": {
+      "onset": "Subacute, developing over hours to a few days",
+      "duration": "Usually 1–5 days at presentation",
+      "progression": "Starts as eyelid swelling and redness, then progresses to proptosis, pain with eye movement, and blurred or double vision; may worsen rapidly over hours",
+      "location": "One eye and the surrounding orbit, sometimes with adjacent sinus or facial pain",
+      "radiation": "Pain may radiate to the forehead or cheek",
+      "quality": "Deep, aching, pressure-like pain; sharp with eye movement",
+      "severity": "Moderate to severe; often 6–9/10",
+      "timing": "Constant, worse with eye movement",
+      "aggravating": [
+        "Moving the eye",
+        "Pressing on the eye or eyelid",
+        "Bending forward"
+      ],
+      "relieving": [
+        "Keeping the eye still",
+        "Analgesics"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Proptosis (bulging eye)",
+          "term": "Proptosis",
+          "frequency": "almost_always",
+          "snomed_verified": true
+        },
+        {
+          "text": "Pain with eye movement",
+          "term": "Eye pain on movement",
+          "frequency": "almost_always",
+          "snomed_verified": true
+        },
+        {
+          "text": "Eyelid swelling",
+          "term": "Eyelid swelling",
+          "frequency": "almost_always",
+          "snomed_verified": true
+        },
+        {
+          "text": "Red eye",
+          "term": "Red eye",
+          "frequency": "common",
+          "snomed_verified": true
+        },
+        {
+          "text": "Blurred vision",
+          "term": "Blurred vision",
+          "frequency": "common",
+          "snomed_verified": true
+        },
+        {
+          "text": "Double vision",
+          "term": "Diplopia",
+          "frequency": "common",
+          "snomed_verified": true
+        },
+        {
+          "text": "Fever",
+          "term": "Fever",
+          "frequency": "common",
+          "snomed_verified": true
+        },
+        {
+          "text": "Headache",
+          "term": "Headache",
+          "frequency": "common",
+          "snomed_verified": true
+        },
+        {
+          "text": "Nasal congestion or runny nose",
+          "term": "Nasal congestion",
+          "frequency": "common",
+          "snomed_verified": true
+        },
+        {
+          "text": "Facial pain or pressure over the sinuses",
+          "term": "Maxillary sinus pain",
+          "frequency": "sometimes",
+          "snomed_verified": true
+        },
+        {
+          "text": "Tooth pain",
+          "term": "Toothache",
+          "frequency": "sometimes",
+          "snomed_verified": true
+        },
+        {
+          "text": "Nausea or vomiting",
+          "term": "Nausea",
+          "frequency": "sometimes",
+          "snomed_verified": true
+        },
+        {
+          "text": "Decreased vision or vision loss",
+          "term": "Vision loss",
+          "frequency": "sometimes",
+          "snomed_verified": false
+        }
+      ],
+      "pertinent_negatives": [
+        "No history of recent eye surgery or trauma",
+        "No known immunosuppression",
+        "No contact lens use",
+        "No prior episodes of similar eye swelling",
+        "No recent dental procedure",
+        "No skin infection around the eye"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fever",
+            "term": "Fever",
+            "frequency": "common",
+            "snomed_verified": true
+          },
+          {
+            "text": "Malaise",
+            "term": "Malaise",
+            "frequency": "common",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Weight loss",
+          "Night sweats"
+        ]
+      },
+      {
+        "system": "eyes",
+        "positives": [
+          {
+            "text": "Proptosis",
+            "term": "Proptosis",
+            "frequency": "almost_always",
+            "snomed_verified": true
+          },
+          {
+            "text": "Eye pain",
+            "term": "Eye pain",
+            "frequency": "almost_always",
+            "snomed_verified": true
+          },
+          {
+            "text": "Eyelid swelling",
+            "term": "Eyelid swelling",
+            "frequency": "almost_always",
+            "snomed_verified": true
+          },
+          {
+            "text": "Red eye",
+            "term": "Red eye",
+            "frequency": "common",
+            "snomed_verified": true
+          },
+          {
+            "text": "Blurred vision",
+            "term": "Blurred vision",
+            "frequency": "common",
+            "snomed_verified": true
+          },
+          {
+            "text": "Double vision",
+            "term": "Diplopia",
+            "frequency": "common",
+            "snomed_verified": true
+          },
+          {
+            "text": "Tearing",
+            "term": "Tearing",
+            "frequency": "sometimes",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Vision loss",
+          "Floaters",
+          "Photophobia"
+        ],
+        "argues_against": [
+          "Isolated conjunctival injection without proptosis"
+        ]
+      },
+      {
+        "system": "ent",
+        "positives": [
+          {
+            "text": "Nasal congestion",
+            "term": "Nasal congestion",
+            "frequency": "common",
+            "snomed_verified": true
+          },
+          {
+            "text": "Runny nose",
+            "term": "Rhinorrhea",
+            "frequency": "common",
+            "snomed_verified": true
+          },
+          {
+            "text": "Facial pain or pressure",
+            "term": "Maxillary sinus pain",
+            "frequency": "sometimes",
+            "snomed_verified": true
+          },
+          {
+            "text": "Tooth pain",
+            "term": "Toothache",
+            "frequency": "sometimes",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Sore throat",
+          "Ear pain",
+          "Hearing loss"
+        ],
+        "argues_against": [
+          "Isolated otitis media without orbital signs"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Headache",
+            "term": "Headache",
+            "frequency": "common",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Neck stiffness",
+          "Confusion",
+          "Seizures",
+          "Focal weakness",
+          "Numbness"
+        ],
+        "argues_against": [
+          "Meningitis",
+          "Cavernous sinus thrombosis"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Nausea",
+            "term": "Nausea",
+            "frequency": "sometimes",
+            "snomed_verified": true
+          },
+          {
+            "text": "Vomiting",
+            "term": "Vomiting",
+            "frequency": "sometimes",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Abdominal pain",
+          "Diarrhea"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Young children may not report vision changes or pain with eye movement; they present with eyelid swelling, fever, irritability, and refusal to open the eye.",
+        "missing_classic_features": [
+          "Explicit pain with eye movement",
+          "Blurred vision",
+          "Diplopia"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "May have less fever and less pain despite severe infection; proptosis may be less obvious due to age-related tissue changes.",
+        "missing_classic_features": [
+          "Fever",
+          "Marked proptosis"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "Can progress rapidly with minimal inflammatory signs; fever may be absent and fungal pathogens are more likely.",
+        "missing_classic_features": [
+          "Fever",
+          "Prominent eyelid swelling"
+        ]
+      },
+      {
+        "population": "diabetes",
+        "how_it_differs": "Higher risk of fungal orbital infection (mucormycosis) with rapid progression, black necrotic eschars, and severe headache.",
+        "missing_classic_features": [
+          "Typical bacterial presentation"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Alert, uncomfortable, eyelid swelling and redness on one side, no systemic toxicity",
+      "moderate": "Ill-appearing, febrile, proptotic eye with pain on movement, prefers to keep the eye closed",
+      "severe": "Toxic-appearing, febrile, marked proptosis with chemosis and limited eye movement, distressed by pain",
+      "critical": "Toxic-appearing, lethargic or confused, severe proptosis with vision loss, may have cranial nerve deficits"
+    },
+    "findings": [
+      {
+        "id": "eyelid-swelling",
+        "region": "heent",
+        "maneuver": "Inspect the eyelids and periorbital area",
+        "finding": "Unilateral eyelid swelling and erythema",
+        "frequency": "almost_always",
+        "significance": "supports",
+        "importance": "essential",
+        "term": "Eyelid swelling",
+        "snomed_id": "271823000",
+        "snomed_verified": true
+      },
+      {
+        "id": "proptosis",
+        "region": "heent",
+        "maneuver": "Inspect the eyes from above and below, or use a Hertel exophthalmometer",
+        "finding": "Forward displacement of the globe (proptosis)",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Proptosis",
+        "snomed_id": "41980009",
+        "snomed_verified": true
+      },
+      {
+        "id": "pain-with-eye-movement",
+        "region": "heent",
+        "maneuver": "Ask the patient to look up, down, left, and right",
+        "finding": "Pain with eye movement",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Eye pain on movement",
+        "snomed_id": "30194000",
+        "snomed_verified": true
+      },
+      {
+        "id": "chemosis",
+        "region": "heent",
+        "maneuver": "Inspect the conjunctiva",
+        "finding": "Conjunctival chemosis (swelling of the conjunctiva)",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Chemosis of conjunctiva",
+        "snomed_id": "19390001",
+        "snomed_verified": true
+      },
+      {
+        "id": "conjunctival-injection",
+        "region": "heent",
+        "maneuver": "Inspect the conjunctiva",
+        "finding": "Conjunctival injection (red eye)",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Conjunctival injection",
+        "snomed_id": "271800004",
+        "snomed_verified": true
+      },
+      {
+        "id": "limited-eye-movement",
+        "region": "heent",
+        "maneuver": "Test extraocular movements in all directions",
+        "finding": "Limited or painful eye movement",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Limited eye movement",
+        "snomed_id": "30194000",
+        "snomed_verified": true
+      },
+      {
+        "id": "reduced-visual-acuity",
+        "region": "heent",
+        "maneuver": "Check visual acuity with a Snellen chart or age-appropriate method",
+        "finding": "Reduced visual acuity",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Reduced visual acuity",
+        "snomed_id": "419775003",
+        "snomed_verified": true
+      },
+      {
+        "id": "diplopia",
+        "region": "heent",
+        "maneuver": "Ask about double vision, or test with red glass/cover test",
+        "finding": "Diplopia",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Diplopia",
+        "snomed_id": "33042004",
+        "snomed_verified": true
+      },
+      {
+        "id": "afferent-pupillary-defect",
+        "region": "heent",
+        "maneuver": "Swing a light between the eyes (swinging flashlight test)",
+        "finding": "Afferent pupillary defect (Marcus Gunn pupil)",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Afferent pupillary defect",
+        "snomed_id": "30194000",
+        "snomed_verified": true
+      },
+      {
+        "id": "raised-intraocular-pressure",
+        "region": "heent",
+        "maneuver": "Measure intraocular pressure with a tonometer if safe",
+        "finding": "Raised intraocular pressure",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Raised intraocular pressure",
+        "snomed_id": "41676007",
+        "snomed_verified": true
+      },
+      {
+        "id": "color-vision-deficit",
+        "region": "heent",
+        "maneuver": "Test color vision with Ishihara plates",
+        "finding": "Impaired color vision",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Color vision deficiency",
+        "snomed_id": "37360003",
+        "snomed_verified": true
+      },
+      {
+        "id": "sinus-tenderness",
+        "region": "heent",
+        "maneuver": "Palpate or percuss over the frontal and maxillary sinuses",
+        "finding": "Sinus tenderness",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Sinus tenderness",
+        "snomed_id": "30194000",
+        "snomed_verified": false
+      },
+      {
+        "id": "cranial-nerve-deficit",
+        "region": "neuro",
+        "maneuver": "Test cranial nerves II, III, IV, V, and VI",
+        "finding": "Cranial nerve deficit (e.g., impaired extraocular movement or facial sensation)",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Cranial nerve deficit",
+        "snomed_id": "30194000",
+        "snomed_verified": false
+      },
+      {
+        "id": "no-neck-stiffness",
+        "region": "neck",
+        "maneuver": "Assess neck stiffness and Kernig/Brudzinski signs if meningitis is a concern",
+        "finding": "No neck stiffness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Neck stiffness",
+        "snomed_id": "30194000",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-oral-lesions",
+        "region": "heent",
+        "maneuver": "Inspect the oral cavity and dentition",
+        "finding": "No dental abscess or oral lesions",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Oral lesion",
+        "snomed_id": "30194000",
+        "snomed_verified": true
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 98.6,
+        "max": 100.4
+      },
+      "moderate": {
+        "min": 100.4,
+        "max": 102.2
+      },
+      "severe": {
+        "min": 101.0,
+        "max": 103.5
+      },
+      "critical": {
+        "min": 101.0,
+        "max": 104.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 70,
+        "max": 100
+      },
+      "moderate": {
+        "min": 90,
+        "max": 110
+      },
+      "severe": {
+        "min": 100,
+        "max": 130
+      },
+      "critical": {
+        "min": 110,
+        "max": 150
+      }
+    },
+    "rr": {
+      "moderate": {
+        "min": 16,
+        "max": 22
+      },
+      "severe": {
+        "min": 20,
+        "max": 28
+      },
+      "critical": {
+        "min": 24,
+        "max": 34
+      }
+    },
+    "sbp": {
+      "critical": {
+        "min": 80,
+        "max": 100
+      }
+    },
+    "dbp": {
+      "critical": {
+        "min": 50,
+        "max": 65
+      }
+    },
+    "spo2": {
+      "critical": {
+        "min": 90,
+        "max": 95
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "mild": {
+          "min": 11.0,
+          "max": 15.0
+        },
+        "moderate": {
+          "min": 14.0,
+          "max": 20.0
+        },
+        "severe": {
+          "min": 18.0,
+          "max": 26.0
+        },
+        "critical": {
+          "min": 20.0,
+          "max": 32.0
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "A normal white count does not exclude orbital cellulitis, especially early or in older or immunocompromised patients."
+    },
+    {
+      "test_id": "neut_pct",
+      "ranges": {
+        "mild": {
+          "min": 70,
+          "max": 80
+        },
+        "moderate": {
+          "min": 75,
+          "max": 88
+        },
+        "severe": {
+          "min": 80,
+          "max": 92
+        },
+        "critical": {
+          "min": 82,
+          "max": 94
+        }
+      },
+      "frequency": "common",
+      "importance": "important"
+    },
+    {
+      "test_id": "bands_pct",
+      "ranges": {
+        "moderate": {
+          "min": 5,
+          "max": 10
+        },
+        "severe": {
+          "min": 8,
+          "max": 18
+        },
+        "critical": {
+          "min": 10,
+          "max": 25
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "A left shift supports bacterial infection but is not required for the diagnosis."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "mild": {
+          "min": 1.0,
+          "max": 4.0
+        },
+        "moderate": {
+          "min": 3.0,
+          "max": 10.0
+        },
+        "severe": {
+          "min": 8.0,
+          "max": 20.0
+        },
+        "critical": {
+          "min": 15.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "common",
+      "importance": "optional",
+      "caveat": "Supports bacterial infection and helps track response; not specific for orbital involvement."
+    },
+    {
+      "test_id": "esr",
+      "ranges": {
+        "mild": {
+          "min": 20,
+          "max": 40
+        },
+        "moderate": {
+          "min": 35,
+          "max": 60
+        },
+        "severe": {
+          "min": 50,
+          "max": 80
+        },
+        "critical": {
+          "min": 60,
+          "max": 100
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "severe": {
+          "min": 2.2,
+          "max": 4.0
+        },
+        "critical": {
+          "min": 3.0,
+          "max": 6.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Elevated only with systemic sepsis or tissue hypoperfusion."
+    },
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "moderate": {
+          "min": 100,
+          "max": 180
+        },
+        "severe": {
+          "min": 140,
+          "max": 250
+        },
+        "critical": {
+          "min": 160,
+          "max": 300
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hyperglycemia suggests undiagnosed or poorly controlled diabetes, which raises concern for fungal orbital infection."
+    },
+    {
+      "test_id": "a1c",
+      "ranges": {
+        "moderate": {
+          "min": 5.7,
+          "max": 6.4
+        },
+        "severe": {
+          "min": 6.5,
+          "max": 9.0
+        },
+        "critical": {
+          "min": 7.0,
+          "max": 12.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Helps identify diabetes, a risk factor for mucormycosis."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "moderate": {
+          "min": 1.2,
+          "max": 1.6
+        },
+        "severe": {
+          "min": 1.5,
+          "max": 2.5
+        },
+        "critical": {
+          "min": 2.0,
+          "max": 4.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Baseline renal function before IV contrast imaging and for antibiotic dosing."
+    },
+    {
+      "test_id": "na",
+      "ranges": {
+        "moderate": {
+          "min": 130,
+          "max": 134
+        },
+        "severe": {
+          "min": 126,
+          "max": 133
+        },
+        "critical": {
+          "min": 120,
+          "max": 132
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Mild hyponatremia can occur with systemic infection or poor intake."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Negative. Required in anyone who could be pregnant before CT imaging."
+    }
+  ],
+  "imaging": [
+    {
+      "study": "CT orbits and sinuses with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Adults and older children; the study of choice to distinguish orbital from preseptal cellulitis and to find an abscess",
+      "findings": [
+        {
+          "text": "Inflammatory stranding and enhancement of the orbital fat",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Extraocular muscle enlargement and enhancement",
+          "frequency": "common"
+        },
+        {
+          "text": "Proptosis with anterior displacement of the globe",
+          "frequency": "common"
+        },
+        {
+          "text": "Subperiosteal or orbital abscess (rim-enhancing fluid collection)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Opacification of the adjacent ethmoid or maxillary sinuses",
+          "frequency": "common"
+        },
+        {
+          "text": "Preseptal soft tissue swelling anterior to the orbital septum",
+          "frequency": "common"
+        },
+        {
+          "text": "Intracranial extension or cavernous sinus thrombosis",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "MRI orbits and brain with and without IV contrast",
+      "modality": "mri",
+      "preferred_when": "Suspected intracranial extension, cavernous sinus thrombosis, or when CT is nondiagnostic",
+      "findings": [
+        {
+          "text": "Orbital fat and muscle inflammation with contrast enhancement",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Subperiosteal or orbital abscess with rim enhancement",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Cavernous sinus thrombosis (filling defect or nonenhancing sinus)",
+          "frequency": "rare"
+        },
+        {
+          "text": "Meningeal enhancement or intracranial abscess",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "CT head without contrast",
+      "modality": "ct",
+      "preferred_when": "Not the study of choice; may be done first when intracranial pathology is the main concern",
+      "findings": [
+        {
+          "text": "May show sinus opacification or orbital soft tissue swelling but is less sensitive than dedicated orbital imaging",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Orbital ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "Rarely used; limited by eyelid swelling and operator dependence",
+      "findings": [
+        {
+          "text": "Thickened orbital tissues or fluid collection may be seen",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Plain radiograph of the orbits or sinuses",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Usually nonspecific; may show sinus opacification but cannot distinguish preseptal from orbital cellulitis",
+          "frequency": "common"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Leukocytosis with a left shift supports bacterial infection and gauges severity"
+      },
+      {
+        "test": "bmp",
+        "why": "Baseline renal function and electrolytes before IV contrast and antibiotics"
+      },
+      {
+        "test": "crp",
+        "why": "Supports bacterial infection and provides a baseline to follow"
+      },
+      {
+        "test": "glucose",
+        "why": "Hyperglycemia raises concern for diabetes and fungal orbital infection"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before CT imaging"
+      },
+      {
+        "test": "CT orbits and sinuses with IV contrast",
+        "why": "Distinguishes orbital from preseptal cellulitis and identifies an abscess or sinus source"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "esr",
+        "why": "Adds to the inflammatory picture and helps track response"
+      },
+      {
+        "test": "a1c",
+        "why": "Identifies diabetes, a risk factor for mucormycosis"
+      },
+      {
+        "test": "lactate",
+        "why": "Assesses for systemic sepsis",
+        "only_if": "the patient is hypotensive, tachycardic, or toxic-appearing"
+      },
+      {
+        "test": "MRI orbits and brain with and without IV contrast",
+        "why": "Better defines intracranial extension or cavernous sinus thrombosis",
+        "only_if": "intracranial extension or cavernous sinus thrombosis is suspected, or CT is nondiagnostic"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Plain radiograph of the orbits or sinuses",
+        "why": "Cannot distinguish preseptal from orbital cellulitis and does not change management"
+      },
+      {
+        "test": "Orbital ultrasound",
+        "why": "Limited by eyelid swelling and less accurate than CT"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in the evaluation of orbital infection"
+      },
+      {
+        "test": "lipase",
+        "why": "Not needed unless abdominal pain suggests pancreatitis"
+      },
+      {
+        "test": "ua",
+        "why": "Not routinely helpful in orbital cellulitis"
+      },
+      {
+        "test": "MRI orbits and brain with and without IV contrast",
+        "why": "Reserved for suspected intracranial extension or nondiagnostic CT",
+        "only_if": "intracranial extension or cavernous sinus thrombosis is suspected, or CT is nondiagnostic"
+      }
+    ],
+    "decision_points": [
+      "Pregnancy test before CT in anyone who could be pregnant",
+      "Distinguish preseptal from orbital cellulitis by proptosis, pain with eye movement, and limited eye movement; CT confirms orbital involvement",
+      "Urgent ophthalmology and ENT consultation when proptosis, vision change, or an abscess is present",
+      "Surgical drainage is considered for a subperiosteal or orbital abscess, especially with vision loss or failure to improve on antibiotics",
+      "Blood cultures and sinus cultures are obtained when systemic infection or a surgical source is suspected"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Preseptal (periorbital) cellulitis",
+      "slug": "preseptal-cellulitis",
+      "why_considered": "The most common and most important look-alike: infection limited to the tissues anterior to the orbital septum, with eyelid swelling and redness that can look identical at first glance.",
+      "must_not_miss": true,
+      "trigger": "Eyelid swelling and redness without proptosis, pain with eye movement, or vision change",
+      "discriminators": {
+        "history": [
+          "Eyelid swelling and redness without bulging of the eye",
+          "No double vision",
+          "No change in vision",
+          "Often follows a skin break, insect bite, or stye"
+        ],
+        "exam": [
+          "No proptosis",
+          "No pain with eye movement",
+          "Full extraocular movements",
+          "Normal visual acuity and normal pupils",
+          "No chemosis"
+        ],
+        "labs": [
+          "White count may be normal or only mildly elevated"
+        ],
+        "imaging": [
+          "CT shows soft tissue swelling anterior to the orbital septum only, with normal orbital fat and muscles"
+        ]
+      }
+    },
+    {
+      "name": "Cavernous sinus thrombosis",
+      "slug": "cavernous-sinus-thrombosis",
+      "why_considered": "A thrombotic complication of the same sinonasal and facial infections that cause orbital cellulitis, and it can present with proptosis, eyelid swelling, and cranial nerve deficits.",
+      "must_not_miss": true,
+      "trigger": "Bilateral eye findings, severe headache, or cranial nerve deficits in a patient with orbital infection",
+      "discriminators": {
+        "history": [
+          "Severe headache, often the earliest and worst symptom",
+          "Rapid progression over hours",
+          "Fever and rigors"
+        ],
+        "exam": [
+          "Bilateral proptosis and eyelid swelling (spread across the sinuses)",
+          "Cranial nerve deficits, especially III, IV, V1/V2, and VI",
+          "Altered mental status or meningismus",
+          "Dilated, sluggish pupil"
+        ],
+        "labs": [
+          "Marked leukocytosis",
+          "Blood cultures may be positive"
+        ],
+        "imaging": [
+          "MRI with contrast shows a filling defect or nonenhancing cavernous sinus",
+          "CT venography shows absent flow in the cavernous sinus"
+        ]
+      }
+    },
+    {
+      "name": "Orbital inflammatory disease (idiopathic orbital pseudotumor)",
+      "slug": "orbital-inflammatory-disease",
+      "why_considered": "Noninfectious inflammation of the orbit that causes painful proptosis, eyelid swelling, and limited eye movement, mimicking infection.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Subacute onset over days to weeks rather than hours",
+          "Often no fever or systemic illness",
+          "May be recurrent",
+          "May be associated with autoimmune disease"
+        ],
+        "exam": [
+          "Proptosis and painful eye movement but no purulent discharge",
+          "No sinus tenderness",
+          "No systemic toxicity"
+        ],
+        "labs": [
+          "Inflammatory markers may be normal or mildly elevated",
+          "No leukocytosis",
+          "Thyroid function and thyroid antibodies may be abnormal if thyroid eye disease"
+        ],
+        "imaging": [
+          "CT or MRI shows diffuse orbital fat and muscle inflammation without an abscess or sinus opacification",
+          "May involve the lacrimal gland or extraocular muscles in a pattern atypical for infection"
+        ]
+      }
+    },
+    {
+      "name": "Thyroid eye disease (Graves ophthalmopathy)",
+      "slug": "thyroid-eye-disease",
+      "why_considered": "Causes proptosis, eyelid swelling, and diplopia, and can be mistaken for orbital infection when inflammation is active.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Gradual onset over weeks to months",
+          "History of hyperthyroidism, hypothyroidism, or prior thyroid disease",
+          "No fever or acute pain",
+          "Smoking history is common"
+        ],
+        "exam": [
+          "Bilateral proptosis, often asymmetric",
+          "Lid lag and lid retraction",
+          "Restrictive strabismus with diplopia on upgaze",
+          "No pain with eye movement or only mild discomfort"
+        ],
+        "labs": [
+          "Abnormal TSH, free T4, or thyroid-stimulating immunoglobulin"
+        ],
+        "imaging": [
+          "CT or MRI shows enlarged extraocular muscle bellies with sparing of the tendons",
+          "No abscess or sinus disease"
+        ]
+      }
+    },
+    {
+      "name": "Orbital tumor (e.g., rhabdomyosarcoma in children, lymphoma or metastasis in adults)",
+      "slug": "orbital-tumor",
+      "why_considered": "A mass in the orbit can cause proptosis, eyelid swelling, and vision change, and may be mistaken for infection when it presents subacutely.",
+      "must_not_miss": true,
+      "trigger": "Proptosis that progresses over weeks without fever or sinus symptoms, especially in a child",
+      "discriminators": {
+        "history": [
+          "Gradual onset over weeks to months",
+          "No fever, no recent sinusitis or skin infection",
+          "Weight loss, night sweats, or known malignancy in adults"
+        ],
+        "exam": [
+          "Proptosis that is painless or only mildly painful",
+          "Palpable mass or resistance in the orbit",
+          "No purulent discharge or sinus tenderness",
+          "May have ptosis or a fixed globe"
+        ],
+        "labs": [
+          "Normal white count and inflammatory markers",
+          "Lactate dehydrogenase may be elevated in lymphoma"
+        ],
+        "imaging": [
+          "CT or MRI shows a discrete soft tissue mass, bone destruction, or remodeling",
+          "No rim-enhancing abscess or sinus opacification"
+        ]
+      }
+    },
+    {
+      "name": "Mucormycosis (rhinocerebral or orbital)",
+      "slug": "mucormycosis",
+      "why_considered": "An angioinvasive fungal infection that can spread from the sinuses into the orbit and cause proptosis, vision loss, and cranial nerve deficits, especially in diabetes or immunosuppression.",
+      "must_not_miss": true,
+      "trigger": "Diabetic or immunocompromised patient with sinusitis, orbital swelling, black necrotic eschars, and rapidly worsening vision",
+      "discriminators": {
+        "history": [
+          "Poorly controlled diabetes, especially with ketoacidosis",
+          "Immunosuppression, transplant, or prolonged corticosteroid use",
+          "Rapid progression over hours to days",
+          "Severe headache and facial pain"
+        ],
+        "exam": [
+          "Black necrotic eschar on the nasal mucosa or palate",
+          "Facial numbness or cranial nerve deficits",
+          "Vision loss out of proportion to external findings",
+          "Proptosis and chemosis"
+        ],
+        "labs": [
+          "Hyperglycemia and acidosis",
+          "Leukocytosis",
+          "Fungal hyphae on biopsy or culture"
+        ],
+        "imaging": [
+          "CT or MRI shows sinus opacification with orbital and intracranial extension",
+          "Absence of normal sinus enhancement or bone destruction",
+          "Cavernous sinus or carotid involvement"
+        ]
+      }
+    },
+    {
+      "name": "Allergic conjunctivitis with periorbital swelling",
+      "slug": "allergic-conjunctivitis",
+      "why_considered": "Causes red, swollen, watery eyes and eyelid puffiness that can be mistaken for early periorbital infection.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Itching is the dominant symptom",
+          "Bilateral involvement",
+          "Seasonal or exposure-related pattern",
+          "No fever or pain"
+        ],
+        "exam": [
+          "Diffuse conjunctival injection with chemosis",
+          "No proptosis",
+          "No pain with eye movement",
+          "Normal visual acuity"
+        ],
+        "labs": [
+          "Not routinely needed"
+        ],
+        "imaging": [
+          "Not indicated"
+        ]
+      }
+    },
+    {
+      "name": "Traumatic orbital hematoma",
+      "slug": "orbital-hematoma",
+      "why_considered": "Trauma can cause proptosis, eyelid swelling, and limited eye movement from a hematoma or fracture, resembling infection.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Recent trauma to the eye or face",
+          "Sudden onset after injury",
+          "No fever or systemic illness"
+        ],
+        "exam": [
+          "Ecchymosis and periorbital swelling",
+          "Proptosis may be present",
+          "Possible step-off or crepitus from orbital fracture",
+          "No purulent discharge"
+        ],
+        "labs": [
+          "Normal white count and inflammatory markers"
+        ],
+        "imaging": [
+          "CT shows hematoma, orbital fracture, or air in the orbit",
+          "No abscess or sinus opacification"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Early orbital cellulitis: eyelid swelling and mild proptosis, pain with eye movement, no vision change, low-grade or no fever, normal visual acuity",
+      "moderate": "Established orbital cellulitis: clear proptosis, chemosis, limited eye movement, fever, leukocytosis, but vision preserved",
+      "severe": "Orbital cellulitis with a subperiosteal or orbital abscess, or with vision loss, afferent pupillary defect, or cranial nerve deficits",
+      "critical": "Orbital cellulitis with intracranial extension, cavernous sinus thrombosis, or sepsis with hemodynamic instability"
+    },
+    "red_flags": [
+      {
+        "finding": "Decreased visual acuity or color vision",
+        "meaning": "Optic nerve or retinal compromise; needs urgent imaging and ophthalmology evaluation"
+      },
+      {
+        "finding": "Afferent pupillary defect",
+        "meaning": "Optic nerve dysfunction; sight-threatening emergency"
+      },
+      {
+        "finding": "Severe proptosis with a fixed, immobile globe",
+        "meaning": "Orbital compartment syndrome or large abscess; may need urgent surgical decompression"
+      },
+      {
+        "finding": "Cranial nerve deficits or altered mental status",
+        "meaning": "Intracranial extension or cavernous sinus thrombosis"
+      },
+      {
+        "finding": "Bilateral eye findings",
+        "meaning": "Cavernous sinus thrombosis until proven otherwise"
+      },
+      {
+        "finding": "Hypotension, tachycardia, or toxic appearance",
+        "meaning": "Sepsis; needs resuscitation and broad-spectrum antibiotics"
+      },
+      {
+        "finding": "Black necrotic eschar on nasal mucosa or palate in a diabetic or immunocompromised patient",
+        "meaning": "Mucormycosis; needs urgent biopsy and antifungal therapy"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Subperiosteal abscess",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Proptosis worsening despite antibiotics",
+          "Fever persisting beyond 48 hours",
+          "Limited eye movement",
+          "CT showing a rim-enhancing fluid collection along the orbital wall"
+        ]
+      },
+      {
+        "name": "Orbital abscess",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Marked proptosis",
+          "Severe pain",
+          "Vision loss",
+          "CT or MRI showing an intraorbital rim-enhancing collection"
+        ]
+      },
+      {
+        "name": "Vision loss from optic neuropathy or retinal ischemia",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Decreased visual acuity",
+          "Afferent pupillary defect",
+          "Impaired color vision",
+          "Severe proptosis with increased intraocular pressure"
+        ]
+      },
+      {
+        "name": "Cavernous sinus thrombosis",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Bilateral proptosis and eyelid swelling",
+          "Severe headache",
+          "Cranial nerve deficits",
+          "MRI or CT venography showing a filling defect"
+        ]
+      },
+      {
+        "name": "Intracranial extension (meningitis, epidural or brain abscess)",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Altered mental status",
+          "Neck stiffness",
+          "Seizures",
+          "Focal neurologic deficits",
+          "MRI showing meningeal enhancement or intracranial collection"
+        ]
+      },
+      {
+        "name": "Sepsis",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Hypotension",
+          "Tachycardia",
+          "Elevated lactate",
+          "Positive blood cultures"
+        ]
+      },
+      {
+        "name": "Optic atrophy and permanent visual impairment",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Persistent vision loss after resolution of infection",
+          "Pale optic disc on fundoscopy"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Most common in children under 10; young children may not report pain with eye movement or vision change, presenting instead with eyelid swelling, fever, irritability, and refusal to open the eye. Sinusitis is the usual source. CT is used when orbital involvement is suspected, and younger children may need sedation for imaging."
+      },
+      {
+        "population": "older_adults",
+        "differences": "May have less fever and less pain despite severe infection; proptosis may be less obvious. Dental and sinus sources are common. Higher risk of atypical organisms and complications."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Can progress rapidly with minimal inflammatory signs; fever may be absent. Fungal pathogens, especially Mucorales, are more likely and require urgent biopsy and antifungal therapy."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Higher risk of fungal orbital infection (mucormycosis) with rapid progression, black necrotic eschars, severe headache, and vision loss. Glucose control is part of management."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Imaging should avoid ionizing radiation when possible; MRI without gadolinium or with gadolinium after weighing benefits is preferred. Antibiotic choices must consider fetal safety."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "When did the eye swelling start, and how fast has it gotten worse?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Onset over hours to a few days with rapid progression; a slow course over weeks suggests a noninfectious or neoplastic cause"
+      },
+      {
+        "question": "Does the eye look like it is bulging out, or is it just the eyelid that is swollen?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Proptosis (globe pushed forward) points to orbital rather than preseptal involvement"
+      },
+      {
+        "question": "Does it hurt when you move your eye?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Pain with eye movement, a hallmark of orbital involvement"
+      },
+      {
+        "question": "Has your vision changed — blurry, dimmer, double, or loss of color?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Blurred or decreased vision, diplopia, or color change; vision loss is a sight-threatening red flag"
+      },
+      {
+        "question": "Have you had a fever, chills, or felt generally unwell?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Fever and systemic illness supporting infection"
+      },
+      {
+        "question": "Have you had a recent cold, sinus infection, or facial pain and pressure?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Recent or current sinusitis or upper respiratory infection, the most common source"
+      },
+      {
+        "question": "Any recent tooth pain, dental work, or dental infection?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Dental source of orbital infection"
+      },
+      {
+        "question": "Any recent injury to the eye or face, or eye surgery or injection?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Trauma or recent ocular procedure as a portal of entry"
+      },
+      {
+        "question": "Do you have diabetes, or any condition or medicine that weakens your immune system?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Diabetes or immunosuppression, which raises concern for fungal infection such as mucormycosis"
+      },
+      {
+        "question": "Are you taking steroids or other immunosuppressive medicines?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Corticosteroids, transplant drugs, or biologics that increase risk of severe or fungal infection"
+      },
+      {
+        "question": "Any headache, neck stiffness, confusion, or weakness?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Intracranial extension, meningitis, or cavernous sinus thrombosis"
+      },
+      {
+        "question": "Could you be pregnant? When was your last period?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Pregnancy status before CT imaging and to guide antibiotic choice"
+      }
+    ],
+    "accepted_names": [
+      "Orbital cellulitis",
+      "Post-septal cellulitis",
+      "Orbital infection"
+    ],
+    "reasoning_points": [
+      "Unilateral eyelid swelling and redness with proptosis, pain with eye movement, and often fever",
+      "Recent or current sinusitis, upper respiratory infection, or dental infection as the usual source",
+      "Distinguishing orbital from preseptal cellulitis by proptosis, pain with eye movement, limited eye movement, and vision change",
+      "Reduced visual acuity, afferent pupillary defect, or cranial nerve deficits indicating a sight- or life-threatening complication",
+      "Leukocytosis with neutrophil predominance and elevated inflammatory markers supporting bacterial infection",
+      "Contrast-enhanced CT of the orbits and sinuses showing orbital fat stranding, muscle enlargement, sinus opacification, or an abscess",
+      "Considering fungal infection (mucormycosis) in a diabetic or immunocompromised patient with rapid progression or necrotic eschar",
+      "Pregnancy excluded before CT imaging",
+      "Urgent ophthalmology and ENT involvement, with surgical drainage considered for an abscess or vision loss"
+    ],
+    "difficulty": {
+      "easy": [
+        "Child with recent sinusitis and a swollen, bulging red eye",
+        "Clear proptosis with pain on eye movement and fever",
+        "Leukocytosis and sinus opacification on CT",
+        "Classic distinction from preseptal cellulitis is straightforward"
+      ],
+      "medium": [
+        "Early orbital cellulitis with eyelid swelling and only mild proptosis, hard to separate from preseptal cellulitis",
+        "Older adult with little fever or pain despite significant infection",
+        "Mild pyuria or nonspecific symptoms suggesting another cause",
+        "Patient with dental source rather than obvious sinusitis"
+      ],
+      "hard": [
+        "Diabetic or immunocompromised patient with rapidly progressive disease and concern for mucormycosis",
+        "Young child who cannot report pain with eye movement or vision change, presenting with irritability and refusal to open the eye",
+        "Bilateral findings suggesting cavernous sinus thrombosis",
+        "Proptosis that progresses over weeks without fever, raising concern for an orbital tumor",
+        "Vision loss or cranial nerve deficits at presentation indicating intracranial extension"
+      ]
+    }
+  }
+}

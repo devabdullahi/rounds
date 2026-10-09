@@ -1,0 +1,1691 @@
+{
+  "schema_version": "0.2",
+  "slug": "beriberi",
+  "triage": {
+    "name": "Beriberi",
+    "case_suitable": true,
+    "reason": "Thiamine deficiency presenting with neuropathy, high-output heart failure or edema; reachable from diet and alcohol history plus exam.",
+    "kind": "disease",
+    "category": "vitamin deficiency",
+    "organ_systems": [
+      "endocrine",
+      "cardiovascular",
+      "nervous"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "neurology",
+      "familyMedicine"
+    ],
+    "commonness": "rare",
+    "settings": [
+      "inpatient",
+      "clinic"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:24:03Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:44:24Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:44:49Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:45:02Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:45:12Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:45:19Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'troponin' to 'hs_tnt'",
+        "auto-repaired: workup: 'chest x-ray' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'mri brain with and without contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'chest x-ray' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'mri brain with and without contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "differential wernicke-encephalopathy: no profile yet",
+        "differential alcoholic-polyneuropathy: no profile yet",
+        "differential vitamin-b12-deficiency: no profile yet",
+        "differential diabetic-peripheral-neuropathy: no profile yet",
+        "differential heart-failure-with-reduced-ejection-fraction: no profile yet",
+        "differential nephrotic-syndrome: no profile yet",
+        "differential guillain-barre-syndrome: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 20,
+      "typical_max": 70,
+      "peak": "30–60",
+      "possible_min": 0,
+      "possible_max": 90
+    },
+    "sex": "either",
+    "demographics": [
+      "More common in populations where polished white rice is the staple food",
+      "In the US, most often seen in people with chronic alcohol use disorder",
+      "Also occurs after bariatric surgery, in prolonged parenteral nutrition without thiamine, and in severe malnutrition"
+    ],
+    "risk_factors": [
+      {
+        "text": "Chronic alcohol use disorder",
+        "strength": "strong"
+      },
+      {
+        "text": "Diet consisting mainly of polished white rice",
+        "strength": "strong"
+      },
+      {
+        "text": "Prolonged vomiting or hyperemesis",
+        "strength": "moderate"
+      },
+      {
+        "text": "Bariatric surgery or other malabsorptive gastrointestinal surgery",
+        "strength": "moderate"
+      },
+      {
+        "text": "Prolonged parenteral nutrition without thiamine supplementation",
+        "strength": "moderate"
+      },
+      {
+        "text": "Severe malnutrition or food insecurity",
+        "strength": "moderate"
+      },
+      {
+        "text": "Chronic kidney disease with dialysis",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Alcohol use disorder",
+      "Chronic liver disease",
+      "Malabsorption syndromes",
+      "Chronic kidney disease on dialysis",
+      "HIV/AIDS"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Heavy alcohol use",
+      "Food insecurity or limited diet",
+      "Homelessness or institutional living"
+    ],
+    "exposures": [
+      "Long-term consumption of polished white rice as the main food",
+      "Long-term parenteral nutrition without thiamine"
+    ],
+    "risk_medications": [
+      "furosemide",
+      "metformin",
+      "phenytoin"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My feet feel numb and tingly",
+        "frequency": "common",
+        "term": "Paresthesia of foot",
+        "snomed_verified": true
+      },
+      {
+        "text": "My legs feel weak and heavy",
+        "frequency": "common",
+        "term": "Weakness of leg",
+        "snomed_verified": true
+      },
+      {
+        "text": "My legs and feet are swollen",
+        "frequency": "common",
+        "term": "Edema of lower extremity",
+        "snomed_verified": true
+      },
+      {
+        "text": "I get short of breath just walking across the room",
+        "frequency": "sometimes",
+        "term": "Dyspnea on exertion",
+        "snomed_verified": true
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual over weeks to months",
+      "duration": "Weeks to months",
+      "progression": "Numbness and tingling start in the feet and spread upward; weakness and swelling develop later; without treatment, symptoms worsen and can involve the heart",
+      "location": "Feet and legs first, then hands and arms; swelling in the lower legs and feet",
+      "radiation": "Numbness spreads from the feet upward in a stocking-glove pattern",
+      "quality": "Tingling, pins-and-needles, burning, and heaviness; swelling is soft and pitting",
+      "severity": "Mild at first, then moderate to severe as weakness and swelling progress",
+      "timing": "Constant, worse at night",
+      "aggravating": [
+        "Walking",
+        "Standing",
+        "Exertion"
+      ],
+      "relieving": [
+        "Rest",
+        "Elevating the legs"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Numbness in the feet",
+          "frequency": "common",
+          "term": "Numbness of foot",
+          "snomed_verified": true
+        },
+        {
+          "text": "Tingling in the hands",
+          "frequency": "sometimes",
+          "term": "Paresthesia of hand",
+          "snomed_verified": true
+        },
+        {
+          "text": "Muscle cramps in the legs",
+          "frequency": "sometimes",
+          "term": "Muscle cramp",
+          "snomed_verified": true
+        },
+        {
+          "text": "Difficulty rising from a chair",
+          "frequency": "sometimes",
+          "term": "Difficulty walking",
+          "snomed_verified": true
+        },
+        {
+          "text": "Fast heartbeat",
+          "frequency": "sometimes",
+          "term": "Palpitations",
+          "snomed_verified": true
+        },
+        {
+          "text": "Swelling of the feet and legs",
+          "frequency": "common",
+          "term": "Edema of lower extremity",
+          "snomed_verified": true
+        },
+        {
+          "text": "Shortness of breath when active",
+          "frequency": "sometimes",
+          "term": "Dyspnea on exertion",
+          "snomed_verified": true
+        },
+        {
+          "text": "Loss of appetite",
+          "frequency": "sometimes",
+          "term": "Anorexia",
+          "snomed_verified": true
+        }
+      ],
+      "pertinent_negatives": [
+        "Chest pain",
+        "Cough",
+        "Fever",
+        "Night sweats",
+        "Weight loss",
+        "Blood in stool",
+        "Vomiting blood",
+        "Sudden weakness on one side of the body",
+        "Difficulty speaking",
+        "Vision loss"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fatigue",
+            "frequency": "common",
+            "term": "Fatigue",
+            "snomed_verified": true
+          },
+          {
+            "text": "Loss of appetite",
+            "frequency": "sometimes",
+            "term": "Anorexia",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Fever",
+          "Night sweats",
+          "Weight loss"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [
+          {
+            "text": "Fast heartbeat",
+            "frequency": "sometimes",
+            "term": "Palpitations",
+            "snomed_verified": true
+          },
+          {
+            "text": "Swelling of the legs and feet",
+            "frequency": "common",
+            "term": "Edema of lower extremity",
+            "snomed_verified": true
+          },
+          {
+            "text": "Shortness of breath when active",
+            "frequency": "sometimes",
+            "term": "Dyspnea on exertion",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Chest pain",
+          "Fainting",
+          "Cough"
+        ],
+        "argues_against": [
+          "Chest pain with exertion",
+          "Orthopnea"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Loss of appetite",
+            "frequency": "sometimes",
+            "term": "Anorexia",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Nausea",
+          "Vomiting",
+          "Diarrhea",
+          "Blood in stool"
+        ],
+        "argues_against": [
+          "Vomiting blood",
+          "Black stools"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Muscle cramps in the legs",
+            "frequency": "sometimes",
+            "term": "Muscle cramp",
+            "snomed_verified": true
+          },
+          {
+            "text": "Weakness in the legs",
+            "frequency": "common",
+            "term": "Weakness of leg",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Joint swelling",
+          "Joint pain"
+        ],
+        "argues_against": [
+          "Joint redness and swelling"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Numbness in the feet",
+            "frequency": "common",
+            "term": "Numbness of foot",
+            "snomed_verified": true
+          },
+          {
+            "text": "Tingling in the feet",
+            "frequency": "common",
+            "term": "Paresthesia of foot",
+            "snomed_verified": true
+          },
+          {
+            "text": "Tingling in the hands",
+            "frequency": "sometimes",
+            "term": "Paresthesia of hand",
+            "snomed_verified": true
+          },
+          {
+            "text": "Difficulty walking",
+            "frequency": "sometimes",
+            "term": "Difficulty walking",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Sudden weakness on one side of the body",
+          "Difficulty speaking",
+          "Vision loss",
+          "Seizures"
+        ],
+        "argues_against": [
+          "Sudden one-sided weakness",
+          "Slurred speech"
+        ]
+      },
+      {
+        "system": "psychiatric",
+        "positives": [
+          {
+            "text": "Irritability",
+            "frequency": "sometimes",
+            "term": "Irritability",
+            "snomed_verified": true
+          },
+          {
+            "text": "Trouble concentrating",
+            "frequency": "sometimes",
+            "term": "Poor concentration",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Hallucinations",
+          "Confusion"
+        ],
+        "argues_against": [
+          "Confusion and memory loss"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [],
+        "negatives": [
+          "Rash",
+          "Ulcers"
+        ],
+        "argues_against": [
+          "Skin rash"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "infants",
+        "how_it_differs": "Infantile beriberi presents with vomiting, irritability, and heart failure; the classic numbness and tingling are not described.",
+        "missing_classic_features": [
+          "Numbness and tingling in the feet",
+          "Swelling of the legs"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "Symptoms may be attributed to aging or other conditions; heart failure and confusion can be more prominent.",
+        "missing_classic_features": [
+          "Clear stocking-glove numbness"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Hyperemesis gravidarum and poor diet can cause thiamine deficiency; presenting symptoms may be severe vomiting, weakness, and heart failure.",
+        "missing_classic_features": [
+          "Gradual stocking-glove numbness"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Well-appearing, fully ambulatory, no distress",
+      "moderate": "Mildly uncomfortable, steady gait but unsteady on tandem walking, no distress",
+      "severe": "Ill-appearing, dyspneic on minimal exertion, needs help to stand from a chair, may be orthopneic",
+      "critical": "Toxic-appearing, tachypneic and diaphoretic, sitting upright, confused or lethargic"
+    },
+    "findings": [
+      {
+        "id": "lower-extremity-edema",
+        "region": "extremities",
+        "maneuver": "Press firmly over the dorsum of the foot and the medial malleolus for several seconds",
+        "finding": "Pitting edema of the lower legs and feet, often symmetric and extending to the mid-calf",
+        "frequency": "common",
+        "min_severity": "mild",
+        "significance": "supports",
+        "importance": "essential",
+        "term": "Edema of lower extremity",
+        "snomed_verified": true
+      },
+      {
+        "id": "stocking-glove-sensory-loss",
+        "region": "neuro",
+        "maneuver": "Test pinprick, light touch and vibration in a stocking-glove distribution, comparing distal to proximal",
+        "finding": "Reduced pinprick, light touch and vibration sense in a symmetric stocking-glove pattern, worse distally",
+        "frequency": "common",
+        "min_severity": "mild",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Sensory neuropathy",
+        "snomed_verified": true
+      },
+      {
+        "id": "diminished-ankle-reflexes",
+        "region": "neuro",
+        "maneuver": "Tap the Achilles tendon with the patient relaxed and the foot dorsiflexed",
+        "finding": "Reduced or absent ankle jerk reflexes, often symmetric",
+        "frequency": "common",
+        "min_severity": "mild",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Absent ankle reflex",
+        "snomed_verified": true
+      },
+      {
+        "id": "distal-weakness",
+        "region": "musculoskeletal",
+        "maneuver": "Ask the patient to walk on heels and toes, and to dorsiflex the foot against resistance",
+        "finding": "Symmetric distal weakness, worse in the legs than the arms, with difficulty heel-walking",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Weakness of leg",
+        "snomed_verified": true
+      },
+      {
+        "id": "wide-based-gait",
+        "region": "neuro",
+        "maneuver": "Observe the patient walking and ask them to walk heel-to-toe",
+        "finding": "Wide-based, unsteady gait with impaired tandem walking",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Ataxic gait",
+        "snomed_verified": true
+      },
+      {
+        "id": "tachycardia",
+        "region": "cardiac",
+        "maneuver": "Palpate the radial pulse and count the rate for a full minute",
+        "finding": "Sinus tachycardia at rest",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Tachycardia",
+        "snomed_verified": true
+      },
+      {
+        "id": "widened-pulse-pressure",
+        "region": "cardiac",
+        "maneuver": "Measure the blood pressure and compare the systolic and diastolic values",
+        "finding": "Widened pulse pressure from a high-output state",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Widened pulse pressure",
+        "snomed_verified": true
+      },
+      {
+        "id": "jugular-venous-distension",
+        "region": "neck",
+        "maneuver": "Inspect the internal jugular vein with the patient at 30–45 degrees",
+        "finding": "Jugular venous distension above the sternal angle",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Jugular venous distension",
+        "snomed_verified": true
+      },
+      {
+        "id": "s3-gallop",
+        "region": "cardiac",
+        "maneuver": "Auscultate the apex with the bell while the patient lies in the left lateral position",
+        "finding": "Third heart sound (S3 gallop)",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Third heart sound",
+        "snomed_verified": true
+      },
+      {
+        "id": "basal-crackles",
+        "region": "lung",
+        "maneuver": "Auscultate the lung bases posteriorly with the patient sitting upright",
+        "finding": "Fine inspiratory crackles at both lung bases",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Inspiratory crackles",
+        "snomed_verified": true
+      },
+      {
+        "id": "hepatomegaly",
+        "region": "abdomen",
+        "maneuver": "Percuss the liver span and palpate below the right costal margin",
+        "finding": "Tender, enlarged liver",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Hepatomegaly",
+        "snomed_verified": true
+      },
+      {
+        "id": "confusion",
+        "region": "mental_status",
+        "maneuver": "Assess orientation to person, place and time, and test short-term recall",
+        "finding": "Disorientation or impaired short-term memory, sometimes with confabulation",
+        "frequency": "rare",
+        "min_severity": "critical",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Confusion",
+        "snomed_verified": true
+      },
+      {
+        "id": "ophthalmoplegia",
+        "region": "heent",
+        "maneuver": "Test extraocular movements and observe for nystagmus",
+        "finding": "Horizontal nystagmus or lateral rectus weakness (Wernicke encephalopathy)",
+        "frequency": "rare",
+        "min_severity": "critical",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Ophthalmoplegia",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-fever",
+        "region": "general",
+        "maneuver": "Measure the temperature",
+        "finding": "Afebrile",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Fever",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-rash",
+        "region": "skin",
+        "maneuver": "Inspect the skin over the legs and feet",
+        "finding": "No rash, ulcers or cellulitis",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Skin rash",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-focal-neurologic-deficit",
+        "region": "neuro",
+        "maneuver": "Test strength and sensation on both sides and check for facial asymmetry",
+        "finding": "No sudden one-sided weakness, facial droop or dysarthria",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Hemiparesis",
+        "snomed_verified": true
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {},
+    "hr": {
+      "mild": {
+        "min": 72,
+        "max": 100
+      },
+      "moderate": {
+        "min": 90,
+        "max": 115
+      },
+      "severe": {
+        "min": 100,
+        "max": 130
+      },
+      "critical": {
+        "min": 110,
+        "max": 150
+      }
+    },
+    "rr": {
+      "severe": {
+        "min": 18,
+        "max": 26
+      },
+      "critical": {
+        "min": 22,
+        "max": 34
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 100,
+        "max": 140
+      },
+      "moderate": {
+        "min": 100,
+        "max": 150
+      },
+      "severe": {
+        "min": 90,
+        "max": 150
+      },
+      "critical": {
+        "min": 70,
+        "max": 100
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 60,
+        "max": 85
+      },
+      "moderate": {
+        "min": 55,
+        "max": 85
+      },
+      "severe": {
+        "min": 50,
+        "max": 85
+      },
+      "critical": {
+        "min": 40,
+        "max": 65
+      }
+    },
+    "spo2": {
+      "severe": {
+        "min": 90,
+        "max": 96
+      },
+      "critical": {
+        "min": 85,
+        "max": 93
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "moderate": {
+          "min": 2.1,
+          "max": 4.0
+        },
+        "severe": {
+          "min": 3.0,
+          "max": 6.0
+        },
+        "critical": {
+          "min": 4.0,
+          "max": 10.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Mild lactic acidosis from impaired oxidative metabolism in thiamine deficiency; resolves quickly with thiamine."
+    },
+    {
+      "test_id": "bnp",
+      "ranges": {
+        "moderate": {
+          "min": 100,
+          "max": 400
+        },
+        "severe": {
+          "min": 300,
+          "max": 900
+        },
+        "critical": {
+          "min": 600,
+          "max": 2000
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Elevated in wet beriberi with high-output heart failure; a normal value argues against significant cardiac involvement."
+    },
+    {
+      "test_id": "nt_probnp",
+      "ranges": {
+        "moderate": {
+          "min": 125,
+          "max": 900
+        },
+        "severe": {
+          "min": 600,
+          "max": 3000
+        },
+        "critical": {
+          "min": 1500,
+          "max": 6000
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Alternative to BNP; elevated in wet beriberi."
+    },
+    {
+      "test_id": "albumin",
+      "ranges": {
+        "mild": {
+          "min": 3.0,
+          "max": 3.5
+        },
+        "moderate": {
+          "min": 2.5,
+          "max": 3.4
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 3.0
+        },
+        "critical": {
+          "min": 1.5,
+          "max": 2.5
+        }
+      },
+      "frequency": "common",
+      "importance": "optional",
+      "caveat": "Low from malnutrition and chronic alcohol use; contributes to edema but is not diagnostic."
+    },
+    {
+      "test_id": "b12",
+      "ranges": {
+        "mild": {
+          "min": 150,
+          "max": 200
+        },
+        "moderate": {
+          "min": 100,
+          "max": 199
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Low B12 can mimic the neuropathy of dry beriberi and often coexists in alcohol use disorder; check before attributing neuropathy to thiamine alone."
+    },
+    {
+      "test_id": "folate",
+      "ranges": {
+        "mild": {
+          "min": 2.0,
+          "max": 3.0
+        },
+        "moderate": {
+          "min": 1.0,
+          "max": 2.9
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Low folate is common in malnutrition and alcohol use and can worsen neuropathy."
+    },
+    {
+      "test_id": "mg",
+      "ranges": {
+        "mild": {
+          "min": 1.4,
+          "max": 1.7
+        },
+        "moderate": {
+          "min": 1.0,
+          "max": 1.6
+        },
+        "severe": {
+          "min": 0.7,
+          "max": 1.2
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Hypomagnesemia is common in alcohol use disorder and must be corrected for thiamine therapy to work."
+    },
+    {
+      "test_id": "phos",
+      "ranges": {
+        "mild": {
+          "min": 2.0,
+          "max": 2.5
+        },
+        "moderate": {
+          "min": 1.5,
+          "max": 2.4
+        },
+        "severe": {
+          "min": 1.0,
+          "max": 1.9
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hypophosphatemia from malnutrition; can worsen weakness and cardiac function."
+    },
+    {
+      "test_id": "k",
+      "ranges": {
+        "mild": {
+          "min": 3.2,
+          "max": 3.5
+        },
+        "moderate": {
+          "min": 2.8,
+          "max": 3.4
+        },
+        "severe": {
+          "min": 2.2,
+          "max": 3.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hypokalemia from poor intake, vomiting or diuretics; correct before attributing all weakness to thiamine deficiency."
+    },
+    {
+      "test_id": "hco3",
+      "ranges": {
+        "mild": {
+          "min": 20,
+          "max": 22
+        },
+        "moderate": {
+          "min": 16,
+          "max": 21
+        },
+        "severe": {
+          "min": 12,
+          "max": 18
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Low bicarbonate from lactic acidosis or alcohol-related ketosis."
+    },
+    {
+      "test_id": "ast",
+      "ranges": {
+        "mild": {
+          "min": 41,
+          "max": 80
+        },
+        "moderate": {
+          "min": 70,
+          "max": 150
+        },
+        "severe": {
+          "min": 120,
+          "max": 300
+        }
+      },
+      "frequency": "common",
+      "importance": "optional",
+      "caveat": "Elevated from alcohol-related liver injury, not from beriberi itself."
+    },
+    {
+      "test_id": "alt",
+      "ranges": {
+        "mild": {
+          "min": 57,
+          "max": 90
+        },
+        "moderate": {
+          "min": 80,
+          "max": 160
+        },
+        "severe": {
+          "min": 140,
+          "max": 300
+        }
+      },
+      "frequency": "common",
+      "importance": "optional",
+      "caveat": "Elevated from alcohol-related liver injury."
+    },
+    {
+      "test_id": "ggt",
+      "ranges": {
+        "mild": {
+          "min": 49,
+          "max": 120
+        },
+        "moderate": {
+          "min": 100,
+          "max": 250
+        },
+        "severe": {
+          "min": 200,
+          "max": 500
+        }
+      },
+      "frequency": "common",
+      "importance": "optional",
+      "caveat": "Supports chronic alcohol use; not specific to beriberi."
+    },
+    {
+      "test_id": "mcv",
+      "ranges": {
+        "mild": {
+          "min": 100,
+          "max": 106
+        },
+        "moderate": {
+          "min": 104,
+          "max": 115
+        }
+      },
+      "frequency": "common",
+      "importance": "optional",
+      "caveat": "Macrocytosis from alcohol, folate or B12 deficiency rather than thiamine deficiency."
+    },
+    {
+      "test_id": "plt",
+      "ranges": {
+        "mild": {
+          "min": 100,
+          "max": 150
+        },
+        "moderate": {
+          "min": 60,
+          "max": 149
+        },
+        "severe": {
+          "min": 30,
+          "max": 99
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Thrombocytopenia from alcohol-related marrow suppression or liver disease."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Negative. Required in anyone who could be pregnant before imaging and because hyperemesis gravidarum is a cause of thiamine deficiency."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rhythm",
+        "finding": "Sinus tachycardia",
+        "frequency": "common",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "rate",
+        "finding": "Resting tachycardia out of proportion to fever or anemia",
+        "frequency": "common",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "other",
+        "finding": "Low-voltage QRS complexes in the limb leads",
+        "frequency": "sometimes",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "t_wave",
+        "finding": "Nonspecific T-wave flattening or inversion",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "qt",
+        "finding": "Prolonged QTc interval",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "conduction",
+        "finding": "First-degree AV block",
+        "frequency": "rare",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Atrial fibrillation",
+        "frequency": "rare",
+        "min_severity": "severe"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Transthoracic echocardiogram",
+      "modality": "echo",
+      "preferred_when": "Suspected wet beriberi with dyspnea, edema or tachycardia",
+      "findings": [
+        {
+          "text": "High cardiac output with normal or increased ejection fraction",
+          "frequency": "common"
+        },
+        {
+          "text": "Dilated right and left ventricles",
+          "frequency": "common"
+        },
+        {
+          "text": "Biventricular chamber enlargement with normal wall thickness",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Pericardial effusion",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Reduced ejection fraction in late or fulminant disease",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Chest x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Cardiomegaly with increased cardiothoracic ratio",
+          "frequency": "common"
+        },
+        {
+          "text": "Pulmonary venous congestion or pleural effusions",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Normal study",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "MRI brain with and without contrast",
+      "modality": "mri",
+      "preferred_when": "Suspected Wernicke encephalopathy with confusion, ophthalmoplegia or ataxia",
+      "findings": [
+        {
+          "text": "T2 hyperintensity in the medial thalami and periventricular regions",
+          "frequency": "common"
+        },
+        {
+          "text": "T2 hyperintensity around the third ventricle and periaqueductal gray",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Mammillary body enhancement",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Normal study (imaging is often normal)",
+          "frequency": "sometimes"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Baseline blood counts; macrocytosis and thrombocytopenia point to alcohol or other vitamin deficiencies"
+      },
+      {
+        "test": "bmp",
+        "why": "Electrolytes, renal function and bicarbonate before thiamine and fluid therapy"
+      },
+      {
+        "test": "mg",
+        "why": "Hypomagnesemia is common in alcohol use disorder and blocks the response to thiamine"
+      },
+      {
+        "test": "phos",
+        "why": "Hypophosphatemia from malnutrition worsens weakness and cardiac function"
+      },
+      {
+        "test": "lactate",
+        "why": "Mild lactic acidosis supports thiamine deficiency and tracks severity"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy and identifies hyperemesis gravidarum as a cause"
+      },
+      {
+        "test": "Transthoracic echocardiogram",
+        "why": "Assesses chamber size, ejection fraction and cardiac output in suspected wet beriberi",
+        "only_if": "dyspnea, edema or tachycardia suggests cardiac involvement"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Whole-blood thiamine diphosphate (vitamin B1)",
+        "why": "Direct measure of thiamine status; low level confirms the diagnosis"
+      },
+      {
+        "test": "Erythrocyte transketolase activity",
+        "why": "Functional assay; low activity with a rise after thiamine pyrophosphate confirms deficiency"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "b12",
+        "why": "Low B12 causes a similar neuropathy and often coexists"
+      },
+      {
+        "test": "folate",
+        "why": "Low folate is common in malnutrition and alcohol use"
+      },
+      {
+        "test": "albumin",
+        "why": "Reflects nutritional status and contributes to edema"
+      },
+      {
+        "test": "ast",
+        "why": "Assesses coexisting alcohol-related liver injury"
+      },
+      {
+        "test": "alt",
+        "why": "Assesses coexisting alcohol-related liver injury"
+      },
+      {
+        "test": "ggt",
+        "why": "Supports chronic alcohol use"
+      },
+      {
+        "test": "bnp",
+        "why": "Supports heart failure when the cause of dyspnea is unclear"
+      },
+      {
+        "test": "Chest x-ray",
+        "why": "Shows cardiomegaly and pulmonary congestion",
+        "only_if": "dyspnea or suspected heart failure"
+      },
+      {
+        "test": "MRI brain with and without contrast",
+        "why": "Looks for Wernicke encephalopathy",
+        "only_if": "confusion, ophthalmoplegia or ataxia is present"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "d_dimer",
+        "why": "No role in the evaluation of neuropathy or edema"
+      },
+      {
+        "test": "lipase",
+        "why": "Not needed unless there is epigastric pain"
+      },
+      {
+        "test": "hs_tnt",
+        "why": "Not indicated for high-output heart failure without chest pain or ischemic features"
+      },
+      {
+        "test": "MRI brain with and without contrast",
+        "why": "Not routine; reserved for suspected Wernicke encephalopathy",
+        "only_if": "confusion, ophthalmoplegia or ataxia is present"
+      },
+      {
+        "test": "Chest x-ray",
+        "why": "Not routine without respiratory symptoms",
+        "only_if": "dyspnea or suspected heart failure"
+      }
+    ],
+    "decision_points": [
+      "Give IV thiamine before any glucose-containing fluids in a malnourished or alcohol-dependent patient to avoid precipitating Wernicke encephalopathy",
+      "Correct magnesium, potassium and phosphate alongside thiamine; thiamine is ineffective when magnesium is low",
+      "Distinguish dry beriberi (neuropathy) from wet beriberi (high-output heart failure) because the workup and urgency differ",
+      "Pregnancy test before imaging in anyone who could be pregnant"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Wernicke encephalopathy",
+      "slug": "wernicke-encephalopathy",
+      "why_considered": "Same thiamine-deficient patient population; shares ataxia and can coexist with beriberi",
+      "must_not_miss": true,
+      "trigger": "Confusion, ophthalmoplegia or nystagmus in a malnourished or alcohol-dependent patient",
+      "discriminators": {
+        "history": [
+          "Acute onset over days rather than weeks to months",
+          "Confusion and memory problems prominent",
+          "Heavy alcohol use or prolonged poor intake"
+        ],
+        "exam": [
+          "Ophthalmoplegia, nystagmus or gaze palsy",
+          "Disorientation and impaired short-term memory",
+          "Ataxia out of proportion to sensory loss"
+        ],
+        "labs": [
+          "Low whole-blood thiamine diphosphate",
+          "Low magnesium and phosphate"
+        ],
+        "imaging": [
+          "T2 hyperintensity in medial thalami and periaqueductal gray on MRI",
+          "Mammillary body enhancement"
+        ]
+      }
+    },
+    {
+      "name": "Alcoholic polyneuropathy",
+      "slug": "alcoholic-polyneuropathy",
+      "why_considered": "Chronic alcohol use with symmetric distal numbness, tingling and weakness",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Years of heavy alcohol use",
+          "Painful burning feet, often worse at night",
+          "No cardiac symptoms"
+        ],
+        "exam": [
+          "Stocking-glove sensory loss",
+          "Distal weakness and absent ankle reflexes",
+          "No edema, tachycardia or signs of heart failure"
+        ],
+        "labs": [
+          "Elevated GGT, AST and ALT",
+          "Macrocytosis",
+          "Normal BNP and lactate"
+        ]
+      }
+    },
+    {
+      "name": "Vitamin B12 deficiency",
+      "slug": "vitamin-b12-deficiency",
+      "why_considered": "Symmetric paresthesias and gait difficulty with distal sensory loss",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Vegan diet, pernicious anemia or gastric surgery",
+          "Numbness and imbalance",
+          "No heavy alcohol use required"
+        ],
+        "exam": [
+          "Vibration and position sense loss",
+          "Positive Romberg sign",
+          "Spasticity and hyperreflexia rather than absent reflexes"
+        ],
+        "labs": [
+          "Low serum B12",
+          "Elevated methylmalonic acid and homocysteine",
+          "Macrocytic anemia"
+        ]
+      }
+    },
+    {
+      "name": "Diabetic peripheral neuropathy",
+      "slug": "diabetic-peripheral-neuropathy",
+      "why_considered": "Symmetric stocking-distribution numbness, tingling and burning feet",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Known diabetes or prediabetes",
+          "Gradual onset over years",
+          "No heavy alcohol use or polished-rice diet"
+        ],
+        "exam": [
+          "Distal sensory loss with preserved strength early",
+          "Foot ulcers or calluses",
+          "No edema or tachycardia"
+        ],
+        "labs": [
+          "Elevated hemoglobin A1c or fasting glucose",
+          "Normal thiamine level"
+        ]
+      }
+    },
+    {
+      "name": "Heart failure with reduced ejection fraction",
+      "slug": "heart-failure-with-reduced-ejection-fraction",
+      "why_considered": "Dyspnea on exertion, leg edema and tachycardia",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Known coronary disease, hypertension or valve disease",
+          "Orthopnea and paroxysmal nocturnal dyspnea",
+          "No stocking-glove numbness"
+        ],
+        "exam": [
+          "Displaced apical impulse",
+          "S3 gallop and pulmonary crackles",
+          "No sensory neuropathy"
+        ],
+        "labs": [
+          "Elevated BNP",
+          "Normal thiamine level"
+        ],
+        "imaging": [
+          "Echocardiogram shows reduced ejection fraction with dilated chambers"
+        ]
+      }
+    },
+    {
+      "name": "Nephrotic syndrome",
+      "slug": "nephrotic-syndrome",
+      "why_considered": "Generalized edema and leg swelling in a malnourished patient",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Frothy urine",
+          "Recent infection or known glomerular disease",
+          "No paresthesias"
+        ],
+        "exam": [
+          "Periorbital edema",
+          "No sensory loss or tachycardia"
+        ],
+        "labs": [
+          "Heavy proteinuria",
+          "Low serum albumin",
+          "Normal thiamine level"
+        ]
+      }
+    },
+    {
+      "name": "Hypothyroidism",
+      "slug": "hypothyroidism",
+      "why_considered": "Fatigue, leg swelling, weakness and slowed mentation",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Cold intolerance",
+          "Constipation",
+          "Weight gain"
+        ],
+        "exam": [
+          "Dry skin, bradycardia and delayed relaxation of reflexes",
+          "Non-pitting myxedema",
+          "No stocking-glove sensory loss"
+        ],
+        "labs": [
+          "Elevated TSH",
+          "Low free T4"
+        ]
+      }
+    },
+    {
+      "name": "Guillain-Barré syndrome",
+      "slug": "guillain-barre-syndrome",
+      "why_considered": "Ascending weakness and areflexia in a patient with recent illness",
+      "must_not_miss": true,
+      "trigger": "Rapidly progressive ascending weakness with areflexia after a diarrheal or respiratory illness",
+      "discriminators": {
+        "history": [
+          "Progression over days, not months",
+          "Recent Campylobacter or viral infection",
+          "No chronic alcohol use or polished-rice diet"
+        ],
+        "exam": [
+          "Ascending symmetric weakness with absent reflexes",
+          "Minimal sensory loss",
+          "Possible autonomic instability"
+        ],
+        "labs": [
+          "Normal thiamine level",
+          "Elevated CSF protein with normal cell count"
+        ],
+        "imaging": [
+          "Nerve conduction studies show demyelinating pattern"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Early dry beriberi: mild distal numbness and tingling in the feet, normal gait, no weakness, no edema or cardiac symptoms",
+      "moderate": "Established neuropathy with stocking-glove sensory loss, absent ankle reflexes, mild distal weakness, or early wet beriberi with mild leg edema and exertional dyspnea",
+      "severe": "Marked distal weakness with difficulty walking or rising from a chair, or wet beriberi with resting tachycardia, significant edema, elevated BNP and cardiomegaly",
+      "critical": "Fulminant wet beriberi with high-output heart failure, hypotension, pulmonary edema or shock; or coexisting Wernicke encephalopathy with confusion and ophthalmoplegia"
+    },
+    "red_flags": [
+      {
+        "finding": "Confusion, ophthalmoplegia or nystagmus",
+        "meaning": "Wernicke encephalopathy; give IV thiamine immediately before glucose"
+      },
+      {
+        "finding": "Hypotension or resting tachycardia with edema",
+        "meaning": "Fulminant wet beriberi with high-output heart failure and impending shock"
+      },
+      {
+        "finding": "Dyspnea at rest or orthopnea",
+        "meaning": "Cardiac decompensation; urgent echocardiogram and thiamine"
+      },
+      {
+        "finding": "Rapidly progressive weakness over days",
+        "meaning": "Consider Guillain-Barré syndrome or severe dry beriberi; assess respiratory function"
+      },
+      {
+        "finding": "Low magnesium, potassium or phosphate",
+        "meaning": "Thiamine therapy will not work until these are corrected"
+      }
+    ],
+    "complications": [
+      {
+        "name": "High-output heart failure and pulmonary edema",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Dyspnea on exertion progressing to rest",
+          "Leg edema and jugular venous distension",
+          "Elevated BNP and cardiomegaly"
+        ]
+      },
+      {
+        "name": "Wernicke encephalopathy",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Confusion",
+          "Ophthalmoplegia or nystagmus",
+          "Ataxia"
+        ]
+      },
+      {
+        "name": "Korsakoff syndrome",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Persistent memory loss and confabulation after Wernicke encephalopathy",
+          "Little recovery with thiamine"
+        ]
+      },
+      {
+        "name": "Irreversible peripheral neuropathy",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Months of untreated numbness and weakness",
+          "Persistent sensory loss despite thiamine repletion"
+        ]
+      },
+      {
+        "name": "Falls and fractures from gait instability",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Wide-based gait",
+          "Impaired tandem walking",
+          "Distal weakness"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "infants",
+        "differences": "Infantile beriberi presents with vomiting, irritability, and acute heart failure; classic stocking-glove numbness is not described. Breastfed infants of thiamine-deficient mothers are at risk."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Hyperemesis gravidarum and poor diet can cause thiamine deficiency; presenting symptoms may be severe vomiting, weakness, and heart failure. Check thiamine status and treat early."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Symptoms may be attributed to aging or other conditions; heart failure and confusion can be more prominent, and polypharmacy may worsen thiamine loss."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "Dialysis removes thiamine and patients on chronic dialysis are at increased risk; supplement routinely and monitor for neuropathy and heart failure."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "What does a typical day of eating and drinking look like for you?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Diet based mainly on polished white rice, or very poor intake; identifies the thiamine-deficient diet"
+      },
+      {
+        "question": "How much alcohol do you drink, and how often?",
+        "category": "social",
+        "importance": "essential",
+        "looking_for": "Chronic heavy alcohol use, the most common cause in the US"
+      },
+      {
+        "question": "When did the numbness and tingling start, and where did it begin?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Gradual onset over weeks to months, starting in the feet and spreading upward in a stocking-glove pattern"
+      },
+      {
+        "question": "Has the numbness spread to your hands or higher up your legs?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Ascending symmetric sensory loss; supports a length-dependent polyneuropathy"
+      },
+      {
+        "question": "Have you noticed weakness, trouble walking, or difficulty getting out of a chair?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Distal weakness worse in the legs; suggests dry beriberi"
+      },
+      {
+        "question": "Are your legs or feet swollen?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Pitting lower-extremity edema; suggests wet beriberi"
+      },
+      {
+        "question": "Do you get short of breath with activity, or when lying flat?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Exertional dyspnea or orthopnea; points to high-output heart failure"
+      },
+      {
+        "question": "Have you had palpitations or a racing heartbeat?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Tachycardia or palpitations from a high-output state"
+      },
+      {
+        "question": "Have you had any confusion, trouble with memory, or double vision?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Confusion, ophthalmoplegia or nystagmus; suggests coexisting Wernicke encephalopathy and the need for immediate IV thiamine"
+      },
+      {
+        "question": "Have you had weight loss, poor appetite, or trouble keeping food down?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Malnutrition, anorexia or prolonged vomiting that predisposes to thiamine deficiency"
+      },
+      {
+        "question": "Have you had any stomach or weight-loss surgery, or been on long-term IV nutrition?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Bariatric surgery, malabsorptive GI surgery, or parenteral nutrition without thiamine"
+      },
+      {
+        "question": "Do you take diuretics or any other regular medicines?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Furosemide or other diuretics that increase thiamine loss and can worsen edema"
+      },
+      {
+        "question": "Could you be pregnant? When was your last period?",
+        "category": "obstetric",
+        "importance": "important",
+        "looking_for": "Pregnancy with hyperemesis gravidarum as a cause; also needed before imaging"
+      },
+      {
+        "question": "Is there any family history of neuropathy or heart disease?",
+        "category": "family",
+        "importance": "optional",
+        "looking_for": "Alternative inherited causes of neuropathy or cardiomyopathy"
+      }
+    ],
+    "accepted_names": [
+      "Beriberi",
+      "Thiamine deficiency",
+      "Vitamin B1 deficiency",
+      "Thiamine (vitamin B1) deficiency",
+      "B1 deficiency"
+    ],
+    "reasoning_points": [
+      "Recognizes a diet of polished white rice or chronic heavy alcohol use as the key risk factor for thiamine deficiency",
+      "Describes the gradual, symmetric, length-dependent stocking-glove sensory loss starting in the feet",
+      "Distinguishes dry beriberi (peripheral neuropathy with distal weakness and absent ankle reflexes) from wet beriberi (high-output heart failure with edema, tachycardia and elevated BNP)",
+      "Notes that thiamine deficiency can coexist with Wernicke encephalopathy, signaled by confusion, ophthalmoplegia or nystagmus",
+      "Plans to give IV thiamine before any glucose-containing fluids in a malnourished or alcohol-dependent patient",
+      "Checks and corrects magnesium, potassium and phosphate, because thiamine is ineffective when magnesium is low",
+      "Orders whole-blood thiamine diphosphate or erythrocyte transketolase activity to confirm the diagnosis",
+      "Considers and excludes look-alikes such as alcoholic polyneuropathy, vitamin B12 deficiency, diabetic neuropathy, Guillain-Barré syndrome and heart failure from other causes"
+    ],
+    "difficulty": {
+      "easy": [
+        "Classic stocking-glove numbness and tingling in a patient with a polished-rice diet or heavy alcohol use",
+        "Obvious pitting leg edema with tachycardia and exertional dyspnea",
+        "Absent ankle reflexes and distal sensory loss on exam",
+        "Low whole-blood thiamine level confirms the diagnosis"
+      ],
+      "medium": [
+        "Predominantly cardiac presentation with edema and dyspnea but little or no neuropathy",
+        "Neuropathy attributed to alcohol alone, missing coexisting thiamine deficiency",
+        "Coexisting B12 deficiency or hypomagnesemia that muddies the picture",
+        "Mild early symptoms with normal gait and no edema"
+      ],
+      "hard": [
+        "Infant with vomiting, irritability and acute heart failure rather than classic numbness",
+        "Older adult whose weakness and swelling are attributed to aging or heart failure",
+        "Pregnant patient with hyperemesis gravidarum and severe weakness",
+        "Patient on chronic dialysis or long-term parenteral nutrition without thiamine supplementation",
+        "Coexisting Wernicke encephalopathy with confusion and ophthalmoplegia dominating the presentation"
+      ]
+    }
+  }
+}

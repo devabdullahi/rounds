@@ -27,8 +27,8 @@ serve(async (req) => {
   const { focus: requested = "" } = await body<Request>(req);
   const focus = parseFocus(requested);
 
-  const rows = await sql<{ profile: Profile; clerkships: string[]; synonyms: string[] }[]>`
-    select profile, clerkships,
+  const rows = await sql<{ profile: Profile; clerkships: string[]; organ_systems: string[]; synonyms: string[] }[]>`
+    select profile, clerkships, organ_systems,
       coalesce((select array(select jsonb_array_elements_text(c.terms -> 'snomed' -> 'synonyms'))
                 from private.conditions c where c.slug = condition_profiles.slug), '{}') as synonyms
     from private.condition_profiles
@@ -41,14 +41,14 @@ serve(async (req) => {
     if (queued.inFlight) return json({ status: "preparing" }, 202);
     throw new HttpError(404, "no conditions available for this focus yet");
   }
-  const { profile, clerkships, synonyms } = rows[0];
+  const { profile, clerkships, organ_systems: systems, synonyms } = rows[0];
 
   // A new patient costs a model call, so it counts against the daily limit (refunded on failure).
-  return withQuota(userId, "case", () => writeCase(userId, profile, clerkships, synonyms, focus));
+  return withQuota(userId, "case", () => writeCase(userId, profile, clerkships, systems, synonyms, focus));
 });
 
 /** Plans the patient in code, has the model write them, checks the writing, and saves the case. */
-async function writeCase(userId: string, profile: Profile, clerkships: string[], synonyms: string[], focus: Focus): Promise<Response> {
+async function writeCase(userId: string, profile: Profile, clerkships: string[], systems: string[], synonyms: string[], focus: Focus): Promise<Response> {
   // Clinical psychology is a focus like any rotation; its cases are written as a psychologist's intake.
   const psychology = focus.kind === "rotation" && focus.value === "clinicalPsychology";
   const dermatology = focus.kind === "rotation" && focus.value === "dermatology";
@@ -72,7 +72,7 @@ async function writeCase(userId: string, profile: Profile, clerkships: string[],
     throw new HttpError(502, "the patient couldn't be written; try again");
   }
 
-  const caseId = await save(userId, profile, clerkships, synonyms, plan, neutralIds(writing), focus);
+  const caseId = await save(userId, profile, clerkships, systems, synonyms, plan, neutralIds(writing), focus);
   return json({ case_id: caseId, model: currentModel() });
 }
 
@@ -81,6 +81,13 @@ async function writeCase(userId: string, profile: Profile, clerkships: string[],
  *  for Cardiology is a cardiology case), else the condition's own primary rotation. */
 function caseClerkship(profile: Profile, topics: string[], focus: Focus): string {
   return focus.kind === "rotation" && topics.includes(focus.value) ? focus.value : profile.triage.primary_clerkship;
+}
+
+/** The body system a case files under: the one the student picked when the condition is in it, else
+ *  the condition's first (from the catalog's re-filing, falling back to triage's). */
+function caseSystem(profile: Profile, systems: string[], focus: Focus): string {
+  if (focus.kind === "system" && systems.includes(focus.value)) return focus.value;
+  return systems[0] ?? profile.triage.organ_systems[0];
 }
 
 function bedCode(): string {
@@ -106,7 +113,7 @@ function doorVitals(plan: CasePlan) {
   return out.map((x) => ({ ...x, label: VITAL_LABELS[x.id] }));
 }
 
-async function save(userId: string, profile: Profile, clerkships: string[], synonyms: string[], plan: CasePlan, w: Writing, focus: Focus): Promise<string> {
+async function save(userId: string, profile: Profile, clerkships: string[], systems: string[], synonyms: string[], plan: CasePlan, w: Writing, focus: Focus): Promise<string> {
   const meta = new Map(w.test_meta.map((m) => [m.test_id, m]));
   const reports = new Map(w.studies.map((s) => [s.test_id, s]));
   const tests = plan.tests.map((t) => {
@@ -132,7 +139,7 @@ async function save(userId: string, profile: Profile, clerkships: string[], syno
             published, created_by, setting, demeanor, organ_system, clerkship, suggested, maneuvers, test_menu, key_history)
           values (${id}, ${profile.triage.primary_clerkship}, ${w.patient.name}, ${plan.age}, ${plan.sex},
             ${w.patient.quote}, ${w.patient.complaint}, ${tx.json(doorVitals(plan))}, ${budget}, 10,
-            false, ${userId}, ${w.patient.setting}, ${w.patient.demeanor}, ${profile.triage.organ_systems[0]},
+            false, ${userId}, ${w.patient.setting}, ${w.patient.demeanor}, ${caseSystem(profile, systems, focus)},
             ${caseClerkship(profile, clerkships, focus)}, ${tx.json(w.suggested)},
             ${tx.json(w.maneuvers.map(({ id, title }) => ({ id, title })))},
             ${tx.json(tests.map(({ id, name, detail, cost, turnaround_s, delays_care_min }) =>

@@ -1,0 +1,945 @@
+{
+  "schema_version": "0.2",
+  "slug": "varicocele",
+  "triage": {
+    "name": "Varicocele",
+    "case_suitable": true,
+    "reason": "Scrotal swelling with a characteristic bag-of-worms exam finding; diagnosed clinically and by ultrasound, with infertility implications.",
+    "kind": "disease",
+    "category": "scrotal vascular disorder",
+    "organ_systems": [
+      "reproductive"
+    ],
+    "primary_clerkship": "surgery",
+    "secondary_clerkships": [
+      "familyMedicine",
+      "internalMedicine"
+    ],
+    "commonness": "common",
+    "settings": [
+      "clinic"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:24:24Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:59:35Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:59:52Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:59:59Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T07:00:09Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T07:00:16Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'semen_analysis' to 'Semen analysis'",
+        "auto-repaired: workup: renamed 'testosterone_total' to 'Testosterone total'",
+        "auto-repaired: workup: renamed 'fsh' to 'FSH'",
+        "auto-repaired: workup: renamed 'lh' to 'LH'",
+        "auto-repaired: workup: 'scrotal ultrasound with color doppler' was in ['initial', 'confirmatory'], kept ['initial']",
+        "exam: term 'Valsalva maneuver' not found in SNOMED CT",
+        "differential testicular-torsion: no profile yet",
+        "differential inguinal-hernia: no profile yet",
+        "differential testicular-cancer: no profile yet",
+        "differential spermatocele: no profile yet",
+        "differential retroperitoneal-mass: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 15,
+      "typical_max": 45,
+      "peak": "15–35",
+      "possible_min": 10,
+      "possible_max": 80
+    },
+    "sex": "male_only",
+    "demographics": [
+      "Present in about 15% of adult men and up to 20% of adolescents",
+      "More often detected on the left side",
+      "A common finding in men evaluated for infertility"
+    ],
+    "risk_factors": [
+      {
+        "text": "Adolescence and young adulthood",
+        "strength": "strong"
+      },
+      {
+        "text": "Male infertility or abnormal semen analysis",
+        "strength": "moderate"
+      },
+      {
+        "text": "Family history of varicocele",
+        "strength": "weak"
+      },
+      {
+        "text": "Tall, thin body habitus",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Male infertility",
+      "Testicular atrophy",
+      "Chronic scrotal pain"
+    ],
+    "family_history": [
+      "Varicocele in a father or brother"
+    ],
+    "social_history": [],
+    "exposures": [],
+    "risk_medications": []
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I feel a heavy, achy feeling in my scrotum",
+        "term": "Scrotal pain",
+        "frequency": "common",
+        "snomed_verified": true
+      },
+      {
+        "text": "There's a lump on the left side of my scrotum",
+        "term": "Scrotal mass",
+        "frequency": "common",
+        "snomed_verified": true
+      },
+      {
+        "text": "My scrotum looks different — like there are worms under the skin",
+        "term": "Scrotal swelling",
+        "frequency": "sometimes",
+        "snomed_verified": true
+      },
+      {
+        "text": "We've been trying to have a baby and it hasn't happened",
+        "term": "Infertility",
+        "frequency": "sometimes",
+        "snomed_verified": true
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual; often noticed incidentally or during adolescence",
+      "duration": "Present for months to years",
+      "progression": "Slowly enlarges over time; may become more noticeable with standing or straining",
+      "location": "Left side of the scrotum in most cases; can be bilateral",
+      "radiation": "May radiate along the spermatic cord toward the groin",
+      "quality": "Dull, dragging ache or heaviness; the swelling feels like a bag of worms",
+      "severity": "Mild to moderate; often 2–5/10",
+      "timing": "Worse after standing, prolonged activity or at the end of the day; improves when lying down",
+      "aggravating": [
+        "Standing for long periods",
+        "Physical exertion",
+        "Straining"
+      ],
+      "relieving": [
+        "Lying down",
+        "Scrotal support"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Scrotal heaviness or dragging sensation",
+          "term": "Scrotal pain",
+          "frequency": "common",
+          "snomed_verified": true
+        },
+        {
+          "text": "Noticeable swelling that shrinks when lying down",
+          "term": "Scrotal swelling",
+          "frequency": "common",
+          "snomed_verified": true
+        },
+        {
+          "text": "Smaller testicle on the affected side",
+          "term": "Testicular atrophy",
+          "frequency": "sometimes",
+          "snomed_verified": true
+        },
+        {
+          "text": "Difficulty achieving pregnancy with a partner",
+          "term": "Infertility",
+          "frequency": "sometimes",
+          "snomed_verified": true
+        }
+      ],
+      "pertinent_negatives": [
+        "Sudden severe testicular pain",
+        "Fever",
+        "Dysuria",
+        "Urethral discharge",
+        "Scrotal skin redness or ulceration",
+        "Prior scrotal surgery or trauma",
+        "Weight loss or night sweats"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [],
+        "negatives": [
+          "Fever",
+          "Weight loss",
+          "Night sweats"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [
+          {
+            "text": "Scrotal swelling",
+            "term": "Scrotal swelling",
+            "frequency": "common",
+            "snomed_verified": true
+          },
+          {
+            "text": "Scrotal discomfort",
+            "term": "Scrotal pain",
+            "frequency": "common",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Dysuria",
+          "Hematuria",
+          "Urethral discharge",
+          "Urinary frequency"
+        ],
+        "argues_against": [
+          "Epididymitis",
+          "Urinary tract infection"
+        ]
+      },
+      {
+        "system": "reproductive",
+        "positives": [
+          {
+            "text": "Infertility",
+            "term": "Infertility",
+            "frequency": "sometimes",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Erectile dysfunction",
+          "Loss of libido",
+          "Penile lesions"
+        ],
+        "argues_against": [
+          "Hypogonadism",
+          "Sexually transmitted infection"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [],
+        "negatives": [
+          "Flank pain",
+          "Back pain"
+        ],
+        "argues_against": [
+          "Renal colic",
+          "Retroperitoneal mass"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Prepubertal boys rarely have varicoceles; when present, consider a retroperitoneal mass or other secondary cause.",
+        "missing_classic_features": [
+          "Typical adolescent presentation"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "A new varicocele in an older man, especially on the right or that does not shrink when lying down, raises concern for a retroperitoneal or renal mass.",
+        "missing_classic_features": [
+          "Left-sided predominance",
+          "Improvement with lying down"
+        ]
+      },
+      {
+        "population": "obesity",
+        "how_it_differs": "Scrotal examination can be difficult, so the varicocele may be missed or only detected on ultrasound.",
+        "missing_classic_features": [
+          "Palpable bag-of-worms on exam"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Comfortable, well-appearing, no distress",
+      "moderate": "Mild discomfort when standing; otherwise comfortable",
+      "severe": "Visible scrotal enlargement with a dragging ache; may sit or adjust posture to relieve it",
+      "critical": "Not applicable; varicocele is not a critical illness"
+    },
+    "findings": [
+      {
+        "id": "scrotal-mass",
+        "region": "genitourinary",
+        "maneuver": "Inspect and palpate the scrotum with the patient standing",
+        "finding": "Soft, compressible mass in the scrotum above the testis",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "essential",
+        "term": "Scrotal mass",
+        "snomed_verified": true
+      },
+      {
+        "id": "spermatic-cord-thickening",
+        "region": "genitourinary",
+        "maneuver": "Palpate the spermatic cord between the thumb and index finger",
+        "finding": "Thickened, tortuous spermatic cord",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Thickened spermatic cord",
+        "snomed_verified": true
+      },
+      {
+        "id": "valsalva-augmentation",
+        "region": "genitourinary",
+        "maneuver": "Ask the patient to stand and perform a Valsalva maneuver while palpating the cord",
+        "finding": "Swelling and tortuosity increase with Valsalva",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Valsalva maneuver",
+        "snomed_verified": false
+      },
+      {
+        "id": "decompression-supine",
+        "region": "genitourinary",
+        "maneuver": "Have the patient lie down and re-examine the scrotum",
+        "finding": "The swelling decreases or disappears when supine",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Scrotal swelling",
+        "snomed_verified": true
+      },
+      {
+        "id": "testicular-size-asymmetry",
+        "region": "genitourinary",
+        "maneuver": "Compare the size and consistency of both testes",
+        "finding": "Smaller, softer testis on the affected side",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Testicular atrophy",
+        "snomed_verified": true
+      },
+      {
+        "id": "left-sided-predominance",
+        "region": "genitourinary",
+        "maneuver": "Examine both sides of the scrotum",
+        "finding": "Abnormality confined to the left side",
+        "frequency": "almost_always",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Scrotal swelling",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-tenderness",
+        "region": "genitourinary",
+        "maneuver": "Palpate the testis and epididymis",
+        "finding": "No tenderness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Scrotal pain",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-erythema",
+        "region": "genitourinary",
+        "maneuver": "Inspect the scrotal skin",
+        "finding": "No redness or warmth of the scrotal skin",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Erythema",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-hernia",
+        "region": "abdomen",
+        "maneuver": "Palpate the inguinal canal and ask the patient to cough",
+        "finding": "No inguinal bulge or expansile cough impulse",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Inguinal hernia",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the inguinal lymph nodes",
+        "finding": "No enlarged inguinal lymph nodes",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Lymphadenopathy",
+        "snomed_verified": true
+      }
+    ]
+  },
+  "vitals": {},
+  "labs": [
+    {
+      "test_id": "hcg",
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Not applicable in men; listed only to note that pregnancy testing has no role in this condition."
+    }
+  ],
+  "imaging": [
+    {
+      "study": "Scrotal ultrasound with color Doppler",
+      "modality": "ultrasound",
+      "preferred_when": "First-line imaging for any suspected varicocele, especially when the exam is equivocal, the patient is obese, or the varicocele is right-sided or new",
+      "findings": [
+        {
+          "text": "Dilated, tortuous veins of the pampiniform plexus measuring more than 3 mm in diameter",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Venous dilation that increases with Valsalva maneuver and decreases when supine",
+          "frequency": "common"
+        },
+        {
+          "text": "Retrograde venous flow on color Doppler during Valsalva",
+          "frequency": "common"
+        },
+        {
+          "text": "Left-sided predominance",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Smaller testicular volume on the affected side",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Normal testicular parenchyma without a discrete mass",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "CT abdomen and pelvis with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Suspected secondary varicocele from a retroperitoneal or renal mass (right-sided, new in an older man, or does not decompress when supine)",
+      "findings": [
+        {
+          "text": "Retroperitoneal or renal mass obstructing the gonadal vein",
+          "frequency": "rare"
+        },
+        {
+          "text": "Enlarged retroperitoneal lymph nodes",
+          "frequency": "rare"
+        },
+        {
+          "text": "No obstructing mass in the typical primary varicocele",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "MRI abdomen and pelvis without contrast",
+      "modality": "mri",
+      "preferred_when": "When CT is contraindicated or when further characterization of a retroperitoneal mass is needed",
+      "findings": [
+        {
+          "text": "Retroperitoneal or renal mass compressing the gonadal vein",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Abdominal x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "No role in the evaluation of varicocele; usually normal",
+          "frequency": "almost_always"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "Scrotal ultrasound with color Doppler",
+        "why": "Confirms the diagnosis, assesses vein diameter and flow, and evaluates testicular size and parenchyma"
+      },
+      {
+        "test": "Semen analysis",
+        "why": "Assesses fertility impact in men with infertility or abnormal semen parameters",
+        "only_if": "infertility or abnormal semen analysis is a concern"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Looks for a retroperitoneal or renal mass causing secondary varicocele",
+        "only_if": "right-sided, new in an older man, or does not decompress when supine"
+      },
+      {
+        "test": "MRI abdomen and pelvis without contrast",
+        "why": "Alternative to CT for retroperitoneal evaluation",
+        "only_if": "CT is contraindicated or further characterization of a mass is needed"
+      },
+      {
+        "test": "Testosterone total",
+        "why": "Evaluates for hypogonadism when symptoms suggest it",
+        "only_if": "loss of libido, erectile dysfunction, or other hypogonadal symptoms are present"
+      },
+      {
+        "test": "FSH",
+        "why": "Assesses testicular function in the infertility workup",
+        "only_if": "infertility evaluation is being performed"
+      },
+      {
+        "test": "LH",
+        "why": "Assesses testicular function in the infertility workup",
+        "only_if": "infertility evaluation is being performed"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "cbc",
+        "why": "No role in the diagnosis or management of varicocele"
+      },
+      {
+        "test": "bmp",
+        "why": "No role in the diagnosis or management of varicocele"
+      },
+      {
+        "test": "crp",
+        "why": "Inflammatory markers are not useful; varicocele is not an infectious or inflammatory condition"
+      },
+      {
+        "test": "esr",
+        "why": "Inflammatory markers are not useful; varicocele is not an infectious or inflammatory condition"
+      },
+      {
+        "test": "ua",
+        "why": "Urinalysis is not needed unless urinary symptoms suggest another diagnosis"
+      },
+      {
+        "test": "hcg",
+        "why": "Not applicable in men"
+      },
+      {
+        "test": "Abdominal x-ray",
+        "why": "Does not evaluate the scrotal veins or retroperitoneum and rarely changes management"
+      }
+    ],
+    "decision_points": [
+      "A varicocele that does not shrink when the patient lies down, is right-sided, or appears new in an older man should prompt imaging for a retroperitoneal or renal mass.",
+      "Semen analysis is offered when infertility is a concern or before surgical repair.",
+      "Scrotal ultrasound is used when the physical exam is equivocal, the patient is obese, or the varicocele is not typical."
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Testicular torsion",
+      "slug": "testicular-torsion",
+      "why_considered": "Acute scrotal pain and swelling can be mistaken for a symptomatic varicocele",
+      "must_not_miss": true,
+      "trigger": "Sudden severe testicular pain with a high-riding, transversely lying testis and absent cremasteric reflex",
+      "discriminators": {
+        "history": [
+          "Sudden onset of severe pain, often waking the patient from sleep",
+          "Nausea and vomiting at onset",
+          "No relief with lying down"
+        ],
+        "exam": [
+          "High-riding testis with horizontal lie",
+          "Absent cremasteric reflex",
+          "Diffuse testicular tenderness without a bag-of-worms cord"
+        ],
+        "labs": [
+          "No specific laboratory finding; diagnosis is clinical and surgical"
+        ],
+        "imaging": [
+          "Reduced or absent testicular blood flow on color Doppler ultrasound",
+          "No dilated pampiniform plexus veins"
+        ]
+      }
+    },
+    {
+      "name": "Epididymitis",
+      "slug": "epididymitis",
+      "why_considered": "Scrotal pain and swelling are common to both conditions",
+      "must_not_miss": true,
+      "trigger": "Gradual-onset unilateral scrotal pain with fever, dysuria, or urethral discharge",
+      "discriminators": {
+        "history": [
+          "Gradual onset over hours to days",
+          "Dysuria, urinary frequency, or urethral discharge",
+          "Sexually transmitted infection risk or recent urinary instrumentation"
+        ],
+        "exam": [
+          "Tenderness localized to the epididymis, especially the tail",
+          "Scrotal erythema and warmth",
+          "Positive Prehn sign (pain relief with scrotal elevation) is unreliable but may be present"
+        ],
+        "labs": [
+          "Pyuria on urinalysis",
+          "Positive nucleic acid amplification test for Chlamydia trachomatis or Neisseria gonorrhoeae",
+          "Leukocytosis may be present"
+        ],
+        "imaging": [
+          "Enlarged, hyperemic epididymis on Doppler ultrasound",
+          "Normal or reactive hydrocele; no dilated pampiniform plexus veins"
+        ]
+      }
+    },
+    {
+      "name": "Inguinal hernia",
+      "slug": "inguinal-hernia",
+      "why_considered": "A groin or scrotal bulge can resemble a varicocele",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Bulge that is more prominent with coughing, straining, or standing",
+          "May be reducible when lying down",
+          "Discomfort with lifting or prolonged standing"
+        ],
+        "exam": [
+          "Palpable inguinal bulge with an expansile cough impulse",
+          "Bowel sounds may be audible over the hernia",
+          "The swelling is separate from the spermatic cord and does not feel like a bag of worms"
+        ],
+        "imaging": [
+          "Ultrasound or CT shows bowel or omentum in the inguinal canal",
+          "No dilated pampiniform plexus veins"
+        ]
+      }
+    },
+    {
+      "name": "Testicular cancer",
+      "slug": "testicular-cancer",
+      "why_considered": "A painless testicular mass or swelling may be attributed to a varicocele",
+      "must_not_miss": true,
+      "trigger": "Firm, painless intratesticular mass or new testicular enlargement",
+      "discriminators": {
+        "history": [
+          "Painless testicular enlargement or heaviness",
+          "No change with position or Valsalva",
+          "May have a history of cryptorchidism"
+        ],
+        "exam": [
+          "Firm, irregular intratesticular mass that does not transilluminate",
+          "Testis may be enlarged rather than atrophic",
+          "No bag-of-worms cord"
+        ],
+        "labs": [
+          "Elevated alpha-fetoprotein, beta-hCG, or lactate dehydrogenase"
+        ],
+        "imaging": [
+          "Solid intratesticular mass on ultrasound",
+          "No dilated pampiniform plexus veins"
+        ]
+      }
+    },
+    {
+      "name": "Spermatocele",
+      "slug": "spermatocele",
+      "why_considered": "A scrotal mass can be confused with a varicocele",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Painless or mildly uncomfortable scrotal lump",
+          "Does not change with position or Valsalva"
+        ],
+        "exam": [
+          "Cystic, transilluminating mass separate from the testis, usually at the epididymal head",
+          "No tortuous cord"
+        ],
+        "imaging": [
+          "Cystic lesion on ultrasound without venous dilation"
+        ]
+      }
+    },
+    {
+      "name": "Hydrocele",
+      "slug": "hydrocele",
+      "why_considered": "Scrotal swelling is a shared feature",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Gradual, painless scrotal enlargement",
+          "May fluctuate with activity but does not shrink when lying down"
+        ],
+        "exam": [
+          "Fluid-filled scrotal swelling that transilluminates",
+          "Testis may be difficult to palpate",
+          "No bag-of-worms cord"
+        ],
+        "imaging": [
+          "Anechoic fluid collection around the testis on ultrasound",
+          "No dilated pampiniform plexus veins"
+        ]
+      }
+    },
+    {
+      "name": "Varicocele secondary to retroperitoneal mass",
+      "slug": "retroperitoneal-mass",
+      "why_considered": "A new or non-decompressing varicocele may be the presenting sign of a retroperitoneal or renal tumor obstructing the gonadal vein",
+      "must_not_miss": true,
+      "trigger": "Right-sided varicocele, new varicocele in an older man, or a varicocele that does not shrink when supine",
+      "discriminators": {
+        "history": [
+          "New scrotal swelling in an older man",
+          "Constitutional symptoms such as weight loss, night sweats, or flank pain",
+          "No prior history of varicocele"
+        ],
+        "exam": [
+          "Varicocele that does not decompress when lying down",
+          "Palpable abdominal or flank mass",
+          "Right-sided varicocele"
+        ],
+        "labs": [
+          "Anemia or elevated inflammatory markers may be present",
+          "Elevated lactate dehydrogenase if lymphoma"
+        ],
+        "imaging": [
+          "CT or MRI shows a retroperitoneal or renal mass compressing the gonadal vein",
+          "Enlarged retroperitoneal lymph nodes"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Small, palpable only with Valsalva; no pain, normal testicular size, and no fertility concerns",
+      "moderate": "Palpable at rest, visible bag-of-worms, mild to moderate scrotal discomfort, and possible mild testicular asymmetry",
+      "severe": "Large, visibly distended scrotum with persistent pain, marked testicular atrophy, and abnormal semen parameters",
+      "critical": "Not applicable; varicocele is not a life-threatening condition"
+    },
+    "red_flags": [
+      {
+        "finding": "Sudden severe testicular pain with nausea and vomiting",
+        "meaning": "Suggests testicular torsion, a surgical emergency"
+      },
+      {
+        "finding": "Right-sided varicocele or one that does not shrink when lying down",
+        "meaning": "Raises concern for a retroperitoneal or renal mass obstructing the gonadal vein"
+      },
+      {
+        "finding": "New varicocele in an older man",
+        "meaning": "May indicate a secondary cause such as a retroperitoneal tumor"
+      },
+      {
+        "finding": "Firm, painless intratesticular mass",
+        "meaning": "Suggests testicular cancer rather than a varicocele"
+      },
+      {
+        "finding": "Fever, dysuria, or urethral discharge",
+        "meaning": "Points toward epididymitis or another infectious process"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Testicular atrophy",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Smaller, softer testis on the affected side",
+          "Long-standing varicocele"
+        ]
+      },
+      {
+        "name": "Male infertility",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Abnormal semen analysis",
+          "Difficulty achieving pregnancy with a partner"
+        ]
+      },
+      {
+        "name": "Chronic scrotal pain",
+        "timing": "any",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Dull, dragging ache that worsens with standing and improves with lying down"
+        ]
+      },
+      {
+        "name": "Hydrocele",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "rare",
+        "clues": [
+          "Fluid collection around the testis on ultrasound"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Prepubertal boys rarely have varicoceles; when present, consider a retroperitoneal mass or other secondary cause. Adolescent varicoceles may affect testicular growth and warrant monitoring."
+      },
+      {
+        "population": "older_adults",
+        "differences": "A new varicocele in an older man, especially on the right or that does not shrink when lying down, raises concern for a retroperitoneal or renal mass and should prompt imaging."
+      },
+      {
+        "population": "obesity",
+        "differences": "Scrotal examination can be difficult, so the varicocele may be missed or only detected on ultrasound."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "What does the scrotal swelling or discomfort feel like, and when did you first notice it?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Gradual onset of a dull, dragging ache or heaviness over months to years, not sudden severe pain"
+      },
+      {
+        "question": "Does the swelling or ache change when you stand up, strain, or lie down?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Worse with standing, exertion, or Valsalva and better or gone when lying down — the positional pattern of a varicocele"
+      },
+      {
+        "question": "Which side is affected — left, right, or both?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Left-sided predominance; right-sided or bilateral raises concern for a secondary cause"
+      },
+      {
+        "question": "Have you or your partner had trouble getting pregnant, or has anyone said your sperm count is low?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Infertility or abnormal semen analysis, the main reason varicoceles are treated"
+      },
+      {
+        "question": "Have you noticed one testicle looking or feeling smaller than the other?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Testicular atrophy or asymmetry on the affected side"
+      },
+      {
+        "question": "Is there any pain, and if so, how severe is it and does it interfere with daily activities?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Mild to moderate dull ache; severe or acute pain suggests another diagnosis"
+      },
+      {
+        "question": "Any fever, burning with urination, or discharge from the penis?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Absent; if present, points toward epididymitis or another infection"
+      },
+      {
+        "question": "Have you had any scrotal surgery, trauma, or prior groin hernia repair?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Prior instrumentation or surgery that could explain the swelling"
+      },
+      {
+        "question": "Has anyone in your family had a varicocele or fertility problems?",
+        "category": "family",
+        "importance": "optional",
+        "looking_for": "Family history of varicocele or male infertility"
+      },
+      {
+        "question": "Have you had any unintentional weight loss, night sweats, or flank or back pain?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Constitutional or flank symptoms suggesting a retroperitoneal or renal mass causing a secondary varicocele"
+      },
+      {
+        "question": "Are you sexually active, and have you had any sexually transmitted infections?",
+        "category": "sexual",
+        "importance": "optional",
+        "looking_for": "STI risk factors that would point toward epididymitis rather than varicocele"
+      }
+    ],
+    "accepted_names": [
+      "Varicocele",
+      "Scrotal varicocele",
+      "Varicocele of the spermatic cord",
+      "Pampiniform plexus varicocele"
+    ],
+    "reasoning_points": [
+      "Gradual onset of a dull, dragging scrotal ache or heaviness that worsens with standing or straining and improves when lying down",
+      "Left-sided predominance, consistent with the anatomy of the left gonadal vein draining into the left renal vein",
+      "Palpable bag-of-worms thickening of the spermatic cord that augments with Valsalva and decompresses when supine",
+      "No fever, dysuria, urethral discharge, or scrotal erythema to suggest infection",
+      "No sudden severe pain or absent cremasteric reflex to suggest testicular torsion",
+      "Scrotal ultrasound with color Doppler showing dilated pampiniform plexus veins greater than 3 mm with retrograde flow on Valsalva",
+      "Semen analysis and testicular size assessed when infertility or testicular atrophy is a concern",
+      "Right-sided, non-decompressing, or new varicocele in an older man prompts imaging for a retroperitoneal or renal mass"
+    ],
+    "difficulty": {
+      "easy": [
+        "Adolescent or young adult man with a classic left-sided bag-of-worms cord that augments with Valsalva and decompresses when supine",
+        "Dull dragging ache worse at the end of the day and relieved by lying down",
+        "No fever, dysuria, or acute severe pain",
+        "Scrotal ultrasound confirms dilated pampiniform plexus veins"
+      ],
+      "medium": [
+        "Man evaluated for infertility with an incidental varicocele and abnormal semen analysis",
+        "Obese patient in whom the varicocele is not palpable and is only found on ultrasound",
+        "Bilateral or right-sided varicocele requiring imaging to exclude a secondary cause",
+        "Mild chronic scrotal pain with a normal urinalysis and no infectious symptoms"
+      ],
+      "hard": [
+        "New right-sided varicocele in an older man that does not decompress when supine, suggesting a retroperitoneal or renal mass",
+        "Prepubertal boy with a varicocele, raising concern for a secondary cause",
+        "Patient presenting with acute scrotal pain where torsion must be excluded first",
+        "Varicocele coexisting with a hydrocele or inguinal hernia that obscures the classic findings"
+      ]
+    }
+  }
+}

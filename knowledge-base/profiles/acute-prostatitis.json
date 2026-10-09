@@ -1,0 +1,1607 @@
+{
+  "schema_version": "0.2",
+  "slug": "acute-prostatitis",
+  "triage": {
+    "name": "Acute prostatitis",
+    "case_suitable": true,
+    "reason": "Fever, dysuria, perineal pain and tender prostate on exam; diagnosed clinically with urine testing, with a clear differential.",
+    "kind": "disease",
+    "category": "genitourinary infection",
+    "organ_systems": [
+      "renal",
+      "reproductive"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "emergency",
+      "familyMedicine",
+      "surgery"
+    ],
+    "commonness": "uncommon",
+    "settings": [
+      "emergency",
+      "clinic",
+      "inpatient"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:24:24Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:50:48Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:51:09Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:51:19Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:51:31Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:51:37Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'urine culture with susceptibilities' was in ['initial', 'confirmatory'], kept ['initial']",
+        "auto-repaired: workup: 'ct abdomen and pelvis with iv contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'transrectal ultrasound of the prostate' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'ct abdomen and pelvis with iv contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'transrectal ultrasound of the prostate' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "exam: term 'Perineal tenderness' not found in SNOMED CT",
+        "exam: term 'Testicular tenderness' not found in SNOMED CT",
+        "exam: term 'Scrotal swelling' not found in SNOMED CT",
+        "differential acute-cystitis: no profile yet",
+        "differential acute-epididymitis: no profile yet",
+        "differential testicular-torsion: no profile yet",
+        "differential prostatic-abscess: no profile yet",
+        "differential chronic-prostatitis: no profile yet",
+        "differential benign-prostatic-hyperplasia: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 18,
+      "typical_max": 65,
+      "peak": "30–50",
+      "possible_min": 0,
+      "possible_max": 90
+    },
+    "sex": "male_only",
+    "demographics": [
+      "Occurs in males of all ages; most common in sexually active adult men",
+      "Uncommon in prepubertal boys"
+    ],
+    "risk_factors": [
+      {
+        "text": "Recent urinary tract infection",
+        "strength": "strong"
+      },
+      {
+        "text": "Indwelling urinary catheter or recent instrumentation of the urinary tract",
+        "strength": "strong"
+      },
+      {
+        "text": "Benign prostatic hyperplasia or other bladder outlet obstruction",
+        "strength": "moderate"
+      },
+      {
+        "text": "Recent prostate biopsy or transurethral procedure",
+        "strength": "moderate"
+      },
+      {
+        "text": "Unprotected anal intercourse",
+        "strength": "moderate"
+      },
+      {
+        "text": "Diabetes mellitus",
+        "strength": "moderate"
+      },
+      {
+        "text": "Immunosuppression",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Benign prostatic hyperplasia",
+      "Diabetes mellitus",
+      "Immunosuppression",
+      "Recent urinary tract infection"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Multiple sexual partners",
+      "Unprotected anal intercourse"
+    ],
+    "exposures": [
+      "Recent urinary catheterization",
+      "Recent cystoscopy or prostate biopsy",
+      "Recent transurethral surgery"
+    ],
+    "risk_medications": []
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "It burns when I pee",
+        "frequency": "almost_always",
+        "term": "Dysuria",
+        "snomed_verified": true
+      },
+      {
+        "text": "I have to pee all the time",
+        "frequency": "common",
+        "term": "Urinary frequency",
+        "snomed_verified": true
+      },
+      {
+        "text": "The area between my scrotum and anus hurts",
+        "frequency": "common",
+        "term": "Perineal pain",
+        "snomed_verified": true
+      },
+      {
+        "text": "I have a fever and feel awful",
+        "frequency": "common",
+        "term": "Fever",
+        "snomed_verified": true
+      }
+    ],
+    "hpi": {
+      "onset": "Fairly abrupt, developing over hours to a day or two",
+      "duration": "Usually a few days at presentation",
+      "progression": "Rapidly worsening urinary burning and frequency with increasing perineal and pelvic pain, often accompanied by fever and chills",
+      "location": "Perineum, suprapubic region, and sometimes the lower back or rectum",
+      "radiation": "May radiate to the lower back, groin, or penis",
+      "quality": "Burning with urination; deep, aching, or pressure-like pain in the perineum and pelvis",
+      "severity": "Moderate to severe; often 6–8/10 at presentation",
+      "timing": "Constant, worse with urination and with bowel movements",
+      "aggravating": [
+        "Urination",
+        "Bowel movements",
+        "Sitting for long periods",
+        "Ejaculation"
+      ],
+      "relieving": [
+        "Nothing much helps",
+        "Sometimes lying down"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Burning with urination",
+          "frequency": "almost_always",
+          "term": "Dysuria",
+          "snomed_verified": true
+        },
+        {
+          "text": "Going to the bathroom often",
+          "frequency": "common",
+          "term": "Urinary frequency",
+          "snomed_verified": true
+        },
+        {
+          "text": "Sudden urge to urinate",
+          "frequency": "common",
+          "term": "Urgent desire to urinate",
+          "snomed_verified": true
+        },
+        {
+          "text": "Fever",
+          "frequency": "common",
+          "term": "Fever",
+          "snomed_verified": true
+        },
+        {
+          "text": "Chills",
+          "frequency": "common",
+          "term": "Chills",
+          "snomed_verified": true
+        },
+        {
+          "text": "Pain in the perineum",
+          "frequency": "common",
+          "term": "Perineal pain",
+          "snomed_verified": true
+        },
+        {
+          "text": "Pain in the lower abdomen",
+          "frequency": "sometimes",
+          "term": "Suprapubic pain",
+          "snomed_verified": true
+        },
+        {
+          "text": "Pain in the lower back",
+          "frequency": "sometimes",
+          "term": "Low back pain",
+          "snomed_verified": true
+        },
+        {
+          "text": "Pain with ejaculation",
+          "frequency": "sometimes",
+          "term": "Painful ejaculation",
+          "snomed_verified": true
+        },
+        {
+          "text": "Blood in the urine",
+          "frequency": "sometimes",
+          "term": "Hematuria",
+          "snomed_verified": true
+        },
+        {
+          "text": "Difficulty starting the urine stream",
+          "frequency": "sometimes",
+          "term": "Urinary hesitancy",
+          "snomed_verified": true
+        },
+        {
+          "text": "Feeling like the bladder isn't empty after urinating",
+          "frequency": "sometimes",
+          "term": "Sensation of incomplete bladder emptying",
+          "snomed_verified": true
+        },
+        {
+          "text": "Nausea",
+          "frequency": "sometimes",
+          "term": "Nausea",
+          "snomed_verified": true
+        },
+        {
+          "text": "Vomiting",
+          "frequency": "rare",
+          "term": "Vomiting",
+          "snomed_verified": true
+        },
+        {
+          "text": "Pain with bowel movements",
+          "frequency": "rare",
+          "term": "Painful defecation",
+          "snomed_verified": true
+        }
+      ],
+      "pertinent_negatives": [
+        "Painless scrotal swelling",
+        "Testicular mass",
+        "Flank pain radiating to the groin in waves",
+        "Vaginal discharge or bleeding",
+        "Missed period",
+        "Prior similar episodes with no fever",
+        "Chronic perineal pain lasting months"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fever",
+            "frequency": "common",
+            "term": "Fever",
+            "snomed_verified": true
+          },
+          {
+            "text": "Chills",
+            "frequency": "common",
+            "term": "Chills",
+            "snomed_verified": true
+          },
+          {
+            "text": "Feeling tired",
+            "frequency": "common",
+            "term": "Fatigue",
+            "snomed_verified": true
+          },
+          {
+            "text": "Night sweats",
+            "frequency": "sometimes",
+            "term": "Night sweats",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Weight loss",
+          "Loss of appetite"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [
+          {
+            "text": "Burning with urination",
+            "frequency": "almost_always",
+            "term": "Dysuria",
+            "snomed_verified": true
+          },
+          {
+            "text": "Going to the bathroom often",
+            "frequency": "common",
+            "term": "Urinary frequency",
+            "snomed_verified": true
+          },
+          {
+            "text": "Sudden urge to urinate",
+            "frequency": "common",
+            "term": "Urgent desire to urinate",
+            "snomed_verified": true
+          },
+          {
+            "text": "Blood in the urine",
+            "frequency": "sometimes",
+            "term": "Hematuria",
+            "snomed_verified": true
+          },
+          {
+            "text": "Difficulty starting the urine stream",
+            "frequency": "sometimes",
+            "term": "Urinary hesitancy",
+            "snomed_verified": true
+          },
+          {
+            "text": "Feeling like the bladder isn't empty after urinating",
+            "frequency": "sometimes",
+            "term": "Sensation of incomplete bladder emptying",
+            "snomed_verified": true
+          },
+          {
+            "text": "Pain in the perineum",
+            "frequency": "common",
+            "term": "Perineal pain",
+            "snomed_verified": true
+          },
+          {
+            "text": "Pain in the lower abdomen",
+            "frequency": "sometimes",
+            "term": "Suprapubic pain",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Flank pain",
+          "Painless scrotal swelling",
+          "Testicular mass"
+        ],
+        "argues_against": [
+          "Colicky flank pain radiating to the groin",
+          "Painless scrotal swelling"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Nausea",
+            "frequency": "sometimes",
+            "term": "Nausea",
+            "snomed_verified": true
+          },
+          {
+            "text": "Vomiting",
+            "frequency": "rare",
+            "term": "Vomiting",
+            "snomed_verified": true
+          },
+          {
+            "text": "Pain with bowel movements",
+            "frequency": "rare",
+            "term": "Painful defecation",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Blood in stool",
+          "Diarrhea",
+          "Constipation"
+        ],
+        "argues_against": [
+          "Profuse diarrhea",
+          "Bloody diarrhea"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Pain in the lower back",
+            "frequency": "sometimes",
+            "term": "Low back pain",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Joint swelling",
+          "Muscle weakness"
+        ],
+        "argues_against": [
+          "Severe back pain with neurologic deficits"
+        ]
+      },
+      {
+        "system": "reproductive",
+        "positives": [
+          {
+            "text": "Pain with ejaculation",
+            "frequency": "sometimes",
+            "term": "Painful ejaculation",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Penile discharge",
+          "Testicular pain",
+          "Scrotal swelling"
+        ],
+        "argues_against": [
+          "Urethral discharge",
+          "Testicular torsion"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "older_adults",
+        "how_it_differs": "May present with confusion, falls, or generalized weakness rather than classic urinary and perineal symptoms; fever may be blunted.",
+        "missing_classic_features": [
+          "Dysuria",
+          "Perineal pain",
+          "Fever"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "Symptoms may be milder or more indolent, and fever may be absent despite significant infection; atypical organisms are more likely.",
+        "missing_classic_features": [
+          "Fever",
+          "Severe pain"
+        ]
+      },
+      {
+        "population": "diabetes",
+        "how_it_differs": "Higher risk of severe infection, abscess formation, and atypical or resistant organisms; presentation may be more severe or masked.",
+        "missing_classic_features": [
+          "Classic dysuria"
+        ]
+      },
+      {
+        "population": "children",
+        "how_it_differs": "Prepubertal boys are uncommon; when it occurs, they may present with fever, irritability, and nonspecific abdominal or urinary symptoms rather than perineal pain.",
+        "missing_classic_features": [
+          "Perineal pain",
+          "Painful ejaculation"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Uncomfortable but not toxic; able to sit and talk",
+      "moderate": "Ill-appearing, febrile, prefers to shift weight off the perineum",
+      "severe": "Toxic-appearing, flushed, diaphoretic, reluctant to sit still",
+      "critical": "Toxic-appearing, pale, diaphoretic, lethargic or confused"
+    },
+    "findings": [
+      {
+        "id": "prostate-tenderness",
+        "region": "rectal",
+        "maneuver": "Perform a gentle digital rectal exam, palpating the prostate",
+        "finding": "Exquisitely tender, boggy prostate",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Prostate tender",
+        "snomed_verified": true
+      },
+      {
+        "id": "prostate-boggy",
+        "region": "rectal",
+        "maneuver": "Palpate the prostate during digital rectal exam",
+        "finding": "Soft, boggy, enlarged prostate with loss of the normal median sulcus",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Boggy prostate",
+        "snomed_verified": true
+      },
+      {
+        "id": "perineal-tenderness",
+        "region": "genitourinary",
+        "maneuver": "Palpate the perineum between the scrotum and anus",
+        "finding": "Perineal tenderness",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Perineal tenderness",
+        "snomed_verified": false
+      },
+      {
+        "id": "suprapubic-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate the suprapubic region",
+        "finding": "Suprapubic tenderness",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Suprapubic pain",
+        "snomed_verified": true
+      },
+      {
+        "id": "cva-tenderness",
+        "region": "abdomen",
+        "maneuver": "Percuss the costovertebral angles",
+        "finding": "Costovertebral angle tenderness",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Costovertebral angle tenderness",
+        "snomed_verified": true
+      },
+      {
+        "id": "bladder-distension",
+        "region": "abdomen",
+        "maneuver": "Palpate and percuss the suprapubic area for a distended bladder",
+        "finding": "Palpable distended bladder",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Distended bladder",
+        "snomed_verified": true
+      },
+      {
+        "id": "guarding",
+        "region": "abdomen",
+        "maneuver": "Palpate the lower abdomen",
+        "finding": "Voluntary guarding",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Abdominal guarding",
+        "snomed_verified": true
+      },
+      {
+        "id": "epididymal-tenderness",
+        "region": "genitourinary",
+        "maneuver": "Palpate the scrotal contents, including the epididymis and testis",
+        "finding": "Epididymal tenderness",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Epididymitis",
+        "snomed_verified": true
+      },
+      {
+        "id": "testicular-tenderness",
+        "region": "genitourinary",
+        "maneuver": "Palpate the testis",
+        "finding": "Testicular tenderness",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Testicular tenderness",
+        "snomed_verified": false
+      },
+      {
+        "id": "no-flank-mass",
+        "region": "abdomen",
+        "maneuver": "Palpate the flanks and abdomen for a mass",
+        "finding": "No flank or abdominal mass",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Abdominal mass",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-peritoneal-signs",
+        "region": "abdomen",
+        "maneuver": "Assess for rebound tenderness and rigidity",
+        "finding": "No rebound tenderness or rigidity",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Rebound tenderness",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-urethral-discharge",
+        "region": "genitourinary",
+        "maneuver": "Inspect the urethral meatus and milk the urethra",
+        "finding": "No urethral discharge",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Urethral discharge",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-scrotal-swelling",
+        "region": "genitourinary",
+        "maneuver": "Inspect and palpate the scrotum",
+        "finding": "No scrotal swelling or mass",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Scrotal swelling",
+        "snomed_verified": false
+      },
+      {
+        "id": "no-lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the inguinal lymph nodes",
+        "finding": "No inguinal lymphadenopathy",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Inguinal lymphadenopathy",
+        "snomed_verified": true
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 98.6,
+        "max": 100.2
+      },
+      "moderate": {
+        "min": 100.0,
+        "max": 101.5
+      },
+      "severe": {
+        "min": 101.0,
+        "max": 103.0
+      },
+      "critical": {
+        "min": 102.0,
+        "max": 104.5
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 70,
+        "max": 100
+      },
+      "moderate": {
+        "min": 90,
+        "max": 110
+      },
+      "severe": {
+        "min": 100,
+        "max": 125
+      },
+      "critical": {
+        "min": 115,
+        "max": 145
+      }
+    },
+    "rr": {
+      "moderate": {
+        "min": 16,
+        "max": 22
+      },
+      "severe": {
+        "min": 18,
+        "max": 26
+      },
+      "critical": {
+        "min": 22,
+        "max": 32
+      }
+    },
+    "sbp": {
+      "severe": {
+        "min": 95,
+        "max": 115
+      },
+      "critical": {
+        "min": 75,
+        "max": 95
+      }
+    },
+    "dbp": {
+      "severe": {
+        "min": 55,
+        "max": 75
+      },
+      "critical": {
+        "min": 40,
+        "max": 60
+      }
+    },
+    "spo2": {
+      "critical": {
+        "min": 88,
+        "max": 94
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "mild": {
+          "min": 10.0,
+          "max": 13.0
+        },
+        "moderate": {
+          "min": 12.0,
+          "max": 17.0
+        },
+        "severe": {
+          "min": 15.0,
+          "max": 22.0
+        },
+        "critical": {
+          "min": 18.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "A normal white count does not exclude acute prostatitis, especially early or in older or immunocompromised patients."
+    },
+    {
+      "test_id": "neut_pct",
+      "ranges": {
+        "mild": {
+          "min": 68,
+          "max": 80
+        },
+        "moderate": {
+          "min": 74,
+          "max": 86
+        },
+        "severe": {
+          "min": 80,
+          "max": 90
+        },
+        "critical": {
+          "min": 82,
+          "max": 92
+        }
+      },
+      "frequency": "common",
+      "importance": "important"
+    },
+    {
+      "test_id": "bands_pct",
+      "ranges": {
+        "severe": {
+          "min": 5,
+          "max": 12
+        },
+        "critical": {
+          "min": 8,
+          "max": 20
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "ua_le",
+      "qualitative": {
+        "mild": "Trace",
+        "moderate": "1+",
+        "severe": "2+",
+        "critical": "3+"
+      },
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Leukocyte esterase is positive in nearly all patients; a negative result argues against a urinary source."
+    },
+    {
+      "test_id": "ua_nitrite",
+      "qualitative": {
+        "moderate": "Positive",
+        "severe": "Positive",
+        "critical": "Positive"
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Positive only with nitrate-reducing organisms such as E. coli; a negative nitrite does not exclude infection."
+    },
+    {
+      "test_id": "ua_wbc",
+      "ranges": {
+        "mild": {
+          "min": 6,
+          "max": 20
+        },
+        "moderate": {
+          "min": 15,
+          "max": 50
+        },
+        "severe": {
+          "min": 30,
+          "max": 100
+        },
+        "critical": {
+          "min": 50,
+          "max": 200
+        }
+      },
+      "frequency": "almost_always",
+      "importance": "essential"
+    },
+    {
+      "test_id": "ua_bacteria",
+      "qualitative": {
+        "mild": "Few",
+        "moderate": "Moderate",
+        "severe": "Many",
+        "critical": "Many"
+      },
+      "frequency": "common",
+      "importance": "important"
+    },
+    {
+      "test_id": "ua_blood",
+      "qualitative": {
+        "mild": "Trace",
+        "moderate": "1+",
+        "severe": "2+",
+        "critical": "3+"
+      },
+      "frequency": "common",
+      "importance": "important"
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "mild": {
+          "min": 1.0,
+          "max": 4.0
+        },
+        "moderate": {
+          "min": 3.0,
+          "max": 10.0
+        },
+        "severe": {
+          "min": 8.0,
+          "max": 25.0
+        },
+        "critical": {
+          "min": 15.0,
+          "max": 40.0
+        }
+      },
+      "frequency": "common",
+      "importance": "optional",
+      "caveat": "Supports the diagnosis and helps track response, but is not required."
+    },
+    {
+      "test_id": "procalcitonin",
+      "ranges": {
+        "severe": {
+          "min": 0.5,
+          "max": 2.0
+        },
+        "critical": {
+          "min": 2.0,
+          "max": 10.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Higher values suggest bacteremia or a more severe systemic infection."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "moderate": {
+          "min": 1.2,
+          "max": 1.6
+        },
+        "severe": {
+          "min": 1.5,
+          "max": 2.5
+        },
+        "critical": {
+          "min": 2.0,
+          "max": 4.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Rises with dehydration, obstruction, or sepsis; guides antibiotic dosing."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "moderate": {
+          "min": 18,
+          "max": 30
+        },
+        "severe": {
+          "min": 25,
+          "max": 45
+        },
+        "critical": {
+          "min": 35,
+          "max": 60
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "From poor intake, vomiting, or dehydration."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "severe": {
+          "min": 2.0,
+          "max": 3.5
+        },
+        "critical": {
+          "min": 3.0,
+          "max": 6.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "important",
+      "caveat": "Elevated lactate with hypotension suggests sepsis and warrants urgent resuscitation."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Not applicable in males; listed only because pregnancy must be excluded before pelvic imaging in anyone who could be pregnant."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rate",
+        "finding": "Sinus tachycardia",
+        "frequency": "common",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Sinus rhythm",
+        "frequency": "almost_always"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "CT abdomen and pelvis with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Severe illness, suspected abscess, or failure to improve on antibiotics",
+      "findings": [
+        {
+          "text": "Enlarged, edematous prostate with heterogeneous enhancement",
+          "frequency": "common"
+        },
+        {
+          "text": "Periprostatic fat stranding",
+          "frequency": "common"
+        },
+        {
+          "text": "Prostatic abscess (rim-enhancing fluid collection)",
+          "frequency": "rare"
+        },
+        {
+          "text": "Normal-appearing prostate (early or mild disease)",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Transrectal ultrasound of the prostate",
+      "modality": "ultrasound",
+      "preferred_when": "Suspected prostatic abscess or when CT is unavailable",
+      "findings": [
+        {
+          "text": "Enlarged, hypoechoic prostate",
+          "frequency": "common"
+        },
+        {
+          "text": "Focal hypoechoic or complex fluid collection suggesting abscess",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Normal-appearing prostate",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "MRI prostate with and without contrast",
+      "modality": "mri",
+      "preferred_when": "Equivocal CT or ultrasound when abscess is suspected",
+      "findings": [
+        {
+          "text": "Diffuse prostatic edema with increased T2 signal and restricted diffusion",
+          "frequency": "common"
+        },
+        {
+          "text": "Rim-enhancing abscess cavity",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Abdominal x-ray (KUB)",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Usually normal; may show a bladder shadow or calcifications",
+          "frequency": "almost_always"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "ua",
+        "why": "First-line test; pyuria, bacteriuria, and leukocyte esterase support a urinary tract infection"
+      },
+      {
+        "test": "cbc",
+        "why": "Leukocytosis with left shift supports infection and gauges severity"
+      },
+      {
+        "test": "bmp",
+        "why": "Assesses hydration, renal function, and electrolytes before antibiotic dosing"
+      },
+      {
+        "test": "Urine culture with susceptibilities",
+        "why": "Identifies the organism and guides antibiotic choice; obtain before starting antibiotics"
+      },
+      {
+        "test": "Blood cultures",
+        "why": "Detects bacteremia in febrile or systemically ill patients",
+        "only_if": "fever, chills, or signs of sepsis"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "crp",
+        "why": "Supports the diagnosis and helps track response to treatment"
+      },
+      {
+        "test": "procalcitonin",
+        "why": "Suggests bacteremia or severe systemic infection",
+        "only_if": "severe illness or concern for sepsis"
+      },
+      {
+        "test": "lactate",
+        "why": "Screens for sepsis and tissue hypoperfusion",
+        "only_if": "hypotension, tachycardia, or toxic appearance"
+      },
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Detects prostatic abscess or obstruction",
+        "only_if": "severe illness, suspected abscess, or no improvement after 48–72 hours of antibiotics"
+      },
+      {
+        "test": "Transrectal ultrasound of the prostate",
+        "why": "Evaluates for prostatic abscess",
+        "only_if": "suspected abscess or CT is unavailable"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Prostate massage / expressed prostatic secretions",
+        "why": "Vigorous prostatic massage is contraindicated in acute prostatitis because of the risk of bacteremia"
+      },
+      {
+        "test": "Prostate biopsy",
+        "why": "Not performed during acute infection; risks seeding and bleeding"
+      },
+      {
+        "test": "Abdominal x-ray (KUB)",
+        "why": "Rarely changes management"
+      },
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Not routine; reserved for severe or nonresponding cases",
+        "only_if": "severe illness, suspected abscess, or failure to improve"
+      },
+      {
+        "test": "Transrectal ultrasound of the prostate",
+        "why": "Not routine; reserved for suspected abscess",
+        "only_if": "suspected prostatic abscess"
+      },
+      {
+        "test": "MRI prostate with and without contrast",
+        "why": "Not routine; reserved for equivocal imaging when abscess is suspected",
+        "only_if": "equivocal CT or ultrasound"
+      },
+      {
+        "test": "hcg",
+        "why": "Not applicable in males"
+      }
+    ],
+    "decision_points": [
+      "Obtain urine culture before starting antibiotics so susceptibilities are available",
+      "Avoid vigorous prostate massage or biopsy during acute infection",
+      "If the patient is toxic, hypotensive, or has rigors, treat as sepsis and admit for IV antibiotics",
+      "If fever and symptoms do not improve within 48–72 hours of appropriate antibiotics, image for prostatic abscess",
+      "Consider sexually transmitted organisms in young sexually active men and adjust coverage accordingly"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Acute bacterial cystitis",
+      "slug": "acute-cystitis",
+      "why_considered": "Dysuria, frequency, urgency and pyuria are the cardinal features of both, and cystitis is far more common.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Suprapubic discomfort only, without perineal or rectal pain",
+          "No fever or chills in uncomplicated cases",
+          "No pain with ejaculation or bowel movements"
+        ],
+        "exam": [
+          "Suprapubic tenderness without perineal tenderness",
+          "Prostate is non-tender and normal on gentle digital rectal exam"
+        ],
+        "labs": [
+          "Pyuria and bacteriuria on urinalysis",
+          "Normal or minimally elevated white count"
+        ],
+        "imaging": [
+          "Imaging not indicated"
+        ]
+      }
+    },
+    {
+      "name": "Acute epididymitis",
+      "slug": "acute-epididymitis",
+      "why_considered": "Scrotal and perineal pain with dysuria and fever in a sexually active man overlaps with prostatitis.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Pain localized to the scrotum and radiating along the spermatic cord",
+          "Gradual onset over days",
+          "Urethral discharge may be present"
+        ],
+        "exam": [
+          "Tender, indurated epididymis with a positive Prehn sign",
+          "Prostate is typically non-tender",
+          "Scrotal erythema and swelling"
+        ],
+        "labs": [
+          "Pyuria on urinalysis",
+          "Positive nucleic acid amplification testing for Chlamydia or Gonorrhea in young men"
+        ],
+        "imaging": [
+          "Scrotal ultrasound showing epididymal enlargement and hyperemia with normal testicular flow"
+        ]
+      }
+    },
+    {
+      "name": "Testicular torsion",
+      "slug": "testicular-torsion",
+      "why_considered": "Acute severe scrotal and groin pain with nausea and vomiting can be mistaken for prostatitis when the patient localizes poorly.",
+      "must_not_miss": true,
+      "trigger": "Sudden severe testicular pain with a high-riding, transversely oriented testis and absent cremasteric reflex",
+      "discriminators": {
+        "history": [
+          "Abrupt onset, often waking the patient from sleep",
+          "Nausea and vomiting at onset",
+          "No dysuria or urinary frequency"
+        ],
+        "exam": [
+          "High-riding, horizontally lying testis",
+          "Absent cremasteric reflex",
+          "Prostate is non-tender"
+        ],
+        "labs": [
+          "Urinalysis is typically normal"
+        ],
+        "imaging": [
+          "Doppler ultrasound showing absent or reduced testicular blood flow"
+        ]
+      }
+    },
+    {
+      "name": "Acute pyelonephritis",
+      "slug": "acute-pyelonephritis",
+      "why_considered": "Fever, chills, dysuria and flank or back pain overlap, and both are ascending urinary infections.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Prominent flank pain and high fever with rigors",
+          "Nausea and vomiting more prominent",
+          "No perineal or rectal pain"
+        ],
+        "exam": [
+          "Marked costovertebral angle tenderness",
+          "Prostate is non-tender",
+          "No perineal tenderness"
+        ],
+        "labs": [
+          "Pyuria with white blood cell casts",
+          "Bacteremia more common",
+          "Elevated creatinine"
+        ],
+        "imaging": [
+          "CT with contrast showing wedge-shaped renal hypodensities or perinephric stranding"
+        ]
+      }
+    },
+    {
+      "name": "Prostatic abscess",
+      "slug": "prostatic-abscess",
+      "why_considered": "A complication of acute prostatitis that presents identically but fails to improve with appropriate antibiotics.",
+      "must_not_miss": true,
+      "trigger": "Persistent fever and perineal pain after 48–72 hours of appropriate antibiotics",
+      "discriminators": {
+        "history": [
+          "Symptoms persist or worsen despite appropriate antibiotics",
+          "Higher fever with rigors",
+          "Recent instrumentation or catheterization"
+        ],
+        "exam": [
+          "Fluctuant or exquisitely tender prostate",
+          "Toxic appearance"
+        ],
+        "labs": [
+          "Persistent leukocytosis",
+          "Positive blood cultures"
+        ],
+        "imaging": [
+          "CT or transrectal ultrasound showing a rim-enhancing fluid collection within the prostate"
+        ]
+      }
+    },
+    {
+      "name": "Chronic prostatitis / chronic pelvic pain syndrome",
+      "slug": "chronic-prostatitis",
+      "why_considered": "Perineal and pelvic pain with urinary symptoms in a man, but with a very different time course.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Symptoms for at least 3 of the past 6 months",
+          "No fever or systemic illness",
+          "Pain waxes and wanes"
+        ],
+        "exam": [
+          "Prostate may be tender but is not boggy or acutely inflamed",
+          "No systemic toxicity"
+        ],
+        "labs": [
+          "Urinalysis and urine culture are typically negative",
+          "Normal white count"
+        ],
+        "imaging": [
+          "Imaging is not indicated"
+        ]
+      }
+    },
+    {
+      "name": "Benign prostatic hyperplasia",
+      "slug": "benign-prostatic-hyperplasia",
+      "why_considered": "Older men with lower urinary tract symptoms, hesitancy and incomplete emptying may be thought to have infection.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Gradual onset over months to years",
+          "No fever, chills or dysuria",
+          "Nocturia and weak stream predominate"
+        ],
+        "exam": [
+          "Smooth, enlarged, non-tender prostate",
+          "No perineal tenderness"
+        ],
+        "labs": [
+          "Normal urinalysis",
+          "Normal white count"
+        ],
+        "imaging": [
+          "Post-void residual showing incomplete emptying"
+        ]
+      }
+    },
+    {
+      "name": "Prostate cancer",
+      "slug": "prostate-cancer",
+      "why_considered": "Can cause perineal or pelvic pain and urinary symptoms, and may be found incidentally during evaluation.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Gradual onset, often asymptomatic",
+          "No fever or acute systemic illness",
+          "Weight loss or bone pain in advanced disease"
+        ],
+        "exam": [
+          "Hard, nodular or asymmetrical prostate",
+          "No acute tenderness"
+        ],
+        "labs": [
+          "Elevated prostate-specific antigen",
+          "Normal urinalysis and white count"
+        ],
+        "imaging": [
+          "MRI showing a focal lesion; biopsy confirms malignancy"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Early, uncomplicated: mild dysuria and frequency, low-grade or no fever, no systemic toxicity, able to take oral fluids and antibiotics as an outpatient",
+      "moderate": "Established infection: fever and chills, significant perineal pain, leukocytosis and pyuria, but hemodynamically stable and able to take oral therapy",
+      "severe": "Systemically ill: high fever with rigors, toxic appearance, marked leukocytosis, possible acute urinary retention or early sepsis, requiring admission and IV antibiotics",
+      "critical": "Septic shock or urosepsis from acute prostatitis, with hypotension, tachycardia, altered mental status and organ dysfunction; can be life-threatening"
+    },
+    "red_flags": [
+      {
+        "finding": "Hypotension or heart rate over 120",
+        "meaning": "Sepsis or septic shock; needs urgent resuscitation and IV antibiotics"
+      },
+      {
+        "finding": "Altered mental status or confusion",
+        "meaning": "Severe systemic infection or sepsis, especially in older adults"
+      },
+      {
+        "finding": "Rigors or high fever with toxic appearance",
+        "meaning": "Bacteremia or severe systemic infection"
+      },
+      {
+        "finding": "Acute urinary retention or inability to void",
+        "meaning": "Bladder outlet obstruction from prostatic swelling; requires catheterization"
+      },
+      {
+        "finding": "Persistent fever and pain after 48–72 hours of appropriate antibiotics",
+        "meaning": "Prostatic abscess or resistant organism; image and reassess"
+      },
+      {
+        "finding": "Flank pain with costovertebral angle tenderness",
+        "meaning": "Concurrent pyelonephritis or upper tract obstruction"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Acute urinary retention",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Inability to void",
+          "Palpable distended bladder",
+          "Suprapubic pain"
+        ]
+      },
+      {
+        "name": "Prostatic abscess",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Persistent fever despite appropriate antibiotics",
+          "Fluctuant or exquisitely tender prostate",
+          "Persistent leukocytosis"
+        ]
+      },
+      {
+        "name": "Bacteremia and sepsis",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Rigors",
+          "Hypotension",
+          "Tachycardia",
+          "Positive blood cultures"
+        ]
+      },
+      {
+        "name": "Epididymo-orchitis",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Scrotal pain and swelling",
+          "Tender epididymis"
+        ]
+      },
+      {
+        "name": "Chronic prostatitis / chronic pelvic pain syndrome",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Persistent perineal pain for months after treatment",
+          "Negative urine cultures"
+        ]
+      },
+      {
+        "name": "Seminal vesicle or epididymal involvement",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Painful ejaculation",
+          "Hematospermia",
+          "Scrotal pain"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "older_adults",
+        "differences": "May present with confusion, falls or generalized weakness rather than classic urinary and perineal symptoms; fever may be blunted, and the prostate may be less tender. Higher risk of retention and sepsis."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Symptoms may be milder or more indolent, fever may be absent despite significant infection, and atypical organisms are more likely. Lower threshold for admission and broad-spectrum antibiotics."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Higher risk of severe infection, abscess formation and atypical or resistant organisms; presentation may be more severe or masked. Tight glucose control is important."
+      },
+      {
+        "population": "children",
+        "differences": "Uncommon in prepubertal boys; when it occurs, they may present with fever, irritability and nonspecific abdominal or urinary symptoms rather than perineal pain. Consider anatomic abnormalities."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "Antibiotic doses must be adjusted for renal function; avoid nephrotoxic agents and monitor creatinine closely."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "Where exactly is the pain? Does it hurt between the scrotum and the anus?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Perineal pain, the feature that separates prostatitis from simple cystitis"
+      },
+      {
+        "question": "When did this start, and how fast has it gotten worse?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Abrupt onset over hours to a day or two with rapid worsening, rather than months of gradual symptoms"
+      },
+      {
+        "question": "Do you have a fever, chills, or shaking rigors?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Fever and chills suggesting systemic infection; rigors raise concern for bacteremia or sepsis"
+      },
+      {
+        "question": "Does it burn when you urinate, and are you going more often or feeling an urgent need?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Dysuria, frequency and urgency, which are almost always present"
+      },
+      {
+        "question": "Does it hurt to sit, have a bowel movement, or ejaculate?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Pain with sitting, defecation or ejaculation, which points to the prostate rather than the bladder"
+      },
+      {
+        "question": "Have you had a urinary catheter, cystoscopy, prostate biopsy, or any recent urinary procedure?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Recent instrumentation, a strong risk factor and a clue to the likely organism"
+      },
+      {
+        "question": "Have you had a urinary tract infection recently, or do you have trouble emptying your bladder?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Recent UTI, benign prostatic hyperplasia or other bladder outlet obstruction"
+      },
+      {
+        "question": "Are you able to urinate at all right now?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Acute urinary retention from prostatic swelling, which needs urgent catheterization"
+      },
+      {
+        "question": "Have you had unprotected sex, including anal intercourse, or new partners?",
+        "category": "sexual",
+        "importance": "important",
+        "looking_for": "Sexually transmitted organisms such as Chlamydia, Gonorrhea or enteric flora"
+      },
+      {
+        "question": "Do you have diabetes, HIV, or any condition or medication that weakens your immune system?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Immunosuppression or diabetes, which raises the risk of severe infection, abscess and atypical organisms"
+      },
+      {
+        "question": "Any flank pain, nausea or vomiting?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Flank pain with costovertebral tenderness suggests concurrent pyelonephritis; vomiting suggests systemic illness"
+      },
+      {
+        "question": "Have you had blood in your urine, or pain in your testicles or scrotum?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Hematuria is sometimes present; scrotal or testicular pain suggests epididymitis or torsion instead"
+      },
+      {
+        "question": "Have you had similar episodes of perineal pain lasting months without fever?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Chronic prostatitis or chronic pelvic pain syndrome, which has a very different time course"
+      },
+      {
+        "question": "Do you have any allergies to antibiotics, especially penicillins or sulfa drugs?",
+        "category": "allergies",
+        "importance": "important",
+        "looking_for": "Allergies that would change the choice of empiric antibiotic"
+      },
+      {
+        "question": "What medications do you take, including any for the prostate or bladder?",
+        "category": "medications",
+        "importance": "optional",
+        "looking_for": "Alpha-blockers, anticholinergics or recent antibiotics that affect the picture"
+      }
+    ],
+    "accepted_names": [
+      "Acute prostatitis",
+      "Acute bacterial prostatitis",
+      "Prostatitis"
+    ],
+    "reasoning_points": [
+      "Abrupt onset over hours to a day or two of dysuria and frequency with perineal pain",
+      "Fever and chills indicating a systemic infection rather than simple cystitis",
+      "Exquisitely tender, boggy prostate on gentle digital rectal exam",
+      "Pyuria and bacteriuria with leukocyte esterase on urinalysis, and leukocytosis on CBC",
+      "Urine culture obtained before antibiotics to identify the organism and guide therapy",
+      "Risk factors such as recent instrumentation, catheterization or urinary tract infection",
+      "Red flags for sepsis, acute urinary retention or prostatic abscess considered and excluded",
+      "Look-alikes such as cystitis, epididymitis, testicular torsion, pyelonephritis and chronic prostatitis distinguished"
+    ],
+    "difficulty": {
+      "easy": [
+        "Sexually active adult man with abrupt dysuria, frequency, fever and perineal pain",
+        "Exquisitely tender, boggy prostate on digital rectal exam",
+        "Pyuria and bacteriuria with leukocytosis"
+      ],
+      "medium": [
+        "Older man with benign prostatic hyperplasia and recent catheterization presenting with fever and urinary symptoms",
+        "Young man with a sexually transmitted organism and mild urethral discharge",
+        "Concurrent pyelonephritis with flank pain and costovertebral angle tenderness"
+      ],
+      "hard": [
+        "Older adult presenting with confusion, falls or generalized weakness and a blunted fever",
+        "Immunocompromised or diabetic patient with mild symptoms but significant infection or abscess",
+        "Patient who fails to improve after 48–72 hours of appropriate antibiotics, suggesting prostatic abscess",
+        "Patient in acute urinary retention or early septic shock requiring urgent resuscitation"
+      ]
+    }
+  }
+}

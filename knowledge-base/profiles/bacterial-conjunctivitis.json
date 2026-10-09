@@ -1,0 +1,1023 @@
+{
+  "schema_version": "0.2",
+  "slug": "bacterial-conjunctivitis",
+  "triage": {
+    "name": "Bacterial conjunctivitis",
+    "case_suitable": true,
+    "reason": "Common red eye presentation with discharge; diagnosis reachable by history, exam and, when needed, cultures, with important look-alikes such as viral and allergic conjunctivitis.",
+    "kind": "disease",
+    "category": "ocular infection",
+    "organ_systems": [
+      "musculoskeletal"
+    ],
+    "primary_clerkship": "familyMedicine",
+    "secondary_clerkships": [
+      "pediatrics",
+      "emergency",
+      "internalMedicine"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "clinic",
+      "emergency",
+      "pediatric_clinic"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:24:14Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:58:25Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:59:00Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:59:04Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:59:16Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:59:23Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'conjunctival swab for bacterial culture' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'rapid antigen or pcr testing of conjunctival swab for adenovirus' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'conjunctival swab for bacterial culture' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'rapid antigen or pcr testing of conjunctival swab for adenovirus' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "presentation: term 'Purulent discharge from eye' not found in SNOMED CT",
+        "exam: term 'Papillae of conjunctiva' not found in SNOMED CT",
+        "exam: term 'Extraocular movements normal' not found in SNOMED CT",
+        "exam: term 'Ciliary injection absent' not found in SNOMED CT",
+        "differential viral-conjunctivitis: no profile yet",
+        "differential bacterial-keratitis: no profile yet",
+        "differential blepharitis: no profile yet",
+        "differential nasolacrimal-duct-obstruction: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 0,
+      "typical_max": 90,
+      "peak": "children under 7 and adults",
+      "possible_min": 0,
+      "possible_max": 110
+    },
+    "sex": "either",
+    "demographics": [
+      "Very common in young children, especially those in daycare or school",
+      "Adults of any age can be affected, with higher rates in contact lens wearers"
+    ],
+    "risk_factors": [
+      {
+        "text": "Contact lens wear",
+        "strength": "strong"
+      },
+      {
+        "text": "Close contact with someone who has conjunctivitis",
+        "strength": "moderate"
+      },
+      {
+        "text": "Daycare or school attendance",
+        "strength": "moderate"
+      },
+      {
+        "text": "Recent upper respiratory infection",
+        "strength": "weak"
+      },
+      {
+        "text": "Poor hand hygiene",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Blepharitis",
+      "Dry eye syndrome",
+      "Immunosuppression"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Crowded living conditions",
+      "Daycare or school exposure"
+    ],
+    "exposures": [
+      "Contact with a person who has red eye or eye discharge",
+      "Contaminated contact lens solutions or cases"
+    ],
+    "risk_medications": [
+      "topical corticosteroids",
+      "immunosuppressants"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My eye is red and stuck shut",
+        "frequency": "almost_always",
+        "term": "Red eye",
+        "snomed_verified": true
+      },
+      {
+        "text": "There is yellow-green goop coming from my eye",
+        "frequency": "common",
+        "term": "Eye discharge",
+        "snomed_verified": true
+      },
+      {
+        "text": "My eye feels scratchy and irritated",
+        "frequency": "common",
+        "term": "Foreign body sensation in eye",
+        "snomed_verified": true
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual over 1–2 days",
+      "duration": "Usually less than 1 week at presentation",
+      "progression": "Starts in one eye with redness and discharge, then may spread to the other eye within a few days",
+      "location": "One or both eyes, conjunctiva",
+      "radiation": "None",
+      "quality": "Gritty, burning, or foreign-body sensation; discharge is thick and purulent",
+      "severity": "Mild to moderate; vision is typically unaffected",
+      "timing": "Constant, worse in the morning when discharge crusts the eyelids shut",
+      "aggravating": [
+        "Rubbing the eye",
+        "Contact lens wear"
+      ],
+      "relieving": [
+        "Warm compresses",
+        "Gentle cleaning of the eyelids"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Eyelid crusting or matting, especially on waking",
+          "frequency": "common",
+          "term": "Crusting of eyelid",
+          "snomed_verified": true
+        },
+        {
+          "text": "Mild eyelid swelling",
+          "frequency": "sometimes",
+          "term": "Eyelid swelling",
+          "snomed_verified": true
+        },
+        {
+          "text": "Sensation of grittiness or burning",
+          "frequency": "common",
+          "term": "Foreign body sensation in eye",
+          "snomed_verified": true
+        },
+        {
+          "text": "Mild eye pain or discomfort",
+          "frequency": "sometimes",
+          "term": "Eye pain",
+          "snomed_verified": true
+        }
+      ],
+      "pertinent_negatives": [
+        "Itching (prominent itching suggests allergic conjunctivitis)",
+        "Watery discharge (suggests viral conjunctivitis)",
+        "Blurred vision or vision loss",
+        "Severe eye pain",
+        "Photophobia",
+        "Recent upper respiratory infection symptoms",
+        "Known contact with someone with viral conjunctivitis"
+      ]
+    },
+    "ros": [
+      {
+        "system": "eyes",
+        "positives": [
+          {
+            "text": "Redness of the conjunctiva",
+            "frequency": "almost_always",
+            "term": "Conjunctival injection",
+            "snomed_verified": true
+          },
+          {
+            "text": "Purulent discharge",
+            "frequency": "common",
+            "term": "Purulent discharge from eye",
+            "snomed_verified": false
+          },
+          {
+            "text": "Gritty or burning sensation",
+            "frequency": "common",
+            "term": "Foreign body sensation in eye",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Vision loss",
+          "Severe eye pain",
+          "Photophobia",
+          "Itching"
+        ],
+        "argues_against": [
+          "Corneal ulcer or keratitis",
+          "Acute angle-closure glaucoma",
+          "Allergic conjunctivitis"
+        ]
+      },
+      {
+        "system": "ent",
+        "positives": [],
+        "negatives": [
+          "Ear pain",
+          "Sore throat",
+          "Nasal congestion"
+        ],
+        "argues_against": [
+          "Viral upper respiratory infection with conjunctivitis"
+        ]
+      },
+      {
+        "system": "constitutional",
+        "positives": [],
+        "negatives": [
+          "Fever",
+          "Malaise"
+        ],
+        "argues_against": [
+          "Systemic infection"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Young children may not report eye discomfort; parents notice redness, discharge, and matted eyelids, often with irritability.",
+        "missing_classic_features": [
+          "Clear history of gritty sensation"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "May present with less prominent redness and discharge, and more non-specific eye discomfort; higher risk of complications if untreated.",
+        "missing_classic_features": [
+          "Prominent purulent discharge"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "Can have more severe, prolonged, or atypical presentation with higher risk of corneal involvement.",
+        "missing_classic_features": [
+          "Mild self-limited course"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Alert, comfortable, no distress; one or both eyes red with mild discharge",
+      "moderate": "Mildly uncomfortable, keeps dabbing the eye, eyelids matted with discharge",
+      "severe": "Ill-appearing with marked eyelid swelling and copious discharge, photophobia, or eye pain",
+      "critical": "Toxic-appearing with severe periocular swelling, proptosis, or systemic signs suggesting orbital or systemic spread"
+    },
+    "findings": [
+      {
+        "id": "conjunctival-injection",
+        "region": "heent",
+        "maneuver": "Inspect the conjunctiva and sclera in natural light",
+        "finding": "Diffuse redness of the palpebral and bulbar conjunctiva, most marked peripherally and fading toward the limbus",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Conjunctival injection",
+        "snomed_verified": true
+      },
+      {
+        "id": "purulent-discharge",
+        "region": "heent",
+        "maneuver": "Inspect the lower fornix and lid margins, and ask the patient to blink",
+        "finding": "Thick yellow-green or mucopurulent discharge pooling in the inferior fornix and crusting the lashes",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Eye discharge",
+        "snomed_verified": true
+      },
+      {
+        "id": "eyelid-crusting",
+        "region": "heent",
+        "maneuver": "Inspect the eyelid margins and lashes",
+        "finding": "Crusted or matted eyelashes, often worse on waking",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Crusting of eyelid",
+        "snomed_verified": true
+      },
+      {
+        "id": "eyelid-swelling",
+        "region": "heent",
+        "maneuver": "Inspect and gently palpate the eyelids",
+        "finding": "Mild diffuse eyelid edema without focal nodule or erythema of the lid skin",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Eyelid swelling",
+        "snomed_verified": true
+      },
+      {
+        "id": "chemosis",
+        "region": "heent",
+        "maneuver": "Inspect the bulbar conjunctiva",
+        "finding": "Conjunctival edema with a glassy, boggy appearance",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Chemosis",
+        "snomed_verified": true
+      },
+      {
+        "id": "follicles",
+        "region": "heent",
+        "maneuver": "Evert the lower eyelid and inspect the tarsal conjunctiva",
+        "finding": "Small lymphoid follicles on the palpebral conjunctiva",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Follicles of conjunctiva",
+        "snomed_verified": true
+      },
+      {
+        "id": "papillae",
+        "region": "heent",
+        "maneuver": "Evert the upper eyelid and inspect the tarsal conjunctiva",
+        "finding": "Fine papillae on the tarsal conjunctiva",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Papillae of conjunctiva",
+        "snomed_verified": false
+      },
+      {
+        "id": "preauricular-lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the preauricular and submandibular lymph nodes",
+        "finding": "Tender preauricular lymph node enlargement",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Preauricular lymphadenopathy",
+        "snomed_verified": true
+      },
+      {
+        "id": "visual-acuity-normal",
+        "region": "heent",
+        "maneuver": "Check visual acuity with a Snellen chart, with correction if worn",
+        "finding": "Visual acuity at or near the patient's baseline, no decline",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential",
+        "term": "Visual acuity normal",
+        "snomed_verified": true
+      },
+      {
+        "id": "pupillary-reflex",
+        "region": "heent",
+        "maneuver": "Shine a light into each eye and observe the direct and consensual response",
+        "finding": "Brisk, symmetric pupillary constriction with no afferent defect",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Indirect light pupillary reflex",
+        "snomed_verified": true
+      },
+      {
+        "id": "cornea-clear",
+        "region": "heent",
+        "maneuver": "Inspect the cornea with a penlight, and stain with fluorescein if a corneal lesion is suspected",
+        "finding": "Clear cornea without opacity, infiltrate, or fluorescein uptake",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential",
+        "term": "Cornea normal",
+        "snomed_verified": true
+      },
+      {
+        "id": "extraocular-movements",
+        "region": "heent",
+        "maneuver": "Ask the patient to follow a finger through the cardinal directions of gaze",
+        "finding": "Full, painless eye movements without diplopia",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Extraocular movements normal",
+        "snomed_verified": false
+      },
+      {
+        "id": "no-photophobia",
+        "region": "heent",
+        "maneuver": "Ask about and observe the response to light",
+        "finding": "No light sensitivity or squinting in bright light",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Photophobia absent",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-itching",
+        "region": "heent",
+        "maneuver": "Ask the patient whether the eyes itch",
+        "finding": "No prominent itching",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Pruritus of eye absent",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-ciliary-injection",
+        "region": "heent",
+        "maneuver": "Inspect the perilimbal vessels with a penlight",
+        "finding": "No deep perilimbal (ciliary) injection",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Ciliary injection absent",
+        "snomed_verified": false
+      },
+      {
+        "id": "no-proptosis",
+        "region": "heent",
+        "maneuver": "Inspect the eyes from above and below for forward displacement",
+        "finding": "No proptosis or resistance to retropulsion",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Proptosis absent",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-periorbital-cellulitis",
+        "region": "heent",
+        "maneuver": "Inspect and palpate the periorbital skin and lids",
+        "finding": "No marked periorbital erythema, induration, or tenderness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Periorbital cellulitis absent",
+        "snomed_verified": true
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 97.8,
+        "max": 99.5
+      },
+      "moderate": {
+        "min": 98.6,
+        "max": 100.4
+      },
+      "severe": {
+        "min": 99.5,
+        "max": 101.5
+      },
+      "critical": {
+        "min": 100.4,
+        "max": 103.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 95
+      },
+      "moderate": {
+        "min": 70,
+        "max": 105
+      },
+      "severe": {
+        "min": 85,
+        "max": 120
+      },
+      "critical": {
+        "min": 100,
+        "max": 140
+      }
+    },
+    "rr": {
+      "severe": {
+        "min": 16,
+        "max": 22
+      },
+      "critical": {
+        "min": 20,
+        "max": 28
+      }
+    },
+    "sbp": {
+      "critical": {
+        "min": 80,
+        "max": 100
+      }
+    },
+    "dbp": {
+      "critical": {
+        "min": 45,
+        "max": 65
+      }
+    },
+    "spo2": {
+      "critical": {
+        "min": 90,
+        "max": 95
+      }
+    }
+  },
+  "labs": [],
+  "imaging": [],
+  "workup": {
+    "initial": [],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "Conjunctival swab for bacterial culture",
+        "why": "Identifies the organism and guides therapy when the course is severe, recurrent, or atypical",
+        "only_if": "severe, recurrent, or treatment-failure conjunctivitis, or suspected gonococcal or chlamydial infection"
+      },
+      {
+        "test": "Rapid antigen or PCR testing of conjunctival swab for adenovirus",
+        "why": "Distinguishes viral from bacterial conjunctivitis when the cause is unclear",
+        "only_if": "discharge is watery or the diagnosis is uncertain"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "cbc",
+        "why": "Bacterial conjunctivitis is a localized infection; the white count is typically normal and does not change management"
+      },
+      {
+        "test": "crp",
+        "why": "No role in a superficial eye infection"
+      },
+      {
+        "test": "esr",
+        "why": "No role in a superficial eye infection"
+      },
+      {
+        "test": "Conjunctival swab for bacterial culture",
+        "why": "Not routine for uncomplicated cases; reserved for severe, recurrent, or atypical presentations",
+        "only_if": "severe, recurrent, or treatment-failure conjunctivitis, or suspected gonococcal or chlamydial infection"
+      },
+      {
+        "test": "Rapid antigen or PCR testing of conjunctival swab for adenovirus",
+        "why": "Not routine; used only when viral conjunctivitis is a strong consideration",
+        "only_if": "discharge is watery or the diagnosis is uncertain"
+      },
+      {
+        "test": "CT orbits with contrast",
+        "why": "Not needed for conjunctivitis; reserved for suspected orbital cellulitis or abscess"
+      },
+      {
+        "test": "Fluorescein staining of the cornea",
+        "why": "Not routine; performed when a corneal ulcer or keratitis is suspected"
+      }
+    ],
+    "decision_points": [
+      "Diagnosis is clinical; do not order routine labs or imaging for typical purulent conjunctivitis",
+      "Consider culture and gonococcal/chlamydial testing when there is severe purulent discharge, marked eyelid swelling, or no response to topical antibiotics",
+      "Refer urgently if vision is decreased, there is severe pain or photophobia, or the cornea shows fluorescein uptake"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Viral conjunctivitis",
+      "slug": "viral-conjunctivitis",
+      "why_considered": "The most common cause of acute red eye; watery discharge and a viral prodrome can look like a mild bacterial infection",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Watery rather than purulent discharge",
+          "Recent upper respiratory infection or sick contacts",
+          "Prominent itching or burning",
+          "Often starts in one eye and spreads to the other within days",
+          "Highly contagious, often with a known outbreak"
+        ],
+        "exam": [
+          "Diffuse conjunctival injection with a watery or serous discharge",
+          "Follicles on the palpebral conjunctiva, especially the lower lid",
+          "Preauricular lymphadenopathy is more common than in bacterial disease",
+          "No purulent crusting of the lashes"
+        ],
+        "labs": [
+          "Adenovirus rapid antigen or PCR positive on conjunctival swab when tested"
+        ],
+        "imaging": []
+      }
+    },
+    {
+      "name": "Allergic conjunctivitis",
+      "slug": "allergic-conjunctivitis",
+      "why_considered": "Red, irritated eyes with discharge are common in allergy, and patients may describe matting on waking",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Prominent itching is the hallmark",
+          "Bilateral and symmetric involvement",
+          "Recurrent seasonal or perennial pattern",
+          "Exposure to known allergens such as pollen, dust, or animal dander",
+          "No sick contacts"
+        ],
+        "exam": [
+          "Bilateral conjunctival injection with a stringy or watery discharge",
+          "Chemosis and eyelid edema",
+          "Cobblestone papillae on the tarsal conjunctiva in chronic cases",
+          "Allergic shiners or Dennie-Morgan lines"
+        ],
+        "labs": [
+          "Eosinophils on conjunctival scraping when performed"
+        ],
+        "imaging": []
+      }
+    },
+    {
+      "name": "Bacterial keratitis",
+      "slug": "bacterial-keratitis",
+      "why_considered": "A red, painful eye with purulent discharge that can be mistaken for conjunctivitis, especially in contact lens wearers",
+      "must_not_miss": true,
+      "trigger": "Contact lens wear with eye pain, photophobia, or decreased vision",
+      "discriminators": {
+        "history": [
+          "Contact lens wear, especially overnight or with poor hygiene",
+          "Severe eye pain rather than grittiness",
+          "Photophobia and tearing",
+          "Decreased or blurred vision"
+        ],
+        "exam": [
+          "Corneal opacity, infiltrate, or fluorescein uptake",
+          "Ciliary (perilimbal) injection",
+          "Anterior chamber cells or hypopyon in severe cases",
+          "Reduced visual acuity"
+        ],
+        "labs": [
+          "Corneal scraping for culture and Gram stain when a corneal ulcer is present"
+        ],
+        "imaging": []
+      }
+    },
+    {
+      "name": "Acute angle-closure glaucoma",
+      "slug": "acute-angle-closure-glaucoma",
+      "why_considered": "A red, painful eye that can be confused with conjunctivitis if the pain and visual symptoms are not elicited",
+      "must_not_miss": true,
+      "trigger": "Severe eye pain with headache, nausea, or halos around lights",
+      "discriminators": {
+        "history": [
+          "Sudden, severe eye or brow pain",
+          "Nausea and vomiting",
+          "Blurred vision with colored halos around lights",
+          "Headache, sometimes mistaken for migraine"
+        ],
+        "exam": [
+          "Fixed, mid-dilated pupil",
+          "Corneal haze or steamy cornea",
+          "Markedly elevated intraocular pressure on tonometry",
+          "Shallow anterior chamber on penlight exam",
+          "Conjunctival injection with a hazy cornea"
+        ],
+        "labs": [],
+        "imaging": [
+          "Gonioscopy showing a closed angle when performed by an ophthalmologist"
+        ]
+      }
+    },
+    {
+      "name": "Orbital cellulitis",
+      "slug": "orbital-cellulitis",
+      "why_considered": "Eyelid swelling and redness with discharge can be the presenting picture of a deeper orbital infection",
+      "must_not_miss": true,
+      "trigger": "Proptosis, painful or limited eye movements, or systemic illness",
+      "discriminators": {
+        "history": [
+          "Fever and systemic illness",
+          "Pain with eye movement",
+          "Recent sinusitis or dental infection",
+          "Rapidly progressive eyelid swelling"
+        ],
+        "exam": [
+          "Proptosis and resistance to retropulsion",
+          "Painful or restricted extraocular movements",
+          "Marked periorbital erythema, induration, and tenderness",
+          "Decreased visual acuity or afferent pupillary defect in severe cases"
+        ],
+        "labs": [
+          "Leukocytosis and elevated inflammatory markers",
+          "Blood cultures when systemic infection is suspected"
+        ],
+        "imaging": [
+          "CT orbits with contrast showing orbital fat stranding, abscess, or sinusitis"
+        ]
+      }
+    },
+    {
+      "name": "Blepharitis",
+      "slug": "blepharitis",
+      "why_considered": "Crusted, matted lashes and red eyes are common in blepharitis and can mimic bacterial conjunctivitis",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Chronic, recurrent eyelid irritation rather than acute onset",
+          "Burning or foreign body sensation along the lid margins",
+          "Often bilateral and associated with rosacea or seborrheic dermatitis"
+        ],
+        "exam": [
+          "Erythema and crusting localized to the eyelid margins",
+          "Collarettes or scales around the lash bases",
+          "Conjunctival injection is mild and secondary",
+          "Meibomian gland dysfunction or chalazia"
+        ],
+        "labs": [],
+        "imaging": []
+      }
+    },
+    {
+      "name": "Nasolacrimal duct obstruction",
+      "slug": "nasolacrimal-duct-obstruction",
+      "why_considered": "Chronic tearing and discharge in infants and adults can resemble infectious conjunctivitis",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Chronic tearing rather than acute redness",
+          "Discharge expressed by pressing over the lacrimal sac",
+          "Recurrent episodes in the same eye",
+          "Common in infants with a congenital obstruction"
+        ],
+        "exam": [
+          "Tearing with a normal or minimally injected conjunctiva",
+          "Reflux of mucoid or purulent material from the punctum with pressure over the lacrimal sac",
+          "Mild redness limited to the medial canthus"
+        ],
+        "labs": [],
+        "imaging": [
+          "Dacryocystography or CT in atypical or refractory cases"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Mild redness and discharge in one eye, no pain, normal vision, no systemic symptoms; often self-limited",
+      "moderate": "Marked purulent discharge with eyelid crusting and mild discomfort, but vision remains normal and there is no corneal involvement",
+      "severe": "Copious purulent discharge, marked eyelid swelling, eye pain, or photophobia; may indicate a hyperacute or complicated infection",
+      "critical": "Not applicable; bacterial conjunctivitis itself is not life-threatening, but gonococcal infection or orbital spread can be sight-threatening or systemic"
+    },
+    "red_flags": [
+      {
+        "finding": "Decreased visual acuity",
+        "meaning": "Suggests corneal involvement, keratitis, or another serious cause of red eye; needs urgent ophthalmology evaluation"
+      },
+      {
+        "finding": "Severe eye pain or photophobia",
+        "meaning": "Suggests keratitis, uveitis, or acute angle-closure glaucoma rather than simple conjunctivitis"
+      },
+      {
+        "finding": "Corneal opacity or fluorescein uptake",
+        "meaning": "Corneal ulcer or keratitis; requires urgent ophthalmology referral"
+      },
+      {
+        "finding": "Proptosis, painful or limited eye movements, or marked periorbital swelling",
+        "meaning": "Suggests orbital cellulitis or abscess; needs urgent imaging and IV antibiotics"
+      },
+      {
+        "finding": "Copious purulent discharge with rapid onset and marked eyelid swelling",
+        "meaning": "Suggests hyperacute gonococcal conjunctivitis; requires systemic antibiotics and urgent ophthalmology involvement"
+      },
+      {
+        "finding": "Contact lens wear with pain or vision change",
+        "meaning": "Raises concern for bacterial keratitis; remove lens and refer urgently"
+      },
+      {
+        "finding": "Neonate with purulent eye discharge",
+        "meaning": "Consider gonococcal or chlamydial ophthalmia neonatorum; requires urgent evaluation and systemic treatment"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Corneal ulcer or keratitis",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Severe eye pain",
+          "Photophobia",
+          "Decreased vision",
+          "Corneal opacity or fluorescein uptake"
+        ]
+      },
+      {
+        "name": "Hyperacute gonococcal conjunctivitis with corneal perforation",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Copious purulent discharge",
+          "Marked eyelid swelling",
+          "Rapid progression",
+          "Corneal haze or perforation"
+        ]
+      },
+      {
+        "name": "Orbital cellulitis",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Proptosis",
+          "Painful eye movements",
+          "Fever",
+          "Marked periorbital swelling"
+        ]
+      },
+      {
+        "name": "Chronic or recurrent conjunctivitis",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Symptoms persisting beyond 2 weeks",
+          "Recurrent episodes",
+          "Associated blepharitis or nasolacrimal duct obstruction"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Very common in daycare and school settings; often presents with matted eyelids and irritability rather than reported eye discomfort; usually responds well to topical antibiotics."
+      },
+      {
+        "population": "infants",
+        "differences": "Neonatal conjunctivitis can be caused by gonococcus or chlamydia and requires urgent evaluation and systemic treatment; consider nasolacrimal duct obstruction in chronic tearing."
+      },
+      {
+        "population": "older_adults",
+        "differences": "May have less prominent redness and discharge; higher risk of complications and slower healing; consider blepharitis and dry eye as contributing factors."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Higher risk of severe, prolonged, or atypical infection with corneal involvement; lower threshold for culture and ophthalmology referral."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Topical ophthalmic antibiotics are generally considered safe; avoid systemic fluoroquinolones when possible; consider chlamydial infection in the differential."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "When did the redness and discharge start, and how quickly did it come on?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Gradual onset over 1–2 days; a hyperacute course over hours with copious discharge suggests gonococcal infection"
+      },
+      {
+        "question": "What does the discharge look like — thick and yellow-green, or watery?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Thick, purulent, yellow-green discharge that crusts the lashes; watery discharge points to viral or allergic causes"
+      },
+      {
+        "question": "Is it one eye or both, and did it spread from one to the other?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Often starts in one eye and spreads to the other within a few days; bilateral symmetric itching suggests allergy"
+      },
+      {
+        "question": "Do your eyes itch?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Prominent itching argues for allergic conjunctivitis; bacterial disease is gritty or burning rather than itchy"
+      },
+      {
+        "question": "Is your vision blurry or decreased, and does it clear with blinking?",
+        "category": "ros",
+        "importance": "essential",
+        "looking_for": "Vision should be normal; true vision loss suggests keratitis, uveitis, or glaucoma"
+      },
+      {
+        "question": "How severe is the pain, and are you bothered by light?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Severe pain or photophobia suggests corneal involvement or acute angle-closure glaucoma, not simple conjunctivitis"
+      },
+      {
+        "question": "Do you wear contact lenses, and do you sleep in them or clean them properly?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Contact lens wear with pain or vision change raises concern for bacterial keratitis"
+      },
+      {
+        "question": "Have you had a recent cold, sore throat, or sick contacts with red eyes?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "A viral prodrome or known outbreak points to viral conjunctivitis"
+      },
+      {
+        "question": "Have you had eye surgery, eye injections, or a foreign body in the eye?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Recent ocular surgery or trauma raises the risk of a deeper infection"
+      },
+      {
+        "question": "Do you have allergies, eczema, or asthma, and is this seasonal?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Atopy with a seasonal pattern favors allergic conjunctivitis"
+      },
+      {
+        "question": "Are you using any eye drops, ointments, or topical steroids?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Topical steroids can mask or worsen infection; preserved drops can cause irritation"
+      },
+      {
+        "question": "Any fever, chills, or feeling generally unwell?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Systemic symptoms are unusual and suggest orbital cellulitis or another systemic process"
+      },
+      {
+        "question": "Is there any chance you could be pregnant?",
+        "category": "obstetric",
+        "importance": "optional",
+        "looking_for": "Avoid systemic fluoroquinolones in pregnancy; consider chlamydial infection"
+      }
+    ],
+    "accepted_names": [
+      "Bacterial conjunctivitis",
+      "Conjunctivitis - bacterial",
+      "Conjunctivitis bacterial",
+      "Bacterial pink eye",
+      "Purulent conjunctivitis"
+    ],
+    "reasoning_points": [
+      "Acute onset of redness with thick, purulent, yellow-green discharge that crusts the eyelids, worse on waking",
+      "Gritty or burning discomfort rather than prominent itching",
+      "Diffuse conjunctival injection that fades toward the limbus, with discharge pooling in the inferior fornix",
+      "Visual acuity, pupillary responses, cornea, and extraocular movements are normal",
+      "No severe pain, photophobia, proptosis, or periorbital cellulitis",
+      "Viral and allergic conjunctivitis considered and made less likely by the purulent discharge and absence of itching or viral prodrome",
+      "Serious look-alikes (keratitis, acute angle-closure glaucoma, orbital cellulitis) excluded by history and exam",
+      "Diagnosis is clinical; routine labs and imaging are not indicated for uncomplicated cases"
+    ],
+    "difficulty": {
+      "easy": [
+        "Child in daycare with one red eye and yellow-green discharge crusting the lashes on waking",
+        "Normal vision, no pain, no photophobia",
+        "Diffuse conjunctival injection with purulent discharge in the inferior fornix",
+        "No sick contacts or itching"
+      ],
+      "medium": [
+        "Adult contact lens wearer with redness and discharge but no pain or vision change",
+        "Bilateral involvement with mild eyelid swelling and crusting",
+        "Overlap with viral conjunctivitis when discharge is only mildly purulent",
+        "Older adult with chronic blepharitis and secondary conjunctival injection"
+      ],
+      "hard": [
+        "Neonate with purulent eye discharge raising concern for gonococcal or chlamydial ophthalmia neonatorum",
+        "Hyperacute copious purulent discharge with marked eyelid swelling suggesting gonococcal infection",
+        "Contact lens wearer with early keratitis presenting as 'just pink eye'",
+        "Patient with recurrent episodes due to nasolacrimal duct obstruction",
+        "Immunocompromised patient with prolonged, atypical course and corneal involvement"
+      ]
+    }
+  }
+}

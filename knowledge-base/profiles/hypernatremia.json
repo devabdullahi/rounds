@@ -1,0 +1,1434 @@
+{
+  "schema_version": "0.2",
+  "slug": "hypernatremia",
+  "triage": {
+    "name": "Hypernatremia",
+    "case_suitable": true,
+    "reason": "Electrolyte disturbance with a clear presentation (thirst, confusion, volume status) reachable by history, exam and labs; good teaching on free water deficit and look-alikes.",
+    "kind": "disease",
+    "category": "electrolyte disorder",
+    "organ_systems": [
+      "endocrine",
+      "renal"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "familyMedicine",
+      "pediatrics",
+      "emergency"
+    ],
+    "commonness": "common",
+    "settings": [
+      "inpatient",
+      "clinic",
+      "icu"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:24:24Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:48:31Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:48:46Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:48:56Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:49:07Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:49:13Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "exam: term 'Reduced skin turgor' not found in SNOMED CT",
+        "exam: term 'Neurologic examination normal' not found in SNOMED CT",
+        "differential diabetes-insipidus: no profile yet",
+        "differential diabetic-ketoacidosis: no profile yet",
+        "differential hypercalcemia: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 60,
+      "typical_max": 90,
+      "peak": "older adults, especially those with impaired thirst or limited access to water",
+      "possible_min": 0,
+      "possible_max": 110
+    },
+    "sex": "either",
+    "demographics": [
+      "Most common in older adults, particularly those who are institutionalized, bedbound, or dependent on others for fluid intake",
+      "Also occurs in infants and young children, especially with diarrhea or inadequate breastfeeding",
+      "More common in patients with impaired mental status or those who cannot communicate thirst"
+    ],
+    "risk_factors": [
+      {
+        "text": "Impaired thirst or limited access to water (e.g., bedbound, dementia, sedation)",
+        "strength": "strong"
+      },
+      {
+        "text": "Gastrointestinal losses (vomiting, diarrhea, nasogastric suction)",
+        "strength": "strong"
+      },
+      {
+        "text": "Fever and increased insensible losses",
+        "strength": "moderate"
+      },
+      {
+        "text": "Diabetes insipidus (central or nephrogenic)",
+        "strength": "moderate"
+      },
+      {
+        "text": "Osmotic diuresis (e.g., hyperglycemia, mannitol)",
+        "strength": "moderate"
+      },
+      {
+        "text": "Advanced age",
+        "strength": "moderate"
+      },
+      {
+        "text": "Tube feeding without adequate free water",
+        "strength": "moderate"
+      },
+      {
+        "text": "Diuretic use",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Dementia or other causes of impaired cognition",
+      "Diabetes mellitus",
+      "Chronic kidney disease",
+      "Heart failure",
+      "Gastrointestinal illness with vomiting or diarrhea"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Lives alone or in a long-term care facility",
+      "Limited ability to obtain fluids independently"
+    ],
+    "exposures": [
+      "Hot weather or prolonged exertion without fluid intake",
+      "High-protein or high-sodium tube feedings"
+    ],
+    "risk_medications": [
+      "furosemide",
+      "hydrochlorothiazide",
+      "mannitol",
+      "prednisone",
+      "lithium",
+      "carbamazepine"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I'm so thirsty",
+        "frequency": "almost_always",
+        "term": "Thirst",
+        "snomed_verified": true
+      },
+      {
+        "text": "I feel confused and weak",
+        "frequency": "common",
+        "term": "Confusion",
+        "snomed_verified": true
+      },
+      {
+        "text": "My mouth is very dry",
+        "frequency": "common",
+        "term": "Dry mouth",
+        "snomed_verified": true
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual over hours to days, depending on the cause and access to water",
+      "duration": "Usually days, but can be acute in infants or hospitalized patients",
+      "progression": "Worsens as free water deficit increases; neurologic symptoms can progress from lethargy to seizures and coma if untreated",
+      "location": "Generalized; neurologic symptoms are diffuse",
+      "radiation": "Not applicable",
+      "quality": "Thirst and dryness are constant; neurologic symptoms range from mild confusion to stupor",
+      "severity": "Mild to severe; severity correlates with the degree and rapidity of sodium rise",
+      "timing": "Constant, often worse when unable to access fluids",
+      "aggravating": [
+        "Lack of access to water",
+        "Fever",
+        "Vomiting or diarrhea",
+        "High-sodium intake"
+      ],
+      "relieving": [
+        "Drinking water",
+        "Receiving intravenous fluids"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Thirst",
+          "frequency": "almost_always",
+          "term": "Thirst",
+          "snomed_verified": true
+        },
+        {
+          "text": "Dry mouth and mucous membranes",
+          "frequency": "common",
+          "term": "Dry mouth",
+          "snomed_verified": true
+        },
+        {
+          "text": "Weakness",
+          "frequency": "common",
+          "term": "Weakness",
+          "snomed_verified": true
+        },
+        {
+          "text": "Confusion",
+          "frequency": "common",
+          "term": "Confusion",
+          "snomed_verified": true
+        },
+        {
+          "text": "Lethargy",
+          "frequency": "sometimes",
+          "term": "Lethargy",
+          "snomed_verified": true
+        },
+        {
+          "text": "Irritability",
+          "frequency": "sometimes",
+          "term": "Irritability",
+          "snomed_verified": true
+        },
+        {
+          "text": "Muscle twitching",
+          "frequency": "sometimes",
+          "term": "Muscle twitching",
+          "snomed_verified": true
+        },
+        {
+          "text": "Seizures",
+          "frequency": "rare",
+          "term": "Seizure",
+          "snomed_verified": true
+        },
+        {
+          "text": "Coma",
+          "frequency": "rare",
+          "term": "Coma",
+          "snomed_verified": true
+        }
+      ],
+      "pertinent_negatives": [
+        "Polyuria with dilute urine (suggests diabetes insipidus rather than simple dehydration)",
+        "Recent head trauma or neurosurgery (suggests central diabetes insipidus)",
+        "Access to excessive free water (would argue against hypernatremia)",
+        "Normal thirst mechanism (absence of thirst suggests hypothalamic dysfunction)"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Thirst",
+            "frequency": "almost_always",
+            "term": "Thirst",
+            "snomed_verified": true
+          },
+          {
+            "text": "Weakness",
+            "frequency": "common",
+            "term": "Weakness",
+            "snomed_verified": true
+          },
+          {
+            "text": "Fever",
+            "frequency": "sometimes",
+            "term": "Fever",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Weight loss",
+          "Night sweats"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Confusion",
+            "frequency": "common",
+            "term": "Confusion",
+            "snomed_verified": true
+          },
+          {
+            "text": "Lethargy",
+            "frequency": "sometimes",
+            "term": "Lethargy",
+            "snomed_verified": true
+          },
+          {
+            "text": "Irritability",
+            "frequency": "sometimes",
+            "term": "Irritability",
+            "snomed_verified": true
+          },
+          {
+            "text": "Seizure",
+            "frequency": "rare",
+            "term": "Seizure",
+            "snomed_verified": true
+          },
+          {
+            "text": "Coma",
+            "frequency": "rare",
+            "term": "Coma",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Focal weakness",
+          "Headache",
+          "Vision changes"
+        ],
+        "argues_against": [
+          "Focal neurologic deficit suggesting stroke"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Dry mouth",
+            "frequency": "common",
+            "term": "Dry mouth",
+            "snomed_verified": true
+          },
+          {
+            "text": "Nausea",
+            "frequency": "sometimes",
+            "term": "Nausea",
+            "snomed_verified": true
+          },
+          {
+            "text": "Vomiting",
+            "frequency": "sometimes",
+            "term": "Vomiting",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Diarrhea",
+          "Abdominal pain"
+        ],
+        "argues_against": [
+          "Severe gastrointestinal losses as sole cause"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [
+          {
+            "text": "Polyuria",
+            "frequency": "sometimes",
+            "term": "Polyuria",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Dysuria",
+          "Hematuria",
+          "Flank pain"
+        ],
+        "argues_against": [
+          "Urinary tract infection"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Muscle twitching",
+            "frequency": "sometimes",
+            "term": "Muscle twitching",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Joint pain",
+          "Muscle pain"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "infants",
+        "how_it_differs": "Infants cannot express thirst; they present with irritability, high-pitched cry, poor feeding, and dehydration signs. Hypernatremia often results from inadequate breastfeeding or improperly mixed formula.",
+        "missing_classic_features": [
+          "Thirst",
+          "Confusion"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "Older adults may have blunted thirst and present with confusion, falls, or decreased oral intake without reporting thirst. Hypernatremia often develops insidiously in nursing homes or with tube feeding.",
+        "missing_classic_features": [
+          "Thirst",
+          "Clear history of fluid loss"
+        ]
+      },
+      {
+        "population": "children",
+        "how_it_differs": "Children with gastroenteritis may present with hypernatremia due to diarrhea and inadequate water intake; they can appear lethargic or irritable and may have doughy skin.",
+        "missing_classic_features": [
+          "Thirst",
+          "Confusion"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Alert, thirsty, appears well otherwise",
+      "moderate": "Restless, irritable, dry mouth, reduced skin turgor",
+      "severe": "Lethargic, confused, sunken eyes, markedly dry mucous membranes",
+      "critical": "Stuporous or comatose, shock, seizures, or severe dehydration"
+    },
+    "findings": [
+      {
+        "id": "thirst",
+        "region": "general",
+        "maneuver": "Ask the patient about thirst and observe their response to offered water",
+        "finding": "Reports intense thirst and drinks eagerly when water is offered",
+        "frequency": "almost_always",
+        "significance": "supports",
+        "importance": "essential",
+        "term": "Thirst",
+        "snomed_verified": true
+      },
+      {
+        "id": "dry-mouth",
+        "region": "heent",
+        "maneuver": "Inspect the oral mucosa and tongue",
+        "finding": "Dry, sticky oral mucosa and tongue",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Dry mouth",
+        "snomed_verified": true
+      },
+      {
+        "id": "reduced-skin-turgor",
+        "region": "skin",
+        "maneuver": "Pinch the skin over the forearm or abdomen and release",
+        "finding": "Skin tents and returns slowly",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Reduced skin turgor",
+        "snomed_verified": false
+      },
+      {
+        "id": "sunken-eyes",
+        "region": "heent",
+        "maneuver": "Inspect the eyes and periorbital area",
+        "finding": "Sunken appearance of the eyes",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Sunken eyes",
+        "snomed_verified": true
+      },
+      {
+        "id": "confusion",
+        "region": "mental_status",
+        "maneuver": "Assess orientation to person, place, and time",
+        "finding": "Disorientation or confusion",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "essential",
+        "term": "Confusion",
+        "snomed_verified": true
+      },
+      {
+        "id": "lethargy",
+        "region": "mental_status",
+        "maneuver": "Observe the patient's level of alertness and response to stimulation",
+        "finding": "Reduced alertness, drowsy, slow to respond",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Lethargy",
+        "snomed_verified": true
+      },
+      {
+        "id": "irritability",
+        "region": "mental_status",
+        "maneuver": "Observe the patient's mood and behavior",
+        "finding": "Agitation or irritability",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Irritability",
+        "snomed_verified": true
+      },
+      {
+        "id": "seizure",
+        "region": "neuro",
+        "maneuver": "Observe for seizure activity or ask about recent seizures",
+        "finding": "Generalized tonic-clonic seizure activity",
+        "frequency": "rare",
+        "min_severity": "critical",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Seizure",
+        "snomed_verified": true
+      },
+      {
+        "id": "coma",
+        "region": "mental_status",
+        "maneuver": "Assess level of consciousness using the Glasgow Coma Scale",
+        "finding": "Unresponsive to verbal and painful stimuli",
+        "frequency": "rare",
+        "min_severity": "critical",
+        "significance": "supports",
+        "importance": "essential",
+        "term": "Coma",
+        "snomed_verified": true
+      },
+      {
+        "id": "muscle-twitching",
+        "region": "musculoskeletal",
+        "maneuver": "Observe for spontaneous muscle fasciculations",
+        "finding": "Visible muscle twitching or fasciculations",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Muscle twitching",
+        "snomed_verified": true
+      },
+      {
+        "id": "normal-neurologic-exam",
+        "region": "neuro",
+        "maneuver": "Perform a focused neurologic exam including strength, sensation, and cranial nerves",
+        "finding": "No focal neurologic deficits",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Neurologic examination normal",
+        "snomed_verified": false
+      },
+      {
+        "id": "no-jugular-venous-distension",
+        "region": "neck",
+        "maneuver": "Inspect the neck veins at 45 degrees",
+        "finding": "Jugular veins not distended",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Jugular venous distension",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-rales",
+        "region": "lung",
+        "maneuver": "Auscultate the lungs",
+        "finding": "Clear breath sounds without crackles",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Rales",
+        "snomed_verified": true
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 98.6,
+        "max": 99.5
+      },
+      "moderate": {
+        "min": 99.0,
+        "max": 100.4
+      },
+      "severe": {
+        "min": 100.0,
+        "max": 102.0
+      },
+      "critical": {
+        "min": 101.0,
+        "max": 104.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 100
+      },
+      "moderate": {
+        "min": 90,
+        "max": 120
+      },
+      "severe": {
+        "min": 110,
+        "max": 140
+      },
+      "critical": {
+        "min": 120,
+        "max": 160
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 12,
+        "max": 20
+      },
+      "moderate": {
+        "min": 18,
+        "max": 24
+      },
+      "severe": {
+        "min": 22,
+        "max": 30
+      },
+      "critical": {
+        "min": 26,
+        "max": 36
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 100,
+        "max": 140
+      },
+      "moderate": {
+        "min": 90,
+        "max": 120
+      },
+      "severe": {
+        "min": 80,
+        "max": 100
+      },
+      "critical": {
+        "min": 60,
+        "max": 90
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 60,
+        "max": 90
+      },
+      "moderate": {
+        "min": 50,
+        "max": 80
+      },
+      "severe": {
+        "min": 40,
+        "max": 70
+      },
+      "critical": {
+        "min": 30,
+        "max": 60
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 95,
+        "max": 100
+      },
+      "moderate": {
+        "min": 92,
+        "max": 98
+      },
+      "severe": {
+        "min": 88,
+        "max": 95
+      },
+      "critical": {
+        "min": 80,
+        "max": 92
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "na",
+      "ranges": {
+        "mild": {
+          "min": 146,
+          "max": 150
+        },
+        "moderate": {
+          "min": 151,
+          "max": 155
+        },
+        "severe": {
+          "min": 156,
+          "max": 160
+        },
+        "critical": {
+          "min": 161,
+          "max": 180
+        }
+      },
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "The serum sodium defines the disorder; severity and the speed of the rise, not the absolute value alone, drive symptoms."
+    },
+    {
+      "test_id": "osm",
+      "ranges": {
+        "mild": {
+          "min": 296,
+          "max": 305
+        },
+        "moderate": {
+          "min": 300,
+          "max": 315
+        },
+        "severe": {
+          "min": 310,
+          "max": 330
+        },
+        "critical": {
+          "min": 320,
+          "max": 350
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Measured serum osmolality is high in hypernatremia; a normal or low value should prompt consideration of pseudohypernatremia or another osmolar disturbance."
+    },
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "moderate": {
+          "min": 180,
+          "max": 400
+        },
+        "severe": {
+          "min": 250,
+          "max": 600
+        },
+        "critical": {
+          "min": 300,
+          "max": 800
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Hyperglycemia causes osmotic diuresis and free water loss; it also raises measured sodium by dilutional correction, so interpret together."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "mild": {
+          "min": 21,
+          "max": 30
+        },
+        "moderate": {
+          "min": 25,
+          "max": 45
+        },
+        "severe": {
+          "min": 35,
+          "max": 70
+        },
+        "critical": {
+          "min": 50,
+          "max": 100
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "A high BUN with a BUN/creatinine ratio above 20 supports dehydration and prerenal azotemia."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "mild": {
+          "min": 1.2,
+          "max": 1.5
+        },
+        "moderate": {
+          "min": 1.4,
+          "max": 2.0
+        },
+        "severe": {
+          "min": 1.8,
+          "max": 3.0
+        },
+        "critical": {
+          "min": 2.5,
+          "max": 5.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Creatinine rises with volume depletion; a rising creatinine with high BUN suggests prerenal physiology."
+    },
+    {
+      "test_id": "ua_sg",
+      "ranges": {
+        "moderate": {
+          "min": 1.02,
+          "max": 1.03
+        },
+        "severe": {
+          "min": 1.025,
+          "max": 1.035
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "High urine specific gravity supports water conservation and intact antidiuretic hormone action; a low specific gravity points toward diabetes insipidus."
+    },
+    {
+      "test_id": "ua_ketones",
+      "qualitative": {
+        "moderate": "Small",
+        "severe": "Moderate"
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Ketones suggest poor intake or diabetic ketoacidosis as a contributor."
+    },
+    {
+      "test_id": "k",
+      "ranges": {
+        "mild": {
+          "min": 3.2,
+          "max": 3.5
+        },
+        "moderate": {
+          "min": 2.8,
+          "max": 3.4
+        },
+        "severe": {
+          "min": 2.5,
+          "max": 3.2
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hypokalemia often accompanies diuretic use or gastrointestinal losses and can worsen with correction."
+    },
+    {
+      "test_id": "hco3",
+      "ranges": {
+        "mild": {
+          "min": 20,
+          "max": 22
+        },
+        "moderate": {
+          "min": 16,
+          "max": 21
+        },
+        "severe": {
+          "min": 12,
+          "max": 18
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Low bicarbonate suggests a metabolic acidosis from diarrhea, lactic acidosis, or ketoacidosis."
+    },
+    {
+      "test_id": "hct",
+      "ranges": {
+        "mild": {
+          "min": 46,
+          "max": 50
+        },
+        "moderate": {
+          "min": 48,
+          "max": 54
+        },
+        "severe": {
+          "min": 52,
+          "max": 60
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Hemoconcentration reflects water loss but is not specific."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Check in anyone of childbearing potential before imaging or treatment decisions; pregnancy alters free water handling."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rate",
+        "finding": "Sinus tachycardia from volume depletion or fever",
+        "frequency": "common",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Sinus rhythm; no arrhythmia specific to hypernatremia",
+        "frequency": "almost_always"
+      },
+      {
+        "feature": "qt",
+        "finding": "QT interval shortening can occur with severe hypernatremia and hyperosmolality",
+        "frequency": "rare",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "conduction",
+        "finding": "Nonspecific ST-T changes in severe dehydration",
+        "frequency": "rare",
+        "min_severity": "severe"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "CT head without contrast",
+      "modality": "ct",
+      "preferred_when": "Altered mental status, seizures, or focal neurologic findings",
+      "findings": [
+        {
+          "text": "No acute intracranial abnormality in most cases",
+          "frequency": "common"
+        },
+        {
+          "text": "Cerebral edema or diffuse white matter changes in severe hypernatremia",
+          "frequency": "rare"
+        },
+        {
+          "text": "Intracranial hemorrhage or mass as an alternative cause of altered mental status",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "MRI brain without contrast",
+      "modality": "mri",
+      "preferred_when": "Persistent neurologic symptoms with a nondiagnostic CT",
+      "findings": [
+        {
+          "text": "Diffuse white matter signal changes or osmotic demyelination in severe cases",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Chest x-ray",
+      "modality": "xray",
+      "preferred_when": "Suspected pneumonia or pulmonary source of fever and insensible losses",
+      "findings": [
+        {
+          "text": "Infiltrate consistent with pneumonia",
+          "frequency": "sometimes"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "bmp",
+        "why": "Confirms hypernatremia and shows potassium, bicarbonate, BUN and creatinine for volume status and cause"
+      },
+      {
+        "test": "osm",
+        "why": "Confirms hyperosmolality and helps exclude pseudohypernatremia"
+      },
+      {
+        "test": "glucose",
+        "why": "Identifies hyperglycemia as a cause of osmotic diuresis"
+      },
+      {
+        "test": "ua",
+        "why": "Assesses urine concentration and ketones to separate water loss from diabetes insipidus"
+      },
+      {
+        "test": "cbc",
+        "why": "Looks for infection or hemoconcentration"
+      },
+      {
+        "test": "hcg",
+        "why": "Required in anyone who could be pregnant before imaging or treatment",
+        "only_if": "patient is of childbearing potential"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Serum antidiuretic hormone (ADH) level",
+        "why": "Low or inappropriately normal ADH with dilute urine supports diabetes insipidus",
+        "only_if": "polyuria with dilute urine suggests diabetes insipidus"
+      },
+      {
+        "test": "Water deprivation test",
+        "why": "Distinguishes central from nephrogenic diabetes insipidus when the cause is unclear",
+        "only_if": "suspected diabetes insipidus and initial labs are nondiagnostic"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "Urine osmolality",
+        "why": "A high urine osmolality supports water conservation; a low value suggests diabetes insipidus"
+      },
+      {
+        "test": "crp",
+        "why": "Supports an infectious or inflammatory cause when elevated"
+      },
+      {
+        "test": "lactate",
+        "why": "Assesses hypoperfusion in severe dehydration or sepsis"
+      },
+      {
+        "test": "tsh",
+        "why": "Evaluates thyroid disease that can affect water balance",
+        "only_if": "suspected endocrine cause"
+      },
+      {
+        "test": "cortisol_am",
+        "why": "Evaluates adrenal insufficiency as a contributor",
+        "only_if": "suspected adrenal insufficiency"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "CT head without contrast",
+        "why": "Not routine; reserved for altered mental status, seizures, or focal deficits",
+        "only_if": "altered mental status, seizure, or focal neurologic deficit"
+      },
+      {
+        "test": "MRI brain without contrast",
+        "why": "Not routine; reserved for persistent neurologic symptoms with nondiagnostic CT",
+        "only_if": "persistent neurologic symptoms and nondiagnostic CT"
+      },
+      {
+        "test": "Chest x-ray",
+        "why": "Not routine; reserved for suspected pneumonia or pulmonary source of fever",
+        "only_if": "suspected pneumonia or pulmonary source of fever"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in hypernatremia"
+      },
+      {
+        "test": "lipase",
+        "why": "Not needed unless abdominal pain suggests pancreatitis"
+      }
+    ],
+    "decision_points": [
+      "Confirm true hypernatremia with serum osmolality before treating",
+      "Assess volume status to choose fluid type and rate",
+      "Correct sodium slowly to avoid cerebral edema, especially in chronic hypernatremia",
+      "Check pregnancy test before imaging or treatment in anyone who could be pregnant"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Dehydration (volume depletion without hypernatremia)",
+      "slug": "dehydration",
+      "why_considered": "Both cause thirst, dry mucous membranes, reduced skin turgor, tachycardia and prerenal azotemia; dehydration is the most common look-alike.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Poor oral intake, vomiting, diarrhea, or diuretic use",
+          "Thirst with access to water and ability to drink"
+        ],
+        "exam": [
+          "Dry mucous membranes and reduced skin turgor",
+          "Tachycardia and orthostatic hypotension"
+        ],
+        "labs": [
+          "Serum sodium normal or low rather than elevated",
+          "High BUN/creatinine ratio with concentrated urine"
+        ]
+      }
+    },
+    {
+      "name": "Diabetes insipidus (central or nephrogenic)",
+      "slug": "diabetes-insipidus",
+      "why_considered": "Free water loss from dilute polyuria is a classic cause of hypernatremia, especially when the patient cannot keep up with thirst.",
+      "must_not_miss": true,
+      "trigger": "Marked polyuria with dilute urine, or hypernatremia after head trauma, neurosurgery, or with lithium use",
+      "discriminators": {
+        "history": [
+          "Large volumes of dilute urine, often waking at night to drink and urinate",
+          "Recent head trauma, pituitary surgery, or lithium/carbamazepine use"
+        ],
+        "exam": [
+          "Signs of volume depletion may be mild despite large urine output",
+          "Neurologic findings if a hypothalamic or pituitary lesion is present"
+        ],
+        "labs": [
+          "Low urine osmolality and low urine specific gravity despite hypernatremia",
+          "Low or inappropriately normal ADH in central diabetes insipidus",
+          "Water deprivation test distinguishes central from nephrogenic forms"
+        ],
+        "imaging": [
+          "MRI brain showing absent posterior pituitary bright spot or a sellar mass in central diabetes insipidus"
+        ]
+      }
+    },
+    {
+      "name": "Osmotic diuresis from hyperglycemia",
+      "slug": "diabetic-ketoacidosis",
+      "why_considered": "Hyperglycemia causes osmotic diuresis with free water loss and can raise the serum sodium, especially in diabetic ketoacidosis or hyperosmolar hyperglycemic state.",
+      "must_not_miss": true,
+      "trigger": "Hyperglycemia with polyuria, polydipsia, and volume depletion",
+      "discriminators": {
+        "history": [
+          "Polyuria, polydipsia, and weight loss",
+          "Known diabetes or new-onset hyperglycemia"
+        ],
+        "exam": [
+          "Kussmaul respirations and fruity breath in ketoacidosis",
+          "Profound dehydration and altered mental status in hyperosmolar state"
+        ],
+        "labs": [
+          "Markedly elevated glucose",
+          "Positive ketones and metabolic acidosis in diabetic ketoacidosis",
+          "Very high effective osmolality in hyperosmolar hyperglycemic state"
+        ]
+      }
+    },
+    {
+      "name": "Pseudohypernatremia",
+      "why_considered": "Laboratory artifact from hyperproteinemia or hyperlipidemia can falsely lower measured sodium by displacement, but true hypernatremia must be confirmed with osmolality.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "No thirst, polyuria, or fluid loss",
+          "Known paraproteinemia or severe hypertriglyceridemia"
+        ],
+        "exam": [
+          "No signs of dehydration or neurologic symptoms"
+        ],
+        "labs": [
+          "Normal measured serum osmolality",
+          "Elevated total protein or triglycerides"
+        ]
+      }
+    },
+    {
+      "name": "Hypercalcemia",
+      "slug": "hypercalcemia",
+      "why_considered": "Causes polyuria, dehydration, confusion, and weakness that can mimic the neurologic and volume findings of hypernatremia.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Bone pain, kidney stones, constipation, or known malignancy",
+          "Polyuria and polydipsia"
+        ],
+        "exam": [
+          "Confusion, lethargy, and dehydration",
+          "Reduced deep tendon reflexes"
+        ],
+        "labs": [
+          "Elevated serum calcium with normal or low sodium",
+          "Shortened QT interval on ECG"
+        ]
+      }
+    },
+    {
+      "name": "Hypoglycemia",
+      "why_considered": "Can present with confusion, irritability, lethargy, and seizures that overlap with the neurologic symptoms of hypernatremia.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Diabetes treated with insulin or sulfonylureas",
+          "Symptoms relieved by eating or glucose administration"
+        ],
+        "exam": [
+          "Diaphoresis, tremor, and tachycardia",
+          "Confusion or seizures that resolve with glucose"
+        ],
+        "labs": [
+          "Low blood glucose with normal sodium"
+        ]
+      }
+    },
+    {
+      "name": "Stroke",
+      "slug": "stroke",
+      "why_considered": "Acute confusion, lethargy, or coma from a cerebrovascular event can resemble the neurologic presentation of severe hypernatremia.",
+      "must_not_miss": true,
+      "trigger": "Focal neurologic deficit or sudden onset of altered mental status",
+      "discriminators": {
+        "history": [
+          "Sudden onset of symptoms",
+          "Focal weakness, numbness, or speech difficulty"
+        ],
+        "exam": [
+          "Focal neurologic deficits such as hemiparesis or facial droop",
+          "Normal volume status and mucous membranes"
+        ],
+        "labs": [
+          "Normal serum sodium and osmolality"
+        ],
+        "imaging": [
+          "Acute infarct or hemorrhage on CT or MRI head"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Serum sodium 146–150 mmol/L; patient is alert, thirsty, and has minimal or no neurologic symptoms; often found incidentally.",
+      "moderate": "Serum sodium 151–155 mmol/L; dry mucous membranes, reduced skin turgor, tachycardia, and mild confusion or irritability.",
+      "severe": "Serum sodium 156–160 mmol/L; marked dehydration, lethargy, confusion, sunken eyes, and risk of seizures.",
+      "critical": "Serum sodium above 160 mmol/L or rapid rise; stupor, coma, seizures, shock, or severe dehydration requiring urgent correction."
+    },
+    "red_flags": [
+      {
+        "finding": "Altered mental status, lethargy, or coma",
+        "meaning": "Severe hypernatremia with cerebral dehydration; requires urgent evaluation and careful correction"
+      },
+      {
+        "finding": "Seizures",
+        "meaning": "Neurologic emergency from severe hyperosmolality; treat promptly while avoiding rapid sodium correction"
+      },
+      {
+        "finding": "Hypotension or tachycardia with poor perfusion",
+        "meaning": "Severe volume depletion or shock; needs immediate fluid resuscitation"
+      },
+      {
+        "finding": "Rapid rise in serum sodium over hours",
+        "meaning": "Acute hypernatremia is more dangerous than chronic and can cause cerebral shrinkage and vascular injury"
+      },
+      {
+        "finding": "Polyuria with dilute urine",
+        "meaning": "Suggests diabetes insipidus and ongoing free water loss; requires specific diagnosis and treatment"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Cerebral edema during correction",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Sodium corrected faster than 10–12 mmol/L per day",
+          "New headache, confusion, seizures, or coma during treatment"
+        ]
+      },
+      {
+        "name": "Seizures",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Serum sodium above 160 mmol/L",
+          "Rapid rise in sodium",
+          "Altered mental status"
+        ]
+      },
+      {
+        "name": "Coma",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Severe hypernatremia",
+          "Untreated or rapidly worsening sodium"
+        ]
+      },
+      {
+        "name": "Acute kidney injury",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Rising creatinine",
+          "Oliguria",
+          "Volume depletion"
+        ]
+      },
+      {
+        "name": "Rhabdomyolysis",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Muscle pain or weakness",
+          "Elevated creatine kinase",
+          "Dark urine"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "infants",
+        "differences": "Cannot express thirst; present with irritability, high-pitched cry, poor feeding, and dehydration. Hypernatremia often results from inadequate breastfeeding or improperly mixed formula. Correction must be slow to avoid cerebral edema."
+      },
+      {
+        "population": "children",
+        "differences": "Often due to gastroenteritis with diarrhea and inadequate water intake; may appear lethargic or irritable with doughy skin. Careful fluid management is needed."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Blunted thirst and reduced renal concentrating ability; often develop hypernatremia insidiously in nursing homes or with tube feeding. May present with confusion, falls, or decreased oral intake without reporting thirst."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Increased total body water and altered osmoregulation; hypernatremia can occur with hyperemesis gravidarum or diabetes insipidus. Treatment must consider fetal safety and maternal volume status."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "Impaired ability to concentrate urine and excrete sodium; higher risk of hypernatremia with inadequate water intake. Fluid and electrolyte management requires close monitoring."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "How much water have you been drinking, and have you been able to get to water when you are thirsty?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Poor oral intake or inability to access fluids; intact thirst with access to water argues against significant hypernatremia"
+      },
+      {
+        "question": "How much urine are you making, and are you getting up at night to urinate?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Large volumes of dilute urine suggest diabetes insipidus or osmotic diuresis rather than simple water deprivation"
+      },
+      {
+        "question": "Have you had vomiting, diarrhea, or a fever?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Gastrointestinal or insensible free water losses as the cause"
+      },
+      {
+        "question": "When did you last feel completely well, and how quickly did the confusion or weakness come on?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Acute versus chronic onset; rapid rise in sodium is more dangerous and changes the correction rate"
+      },
+      {
+        "question": "Have you had a head injury, brain surgery, or a pituitary problem?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Recent head trauma or neurosurgery suggests central diabetes insipidus"
+      },
+      {
+        "question": "Do you have diabetes, kidney disease, or heart failure?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Hyperglycemia causing osmotic diuresis, or renal impairment limiting water handling"
+      },
+      {
+        "question": "Which medicines do you take, including water pills, lithium, carbamazepine, steroids, or mannitol?",
+        "category": "medications",
+        "importance": "essential",
+        "looking_for": "Diuretics, lithium, carbamazepine, mannitol, or steroids that cause water loss or nephrogenic diabetes insipidus"
+      },
+      {
+        "question": "Are you on tube feedings, and is extra free water being given with them?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "High-sodium or high-protein tube feeding without adequate free water"
+      },
+      {
+        "question": "Do you live alone or depend on others to bring you fluids?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Limited access to water, especially in older or bedbound patients"
+      },
+      {
+        "question": "Have you had a seizure, or has anyone noticed you becoming drowsy or hard to wake?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Seizure, lethargy, or coma from severe hypernatremia requiring urgent care"
+      },
+      {
+        "question": "Any muscle twitching, weakness, or muscle pain?",
+        "category": "ros",
+        "importance": "optional",
+        "looking_for": "Neuromuscular irritability or rhabdomyolysis from severe hyperosmolality"
+      }
+    ],
+    "accepted_names": [
+      "Hypernatremia",
+      "High sodium",
+      "Elevated serum sodium",
+      "Sodium - high",
+      "Na high"
+    ],
+    "reasoning_points": [
+      "Serum sodium above the normal range with high serum osmolality confirms true hypernatremia",
+      "Thirst, dry mucous membranes, reduced skin turgor, and tachycardia point to a free water deficit",
+      "History identifies the route of water loss: gastrointestinal, insensible, renal (diabetes insipidus or osmotic diuresis), or inadequate intake",
+      "Urine osmolality and specific gravity separate water conservation from dilute polyuria of diabetes insipidus",
+      "Glucose and BUN/creatinine ratio identify osmotic diuresis and prerenal azotemia",
+      "Volume status guides the choice of fluid and the rate of correction",
+      "Sodium must be corrected slowly to avoid cerebral edema, especially in chronic hypernatremia",
+      "Look-alikes such as dehydration without hypernatremia, diabetes insipidus, hyperglycemic osmotic diuresis, hypercalcemia, and stroke are excluded"
+    ],
+    "difficulty": {
+      "easy": [
+        "Older adult in a nursing home with poor fluid intake and confusion",
+        "Clear thirst, dry mucous membranes, and reduced skin turgor",
+        "Serum sodium elevated with high serum osmolality and concentrated urine",
+        "Rapid improvement in mental status after careful free water replacement"
+      ],
+      "medium": [
+        "Patient with polyuria and dilute urine suggesting diabetes insipidus",
+        "Hyperglycemia with osmotic diuresis and volume depletion",
+        "Mild hypernatremia found incidentally on a basic metabolic panel",
+        "Patient on lithium or carbamazepine with nephrogenic diabetes insipidus"
+      ],
+      "hard": [
+        "Infant with diarrhea and inadequate breastfeeding who cannot report thirst",
+        "Older adult with blunted thirst presenting only with falls or decreased oral intake",
+        "Hypernatremia after head trauma or pituitary surgery with central diabetes insipidus",
+        "Severe hypernatremia with seizures or coma requiring careful correction to avoid cerebral edema",
+        "Pseudohypernatremia from hyperproteinemia or hyperlipidemia with normal osmolality"
+      ]
+    }
+  }
+}

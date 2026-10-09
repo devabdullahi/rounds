@@ -1,0 +1,1098 @@
+{
+  "schema_version": "0.2",
+  "slug": "corneal-abrasion",
+  "triage": {
+    "name": "Corneal abrasion",
+    "case_suitable": true,
+    "reason": "Acute painful red eye after trauma or foreign body; classic history and exam with fluorescein staining make a good case with look-alikes like corneal ulcer and uveitis.",
+    "kind": "injury",
+    "category": "ocular trauma",
+    "organ_systems": [
+      "musculoskeletal"
+    ],
+    "primary_clerkship": "emergency",
+    "secondary_clerkships": [
+      "familyMedicine",
+      "internalMedicine",
+      "pediatrics"
+    ],
+    "commonness": "common",
+    "settings": [
+      "emergency",
+      "clinic"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:24:14Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:46:40Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:47:07Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:47:11Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:47:22Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:47:29Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'slit lamp examination with fluorescein staining' was in ['initial', 'confirmatory'], kept ['initial']",
+        "auto-repaired: workup: 'orbital ct without contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'orbital ct without contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'orbital ct without contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "exam: term 'Corneal fluorescein staining' not found in SNOMED CT",
+        "exam: term 'Extraocular movements full' not found in SNOMED CT",
+        "exam: term 'Ciliary injection' not found in SNOMED CT",
+        "exam: term 'Facial sensation intact' not found in SNOMED CT",
+        "differential corneal-ulcer: no profile yet",
+        "differential retained-foreign-body-eye: no profile yet",
+        "differential viral-conjunctivitis: no profile yet",
+        "differential globe-rupture: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 5,
+      "typical_max": 70,
+      "peak": "20–40",
+      "possible_min": 0,
+      "possible_max": 100
+    },
+    "sex": "either",
+    "demographics": [
+      "Common in people who work with their hands or play contact sports",
+      "More common in contact lens wearers"
+    ],
+    "risk_factors": [
+      {
+        "text": "Contact lens wear",
+        "strength": "strong"
+      },
+      {
+        "text": "Recent eye trauma or foreign body",
+        "strength": "strong"
+      },
+      {
+        "text": "Occupational exposure to dust, metal or wood particles",
+        "strength": "moderate"
+      },
+      {
+        "text": "Dry eye",
+        "strength": "moderate"
+      },
+      {
+        "text": "Participation in contact sports",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Dry eye disease",
+      "Blepharitis",
+      "Prior corneal abrasion"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Works in construction, farming or other dusty trades",
+      "Plays contact sports"
+    ],
+    "exposures": [
+      "Airborne dust, grit or metal shavings",
+      "Fingernail or foreign object to the eye",
+      "Contact lens use"
+    ],
+    "risk_medications": []
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My eye hurts",
+        "frequency": "almost_always",
+        "term": "Eye pain",
+        "snomed_verified": true
+      },
+      {
+        "text": "It feels like something is stuck in my eye",
+        "frequency": "common",
+        "term": "Foreign body sensation in eye",
+        "snomed_verified": true
+      },
+      {
+        "text": "My eye is red and watery",
+        "frequency": "common",
+        "term": "Red eye",
+        "snomed_verified": true
+      }
+    ],
+    "hpi": {
+      "onset": "Sudden, right after the injury or foreign body exposure",
+      "duration": "Minutes to hours at presentation",
+      "progression": "Pain and tearing start immediately and stay constant; they do not worsen over days unless infection develops",
+      "location": "One eye, over the surface of the eye",
+      "radiation": "Pain can radiate to the brow or temple",
+      "quality": "Sharp, gritty, burning or scratching",
+      "severity": "Moderate to severe; often 6–8/10 and worse with blinking",
+      "timing": "Constant, worse with blinking and bright light",
+      "aggravating": [
+        "Blinking",
+        "Bright light",
+        "Rubbing the eye",
+        "Keeping the eye open"
+      ],
+      "relieving": [
+        "Keeping the eye closed",
+        "Dark room",
+        "Topical anesthetic in the emergency department"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Tearing",
+          "frequency": "almost_always",
+          "term": "Tearing",
+          "snomed_verified": true
+        },
+        {
+          "text": "Red eye",
+          "frequency": "almost_always",
+          "term": "Red eye",
+          "snomed_verified": true
+        },
+        {
+          "text": "Foreign body sensation",
+          "frequency": "common",
+          "term": "Foreign body sensation in eye",
+          "snomed_verified": true
+        },
+        {
+          "text": "Light sensitivity",
+          "frequency": "common",
+          "term": "Photophobia",
+          "snomed_verified": true
+        },
+        {
+          "text": "Blurred vision",
+          "frequency": "sometimes",
+          "term": "Blurred vision",
+          "snomed_verified": true
+        },
+        {
+          "text": "Eyelid spasm",
+          "frequency": "sometimes",
+          "term": "Blepharospasm",
+          "snomed_verified": true
+        },
+        {
+          "text": "Headache",
+          "frequency": "sometimes",
+          "term": "Headache",
+          "snomed_verified": true
+        }
+      ],
+      "pertinent_negatives": [
+        "Eye discharge or pus",
+        "Contact lens left in overnight",
+        "Recent eye surgery",
+        "Severe deep eye pain with vision loss",
+        "Fever",
+        "Nausea or vomiting",
+        "Flashes or floaters",
+        "Curtain over vision"
+      ]
+    },
+    "ros": [
+      {
+        "system": "eyes",
+        "positives": [
+          {
+            "text": "Eye pain",
+            "frequency": "almost_always",
+            "term": "Eye pain",
+            "snomed_verified": true
+          },
+          {
+            "text": "Red eye",
+            "frequency": "almost_always",
+            "term": "Red eye",
+            "snomed_verified": true
+          },
+          {
+            "text": "Tearing",
+            "frequency": "almost_always",
+            "term": "Tearing",
+            "snomed_verified": true
+          },
+          {
+            "text": "Foreign body sensation",
+            "frequency": "common",
+            "term": "Foreign body sensation in eye",
+            "snomed_verified": true
+          },
+          {
+            "text": "Photophobia",
+            "frequency": "common",
+            "term": "Photophobia",
+            "snomed_verified": true
+          },
+          {
+            "text": "Blurred vision",
+            "frequency": "sometimes",
+            "term": "Blurred vision",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Purulent discharge",
+          "Vision loss",
+          "Flashes",
+          "Floaters",
+          "Curtain over vision"
+        ],
+        "argues_against": [
+          "Purulent discharge suggests infectious keratitis",
+          "Marked vision loss suggests corneal ulcer or uveitis",
+          "Flashes and floaters suggest retinal detachment"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Headache",
+            "frequency": "sometimes",
+            "term": "Headache",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Numbness",
+          "Weakness",
+          "Diplopia"
+        ],
+        "argues_against": [
+          "Focal neurologic deficit suggests a different cause"
+        ]
+      },
+      {
+        "system": "constitutional",
+        "positives": [],
+        "negatives": [
+          "Fever",
+          "Chills",
+          "Weight loss"
+        ],
+        "argues_against": [
+          "Fever suggests infection rather than simple abrasion"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Young children may not report a clear injury; they present with crying, eye rubbing, refusal to open the eye and light sensitivity.",
+        "missing_classic_features": [
+          "Clear history of trauma or foreign body",
+          "Localized eye pain description"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "May have reduced corneal sensation and report less pain despite a significant abrasion; dry eye and prior eye disease are more common.",
+        "missing_classic_features": [
+          "Severe pain",
+          "Marked photophobia"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "Healing is slower and there is a higher risk of progression to infectious keratitis, so a red painful eye after minor trauma needs closer follow-up.",
+        "missing_classic_features": [
+          "Rapid resolution within 24–48 hours"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Alert, uncomfortable, holds the affected eye closed or shields it from light",
+      "moderate": "Ill at ease, keeps the eye closed, avoids bright light, tears running down the cheek",
+      "severe": "Distressed, blepharospasm, reluctant to open the eye, marked photophobia",
+      "critical": "Not typical for an uncomplicated abrasion; consider a retained foreign body, corneal ulcer or globe injury"
+    },
+    "findings": [
+      {
+        "id": "visual-acuity-reduced",
+        "region": "heent",
+        "maneuver": "Check visual acuity in each eye separately with a Snellen chart before any eye manipulation",
+        "finding": "Mildly reduced visual acuity in the affected eye that improves with pinhole or after blinking",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "essential",
+        "term": "Decreased visual acuity",
+        "snomed_id": "419775003",
+        "snomed_verified": true
+      },
+      {
+        "id": "conjunctival-injection",
+        "region": "heent",
+        "maneuver": "Inspect the conjunctiva and sclera in daylight",
+        "finding": "Diffuse conjunctival redness of the affected eye",
+        "frequency": "almost_always",
+        "significance": "supports",
+        "importance": "essential",
+        "term": "Conjunctival injection",
+        "snomed_id": "70300000",
+        "snomed_verified": true
+      },
+      {
+        "id": "corneal-fluorescein-staining",
+        "region": "heent",
+        "maneuver": "Instill fluorescein and examine the cornea under cobalt blue light with a slit lamp or Wood lamp",
+        "finding": "A focal area of fluorescein uptake on the corneal surface outlining the epithelial defect",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Corneal fluorescein staining",
+        "snomed_id": "44512004",
+        "snomed_verified": false
+      },
+      {
+        "id": "corneal-epithelial-defect",
+        "region": "heent",
+        "maneuver": "Examine the corneal surface with a slit lamp after fluorescein",
+        "finding": "A visible epithelial defect or irregularity of the corneal surface",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "important",
+        "term": "Corneal epithelial defect",
+        "snomed_id": "41633001",
+        "snomed_verified": true
+      },
+      {
+        "id": "foreign-body-sensation",
+        "region": "heent",
+        "maneuver": "Ask the patient to describe the sensation in the eye",
+        "finding": "Reports of a gritty or foreign body sensation in the affected eye",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Foreign body sensation in eye",
+        "snomed_id": "30057005",
+        "snomed_verified": true
+      },
+      {
+        "id": "photophobia",
+        "region": "heent",
+        "maneuver": "Shine a light into the eye or ask the patient to look at a bright light",
+        "finding": "Pain or aversion to light in the affected eye",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Photophobia",
+        "snomed_id": "75705006",
+        "snomed_verified": true
+      },
+      {
+        "id": "tearing",
+        "region": "heent",
+        "maneuver": "Inspect the eye and lower lid for excess tears",
+        "finding": "Excess tearing from the affected eye",
+        "frequency": "almost_always",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Tearing",
+        "snomed_id": "41829006",
+        "snomed_verified": true
+      },
+      {
+        "id": "blepharospasm",
+        "region": "heent",
+        "maneuver": "Observe the patient's ability to keep the eye open",
+        "finding": "Involuntary eyelid spasm or squinting of the affected eye",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Blepharospasm",
+        "snomed_id": "66112004",
+        "snomed_verified": true
+      },
+      {
+        "id": "pupillary-light-reflex-normal",
+        "region": "heent",
+        "maneuver": "Swing a light between the eyes and observe the direct and consensual pupillary responses",
+        "finding": "No relative afferent pupillary defect; both pupils constrict normally",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Indirect light pupillary reflex",
+        "snomed_id": "30144000",
+        "snomed_verified": true
+      },
+      {
+        "id": "extraocular-movements-normal",
+        "region": "heent",
+        "maneuver": "Ask the patient to follow a finger through the cardinal directions of gaze",
+        "finding": "Full, painless extraocular movements without diplopia",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Extraocular movements full",
+        "snomed_id": "24615002",
+        "snomed_verified": false
+      },
+      {
+        "id": "no-purulent-discharge",
+        "region": "heent",
+        "maneuver": "Inspect the conjunctival sac and lid margins for discharge",
+        "finding": "No purulent or mucopurulent discharge",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Eye discharge",
+        "snomed_id": "246679005",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-ciliary-flush",
+        "region": "heent",
+        "maneuver": "Inspect the limbus and perilimbal vessels under magnification",
+        "finding": "No perilimbal or ciliary injection; redness is diffuse and peripheral",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Ciliary injection",
+        "snomed_id": "193888005",
+        "snomed_verified": false
+      },
+      {
+        "id": "no-corneal-opacity",
+        "region": "heent",
+        "maneuver": "Examine the cornea under slit lamp for opacities or infiltrates",
+        "finding": "No corneal opacity, infiltrate or white spot",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Corneal opacity",
+        "snomed_id": "39750009",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-hypopyon",
+        "region": "heent",
+        "maneuver": "Inspect the anterior chamber for a fluid level",
+        "finding": "No layering of pus or cells in the anterior chamber",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Hypopyon",
+        "snomed_id": "193893000",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-foreign-body",
+        "region": "heent",
+        "maneuver": "Evert the upper eyelid and sweep the fornices with a cotton swab",
+        "finding": "No retained foreign body on the conjunctiva, tarsal plate or cornea",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential",
+        "term": "Foreign body in eye",
+        "snomed_id": "82576008",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-facial-sensory-deficit",
+        "region": "neuro",
+        "maneuver": "Test facial sensation to light touch in the three divisions of the trigeminal nerve",
+        "finding": "Intact facial sensation; no numbness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Facial sensation intact",
+        "snomed_id": "30135002",
+        "snomed_verified": false
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 98.0,
+        "max": 99.5
+      },
+      "moderate": {
+        "min": 98.0,
+        "max": 99.5
+      },
+      "severe": {
+        "min": 98.0,
+        "max": 100.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 100
+      },
+      "moderate": {
+        "min": 65,
+        "max": 105
+      },
+      "severe": {
+        "min": 70,
+        "max": 110
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 12,
+        "max": 20
+      },
+      "moderate": {
+        "min": 12,
+        "max": 20
+      },
+      "severe": {
+        "min": 12,
+        "max": 22
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 100,
+        "max": 130
+      },
+      "moderate": {
+        "min": 100,
+        "max": 135
+      },
+      "severe": {
+        "min": 100,
+        "max": 140
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 60,
+        "max": 85
+      },
+      "moderate": {
+        "min": 60,
+        "max": 85
+      },
+      "severe": {
+        "min": 60,
+        "max": 90
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 95,
+        "max": 100
+      },
+      "moderate": {
+        "min": 95,
+        "max": 100
+      },
+      "severe": {
+        "min": 95,
+        "max": 100
+      }
+    }
+  },
+  "labs": [],
+  "imaging": [
+    {
+      "study": "Slit lamp examination with fluorescein staining",
+      "modality": "other",
+      "preferred_when": "All patients with a red, painful eye after trauma or foreign body exposure",
+      "findings": [
+        {
+          "text": "Focal area of fluorescein uptake outlining the corneal epithelial defect",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Visible epithelial defect or surface irregularity of the cornea",
+          "frequency": "common"
+        },
+        {
+          "text": "No corneal infiltrate, opacity or white spot",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "No retained foreign body on the cornea, conjunctiva or tarsal plate",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "No cells or fluid level in the anterior chamber",
+          "frequency": "almost_always"
+        }
+      ]
+    },
+    {
+      "study": "Orbital CT without contrast",
+      "modality": "ct",
+      "preferred_when": "Suspected retained intraocular or intraorbital foreign body, or concern for globe rupture",
+      "findings": [
+        {
+          "text": "No intraocular or intraorbital foreign body",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "No globe rupture or intraocular air",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Metallic or radiopaque foreign body if one is retained",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "Slit lamp examination with fluorescein staining",
+        "why": "Confirms the corneal epithelial defect and looks for a retained foreign body, infiltrate or anterior chamber cells"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "Orbital CT without contrast",
+        "why": "Localizes a suspected retained foreign body or evaluates for globe rupture",
+        "only_if": "a retained intraocular or intraorbital foreign body is suspected, or globe rupture is a concern"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "cbc",
+        "why": "No role in an uncomplicated corneal abrasion"
+      },
+      {
+        "test": "bmp",
+        "why": "No role in an uncomplicated corneal abrasion"
+      },
+      {
+        "test": "crp",
+        "why": "No role in an uncomplicated corneal abrasion"
+      },
+      {
+        "test": "esr",
+        "why": "No role in an uncomplicated corneal abrasion"
+      },
+      {
+        "test": "Orbital CT without contrast",
+        "why": "Not needed for a simple abrasion; reserved for suspected retained foreign body or globe rupture"
+      }
+    ],
+    "decision_points": [
+      "Check visual acuity and perform fluorescein staining before any eye manipulation",
+      "Evert the upper eyelid to look for a retained foreign body",
+      "Consider orbital CT when a retained intraocular or intraorbital foreign body or globe rupture is suspected",
+      "Contact lens wearers need closer follow-up and coverage for Pseudomonas"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Corneal ulcer (infectious keratitis)",
+      "slug": "corneal-ulcer",
+      "why_considered": "Red, painful, watery eye with photophobia and a foreign body sensation, especially in contact lens wearers",
+      "must_not_miss": true,
+      "trigger": "Contact lens wear, purulent discharge, or a white spot on the cornea",
+      "discriminators": {
+        "history": [
+          "Contact lens wear, especially overnight or extended wear",
+          "Pain and photophobia worsening over days rather than starting abruptly after trauma",
+          "Purulent or mucopurulent discharge"
+        ],
+        "exam": [
+          "Corneal opacity, infiltrate or white spot on slit lamp",
+          "Hypopyon or anterior chamber cells",
+          "Marked visual loss that does not improve with pinhole"
+        ],
+        "labs": [
+          "Corneal scraping for Gram stain and culture if a corneal ulcer is suspected"
+        ],
+        "imaging": [
+          "Slit lamp shows an infiltrate with an overlying epithelial defect rather than a clean epithelial defect alone"
+        ]
+      }
+    },
+    {
+      "name": "Anterior uveitis (iritis)",
+      "slug": "anterior-uveitis",
+      "why_considered": "Painful red eye with photophobia and tearing",
+      "must_not_miss": true,
+      "trigger": "Deep aching eye pain with ciliary flush and no clear history of trauma",
+      "discriminators": {
+        "history": [
+          "Deep, aching eye pain rather than a gritty surface sensation",
+          "No clear history of trauma or foreign body",
+          "Associated autoimmune disease or prior episodes"
+        ],
+        "exam": [
+          "Ciliary flush (perilimbal injection)",
+          "Cells and flare in the anterior chamber",
+          "Constricted pupil and photophobia out of proportion to surface findings"
+        ],
+        "labs": [
+          "Consider HLA-B27, ANA or infectious serologies if recurrent or bilateral"
+        ],
+        "imaging": [
+          "Slit lamp shows anterior chamber cells and flare without a corneal epithelial defect"
+        ]
+      }
+    },
+    {
+      "name": "Acute angle-closure glaucoma",
+      "slug": "acute-angle-closure-glaucoma",
+      "why_considered": "Severe eye pain with redness, tearing and blurred vision",
+      "must_not_miss": true,
+      "trigger": "Severe pain with headache, nausea or vomiting and a mid-dilated fixed pupil",
+      "discriminators": {
+        "history": [
+          "Severe pain with headache, nausea and vomiting",
+          "Halos around lights",
+          "Older age, hyperopia or known narrow angles"
+        ],
+        "exam": [
+          "Markedly elevated intraocular pressure",
+          "Mid-dilated, fixed pupil",
+          "Corneal haze or steamy cornea",
+          "Red eye with ciliary flush"
+        ],
+        "labs": [],
+        "imaging": [
+          "Tonometry shows markedly elevated intraocular pressure; gonioscopy shows closed angles"
+        ]
+      }
+    },
+    {
+      "name": "Retained corneal or conjunctival foreign body",
+      "slug": "retained-foreign-body-eye",
+      "why_considered": "Persistent foreign body sensation and tearing after exposure to dust or metal",
+      "must_not_miss": true,
+      "trigger": "Foreign body sensation that persists after fluorescein staining shows only a small defect",
+      "discriminators": {
+        "history": [
+          "Exposure to metal grinding, wood or dust",
+          "Symptoms persist or worsen after initial treatment"
+        ],
+        "exam": [
+          "Visible foreign body on the cornea, conjunctiva or under the upper eyelid",
+          "Linear vertical corneal scratches suggesting a foreign body under the upper lid"
+        ],
+        "labs": [],
+        "imaging": [
+          "Slit lamp with eyelid eversion shows the retained foreign body",
+          "Orbital CT if an intraocular or intraorbital foreign body is suspected"
+        ]
+      }
+    },
+    {
+      "name": "Bacterial conjunctivitis",
+      "slug": "bacterial-conjunctivitis",
+      "why_considered": "Red, irritated eye with tearing and discharge",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Mucopurulent discharge with matted lashes on waking",
+          "No history of trauma or foreign body",
+          "Often bilateral or spreading from one eye to the other"
+        ],
+        "exam": [
+          "Diffuse conjunctival injection without corneal epithelial defect",
+          "No fluorescein uptake on the cornea",
+          "Normal visual acuity"
+        ],
+        "labs": [],
+        "imaging": []
+      }
+    },
+    {
+      "name": "Viral conjunctivitis",
+      "slug": "viral-conjunctivitis",
+      "why_considered": "Red, watery eye with foreign body sensation and photophobia",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Recent upper respiratory infection or sick contacts",
+          "Watery rather than purulent discharge",
+          "Often bilateral"
+        ],
+        "exam": [
+          "Diffuse conjunctival injection, often with follicles",
+          "No corneal epithelial defect on fluorescein staining",
+          "Preauricular lymphadenopathy"
+        ],
+        "labs": [],
+        "imaging": []
+      }
+    },
+    {
+      "name": "Globe rupture",
+      "slug": "globe-rupture",
+      "why_considered": "Severe eye pain and redness after trauma",
+      "must_not_miss": true,
+      "trigger": "High-velocity trauma, marked vision loss, or an irregular pupil",
+      "discriminators": {
+        "history": [
+          "High-velocity trauma such as hammering metal or a projectile",
+          "Marked vision loss immediately after injury"
+        ],
+        "exam": [
+          "Irregular or peaked pupil",
+          "Shallow anterior chamber",
+          "Hyphema or visible intraocular contents",
+          "Positive Seidel test (streaming of aqueous)"
+        ],
+        "labs": [],
+        "imaging": [
+          "Orbital CT without contrast shows globe deformity, intraocular air or a retained intraocular foreign body"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Small, superficial epithelial defect with mild pain, tearing and photophobia; visual acuity normal or near normal; no infiltrate or anterior chamber cells",
+      "moderate": "Larger or central defect with moderate to severe pain, blepharospasm and photophobia; mildly reduced visual acuity that improves with pinhole; no infection",
+      "severe": "Extensive or recurrent defect, or an abrasion in a contact lens wearer with increasing pain, discharge or a corneal infiltrate suggesting early infection",
+      "critical": "Not typical for an uncomplicated corneal abrasion; consider globe rupture, retained intraocular foreign body or a rapidly progressive corneal ulcer with hypopyon"
+    },
+    "red_flags": [
+      {
+        "finding": "Marked or worsening vision loss",
+        "meaning": "Suggests corneal ulcer, uveitis, hyphema or globe injury rather than a simple abrasion"
+      },
+      {
+        "finding": "Purulent discharge or a white spot on the cornea",
+        "meaning": "Suggests infectious keratitis, which needs urgent ophthalmology evaluation and topical antibiotics"
+      },
+      {
+        "finding": "Contact lens wear with increasing pain after 24 hours",
+        "meaning": "Higher risk of Pseudomonas keratitis; needs close follow-up and antipseudomonal coverage"
+      },
+      {
+        "finding": "High-velocity trauma, irregular pupil or shallow anterior chamber",
+        "meaning": "Possible globe rupture; do not manipulate the eye and obtain urgent ophthalmology evaluation"
+      },
+      {
+        "finding": "Severe headache, nausea or vomiting with a mid-dilated fixed pupil",
+        "meaning": "Suggests acute angle-closure glaucoma with elevated intraocular pressure"
+      },
+      {
+        "finding": "Flashes, floaters or a curtain over the vision",
+        "meaning": "Suggests retinal detachment or posterior segment injury"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Recurrent corneal erosion",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Recurrent morning eye pain and tearing weeks after the initial injury",
+          "History of a prior abrasion, especially from a fingernail or paper"
+        ]
+      },
+      {
+        "name": "Secondary bacterial keratitis",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Increasing pain, discharge or photophobia after 24–48 hours",
+          "Corneal infiltrate or white spot on slit lamp",
+          "Contact lens wear"
+        ]
+      },
+      {
+        "name": "Corneal scarring",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Central abrasion with persistent blurred vision",
+          "Visible corneal opacity after healing"
+        ]
+      },
+      {
+        "name": "Traumatic iritis",
+        "timing": "early",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Deep aching pain and marked photophobia",
+          "Anterior chamber cells and flare on slit lamp"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Young children may not report a clear injury and present with crying, eye rubbing, refusal to open the eye and light sensitivity; examination may require gentle restraint or sedation."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Reduced corneal sensation can make pain milder than expected; dry eye and prior eye disease are more common, and healing may be slower."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Slower healing and higher risk of progression to infectious keratitis; arrange close follow-up and consider early ophthalmology referral."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Impaired epithelial healing may prolong recovery; monitor closely for secondary infection."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "Did something get into your eye or hit your eye, and when did it happen?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "A clear injury or foreign body exposure immediately before the pain started"
+      },
+      {
+        "question": "What were you doing when it started — grinding metal, woodworking, yard work, or playing sports?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "High-risk activity that suggests a retained foreign body or high-velocity injury"
+      },
+      {
+        "question": "Does it feel like something is stuck in your eye, and does blinking make it worse?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Gritty foreign body sensation and pain worse with blinking"
+      },
+      {
+        "question": "Is your vision blurred or lost in that eye?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Mild blurring that clears with blinking or pinhole; marked or persistent loss suggests a deeper injury"
+      },
+      {
+        "question": "Do you wear contact lenses? Did you sleep in them or wear them past their schedule?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Contact lens wear, especially overnight or extended wear, raises concern for Pseudomonas keratitis"
+      },
+      {
+        "question": "Is there any discharge or pus from the eye?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Absent in a simple abrasion; purulent discharge suggests infectious keratitis"
+      },
+      {
+        "question": "Are you sensitive to light, and does the pain feel like it is deep inside the eye?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Surface photophobia from the abrasion; deep aching pain with marked photophobia suggests iritis"
+      },
+      {
+        "question": "Have you had eye surgery, a prior abrasion, or a recurrent erosion?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Prior abrasion or erosion increases the risk of recurrence; recent surgery changes the workup"
+      },
+      {
+        "question": "Do you have any autoimmune disease or prior episodes of a red, painful eye?",
+        "category": "pmh",
+        "importance": "optional",
+        "looking_for": "Recurrent or bilateral episodes suggest uveitis rather than trauma"
+      },
+      {
+        "question": "Do you have flashes, floaters, or a curtain over your vision?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Absent; present suggests retinal detachment or posterior segment injury"
+      },
+      {
+        "question": "Do you have a headache, nausea, or vomiting along with the eye pain?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Absent; present with a mid-dilated fixed pupil suggests acute angle-closure glaucoma"
+      },
+      {
+        "question": "Are you taking any blood thinners or do you have a bleeding disorder?",
+        "category": "medications",
+        "importance": "optional",
+        "looking_for": "Anticoagulation or coagulopathy raises concern for hyphema or more serious trauma"
+      }
+    ],
+    "accepted_names": [
+      "Corneal abrasion",
+      "Corneal epithelial defect",
+      "Scratched cornea",
+      "Traumatic corneal abrasion"
+    ],
+    "reasoning_points": [
+      "Sudden onset of a painful, red, watery eye immediately after trauma or foreign body exposure",
+      "Gritty foreign body sensation with pain worse on blinking and bright light",
+      "Visual acuity normal or only mildly reduced and improving with pinhole",
+      "Fluorescein staining under cobalt blue light shows a focal corneal epithelial defect",
+      "No corneal infiltrate, opacity, hypopyon or purulent discharge to suggest infection",
+      "Upper eyelid everted and fornices swept to exclude a retained foreign body",
+      "Contact lens wear and high-velocity trauma considered because they change management and follow-up",
+      "Look-alikes such as corneal ulcer, anterior uveitis, acute angle-closure glaucoma and globe rupture excluded"
+    ],
+    "difficulty": {
+      "easy": [
+        "Clear history of a fingernail, branch or foreign body to the eye",
+        "Classic gritty pain, tearing and photophobia in one eye",
+        "Fluorescein staining shows a focal epithelial defect",
+        "No infiltrate, discharge or vision loss"
+      ],
+      "medium": [
+        "Contact lens wearer with a red painful eye where keratitis must be excluded",
+        "Small abrasion with minimal findings on external inspection",
+        "Symptoms out of proportion to a subtle epithelial defect",
+        "Young child who will not open the eye or give a clear history"
+      ],
+      "hard": [
+        "Metallic foreign body exposure with a retained intraocular foreign body or globe rupture concern",
+        "Older adult with reduced corneal sensation and milder pain than expected",
+        "Immunocompromised or diabetic patient with slow healing and risk of secondary infection",
+        "Recurrent morning pain and tearing suggesting recurrent corneal erosion rather than a new abrasion"
+      ]
+    }
+  }
+}

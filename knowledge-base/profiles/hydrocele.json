@@ -1,0 +1,917 @@
+{
+  "schema_version": "0.2",
+  "slug": "hydrocele",
+  "triage": {
+    "name": "Hydrocele",
+    "case_suitable": true,
+    "reason": "Common scrotal swelling that students can diagnose by history and exam (transillumination) with ultrasound to confirm, and distinguish from hernia, varicocele and tumor.",
+    "kind": "disease",
+    "category": "scrotal swelling",
+    "organ_systems": [
+      "reproductive"
+    ],
+    "primary_clerkship": "surgery",
+    "secondary_clerkships": [
+      "familyMedicine",
+      "pediatrics",
+      "emergency"
+    ],
+    "commonness": "common",
+    "settings": [
+      "clinic",
+      "emergency"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:24:27Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:59:41Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:59:51Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:59:56Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T07:00:08Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T07:00:14Z"
+      }
+    ],
+    "validation": {
+      "status": "failed",
+      "rule_errors": [
+        "exam: 3 of 9 terms aren't SNOMED CT findings"
+      ],
+      "review_issues": [
+        "auto-repaired: workup: 'scrotal ultrasound with color doppler' was in ['initial', 'confirmatory'], kept ['initial']",
+        "exam: term 'Testis palpable' not found in SNOMED CT",
+        "exam: term 'Scrotal tenderness' not found in SNOMED CT",
+        "exam: term 'Scrotal erythema' not found in SNOMED CT",
+        "differential inguinal-hernia: no profile yet",
+        "differential testicular-torsion: no profile yet",
+        "differential testicular-cancer: no profile yet",
+        "differential spermatocele: no profile yet",
+        "differential testicular-trauma: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 0,
+      "typical_max": 90,
+      "peak": "bimodal: infancy and adulthood 40–70",
+      "possible_min": 0,
+      "possible_max": 110
+    },
+    "sex": "male_only",
+    "demographics": [
+      "Occurs at any age in males",
+      "Congenital (communicating) hydroceles are most often seen in newborns and infants",
+      "Adult hydroceles become more common with increasing age"
+    ],
+    "risk_factors": [
+      {
+        "text": "Premature birth or low birth weight (congenital hydrocele)",
+        "strength": "moderate"
+      },
+      {
+        "text": "Older age",
+        "strength": "moderate"
+      },
+      {
+        "text": "Recent scrotal or inguinal surgery",
+        "strength": "moderate"
+      },
+      {
+        "text": "Scrotal trauma",
+        "strength": "moderate"
+      },
+      {
+        "text": "Epididymitis or orchitis",
+        "strength": "moderate"
+      },
+      {
+        "text": "Testicular torsion",
+        "strength": "weak"
+      },
+      {
+        "text": "Testicular tumor",
+        "strength": "weak"
+      },
+      {
+        "text": "Inguinal hernia repair",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Epididymitis",
+      "Testicular torsion",
+      "Inguinal hernia",
+      "Testicular tumor",
+      "Heart failure",
+      "Nephrotic syndrome",
+      "Cirrhosis with ascites"
+    ],
+    "family_history": [],
+    "social_history": [],
+    "exposures": [],
+    "risk_medications": []
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My scrotum looks swollen",
+        "frequency": "almost_always",
+        "term": "Scrotal swelling",
+        "snomed_verified": true
+      },
+      {
+        "text": "One side of my scrotum feels heavy",
+        "frequency": "common",
+        "term": "Scrotal pain",
+        "snomed_verified": true
+      },
+      {
+        "text": "There's a soft lump in my scrotum",
+        "frequency": "common",
+        "term": "Scrotal mass",
+        "snomed_verified": true
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual over weeks to months in adults; noticed at birth or in the first year of life in congenital cases",
+      "duration": "Weeks to months in adults; present since birth or early infancy in congenital cases",
+      "progression": "Slowly enlarges over time; may fluctuate in size during the day in a communicating hydrocele",
+      "location": "Scrotum, usually one side",
+      "radiation": "Usually none",
+      "quality": "Soft, smooth, painless swelling; feels like a water-filled balloon",
+      "severity": "Mild discomfort or none; 0–3/10",
+      "timing": "Constant; may be larger after activity or at the end of the day in a communicating hydrocele",
+      "aggravating": [
+        "Prolonged standing",
+        "Physical activity"
+      ],
+      "relieving": [
+        "Lying down",
+        "Scrotal support"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Scrotal swelling",
+          "frequency": "almost_always",
+          "term": "Scrotal swelling",
+          "snomed_verified": true
+        },
+        {
+          "text": "Scrotal pain",
+          "frequency": "sometimes",
+          "term": "Scrotal pain",
+          "snomed_verified": true
+        },
+        {
+          "text": "Scrotal mass",
+          "frequency": "common",
+          "term": "Scrotal mass",
+          "snomed_verified": true
+        },
+        {
+          "text": "Inguinal swelling",
+          "frequency": "sometimes",
+          "term": "Inguinal swelling",
+          "snomed_verified": true
+        }
+      ],
+      "pertinent_negatives": [
+        "Sudden severe testicular pain",
+        "Nausea and vomiting with the swelling",
+        "Fever",
+        "Dysuria",
+        "Urethral discharge",
+        "Scrotal redness or warmth",
+        "History of testicular trauma",
+        "Weight loss",
+        "Abdominal pain"
+      ]
+    },
+    "ros": [
+      {
+        "system": "genitourinary",
+        "positives": [
+          {
+            "text": "Scrotal swelling",
+            "frequency": "almost_always",
+            "term": "Scrotal swelling",
+            "snomed_verified": true
+          },
+          {
+            "text": "Scrotal mass",
+            "frequency": "common",
+            "term": "Scrotal mass",
+            "snomed_verified": true
+          },
+          {
+            "text": "Scrotal pain",
+            "frequency": "sometimes",
+            "term": "Scrotal pain",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Dysuria",
+          "Hematuria",
+          "Urethral discharge",
+          "Nocturia"
+        ],
+        "argues_against": [
+          "Dysuria with fever and scrotal pain (epididymitis)",
+          "Sudden severe testicular pain (torsion)"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [],
+        "negatives": [
+          "Abdominal pain",
+          "Vomiting",
+          "Constipation",
+          "Diarrhea"
+        ],
+        "argues_against": [
+          "Vomiting with abdominal pain (incarcerated hernia)"
+        ]
+      },
+      {
+        "system": "constitutional",
+        "positives": [],
+        "negatives": [
+          "Fever",
+          "Weight loss",
+          "Night sweats"
+        ],
+        "argues_against": [
+          "Fever and weight loss (malignancy or infection)"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [],
+        "negatives": [
+          "Groin pain with lifting",
+          "Bulging in the groin"
+        ],
+        "argues_against": [
+          "Groin bulge that enlarges with straining (inguinal hernia)"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "infants",
+        "how_it_differs": "Congenital hydrocele presents as a soft scrotal swelling noticed by parents or at newborn exam; it may be communicating and fluctuate in size, and often resolves spontaneously by 12–24 months.",
+        "missing_classic_features": [
+          "Gradual adult onset",
+          "Heaviness described by the patient"
+        ]
+      },
+      {
+        "population": "children",
+        "how_it_differs": "Often asymptomatic and found incidentally; a communicating hydrocele may be mistaken for an inguinal hernia because it changes size with crying or straining.",
+        "missing_classic_features": [
+          "Pain",
+          "Heaviness"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "More often secondary to another process such as heart failure, nephrotic syndrome or a testicular tumor, so the swelling may be bilateral or accompanied by signs of the underlying disease.",
+        "missing_classic_features": [
+          "Isolated unilateral painless swelling"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Comfortable, no distress; normal gait and activity",
+      "moderate": "Mild discomfort with movement or prolonged standing; otherwise well-appearing",
+      "severe": "Noticeable discomfort, walks cautiously, may hold or support the scrotum",
+      "critical": "Not applicable; hydrocele is not a critical illness"
+    },
+    "findings": [
+      {
+        "id": "scrotal-swelling",
+        "region": "genitourinary",
+        "maneuver": "Inspect the scrotum with the patient standing and supine",
+        "finding": "Unilateral or bilateral scrotal swelling, smooth and rounded",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Scrotal swelling",
+        "snomed_verified": true
+      },
+      {
+        "id": "transillumination",
+        "region": "genitourinary",
+        "maneuver": "Shine a penlight through the scrotum in a darkened room",
+        "finding": "Transmission of light visible through the swelling, confirming fluid",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Transmission of light visible through swelling of scrotum",
+        "snomed_verified": true
+      },
+      {
+        "id": "testis-palpable",
+        "region": "genitourinary",
+        "maneuver": "Palpate the scrotal contents, identifying the testis and epididymis",
+        "finding": "Testis is palpable separately from the fluid collection",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Testis palpable",
+        "snomed_verified": false
+      },
+      {
+        "id": "scrotal-mass",
+        "region": "genitourinary",
+        "maneuver": "Palpate the scrotum",
+        "finding": "Soft, cystic, non-tender mass",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Scrotal mass",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-tenderness",
+        "region": "genitourinary",
+        "maneuver": "Palpate the scrotum and testis",
+        "finding": "No tenderness on palpation",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Scrotal tenderness",
+        "snomed_verified": false
+      },
+      {
+        "id": "no-erythema",
+        "region": "genitourinary",
+        "maneuver": "Inspect the scrotal skin",
+        "finding": "No erythema or warmth",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Scrotal erythema",
+        "snomed_verified": false
+      },
+      {
+        "id": "no-inguinal-hernia",
+        "region": "abdomen",
+        "maneuver": "Palpate the inguinal canal and ask the patient to cough or strain",
+        "finding": "No inguinal bulge or impulse with coughing",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Inguinal hernia",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-varicocele",
+        "region": "genitourinary",
+        "maneuver": "Palpate the spermatic cord with the patient standing and performing Valsalva",
+        "finding": "No worm-like or bag-of-worms texture of the pampiniform plexus",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Varicocele",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the inguinal lymph nodes",
+        "finding": "No inguinal lymphadenopathy",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Inguinal lymphadenopathy",
+        "snomed_verified": true
+      }
+    ]
+  },
+  "vitals": {},
+  "labs": [],
+  "imaging": [
+    {
+      "study": "Scrotal ultrasound with color Doppler",
+      "modality": "ultrasound",
+      "preferred_when": "First-line imaging for any scrotal swelling or mass",
+      "findings": [
+        {
+          "text": "Anechoic fluid collection surrounding the testis within the tunica vaginalis",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Normal testis and epididymis with preserved arterial flow on Doppler",
+          "frequency": "common"
+        },
+        {
+          "text": "Simple hydrocele: no septations, no internal echoes, no solid component",
+          "frequency": "common"
+        },
+        {
+          "text": "Complex hydrocele with internal echoes, septations or wall thickening suggesting hemorrhage, infection or tumor",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Testis not separately visualized from the fluid collection",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Abdominal and pelvic ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "Bilateral hydrocele or suspected secondary cause such as heart failure, nephrotic syndrome or cirrhosis",
+      "findings": [
+        {
+          "text": "Ascites or other signs of the underlying systemic process",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "CT abdomen and pelvis with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Suspected retroperitoneal or pelvic mass, lymphadenopathy or metastatic testicular tumor",
+      "findings": [
+        {
+          "text": "Retroperitoneal lymphadenopathy or a primary mass",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "Scrotal ultrasound with color Doppler",
+        "why": "Confirms a fluid collection, shows whether the testis is normal, and rules out torsion, tumor, hernia and varicocele"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "ua",
+        "why": "Looks for urinary infection when epididymitis or orchitis is being considered",
+        "only_if": "dysuria, fever or scrotal pain suggests infection"
+      },
+      {
+        "test": "cbc",
+        "why": "Leukocytosis supports an infectious cause rather than a simple hydrocele",
+        "only_if": "fever or scrotal tenderness suggests epididymitis or orchitis"
+      },
+      {
+        "test": "crp",
+        "why": "Inflammatory marker that rises with epididymitis or orchitis",
+        "only_if": "infection is suspected"
+      },
+      {
+        "test": "Abdominal and pelvic ultrasound",
+        "why": "Screens for ascites or a systemic cause of bilateral hydrocele",
+        "only_if": "bilateral hydrocele or signs of heart failure, nephrotic syndrome or cirrhosis"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Abdominal x-ray",
+        "why": "Does not show a hydrocele and rarely changes management"
+      },
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Not needed for an uncomplicated hydrocele; reserved for suspected tumor or lymphadenopathy",
+        "only_if": "a testicular or retroperitoneal mass is suspected"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in scrotal swelling"
+      },
+      {
+        "test": "hcg",
+        "why": "Not relevant in a male patient"
+      }
+    ],
+    "decision_points": [
+      "Scrotal ultrasound with Doppler is the key test: absent or reduced testicular flow points to torsion and is a surgical emergency",
+      "A soft, transilluminating, non-tender scrotal swelling with a palpable normal testis supports a simple hydrocele",
+      "A communicating hydrocele in an infant may need surgical referral if it persists beyond 12–24 months or is associated with a hernia",
+      "Bilateral or rapidly enlarging hydroceles warrant evaluation for a systemic cause or tumor"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Inguinal hernia",
+      "slug": "inguinal-hernia",
+      "why_considered": "Both cause a scrotal or groin bulge; a communicating hydrocele and a hernia can look identical in an infant.",
+      "must_not_miss": true,
+      "trigger": "A bulge that enlarges with crying, coughing or straining and reduces when lying down, especially with vomiting or abdominal pain.",
+      "discriminators": {
+        "history": [
+          "Bulge appears with straining, coughing or crying and reduces at rest",
+          "Groin or abdominal discomfort with lifting",
+          "Vomiting or abdominal pain if incarcerated"
+        ],
+        "exam": [
+          "Palpable inguinal bulge or impulse with cough",
+          "Bowel sounds may be heard over the swelling",
+          "Does not transilluminate (unless it contains fluid-rich bowel)",
+          "Tender, irreducible, firm swelling if incarcerated"
+        ],
+        "labs": [
+          "Leukocytosis and elevated inflammatory markers if strangulated"
+        ],
+        "imaging": [
+          "Ultrasound shows bowel or omentum in the inguinal canal or scrotum",
+          "Valsalva maneuver demonstrates the hernia sac"
+        ]
+      }
+    },
+    {
+      "name": "Testicular torsion",
+      "slug": "testicular-torsion",
+      "why_considered": "Acute scrotal swelling and pain; a hydrocele can develop after torsion, and both present with a swollen scrotum.",
+      "must_not_miss": true,
+      "trigger": "Sudden severe testicular pain with nausea and vomiting, high-riding testis, or absent cremasteric reflex.",
+      "discriminators": {
+        "history": [
+          "Sudden onset of severe unilateral testicular pain",
+          "Nausea and vomiting at onset",
+          "Prior similar episodes that resolved spontaneously"
+        ],
+        "exam": [
+          "High-riding, transversely oriented testis",
+          "Absent cremasteric reflex",
+          "Extreme tenderness, often with a reactive hydrocele",
+          "No relief with scrotal support"
+        ],
+        "labs": [
+          "No specific lab findings; diagnosis is clinical and imaging-based"
+        ],
+        "imaging": [
+          "Color Doppler ultrasound shows absent or reduced testicular blood flow",
+          "Enlarged, heterogeneous testis if late"
+        ]
+      }
+    },
+    {
+      "name": "Epididymitis or orchitis",
+      "slug": "epididymitis",
+      "why_considered": "Scrotal pain and swelling with a reactive hydrocele; infection is a common secondary cause of hydrocele.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Gradual onset of scrotal pain over hours to days",
+          "Dysuria, frequency or urethral discharge",
+          "Fever and chills",
+          "Sexually transmitted infection risk or recent urinary instrumentation"
+        ],
+        "exam": [
+          "Tender, indurated epididymis, often with a palpable swelling posterior to the testis",
+          "Scrotal erythema and warmth",
+          "Positive Prehn sign (relief with elevation) is unreliable",
+          "Urethral discharge may be present"
+        ],
+        "labs": [
+          "Pyuria or bacteriuria on urinalysis",
+          "Leukocytosis and elevated CRP",
+          "Positive nucleic acid amplification test for chlamydia or gonorrhea"
+        ],
+        "imaging": [
+          "Ultrasound shows an enlarged, hyperemic epididymis with increased Doppler flow",
+          "Reactive hydrocele may be present"
+        ]
+      }
+    },
+    {
+      "name": "Varicocele",
+      "slug": "varicocele",
+      "why_considered": "Scrotal swelling and heaviness, often described as a bag of worms; common in young men.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Dull ache or heaviness, worse with standing and at the end of the day",
+          "Relieved by lying down",
+          "May be associated with infertility"
+        ],
+        "exam": [
+          "Worm-like or bag-of-worms texture of the pampiniform plexus",
+          "More prominent with standing and Valsalva",
+          "Does not transilluminate",
+          "Left side most common; isolated right-sided varicocele suggests retroperitoneal mass"
+        ],
+        "labs": [
+          "Semen analysis may show abnormal parameters"
+        ],
+        "imaging": [
+          "Scrotal ultrasound with Doppler shows dilated veins greater than 2–3 mm that reverse flow with Valsalva"
+        ]
+      }
+    },
+    {
+      "name": "Testicular cancer",
+      "slug": "testicular-cancer",
+      "why_considered": "Painless scrotal mass or swelling; a hydrocele can be secondary to a tumor and may obscure it.",
+      "must_not_miss": true,
+      "trigger": "A firm, non-transilluminating mass, a hydrocele that does not resolve or enlarges rapidly, or a history of undescended testis.",
+      "discriminators": {
+        "history": [
+          "Painless firm testicular mass or heaviness",
+          "History of undescended testis",
+          "Weight loss, back pain or abdominal mass if metastatic"
+        ],
+        "exam": [
+          "Firm, irregular, non-tender mass within or replacing the testis",
+          "Does not transilluminate",
+          "May have supraclavicular or abdominal lymphadenopathy"
+        ],
+        "labs": [
+          "Elevated alpha-fetoprotein, beta-hCG or LDH"
+        ],
+        "imaging": [
+          "Ultrasound shows a solid, hypoechoic intratesticular mass with internal vascularity",
+          "CT chest, abdomen and pelvis for staging if malignancy suspected"
+        ]
+      }
+    },
+    {
+      "name": "Spermatocele",
+      "slug": "spermatocele",
+      "why_considered": "Painless scrotal swelling that transilluminates, similar to a hydrocele.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Painless, slowly enlarging swelling",
+          "Located above and behind the testis"
+        ],
+        "exam": [
+          "Cystic, transilluminating mass distinct from the testis",
+          "Usually located at the head of the epididymis"
+        ],
+        "labs": [
+          "No specific lab findings"
+        ],
+        "imaging": [
+          "Ultrasound shows a cystic structure separate from the testis, often with low-level internal echoes"
+        ]
+      }
+    },
+    {
+      "name": "Testicular trauma with hematocele",
+      "slug": "testicular-trauma",
+      "why_considered": "Scrotal swelling and pain after injury; blood in the tunica vaginalis can mimic a hydrocele.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Recent scrotal trauma",
+          "Sudden pain and swelling after injury"
+        ],
+        "exam": [
+          "Ecchymosis and tenderness",
+          "Swelling may not transilluminate if bloody"
+        ],
+        "labs": [
+          "No specific lab findings"
+        ],
+        "imaging": [
+          "Ultrasound shows a complex fluid collection with internal echoes, septations or a testicular rupture"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Small, painless, unilateral scrotal swelling; no discomfort, normal activity, normal testis on exam and ultrasound.",
+      "moderate": "Larger swelling causing heaviness or mild discomfort with activity or prolonged standing; may interfere with daily activities but no systemic symptoms.",
+      "severe": "Marked swelling causing significant discomfort, difficulty walking or sitting, and cosmetic concern; may be bilateral or associated with an underlying systemic condition.",
+      "critical": "Not applicable; an uncomplicated hydrocele is not life-threatening. Critical illness would indicate a different diagnosis such as testicular torsion, incarcerated hernia or sepsis."
+    },
+    "red_flags": [
+      {
+        "finding": "Sudden severe testicular pain",
+        "meaning": "Testicular torsion until proven otherwise; requires immediate surgical evaluation."
+      },
+      {
+        "finding": "Fever, scrotal erythema and tenderness",
+        "meaning": "Epididymitis or orchitis; may require antibiotics and further workup."
+      },
+      {
+        "finding": "Irreducible, tender scrotal or inguinal swelling with vomiting",
+        "meaning": "Incarcerated or strangulated inguinal hernia; surgical emergency."
+      },
+      {
+        "finding": "Firm, non-transilluminating testicular mass",
+        "meaning": "Testicular cancer until proven otherwise; needs urgent urology referral and tumor markers."
+      },
+      {
+        "finding": "Rapidly enlarging hydrocele or new bilateral hydrocele",
+        "meaning": "May indicate an underlying tumor, infection or systemic disease such as heart failure or nephrotic syndrome."
+      }
+    ],
+    "complications": [
+      {
+        "name": "Infection (epididymitis or orchitis)",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Fever",
+          "Scrotal pain and erythema",
+          "Tenderness on palpation"
+        ]
+      },
+      {
+        "name": "Hemorrhage into the hydrocele (hematocele)",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Sudden increase in size and pain",
+          "History of trauma",
+          "Ultrasound shows internal echoes or septations"
+        ]
+      },
+      {
+        "name": "Testicular atrophy or infertility",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Long-standing large hydrocele",
+          "Chronic pressure on the testis"
+        ]
+      },
+      {
+        "name": "Rupture or trauma to a large hydrocele",
+        "timing": "any",
+        "seriousness": "minor",
+        "frequency": "rare",
+        "clues": [
+          "Trauma to a large scrotal swelling",
+          "Sudden pain and resolution of swelling"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "infants",
+        "differences": "Congenital (communicating) hydrocele is common and often resolves spontaneously by 12–24 months. Persistence beyond that or association with an inguinal hernia warrants surgical referral."
+      },
+      {
+        "population": "children",
+        "differences": "Often asymptomatic and found incidentally. A communicating hydrocele may fluctuate in size with crying or straining and can be mistaken for a hernia."
+      },
+      {
+        "population": "older_adults",
+        "differences": "More likely to be secondary to another process such as heart failure, nephrotic syndrome, cirrhosis or a testicular tumor; bilateral hydroceles should prompt evaluation for a systemic cause."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "When did you first notice the swelling, and has it changed since then?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Gradual onset over weeks to months in adults; present since birth or early infancy in congenital cases; slow enlargement rather than sudden change"
+      },
+      {
+        "question": "Does the swelling change size during the day, or with crying, straining or activity?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Fluctuation in size suggests a communicating hydrocele (or a hernia); constant size suggests a simple non-communicating hydrocele"
+      },
+      {
+        "question": "Is the swelling painful, or does it just feel heavy?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Painless or mildly uncomfortable heaviness; severe pain points to torsion, epididymitis or strangulated hernia"
+      },
+      {
+        "question": "Did the pain or swelling come on suddenly and severely?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Sudden severe testicular pain suggests testicular torsion, a surgical emergency, not a simple hydrocele"
+      },
+      {
+        "question": "Have you had any fever, burning with urination, or discharge from the penis?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Absent in simple hydrocele; present suggests epididymitis or orchitis as the cause of a reactive hydrocele"
+      },
+      {
+        "question": "Have you had any injury to the scrotum or groin?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Recent trauma suggests a hematocele or testicular rupture rather than a simple hydrocele"
+      },
+      {
+        "question": "Have you had any groin or scrotal surgery, such as a hernia repair?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Recent inguinal or scrotal surgery is a risk factor for a secondary hydrocele"
+      },
+      {
+        "question": "Have you noticed any bulging in the groin that gets bigger when you cough, strain or lift?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "A bulge that enlarges with straining suggests an inguinal hernia, which can mimic or accompany a communicating hydrocele"
+      },
+      {
+        "question": "Have you had any weight loss, night sweats, or back or abdominal pain?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Absent in simple hydrocele; present raises concern for testicular cancer or another systemic cause"
+      },
+      {
+        "question": "Do you have any long-standing illness such as heart failure, kidney disease or liver disease?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Heart failure, nephrotic syndrome or cirrhosis can cause bilateral hydroceles through fluid overload or ascites"
+      },
+      {
+        "question": "Is there any history of an undescended testis, or testicular problems in the family?",
+        "category": "family",
+        "importance": "optional",
+        "looking_for": "History of undescended testis raises the risk of testicular cancer, which can present with a secondary hydrocele"
+      }
+    ],
+    "accepted_names": [
+      "Hydrocele",
+      "Hydrocele of the tunica vaginalis",
+      "Communicating hydrocele",
+      "Congenital hydrocele",
+      "Simple hydrocele",
+      "Scrotal hydrocele"
+    ],
+    "reasoning_points": [
+      "Painless or minimally uncomfortable scrotal swelling that develops gradually over weeks to months",
+      "Soft, smooth, cystic swelling that transilluminates with a penlight in a darkened room",
+      "The testis is palpable separately from the fluid collection and is not tender",
+      "No fever, dysuria, urethral discharge, scrotal erythema or warmth to suggest infection",
+      "No inguinal bulge or impulse with coughing, arguing against an inguinal hernia",
+      "No worm-like pampiniform plexus on Valsalva, arguing against a varicocele",
+      "Scrotal ultrasound with color Doppler confirms an anechoic fluid collection around a normal testis with preserved blood flow",
+      "Sudden severe pain, a firm non-transilluminating mass, or a rapidly enlarging or bilateral hydrocele should prompt evaluation for torsion, tumor or a systemic cause"
+    ],
+    "difficulty": {
+      "easy": [
+        "Adult with a gradually enlarging, painless unilateral scrotal swelling",
+        "Soft, cystic, non-tender swelling that clearly transilluminates",
+        "Testis palpable separately from the fluid and normal on ultrasound",
+        "No fever, dysuria or scrotal erythema"
+      ],
+      "medium": [
+        "Infant with a scrotal swelling that fluctuates in size with crying, raising concern for a communicating hydrocele versus a hernia",
+        "Older adult with a bilateral hydrocele and signs of heart failure or nephrotic syndrome",
+        "Patient with mild scrotal discomfort and a reactive hydrocele from recent epididymitis",
+        "Hydrocele after recent inguinal hernia repair or scrotal surgery"
+      ],
+      "hard": [
+        "Large hydrocele that obscures the testis, making it difficult to exclude an underlying tumor",
+        "Complex hydrocele with internal echoes or septations suggesting hemorrhage, infection or malignancy",
+        "Young man with a hydrocele and a history of undescended testis, requiring tumor markers and imaging",
+        "Scrotal swelling with equivocal transillumination where hernia, varicocele and tumor all remain in the differential"
+      ]
+    }
+  }
+}

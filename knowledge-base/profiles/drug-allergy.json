@@ -1,0 +1,1412 @@
+{
+  "schema_version": "0.2",
+  "slug": "drug-allergy",
+  "triage": {
+    "name": "Drug allergy",
+    "case_suitable": true,
+    "reason": "Broad category rather than a single diagnosis; overlaps with specific reactions (penicillin allergy, serum sickness) and is better taught as those entities.",
+    "kind": "other",
+    "category": "adverse drug reaction",
+    "organ_systems": [
+      "blood"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "familyMedicine",
+      "emergency"
+    ],
+    "commonness": "common",
+    "settings": [
+      "clinic",
+      "emergency",
+      "inpatient"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:24:24Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:49:22Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:49:44Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:49:52Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:50:03Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:50:10Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'tryptase' to 'Tryptase'",
+        "auto-repaired: workup: renamed 'ct' to 'CT'",
+        "auto-repaired: labs: dropped 'tryptase' (not in the reference table)",
+        "exam: term 'Focal neurological deficit' not found in SNOMED CT",
+        "differential anaphylaxis: no profile yet",
+        "differential stevens-johnson-syndrome: no profile yet",
+        "differential dress-syndrome: no profile yet",
+        "differential viral-exanthem: no profile yet",
+        "differential chronic-spontaneous-urticaria: no profile yet",
+        "differential hereditary-angioedema: no profile yet",
+        "differential serum-sickness: no profile yet",
+        "differential drug-induced-thrombocytopenia: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 1,
+      "typical_max": 90,
+      "peak": "any age; often first recognized in adulthood after new drug exposure",
+      "possible_min": 0,
+      "possible_max": 110
+    },
+    "sex": "either",
+    "demographics": [
+      "Can occur at any age; many first reactions are recognized in adulthood when a new drug is started",
+      "Reported penicillin allergy is more common in women",
+      "Reactions are more frequent in people with frequent antibiotic or healthcare exposure"
+    ],
+    "risk_factors": [
+      {
+        "text": "Prior reaction to the same drug or a chemically related drug",
+        "strength": "strong"
+      },
+      {
+        "text": "Repeated or prolonged exposure to the drug",
+        "strength": "strong"
+      },
+      {
+        "text": "High-dose or intravenous administration",
+        "strength": "moderate"
+      },
+      {
+        "text": "Concurrent use of drugs that cause histamine release or interact with mast cells",
+        "strength": "moderate"
+      },
+      {
+        "text": "Female sex",
+        "strength": "weak"
+      },
+      {
+        "text": "Atopy or asthma",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Asthma",
+      "Mast cell disorders",
+      "Frequent infections requiring antibiotics",
+      "Human immunodeficiency virus infection",
+      "Autoimmune disease"
+    ],
+    "family_history": [
+      "Drug allergy in a first-degree relative"
+    ],
+    "social_history": [],
+    "exposures": [
+      "Beta-lactam antibiotics",
+      "Sulfonamide antibiotics",
+      "Nonsteroidal anti-inflammatory drugs",
+      "Radiocontrast media",
+      "Anticonvulsants",
+      "Chemotherapy agents",
+      "Biologic agents"
+    ],
+    "risk_medications": [
+      "penicillin",
+      "amoxicillin",
+      "cephalexin",
+      "sulfamethoxazole",
+      "trimethoprim",
+      "ibuprofen",
+      "naproxen",
+      "aspirin",
+      "phenytoin",
+      "carbamazepine",
+      "vancomycin",
+      "paclitaxel",
+      "iodinated contrast media"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I broke out in a rash after starting a new medicine",
+        "frequency": "almost_always",
+        "term": "Rash",
+        "snomed_verified": true
+      },
+      {
+        "text": "My face and lips are swelling",
+        "frequency": "sometimes",
+        "term": "Angioedema",
+        "snomed_verified": true
+      },
+      {
+        "text": "I'm itchy all over",
+        "frequency": "common",
+        "term": "Pruritus",
+        "snomed_verified": true
+      },
+      {
+        "text": "I feel like I can't breathe",
+        "frequency": "sometimes",
+        "term": "Dyspnea",
+        "snomed_verified": true
+      }
+    ],
+    "hpi": {
+      "onset": "Minutes to hours after a dose for immediate reactions; days to weeks after starting the drug for delayed reactions",
+      "duration": "Minutes to days for acute reactions; may persist or recur with continued exposure",
+      "progression": "Immediate reactions peak within an hour; delayed reactions evolve over days and may worsen with each dose",
+      "location": "Generalized skin, or localized to face, lips, tongue, throat, or injection site",
+      "radiation": "Not applicable",
+      "quality": "Itchy raised welts, flushing, or a spreading red rash; swelling of soft tissues; wheezing or throat tightness in severe cases",
+      "severity": "Mild itching and rash to life-threatening breathing difficulty and low blood pressure",
+      "timing": "Temporally related to drug administration; immediate reactions within 1 hour, delayed reactions after 6 hours to days",
+      "aggravating": [
+        "Taking the drug again",
+        "Increasing the dose"
+      ],
+      "relieving": [
+        "Stopping the drug",
+        "Antihistamines",
+        "Epinephrine for severe reactions"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Itchy raised welts on the skin",
+          "frequency": "common",
+          "term": "Urticaria",
+          "snomed_verified": true
+        },
+        {
+          "text": "Flushing or redness of the skin",
+          "frequency": "common",
+          "term": "Flushing",
+          "snomed_verified": true
+        },
+        {
+          "text": "Swelling of the face, lips, or tongue",
+          "frequency": "sometimes",
+          "term": "Angioedema",
+          "snomed_verified": true
+        },
+        {
+          "text": "Wheezing or difficulty breathing",
+          "frequency": "sometimes",
+          "term": "Wheezing",
+          "snomed_verified": true
+        },
+        {
+          "text": "Feeling faint or lightheaded",
+          "frequency": "sometimes",
+          "term": "Syncope",
+          "snomed_verified": true
+        },
+        {
+          "text": "Nausea or vomiting",
+          "frequency": "sometimes",
+          "term": "Nausea",
+          "snomed_verified": true
+        },
+        {
+          "text": "Abdominal cramping",
+          "frequency": "sometimes",
+          "term": "Abdominal pain",
+          "snomed_verified": true
+        },
+        {
+          "text": "Fever",
+          "frequency": "sometimes",
+          "term": "Fever",
+          "snomed_verified": true
+        }
+      ],
+      "pertinent_negatives": [
+        "No new food, insect sting, or latex exposure",
+        "No recent infection or illness",
+        "No personal or family history of recurrent angioedema without a trigger",
+        "No symptoms before the suspected drug was started",
+        "No isolated gastrointestinal symptoms without skin or respiratory involvement"
+      ]
+    },
+    "ros": [
+      {
+        "system": "skin",
+        "positives": [
+          {
+            "text": "Itchy raised welts",
+            "frequency": "common",
+            "term": "Urticaria",
+            "snomed_verified": true
+          },
+          {
+            "text": "Redness or flushing",
+            "frequency": "common",
+            "term": "Flushing",
+            "snomed_verified": true
+          },
+          {
+            "text": "Swelling of the face or lips",
+            "frequency": "sometimes",
+            "term": "Angioedema",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Peeling skin",
+          "Blisters",
+          "Mucosal ulcers"
+        ],
+        "argues_against": [
+          "Stevens-Johnson syndrome",
+          "Toxic epidermal necrolysis"
+        ]
+      },
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "Wheezing",
+            "frequency": "sometimes",
+            "term": "Wheezing",
+            "snomed_verified": true
+          },
+          {
+            "text": "Shortness of breath",
+            "frequency": "sometimes",
+            "term": "Dyspnea",
+            "snomed_verified": true
+          },
+          {
+            "text": "Throat tightness",
+            "frequency": "sometimes",
+            "term": "Throat tightness",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Cough",
+          "Sputum production",
+          "Pleuritic chest pain"
+        ],
+        "argues_against": [
+          "Pneumonia",
+          "Pulmonary embolism"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [
+          {
+            "text": "Lightheadedness",
+            "frequency": "sometimes",
+            "term": "Lightheadedness",
+            "snomed_verified": true
+          },
+          {
+            "text": "Palpitations",
+            "frequency": "sometimes",
+            "term": "Palpitations",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Chest pain",
+          "Edema of the legs"
+        ],
+        "argues_against": [
+          "Heart failure",
+          "Myocardial infarction"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Nausea",
+            "frequency": "sometimes",
+            "term": "Nausea",
+            "snomed_verified": true
+          },
+          {
+            "text": "Vomiting",
+            "frequency": "sometimes",
+            "term": "Vomiting",
+            "snomed_verified": true
+          },
+          {
+            "text": "Abdominal cramps",
+            "frequency": "sometimes",
+            "term": "Abdominal pain",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Diarrhea",
+          "Blood in stool",
+          "Jaundice"
+        ],
+        "argues_against": [
+          "Infectious gastroenteritis",
+          "Hepatitis"
+        ]
+      },
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fever",
+            "frequency": "sometimes",
+            "term": "Fever",
+            "snomed_verified": true
+          },
+          {
+            "text": "Malaise",
+            "frequency": "sometimes",
+            "term": "Malaise",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Weight loss",
+          "Night sweats"
+        ],
+        "argues_against": [
+          "Lymphoma",
+          "Tuberculosis"
+        ]
+      },
+      {
+        "system": "allergic_immunologic",
+        "positives": [
+          {
+            "text": "Itching",
+            "frequency": "common",
+            "term": "Pruritus",
+            "snomed_verified": true
+          },
+          {
+            "text": "Hives",
+            "frequency": "common",
+            "term": "Urticaria",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Recurrent infections",
+          "Family history of hereditary angioedema"
+        ],
+        "argues_against": [
+          "Hereditary angioedema",
+          "Immunodeficiency"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Young children may present with irritability, feeding difficulty, and a rash that is harder to characterize; delayed reactions such as maculopapular exanthems are common.",
+        "missing_classic_features": [
+          "Clear description of itching",
+          "Immediate temporal relationship to drug"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "May present with less prominent skin findings and more systemic symptoms; polypharmacy increases risk and makes attribution difficult.",
+        "missing_classic_features": [
+          "Prominent urticaria",
+          "Obvious single drug trigger"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Physiologic changes can alter drug metabolism and immune response; presentation is similar but management must consider fetal safety.",
+        "missing_classic_features": []
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "May have blunted or atypical skin findings and more severe systemic reactions; drug allergy can be confused with infection or graft-versus-host disease.",
+        "missing_classic_features": [
+          "Typical urticarial rash",
+          "Eosinophilia"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Comfortable, alert, no distress; itching and rash are the main complaint",
+      "moderate": "Uncomfortable, scratching, anxious but not toxic-appearing",
+      "severe": "Ill-appearing, restless or anxious, flushed, may be wheezing or hoarse",
+      "critical": "Toxic-appearing, pale or cyanotic, diaphoretic, confused or lethargic, in respiratory distress"
+    },
+    "findings": [
+      {
+        "id": "urticaria",
+        "region": "skin",
+        "maneuver": "Inspect the skin over the trunk, limbs, and pressure areas",
+        "finding": "Raised, blanching, erythematous wheals of varying size with surrounding flare",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Urticaria",
+        "snomed_verified": true
+      },
+      {
+        "id": "flushing",
+        "region": "skin",
+        "maneuver": "Inspect the face, neck, and upper trunk",
+        "finding": "Diffuse erythema and warmth of the skin",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Flushing",
+        "snomed_verified": true
+      },
+      {
+        "id": "morbilliform-exanthem",
+        "region": "skin",
+        "maneuver": "Inspect the trunk and extremities for a spreading rash",
+        "finding": "Confluent maculopapular erythematous rash, often starting on the trunk",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Morbilliform eruption",
+        "snomed_verified": true
+      },
+      {
+        "id": "angioedema",
+        "region": "heent",
+        "maneuver": "Inspect and palpate the lips, periorbital tissue, tongue, and oral cavity",
+        "finding": "Non-pitting, non-tender swelling of the lips, eyelids, tongue, or oral soft tissue",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Angioedema",
+        "snomed_verified": true
+      },
+      {
+        "id": "wheezing",
+        "region": "lung",
+        "maneuver": "Auscultate the lungs during quiet and forced expiration",
+        "finding": "Diffuse expiratory wheezing",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "essential",
+        "term": "Wheezing",
+        "snomed_verified": true
+      },
+      {
+        "id": "stridor",
+        "region": "neck",
+        "maneuver": "Auscultate over the larynx and trachea while the patient breathes quietly",
+        "finding": "High-pitched inspiratory sound over the upper airway",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Stridor",
+        "snomed_verified": true
+      },
+      {
+        "id": "hoarseness",
+        "region": "neck",
+        "maneuver": "Listen to the patient's voice and ask about voice change",
+        "finding": "Hoarse or muffled voice suggesting laryngeal edema",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Hoarseness",
+        "snomed_verified": true
+      },
+      {
+        "id": "hypotension",
+        "region": "cardiac",
+        "maneuver": "Measure blood pressure in both arms and repeat after standing if the patient can tolerate it",
+        "finding": "Low systolic blood pressure with or without orthostatic drop",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Hypotension",
+        "snomed_verified": true
+      },
+      {
+        "id": "tachycardia",
+        "region": "cardiac",
+        "maneuver": "Palpate the radial pulse and count the rate",
+        "finding": "Elevated heart rate",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Tachycardia",
+        "snomed_verified": true
+      },
+      {
+        "id": "conjunctival-injection",
+        "region": "heent",
+        "maneuver": "Inspect the conjunctivae and periorbital area",
+        "finding": "Red, injected conjunctivae with or without tearing",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Conjunctival injection",
+        "snomed_verified": true
+      },
+      {
+        "id": "oral-ulcer",
+        "region": "heent",
+        "maneuver": "Inspect the lips, buccal mucosa, tongue, and palate",
+        "finding": "Painful ulceration or erosion of the oral mucosa",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "argues_against",
+        "importance": "important",
+        "term": "Ulcer of mouth",
+        "snomed_verified": true
+      },
+      {
+        "id": "skin-peeling",
+        "region": "skin",
+        "maneuver": "Inspect the skin for blistering, sheet-like detachment, or peeling, and check for a positive Nikolsky sign",
+        "finding": "Peeling or sloughing of the skin, especially at pressure points or mucosal junctions",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "argues_against",
+        "importance": "essential",
+        "term": "Peeling of skin",
+        "snomed_verified": true
+      },
+      {
+        "id": "respiratory-crackles",
+        "region": "lung",
+        "maneuver": "Auscultate the lung bases",
+        "finding": "Fine inspiratory crackles at the bases",
+        "frequency": "rare",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Respiratory crackles",
+        "snomed_verified": true
+      },
+      {
+        "id": "jugular-venous-distension",
+        "region": "neck",
+        "maneuver": "Inspect the internal jugular vein with the patient at 30–45 degrees",
+        "finding": "Elevated jugular venous pressure",
+        "frequency": "rare",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Jugular venous distension",
+        "snomed_verified": true
+      },
+      {
+        "id": "focal-neurologic-deficit",
+        "region": "neuro",
+        "maneuver": "Perform a brief neurologic screen including strength, sensation, and cranial nerves",
+        "finding": "Asymmetric weakness, sensory loss, or cranial nerve abnormality",
+        "frequency": "rare",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Focal neurological deficit",
+        "snomed_verified": false
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 98.0,
+        "max": 99.5
+      },
+      "moderate": {
+        "min": 99.0,
+        "max": 100.8
+      },
+      "severe": {
+        "min": 99.5,
+        "max": 102.0
+      },
+      "critical": {
+        "min": 97.0,
+        "max": 103.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 100
+      },
+      "moderate": {
+        "min": 90,
+        "max": 120
+      },
+      "severe": {
+        "min": 110,
+        "max": 140
+      },
+      "critical": {
+        "min": 120,
+        "max": 160
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 12,
+        "max": 20
+      },
+      "moderate": {
+        "min": 18,
+        "max": 26
+      },
+      "severe": {
+        "min": 22,
+        "max": 32
+      },
+      "critical": {
+        "min": 26,
+        "max": 40
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 100,
+        "max": 130
+      },
+      "moderate": {
+        "min": 90,
+        "max": 120
+      },
+      "severe": {
+        "min": 70,
+        "max": 100
+      },
+      "critical": {
+        "min": 50,
+        "max": 90
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 60,
+        "max": 80
+      },
+      "moderate": {
+        "min": 55,
+        "max": 75
+      },
+      "severe": {
+        "min": 40,
+        "max": 65
+      },
+      "critical": {
+        "min": 30,
+        "max": 60
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 95,
+        "max": 100
+      },
+      "moderate": {
+        "min": 92,
+        "max": 98
+      },
+      "severe": {
+        "min": 85,
+        "max": 94
+      },
+      "critical": {
+        "min": 70,
+        "max": 90
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "eos_pct",
+      "ranges": {
+        "mild": {
+          "min": 5,
+          "max": 8
+        },
+        "moderate": {
+          "min": 7,
+          "max": 15
+        },
+        "severe": {
+          "min": 12,
+          "max": 30
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Eosinophilia supports a drug reaction but is often absent in acute IgE-mediated reactions; it is more typical of delayed reactions such as DRESS."
+    },
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "mild": {
+          "min": 11.0,
+          "max": 14.0
+        },
+        "moderate": {
+          "min": 13.0,
+          "max": 18.0
+        },
+        "severe": {
+          "min": 16.0,
+          "max": 25.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Leukocytosis is nonspecific and can reflect infection or systemic inflammation rather than the drug reaction itself."
+    },
+    {
+      "test_id": "plt",
+      "ranges": {
+        "moderate": {
+          "min": 100,
+          "max": 150
+        },
+        "severe": {
+          "min": 20,
+          "max": 100
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Thrombocytopenia suggests a drug-induced immune thrombocytopenia or a systemic reaction such as DRESS."
+    },
+    {
+      "test_id": "ast",
+      "ranges": {
+        "moderate": {
+          "min": 40,
+          "max": 120
+        },
+        "severe": {
+          "min": 100,
+          "max": 400
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Transaminitis raises concern for drug-induced liver injury or DRESS rather than a simple urticarial reaction."
+    },
+    {
+      "test_id": "alt",
+      "ranges": {
+        "moderate": {
+          "min": 56,
+          "max": 150
+        },
+        "severe": {
+          "min": 120,
+          "max": 500
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional"
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "moderate": {
+          "min": 1.2,
+          "max": 1.8
+        },
+        "severe": {
+          "min": 1.6,
+          "max": 3.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Rising creatinine suggests a systemic reaction with renal involvement, such as acute interstitial nephritis or DRESS."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "moderate": {
+          "min": 1.0,
+          "max": 5.0
+        },
+        "severe": {
+          "min": 4.0,
+          "max": 15.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Nonspecific; helps gauge systemic inflammation in delayed or severe reactions."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rate",
+        "finding": "Sinus tachycardia",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Sinus rhythm; may show ectopy in severe reactions",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "st",
+        "finding": "Diffuse ST depression or nonspecific ST-T changes with hypotension or hypoperfusion",
+        "frequency": "rare",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "qt",
+        "finding": "QT prolongation from concomitant QT-prolonging drugs or electrolyte disturbance",
+        "frequency": "rare",
+        "min_severity": "severe"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Chest x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Usually normal; no infiltrate or edema in an uncomplicated drug reaction",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Hyperinflation or air trapping when bronchospasm is prominent",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Patchy infiltrates or pulmonary edema in severe systemic reactions",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Looks for eosinophilia, leukocytosis, or cytopenias that suggest a systemic drug reaction"
+      },
+      {
+        "test": "cmp_extra",
+        "why": "Assesses hepatic and renal involvement in delayed or severe reactions"
+      },
+      {
+        "test": "Chest x-ray",
+        "why": "Evaluates for an alternative cause of wheeze or dyspnea",
+        "only_if": "respiratory symptoms are prominent or anaphylaxis is suspected"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "skin prick and intradermal testing",
+        "why": "Confirms IgE-mediated allergy to a specific drug, most often a beta-lactam, when the history is unclear",
+        "only_if": "the culprit drug is known and the patient is stable enough for testing"
+      },
+      {
+        "test": "serum specific IgE",
+        "why": "Supports an IgE-mediated mechanism for selected drugs such as penicillins",
+        "only_if": "skin testing is unavailable or contraindicated"
+      },
+      {
+        "test": "graded drug challenge",
+        "why": "Definitive test when skin and serologic testing are negative or unavailable",
+        "only_if": "performed under supervision with resuscitation available"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "Tryptase",
+        "why": "Supports mast cell activation when drawn soon after a suspected anaphylactic reaction"
+      },
+      {
+        "test": "patch_test",
+        "why": "May identify the culprit in delayed cutaneous reactions such as maculopapular exanthem or DRESS"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "d_dimer",
+        "why": "No role in drug allergy; would only mislead toward thromboembolic disease"
+      },
+      {
+        "test": "procalcitonin",
+        "why": "Does not distinguish a drug reaction from infection and is not part of the workup"
+      },
+      {
+        "test": "CT",
+        "why": "Rarely changes management; reserve for suspected complications or an alternative diagnosis"
+      }
+    ],
+    "decision_points": [
+      "Stop the suspected drug immediately and treat anaphylaxis with epinephrine before any testing",
+      "Do not perform skin testing or challenge during an acute severe reaction or within weeks of anaphylaxis",
+      "Distinguish immediate IgE-mediated reactions from delayed T-cell reactions, since the testing strategy differs",
+      "Consider drug-induced liver injury, DRESS, or Stevens-Johnson syndrome when fever, transaminitis, cytopenias, or mucosal involvement are present"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Anaphylaxis",
+      "slug": "anaphylaxis",
+      "why_considered": "Drug exposure followed by urticaria, angioedema, wheezing, and hypotension is the classic picture of anaphylaxis, which is the most severe form of an immediate drug allergy.",
+      "must_not_miss": true,
+      "trigger": "Hypotension, airway swelling, or respiratory distress after a drug dose",
+      "discriminators": {
+        "history": [
+          "Symptoms begin within minutes of the dose",
+          "Rapid progression over minutes to an hour",
+          "Sense of impending doom or throat closing"
+        ],
+        "exam": [
+          "Hypotension or shock",
+          "Stridor or hoarseness from laryngeal edema",
+          "Diffuse wheezing"
+        ],
+        "labs": [
+          "Elevated serum tryptase drawn within a few hours of onset"
+        ],
+        "imaging": [
+          "Chest x-ray usually normal or shows hyperinflation"
+        ]
+      }
+    },
+    {
+      "name": "Stevens-Johnson syndrome and toxic epidermal necrolysis",
+      "slug": "stevens-johnson-syndrome",
+      "why_considered": "A delayed drug reaction that begins with fever and a rash and can be mistaken for a benign morbilliform drug eruption early on.",
+      "must_not_miss": true,
+      "trigger": "Painful skin, mucosal erosions, or skin peeling after starting a new drug",
+      "discriminators": {
+        "history": [
+          "Onset 1 to 3 weeks after starting the culprit drug",
+          "Painful skin and mucosal sores",
+          "Fever and malaise before the rash"
+        ],
+        "exam": [
+          "Mucosal erosions of the mouth, eyes, or genitals",
+          "Sheet-like skin detachment or a positive Nikolsky sign",
+          "Widespread dusky macules coalescing into blisters"
+        ],
+        "labs": [
+          "Cytopenias and elevated transaminases may be present"
+        ]
+      }
+    },
+    {
+      "name": "DRESS syndrome",
+      "slug": "dress-syndrome",
+      "why_considered": "A delayed drug hypersensitivity that presents with fever, rash, and facial edema and is often mistaken for a simple drug rash or a viral exanthem.",
+      "must_not_miss": true,
+      "trigger": "Fever, facial swelling, and a widespread rash 2 to 8 weeks after starting a drug",
+      "discriminators": {
+        "history": [
+          "Fever and malaise preceding the rash",
+          "Facial swelling",
+          "Recent start of an anticonvulsant, sulfonamide, or allopurinol"
+        ],
+        "exam": [
+          "Widespread morbilliform rash with facial edema",
+          "Lymphadenopathy",
+          "No mucosal blistering or skin detachment"
+        ],
+        "labs": [
+          "Marked eosinophilia",
+          "Atypical lymphocytosis",
+          "Elevated transaminases or creatinine"
+        ]
+      }
+    },
+    {
+      "name": "Viral exanthem",
+      "slug": "viral-exanthem",
+      "why_considered": "A morbilliform rash with fever in a patient taking a new medication can be caused by a viral infection rather than the drug.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Preceding or concurrent viral symptoms such as cough, coryza, or sore throat",
+          "Sick contacts",
+          "Rash appears during or after the febrile illness rather than after a new drug"
+        ],
+        "exam": [
+          "Diffuse maculopapular rash without urticaria or angioedema",
+          "No mucosal involvement"
+        ],
+        "labs": [
+          "Normal or mildly elevated eosinophils",
+          "Normal transaminases and creatinine"
+        ]
+      }
+    },
+    {
+      "name": "Chronic spontaneous urticaria",
+      "slug": "chronic-spontaneous-urticaria",
+      "why_considered": "Recurrent hives and itching can be attributed to a drug when no external trigger is actually responsible.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Recurrent wheals for more than 6 weeks",
+          "No clear temporal relationship to any drug dose",
+          "Symptoms may be worse at night or with pressure"
+        ],
+        "exam": [
+          "Urticaria without angioedema or systemic symptoms",
+          "No wheezing or hypotension"
+        ],
+        "labs": [
+          "Normal CBC and inflammatory markers"
+        ]
+      }
+    },
+    {
+      "name": "Hereditary angioedema",
+      "slug": "hereditary-angioedema",
+      "why_considered": "Recurrent swelling of the face, lips, or extremities can be mistaken for drug-induced angioedema.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Recurrent angioedema without urticaria since childhood or adolescence",
+          "Family history of similar swelling",
+          "Abdominal pain attacks"
+        ],
+        "exam": [
+          "Non-pitting angioedema without hives",
+          "No wheezing or hypotension"
+        ],
+        "labs": [
+          "Low C4 and C1 inhibitor levels or function"
+        ]
+      }
+    },
+    {
+      "name": "Serum sickness",
+      "slug": "serum-sickness",
+      "why_considered": "Fever, rash, and joint pain appearing 1 to 2 weeks after a drug or biologic can mimic a delayed drug allergy.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Exposure to a biologic or a drug 1 to 2 weeks earlier",
+          "Fever, arthralgias, and malaise",
+          "Symptoms resolve after stopping the drug"
+        ],
+        "exam": [
+          "Urticarial or morbilliform rash",
+          "Joint tenderness or swelling",
+          "Lymphadenopathy"
+        ],
+        "labs": [
+          "Elevated inflammatory markers",
+          "Low complement levels",
+          "Normal eosinophil count or mild elevation"
+        ]
+      }
+    },
+    {
+      "name": "Drug-induced thrombocytopenia",
+      "slug": "drug-induced-thrombocytopenia",
+      "why_considered": "A drug reaction that presents with petechiae or bruising rather than urticaria, and can be confused with a cutaneous drug eruption.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Petechiae or easy bruising after starting a new drug",
+          "No itching or hives",
+          "Recent exposure to heparin, quinine, or sulfonamides"
+        ],
+        "exam": [
+          "Petechiae and ecchymoses without urticaria",
+          "No angioedema or wheezing"
+        ],
+        "labs": [
+          "Isolated thrombocytopenia",
+          "Normal eosinophils and transaminases"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Localized itching, a few urticarial wheals, or a mild maculopapular rash without systemic symptoms; vital signs normal.",
+      "moderate": "Widespread urticaria or rash with pruritus, mild angioedema of the lips or eyelids, or mild wheezing; vital signs stable but uncomfortable.",
+      "severe": "Marked angioedema, stridor, bronchospasm, hypotension, or a systemic delayed reaction with fever, facial edema, and organ involvement.",
+      "critical": "Anaphylaxis with shock, airway compromise, or respiratory failure; or a severe cutaneous reaction with skin detachment and mucosal involvement."
+    },
+    "red_flags": [
+      {
+        "finding": "Hypotension or syncope after a drug dose",
+        "meaning": "Anaphylaxis; give epinephrine immediately"
+      },
+      {
+        "finding": "Stridor, hoarseness, or throat tightness",
+        "meaning": "Laryngeal edema; airway emergency"
+      },
+      {
+        "finding": "Wheezing with hypoxia",
+        "meaning": "Bronchospasm from anaphylaxis; needs immediate treatment"
+      },
+      {
+        "finding": "Mucosal erosions or skin peeling",
+        "meaning": "Stevens-Johnson syndrome or toxic epidermal necrolysis; stop the drug and admit"
+      },
+      {
+        "finding": "Fever, facial edema, and eosinophilia weeks after starting a drug",
+        "meaning": "DRESS syndrome; risk of organ failure"
+      },
+      {
+        "finding": "Petechiae or bruising with thrombocytopenia",
+        "meaning": "Drug-induced immune thrombocytopenia; risk of bleeding"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Anaphylaxis",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Hypotension",
+          "Stridor",
+          "Diffuse wheezing",
+          "Rapid progression within minutes"
+        ]
+      },
+      {
+        "name": "Stevens-Johnson syndrome or toxic epidermal necrolysis",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Painful skin",
+          "Mucosal erosions",
+          "Skin detachment",
+          "Fever"
+        ]
+      },
+      {
+        "name": "DRESS syndrome with organ involvement",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Fever",
+          "Facial edema",
+          "Eosinophilia",
+          "Transaminitis or rising creatinine"
+        ]
+      },
+      {
+        "name": "Drug-induced liver injury",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Jaundice",
+          "Elevated transaminases",
+          "Nausea and malaise"
+        ]
+      },
+      {
+        "name": "Drug-induced immune thrombocytopenia",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Petechiae",
+          "Bruising",
+          "Low platelet count"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Delayed maculopapular exanthems are common and often benign; immediate reactions are less frequent than in adults. Careful history is needed to avoid unnecessary avoidance of antibiotics."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Polypharmacy makes attribution difficult; skin findings may be less prominent and systemic reactions more severe. Renal and hepatic impairment increase the risk of drug accumulation."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Presentation is similar, but management must consider fetal safety; epinephrine is still first-line for anaphylaxis. Penicillin allergy testing can be performed safely in pregnancy when indicated."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Skin findings may be blunted or atypical, and drug reactions can be confused with infection or graft-versus-host disease. A lower threshold for biopsy and drug discontinuation is warranted."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "Which medicine do you think caused this, and when did you take it relative to your symptoms?",
+        "category": "medications",
+        "importance": "essential",
+        "looking_for": "A specific culprit drug with a clear temporal relationship: within 1 hour for immediate reactions, 6 hours to days for delayed reactions"
+      },
+      {
+        "question": "How soon after the dose did the symptoms start?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Minutes to 1 hour suggests IgE-mediated immediate hypersensitivity; days to weeks suggests a delayed T-cell reaction"
+      },
+      {
+        "question": "What exactly happened — what did the reaction look like?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Hives, flushing, swelling, wheezing, or a spreading rash; helps classify the reaction type"
+      },
+      {
+        "question": "Was there any trouble breathing, throat tightness, or feeling faint?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Airway or circulatory involvement indicating anaphylaxis"
+      },
+      {
+        "question": "Have you taken this drug or a similar one since, and what happened?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Recurrence with re-exposure supports true allergy; tolerance on re-exposure argues against it"
+      },
+      {
+        "question": "How was the reaction treated, and how long did it take to resolve?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Response to antihistamines or epinephrine; rapid resolution after stopping the drug"
+      },
+      {
+        "question": "Are you taking any other medicines, including over-the-counter drugs and supplements?",
+        "category": "medications",
+        "importance": "essential",
+        "looking_for": "All current drugs and the timing of any recent additions, to identify the culprit and interacting agents"
+      },
+      {
+        "question": "Have you ever had a reaction to a medicine before?",
+        "category": "allergies",
+        "importance": "essential",
+        "looking_for": "Prior drug reactions and any cross-reactive agents"
+      },
+      {
+        "question": "Do you have any other allergies, such as food, latex, or insect stings?",
+        "category": "allergies",
+        "importance": "important",
+        "looking_for": "Atopy or other triggers that may explain the symptoms"
+      },
+      {
+        "question": "Do you have asthma or any mast cell disorder?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Conditions that increase the risk and severity of reactions"
+      },
+      {
+        "question": "Has anyone in your family had a drug allergy or recurrent swelling without hives?",
+        "category": "family",
+        "importance": "optional",
+        "looking_for": "Family history of drug allergy or hereditary angioedema"
+      },
+      {
+        "question": "Have you had any fever, facial swelling, or feeling generally unwell since starting the drug?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Systemic features suggesting DRESS or another severe delayed reaction"
+      },
+      {
+        "question": "Have you noticed any sores in your mouth, eyes, or genitals, or any skin peeling?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Mucosal involvement or skin detachment suggesting Stevens-Johnson syndrome or toxic epidermal necrolysis"
+      },
+      {
+        "question": "Any bruising or tiny red spots on the skin?",
+        "category": "ros",
+        "importance": "optional",
+        "looking_for": "Petechiae suggesting drug-induced thrombocytopenia"
+      }
+    ],
+    "accepted_names": [
+      "Drug allergy",
+      "Drug hypersensitivity",
+      "Adverse drug reaction",
+      "Medication allergy"
+    ],
+    "reasoning_points": [
+      "A specific drug was started or taken shortly before the symptoms began",
+      "The timing fits an immediate (minutes to 1 hour) or delayed (days to weeks) hypersensitivity reaction",
+      "Symptoms include typical allergic features such as urticaria, pruritus, flushing, angioedema, wheezing, or hypotension",
+      "Symptoms improve or resolve after stopping the suspected drug",
+      "Alternative causes such as infection, viral exanthem, or chronic urticaria are considered and excluded",
+      "Red flags for anaphylaxis or severe cutaneous reactions are specifically assessed"
+    ],
+    "difficulty": {
+      "easy": [
+        "Clear temporal relationship between a new drug and urticaria or angioedema",
+        "Itching and raised wheals on exam",
+        "Symptoms resolve after stopping the drug",
+        "No systemic or mucosal involvement"
+      ],
+      "medium": [
+        "Delayed maculopapular rash days after starting an antibiotic",
+        "Multiple new medications make the culprit uncertain",
+        "Mild wheezing or facial swelling without hypotension",
+        "Reaction reported in the past but details are vague"
+      ],
+      "hard": [
+        "Reaction occurs during a serious infection, making attribution difficult",
+        "Fever, facial edema, and eosinophilia suggesting DRESS rather than a simple rash",
+        "Mucosal erosions or skin peeling suggesting Stevens-Johnson syndrome",
+        "Patient presents with isolated hypotension or respiratory distress and cannot give a history",
+        "Symptoms overlap with chronic spontaneous urticaria or hereditary angioedema"
+      ]
+    }
+  }
+}
