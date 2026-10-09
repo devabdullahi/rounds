@@ -1,0 +1,1312 @@
+{
+  "schema_version": "0.2",
+  "slug": "fecal-impaction",
+  "triage": {
+    "name": "Fecal impaction",
+    "case_suitable": true,
+    "reason": "Abdominal pain, distension and inability to pass stool; diagnosed by history, exam and imaging, with bowel obstruction and constipation as look-alikes.",
+    "kind": "disease",
+    "category": "lower gastrointestinal disorder",
+    "organ_systems": [
+      "gastrointestinal"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "emergency",
+      "surgery",
+      "familyMedicine"
+    ],
+    "commonness": "common",
+    "settings": [
+      "emergency",
+      "inpatient",
+      "clinic"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:24:14Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:47:50Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:48:05Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:48:14Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:48:27Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:48:33Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "exam: term 'Focal neurologic deficit' not found in SNOMED CT",
+        "differential small-bowel-obstruction: no profile yet",
+        "differential acute-colonic-pseudo-obstruction: no profile yet",
+        "differential diverticulitis: no profile yet",
+        "differential irritable-bowel-syndrome: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 60,
+      "typical_max": 90,
+      "peak": "70–90",
+      "possible_min": 1,
+      "possible_max": 105
+    },
+    "sex": "either",
+    "demographics": [
+      "More common in older adults, especially those who are bedbound or in nursing homes",
+      "Occurs in children, particularly with toilet training difficulties or withholding behavior",
+      "More common in people with limited mobility or neurogenic bowel"
+    ],
+    "risk_factors": [
+      {
+        "text": "Chronic constipation",
+        "strength": "strong"
+      },
+      {
+        "text": "Older age",
+        "strength": "strong"
+      },
+      {
+        "text": "Immobility or bedbound status",
+        "strength": "strong"
+      },
+      {
+        "text": "Neurogenic bowel (spinal cord injury, multiple sclerosis, Parkinson disease)",
+        "strength": "strong"
+      },
+      {
+        "text": "Use of constipating medications (opioids, anticholinergics, calcium channel blockers)",
+        "strength": "strong"
+      },
+      {
+        "text": "Inadequate fluid or fiber intake",
+        "strength": "moderate"
+      },
+      {
+        "text": "Recent surgery or hospitalization",
+        "strength": "moderate"
+      },
+      {
+        "text": "Cognitive impairment or dementia",
+        "strength": "moderate"
+      },
+      {
+        "text": "Pregnancy",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Dementia",
+      "Parkinson disease",
+      "Multiple sclerosis",
+      "Spinal cord injury",
+      "Hypothyroidism",
+      "Diabetes mellitus",
+      "Irritable bowel syndrome",
+      "Diverticular disease"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Residence in a nursing home or long-term care facility",
+      "Low physical activity"
+    ],
+    "exposures": [],
+    "risk_medications": [
+      "oxycodone",
+      "morphine",
+      "codeine",
+      "fentanyl",
+      "diphenhydramine",
+      "oxybutynin",
+      "amitriptyline",
+      "verapamil",
+      "diltiazem",
+      "aluminum hydroxide",
+      "calcium carbonate",
+      "iron"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I can't poop and my belly hurts",
+        "frequency": "almost_always",
+        "term": "Constipation",
+        "snomed_verified": true
+      },
+      {
+        "text": "I feel like I need to go but nothing comes out",
+        "frequency": "common",
+        "term": "Anorectal tenesmus",
+        "snomed_verified": true
+      },
+      {
+        "text": "My stomach is swollen and hard",
+        "frequency": "common",
+        "term": "Abdominal distension",
+        "snomed_verified": true
+      },
+      {
+        "text": "I have leakage of stool and I can't control it",
+        "frequency": "sometimes",
+        "term": "Incontinence of feces",
+        "snomed_verified": true
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual over days to weeks, often on a background of chronic constipation",
+      "duration": "Days to weeks of worsening constipation before presentation",
+      "progression": "Starts as infrequent hard stools, then no stool passage at all; abdominal pain and distension build up; may develop overflow leakage",
+      "location": "Lower abdomen, suprapubic or left lower quadrant",
+      "radiation": "Usually none; may be diffuse if severe",
+      "quality": "Dull, crampy, constant or intermittent",
+      "severity": "Moderate to severe; 5–8/10",
+      "timing": "Constant, may worsen after meals or attempts to defecate",
+      "aggravating": [
+        "Eating",
+        "Straining to defecate",
+        "Movement"
+      ],
+      "relieving": [
+        "Passing small amounts of liquid stool (overflow)",
+        "Lying still",
+        "Nothing fully relieves it"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "No bowel movement for several days",
+          "frequency": "almost_always",
+          "term": "Constipation",
+          "snomed_verified": true
+        },
+        {
+          "text": "Abdominal pain",
+          "frequency": "common",
+          "term": "Abdominal pain",
+          "snomed_verified": true
+        },
+        {
+          "text": "Abdominal bloating or distension",
+          "frequency": "common",
+          "term": "Abdominal distension",
+          "snomed_verified": true
+        },
+        {
+          "text": "Leakage of liquid stool (overflow incontinence)",
+          "frequency": "sometimes",
+          "term": "Incontinence of feces",
+          "snomed_verified": true
+        },
+        {
+          "text": "Nausea",
+          "frequency": "sometimes",
+          "term": "Nausea",
+          "snomed_verified": true
+        },
+        {
+          "text": "Vomiting",
+          "frequency": "rare",
+          "term": "Vomiting",
+          "snomed_verified": true
+        },
+        {
+          "text": "Feeling of incomplete evacuation",
+          "frequency": "common",
+          "term": "Anorectal tenesmus",
+          "snomed_verified": true
+        },
+        {
+          "text": "Urinary retention or difficulty urinating",
+          "frequency": "rare",
+          "term": "Urinary retention",
+          "snomed_verified": true
+        }
+      ],
+      "pertinent_negatives": [
+        "Blood in stool",
+        "Weight loss",
+        "Fever",
+        "Severe constant pain with guarding",
+        "Bilious vomiting",
+        "Prior abdominal surgery"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Feeling tired",
+            "frequency": "sometimes",
+            "term": "Fatigue",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Fever",
+          "Weight loss",
+          "Night sweats"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Constipation",
+            "frequency": "almost_always",
+            "term": "Constipation",
+            "snomed_verified": true
+          },
+          {
+            "text": "Abdominal pain",
+            "frequency": "common",
+            "term": "Abdominal pain",
+            "snomed_verified": true
+          },
+          {
+            "text": "Abdominal distension",
+            "frequency": "common",
+            "term": "Abdominal distension",
+            "snomed_verified": true
+          },
+          {
+            "text": "Nausea",
+            "frequency": "sometimes",
+            "term": "Nausea",
+            "snomed_verified": true
+          },
+          {
+            "text": "Vomiting",
+            "frequency": "rare",
+            "term": "Vomiting",
+            "snomed_verified": true
+          },
+          {
+            "text": "Leakage of stool",
+            "frequency": "sometimes",
+            "term": "Incontinence of feces",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Blood in stool",
+          "Black tarry stools",
+          "Jaundice",
+          "Difficulty swallowing"
+        ],
+        "argues_against": [
+          "Bloody diarrhea",
+          "Severe constant pain with peritoneal signs"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [
+          {
+            "text": "Difficulty urinating",
+            "frequency": "rare",
+            "term": "Urinary retention",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Dysuria",
+          "Hematuria",
+          "Flank pain"
+        ],
+        "argues_against": [
+          "Colicky flank pain radiating to the groin"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [],
+        "negatives": [
+          "Numbness",
+          "Weakness",
+          "Loss of sensation in the perineum"
+        ],
+        "argues_against": [
+          "Cauda equina syndrome"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Children may present with overflow diarrhea and soiling rather than clear constipation; they may hide or deny symptoms and have withholding behavior.",
+        "missing_classic_features": [
+          "Clear history of no bowel movement",
+          "Abdominal pain localization"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "May present with confusion, agitation, or urinary retention without reporting constipation; pain may be mild or absent.",
+        "missing_classic_features": [
+          "Abdominal pain",
+          "Reported constipation"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Constipation is common in pregnancy; impaction may present with lower abdominal pain and pressure, and must be distinguished from obstetric causes.",
+        "missing_classic_features": [
+          "Severe pain",
+          "Distension"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Alert, comfortable at rest, mild lower abdominal discomfort",
+      "moderate": "Uncomfortable, distended abdomen, prefers to lie still",
+      "severe": "Ill-appearing, distended and tender abdomen, reluctant to move",
+      "critical": "Toxic-appearing, pale, diaphoretic, lethargic, with marked abdominal distension"
+    },
+    "findings": [
+      {
+        "id": "abdominal-distension",
+        "region": "abdomen",
+        "maneuver": "Inspect the abdomen from the foot of the bed and measure abdominal girth",
+        "finding": "Visible abdominal distension, tympanitic to percussion",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "essential",
+        "term": "Abdominal distension",
+        "snomed_verified": true
+      },
+      {
+        "id": "palpable-abdominal-mass",
+        "region": "abdomen",
+        "maneuver": "Palpate the lower abdomen and left lower quadrant deeply",
+        "finding": "Palpable firm, nontender or mildly tender mass in the lower abdomen or left lower quadrant",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Abdominal mass",
+        "snomed_verified": true
+      },
+      {
+        "id": "abdominal-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate all four quadrants, starting away from the area of maximal discomfort",
+        "finding": "Mild to moderate tenderness, most often suprapubic or left lower quadrant",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Abdominal tenderness",
+        "snomed_verified": true
+      },
+      {
+        "id": "rectal-mass",
+        "region": "rectal",
+        "maneuver": "Perform a digital rectal exam with the patient in the left lateral decubitus position",
+        "finding": "Hard, firm stool mass palpable in the rectal vault, often filling the rectal ampulla",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Fecal impaction",
+        "snomed_verified": true
+      },
+      {
+        "id": "rectal-sphincter-tone",
+        "region": "rectal",
+        "maneuver": "Assess anal sphincter tone during the digital rectal exam",
+        "finding": "Normal or reduced anal sphincter tone; may be lax in neurogenic bowel",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Anal sphincter tone",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-peritoneal-signs",
+        "region": "abdomen",
+        "maneuver": "Ask the patient to cough, then gently percuss and release pressure over the abdomen",
+        "finding": "No rebound tenderness or involuntary guarding",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Rebound tenderness",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-fecal-blood",
+        "region": "rectal",
+        "maneuver": "Inspect the examining glove and stool for blood after the digital rectal exam",
+        "finding": "No gross blood on the glove or stool",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Hematochezia",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-costovertebral-tenderness",
+        "region": "abdomen",
+        "maneuver": "Percuss the costovertebral angles bilaterally",
+        "finding": "No costovertebral angle tenderness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Costovertebral angle tenderness",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-jaundice",
+        "region": "skin",
+        "maneuver": "Inspect the sclerae and skin in natural light",
+        "finding": "No scleral or skin icterus",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Jaundice",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-focal-neurologic-deficit",
+        "region": "neuro",
+        "maneuver": "Test perineal sensation and lower extremity strength and reflexes",
+        "finding": "No saddle anesthesia, lower extremity weakness, or reduced reflexes",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Focal neurologic deficit",
+        "snomed_verified": false
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "moderate": {
+        "min": 98.0,
+        "max": 99.5
+      },
+      "severe": {
+        "min": 98.2,
+        "max": 100.0
+      },
+      "critical": {
+        "min": 98.0,
+        "max": 100.4
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 100
+      },
+      "moderate": {
+        "min": 70,
+        "max": 110
+      },
+      "severe": {
+        "min": 80,
+        "max": 120
+      },
+      "critical": {
+        "min": 90,
+        "max": 130
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 12,
+        "max": 20
+      },
+      "moderate": {
+        "min": 14,
+        "max": 22
+      },
+      "severe": {
+        "min": 16,
+        "max": 24
+      },
+      "critical": {
+        "min": 18,
+        "max": 28
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 100,
+        "max": 140
+      },
+      "moderate": {
+        "min": 95,
+        "max": 140
+      },
+      "severe": {
+        "min": 90,
+        "max": 140
+      },
+      "critical": {
+        "min": 80,
+        "max": 130
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 60,
+        "max": 90
+      },
+      "moderate": {
+        "min": 55,
+        "max": 90
+      },
+      "severe": {
+        "min": 50,
+        "max": 90
+      },
+      "critical": {
+        "min": 40,
+        "max": 85
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 95,
+        "max": 100
+      },
+      "moderate": {
+        "min": 94,
+        "max": 100
+      },
+      "severe": {
+        "min": 92,
+        "max": 100
+      },
+      "critical": {
+        "min": 90,
+        "max": 100
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "severe": {
+          "min": 11.0,
+          "max": 16.0
+        },
+        "critical": {
+          "min": 14.0,
+          "max": 22.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "A normal white count is expected in uncomplicated impaction; leukocytosis suggests a complication such as ischemia, perforation, or an alternative diagnosis."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "moderate": {
+          "min": 20,
+          "max": 30
+        },
+        "severe": {
+          "min": 25,
+          "max": 45
+        },
+        "critical": {
+          "min": 30,
+          "max": 60
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Rises with dehydration from poor intake or vomiting."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "severe": {
+          "min": 1.2,
+          "max": 2.0
+        },
+        "critical": {
+          "min": 1.5,
+          "max": 3.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Prerenal elevation from dehydration; also relevant before giving osmotic laxatives or enemas."
+    },
+    {
+      "test_id": "k",
+      "ranges": {
+        "moderate": {
+          "min": 3.0,
+          "max": 3.4
+        },
+        "severe": {
+          "min": 2.8,
+          "max": 3.3
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Hypokalemia from laxative overuse or vomiting."
+    },
+    {
+      "test_id": "hco3",
+      "ranges": {
+        "moderate": {
+          "min": 20,
+          "max": 21
+        },
+        "severe": {
+          "min": 16,
+          "max": 20
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Low bicarbonate suggests a metabolic acidosis and raises concern for bowel ischemia."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "critical": {
+          "min": 2.2,
+          "max": 6.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "important",
+      "caveat": "An elevated lactate with severe pain or peritoneal signs suggests bowel ischemia or perforation rather than simple impaction."
+    },
+    {
+      "test_id": "tsh",
+      "ranges": {
+        "moderate": {
+          "min": 4.5,
+          "max": 10.0
+        },
+        "severe": {
+          "min": 10.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Hypothyroidism is a reversible cause of chronic constipation and should be checked when no obvious cause is found."
+    },
+    {
+      "test_id": "ca",
+      "ranges": {
+        "moderate": {
+          "min": 10.3,
+          "max": 11.5
+        },
+        "severe": {
+          "min": 11.5,
+          "max": 13.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Hypercalcemia causes constipation and altered mental status, especially in older adults."
+    }
+  ],
+  "imaging": [
+    {
+      "study": "Abdominal x-ray (supine and upright)",
+      "modality": "xray",
+      "preferred_when": "First-line when obstruction or perforation is a concern; widely available and quick",
+      "findings": [
+        {
+          "text": "Large amount of fecal material in the rectum and distal colon",
+          "frequency": "common"
+        },
+        {
+          "text": "Dilated loops of colon proximal to the fecal burden",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Air-fluid levels suggesting obstruction",
+          "frequency": "rare"
+        },
+        {
+          "text": "Free intraperitoneal air suggesting perforation",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "CT abdomen and pelvis without IV contrast",
+      "modality": "ct",
+      "preferred_when": "When the diagnosis is unclear, obstruction or ischemia is suspected, or the patient does not improve with treatment",
+      "findings": [
+        {
+          "text": "Impacted fecal mass distending the rectum or distal colon",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Proximal colonic dilation with feces and gas",
+          "frequency": "common"
+        },
+        {
+          "text": "Colonic wall thickening or stranding suggesting ischemia or colitis",
+          "frequency": "rare"
+        },
+        {
+          "text": "Free air or abscess suggesting perforation",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "CT abdomen and pelvis with IV contrast",
+      "modality": "ct",
+      "preferred_when": "When ischemia, perforation, or abscess is suspected and renal function permits",
+      "findings": [
+        {
+          "text": "Impacted fecal mass with surrounding inflammatory change",
+          "frequency": "common"
+        },
+        {
+          "text": "Bowel wall hypoenhancement or pneumatosis suggesting ischemia",
+          "frequency": "rare"
+        },
+        {
+          "text": "Abscess or extraluminal air suggesting perforation",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Water-soluble contrast enema",
+      "modality": "xray",
+      "preferred_when": "Suspected colonic obstruction or when therapeutic enema is planned",
+      "findings": [
+        {
+          "text": "Fecal mass outlined by contrast in the rectum or sigmoid",
+          "frequency": "common"
+        },
+        {
+          "text": "Narrowed or obstructing lesion if a stricture or tumor is present",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Baseline white count; leukocytosis suggests a complication or another diagnosis"
+      },
+      {
+        "test": "bmp",
+        "why": "Assesses dehydration, electrolytes, and renal function before laxatives or enemas"
+      },
+      {
+        "test": "Abdominal x-ray (supine and upright)",
+        "why": "Confirms fecal burden and screens for obstruction or perforation"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "CT abdomen and pelvis without IV contrast",
+        "why": "Defines the fecal mass and excludes obstruction, ischemia, or perforation when the picture is atypical or the patient is not improving"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "tsh",
+        "why": "Reversible cause of chronic constipation",
+        "only_if": "no clear cause of constipation or symptoms are chronic"
+      },
+      {
+        "test": "ca",
+        "why": "Hypercalcemia causes constipation and confusion",
+        "only_if": "older adult with confusion or unexplained constipation"
+      },
+      {
+        "test": "lactate",
+        "why": "Screens for bowel ischemia",
+        "only_if": "severe pain, peritoneal signs, or toxic appearance"
+      },
+      {
+        "test": "Water-soluble contrast enema",
+        "why": "Can confirm and sometimes relieve a distal obstruction",
+        "only_if": "obstruction is suspected or therapeutic enema is planned"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "lipase",
+        "why": "Not needed unless pain is epigastric or pancreatitis is suspected"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in constipation or abdominal distension"
+      },
+      {
+        "test": "Abdominal ultrasound",
+        "why": "Limited by gas and does not characterize a fecal mass well"
+      },
+      {
+        "test": "Colonoscopy",
+        "why": "Not for acute impaction; reserved for bleeding, weight loss, or suspected tumor after the impaction is cleared"
+      }
+    ],
+    "decision_points": [
+      "Digital rectal exam is the key bedside step; a hard stool mass in the rectal vault confirms the diagnosis",
+      "Fever, peritoneal signs, or an elevated lactate should prompt imaging for ischemia or perforation rather than simple disimpaction",
+      "Check renal function and electrolytes before giving osmotic laxatives or enemas in frail or dehydrated patients",
+      "In children, consider Hirschsprung disease or withholding behavior if impaction recurs"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Small bowel obstruction",
+      "slug": "small-bowel-obstruction",
+      "why_considered": "Abdominal pain, distension, vomiting and inability to pass stool or gas",
+      "must_not_miss": true,
+      "trigger": "Bilious vomiting, high-pitched or absent bowel sounds, and dilated small bowel loops on imaging",
+      "discriminators": {
+        "history": [
+          "Colicky periumbilical pain that comes in waves",
+          "Vomiting that is bilious or feculent and precedes the distension",
+          "Prior abdominal surgery with adhesions"
+        ],
+        "exam": [
+          "High-pitched or absent bowel sounds",
+          "Tympanitic distension with tenderness but no palpable stool mass",
+          "Empty rectal vault on digital exam"
+        ],
+        "labs": [
+          "Elevated lactate and metabolic acidosis if strangulated",
+          "Elevated BUN and creatinine from dehydration"
+        ],
+        "imaging": [
+          "Dilated small bowel loops with air-fluid levels on abdominal x-ray",
+          "Transition point with collapsed distal bowel on CT"
+        ]
+      }
+    },
+    {
+      "name": "Colorectal cancer",
+      "slug": "colorectal-cancer",
+      "why_considered": "Progressive constipation, abdominal pain and distension in an older adult, sometimes with a distal obstructing lesion",
+      "must_not_miss": true,
+      "trigger": "Weight loss, iron deficiency anemia, rectal bleeding, or a new change in bowel habit in an older adult",
+      "discriminators": {
+        "history": [
+          "Weeks to months of progressive constipation",
+          "Unintentional weight loss",
+          "Blood in stool or a change in stool caliber"
+        ],
+        "exam": [
+          "Palpable firm mass that is not stool and does not change after disimpaction",
+          "Rectal mass on digital exam",
+          "Pallor suggesting anemia"
+        ],
+        "labs": [
+          "Iron deficiency anemia with low ferritin",
+          "Occult blood positive on stool testing"
+        ],
+        "imaging": [
+          "Apple-core or shouldered stricture on contrast enema",
+          "Colonic wall thickening or mass with lymphadenopathy on CT"
+        ]
+      }
+    },
+    {
+      "name": "Acute colonic pseudo-obstruction",
+      "slug": "acute-colonic-pseudo-obstruction",
+      "why_considered": "Marked abdominal distension with absent bowel movements in a hospitalized or bedbound patient",
+      "must_not_miss": true,
+      "trigger": "Massive colonic dilation without a mechanical obstruction on CT, especially after surgery or in a critically ill patient",
+      "discriminators": {
+        "history": [
+          "Recent surgery, trauma, or critical illness",
+          "Use of opioids or anticholinergics",
+          "Distension out of proportion to pain"
+        ],
+        "exam": [
+          "Tympanitic, distended abdomen with mild tenderness",
+          "Rectal vault may be empty or contain only small amounts of soft stool"
+        ],
+        "labs": [
+          "Electrolyte abnormalities such as hypokalemia or hypocalcemia",
+          "Normal white count unless ischemia develops"
+        ],
+        "imaging": [
+          "Dilated colon with a normal transition at the splenic flexure and no obstructing lesion on CT",
+          "Absent fecal mass in the rectum"
+        ]
+      }
+    },
+    {
+      "name": "Diverticulitis",
+      "slug": "diverticulitis",
+      "why_considered": "Left lower quadrant pain, fever and altered bowel habits in an older adult",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Acute onset of constant left lower quadrant pain",
+          "Fever and chills",
+          "Diarrhea or constipation with nausea"
+        ],
+        "exam": [
+          "Focal left lower quadrant tenderness with guarding",
+          "No hard stool mass in the rectal vault"
+        ],
+        "labs": [
+          "Leukocytosis",
+          "Elevated inflammatory markers"
+        ],
+        "imaging": [
+          "Colonic diverticula with pericolic fat stranding and wall thickening on CT",
+          "No impacted fecal mass"
+        ]
+      }
+    },
+    {
+      "name": "Irritable bowel syndrome with constipation",
+      "slug": "irritable-bowel-syndrome",
+      "why_considered": "Chronic constipation, abdominal pain and bloating in an otherwise well patient",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Long-standing alternating constipation and diarrhea",
+          "Pain relieved by defecation",
+          "No weight loss, bleeding, or nocturnal symptoms"
+        ],
+        "exam": [
+          "Mild diffuse tenderness without a palpable mass",
+          "Normal digital rectal exam without a stool mass"
+        ],
+        "labs": [
+          "Normal CBC, TSH, and electrolytes"
+        ],
+        "imaging": [
+          "Normal abdominal x-ray or CT without a fecal burden"
+        ]
+      }
+    },
+    {
+      "name": "Hirschsprung disease",
+      "slug": "hirschsprung-disease",
+      "why_considered": "Chronic constipation and abdominal distension in an infant or young child, sometimes with overflow soiling",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Delay in passing meconium beyond 48 hours of life",
+          "Chronic constipation since infancy",
+          "Failure to thrive"
+        ],
+        "exam": [
+          "Distended abdomen with a tight anal sphincter",
+          "Empty rectal vault on digital exam with a gush of stool after withdrawal"
+        ],
+        "labs": [
+          "Normal electrolytes unless enterocolitis is present"
+        ],
+        "imaging": [
+          "Transition zone on contrast enema with a narrowed aganglionic segment",
+          "Rectal biopsy showing absent ganglion cells"
+        ]
+      }
+    },
+    {
+      "name": "Medication-induced constipation",
+      "slug": "constipation",
+      "why_considered": "Constipation and abdominal discomfort temporally related to constipating drugs",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Recent initiation or dose increase of opioids, anticholinergics, calcium channel blockers, or iron",
+          "Symptoms improve with medication adjustment"
+        ],
+        "exam": [
+          "Mild abdominal tenderness without a fixed mass",
+          "Rectal vault may be empty or contain soft stool"
+        ],
+        "labs": [
+          "Normal CBC and metabolic panel"
+        ],
+        "imaging": [
+          "Fecal burden on x-ray without obstruction"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Recent impaction with mild lower abdominal discomfort, no distension, and a palpable rectal stool mass; able to eat and drink",
+      "moderate": "Established impaction with abdominal pain, distension, nausea, and incomplete evacuation; may have overflow soiling",
+      "severe": "Marked distension and pain with vomiting, dehydration, or urinary retention; requires urgent disimpaction and monitoring",
+      "critical": "Impaction complicated by bowel ischemia, perforation, or sepsis with peritoneal signs, hypotension, or altered mental status"
+    },
+    "red_flags": [
+      {
+        "finding": "Fever with focal or diffuse abdominal tenderness",
+        "meaning": "Suggests ischemia, perforation, or an alternative diagnosis such as diverticulitis"
+      },
+      {
+        "finding": "Peritoneal signs (rebound tenderness, involuntary guarding, rigid abdomen)",
+        "meaning": "Concern for perforation or peritonitis; needs urgent surgical evaluation"
+      },
+      {
+        "finding": "Bilious or feculent vomiting",
+        "meaning": "Suggests bowel obstruction rather than simple impaction"
+      },
+      {
+        "finding": "Hemodynamic instability (hypotension, tachycardia, altered mental status)",
+        "meaning": "Possible sepsis or hypovolemia from vomiting and poor intake"
+      },
+      {
+        "finding": "Gross blood per rectum",
+        "meaning": "Raises concern for ischemia, tumor, or severe mucosal injury"
+      },
+      {
+        "finding": "Urinary retention with distension",
+        "meaning": "Large pelvic stool mass compressing the bladder; needs urgent decompression"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Bowel obstruction",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Vomiting",
+          "Marked distension",
+          "Air-fluid levels on abdominal x-ray"
+        ]
+      },
+      {
+        "name": "Fecal incontinence and overflow soiling",
+        "timing": "any",
+        "seriousness": "minor",
+        "frequency": "common",
+        "clues": [
+          "Leakage of liquid stool",
+          "Perianal irritation",
+          "Feeling of incomplete evacuation"
+        ]
+      },
+      {
+        "name": "Urinary retention",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Inability to void",
+          "Suprapubic fullness",
+          "Bladder distension on exam"
+        ]
+      },
+      {
+        "name": "Colonic ischemia or perforation",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Severe constant pain",
+          "Fever",
+          "Peritoneal signs",
+          "Elevated lactate"
+        ]
+      },
+      {
+        "name": "Stercoral ulceration with bleeding",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Rectal bleeding",
+          "Anemia",
+          "Chronic impaction"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "older_adults",
+        "differences": "May present with confusion, agitation, or urinary retention rather than reporting constipation; pain may be mild or absent, and complications are more likely."
+      },
+      {
+        "population": "children",
+        "differences": "Often presents with overflow diarrhea and soiling rather than clear constipation; withholding behavior and Hirschsprung disease should be considered."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Constipation is common in pregnancy; impaction may cause lower abdominal pain and pressure that must be distinguished from obstetric causes."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Higher risk of severe infection or perforation; fever and tenderness should be evaluated urgently."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "Avoid magnesium- or phosphate-containing enemas; adjust osmotic laxative doses and monitor electrolytes closely."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "When was your last bowel movement, and how often do you normally go?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Several days or longer without a bowel movement against a background of chronic constipation"
+      },
+      {
+        "question": "Have you been passing any gas?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Passing gas suggests impaction; absent gas with distension raises concern for obstruction"
+      },
+      {
+        "question": "Do you feel like you need to go but nothing comes out?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Tenesmus and a sensation of incomplete evacuation"
+      },
+      {
+        "question": "Have you had any leakage of stool or liquid that you cannot control?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Overflow soiling or fecal incontinence, which is easily mistaken for diarrhea"
+      },
+      {
+        "question": "Any nausea, vomiting, or inability to keep fluids down?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Vomiting, especially bilious, suggests obstruction rather than simple impaction"
+      },
+      {
+        "question": "Any blood in your stool or black tarry stools?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Bleeding raises concern for ischemia, tumor, or stercoral ulceration"
+      },
+      {
+        "question": "Have you had fever, chills, or severe constant pain?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Fever or severe pain suggests ischemia, perforation, or an alternative diagnosis"
+      },
+      {
+        "question": "What medications do you take, especially pain medicines, anticholinergics, or iron?",
+        "category": "medications",
+        "importance": "essential",
+        "looking_for": "Opioids, anticholinergics, calcium channel blockers, aluminum or calcium antacids, and iron"
+      },
+      {
+        "question": "Do you have any conditions that affect your bowels or nerves, such as Parkinson disease, multiple sclerosis, spinal cord injury, or dementia?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Neurogenic bowel or cognitive impairment predisposing to impaction"
+      },
+      {
+        "question": "How much fluid and fiber do you get, and how active are you?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Low fluid or fiber intake and immobility or bedbound status"
+      },
+      {
+        "question": "Have you had abdominal surgery or been told you have diverticular disease or a bowel stricture?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Prior surgery, adhesions, or strictures that predispose to obstruction"
+      },
+      {
+        "question": "Any trouble urinating or a feeling of not emptying your bladder?",
+        "category": "ros",
+        "importance": "optional",
+        "looking_for": "Urinary retention from a large pelvic stool mass compressing the bladder"
+      }
+    ],
+    "accepted_names": [
+      "Fecal impaction",
+      "Faecal impaction",
+      "Impaction of feces",
+      "Impacted stool",
+      "Fecal impaction of the colon",
+      "Fecal impaction of the rectum"
+    ],
+    "reasoning_points": [
+      "Chronic constipation with several days or more without a bowel movement",
+      "Abdominal pain and distension with a sensation of incomplete evacuation",
+      "Overflow leakage of liquid stool or fecal incontinence, which can be mistaken for diarrhea",
+      "A hard, firm stool mass palpable in the rectal vault on digital rectal examination",
+      "A palpable firm lower abdominal or left lower quadrant mass",
+      "Absence of peritoneal signs, fever, and gross blood in an uncomplicated case",
+      "Abdominal imaging showing a large fecal burden in the rectum or distal colon",
+      "Exclusion of obstruction, ischemia, perforation, and colorectal cancer"
+    ],
+    "difficulty": {
+      "easy": [
+        "Older bedbound or nursing home patient with chronic constipation and no bowel movement for days",
+        "Abdominal distension with a palpable firm lower abdominal mass",
+        "Hard stool mass felt in the rectal vault on digital rectal exam",
+        "Abdominal x-ray showing a large fecal burden"
+      ],
+      "medium": [
+        "Older adult presenting with confusion, agitation, or urinary retention rather than reporting constipation",
+        "Overflow soiling or leakage of liquid stool mistaken for diarrhea",
+        "Patient on opioids or anticholinergics with new abdominal pain and distension",
+        "Mild leukocytosis or dehydration requiring evaluation before disimpaction"
+      ],
+      "hard": [
+        "Child with overflow diarrhea and soiling rather than clear constipation, raising concern for Hirschsprung disease",
+        "Pregnant patient with lower abdominal pain and pressure that must be distinguished from obstetric causes",
+        "Impaction complicated by obstruction, ischemia, or perforation with fever, peritoneal signs, or elevated lactate",
+        "Older adult with progressive constipation and weight loss where colorectal cancer must be excluded"
+      ]
+    }
+  }
+}

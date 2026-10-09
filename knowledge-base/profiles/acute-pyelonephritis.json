@@ -1,0 +1,1731 @@
+{
+  "schema_version": "0.2",
+  "slug": "acute-pyelonephritis",
+  "triage": {
+    "name": "Acute pyelonephritis",
+    "case_suitable": true,
+    "reason": "Fever, flank pain and urinary symptoms with a clear diagnostic path (urinalysis, culture, imaging when complicated); important look-alikes.",
+    "kind": "disease",
+    "category": "urinary tract infection",
+    "organ_systems": [
+      "renal"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "emergency",
+      "familyMedicine",
+      "pediatrics"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "emergency",
+      "inpatient",
+      "clinic"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:24:24Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:50:37Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:51:04Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:51:14Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:51:27Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:51:34Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'renal ultrasound' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'ct abdomen and pelvis with iv contrast' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'renal ultrasound' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "auto-repaired: workup: 'ct abdomen and pelvis with iv contrast' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
+        "exam: term 'Guarding' not found in SNOMED CT",
+        "exam: term 'Rigid abdomen' not found in SNOMED CT",
+        "exam: term 'Cervical motion tenderness' not found in SNOMED CT",
+        "exam: term 'Adnexal mass' not found in SNOMED CT",
+        "differential acute-appendicitis: no profile yet",
+        "differential ectopic-pregnancy: no profile yet",
+        "differential pelvic-inflammatory-disease: no profile yet",
+        "differential acute-cholecystitis: no profile yet",
+        "differential community-acquired-pneumonia: no profile yet",
+        "differential mechanical-back-pain: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 18,
+      "typical_max": 65,
+      "peak": "young to middle-aged adults",
+      "possible_min": 0,
+      "possible_max": 110
+    },
+    "sex": "female_predominant",
+    "demographics": [
+      "About four times as many women as men are affected",
+      "More common in sexually active young women",
+      "Also common in older adults, especially those with urinary catheters or bladder emptying problems"
+    ],
+    "risk_factors": [
+      {
+        "text": "Female sex",
+        "strength": "strong"
+      },
+      {
+        "text": "Sexual activity",
+        "strength": "strong"
+      },
+      {
+        "text": "Urinary catheter or recent instrumentation of the urinary tract",
+        "strength": "strong"
+      },
+      {
+        "text": "Urinary tract obstruction (stones, prostate enlargement, tumor)",
+        "strength": "strong"
+      },
+      {
+        "text": "Diabetes mellitus",
+        "strength": "moderate"
+      },
+      {
+        "text": "Vesicoureteral reflux or other structural urinary tract abnormality",
+        "strength": "moderate"
+      },
+      {
+        "text": "Pregnancy",
+        "strength": "moderate"
+      },
+      {
+        "text": "Immunosuppression",
+        "strength": "moderate"
+      },
+      {
+        "text": "Recent antibiotic use",
+        "strength": "weak"
+      },
+      {
+        "text": "Spermicide use or diaphragm use",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Diabetes mellitus",
+      "Benign prostatic hyperplasia",
+      "Urinary tract stones",
+      "Neurogenic bladder or spinal cord injury",
+      "Immunosuppression (including HIV, transplant, chemotherapy)",
+      "Chronic kidney disease"
+    ],
+    "family_history": [
+      "Recurrent urinary tract infections",
+      "Vesicoureteral reflux or other congenital urinary tract anomaly"
+    ],
+    "social_history": [
+      "Sexual activity",
+      "Recent hospitalization or residence in a long-term care facility",
+      "Indwelling urinary catheter"
+    ],
+    "exposures": [
+      "Urinary catheterization",
+      "Recent urologic procedure (cystoscopy, surgery)"
+    ],
+    "risk_medications": [
+      "prednisone",
+      "cyclosporine",
+      "tacrolimus",
+      "mycophenolate mofetil",
+      "chemotherapy agents"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My back and side hurt",
+        "frequency": "almost_always",
+        "term": "Flank pain",
+        "snomed_verified": true
+      },
+      {
+        "text": "I feel hot and shaky",
+        "frequency": "almost_always",
+        "term": "Fever",
+        "snomed_verified": true
+      },
+      {
+        "text": "It burns when I pee",
+        "frequency": "common",
+        "term": "Dysuria",
+        "snomed_verified": true
+      },
+      {
+        "text": "I have to go to the bathroom all the time",
+        "frequency": "common",
+        "term": "Urgent desire to urinate",
+        "snomed_verified": true
+      },
+      {
+        "text": "I feel sick to my stomach",
+        "frequency": "common",
+        "term": "Nausea",
+        "snomed_verified": true
+      }
+    ],
+    "hpi": {
+      "onset": "Usually develops over several hours to a day, often after or alongside symptoms of a bladder infection",
+      "duration": "Symptoms present for one to several days at presentation",
+      "progression": "Urinary burning and frequency may precede or accompany the onset of fever and flank pain; symptoms build over hours to a day and then remain steady or worsen",
+      "location": "One or both flanks, below the ribs and toward the back; may also have lower abdominal or suprapubic discomfort",
+      "radiation": "Flank pain may radiate toward the groin or upper abdomen",
+      "quality": "Constant, dull, aching or throbbing pain in the flank; burning with urination",
+      "severity": "Moderate to severe; flank pain often 6–8/10 and fever makes the patient feel very ill",
+      "timing": "Continuous; chills may come in waves",
+      "aggravating": [
+        "Movement",
+        "Coughing",
+        "Pressing on the flank or back"
+      ],
+      "relieving": [
+        "Rest",
+        "Acetaminophen or ibuprofen",
+        "Antibiotics once started"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Chills or shaking chills",
+          "frequency": "common",
+          "term": "Chills",
+          "snomed_verified": true
+        },
+        {
+          "text": "Nausea",
+          "frequency": "common",
+          "term": "Nausea",
+          "snomed_verified": true
+        },
+        {
+          "text": "Vomiting",
+          "frequency": "common",
+          "term": "Vomiting",
+          "snomed_verified": true
+        },
+        {
+          "text": "Frequent urination",
+          "frequency": "common",
+          "term": "Urinary frequency",
+          "snomed_verified": true
+        },
+        {
+          "text": "Urgent desire to urinate",
+          "frequency": "common",
+          "term": "Urgent desire to urinate",
+          "snomed_verified": true
+        },
+        {
+          "text": "Cloudy or foul-smelling urine",
+          "frequency": "common",
+          "term": "Malodorous urine",
+          "snomed_verified": true
+        },
+        {
+          "text": "Blood in the urine",
+          "frequency": "sometimes",
+          "term": "Hematuria",
+          "snomed_verified": true
+        },
+        {
+          "text": "Feeling generally unwell or tired",
+          "frequency": "common",
+          "term": "Malaise",
+          "snomed_verified": true
+        },
+        {
+          "text": "Headache",
+          "frequency": "sometimes",
+          "term": "Headache",
+          "snomed_verified": true
+        },
+        {
+          "text": "Diarrhea",
+          "frequency": "sometimes",
+          "term": "Diarrhea",
+          "snomed_verified": true
+        },
+        {
+          "text": "Pain in the lower abdomen or pelvis",
+          "frequency": "sometimes",
+          "term": "Suprapubic pain",
+          "snomed_verified": true
+        }
+      ],
+      "pertinent_negatives": [
+        "Vaginal discharge or vaginal bleeding",
+        "Genital sores or ulcers",
+        "Sudden severe colicky flank pain radiating to the groin (as with a kidney stone)",
+        "Pain that started before any urinary symptoms",
+        "Recent abdominal surgery",
+        "Known pregnancy",
+        "Immunosuppressive illness or medication",
+        "Symptoms of septic shock such as confusion, fainting or very low blood pressure"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fever",
+            "frequency": "almost_always",
+            "term": "Fever",
+            "snomed_verified": true
+          },
+          {
+            "text": "Chills",
+            "frequency": "common",
+            "term": "Chills",
+            "snomed_verified": true
+          },
+          {
+            "text": "Feeling tired and unwell",
+            "frequency": "common",
+            "term": "Malaise",
+            "snomed_verified": true
+          },
+          {
+            "text": "Night sweats",
+            "frequency": "sometimes",
+            "term": "Night sweats",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Weight loss",
+          "Failure to thrive"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Nausea",
+            "frequency": "common",
+            "term": "Nausea",
+            "snomed_verified": true
+          },
+          {
+            "text": "Vomiting",
+            "frequency": "common",
+            "term": "Vomiting",
+            "snomed_verified": true
+          },
+          {
+            "text": "Abdominal pain",
+            "frequency": "sometimes",
+            "term": "Abdominal pain",
+            "snomed_verified": true
+          },
+          {
+            "text": "Diarrhea",
+            "frequency": "sometimes",
+            "term": "Diarrhea",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Blood in stool",
+          "Jaundice",
+          "Severe localized right lower quadrant pain"
+        ],
+        "argues_against": [
+          "Acute appendicitis",
+          "Biliary colic"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [
+          {
+            "text": "Dysuria",
+            "frequency": "common",
+            "term": "Dysuria",
+            "snomed_verified": true
+          },
+          {
+            "text": "Urinary frequency",
+            "frequency": "common",
+            "term": "Urinary frequency",
+            "snomed_verified": true
+          },
+          {
+            "text": "Urgent desire to urinate",
+            "frequency": "common",
+            "term": "Urgent desire to urinate",
+            "snomed_verified": true
+          },
+          {
+            "text": "Flank pain",
+            "frequency": "almost_always",
+            "term": "Flank pain",
+            "snomed_verified": true
+          },
+          {
+            "text": "Hematuria",
+            "frequency": "sometimes",
+            "term": "Hematuria",
+            "snomed_verified": true
+          },
+          {
+            "text": "Malodorous urine",
+            "frequency": "common",
+            "term": "Malodorous urine",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Difficulty starting urination",
+          "Urinary retention",
+          "Genital lesions"
+        ],
+        "argues_against": [
+          "Urethritis",
+          "Prostatitis"
+        ]
+      },
+      {
+        "system": "reproductive",
+        "positives": [],
+        "negatives": [
+          "Vaginal discharge",
+          "Vaginal bleeding",
+          "Missed period",
+          "Genital ulcers"
+        ],
+        "argues_against": [
+          "Pelvic inflammatory disease",
+          "Ectopic pregnancy"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Flank pain worsened by movement",
+            "frequency": "common",
+            "term": "Flank pain",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Joint swelling",
+          "Muscle weakness"
+        ],
+        "argues_against": [
+          "Musculoskeletal back pain"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [],
+        "negatives": [
+          "Confusion",
+          "Severe headache with stiff neck",
+          "Focal weakness"
+        ],
+        "argues_against": [
+          "Meningitis",
+          "Sepsis with encephalopathy"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "older_adults",
+        "how_it_differs": "May present with confusion, falls, poor appetite or generalized weakness rather than fever and flank pain; fever may be blunted.",
+        "missing_classic_features": [
+          "Fever",
+          "Flank pain",
+          "Dysuria"
+        ]
+      },
+      {
+        "population": "children",
+        "how_it_differs": "Infants and young children may have only fever, irritability, poor feeding, vomiting or failure to thrive; older children may complain of abdominal pain rather than flank pain.",
+        "missing_classic_features": [
+          "Flank pain",
+          "Dysuria",
+          "Localizing urinary symptoms"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "May present with preterm contractions, uterine tenderness or vague abdominal pain in addition to urinary symptoms; risk of preterm labor and low birth weight.",
+        "missing_classic_features": [
+          "Classic flank pain"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "May have fewer localizing symptoms and progress rapidly to sepsis; fever may be absent or blunted.",
+        "missing_classic_features": [
+          "High fever",
+          "Marked flank pain"
+        ]
+      },
+      {
+        "population": "diabetes",
+        "how_it_differs": "Higher risk of severe infection, bacteremia and complications such as emphysematous pyelonephritis or renal abscess; symptoms may be less pronounced.",
+        "missing_classic_features": [
+          "Typical inflammatory response"
+        ]
+      },
+      {
+        "population": "renal_impairment",
+        "how_it_differs": "May have reduced urine output, fluid overload or electrolyte abnormalities; antibiotic dosing needs adjustment.",
+        "missing_classic_features": [
+          "Normal renal function"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Uncomfortable but not toxic; able to lie still, mild fatigue",
+      "moderate": "Ill-appearing, flushed, prefers to lie still, grimaces with movement",
+      "severe": "Toxic-appearing, diaphoretic, rigors, reluctant to move",
+      "critical": "Toxic-appearing, pale, mottled, lethargic or confused, hypotensive"
+    },
+    "findings": [
+      {
+        "id": "cva-tenderness",
+        "region": "abdomen",
+        "maneuver": "Percuss each costovertebral angle with the ulnar side of the fist",
+        "finding": "Costovertebral angle tenderness on the affected side",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Costovertebral angle tenderness",
+        "snomed_id": "300780009",
+        "snomed_verified": true
+      },
+      {
+        "id": "flank-pain",
+        "region": "abdomen",
+        "maneuver": "Palpate the flank and ask about pain",
+        "finding": "Flank pain on palpation",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Flank pain",
+        "snomed_id": "247355005",
+        "snomed_verified": true
+      },
+      {
+        "id": "suprapubic-pain",
+        "region": "abdomen",
+        "maneuver": "Palpate the suprapubic area",
+        "finding": "Suprapubic pain on palpation",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Suprapubic pain",
+        "snomed_id": "307496006",
+        "snomed_verified": true
+      },
+      {
+        "id": "abdominal-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate all four quadrants",
+        "finding": "Mild diffuse abdominal tenderness, often without guarding or rebound",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Abdominal tenderness",
+        "snomed_id": "307496006",
+        "snomed_verified": true
+      },
+      {
+        "id": "guarding",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen",
+        "finding": "Voluntary guarding",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Guarding",
+        "snomed_id": "300780009",
+        "snomed_verified": false
+      },
+      {
+        "id": "rebound-tenderness",
+        "region": "abdomen",
+        "maneuver": "Release deep palpation over the abdomen",
+        "finding": "Rebound tenderness suggesting peritoneal irritation",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Rebound tenderness",
+        "snomed_id": "300780009",
+        "snomed_verified": true
+      },
+      {
+        "id": "rigid-abdomen",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen",
+        "finding": "Diffuse rigidity",
+        "frequency": "rare",
+        "min_severity": "critical",
+        "significance": "supports",
+        "importance": "essential",
+        "term": "Rigid abdomen",
+        "snomed_id": "300780009",
+        "snomed_verified": false
+      },
+      {
+        "id": "normal-bowel-sounds",
+        "region": "abdomen",
+        "maneuver": "Auscultate the abdomen",
+        "finding": "Normal bowel sounds",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Normal bowel sounds",
+        "snomed_id": "300780009",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-cva-tenderness",
+        "region": "abdomen",
+        "maneuver": "Percuss the costovertebral angles",
+        "finding": "No costovertebral angle tenderness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Costovertebral angle tenderness",
+        "snomed_id": "300780009",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-cervical-motion-tenderness",
+        "region": "pelvic",
+        "maneuver": "Perform a pelvic exam when a gynecologic cause is possible",
+        "finding": "No cervical motion tenderness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Cervical motion tenderness",
+        "snomed_id": "300780009",
+        "snomed_verified": false
+      },
+      {
+        "id": "no-adnexal-mass",
+        "region": "pelvic",
+        "maneuver": "Perform a bimanual pelvic exam",
+        "finding": "No adnexal mass or tenderness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Adnexal mass",
+        "snomed_id": "300780009",
+        "snomed_verified": false
+      },
+      {
+        "id": "no-vaginal-discharge",
+        "region": "pelvic",
+        "maneuver": "Inspect the vaginal vault during pelvic exam",
+        "finding": "No abnormal vaginal discharge",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Vaginal discharge",
+        "snomed_id": "300780009",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-murphy-sign",
+        "region": "abdomen",
+        "maneuver": "Hook the fingers under the right costal margin and ask the patient to take a deep breath",
+        "finding": "No arrest of inspiration (Murphy sign absent)",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Murphy sign",
+        "snomed_id": "300780009",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-rovsing-sign",
+        "region": "abdomen",
+        "maneuver": "Press in the left lower quadrant",
+        "finding": "No pain felt in the right lower quadrant (Rovsing sign absent)",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Rovsing sign",
+        "snomed_id": "300780009",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-psoas-sign",
+        "region": "abdomen",
+        "maneuver": "Extend the right hip with the patient on the left side",
+        "finding": "No right lower quadrant pain (psoas sign absent)",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Psoas sign",
+        "snomed_id": "300780009",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-obturator-sign",
+        "region": "abdomen",
+        "maneuver": "Internally rotate the flexed right hip",
+        "finding": "No hypogastric pain (obturator sign absent)",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Obturator sign",
+        "snomed_id": "300780009",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-jaundice",
+        "region": "skin",
+        "maneuver": "Inspect the sclera and skin in natural light",
+        "finding": "No scleral icterus or jaundice",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Jaundice",
+        "snomed_id": "300780009",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-rash",
+        "region": "skin",
+        "maneuver": "Inspect the skin",
+        "finding": "No rash or petechiae",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Rash",
+        "snomed_id": "300780009",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the cervical, axillary and inguinal lymph nodes",
+        "finding": "No enlarged or tender lymph nodes",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Lymphadenopathy",
+        "snomed_id": "300780009",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-jvd",
+        "region": "neck",
+        "maneuver": "Inspect the neck veins at 45 degrees",
+        "finding": "No jugular venous distension",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Jugular venous distension",
+        "snomed_id": "300780009",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-rales",
+        "region": "lung",
+        "maneuver": "Auscultate the lung fields",
+        "finding": "No crackles or rales",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Rales",
+        "snomed_id": "300780009",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-meningismus",
+        "region": "neck",
+        "maneuver": "Assess neck stiffness and perform Kernig and Brudzinski maneuvers if meningitis is suspected",
+        "finding": "No neck stiffness or meningeal signs",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Meningismus",
+        "snomed_id": "300780009",
+        "snomed_verified": true
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 99.5,
+        "max": 100.9
+      },
+      "moderate": {
+        "min": 100.4,
+        "max": 102.2
+      },
+      "severe": {
+        "min": 101.5,
+        "max": 103.5
+      },
+      "critical": {
+        "min": 102.0,
+        "max": 105.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 80,
+        "max": 100
+      },
+      "moderate": {
+        "min": 95,
+        "max": 115
+      },
+      "severe": {
+        "min": 110,
+        "max": 130
+      },
+      "critical": {
+        "min": 120,
+        "max": 150
+      }
+    },
+    "rr": {
+      "moderate": {
+        "min": 16,
+        "max": 22
+      },
+      "severe": {
+        "min": 20,
+        "max": 28
+      },
+      "critical": {
+        "min": 24,
+        "max": 34
+      }
+    },
+    "sbp": {
+      "severe": {
+        "min": 90,
+        "max": 110
+      },
+      "critical": {
+        "min": 70,
+        "max": 95
+      }
+    },
+    "dbp": {
+      "severe": {
+        "min": 55,
+        "max": 70
+      },
+      "critical": {
+        "min": 40,
+        "max": 60
+      }
+    },
+    "spo2": {
+      "severe": {
+        "min": 92,
+        "max": 96
+      },
+      "critical": {
+        "min": 88,
+        "max": 94
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "mild": {
+          "min": 11.0,
+          "max": 14.0
+        },
+        "moderate": {
+          "min": 13.0,
+          "max": 18.0
+        },
+        "severe": {
+          "min": 16.0,
+          "max": 24.0
+        },
+        "critical": {
+          "min": 18.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "A normal white count does not exclude pyelonephritis, especially in older or immunocompromised patients."
+    },
+    {
+      "test_id": "neut_pct",
+      "ranges": {
+        "mild": {
+          "min": 70,
+          "max": 80
+        },
+        "moderate": {
+          "min": 75,
+          "max": 85
+        },
+        "severe": {
+          "min": 80,
+          "max": 90
+        },
+        "critical": {
+          "min": 82,
+          "max": 92
+        }
+      },
+      "frequency": "common",
+      "importance": "important"
+    },
+    {
+      "test_id": "bands_pct",
+      "ranges": {
+        "severe": {
+          "min": 5,
+          "max": 12
+        },
+        "critical": {
+          "min": 8,
+          "max": 20
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "moderate": {
+          "min": 1.2,
+          "max": 1.6
+        },
+        "severe": {
+          "min": 1.5,
+          "max": 2.5
+        },
+        "critical": {
+          "min": 2.0,
+          "max": 4.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Rising creatinine suggests obstruction or acute kidney injury; adjust antibiotic dosing."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "moderate": {
+          "min": 20,
+          "max": 30
+        },
+        "severe": {
+          "min": 28,
+          "max": 45
+        },
+        "critical": {
+          "min": 35,
+          "max": 60
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Elevated from dehydration, vomiting or reduced kidney function."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "severe": {
+          "min": 2.2,
+          "max": 4.0
+        },
+        "critical": {
+          "min": 3.0,
+          "max": 6.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevated lactate with hypotension or organ dysfunction suggests sepsis from pyelonephritis."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "mild": {
+          "min": 1.0,
+          "max": 4.0
+        },
+        "moderate": {
+          "min": 3.0,
+          "max": 10.0
+        },
+        "severe": {
+          "min": 8.0,
+          "max": 20.0
+        },
+        "critical": {
+          "min": 15.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "common",
+      "importance": "optional"
+    },
+    {
+      "test_id": "ua_le",
+      "qualitative": {
+        "mild": "Trace",
+        "moderate": "1+",
+        "severe": "2+",
+        "critical": "3+"
+      },
+      "frequency": "almost_always",
+      "importance": "essential"
+    },
+    {
+      "test_id": "ua_nitrite",
+      "qualitative": {
+        "moderate": "Positive",
+        "severe": "Positive",
+        "critical": "Positive"
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "Positive nitrite is fairly specific for a gram-negative urinary infection; a negative result does not rule it out."
+    },
+    {
+      "test_id": "ua_wbc",
+      "ranges": {
+        "mild": {
+          "min": 5,
+          "max": 15
+        },
+        "moderate": {
+          "min": 10,
+          "max": 30
+        },
+        "severe": {
+          "min": 20,
+          "max": 60
+        },
+        "critical": {
+          "min": 30,
+          "max": 100
+        }
+      },
+      "frequency": "almost_always",
+      "importance": "essential"
+    },
+    {
+      "test_id": "ua_bacteria",
+      "qualitative": {
+        "mild": "Few",
+        "moderate": "Moderate",
+        "severe": "Many",
+        "critical": "Many"
+      },
+      "frequency": "common",
+      "importance": "important"
+    },
+    {
+      "test_id": "ua_blood",
+      "qualitative": {
+        "mild": "Trace",
+        "moderate": "1+",
+        "severe": "2+",
+        "critical": "3+"
+      },
+      "frequency": "common",
+      "importance": "optional"
+    },
+    {
+      "test_id": "ua_casts",
+      "qualitative": {
+        "severe": "WBC casts",
+        "critical": "WBC casts"
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "White blood cell casts point to infection in the kidney rather than the bladder."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Negative. Required in anyone who could be pregnant before imaging and before choosing antibiotics."
+    }
+  ],
+  "imaging": [
+    {
+      "study": "CT abdomen and pelvis with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Complicated pyelonephritis, suspected obstruction, abscess, emphysematous pyelonephritis, or failure to improve after 48–72 hours of antibiotics",
+      "findings": [
+        {
+          "text": "Enlarged, swollen kidney with striated or wedge-shaped areas of decreased enhancement",
+          "frequency": "common"
+        },
+        {
+          "text": "Perinephric fat stranding",
+          "frequency": "common"
+        },
+        {
+          "text": "Dilatation of the renal pelvis and ureter (hydronephrosis) from obstruction",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Renal or perinephric abscess",
+          "frequency": "rare"
+        },
+        {
+          "text": "Gas within the renal parenchyma (emphysematous pyelonephritis)",
+          "frequency": "rare"
+        },
+        {
+          "text": "Normal-appearing kidneys (early or mild infection)",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Renal ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "Pregnancy, children, renal impairment, or when obstruction is suspected and CT is not available",
+      "findings": [
+        {
+          "text": "Hydronephrosis suggesting obstruction",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Enlarged, echogenic kidney with loss of normal corticomedullary differentiation",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Renal or perinephric fluid collection or abscess",
+          "frequency": "rare"
+        },
+        {
+          "text": "Normal-appearing kidneys (does not exclude pyelonephritis)",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "MRI abdomen and pelvis with and without contrast",
+      "modality": "mri",
+      "preferred_when": "Pregnancy when ultrasound is nondiagnostic and further imaging is needed",
+      "findings": [
+        {
+          "text": "Renal enlargement with wedge-shaped areas of altered signal and perinephric stranding",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "Abdominal x-ray (KUB)",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Usually nonspecific; may show a radiopaque urinary tract stone",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "ua",
+        "why": "Pyuria, leukocyte esterase, nitrite and bacteria support a urinary tract infection"
+      },
+      {
+        "test": "cbc",
+        "why": "Leukocytosis with a left shift supports infection and helps gauge severity"
+      },
+      {
+        "test": "bmp",
+        "why": "Assesses kidney function, electrolytes and hydration before and during treatment"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before imaging and guides antibiotic choice"
+      },
+      {
+        "test": "Renal ultrasound",
+        "why": "Looks for obstruction or abscess",
+        "only_if": "pregnancy, renal impairment, suspected obstruction, or CT is not available"
+      },
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Defines complications such as obstruction, abscess or emphysematous pyelonephritis",
+        "only_if": "severe illness, suspected obstruction or abscess, or failure to improve after 48–72 hours of antibiotics"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "urine culture",
+        "why": "Identifies the organism and its susceptibilities; confirms the diagnosis and guides definitive antibiotics"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "lactate",
+        "why": "Helps identify sepsis and guide resuscitation",
+        "only_if": "hypotension, tachycardia, confusion or other signs of sepsis"
+      },
+      {
+        "test": "crp",
+        "why": "Supports the diagnosis and can help track response to treatment"
+      },
+      {
+        "test": "procalcitonin",
+        "why": "May support a bacterial cause and help gauge severity",
+        "only_if": "the diagnosis is uncertain or sepsis is suspected"
+      },
+      {
+        "test": "blood culture",
+        "why": "Identifies bacteremia and guides therapy",
+        "only_if": "severe illness, sepsis, immunocompromise, pregnancy or suspected hematogenous spread"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Not needed for uncomplicated pyelonephritis that responds to antibiotics",
+        "only_if": "severe illness, suspected obstruction or abscess, or failure to improve after 48–72 hours of antibiotics"
+      },
+      {
+        "test": "Renal ultrasound",
+        "why": "Not routine in uncomplicated cases",
+        "only_if": "pregnancy, renal impairment, suspected obstruction, or CT is not available"
+      },
+      {
+        "test": "Abdominal x-ray (KUB)",
+        "why": "Rarely changes management and does not show most stones"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in the evaluation of flank pain or urinary infection"
+      },
+      {
+        "test": "lipase",
+        "why": "Not needed unless the pain is epigastric or pancreatitis is suspected"
+      },
+      {
+        "test": "csf",
+        "why": "Only if meningitis is suspected; not part of the pyelonephritis workup"
+      }
+    ],
+    "decision_points": [
+      "Pregnancy test before CT in anyone who could be pregnant",
+      "Ultrasound first in pregnancy, children and renal impairment; CT if complications are suspected",
+      "Blood cultures and lactate when sepsis is suspected",
+      "Image if there is no improvement after 48–72 hours of appropriate antibiotics"
+    ],
+    "criteria": [],
+    "scores": [
+      "qsofa",
+      "news2"
+    ]
+  },
+  "differential": [
+    {
+      "name": "Kidney stone with obstruction or infection",
+      "slug": "kidney-stones",
+      "why_considered": "Flank pain with nausea and vomiting is the classic presentation of both; a stone can also obstruct and cause pyelonephritis.",
+      "must_not_miss": true,
+      "trigger": "Colicky pain that comes in waves and radiates to the groin, or a patient who is writhing and cannot lie still",
+      "discriminators": {
+        "history": [
+          "Sudden onset of severe colicky pain",
+          "Pain radiates to the groin or testicle",
+          "Patient writhes and cannot get comfortable",
+          "Prior stone episodes",
+          "Pain started before any fever or urinary symptoms"
+        ],
+        "exam": [
+          "Costovertebral angle tenderness may be present but the patient is restless rather than lying still",
+          "No high fever at the start"
+        ],
+        "labs": [
+          "Hematuria on urinalysis",
+          "Leukocyte esterase and nitrite may be negative",
+          "White count usually normal unless infected"
+        ],
+        "imaging": [
+          "Radiopaque stone on CT",
+          "Hydronephrosis from obstruction",
+          "Perinephric stranding only if infected"
+        ]
+      }
+    },
+    {
+      "name": "Acute appendicitis",
+      "slug": "acute-appendicitis",
+      "why_considered": "Right-sided abdominal pain with fever, nausea and vomiting can be mistaken for right pyelonephritis, especially in children and when the appendix is retrocecal.",
+      "must_not_miss": true,
+      "trigger": "Pain that migrates from the umbilicus to the right lower quadrant and localizes there",
+      "discriminators": {
+        "history": [
+          "Periumbilical pain that migrates to the right lower quadrant",
+          "Anorexia",
+          "Pain worsened by movement or coughing but not by urination",
+          "No dysuria or urinary frequency"
+        ],
+        "exam": [
+          "Right lower quadrant tenderness with guarding",
+          "Positive Rovsing, psoas or obturator signs",
+          "No costovertebral angle tenderness"
+        ],
+        "labs": [
+          "Leukocytosis without pyuria or bacteriuria",
+          "Urinalysis usually bland; a few white cells can be seen if the appendix irritates the ureter"
+        ],
+        "imaging": [
+          "Enlarged, non-compressible appendix with surrounding fat stranding on ultrasound or CT",
+          "Normal kidneys and collecting systems"
+        ]
+      }
+    },
+    {
+      "name": "Ectopic pregnancy",
+      "slug": "ectopic-pregnancy",
+      "why_considered": "Lower abdominal or flank pain with a missed period in a patient who could be pregnant; can present with urinary symptoms and shock.",
+      "must_not_miss": true,
+      "trigger": "Any patient of childbearing age with abdominal pain, especially with a missed period or vaginal bleeding",
+      "discriminators": {
+        "history": [
+          "Missed period",
+          "Vaginal bleeding or spotting",
+          "Sudden severe unilateral pelvic pain",
+          "Syncope or shoulder pain if ruptured"
+        ],
+        "exam": [
+          "Adnexal tenderness or mass",
+          "Cervical motion tenderness",
+          "Signs of hypovolemia if ruptured"
+        ],
+        "labs": [
+          "Positive hCG",
+          "Falling hematocrit if bleeding"
+        ],
+        "imaging": [
+          "No intrauterine pregnancy on transvaginal ultrasound",
+          "Free fluid in the pelvis",
+          "Adnexal mass or gestational sac"
+        ]
+      }
+    },
+    {
+      "name": "Pelvic inflammatory disease",
+      "slug": "pelvic-inflammatory-disease",
+      "why_considered": "Fever, lower abdominal pain and dysuria in a sexually active young woman overlap with urinary tract infection.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Vaginal discharge",
+          "New or multiple sexual partners",
+          "Pain with intercourse",
+          "Bilateral lower abdominal pain"
+        ],
+        "exam": [
+          "Cervical motion tenderness",
+          "Adnexal tenderness",
+          "Mucopurulent cervical discharge"
+        ],
+        "labs": [
+          "Positive nucleic acid amplification test for gonorrhea or chlamydia",
+          "Urinalysis may show pyuria but nitrite is usually negative"
+        ],
+        "imaging": [
+          "Thickened fallopian tubes or free pelvic fluid on ultrasound",
+          "Normal kidneys"
+        ]
+      }
+    },
+    {
+      "name": "Acute cholecystitis",
+      "slug": "acute-cholecystitis",
+      "why_considered": "Right upper quadrant or flank pain with fever, nausea and vomiting can be referred to the back and mimic right pyelonephritis.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Pain after fatty meals",
+          "Right upper quadrant pain radiating to the right shoulder or scapula",
+          "No urinary symptoms"
+        ],
+        "exam": [
+          "Positive Murphy sign",
+          "Right upper quadrant tenderness with guarding",
+          "No costovertebral angle tenderness"
+        ],
+        "labs": [
+          "Elevated alkaline phosphatase, bilirubin or transaminases",
+          "Leukocytosis without pyuria"
+        ],
+        "imaging": [
+          "Gallstones with gallbladder wall thickening, pericholecystic fluid or sonographic Murphy sign on ultrasound",
+          "Normal kidneys"
+        ]
+      }
+    },
+    {
+      "name": "Lower lobe pneumonia",
+      "slug": "community-acquired-pneumonia",
+      "why_considered": "Fever, chills and pleuritic pain referred to the upper abdomen or flank can be mistaken for pyelonephritis, especially in older adults.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Cough, sputum production or shortness of breath",
+          "Pleuritic chest pain worsened by deep breathing",
+          "No dysuria or urinary frequency"
+        ],
+        "exam": [
+          "Crackles, egophony or dullness at the lung base",
+          "Tachypnea and hypoxemia",
+          "No costovertebral angle tenderness"
+        ],
+        "labs": [
+          "Leukocytosis without pyuria or bacteriuria",
+          "Hypoxemia on pulse oximetry or arterial blood gas"
+        ],
+        "imaging": [
+          "Lobar consolidation or infiltrate on chest x-ray or CT",
+          "Normal kidneys and collecting systems"
+        ]
+      }
+    },
+    {
+      "name": "Musculoskeletal back pain",
+      "slug": "mechanical-back-pain",
+      "why_considered": "Flank and back pain are common reasons for presentation and can be confused with renal pain when urinary symptoms are mild.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Pain brought on by lifting, twisting or a fall",
+          "Pain worsened by specific movements and relieved by rest",
+          "No fever, chills or urinary symptoms"
+        ],
+        "exam": [
+          "Paraspinal muscle tenderness",
+          "Pain reproduced by spinal movement",
+          "No costovertebral angle tenderness"
+        ],
+        "labs": [
+          "Normal urinalysis",
+          "Normal white count"
+        ],
+        "imaging": [
+          "Normal kidneys on any imaging obtained",
+          "Degenerative changes or muscle spasm if spine imaged"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Uncomplicated pyelonephritis in a stable, non-pregnant patient: low-grade fever, mild flank pain, able to eat and drink, no vomiting, normal kidney function, no signs of sepsis.",
+      "moderate": "Established uncomplicated pyelonephritis: fever above 100.4°F, moderate to severe flank pain, nausea or vomiting, leukocytosis, but hemodynamically stable and no organ dysfunction.",
+      "severe": "Complicated pyelonephritis: high fever with rigors, severe pain, vomiting preventing oral intake, suspected obstruction, abscess, emphysematous pyelonephritis, or early sepsis with tachycardia and mild hypotension.",
+      "critical": "Septic shock from pyelonephritis: hypotension despite fluids, altered mental status, mottled skin, rising lactate, acute kidney injury, or respiratory failure; may also include emphysematous pyelonephritis or a ruptured renal abscess."
+    },
+    "red_flags": [
+      {
+        "finding": "Hypotension or heart rate over 120",
+        "meaning": "Sepsis or septic shock; needs immediate fluids, cultures, IV antibiotics and likely ICU-level care"
+      },
+      {
+        "finding": "Altered mental status or confusion",
+        "meaning": "Sepsis with encephalopathy, especially in older adults; a poor prognostic sign"
+      },
+      {
+        "finding": "Lactate above 2 mmol/L",
+        "meaning": "Tissue hypoperfusion; suggests sepsis and the need for aggressive resuscitation"
+      },
+      {
+        "finding": "Rising creatinine or decreasing urine output",
+        "meaning": "Acute kidney injury from obstruction, dehydration or sepsis; requires imaging and possible urinary drainage"
+      },
+      {
+        "finding": "Persistent fever or worsening pain after 48–72 hours of appropriate antibiotics",
+        "meaning": "Complicated infection such as obstruction, abscess or emphysematous pyelonephritis; needs imaging and possible drainage"
+      },
+      {
+        "finding": "Positive pregnancy test",
+        "meaning": "Changes imaging and antibiotic choices and raises the risk of preterm labor and low birth weight"
+      },
+      {
+        "finding": "Immunocompromise or diabetes with severe infection",
+        "meaning": "Higher risk of bacteremia, abscess and emphysematous pyelonephritis; lower threshold for admission and imaging"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Bacteremia and sepsis",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "High fever with rigors",
+          "Hypotension or tachycardia",
+          "Elevated lactate",
+          "Positive blood cultures"
+        ]
+      },
+      {
+        "name": "Renal or perinephric abscess",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Persistent fever after 48–72 hours of antibiotics",
+          "Unremitting flank pain",
+          "Fluid collection or mass on CT or ultrasound"
+        ]
+      },
+      {
+        "name": "Emphysematous pyelonephritis",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Diabetes mellitus",
+          "Severe illness with sepsis",
+          "Gas within the renal parenchyma on CT"
+        ]
+      },
+      {
+        "name": "Acute kidney injury",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Rising creatinine",
+          "Decreasing urine output",
+          "Obstruction or dehydration"
+        ]
+      },
+      {
+        "name": "Papillary necrosis",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Diabetes, sickle cell disease or analgesic overuse",
+          "Passage of necrotic papillae",
+          "Flank pain with worsening renal function"
+        ]
+      },
+      {
+        "name": "Chronic kidney disease or renal scarring",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Recurrent pyelonephritis",
+          "Vesicoureteral reflux",
+          "Persistent creatinine elevation or scarring on imaging"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "pregnancy",
+        "differences": "Pyelonephritis in pregnancy is associated with preterm labor, low birth weight and maternal sepsis. Admit for IV antibiotics, obtain blood cultures, and use renal ultrasound first; avoid fluoroquinolones and tetracyclines."
+      },
+      {
+        "population": "older_adults",
+        "differences": "May present with confusion, falls, poor appetite or generalized weakness rather than fever and flank pain. Fever may be blunted, and the risk of bacteremia and death is higher."
+      },
+      {
+        "population": "children",
+        "differences": "Infants and young children may have only fever, irritability, poor feeding or vomiting. Older children may complain of abdominal pain rather than flank pain. Obtain urine culture before antibiotics and image if there is a history of reflux or recurrent infection."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "May have fewer localizing symptoms and progress rapidly to sepsis. Fever may be absent or blunted. Lower threshold for admission, blood cultures and broad-spectrum antibiotics."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Higher risk of severe infection, bacteremia, renal abscess and emphysematous pyelonephritis. Symptoms may be less pronounced. Image early if there is severe illness or failure to improve."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "May have reduced urine output, fluid overload or electrolyte abnormalities. Adjust antibiotic doses for kidney function and avoid nephrotoxic agents when possible."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "Where exactly is the pain, and does it hurt when I tap on your back over the kidney area?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Unilateral flank pain below the ribs, worsened by percussion or movement"
+      },
+      {
+        "question": "When did the fever and flank pain start, and how quickly did they come on?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Onset over hours to a day, often after or alongside bladder symptoms"
+      },
+      {
+        "question": "Do you have burning, urgency or frequency when you urinate?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Lower urinary tract symptoms preceding or accompanying the fever and flank pain"
+      },
+      {
+        "question": "Have you had chills or shaking chills?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Rigors suggesting bacteremia or sepsis"
+      },
+      {
+        "question": "Any nausea or vomiting, and can you keep fluids down?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Vomiting that prevents oral intake and may require IV fluids and admission"
+      },
+      {
+        "question": "Have you had a urinary catheter or any recent procedure on your urinary tract?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Catheter or instrumentation as a risk factor for complicated infection"
+      },
+      {
+        "question": "Do you have diabetes, kidney stones, an enlarged prostate, or any problem emptying your bladder?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Conditions that predispose to obstruction, abscess or emphysematous pyelonephritis"
+      },
+      {
+        "question": "Are you taking any medicines that weaken your immune system, like prednisone or chemotherapy?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Immunosuppression that lowers the threshold for admission and broad-spectrum antibiotics"
+      },
+      {
+        "question": "Could you be pregnant? When was your last menstrual period?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Pregnancy, which changes imaging and antibiotic choices and raises the risk of preterm labor"
+      },
+      {
+        "question": "Any vaginal discharge, bleeding, or pain with intercourse?",
+        "category": "sexual",
+        "importance": "important",
+        "looking_for": "Absent; present suggests pelvic inflammatory disease or another gynecologic cause"
+      },
+      {
+        "question": "Have you had a kidney stone before, or pain that comes in waves and radiates to your groin?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Colicky radiating pain suggesting a stone rather than infection"
+      },
+      {
+        "question": "Any cough, shortness of breath, or chest pain when you breathe deeply?",
+        "category": "ros",
+        "importance": "optional",
+        "looking_for": "Absent; present suggests lower lobe pneumonia referred to the flank"
+      },
+      {
+        "question": "Have you felt confused, faint, or very weak?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Altered mental status or syncope suggesting sepsis or shock"
+      }
+    ],
+    "accepted_names": [
+      "Acute pyelonephritis",
+      "Pyelonephritis",
+      "Acute kidney infection",
+      "Kidney infection",
+      "Upper urinary tract infection",
+      "Upper UTI"
+    ],
+    "reasoning_points": [
+      "Fever with chills and unilateral flank pain in a patient with urinary symptoms",
+      "Costovertebral angle tenderness on the affected side",
+      "Urinalysis with pyuria, leukocyte esterase and often positive nitrite",
+      "White blood cell casts pointing to infection in the kidney rather than the bladder",
+      "Leukocytosis with a left shift supporting a bacterial infection",
+      "Pregnancy excluded before imaging and antibiotic selection",
+      "Urine culture obtained before antibiotics to identify the organism and susceptibilities",
+      "Complications such as obstruction, abscess or emphysematous pyelonephritis considered when the patient is severely ill or fails to improve"
+    ],
+    "difficulty": {
+      "easy": [
+        "Young woman with fever, chills and unilateral flank pain after a few days of dysuria and frequency",
+        "Costovertebral angle tenderness on exam",
+        "Urinalysis with pyuria, positive leukocyte esterase and positive nitrite",
+        "Leukocytosis on CBC"
+      ],
+      "medium": [
+        "Older adult with confusion or a fall and only mild flank pain",
+        "Diabetic patient with severe infection and a blunted fever",
+        "Pregnant patient with flank pain and preterm contractions",
+        "Patient with a kidney stone and superimposed infection",
+        "Normal white count despite clear clinical pyelonephritis"
+      ],
+      "hard": [
+        "Immunocompromised patient with few localizing symptoms who progresses rapidly to sepsis",
+        "Patient with right-sided pain and fever where appendicitis or cholecystitis is a strong alternative",
+        "Older adult with lower lobe pneumonia presenting with flank pain and no urinary symptoms",
+        "Persistent fever after 48–72 hours of antibiotics suggesting abscess or obstruction",
+        "Patient with emphysematous pyelonephritis and gas in the renal parenchyma on CT"
+      ]
+    }
+  }
+}

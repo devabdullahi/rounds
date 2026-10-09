@@ -1,0 +1,1416 @@
+{
+  "schema_version": "0.2",
+  "slug": "scurvy",
+  "triage": {
+    "name": "Scurvy",
+    "case_suitable": true,
+    "reason": "Dietary vitamin C deficiency with gingival bleeding, perifollicular hemorrhage and poor wound healing; classic history-plus-exam diagnosis.",
+    "kind": "disease",
+    "category": "vitamin deficiency",
+    "organ_systems": [
+      "endocrine",
+      "musculoskeletal"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "familyMedicine",
+      "pediatrics"
+    ],
+    "commonness": "rare",
+    "settings": [
+      "clinic",
+      "inpatient"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:24:03Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:43:50Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:44:17Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:44:26Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:44:36Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:44:43Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "exam: term 'Abnormal hair' not found in SNOMED CT",
+        "exam: term 'Tenderness of calf' not found in SNOMED CT",
+        "differential immune-thrombocytopenia: no profile yet",
+        "differential acute-leukemia: no profile yet",
+        "differential ehlers-danlos-syndrome: no profile yet",
+        "differential multiple-myeloma: no profile yet",
+        "differential vasculitis: no profile yet",
+        "differential vitamin-k-deficiency: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 1,
+      "typical_max": 90,
+      "peak": "infants and older adults",
+      "possible_min": 0,
+      "possible_max": 110
+    },
+    "sex": "either",
+    "demographics": [
+      "Seen in people with severely restricted diets, food insecurity, or alcohol use disorder",
+      "More common in older adults living alone or in institutions",
+      "Can occur in children with restrictive eating patterns or developmental conditions"
+    ],
+    "risk_factors": [
+      {
+        "text": "Diet lacking fresh fruits and vegetables for months",
+        "strength": "strong"
+      },
+      {
+        "text": "Alcohol use disorder",
+        "strength": "strong"
+      },
+      {
+        "text": "Food insecurity or poverty",
+        "strength": "moderate"
+      },
+      {
+        "text": "Living alone or in an institution with limited diet variety",
+        "strength": "moderate"
+      },
+      {
+        "text": "Restrictive or fad diets",
+        "strength": "moderate"
+      },
+      {
+        "text": "Malabsorption (e.g., celiac disease, bariatric surgery)",
+        "strength": "moderate"
+      },
+      {
+        "text": "Dialysis or chronic illness with poor intake",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Alcohol use disorder",
+      "Malabsorption syndromes",
+      "Chronic kidney disease on dialysis",
+      "Eating disorders"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Limited access to fresh produce",
+      "Lives alone or in a care facility",
+      "Heavy alcohol use"
+    ],
+    "exposures": [],
+    "risk_medications": []
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My gums bleed when I brush my teeth",
+        "frequency": "common",
+        "term": "Gingival bleeding",
+        "snomed_verified": true
+      },
+      {
+        "text": "I feel weak and tired all the time",
+        "frequency": "common",
+        "term": "Fatigue",
+        "snomed_verified": true
+      },
+      {
+        "text": "I have red spots on my legs",
+        "frequency": "sometimes",
+        "term": "Petechiae",
+        "snomed_verified": true
+      },
+      {
+        "text": "My legs hurt and feel tight",
+        "frequency": "sometimes",
+        "term": "Leg pain",
+        "snomed_verified": true
+      },
+      {
+        "text": "My teeth feel loose",
+        "frequency": "sometimes",
+        "term": "Loose tooth",
+        "snomed_verified": true
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual over weeks to months",
+      "duration": "Usually 1–3 months of poor dietary intake before symptoms appear",
+      "progression": "Starts with fatigue and poor appetite, then bleeding gums, easy bruising, and leg pain develop; wounds heal slowly and old scars may break down",
+      "location": "Gums, legs, skin, and joints",
+      "radiation": "Leg pain may radiate to the thighs",
+      "quality": "Gums are sore and spongy; leg pain is aching and tight; skin spots are flat and red",
+      "severity": "Mild to moderate, gradually worsening",
+      "timing": "Constant, worse with activity",
+      "aggravating": [
+        "Brushing teeth",
+        "Walking",
+        "Touching the legs"
+      ],
+      "relieving": [
+        "Rest"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Bleeding gums",
+          "frequency": "common",
+          "term": "Gingival bleeding",
+          "snomed_verified": true
+        },
+        {
+          "text": "Fatigue",
+          "frequency": "common",
+          "term": "Fatigue",
+          "snomed_verified": true
+        },
+        {
+          "text": "Easy bruising",
+          "frequency": "common",
+          "term": "Easy bruising",
+          "snomed_verified": true
+        },
+        {
+          "text": "Joint pain",
+          "frequency": "sometimes",
+          "term": "Arthralgia",
+          "snomed_verified": true
+        },
+        {
+          "text": "Muscle pain",
+          "frequency": "sometimes",
+          "term": "Myalgia",
+          "snomed_verified": true
+        },
+        {
+          "text": "Poor wound healing",
+          "frequency": "sometimes",
+          "term": "Impaired wound healing",
+          "snomed_verified": true
+        },
+        {
+          "text": "Swollen gums",
+          "frequency": "sometimes",
+          "term": "Swollen gums",
+          "snomed_verified": true
+        },
+        {
+          "text": "Shortness of breath",
+          "frequency": "rare",
+          "term": "Dyspnea",
+          "snomed_verified": true
+        }
+      ],
+      "pertinent_negatives": [
+        "Fever",
+        "Weight loss",
+        "Night sweats",
+        "Bloody diarrhea",
+        "Severe abdominal pain",
+        "Recent trauma",
+        "Family history of bleeding disorders"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fatigue",
+            "frequency": "common",
+            "term": "Fatigue",
+            "snomed_verified": true
+          },
+          {
+            "text": "Poor appetite",
+            "frequency": "common",
+            "term": "Anorexia",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Fever",
+          "Weight loss",
+          "Night sweats"
+        ],
+        "argues_against": [
+          "Chronic infection",
+          "Malignancy"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Bleeding gums",
+            "frequency": "common",
+            "term": "Gingival bleeding",
+            "snomed_verified": true
+          },
+          {
+            "text": "Swollen gums",
+            "frequency": "sometimes",
+            "term": "Swollen gums",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Bloody diarrhea",
+          "Jaundice",
+          "Abdominal pain"
+        ],
+        "argues_against": [
+          "Inflammatory bowel disease",
+          "Liver disease"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Joint pain",
+            "frequency": "sometimes",
+            "term": "Arthralgia",
+            "snomed_verified": true
+          },
+          {
+            "text": "Muscle pain",
+            "frequency": "sometimes",
+            "term": "Myalgia",
+            "snomed_verified": true
+          },
+          {
+            "text": "Leg pain",
+            "frequency": "sometimes",
+            "term": "Leg pain",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Joint swelling",
+          "Joint redness",
+          "Muscle weakness"
+        ],
+        "argues_against": [
+          "Inflammatory arthritis",
+          "Myositis"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [
+          {
+            "text": "Petechiae",
+            "frequency": "sometimes",
+            "term": "Petechiae",
+            "snomed_verified": true
+          },
+          {
+            "text": "Easy bruising",
+            "frequency": "common",
+            "term": "Easy bruising",
+            "snomed_verified": true
+          },
+          {
+            "text": "Perifollicular hemorrhage",
+            "frequency": "sometimes",
+            "term": "Perifollicular hemorrhage",
+            "snomed_verified": true
+          },
+          {
+            "text": "Poor wound healing",
+            "frequency": "sometimes",
+            "term": "Impaired wound healing",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Rash",
+          "Ulcers",
+          "Skin tightening"
+        ],
+        "argues_against": [
+          "Vasculitis",
+          "Scleroderma"
+        ]
+      },
+      {
+        "system": "hematologic",
+        "positives": [
+          {
+            "text": "Anemia",
+            "frequency": "sometimes",
+            "term": "Anemia",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Lymphadenopathy",
+          "Splenomegaly"
+        ],
+        "argues_against": [
+          "Lymphoma",
+          "Leukemia"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "infants",
+        "how_it_differs": "Infants present with irritability, poor feeding, and pseudoparalysis (refusal to move a limb) rather than gum bleeding.",
+        "missing_classic_features": [
+          "Gingival bleeding",
+          "Perifollicular hemorrhage"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "Older adults may have fewer gum findings if edentulous, and present with weakness, easy bruising, and leg swelling.",
+        "missing_classic_features": [
+          "Gingival bleeding",
+          "Loose teeth"
+        ]
+      },
+      {
+        "population": "children",
+        "how_it_differs": "Children may present with bone pain, limping, and poor growth rather than classic skin and gum findings.",
+        "missing_classic_features": [
+          "Perifollicular hemorrhage",
+          "Gingival bleeding"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Tired but not ill-appearing; favors the legs when walking",
+      "moderate": "Pale, listless, walks slowly with a limp or stiff-legged gait",
+      "severe": "Ill-appearing, pale, reluctant to stand or walk, holds the legs",
+      "critical": "Toxic-appearing, pale, weak, unable to bear weight or move the affected limb"
+    },
+    "findings": [
+      {
+        "id": "gingival-bleeding",
+        "region": "heent",
+        "maneuver": "Inspect the gums and gently press or brush along the gingival margin",
+        "finding": "Bleeding from the gum margins, especially between teeth",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Gingival bleeding",
+        "snomed_verified": true
+      },
+      {
+        "id": "spongy-gums",
+        "region": "heent",
+        "maneuver": "Inspect and palpate the gums",
+        "finding": "Swollen, spongy, friable gums that are bluish-purple and bleed easily",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Swollen gums",
+        "snomed_verified": true
+      },
+      {
+        "id": "loose-teeth",
+        "region": "heent",
+        "maneuver": "Gently press on the teeth or ask the patient to wiggle them",
+        "finding": "Teeth are loose in their sockets",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Loose tooth",
+        "snomed_verified": true
+      },
+      {
+        "id": "perifollicular-hemorrhage",
+        "region": "skin",
+        "maneuver": "Inspect the skin of the legs and arms with good lighting, looking at hair follicles",
+        "finding": "Pinpoint hemorrhages around hair follicles, often with broken or coiled hairs",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Perifollicular hemorrhage",
+        "snomed_verified": true
+      },
+      {
+        "id": "petechiae",
+        "region": "skin",
+        "maneuver": "Inspect the lower legs and dependent areas",
+        "finding": "Non-blanching pinpoint red spots",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Petechiae",
+        "snomed_verified": true
+      },
+      {
+        "id": "ecchymoses",
+        "region": "skin",
+        "maneuver": "Inspect the skin for bruises, including areas of minor trauma",
+        "finding": "Easy bruising or large ecchymoses out of proportion to trauma",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Ecchymosis",
+        "snomed_verified": true
+      },
+      {
+        "id": "poor-wound-healing",
+        "region": "skin",
+        "maneuver": "Inspect any wounds or old scars",
+        "finding": "Wounds healing slowly or old scars breaking down",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Impaired wound healing",
+        "snomed_verified": true
+      },
+      {
+        "id": "corkscrew-hairs",
+        "region": "skin",
+        "maneuver": "Inspect body hair on the legs and arms",
+        "finding": "Hairs that are coiled or broken (corkscrew hairs)",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Abnormal hair",
+        "snomed_verified": false
+      },
+      {
+        "id": "leg-edema",
+        "region": "extremities",
+        "maneuver": "Press over the shins and calves",
+        "finding": "Pitting edema of the lower legs",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Edema of lower extremity",
+        "snomed_verified": true
+      },
+      {
+        "id": "calf-tenderness",
+        "region": "extremities",
+        "maneuver": "Palpate the calves and thighs",
+        "finding": "Tenderness and a brawny, woody feel to the muscles of the calves and thighs",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Tenderness of calf",
+        "snomed_verified": false
+      },
+      {
+        "id": "joint-tenderness",
+        "region": "musculoskeletal",
+        "maneuver": "Palpate the knees, ankles and other joints and move them through range of motion",
+        "finding": "Joint tenderness, and sometimes warmth or swelling, without deformity",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Arthralgia",
+        "snomed_verified": true
+      },
+      {
+        "id": "hemarthrosis",
+        "region": "musculoskeletal",
+        "maneuver": "Inspect and palpate a painful joint",
+        "finding": "Blood within the joint space causing swelling and restricted movement",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Hemarthrosis",
+        "snomed_verified": true
+      },
+      {
+        "id": "pale-complexion",
+        "region": "general",
+        "maneuver": "Inspect the conjunctivae, palms and mucous membranes",
+        "finding": "Pallor of the conjunctivae and skin",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Pale complexion",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-fever",
+        "region": "general",
+        "maneuver": "Measure the temperature and assess for systemic signs",
+        "finding": "No fever",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Fever",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-splenomegaly",
+        "region": "abdomen",
+        "maneuver": "Palpate the left upper quadrant and percuss for splenic dullness",
+        "finding": "No splenomegaly",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Splenomegaly",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the cervical, axillary and inguinal lymph node chains",
+        "finding": "No enlarged lymph nodes",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Lymphadenopathy",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-skin-tightening",
+        "region": "skin",
+        "maneuver": "Pinch and inspect the skin of the hands and face",
+        "finding": "No thickening or tightening of the skin",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Scleroderma",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-joint-deformity",
+        "region": "musculoskeletal",
+        "maneuver": "Inspect and move the joints of the hands, knees and ankles",
+        "finding": "No joint deformity or hypermobility",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Joint deformity",
+        "snomed_verified": true
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "moderate": {
+        "min": 97.8,
+        "max": 99.5
+      },
+      "severe": {
+        "min": 97.5,
+        "max": 100.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 70,
+        "max": 100
+      },
+      "moderate": {
+        "min": 80,
+        "max": 110
+      },
+      "severe": {
+        "min": 90,
+        "max": 125
+      },
+      "critical": {
+        "min": 100,
+        "max": 140
+      }
+    },
+    "rr": {
+      "severe": {
+        "min": 18,
+        "max": 24
+      },
+      "critical": {
+        "min": 22,
+        "max": 30
+      }
+    },
+    "sbp": {
+      "severe": {
+        "min": 90,
+        "max": 110
+      },
+      "critical": {
+        "min": 80,
+        "max": 100
+      }
+    },
+    "dbp": {
+      "severe": {
+        "min": 55,
+        "max": 70
+      },
+      "critical": {
+        "min": 45,
+        "max": 65
+      }
+    },
+    "spo2": {
+      "severe": {
+        "min": 92,
+        "max": 96
+      },
+      "critical": {
+        "min": 88,
+        "max": 94
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "hgb",
+      "ranges": {
+        "mild": {
+          "min": 11.0,
+          "max": 12.0
+        },
+        "moderate": {
+          "min": 9.0,
+          "max": 11.5
+        },
+        "severe": {
+          "min": 7.0,
+          "max": 10.0
+        },
+        "critical": {
+          "min": 6.0,
+          "max": 8.5
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Anemia is usually normocytic or mildly macrocytic; it can be multifactorial when diet is generally poor."
+    },
+    {
+      "test_id": "mcv",
+      "ranges": {
+        "mild": {
+          "min": 82,
+          "max": 100
+        },
+        "moderate": {
+          "min": 85,
+          "max": 105
+        },
+        "severe": {
+          "min": 88,
+          "max": 110
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Mild macrocytosis can occur; marked macrocytosis should prompt checking B12 and folate."
+    },
+    {
+      "test_id": "plt",
+      "ranges": {
+        "moderate": {
+          "min": 100,
+          "max": 150
+        },
+        "severe": {
+          "min": 60,
+          "max": 120
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Mild thrombocytopenia can occur; bleeding is mainly due to defective collagen and capillary fragility, not low platelets."
+    },
+    {
+      "test_id": "esr",
+      "ranges": {
+        "mild": {
+          "min": 20,
+          "max": 35
+        },
+        "moderate": {
+          "min": 30,
+          "max": 55
+        },
+        "severe": {
+          "min": 45,
+          "max": 80
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Nonspecific; may be mildly elevated."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "mild": {
+          "min": 1.0,
+          "max": 3.0
+        },
+        "moderate": {
+          "min": 2.0,
+          "max": 6.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Usually normal or only mildly elevated; a high value suggests another process such as infection."
+    },
+    {
+      "test_id": "albumin",
+      "ranges": {
+        "moderate": {
+          "min": 3.0,
+          "max": 3.5
+        },
+        "severe": {
+          "min": 2.5,
+          "max": 3.2
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Low when overall nutrition is poor."
+    },
+    {
+      "test_id": "b12",
+      "ranges": {
+        "moderate": {
+          "min": 150,
+          "max": 200
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Check because a poor diet often causes multiple deficiencies; low B12 changes the anemia workup."
+    },
+    {
+      "test_id": "folate",
+      "ranges": {
+        "moderate": {
+          "min": 2.0,
+          "max": 3.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Check alongside B12 in restricted diets."
+    },
+    {
+      "test_id": "pt",
+      "ranges": {
+        "moderate": {
+          "min": 13.5,
+          "max": 15.0
+        },
+        "severe": {
+          "min": 14.5,
+          "max": 17.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Coagulation studies are usually normal; mild prolongation may reflect poor nutrition or liver disease."
+    },
+    {
+      "test_id": "aptt",
+      "ranges": {
+        "moderate": {
+          "min": 35,
+          "max": 42
+        },
+        "severe": {
+          "min": 40,
+          "max": 48
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Usually normal; abnormal values point to another bleeding disorder."
+    }
+  ],
+  "imaging": [
+    {
+      "study": "Upper endoscopy",
+      "modality": "endoscopy",
+      "preferred_when": "Only when another cause of the bleeding or malabsorption is suspected",
+      "findings": [
+        {
+          "text": "Normal mucosa in most patients",
+          "frequency": "common"
+        },
+        {
+          "text": "Gastric or duodenal erosions from a separate process",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "MRI of the brain",
+      "modality": "mri",
+      "preferred_when": "Only for focal neurologic deficits or suspected intracranial bleeding",
+      "findings": [
+        {
+          "text": "No acute abnormality in most patients",
+          "frequency": "common"
+        },
+        {
+          "text": "Small extra-axial or subdural hemorrhage",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Anemia, thrombocytopenia and other cytopenias; helps exclude leukemia and marrow disease"
+      },
+      {
+        "test": "bmp",
+        "why": "Baseline electrolytes and renal function, especially with poor intake or alcohol use"
+      },
+      {
+        "test": "cmp_extra",
+        "why": "Albumin and liver tests to assess overall nutritional and hepatic status"
+      },
+      {
+        "test": "pt",
+        "why": "Screens for a coagulation disorder as an alternative cause of bleeding"
+      },
+      {
+        "test": "aptt",
+        "why": "Screens for a coagulation disorder as an alternative cause of bleeding"
+      },
+      {
+        "test": "esr",
+        "why": "Nonspecific inflammation marker; helps frame an alternative systemic illness"
+      },
+      {
+        "test": "crp",
+        "why": "Helps exclude an infectious or inflammatory process"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Serum ascorbic acid (vitamin C) level",
+        "why": "Low level confirms vitamin C deficiency; the decisive test when the history and exam suggest scurvy"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "b12",
+        "why": "Common coexisting deficiency in restricted diets"
+      },
+      {
+        "test": "folate",
+        "why": "Common coexisting deficiency in restricted diets"
+      },
+      {
+        "test": "ferritin",
+        "why": "Iron deficiency can coexist and contribute to the anemia"
+      },
+      {
+        "test": "iron",
+        "why": "Part of the anemia evaluation when iron deficiency is suspected"
+      },
+      {
+        "test": "tibc",
+        "why": "Helps interpret iron status in a patient with anemia"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "d_dimer",
+        "why": "No role in the evaluation of nutritional bleeding; a positive result would only mislead"
+      },
+      {
+        "test": "Upper endoscopy",
+        "why": "Not routine; reserve for suspected gastrointestinal bleeding or malabsorption",
+        "only_if": "there is evidence of gastrointestinal bleeding or malabsorption"
+      },
+      {
+        "test": "MRI of the brain",
+        "why": "Not routine; only for focal neurologic findings or suspected intracranial hemorrhage",
+        "only_if": "focal neurologic deficits or suspected intracranial bleeding"
+      },
+      {
+        "test": "Serum protein electrophoresis",
+        "why": "Not routine; consider only if myeloma is suspected from hypercalcemia, renal failure, bone lesions or a markedly elevated total protein",
+        "only_if": "multiple myeloma is suspected"
+      }
+    ],
+    "decision_points": [
+      "Confirm the diagnosis with a serum ascorbic acid level before attributing bleeding to scurvy",
+      "Check B12, folate and iron when the diet is broadly poor, since deficiencies often coexist",
+      "A normal platelet count and coagulation studies with bleeding gums and perifollicular hemorrhage point toward a collagen/vitamin C problem rather than a platelet or clotting disorder",
+      "Consider myeloma or a marrow disorder if there is hypercalcemia, renal impairment, bone pain or pancytopenia"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Immune thrombocytopenia",
+      "slug": "immune-thrombocytopenia",
+      "why_considered": "Petechiae, easy bruising and gum bleeding in a patient with a bleeding tendency",
+      "must_not_miss": true,
+      "trigger": "Isolated low platelets with bleeding and no dietary history",
+      "discriminators": {
+        "history": [
+          "Sudden onset of bruising and petechiae",
+          "No dietary restriction",
+          "Recent viral illness or new medication"
+        ],
+        "exam": [
+          "Petechiae and ecchymoses without gum hypertrophy",
+          "No perifollicular hemorrhage",
+          "No corkscrew hairs"
+        ],
+        "labs": [
+          "Isolated thrombocytopenia with normal hemoglobin and white count",
+          "Normal coagulation studies",
+          "Normal serum ascorbic acid"
+        ]
+      }
+    },
+    {
+      "name": "Acute leukemia",
+      "slug": "acute-leukemia",
+      "why_considered": "Bleeding gums, bruising, fatigue and anemia in a patient who looks unwell",
+      "must_not_miss": true,
+      "trigger": "Pancytopenia, blasts on smear, or lymphadenopathy and splenomegaly",
+      "discriminators": {
+        "history": [
+          "Weeks of fatigue, fever, night sweats",
+          "Weight loss",
+          "Recurrent infections"
+        ],
+        "exam": [
+          "Lymphadenopathy",
+          "Splenomegaly or hepatomegaly",
+          "Gum infiltration rather than simple bleeding"
+        ],
+        "labs": [
+          "Pancytopenia",
+          "Blasts on peripheral smear",
+          "Elevated LDH and uric acid"
+        ],
+        "imaging": [
+          "Mediastinal mass or organomegaly on chest radiograph or CT"
+        ]
+      }
+    },
+    {
+      "name": "Ehlers-Danlos syndrome",
+      "slug": "ehlers-danlos-syndrome",
+      "why_considered": "Easy bruising, poor wound healing and bleeding from fragile connective tissue",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Lifelong easy bruising and poor scarring",
+          "Joint hypermobility since childhood",
+          "Family history of similar findings"
+        ],
+        "exam": [
+          "Skin hyperextensibility",
+          "Joint hypermobility",
+          "Atrophic scarring",
+          "No gum bleeding or perifollicular hemorrhage"
+        ],
+        "labs": [
+          "Normal serum ascorbic acid",
+          "Normal platelet count and coagulation studies"
+        ],
+        "imaging": [
+          "No specific imaging findings; genetic testing confirms the subtype"
+        ]
+      }
+    },
+    {
+      "name": "Multiple myeloma",
+      "slug": "multiple-myeloma",
+      "why_considered": "Anemia, bone pain and bleeding tendency in an older adult",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Bone pain, especially back or ribs",
+          "Recurrent infections",
+          "No dietary restriction"
+        ],
+        "exam": [
+          "Pallor",
+          "Bone tenderness",
+          "No gum or perifollicular findings"
+        ],
+        "labs": [
+          "Normocytic anemia",
+          "Elevated total protein with monoclonal spike on serum protein electrophoresis",
+          "Hypercalcemia",
+          "Renal impairment",
+          "Rouleaux on smear"
+        ],
+        "imaging": [
+          "Lytic bone lesions on skeletal survey or low-dose CT"
+        ]
+      }
+    },
+    {
+      "name": "Vasculitis",
+      "slug": "vasculitis",
+      "why_considered": "Palpable purpura, joint pain and systemic symptoms",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Fever, weight loss, night sweats",
+          "New rash over weeks",
+          "No dietary restriction"
+        ],
+        "exam": [
+          "Palpable purpura",
+          "Joint swelling",
+          "Renal or neurologic findings",
+          "No spongy gums"
+        ],
+        "labs": [
+          "Elevated ESR and CRP",
+          "Positive ANCA or other autoantibodies",
+          "Hematuria and proteinuria",
+          "Normal serum ascorbic acid"
+        ],
+        "imaging": [
+          "Chest imaging may show nodules or infiltrates; biopsy of affected tissue shows vessel inflammation"
+        ]
+      }
+    },
+    {
+      "name": "Vitamin K deficiency or coagulopathy",
+      "slug": "vitamin-k-deficiency",
+      "why_considered": "Bleeding gums and easy bruising from a clotting problem",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Antibiotic use, poor intake, or liver disease",
+          "Bleeding from multiple sites",
+          "No perifollicular rash"
+        ],
+        "exam": [
+          "Ecchymoses and mucosal bleeding",
+          "No spongy gums or corkscrew hairs"
+        ],
+        "labs": [
+          "Prolonged PT with normal platelets",
+          "Normal serum ascorbic acid",
+          "Low vitamin K level if measured"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Fatigue, poor appetite, and early gum tenderness or bleeding with brushing; no significant anemia or functional limitation",
+      "moderate": "Established disease with spongy bleeding gums, perifollicular hemorrhage, easy bruising, leg pain and mild anemia; some limitation in walking or daily activities",
+      "severe": "Marked gingival bleeding and loose teeth, extensive ecchymoses, brawny leg edema, joint pain, significant anemia, and poor wound healing; patient is reluctant to walk",
+      "critical": "Rare life-threatening presentation with severe anemia, hypotension, or bleeding into a critical site such as the central nervous system or pericardium"
+    },
+    "red_flags": [
+      {
+        "finding": "Syncope, dyspnea at rest, or heart rate over 120 with pallor",
+        "meaning": "Severe anemia from chronic blood loss or poor erythropoiesis; needs urgent transfusion assessment"
+      },
+      {
+        "finding": "Hypotension or altered mental status",
+        "meaning": "Hemodynamic instability, possibly from occult hemorrhage or sepsis; resuscitate and investigate urgently"
+      },
+      {
+        "finding": "Focal neurologic deficit, severe headache, or new confusion",
+        "meaning": "Possible intracranial hemorrhage; obtain urgent neuroimaging"
+      },
+      {
+        "finding": "Fever with purulent gums or spreading facial swelling",
+        "meaning": "Secondary infection of friable gingiva or periodontal tissue; needs antibiotics and dental evaluation"
+      },
+      {
+        "finding": "Rapidly enlarging bruise or swelling in a limb with pain and pallor",
+        "meaning": "Large soft-tissue or intramuscular hemorrhage; assess for compartment syndrome"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Severe anemia",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Progressive pallor",
+          "Dyspnea on exertion",
+          "Falling hemoglobin"
+        ]
+      },
+      {
+        "name": "Intracranial hemorrhage",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Sudden severe headache",
+          "Focal neurologic deficit",
+          "Altered consciousness"
+        ]
+      },
+      {
+        "name": "Gastrointestinal or genitourinary bleeding",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Melena",
+          "Hematochezia",
+          "Gross hematuria",
+          "Unexplained drop in hemoglobin"
+        ]
+      },
+      {
+        "name": "Secondary infection of gingiva or periodontal tissue",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Fever",
+          "Purulent gingival discharge",
+          "Facial or submandibular swelling",
+          "Trismus"
+        ]
+      },
+      {
+        "name": "Poor wound healing and wound dehiscence",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Surgical or traumatic wound that fails to close",
+          "Old scars breaking down"
+        ]
+      },
+      {
+        "name": "Hemarthrosis or subperiosteal hemorrhage",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Acutely swollen, painful joint",
+          "Bone pain in a child",
+          "Refusal to move a limb"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "infants",
+        "differences": "Present with irritability, poor feeding, and pseudoparalysis (refusal to move a limb) from subperiosteal hemorrhage; gum findings are absent because teeth have not erupted."
+      },
+      {
+        "population": "children",
+        "differences": "May present with bone pain, limp, and poor growth rather than classic skin and gum findings; consider in children with restrictive eating patterns or developmental conditions."
+      },
+      {
+        "population": "older_adults",
+        "differences": "May have fewer gum findings if edentulous; present with weakness, easy bruising, leg swelling, and poor wound healing; often live alone or in institutions with limited diet variety."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Vitamin C requirements increase; deficiency can contribute to anemia and poor wound healing, and severe deficiency has been linked to adverse pregnancy outcomes."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "Patients on dialysis lose vitamin C during treatment and may have restricted diets; maintain a higher index of suspicion."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Poor wound healing and friable gums may be more pronounced; secondary infection risk is higher."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "What have you been eating over the past few months? Do you eat any fresh fruits or vegetables?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "A diet with no fresh fruits or vegetables for weeks to months; the single most important piece of history"
+      },
+      {
+        "question": "How long has it been since you ate fruit or vegetables?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Typically 1–3 months of severely restricted intake before symptoms appear"
+      },
+      {
+        "question": "Do your gums bleed when you brush your teeth or eat?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Bleeding from the gum margins, often the first thing the patient notices"
+      },
+      {
+        "question": "Have you noticed red or purple spots on your legs, or bruising more easily than usual?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Perifollicular hemorrhage, petechiae and easy bruising"
+      },
+      {
+        "question": "Do your legs hurt or feel tight? Does it hurt to walk?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Aching leg pain with a brawny, woody feel to the calves and thighs"
+      },
+      {
+        "question": "Have your teeth felt loose or has your gum felt swollen and spongy?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Loose teeth and spongy, friable gums in more advanced disease"
+      },
+      {
+        "question": "How have your energy and appetite been?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Fatigue and poor appetite, often the earliest symptoms"
+      },
+      {
+        "question": "Do you drink alcohol? How much and how often?",
+        "category": "social",
+        "importance": "essential",
+        "looking_for": "Alcohol use disorder, a strong risk factor for a diet devoid of fresh produce"
+      },
+      {
+        "question": "Who does your grocery shopping and cooking? Do you have trouble affording or getting fresh food?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Food insecurity, living alone, or institutional food with limited variety"
+      },
+      {
+        "question": "Have you had stomach or intestinal surgery, or been told you have trouble absorbing nutrients?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Bariatric surgery, celiac disease or other malabsorption"
+      },
+      {
+        "question": "Are you on dialysis or do you have chronic kidney disease?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Dialysis, which removes vitamin C and often comes with a restricted diet"
+      },
+      {
+        "question": "Have you had any fevers, weight loss or night sweats?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Absent; their presence points toward infection, malignancy or vasculitis instead"
+      },
+      {
+        "question": "Does anyone in your family have a bleeding or clotting problem?",
+        "category": "family",
+        "importance": "important",
+        "looking_for": "Absent; a family history suggests an inherited bleeding disorder"
+      },
+      {
+        "question": "Have you had any recent trauma, or bleeding from the nose, gut or urine?",
+        "category": "red_flag",
+        "importance": "important",
+        "looking_for": "Trauma or bleeding from other sites, which changes the differential and urgency"
+      },
+      {
+        "question": "Are you taking any blood thinners or new medications?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Anticoagulants or antiplatelets that would explain the bleeding"
+      }
+    ],
+    "accepted_names": [
+      "Scurvy",
+      "Vitamin C deficiency",
+      "Ascorbic acid deficiency",
+      "Hypovitaminosis C",
+      "Hypovitamin C"
+    ],
+    "reasoning_points": [
+      "A diet lacking fresh fruits and vegetables for weeks to months, often with alcohol use disorder, food insecurity, living alone or malabsorption",
+      "Bleeding gums and spongy, friable gingiva, sometimes with loose teeth",
+      "Perifollicular hemorrhage, petechiae and easy bruising on the legs",
+      "Leg pain with a brawny, woody feel to the calves and thighs, and joint pain",
+      "Fatigue, poor appetite, pallor and a normocytic or mildly macrocytic anemia",
+      "Poor wound healing or breakdown of old scars",
+      "A normal platelet count and normal coagulation studies, which argue against a platelet or clotting disorder",
+      "A low serum ascorbic acid level confirming the diagnosis",
+      "Coexisting deficiencies such as B12, folate or iron considered when the diet is broadly poor",
+      "Look-alikes such as immune thrombocytopenia, leukemia, Ehlers-Danlos syndrome, myeloma and vasculitis excluded by the dietary history, exam and labs"
+    ],
+    "difficulty": {
+      "easy": [
+        "Older adult living alone or with alcohol use disorder who eats almost no fresh produce",
+        "Classic bleeding gums with perifollicular hemorrhage on the legs",
+        "Leg pain with a brawny, woody feel to the calves",
+        "Normal platelet count and coagulation studies",
+        "Low serum ascorbic acid level"
+      ],
+      "medium": [
+        "Patient with fatigue and anemia but no obvious gum bleeding until asked directly",
+        "Edentulous older adult with weakness, easy bruising and leg swelling but no gum findings",
+        "Diet history only obtained after the student asks specifically about fruit and vegetables",
+        "Coexisting B12, folate or iron deficiency muddying the anemia picture"
+      ],
+      "hard": [
+        "Infant with irritability, poor feeding and pseudoparalysis rather than gum or skin findings",
+        "Child with bone pain, limp and poor growth rather than classic skin and gum findings",
+        "Patient on dialysis with a restricted diet and a high index of suspicion needed",
+        "Patient with a coexisting bleeding disorder or thrombocytopenia where scurvy is not the only explanation",
+        "Presentation with poor wound healing or a dehisced surgical wound and no bleeding complaints"
+      ]
+    }
+  }
+}

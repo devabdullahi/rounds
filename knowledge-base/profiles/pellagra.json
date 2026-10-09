@@ -1,0 +1,1618 @@
+{
+  "schema_version": "0.2",
+  "slug": "pellagra",
+  "triage": {
+    "name": "Pellagra",
+    "case_suitable": true,
+    "reason": "Niacin deficiency with dermatitis, diarrhea and dementia; distinctive sun-exposed rash plus diet history makes it a reachable diagnosis.",
+    "kind": "disease",
+    "category": "vitamin deficiency",
+    "organ_systems": [
+      "endocrine",
+      "musculoskeletal",
+      "nervous"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "dermatology",
+      "psychiatry",
+      "familyMedicine"
+    ],
+    "commonness": "rare",
+    "settings": [
+      "clinic",
+      "inpatient"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:24:03Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:44:34Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:44:52Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:45:05Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:45:17Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:45:23Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'hiv' to 'HIV'",
+        "auto-repaired: workup: renamed 'niacin' to 'Niacin'",
+        "auto-repaired: labs: dropped 'niacin' (not in the reference table)",
+        "auto-repaired: labs: dropped 'hiv' (not in the reference table)",
+        "exam: term 'Casal necklace' not found in SNOMED CT",
+        "exam: term 'Focal neurologic deficit' not found in SNOMED CT",
+        "differential porphyria-cutanea-tarda: no profile yet",
+        "differential systemic-lupus-erythematosus: no profile yet",
+        "differential carcinoid-syndrome: no profile yet",
+        "differential zinc-deficiency: no profile yet",
+        "differential hartnup-disease: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 20,
+      "typical_max": 70,
+      "peak": "30–60",
+      "possible_min": 1,
+      "possible_max": 90
+    },
+    "sex": "either",
+    "demographics": [
+      "In the US, most often seen in people with chronic alcohol use disorder, food insecurity, or homelessness",
+      "Also occurs in people with malabsorption, prolonged isoniazid therapy, or carcinoid syndrome",
+      "Historically endemic in populations relying on corn-based diets without niacin fortification"
+    ],
+    "risk_factors": [
+      {
+        "text": "Chronic alcohol use disorder",
+        "strength": "strong"
+      },
+      {
+        "text": "Diet limited to corn or lacking niacin and tryptophan",
+        "strength": "strong"
+      },
+      {
+        "text": "Malabsorption (celiac disease, Crohn disease, bariatric surgery)",
+        "strength": "moderate"
+      },
+      {
+        "text": "Long-term isoniazid therapy",
+        "strength": "moderate"
+      },
+      {
+        "text": "Carcinoid syndrome",
+        "strength": "moderate"
+      },
+      {
+        "text": "Hartnup disease",
+        "strength": "weak"
+      },
+      {
+        "text": "Food insecurity or homelessness",
+        "strength": "moderate"
+      }
+    ],
+    "comorbidities": [
+      "Alcohol use disorder",
+      "Celiac disease",
+      "Crohn disease",
+      "Bariatric surgery",
+      "Carcinoid syndrome",
+      "Hartnup disease"
+    ],
+    "family_history": [],
+    "social_history": [
+      "Heavy alcohol use",
+      "Poor diet or food insecurity",
+      "Homelessness or institutionalization"
+    ],
+    "exposures": [
+      "Isoniazid",
+      "Corn-based diet without niacin fortification"
+    ],
+    "risk_medications": [
+      "isoniazid"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My skin is red, peeling and burning in the sun",
+        "frequency": "almost_always",
+        "term": "Photosensitive dermatitis",
+        "snomed_verified": true
+      },
+      {
+        "text": "I have diarrhea that won't go away",
+        "frequency": "common",
+        "term": "Diarrhea",
+        "snomed_verified": true
+      },
+      {
+        "text": "I feel confused and forgetful",
+        "frequency": "common",
+        "term": "Confusion",
+        "snomed_verified": true
+      },
+      {
+        "text": "My mouth and tongue are sore",
+        "frequency": "common",
+        "term": "Sore mouth",
+        "snomed_verified": true
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual over weeks to months",
+      "duration": "Weeks to months",
+      "progression": "Skin changes appear first on sun-exposed areas, followed by diarrhea and then neurologic symptoms; all three may not be present at once",
+      "location": "Skin rash on face, neck (Casal necklace), hands, forearms and feet; mouth and tongue; gastrointestinal and neurologic systems",
+      "radiation": "None",
+      "quality": "Burning, stinging rash that becomes scaly and thickened; watery diarrhea; memory problems and confusion",
+      "severity": "Moderate to severe; can progress to severe dementia and wasting",
+      "timing": "Skin worse after sun exposure; diarrhea intermittent; neurologic symptoms progressive",
+      "aggravating": [
+        "Sun exposure",
+        "Alcohol use",
+        "Poor diet"
+      ],
+      "relieving": [
+        "Avoiding sun",
+        "Niacin-rich foods or supplements"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Redness and scaling of sun-exposed skin",
+          "frequency": "almost_always",
+          "term": "Photosensitive dermatitis",
+          "snomed_verified": true
+        },
+        {
+          "text": "Watery diarrhea",
+          "frequency": "common",
+          "term": "Diarrhea",
+          "snomed_verified": true
+        },
+        {
+          "text": "Sore, red tongue",
+          "frequency": "common",
+          "term": "Glossitis",
+          "snomed_verified": true
+        },
+        {
+          "text": "Confusion and memory loss",
+          "frequency": "common",
+          "term": "Confusion",
+          "snomed_verified": true
+        },
+        {
+          "text": "Irritability and mood changes",
+          "frequency": "sometimes",
+          "term": "Irritability",
+          "snomed_verified": true
+        },
+        {
+          "text": "Insomnia",
+          "frequency": "sometimes",
+          "term": "Insomnia",
+          "snomed_verified": true
+        },
+        {
+          "text": "Loss of appetite",
+          "frequency": "common",
+          "term": "Anorexia",
+          "snomed_verified": true
+        },
+        {
+          "text": "Abdominal pain",
+          "frequency": "sometimes",
+          "term": "Abdominal pain",
+          "snomed_verified": true
+        },
+        {
+          "text": "Nausea and vomiting",
+          "frequency": "sometimes",
+          "term": "Nausea",
+          "snomed_verified": true
+        },
+        {
+          "text": "Numbness or tingling in hands and feet",
+          "frequency": "sometimes",
+          "term": "Paresthesia",
+          "snomed_verified": true
+        }
+      ],
+      "pertinent_negatives": [
+        "Bloody diarrhea",
+        "Fever",
+        "Weight loss despite adequate intake",
+        "Joint pain or swelling",
+        "Recent antibiotic use",
+        "Travel to areas with endemic infections"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fatigue",
+            "frequency": "common",
+            "term": "Fatigue",
+            "snomed_verified": true
+          },
+          {
+            "text": "Loss of appetite",
+            "frequency": "common",
+            "term": "Anorexia",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Fever",
+          "Night sweats",
+          "Weight loss"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [
+          {
+            "text": "Red, scaly rash on sun-exposed areas",
+            "frequency": "almost_always",
+            "term": "Photosensitive dermatitis",
+            "snomed_verified": true
+          },
+          {
+            "text": "Burning or stinging skin",
+            "frequency": "common",
+            "term": "Skin burning sensation",
+            "snomed_verified": true
+          },
+          {
+            "text": "Thickened, darkened skin",
+            "frequency": "sometimes",
+            "term": "Hyperpigmentation of skin",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Hives",
+          "Blisters",
+          "Mucosal ulcers"
+        ],
+        "argues_against": [
+          "Rash limited to non-sun-exposed areas",
+          "Vesicular rash"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Watery diarrhea",
+            "frequency": "common",
+            "term": "Diarrhea",
+            "snomed_verified": true
+          },
+          {
+            "text": "Sore, red tongue",
+            "frequency": "common",
+            "term": "Glossitis",
+            "snomed_verified": true
+          },
+          {
+            "text": "Abdominal pain",
+            "frequency": "sometimes",
+            "term": "Abdominal pain",
+            "snomed_verified": true
+          },
+          {
+            "text": "Nausea",
+            "frequency": "sometimes",
+            "term": "Nausea",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Blood in stool",
+          "Jaundice",
+          "Vomiting blood"
+        ],
+        "argues_against": [
+          "Bloody diarrhea",
+          "Severe right lower quadrant pain"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Confusion",
+            "frequency": "common",
+            "term": "Confusion",
+            "snomed_verified": true
+          },
+          {
+            "text": "Memory loss",
+            "frequency": "common",
+            "term": "Memory loss",
+            "snomed_verified": true
+          },
+          {
+            "text": "Irritability",
+            "frequency": "sometimes",
+            "term": "Irritability",
+            "snomed_verified": true
+          },
+          {
+            "text": "Insomnia",
+            "frequency": "sometimes",
+            "term": "Insomnia",
+            "snomed_verified": true
+          },
+          {
+            "text": "Numbness or tingling in hands and feet",
+            "frequency": "sometimes",
+            "term": "Paresthesia",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Seizures",
+          "Focal weakness",
+          "Loss of consciousness"
+        ],
+        "argues_against": [
+          "Focal neurologic deficit",
+          "Sudden severe headache"
+        ]
+      },
+      {
+        "system": "psychiatric",
+        "positives": [
+          {
+            "text": "Depressed mood",
+            "frequency": "sometimes",
+            "term": "Depressed mood",
+            "snomed_verified": true
+          },
+          {
+            "text": "Anxiety",
+            "frequency": "sometimes",
+            "term": "Anxiety",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Suicidal ideation",
+          "Hallucinations"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Children may present with irritability, poor growth and diarrhea before the rash is obvious; neurologic signs are less prominent.",
+        "missing_classic_features": [
+          "Dementia",
+          "Casal necklace"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "Neurologic symptoms such as confusion and memory loss may be mistaken for dementia; skin findings may be attributed to sun damage.",
+        "missing_classic_features": [
+          "Diarrhea",
+          "Glossitis"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Nausea and vomiting of pregnancy can worsen dietary intake; pellagra may present with severe vomiting and dehydration.",
+        "missing_classic_features": [
+          "Classic dermatitis",
+          "Dementia"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "In people with HIV or on immunosuppressants, pellagra can present with severe diarrhea and wasting without the classic rash.",
+        "missing_classic_features": [
+          "Photosensitive dermatitis",
+          "Casal necklace"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Alert and conversant, but with sunburn-like rash on exposed skin; may appear tired",
+      "moderate": "Ill-appearing, with obvious dermatitis, glossitis and intermittent diarrhea; may be irritable or mildly confused",
+      "severe": "Cachectic and disoriented, with extensive hyperpigmented scaly rash, profuse diarrhea and memory impairment",
+      "critical": "Lethargic or stuporous, with severe dementia, profound diarrhea, dehydration and possible hypothermia"
+    },
+    "findings": [
+      {
+        "id": "photosensitive-dermatitis",
+        "region": "skin",
+        "maneuver": "Inspect the face, neck, dorsal hands, forearms and feet in good lighting",
+        "finding": "Erythematous, scaly, sharply demarcated rash confined to sun-exposed skin",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Photosensitive dermatitis",
+        "snomed_verified": true
+      },
+      {
+        "id": "casal-necklace",
+        "region": "neck",
+        "maneuver": "Inspect the neck and upper chest, especially the V of the neck",
+        "finding": "Hyperpigmented, scaly, well-demarcated band of dermatitis around the neck and upper chest",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "important",
+        "term": "Casal necklace",
+        "snomed_verified": false
+      },
+      {
+        "id": "glossitis",
+        "region": "heent",
+        "maneuver": "Ask the patient to open the mouth and protrude the tongue; inspect the tongue and oral mucosa",
+        "finding": "Beefy-red, swollen, smooth tongue with loss of papillae; may be sore",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Glossitis",
+        "snomed_verified": true
+      },
+      {
+        "id": "angular-stomatitis",
+        "region": "heent",
+        "maneuver": "Inspect the corners of the mouth",
+        "finding": "Fissuring and erythema at the oral commissures",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Angular stomatitis",
+        "snomed_verified": true
+      },
+      {
+        "id": "diarrhea",
+        "region": "abdomen",
+        "maneuver": "Ask about bowel habits and, if inpatient, inspect stool in the bedpan or perineum",
+        "finding": "Watery, non-bloody diarrhea; stool may be frequent and loose",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Diarrhea",
+        "snomed_verified": true
+      },
+      {
+        "id": "abdominal-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen gently in all quadrants",
+        "finding": "Mild diffuse abdominal tenderness without guarding or rebound",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Abdominal tenderness",
+        "snomed_verified": true
+      },
+      {
+        "id": "confusion",
+        "region": "mental_status",
+        "maneuver": "Assess orientation to person, place and time; ask about recent memory",
+        "finding": "Disorientation, impaired recent memory, or difficulty with attention",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "essential",
+        "term": "Confusion",
+        "snomed_verified": true
+      },
+      {
+        "id": "memory-loss",
+        "region": "mental_status",
+        "maneuver": "Ask the patient to recall three objects after a few minutes, or ask family about memory changes",
+        "finding": "Impaired short-term memory and recall",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Memory loss",
+        "snomed_verified": true
+      },
+      {
+        "id": "irritability",
+        "region": "mental_status",
+        "maneuver": "Observe mood and interaction during the interview",
+        "finding": "Irritable, labile or agitated affect",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Irritability",
+        "snomed_verified": true
+      },
+      {
+        "id": "peripheral-neuropathy",
+        "region": "neuro",
+        "maneuver": "Test vibration and pinprick sensation in the feet and hands; check ankle reflexes",
+        "finding": "Reduced distal sensation or absent ankle reflexes in a stocking-glove distribution",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Peripheral neuropathy",
+        "snomed_verified": true
+      },
+      {
+        "id": "hyperpigmentation",
+        "region": "skin",
+        "maneuver": "Inspect skin in sun-exposed and intertriginous areas",
+        "finding": "Darkened, thickened, dry skin with scaling in affected areas",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Hyperpigmentation of skin",
+        "snomed_verified": true
+      },
+      {
+        "id": "peeling-of-skin",
+        "region": "skin",
+        "maneuver": "Gently stroke or lift the edge of the rash",
+        "finding": "Flaking and peeling of the affected skin",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Peeling of skin",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-focal-neurologic-deficit",
+        "region": "neuro",
+        "maneuver": "Test strength, sensation and cranial nerves; check for asymmetry",
+        "finding": "No focal weakness, sensory level or cranial nerve palsy",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Focal neurologic deficit",
+        "snomed_verified": false
+      },
+      {
+        "id": "no-mucosal-ulcers",
+        "region": "heent",
+        "maneuver": "Inspect the oral mucosa, lips and pharynx",
+        "finding": "No ulcers, vesicles or exudate on the oral mucosa",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Mucosal ulcer",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-jaundice",
+        "region": "abdomen",
+        "maneuver": "Inspect the sclerae and skin in natural light",
+        "finding": "No scleral icterus or jaundice",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Jaundice",
+        "snomed_verified": true
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 97.8,
+        "max": 99.1
+      },
+      "moderate": {
+        "min": 97.5,
+        "max": 99.5
+      },
+      "severe": {
+        "min": 96.8,
+        "max": 99.0
+      },
+      "critical": {
+        "min": 95.5,
+        "max": 98.5
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 100
+      },
+      "moderate": {
+        "min": 70,
+        "max": 110
+      },
+      "severe": {
+        "min": 90,
+        "max": 130
+      },
+      "critical": {
+        "min": 100,
+        "max": 140
+      }
+    },
+    "rr": {
+      "moderate": {
+        "min": 12,
+        "max": 20
+      },
+      "severe": {
+        "min": 16,
+        "max": 24
+      },
+      "critical": {
+        "min": 18,
+        "max": 30
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 100,
+        "max": 130
+      },
+      "moderate": {
+        "min": 90,
+        "max": 120
+      },
+      "severe": {
+        "min": 80,
+        "max": 110
+      },
+      "critical": {
+        "min": 70,
+        "max": 100
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 60,
+        "max": 80
+      },
+      "moderate": {
+        "min": 55,
+        "max": 75
+      },
+      "severe": {
+        "min": 50,
+        "max": 70
+      },
+      "critical": {
+        "min": 40,
+        "max": 65
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 95,
+        "max": 100
+      },
+      "moderate": {
+        "min": 94,
+        "max": 99
+      },
+      "severe": {
+        "min": 92,
+        "max": 98
+      },
+      "critical": {
+        "min": 90,
+        "max": 96
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "b12",
+      "ranges": {
+        "mild": {
+          "min": 150,
+          "max": 200
+        },
+        "moderate": {
+          "min": 100,
+          "max": 180
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Low or low-normal B12 is common in the same malnourished or alcohol-using patients and can cause similar neurologic and glossitis findings; check it before attributing everything to niacin deficiency."
+    },
+    {
+      "test_id": "folate",
+      "ranges": {
+        "mild": {
+          "min": 2.0,
+          "max": 3.0
+        },
+        "moderate": {
+          "min": 1.0,
+          "max": 2.5
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Folate deficiency is a common coexisting deficiency in poor diet or alcohol use and can cause glossitis and diarrhea."
+    },
+    {
+      "test_id": "albumin",
+      "ranges": {
+        "mild": {
+          "min": 3.0,
+          "max": 3.5
+        },
+        "moderate": {
+          "min": 2.5,
+          "max": 3.2
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 2.8
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Low albumin reflects malnutrition, chronic alcohol use or malabsorption rather than the niacin deficiency itself."
+    },
+    {
+      "test_id": "hgb",
+      "ranges": {
+        "mild": {
+          "min": 10.5,
+          "max": 12.0
+        },
+        "moderate": {
+          "min": 9.0,
+          "max": 11.0
+        },
+        "severe": {
+          "min": 7.5,
+          "max": 9.5
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Anemia is usually from coexisting iron, folate or B12 deficiency or from alcohol; it is not caused by niacin deficiency alone."
+    },
+    {
+      "test_id": "mcv",
+      "ranges": {
+        "mild": {
+          "min": 100,
+          "max": 108
+        },
+        "moderate": {
+          "min": 104,
+          "max": 115
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Macrocytosis points to coexisting folate or B12 deficiency or alcohol use."
+    },
+    {
+      "test_id": "na",
+      "ranges": {
+        "mild": {
+          "min": 130,
+          "max": 134
+        },
+        "moderate": {
+          "min": 125,
+          "max": 132
+        },
+        "severe": {
+          "min": 120,
+          "max": 128
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hyponatremia from diarrhea, poor intake or alcohol use; can worsen confusion."
+    },
+    {
+      "test_id": "k",
+      "ranges": {
+        "mild": {
+          "min": 3.2,
+          "max": 3.5
+        },
+        "moderate": {
+          "min": 2.8,
+          "max": 3.3
+        },
+        "severe": {
+          "min": 2.4,
+          "max": 3.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hypokalemia from chronic diarrhea; replace before it causes arrhythmia or ileus."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "moderate": {
+          "min": 20,
+          "max": 30
+        },
+        "severe": {
+          "min": 25,
+          "max": 45
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Rises with dehydration from diarrhea and poor intake."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "moderate": {
+          "min": 1.2,
+          "max": 1.6
+        },
+        "severe": {
+          "min": 1.4,
+          "max": 2.2
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Pre-renal azotemia from diarrhea and poor oral intake; guides fluid resuscitation."
+    },
+    {
+      "test_id": "mg",
+      "ranges": {
+        "mild": {
+          "min": 1.5,
+          "max": 1.7
+        },
+        "moderate": {
+          "min": 1.2,
+          "max": 1.6
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hypomagnesemia is common with alcohol use and diarrhea and can perpetuate hypokalemia and neurologic symptoms."
+    },
+    {
+      "test_id": "phos",
+      "ranges": {
+        "mild": {
+          "min": 2.0,
+          "max": 2.5
+        },
+        "moderate": {
+          "min": 1.5,
+          "max": 2.2
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Low phosphorus accompanies refeeding risk and malnutrition."
+    },
+    {
+      "test_id": "ast",
+      "ranges": {
+        "mild": {
+          "min": 45,
+          "max": 90
+        },
+        "moderate": {
+          "min": 70,
+          "max": 150
+        },
+        "severe": {
+          "min": 120,
+          "max": 300
+        }
+      },
+      "frequency": "common",
+      "importance": "optional",
+      "caveat": "Elevated AST with an AST/ALT ratio above 2 suggests alcohol-related liver injury rather than pellagra itself."
+    },
+    {
+      "test_id": "alt",
+      "ranges": {
+        "mild": {
+          "min": 60,
+          "max": 100
+        },
+        "moderate": {
+          "min": 80,
+          "max": 150
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "ggt",
+      "ranges": {
+        "mild": {
+          "min": 50,
+          "max": 120
+        },
+        "moderate": {
+          "min": 90,
+          "max": 250
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Supports chronic alcohol use as the underlying cause."
+    },
+    {
+      "test_id": "tsh",
+      "ranges": {
+        "mild": {
+          "min": 4.5,
+          "max": 8.0
+        },
+        "moderate": {
+          "min": 6.0,
+          "max": 12.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Hypothyroidism can mimic the confusion, cold intolerance and skin changes; check it when the picture is atypical."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "mild": {
+          "min": 1.0,
+          "max": 3.0
+        },
+        "moderate": {
+          "min": 2.0,
+          "max": 6.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Usually normal or only mildly elevated; a high value should prompt a search for infection or another inflammatory cause of diarrhea."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rate",
+        "finding": "Sinus tachycardia from dehydration, diarrhea and poor intake",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "qt",
+        "finding": "Prolonged QT interval from hypokalemia, hypomagnesemia or hypocalcemia",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "t_wave",
+        "finding": "Flattened T waves and prominent U waves with severe hypokalemia",
+        "frequency": "rare",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Atrial or ventricular arrhythmia triggered by severe electrolyte derangement",
+        "frequency": "rare",
+        "min_severity": "critical"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "CT or MRI of the brain without contrast",
+      "modality": "ct",
+      "preferred_when": "When confusion or dementia is prominent and another structural cause must be excluded",
+      "findings": [
+        {
+          "text": "No acute infarct, hemorrhage or mass",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Diffuse cerebral atrophy or nonspecific white matter changes in chronic alcohol use",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "MRI of the brain without contrast",
+      "modality": "mri",
+      "preferred_when": "When CT is nondiagnostic and a structural or demyelinating cause of encephalopathy is suspected",
+      "findings": [
+        {
+          "text": "No structural lesion; may show atrophy or nonspecific white matter T2 hyperintensities",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Abdominal x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Nonspecific bowel gas pattern; no obstruction or free air",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "CT abdomen and pelvis with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Only when diarrhea is severe or another abdominal cause is suspected",
+      "findings": [
+        {
+          "text": "Diffuse small bowel or colonic wall thickening from chronic diarrhea",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "No abscess, mass or obstruction",
+          "frequency": "common"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Looks for anemia and macrocytosis from coexisting folate, B12 or iron deficiency and for leukocytosis suggesting infection"
+      },
+      {
+        "test": "bmp",
+        "why": "Assesses dehydration, hyponatremia, hypokalemia and renal function from chronic diarrhea"
+      },
+      {
+        "test": "cmp_extra",
+        "why": "Albumin and liver enzymes assess malnutrition and alcohol-related liver disease"
+      },
+      {
+        "test": "mg",
+        "why": "Hypomagnesemia is common with alcohol use and diarrhea and can worsen neurologic symptoms"
+      },
+      {
+        "test": "phos",
+        "why": "Low phosphorus is common in malnutrition and matters for refeeding"
+      },
+      {
+        "test": "b12",
+        "why": "B12 deficiency is a common coexisting cause of glossitis, diarrhea and neuropathy"
+      },
+      {
+        "test": "folate",
+        "why": "Folate deficiency commonly coexists and can mimic parts of the picture"
+      },
+      {
+        "test": "tsh",
+        "why": "Hypothyroidism can mimic confusion and skin changes",
+        "only_if": "the presentation is atypical or thyroid disease is suspected"
+      },
+      {
+        "test": "HIV",
+        "why": "Unexplained chronic diarrhea, weight loss and dermatitis warrant HIV testing",
+        "only_if": "chronic diarrhea, weight loss or risk factors are present"
+      },
+      {
+        "test": "crp",
+        "why": "Helps exclude an inflammatory or infectious cause of diarrhea",
+        "only_if": "fever, bloody diarrhea or severe abdominal pain is present"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Niacin",
+        "why": "Low urinary niacin metabolites or plasma niacin supports niacin deficiency; in practice the diagnosis is often confirmed by rapid improvement of dermatitis, diarrhea and confusion after niacin replacement"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "albumin",
+        "why": "Documents malnutrition and guides nutritional support"
+      },
+      {
+        "test": "ast",
+        "why": "Supports alcohol-related liver injury as the underlying cause"
+      },
+      {
+        "test": "ggt",
+        "why": "Supports chronic alcohol use"
+      },
+      {
+        "test": "CT or MRI of the brain without contrast",
+        "why": "Excludes structural causes of confusion and dementia",
+        "only_if": "confusion or dementia is prominent"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Not needed for uncomplicated diarrhea when the history and exam point to pellagra",
+        "only_if": "diarrhea is severe or another abdominal cause is suspected"
+      },
+      {
+        "test": "Abdominal x-ray",
+        "why": "Rarely changes management in chronic watery diarrhea"
+      },
+      {
+        "test": "lipase",
+        "why": "Not needed unless the pain is epigastric or pancreatitis is suspected"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in this presentation"
+      },
+      {
+        "test": "csf",
+        "why": "Not indicated unless meningitis or encephalitis is suspected",
+        "only_if": "fever, meningismus or acute severe encephalopathy is present"
+      },
+      {
+        "test": "patch_test",
+        "why": "The rash is photodistributed and dietary, not contact allergic"
+      },
+      {
+        "test": "koh_prep",
+        "why": "The rash is not a fungal infection",
+        "only_if": "the rash has an annular or scaling border suggesting tinea"
+      }
+    ],
+    "decision_points": [
+      "Treat with niacin when the history and photodistributed rash are typical; do not wait for niacin levels to return",
+      "Check B12 and folate before attributing all neurologic and mucosal findings to niacin alone",
+      "Correct hypokalemia, hypomagnesemia and dehydration before they cause arrhythmia",
+      "Consider refeeding syndrome and monitor phosphorus when starting nutrition in a malnourished patient",
+      "Image the brain when confusion is prominent and another structural cause is possible"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Porphyria cutanea tarda",
+      "slug": "porphyria-cutanea-tarda",
+      "why_considered": "Photosensitive blistering and fragile skin on sun-exposed areas in a patient with alcohol use or liver disease",
+      "must_not_miss": true,
+      "trigger": "Blistering, skin fragility and hypertrichosis on sun-exposed skin, especially with alcohol use or hepatitis C",
+      "discriminators": {
+        "history": [
+          "Blisters and skin fragility rather than a scaly burning rash",
+          "No chronic diarrhea",
+          "No confusion or memory loss"
+        ],
+        "exam": [
+          "Vesicles and bullae, milia, hypertrichosis and hyperpigmentation on the face and hands",
+          "No Casal necklace",
+          "No glossitis"
+        ],
+        "labs": [
+          "Elevated urinary uroporphyrin and coproporphyrin",
+          "Elevated plasma porphyrins with a fluorescence peak",
+          "Iron studies often show iron overload"
+        ],
+        "imaging": [
+          "Liver ultrasound or CT may show hepatic steatosis or cirrhosis"
+        ]
+      }
+    },
+    {
+      "name": "Systemic lupus erythematosus",
+      "slug": "systemic-lupus-erythematosus",
+      "why_considered": "Photosensitive rash, oral sores, diarrhea and neuropsychiatric symptoms in a young adult",
+      "must_not_miss": true,
+      "trigger": "Malar rash with arthralgias, oral ulcers and positive ANA",
+      "discriminators": {
+        "history": [
+          "Joint pain and swelling",
+          "Recurrent oral or nasal ulcers",
+          "Raynaud phenomenon",
+          "No dietary deficiency or heavy alcohol use"
+        ],
+        "exam": [
+          "Malar or discoid rash that spares the nasolabial folds",
+          "Oral ulcers",
+          "Arthritis or synovitis"
+        ],
+        "labs": [
+          "Positive ANA",
+          "Positive anti-dsDNA or anti-Smith",
+          "Cytopenias"
+        ],
+        "imaging": [
+          "No specific imaging; may show serositis or nephritis if involved"
+        ]
+      }
+    },
+    {
+      "name": "Carcinoid syndrome",
+      "slug": "carcinoid-syndrome",
+      "why_considered": "Flushing, diarrhea and skin changes in a patient with a neuroendocrine tumor that shunts tryptophan away from niacin synthesis",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Episodic flushing of the face and upper trunk",
+          "Wheezing",
+          "Diarrhea without a dietary deficiency"
+        ],
+        "exam": [
+          "Flushing, telangiectasias",
+          "Right-sided cardiac murmur from carcinoid heart disease",
+          "No Casal necklace"
+        ],
+        "labs": [
+          "Elevated 24-hour urinary 5-HIAA",
+          "Elevated chromogranin A"
+        ],
+        "imaging": [
+          "CT or MRI showing a small bowel or liver mass",
+          "Octreotide scan or DOTATATE PET showing somatostatin receptor–avid lesions"
+        ]
+      }
+    },
+    {
+      "name": "Zinc deficiency",
+      "slug": "zinc-deficiency",
+      "why_considered": "Acral and periorificial dermatitis, diarrhea, and altered mental status in a malnourished patient",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Rash around the mouth, anus and eyes rather than strictly sun-exposed areas",
+          "Hair loss",
+          "Poor wound healing",
+          "Risk factors such as bariatric surgery or chronic alcohol use"
+        ],
+        "exam": [
+          "Erythematous, scaly, crusted plaques in periorificial and acral distribution",
+          "Alopecia",
+          "No Casal necklace"
+        ],
+        "labs": [
+          "Low plasma zinc",
+          "Alkaline phosphatase may be low"
+        ],
+        "imaging": [
+          "No specific imaging"
+        ]
+      }
+    },
+    {
+      "name": "Pellagra-like drug eruption (isoniazid, hydralazine, chlorpromazine)",
+      "why_considered": "Medication that interferes with niacin metabolism or causes photosensitivity, producing a similar rash and neurologic symptoms",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Temporal relationship to starting the medication",
+          "No dietary deficiency",
+          "Symptoms improve after stopping the drug"
+        ],
+        "exam": [
+          "Photodistributed rash similar to pellagra",
+          "May have drug-induced lupus or other drug reaction features"
+        ],
+        "labs": [
+          "Niacin metabolites may be low if the drug blocks conversion",
+          "Drug-induced autoantibodies if relevant"
+        ],
+        "imaging": [
+          "No specific imaging"
+        ]
+      }
+    },
+    {
+      "name": "Hartnup disease",
+      "slug": "hartnup-disease",
+      "why_considered": "Inherited defect of neutral amino acid transport causing pellagra-like photosensitive rash and neurologic symptoms",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Onset in childhood",
+          "Intermittent cerebellar ataxia",
+          "Symptoms worsen with poor nutrition or illness"
+        ],
+        "exam": [
+          "Photosensitive rash",
+          "Ataxia, nystagmus, tremor",
+          "No diarrhea"
+        ],
+        "labs": [
+          "Neutral aminoaciduria",
+          "Low plasma tryptophan and niacin metabolites"
+        ],
+        "imaging": [
+          "No specific imaging"
+        ]
+      }
+    },
+    {
+      "name": "Alcohol-related pellagra vs. alcohol-related neuropathy and Wernicke encephalopathy",
+      "why_considered": "Chronic alcohol use can cause thiamine deficiency with confusion, ataxia and neuropathy that overlaps with pellagra's neurologic picture",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Ataxia and ophthalmoplegia rather than primarily memory loss and dermatitis",
+          "No photosensitive rash",
+          "Heavy alcohol use"
+        ],
+        "exam": [
+          "Ophthalmoplegia, nystagmus, ataxia",
+          "Confusion",
+          "No Casal necklace or glossitis"
+        ],
+        "labs": [
+          "Low thiamine or elevated erythrocyte transketolase",
+          "Low magnesium"
+        ],
+        "imaging": [
+          "MRI may show mamillary body and periaqueductal T2 hyperintensities"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Early deficiency: sun-exposed burning rash and mild glossitis, no significant diarrhea or cognitive change; patient is functional and eating poorly.",
+      "moderate": "Classic triad emerging: prominent dermatitis, intermittent watery diarrhea, glossitis, and mild confusion or memory difficulty; may be dehydrated.",
+      "severe": "Advanced disease: extensive hyperpigmented scaly rash, profuse diarrhea with weight loss, disorientation, memory impairment, peripheral neuropathy, and electrolyte derangements.",
+      "critical": "Life-threatening pellagra encephalopathy: stupor or coma, severe dementia, profound diarrhea with hypovolemic shock, severe electrolyte abnormalities, and risk of death if untreated."
+    },
+    "red_flags": [
+      {
+        "finding": "New confusion, disorientation or memory loss",
+        "meaning": "Neurologic involvement; pellagra can progress to irreversible dementia if not treated promptly"
+      },
+      {
+        "finding": "Profuse diarrhea with hypotension or tachycardia",
+        "meaning": "Hypovolemia and electrolyte loss; needs IV fluids and electrolyte replacement"
+      },
+      {
+        "finding": "Severe hypokalemia or hypomagnesemia",
+        "meaning": "Risk of arrhythmia and worsening encephalopathy; replace before complications"
+      },
+      {
+        "finding": "Stupor, coma or seizures",
+        "meaning": "Severe pellagra encephalopathy; urgent niacin and supportive care"
+      },
+      {
+        "finding": "Malnutrition with low phosphorus",
+        "meaning": "Refeeding syndrome risk when nutrition is started; monitor and replace phosphorus"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Pellagra encephalopathy",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Confusion, memory loss, disorientation",
+          "Stupor or coma",
+          "Untreated niacin deficiency"
+        ]
+      },
+      {
+        "name": "Severe diarrhea with hypovolemia and electrolyte derangement",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Profuse watery diarrhea",
+          "Hypotension, tachycardia",
+          "Low potassium, magnesium, sodium"
+        ]
+      },
+      {
+        "name": "Peripheral neuropathy",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Numbness, tingling, burning feet",
+          "Reduced distal sensation",
+          "Absent ankle reflexes"
+        ]
+      },
+      {
+        "name": "Secondary infection",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Fever",
+          "Leukocytosis",
+          "Skin breakdown or severe diarrhea"
+        ]
+      },
+      {
+        "name": "Death",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Untreated severe pellagra",
+          "Coma",
+          "Shock"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "May present with irritability, poor growth and diarrhea before the rash is obvious; neurologic signs are less prominent and dermatitis may be mistaken for sunburn or eczema."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Confusion and memory loss may be mistaken for dementia; skin findings may be attributed to sun damage or aging; diarrhea may be absent."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Nausea and vomiting of pregnancy can worsen dietary intake; pellagra may present with severe vomiting, dehydration and poor weight gain; niacin requirements increase."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "In people with HIV or on immunosuppressants, pellagra can present with severe diarrhea and wasting without the classic rash; coexisting deficiencies are common."
+      },
+      {
+        "population": "hepatic_impairment",
+        "differences": "Chronic liver disease from alcohol use is a common setting; impaired hepatic conversion of tryptophan to niacin may worsen deficiency and complicate fluid and electrolyte management."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "What does a typical day of eating and drinking look like for you?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Diet limited to corn or lacking niacin and tryptophan; food insecurity or homelessness"
+      },
+      {
+        "question": "How much alcohol do you drink, and how often?",
+        "category": "social",
+        "importance": "essential",
+        "looking_for": "Chronic heavy alcohol use, a strong risk factor for niacin deficiency"
+      },
+      {
+        "question": "Where on your body did the rash start, and does sunlight make it worse?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Rash confined to sun-exposed skin (face, neck, hands, forearms, feet) that burns and worsens with sun"
+      },
+      {
+        "question": "Have you had diarrhea, and if so for how long?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Chronic watery, non-bloody diarrhea"
+      },
+      {
+        "question": "Have you or your family noticed any confusion, forgetfulness or personality change?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Confusion, memory loss, irritability or depressed mood suggesting neurologic involvement"
+      },
+      {
+        "question": "Is your tongue sore or red, or do you have sores at the corners of your mouth?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Glossitis and angular stomatitis"
+      },
+      {
+        "question": "Have you had nausea, vomiting, abdominal pain or loss of appetite?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Gastrointestinal symptoms contributing to poor intake and weight loss"
+      },
+      {
+        "question": "Do you have numbness, tingling or burning in your hands or feet?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Peripheral neuropathy in a stocking-glove distribution"
+      },
+      {
+        "question": "Do you take isoniazid or any other long-term medication?",
+        "category": "medications",
+        "importance": "essential",
+        "looking_for": "Long-term isoniazid therapy, which interferes with niacin metabolism"
+      },
+      {
+        "question": "Have you had stomach or intestinal surgery, or been diagnosed with celiac disease or Crohn disease?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Malabsorption from bariatric surgery, celiac disease or Crohn disease"
+      },
+      {
+        "question": "Have you had episodes of flushing, wheezing or a racing heart?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Carcinoid syndrome, which shunts tryptophan away from niacin synthesis"
+      },
+      {
+        "question": "Any fever, bloody diarrhea or recent antibiotic use?",
+        "category": "red_flag",
+        "importance": "important",
+        "looking_for": "Absent; present suggests an infectious or inflammatory cause of diarrhea instead"
+      }
+    ],
+    "accepted_names": [
+      "Pellagra",
+      "Niacin deficiency",
+      "Vitamin B3 deficiency",
+      "Nicotinic acid deficiency"
+    ],
+    "reasoning_points": [
+      "Photodistributed, sharply demarcated scaly dermatitis on sun-exposed skin, often with a Casal necklace",
+      "Chronic watery diarrhea with glossitis and sore mouth",
+      "Neuropsychiatric symptoms such as confusion, memory loss, irritability or depressed mood",
+      "Diet history lacking niacin and tryptophan, or heavy alcohol use, malabsorption, long-term isoniazid or carcinoid syndrome",
+      "Coexisting deficiencies (B12, folate, iron) and electrolyte derangements from diarrhea and poor intake",
+      "Rapid improvement of dermatitis, diarrhea and confusion after niacin replacement supports the diagnosis"
+    ],
+    "difficulty": {
+      "easy": [
+        "Classic triad of dermatitis, diarrhea and dementia in a patient with heavy alcohol use",
+        "Rash sharply confined to sun-exposed skin with a Casal necklace",
+        "Beefy-red sore tongue and chronic watery diarrhea",
+        "Clear dietary deficiency or long-term isoniazid use"
+      ],
+      "medium": [
+        "Only one or two of the three D's are present at first",
+        "Older adult whose confusion is mistaken for dementia",
+        "Patient with malabsorption or bariatric surgery and nonspecific skin changes",
+        "Coexisting B12 or folate deficiency confusing the neurologic and mucosal picture"
+      ],
+      "hard": [
+        "Immunocompromised patient with severe diarrhea and wasting but no classic rash",
+        "Child with irritability, poor growth and diarrhea before the rash appears",
+        "Pregnant patient with severe vomiting and dehydration masking the dietary history",
+        "Carcinoid syndrome or Hartnup disease presenting with pellagra-like findings",
+        "Rash attributed to sun damage, eczema or a drug eruption"
+      ]
+    }
+  }
+}

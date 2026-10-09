@@ -1,0 +1,1692 @@
+{
+  "schema_version": "0.2",
+  "slug": "renal-cell-carcinoma",
+  "triage": {
+    "name": "Renal cell carcinoma",
+    "case_suitable": true,
+    "reason": "Often incidental but can present with hematuria, flank mass and paraneoplastic findings; imaging-based diagnosis with a teachable differential.",
+    "kind": "disease",
+    "category": "renal malignancy",
+    "organ_systems": [
+      "renal"
+    ],
+    "primary_clerkship": "surgery",
+    "secondary_clerkships": [
+      "internalMedicine",
+      "familyMedicine"
+    ],
+    "commonness": "uncommon",
+    "settings": [
+      "clinic",
+      "inpatient",
+      "emergency"
+    ],
+    "is_cancer": true
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:24:24Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:50:53Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:51:07Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:51:19Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:51:32Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:51:39Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'ct_chest' to 'Ct chest'",
+        "auto-repaired: workup: 'ct abdomen and pelvis with iv contrast (multiphasic)' was in ['initial', 'confirmatory'], kept ['initial']",
+        "auto-repaired: workup: 'bone scan' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'brain mri with contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'bone scan' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'brain mri with contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "presentation: term 'Incidental finding' not found in SNOMED CT",
+        "exam: term 'Suprapubic tenderness' not found in SNOMED CT",
+        "differential upper-tract-urothelial-carcinoma: no profile yet",
+        "differential renal-oncocytoma: no profile yet",
+        "differential renal-angiomyolipoma: no profile yet",
+        "differential renal-abscess: no profile yet",
+        "differential polycystic-kidney-disease: no profile yet",
+        "differential renal-lymphoma: no profile yet",
+        "differential renal-metastasis: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 50,
+      "typical_max": 75,
+      "peak": "60–70",
+      "possible_min": 20,
+      "possible_max": 90
+    },
+    "sex": "male_predominant",
+    "demographics": [
+      "About twice as common in men as in women",
+      "More common in Black and American Indian/Alaska Native populations than in White or Asian populations",
+      "Rates are highest in North America and Europe and lower in Asia and South America"
+    ],
+    "risk_factors": [
+      {
+        "text": "Cigarette smoking",
+        "strength": "strong"
+      },
+      {
+        "text": "Obesity",
+        "strength": "strong"
+      },
+      {
+        "text": "Long-term dialysis or end-stage kidney disease",
+        "strength": "strong"
+      },
+      {
+        "text": "Hypertension",
+        "strength": "moderate"
+      },
+      {
+        "text": "Male sex",
+        "strength": "moderate"
+      },
+      {
+        "text": "Older age",
+        "strength": "moderate"
+      },
+      {
+        "text": "Family history of kidney cancer",
+        "strength": "moderate"
+      },
+      {
+        "text": "Occupational exposure to trichloroethylene or cadmium",
+        "strength": "weak"
+      },
+      {
+        "text": "Sickle cell trait or disease",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Chronic kidney disease",
+      "End-stage kidney disease on dialysis",
+      "Hypertension",
+      "Obesity",
+      "Type 2 diabetes mellitus",
+      "Acquired cystic kidney disease"
+    ],
+    "family_history": [
+      "Kidney cancer in a first-degree relative",
+      "Von Hippel-Lindau disease",
+      "Hereditary papillary renal cell carcinoma",
+      "Birt-Hogg-Dubé syndrome",
+      "Tuberous sclerosis complex"
+    ],
+    "social_history": [
+      "Current or former cigarette smoking",
+      "Occupational exposure to industrial chemicals"
+    ],
+    "exposures": [
+      "Cigarette smoke",
+      "Trichloroethylene",
+      "Cadmium"
+    ],
+    "risk_medications": [
+      "hydrochlorothiazide"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I noticed blood in my urine",
+        "frequency": "common",
+        "term": "Hematuria",
+        "snomed_verified": true
+      },
+      {
+        "text": "I've been feeling tired and run down",
+        "frequency": "common",
+        "term": "Fatigue",
+        "snomed_verified": true
+      },
+      {
+        "text": "I have a dull ache in my side",
+        "frequency": "sometimes",
+        "term": "Flank pain",
+        "snomed_verified": true
+      },
+      {
+        "text": "I've lost weight without trying",
+        "frequency": "sometimes",
+        "term": "Weight loss",
+        "snomed_verified": true
+      },
+      {
+        "text": "My doctor found something on a scan I had for another reason",
+        "frequency": "common",
+        "term": "Incidental finding",
+        "snomed_verified": false
+      }
+    ],
+    "hpi": {
+      "onset": "Often gradual and unnoticed; many tumors are found incidentally on imaging done for another reason. When symptoms occur, they usually develop over weeks to months.",
+      "duration": "Weeks to months; hematuria may be intermittent",
+      "progression": "Slowly progressive. Hematuria may come and go. Constitutional symptoms and flank pain tend to worsen as the tumor enlarges or invades.",
+      "location": "Flank or abdominal mass; hematuria is painless and diffuse",
+      "radiation": "Flank pain may radiate to the back or groin but usually does not",
+      "quality": "Dull, constant flank ache; hematuria is painless and may be visible or only microscopic",
+      "severity": "Variable; flank pain is usually mild to moderate, hematuria is painless",
+      "timing": "Hematuria may be intermittent; flank pain is often constant",
+      "aggravating": [
+        "Physical activity",
+        "Palpation of the flank"
+      ],
+      "relieving": [
+        "Nothing reliably relieves it"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Blood in the urine",
+          "frequency": "common",
+          "term": "Hematuria",
+          "snomed_verified": true
+        },
+        {
+          "text": "Tiredness and low energy",
+          "frequency": "common",
+          "term": "Fatigue",
+          "snomed_verified": true
+        },
+        {
+          "text": "Unintentional weight loss",
+          "frequency": "sometimes",
+          "term": "Weight loss",
+          "snomed_verified": true
+        },
+        {
+          "text": "Dull pain in the side or back",
+          "frequency": "sometimes",
+          "term": "Flank pain",
+          "snomed_verified": true
+        },
+        {
+          "text": "Feeling hot or having chills",
+          "frequency": "sometimes",
+          "term": "Fever",
+          "snomed_verified": true
+        },
+        {
+          "text": "A lump I can feel in my belly or side",
+          "frequency": "rare",
+          "term": "Abdominal mass",
+          "snomed_verified": true
+        },
+        {
+          "text": "Swelling in my legs or ankles",
+          "frequency": "rare",
+          "term": "Peripheral edema",
+          "snomed_verified": true
+        },
+        {
+          "text": "New or worsening high blood pressure",
+          "frequency": "sometimes",
+          "term": "Hypertension",
+          "snomed_verified": true
+        },
+        {
+          "text": "Feeling confused or having headaches",
+          "frequency": "rare",
+          "term": "Confusion",
+          "snomed_verified": true
+        }
+      ],
+      "pertinent_negatives": [
+        "Burning or pain with urination",
+        "Passing urine more often or urgently",
+        "Fever with shaking chills",
+        "Recent sore throat or skin infection",
+        "Colicky pain that comes in waves",
+        "Nausea and vomiting",
+        "Blood clots in the urine",
+        "Recent trauma to the flank or abdomen",
+        "Family history of bleeding or clotting disorder",
+        "Use of blood thinners"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Tiredness",
+            "frequency": "common",
+            "term": "Fatigue",
+            "snomed_verified": true
+          },
+          {
+            "text": "Unintentional weight loss",
+            "frequency": "sometimes",
+            "term": "Weight loss",
+            "snomed_verified": true
+          },
+          {
+            "text": "Fever",
+            "frequency": "sometimes",
+            "term": "Fever",
+            "snomed_verified": true
+          },
+          {
+            "text": "Night sweats",
+            "frequency": "rare",
+            "term": "Night sweats",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Chills",
+          "Loss of appetite"
+        ],
+        "argues_against": [
+          "High fever with rigors suggesting pyelonephritis"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [
+          {
+            "text": "Blood in the urine",
+            "frequency": "common",
+            "term": "Hematuria",
+            "snomed_verified": true
+          },
+          {
+            "text": "Flank pain",
+            "frequency": "sometimes",
+            "term": "Flank pain",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Dysuria",
+          "Urinary frequency",
+          "Urgency",
+          "Nocturia",
+          "Difficulty starting urination"
+        ],
+        "argues_against": [
+          "Dysuria and frequency suggesting urinary tract infection",
+          "Colicky pain radiating to the groin suggesting kidney stones"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Abdominal mass",
+            "frequency": "rare",
+            "term": "Abdominal mass",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Nausea",
+          "Vomiting",
+          "Diarrhea",
+          "Constipation",
+          "Blood in stool",
+          "Jaundice"
+        ],
+        "argues_against": [
+          "Gastrointestinal bleeding",
+          "Bowel obstruction"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [
+          {
+            "text": "High blood pressure",
+            "frequency": "sometimes",
+            "term": "Hypertension",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Chest pain",
+          "Shortness of breath at rest",
+          "Palpitations",
+          "Leg swelling"
+        ],
+        "argues_against": [
+          "Heart failure",
+          "Pulmonary embolism"
+        ]
+      },
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "Cough",
+            "frequency": "rare",
+            "term": "Cough",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Hemoptysis",
+          "Pleuritic chest pain",
+          "Shortness of breath"
+        ],
+        "argues_against": [
+          "Lung primary tumor with hemoptysis"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Back pain",
+            "frequency": "sometimes",
+            "term": "Back pain",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Bone pain",
+          "Joint swelling",
+          "Muscle weakness"
+        ],
+        "argues_against": [
+          "Metastatic bone pain"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Headache",
+            "frequency": "rare",
+            "term": "Headache",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Seizures",
+          "Vision changes",
+          "Numbness",
+          "Weakness",
+          "Confusion"
+        ],
+        "argues_against": [
+          "Brain metastases"
+        ]
+      },
+      {
+        "system": "endocrine",
+        "positives": [
+          {
+            "text": "High blood pressure",
+            "frequency": "sometimes",
+            "term": "Hypertension",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Heat intolerance",
+          "Cold intolerance",
+          "Excessive thirst",
+          "Frequent urination"
+        ],
+        "argues_against": [
+          "Paraneoplastic syndromes such as hypercalcemia or Cushing syndrome"
+        ]
+      },
+      {
+        "system": "hematologic",
+        "positives": [],
+        "negatives": [
+          "Easy bruising",
+          "Bleeding gums",
+          "Blood clots"
+        ],
+        "argues_against": [
+          "Coagulopathy"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [],
+        "negatives": [
+          "Rash",
+          "Jaundice",
+          "Flushing"
+        ],
+        "argues_against": [
+          "Dermatologic paraneoplastic syndromes"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "older_adults",
+        "how_it_differs": "More likely to be found incidentally on imaging and less likely to report pain or hematuria; may present with nonspecific fatigue or anemia.",
+        "missing_classic_features": [
+          "Hematuria",
+          "Flank pain",
+          "Palpable mass"
+        ]
+      },
+      {
+        "population": "renal_impairment",
+        "how_it_differs": "Patients on dialysis or with end-stage kidney disease may have acquired cystic kidney disease and present with hematuria or an incidental mass; constitutional symptoms may be attributed to uremia.",
+        "missing_classic_features": [
+          "Clear flank pain",
+          "Palpable mass"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "May present with more aggressive disease and systemic symptoms, and imaging findings may be confused with infection or post-transplant lymphoproliferative disorder.",
+        "missing_classic_features": [
+          "Typical indolent course"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Renal masses may be found incidentally on obstetric ultrasound; hematuria may be attributed to urinary tract infection or pregnancy-related changes.",
+        "missing_classic_features": [
+          "Classic triad of hematuria, flank pain and mass"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Well-appearing, no distress; tumor often found incidentally",
+      "moderate": "Mildly uncomfortable, able to lie flat for examination",
+      "severe": "Ill-appearing, fatigued, may have visible weight loss",
+      "critical": "Cachectic or toxic-appearing, pale, in distress from pain or hematuria"
+    },
+    "findings": [
+      {
+        "id": "flank-mass",
+        "region": "abdomen",
+        "maneuver": "Palpate the flank and abdomen with the patient supine and relaxed",
+        "finding": "Palpable flank or abdominal mass",
+        "frequency": "sometimes",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Abdominal mass",
+        "snomed_verified": true
+      },
+      {
+        "id": "flank-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate the costovertebral angle and flank",
+        "finding": "Tenderness over the flank or costovertebral angle",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Costovertebral angle tenderness",
+        "snomed_verified": true
+      },
+      {
+        "id": "hematuria-visible",
+        "region": "genitourinary",
+        "maneuver": "Inspect the urine (or ask about its color)",
+        "finding": "Grossly bloody or tea-colored urine",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Gross hematuria",
+        "snomed_verified": true
+      },
+      {
+        "id": "pale-complexion",
+        "region": "general",
+        "maneuver": "Inspect the conjunctivae and skin",
+        "finding": "Pale conjunctivae and skin suggesting anemia",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Pale complexion",
+        "snomed_verified": true
+      },
+      {
+        "id": "pedal-edema",
+        "region": "extremities",
+        "maneuver": "Press over the dorsum of the foot and lower shin",
+        "finding": "Pitting edema of the lower extremities",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Peripheral edema",
+        "snomed_verified": true
+      },
+      {
+        "id": "varicocele",
+        "region": "genitourinary",
+        "maneuver": "Examine the scrotum with the patient standing and performing a Valsalva maneuver",
+        "finding": "Non-reducing left-sided varicocele (suggests renal vein involvement)",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Varicocele",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-cva-tenderness",
+        "region": "abdomen",
+        "maneuver": "Percuss the costovertebral angles",
+        "finding": "No costovertebral angle tenderness",
+        "frequency": "sometimes",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Costovertebral angle tenderness",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-suprapubic-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate the suprapubic region",
+        "finding": "No suprapubic tenderness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Suprapubic tenderness",
+        "snomed_verified": false
+      },
+      {
+        "id": "no-lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the cervical, supraclavicular and inguinal lymph node chains",
+        "finding": "No enlarged lymph nodes",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Lymphadenopathy",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-hepatomegaly",
+        "region": "abdomen",
+        "maneuver": "Percuss and palpate the liver edge",
+        "finding": "No hepatomegaly",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Hepatomegaly",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-jaundice",
+        "region": "skin",
+        "maneuver": "Inspect the sclerae and skin",
+        "finding": "No scleral or skin icterus",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Jaundice",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-costovertebral-bruit",
+        "region": "abdomen",
+        "maneuver": "Auscultate the epigastrium and flanks for bruits",
+        "finding": "No renal artery bruit",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Abdominal bruit",
+        "snomed_verified": true
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 98.0,
+        "max": 99.5
+      },
+      "moderate": {
+        "min": 98.6,
+        "max": 100.4
+      },
+      "severe": {
+        "min": 99.0,
+        "max": 101.5
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 90
+      },
+      "moderate": {
+        "min": 70,
+        "max": 100
+      },
+      "severe": {
+        "min": 85,
+        "max": 115
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 110,
+        "max": 140
+      },
+      "moderate": {
+        "min": 120,
+        "max": 160
+      },
+      "severe": {
+        "min": 130,
+        "max": 180
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 65,
+        "max": 88
+      },
+      "moderate": {
+        "min": 70,
+        "max": 95
+      },
+      "severe": {
+        "min": 80,
+        "max": 105
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "hgb",
+      "ranges": {
+        "mild": {
+          "min": 11.0,
+          "max": 13.0
+        },
+        "moderate": {
+          "min": 9.0,
+          "max": 11.5
+        },
+        "severe": {
+          "min": 7.0,
+          "max": 9.5
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Normocytic anemia from chronic disease or hematuria; a normal hemoglobin does not exclude the tumor."
+    },
+    {
+      "test_id": "hct",
+      "ranges": {
+        "mild": {
+          "min": 33,
+          "max": 40
+        },
+        "moderate": {
+          "min": 27,
+          "max": 35
+        },
+        "severe": {
+          "min": 21,
+          "max": 30
+        }
+      },
+      "frequency": "common",
+      "importance": "optional"
+    },
+    {
+      "test_id": "plt",
+      "ranges": {
+        "mild": {
+          "min": 400,
+          "max": 500
+        },
+        "moderate": {
+          "min": 450,
+          "max": 650
+        },
+        "severe": {
+          "min": 500,
+          "max": 800
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Reactive thrombocytosis; also a paraneoplastic finding."
+    },
+    {
+      "test_id": "esr",
+      "ranges": {
+        "mild": {
+          "min": 20,
+          "max": 40
+        },
+        "moderate": {
+          "min": 35,
+          "max": 70
+        },
+        "severe": {
+          "min": 60,
+          "max": 100
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "mild": {
+          "min": 1.0,
+          "max": 3.0
+        },
+        "moderate": {
+          "min": 2.5,
+          "max": 8.0
+        },
+        "severe": {
+          "min": 6.0,
+          "max": 15.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "mild": {
+          "min": 1.2,
+          "max": 1.6
+        },
+        "moderate": {
+          "min": 1.5,
+          "max": 2.5
+        },
+        "severe": {
+          "min": 2.5,
+          "max": 6.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Needed before contrast imaging and to plan surgery; may be normal with a small tumor."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "mild": {
+          "min": 20,
+          "max": 28
+        },
+        "moderate": {
+          "min": 26,
+          "max": 45
+        },
+        "severe": {
+          "min": 40,
+          "max": 80
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "ca",
+      "ranges": {
+        "mild": {
+          "min": 10.3,
+          "max": 11.0
+        },
+        "moderate": {
+          "min": 10.8,
+          "max": 12.0
+        },
+        "severe": {
+          "min": 11.5,
+          "max": 13.5
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Paraneoplastic hypercalcemia from PTHrP or bone metastases; check ionized or corrected calcium if albumin is low."
+    },
+    {
+      "test_id": "ldh",
+      "ranges": {
+        "mild": {
+          "min": 280,
+          "max": 400
+        },
+        "moderate": {
+          "min": 350,
+          "max": 600
+        },
+        "severe": {
+          "min": 500,
+          "max": 1000
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Nonspecific; marked elevation suggests bulky or metastatic disease."
+    },
+    {
+      "test_id": "alp",
+      "ranges": {
+        "mild": {
+          "min": 147,
+          "max": 220
+        },
+        "moderate": {
+          "min": 200,
+          "max": 350
+        },
+        "severe": {
+          "min": 300,
+          "max": 600
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "May reflect bone metastases or liver involvement."
+    },
+    {
+      "test_id": "ast",
+      "ranges": {
+        "mild": {
+          "min": 40,
+          "max": 70
+        },
+        "moderate": {
+          "min": 60,
+          "max": 120
+        },
+        "severe": {
+          "min": 100,
+          "max": 250
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "alt",
+      "ranges": {
+        "mild": {
+          "min": 56,
+          "max": 90
+        },
+        "moderate": {
+          "min": 80,
+          "max": 150
+        },
+        "severe": {
+          "min": 120,
+          "max": 300
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "ua_blood",
+      "qualitative": {
+        "mild": "Trace",
+        "moderate": "1+",
+        "severe": "3+"
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "Microscopic or gross hematuria is the most common urinary finding; a negative dipstick does not exclude the tumor."
+    },
+    {
+      "test_id": "ua_rbc",
+      "ranges": {
+        "mild": {
+          "min": 3,
+          "max": 10
+        },
+        "moderate": {
+          "min": 8,
+          "max": 50
+        },
+        "severe": {
+          "min": 30,
+          "max": 200
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Dysmorphic red cells and casts are absent; their presence points to glomerular disease instead."
+    },
+    {
+      "test_id": "ua_protein",
+      "qualitative": {
+        "mild": "Trace",
+        "moderate": "1+",
+        "severe": "2+"
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    }
+  ],
+  "imaging": [
+    {
+      "study": "CT abdomen and pelvis with IV contrast (multiphasic)",
+      "modality": "ct",
+      "preferred_when": "First-line for a suspected renal mass in adults with adequate kidney function",
+      "findings": [
+        {
+          "text": "Solid renal mass with enhancement after contrast",
+          "frequency": "almost_always",
+          "term": "Renal mass"
+        },
+        {
+          "text": "Mass in the renal cortex, often with a heterogeneous or necrotic center",
+          "frequency": "common"
+        },
+        {
+          "text": "Enhancement less than normal renal parenchyma (hypovascular or hypervascular pattern)",
+          "frequency": "common"
+        },
+        {
+          "text": "Extension into the renal vein or inferior vena cava",
+          "frequency": "sometimes",
+          "term": "Renal vein thrombosis"
+        },
+        {
+          "text": "Enlarged regional lymph nodes",
+          "frequency": "sometimes",
+          "term": "Lymphadenopathy"
+        },
+        {
+          "text": "Adrenal, liver, lung or bone lesions suggesting metastases",
+          "frequency": "sometimes",
+          "term": "Metastasis"
+        },
+        {
+          "text": "Cystic or complex cystic mass with thick walls or septa (cystic renal cell carcinoma)",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "MRI abdomen with and without contrast",
+      "modality": "mri",
+      "preferred_when": "Contrast allergy, pregnancy, or when CT is equivocal; best for venous thrombus extent",
+      "findings": [
+        {
+          "text": "Solid renal mass with enhancement and restricted diffusion",
+          "frequency": "common"
+        },
+        {
+          "text": "Tumor thrombus extending into the renal vein or inferior vena cava",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Fat-poor angiomyolipoma can mimic renal cell carcinoma",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Renal ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "Incidental hematuria workup, pregnancy, or when contrast is contraindicated",
+      "findings": [
+        {
+          "text": "Solid or complex cystic renal mass",
+          "frequency": "common"
+        },
+        {
+          "text": "Mass may be isoechoic and easy to miss; small tumors can be overlooked",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Hydronephrosis if the tumor obstructs the collecting system",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "CT chest without contrast",
+      "modality": "ct",
+      "preferred_when": "Staging after a renal mass is confirmed",
+      "findings": [
+        {
+          "text": "Pulmonary nodules or masses suggesting metastases",
+          "frequency": "sometimes",
+          "term": "Pulmonary metastasis"
+        },
+        {
+          "text": "Mediastinal or hilar lymphadenopathy",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Bone scan",
+      "modality": "nuclear",
+      "preferred_when": "Bone pain or an elevated alkaline phosphatase",
+      "findings": [
+        {
+          "text": "Focal increased uptake in the axial skeleton or long bones",
+          "frequency": "sometimes",
+          "term": "Bone metastasis"
+        }
+      ]
+    },
+    {
+      "study": "Brain MRI with contrast",
+      "modality": "mri",
+      "preferred_when": "Neurologic symptoms or known metastatic disease",
+      "findings": [
+        {
+          "text": "Enhancing parenchymal lesions with surrounding edema",
+          "frequency": "rare",
+          "term": "Brain metastasis"
+        }
+      ]
+    },
+    {
+      "study": "Percutaneous renal mass biopsy",
+      "modality": "other",
+      "preferred_when": "Uncertain diagnosis, suspected metastasis or lymphoma, or before ablation",
+      "findings": [
+        {
+          "text": "Clear cell, papillary or chromophobe histology on core biopsy",
+          "frequency": "common"
+        },
+        {
+          "text": "Nondiagnostic or insufficient sample",
+          "frequency": "sometimes"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Anemia, leukocytosis or thrombocytosis from chronic disease or paraneoplastic effect"
+      },
+      {
+        "test": "bmp",
+        "why": "Baseline kidney function and calcium before contrast imaging and surgery"
+      },
+      {
+        "test": "ua",
+        "why": "Confirms hematuria and looks for infection or glomerular disease"
+      },
+      {
+        "test": "CT abdomen and pelvis with IV contrast (multiphasic)",
+        "why": "Best initial study to characterize a renal mass and stage local disease"
+      },
+      {
+        "test": "Renal ultrasound",
+        "why": "Avoids contrast and radiation",
+        "only_if": "pregnancy, contrast allergy, or an incidental mass on another study"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before CT in anyone who could be pregnant"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "MRI abdomen with and without contrast",
+        "why": "Confirms an equivocal mass and maps venous tumor thrombus",
+        "only_if": "CT is contraindicated or the mass is indeterminate"
+      },
+      {
+        "test": "Percutaneous renal mass biopsy",
+        "why": "Tissue diagnosis when imaging is not classic or before ablation or systemic therapy",
+        "only_if": "diagnosis remains uncertain or nonsurgical management is planned"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "CT chest without contrast",
+        "why": "Staging for lung metastases"
+      },
+      {
+        "test": "ldh",
+        "why": "Prognostic marker in metastatic disease"
+      },
+      {
+        "test": "alp",
+        "why": "Suggests bone or liver involvement"
+      },
+      {
+        "test": "Bone scan",
+        "why": "Looks for bone metastases",
+        "only_if": "bone pain or elevated alkaline phosphatase"
+      },
+      {
+        "test": "Brain MRI with contrast",
+        "why": "Looks for brain metastases",
+        "only_if": "neurologic symptoms or known metastatic disease"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Abdominal x-ray",
+        "why": "Does not show renal masses and rarely changes management"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in the evaluation of a renal mass"
+      },
+      {
+        "test": "lipase",
+        "why": "Not needed unless the pain is epigastric"
+      },
+      {
+        "test": "Ct chest",
+        "why": "Not part of the initial workup of an incidental small mass",
+        "only_if": "staging is planned after a renal mass is confirmed"
+      },
+      {
+        "test": "Bone scan",
+        "why": "Not routine in early-stage disease",
+        "only_if": "bone pain or elevated alkaline phosphatase"
+      },
+      {
+        "test": "Brain MRI with contrast",
+        "why": "Not routine in early-stage disease",
+        "only_if": "neurologic symptoms or known metastatic disease"
+      }
+    ],
+    "decision_points": [
+      "Pregnancy test before CT in anyone who could be pregnant",
+      "Check kidney function before iodinated contrast; use MRI or ultrasound when eGFR is low",
+      "A solid enhancing renal mass is presumed renal cell carcinoma until proven otherwise",
+      "Biopsy is not needed before resection of a clearly resectable mass",
+      "Stage with chest imaging once the diagnosis is confirmed"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Upper tract urothelial carcinoma",
+      "slug": "upper-tract-urothelial-carcinoma",
+      "why_considered": "Painless hematuria in an older adult, often with a filling defect or mass in the collecting system",
+      "must_not_miss": true,
+      "trigger": "Gross or microscopic hematuria with a filling defect in the renal pelvis or ureter on imaging",
+      "discriminators": {
+        "history": [
+          "Painless gross hematuria is the dominant symptom",
+          "Current or former cigarette smoking",
+          "Occupational exposure to aromatic amines or dyes",
+          "Prior bladder cancer"
+        ],
+        "exam": [
+          "Usually no palpable mass",
+          "May have flank pain if the tumor obstructs the ureter"
+        ],
+        "labs": [
+          "Hematuria on urinalysis",
+          "Cytology may show malignant urothelial cells"
+        ],
+        "imaging": [
+          "Filling defect in the renal pelvis or ureter on CT urography",
+          "Soft-tissue mass centered in the collecting system rather than the renal cortex",
+          "Hydronephrosis from ureteral obstruction"
+        ]
+      }
+    },
+    {
+      "name": "Renal oncocytoma",
+      "slug": "renal-oncocytoma",
+      "why_considered": "A solid enhancing renal mass that is benign but can look identical to renal cell carcinoma on imaging",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Usually asymptomatic and found incidentally",
+          "No constitutional symptoms or weight loss"
+        ],
+        "exam": [
+          "No palpable mass",
+          "No hematuria"
+        ],
+        "labs": [
+          "Normal hemoglobin and calcium",
+          "No hematuria on urinalysis"
+        ],
+        "imaging": [
+          "Homogeneous solid renal mass with a central stellate scar on CT or MRI",
+          "No venous thrombus or lymphadenopathy",
+          "Often cannot be reliably distinguished from renal cell carcinoma without biopsy or resection"
+        ]
+      }
+    },
+    {
+      "name": "Renal angiomyolipoma",
+      "slug": "renal-angiomyolipoma",
+      "why_considered": "A solid renal mass that can bleed and cause flank pain or hematuria",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Flank pain from spontaneous hemorrhage",
+          "History of tuberous sclerosis complex or sporadic angiomyolipoma",
+          "May be asymptomatic and incidental"
+        ],
+        "exam": [
+          "Flank tenderness if bleeding",
+          "Signs of tuberous sclerosis such as facial angiofibromas or hypopigmented macules"
+        ],
+        "labs": [
+          "Hematuria if the tumor bleeds into the collecting system",
+          "Falling hemoglobin if there is significant retroperitoneal hemorrhage"
+        ],
+        "imaging": [
+          "Macroscopic fat within the mass on CT or MRI is characteristic",
+          "Fat-poor angiomyolipoma can mimic renal cell carcinoma"
+        ]
+      }
+    },
+    {
+      "name": "Renal abscess",
+      "slug": "renal-abscess",
+      "why_considered": "Fever, flank pain and a renal mass on imaging",
+      "must_not_miss": true,
+      "trigger": "Fever with rigors, flank pain and a cystic or complex renal lesion",
+      "discriminators": {
+        "history": [
+          "Acute onset of fever, chills and flank pain",
+          "Recent urinary tract infection or pyelonephritis",
+          "Diabetes mellitus or immunosuppression"
+        ],
+        "exam": [
+          "High fever with rigors",
+          "Marked costovertebral angle tenderness",
+          "Ill-appearing"
+        ],
+        "labs": [
+          "Leukocytosis with left shift",
+          "Positive urine culture",
+          "Elevated inflammatory markers"
+        ],
+        "imaging": [
+          "Complex cystic or rim-enhancing fluid collection in the kidney",
+          "Perinephric fat stranding",
+          "No solid enhancing mass"
+        ]
+      }
+    },
+    {
+      "name": "Polycystic kidney disease",
+      "slug": "polycystic-kidney-disease",
+      "why_considered": "Bilateral enlarged kidneys with multiple cystic lesions and hematuria",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Family history of polycystic kidney disease",
+          "Long-standing hypertension",
+          "Progressive kidney failure"
+        ],
+        "exam": [
+          "Bilateral palpable flank masses",
+          "Signs of chronic kidney disease such as pallor"
+        ],
+        "labs": [
+          "Elevated creatinine and BUN",
+          "Anemia of chronic kidney disease",
+          "Hematuria during cyst hemorrhage"
+        ],
+        "imaging": [
+          "Numerous bilateral renal cysts of varying sizes",
+          "Enlarged kidneys with preserved renal outline",
+          "No single dominant solid enhancing mass"
+        ]
+      }
+    },
+    {
+      "name": "Renal lymphoma",
+      "slug": "renal-lymphoma",
+      "why_considered": "A renal mass with constitutional symptoms such as fever, night sweats and weight loss",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "B symptoms: fever, drenching night sweats, weight loss",
+          "Known lymphoma elsewhere",
+          "Immunosuppression or transplant history"
+        ],
+        "exam": [
+          "Generalized lymphadenopathy",
+          "Hepatosplenomegaly",
+          "No palpable flank mass"
+        ],
+        "labs": [
+          "Cytopenias",
+          "Elevated LDH",
+          "Atypical lymphocytes on peripheral smear"
+        ],
+        "imaging": [
+          "Multiple bilateral homogeneous renal masses",
+          "Retroperitoneal lymphadenopathy",
+          "Minimal enhancement compared with renal cell carcinoma"
+        ]
+      }
+    },
+    {
+      "name": "Metastasis to the kidney",
+      "slug": "renal-metastasis",
+      "why_considered": "A renal mass in a patient with a known primary cancer elsewhere",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Known primary malignancy such as lung, breast, colon or melanoma",
+          "Weight loss and fatigue"
+        ],
+        "exam": [
+          "Findings related to the primary tumor",
+          "Lymphadenopathy"
+        ],
+        "labs": [
+          "Abnormal liver enzymes or tumor markers related to the primary",
+          "Anemia"
+        ],
+        "imaging": [
+          "Multiple bilateral renal masses",
+          "Widespread metastases elsewhere",
+          "Biopsy shows histology matching the known primary"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Small, localized tumor found incidentally; no symptoms, normal kidney function, no metastases",
+      "moderate": "Larger localized tumor with hematuria, flank pain or paraneoplastic findings; no distant metastases",
+      "severe": "Locally advanced or metastatic disease with significant symptoms, anemia, hypercalcemia or venous thrombus",
+      "critical": "Life-threatening complications such as massive hemorrhage, tumor thrombus extending into the inferior vena cava or right atrium, or brain metastases with raised intracranial pressure"
+    },
+    "red_flags": [
+      {
+        "finding": "Gross hematuria with hemodynamic instability",
+        "meaning": "Massive retroperitoneal or urinary tract hemorrhage; needs urgent resuscitation and urologic intervention"
+      },
+      {
+        "finding": "New lower extremity edema, abdominal distention or dilated abdominal veins",
+        "meaning": "Inferior vena cava tumor thrombus causing venous obstruction"
+      },
+      {
+        "finding": "Severe headache, confusion, seizures or focal neurologic deficits",
+        "meaning": "Brain metastases or hypercalcemia; needs urgent imaging and management"
+      },
+      {
+        "finding": "Calcium above 12 mg/dL or symptomatic hypercalcemia",
+        "meaning": "Paraneoplastic hypercalcemia requiring urgent treatment"
+      },
+      {
+        "finding": "Rapidly enlarging flank mass with severe pain",
+        "meaning": "Tumor hemorrhage or rapid progression; needs urgent evaluation"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Tumor hemorrhage",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Sudden severe flank pain",
+          "Falling hemoglobin",
+          "Hypotension or tachycardia",
+          "Perinephric hematoma on imaging"
+        ]
+      },
+      {
+        "name": "Inferior vena cava tumor thrombus",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Lower extremity edema",
+          "Abdominal distention",
+          "Dilated superficial abdominal veins",
+          "Filling defect in the renal vein or IVC on CT or MRI"
+        ]
+      },
+      {
+        "name": "Paraneoplastic hypercalcemia",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Confusion",
+          "Constipation",
+          "Polyuria and dehydration",
+          "Calcium above 10.5 mg/dL"
+        ]
+      },
+      {
+        "name": "Bone metastasis",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Bone pain",
+          "Elevated alkaline phosphatase",
+          "Pathologic fracture",
+          "Focal uptake on bone scan"
+        ]
+      },
+      {
+        "name": "Brain metastasis",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Headache",
+          "Seizures",
+          "Focal neurologic deficits",
+          "Enhancing lesions on brain MRI"
+        ]
+      },
+      {
+        "name": "Chronic kidney disease",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Rising creatinine",
+          "Anemia",
+          "Proteinuria",
+          "Loss of renal parenchyma after nephrectomy"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "older_adults",
+        "differences": "More likely to be found incidentally and less likely to report pain or hematuria; may present with nonspecific fatigue, anemia or weight loss. Treatment decisions must weigh competing comorbidities and frailty."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "Patients on dialysis or with end-stage kidney disease may have acquired cystic kidney disease and present with hematuria or an incidental mass. Contrast imaging requires careful planning and nephrology input."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Renal masses may be found incidentally on obstetric ultrasound; hematuria may be attributed to urinary tract infection or pregnancy-related changes. MRI without gadolinium is preferred when imaging is needed."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "May present with more aggressive disease and systemic symptoms; imaging findings may be confused with infection or post-transplant lymphoproliferative disorder."
+      }
+    ]
+  },
+  "cancer": {
+    "screening": "There is no recommended routine screening for renal cell carcinoma in the general population. Screening is not recommended by the USPSTF. Surveillance imaging may be considered in high-risk groups such as those with von Hippel-Lindau disease or other hereditary syndromes, but this is not general population screening.",
+    "pathology": "Renal cell carcinoma arises from the renal tubular epithelium. The most common histologic subtype is clear cell (conventional) renal cell carcinoma, followed by papillary and chromophobe subtypes. Clear cell tumors are associated with inactivation of the von Hippel-Lindau gene and are typically hypervascular. Papillary and chromophobe subtypes have different genetic drivers and generally a better prognosis than clear cell carcinoma.",
+    "staging_concepts": "Staging uses the TNM system. T stage describes the size and local extent of the tumor, including invasion of perinephric fat, renal sinus, renal vein or inferior vena cava, and extension beyond Gerota fascia or into the adrenal gland. N stage describes regional lymph node involvement. M stage describes distant metastases. Stage groups range from stage I (confined to the kidney, 7 cm or less) to stage IV (distant metastases or invasion beyond Gerota fascia). Stage is the strongest predictor of prognosis.",
+    "metastatic_sites": [
+      "Lung",
+      "Bone",
+      "Liver",
+      "Brain",
+      "Adrenal gland",
+      "Contralateral kidney",
+      "Lymph nodes"
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "Have you noticed blood in your urine, and if so, was it painful?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Painless gross or microscopic hematuria; painless bleeding in an older adult points to a renal or urothelial tumor rather than infection or stones"
+      },
+      {
+        "question": "Have you had any imaging of your abdomen or kidneys for another reason recently?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "An incidental renal mass found on ultrasound or CT done for an unrelated complaint, which is now the most common way this tumor is found"
+      },
+      {
+        "question": "Do you have a dull ache or heaviness in your side or back?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Constant, non-colicky flank or back discomfort rather than the waves of renal colic"
+      },
+      {
+        "question": "Have you lost weight without trying, or had fevers, night sweats or unusual tiredness?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Constitutional symptoms suggesting a malignancy or paraneoplastic effect"
+      },
+      {
+        "question": "Have you noticed any new swelling in your legs, abdominal bloating, or prominent veins on your belly?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Signs of inferior vena cava tumor thrombus causing venous obstruction"
+      },
+      {
+        "question": "Have you had any confusion, constipation, excessive thirst or frequent urination?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Symptoms of paraneoplastic hypercalcemia"
+      },
+      {
+        "question": "Have you ever smoked cigarettes, and for how long?",
+        "category": "social",
+        "importance": "essential",
+        "looking_for": "Current or former smoking, the strongest modifiable risk factor"
+      },
+      {
+        "question": "Have you been on dialysis or been told you have kidney disease or cysts in your kidneys?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "End-stage kidney disease with acquired cystic kidney disease, a strong risk factor"
+      },
+      {
+        "question": "Has anyone in your family had kidney cancer or a hereditary syndrome such as von Hippel-Lindau disease?",
+        "category": "family",
+        "importance": "important",
+        "looking_for": "Family history suggesting a hereditary renal cancer syndrome"
+      },
+      {
+        "question": "Do you work with industrial chemicals, solvents or metals?",
+        "category": "social",
+        "importance": "optional",
+        "looking_for": "Occupational exposure to trichloroethylene or cadmium"
+      },
+      {
+        "question": "Have you had any burning with urination, urinary frequency or urgency?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Absent; their presence points to a urinary tract infection rather than a tumor"
+      },
+      {
+        "question": "Have you had any blood clots in your urine, or passed gravel or stones?",
+        "category": "ros",
+        "importance": "optional",
+        "looking_for": "Absent; stones cause colicky pain and gravel, not painless hematuria"
+      }
+    ],
+    "accepted_names": [
+      "Renal cell carcinoma",
+      "RCC",
+      "Renal cell cancer",
+      "Kidney cancer",
+      "Renal adenocarcinoma",
+      "Hypernephroma",
+      "Clear cell carcinoma of the kidney",
+      "Clear cell renal cell carcinoma"
+    ],
+    "reasoning_points": [
+      "Painless gross or microscopic hematuria in an older adult, or an incidental solid renal mass on imaging done for another reason",
+      "Risk factors such as cigarette smoking, obesity, hypertension, long-term dialysis or a family history of kidney cancer",
+      "Dull constant flank or back pain rather than the colicky pain of stones, and absence of dysuria or frequency",
+      "Constitutional or paraneoplastic features such as weight loss, fatigue, fever, new hypertension, hypercalcemia or anemia",
+      "A palpable flank or abdominal mass or costovertebral angle tenderness on examination",
+      "A solid, contrast-enhancing renal cortical mass on multiphasic CT, with possible renal vein or inferior vena cava thrombus or regional lymphadenopathy",
+      "Hematuria on urinalysis without dysmorphic red cells or casts, which would instead suggest glomerular disease",
+      "Exclusion of look-alikes such as upper tract urothelial carcinoma, renal abscess, polycystic kidney disease, oncocytoma, angiomyolipoma and renal lymphoma",
+      "Staging with chest imaging once the diagnosis is confirmed, since stage is the strongest prognostic factor"
+    ],
+    "difficulty": {
+      "easy": [
+        "Older adult with a long smoking history",
+        "Painless gross hematuria plus a palpable flank mass",
+        "Solid enhancing renal cortical mass on CT",
+        "Anemia and hypercalcemia on labs"
+      ],
+      "medium": [
+        "Tumor found incidentally on imaging done for an unrelated complaint, with no urinary symptoms",
+        "Microscopic hematuria only, with a normal examination",
+        "Paraneoplastic presentation such as new hypertension, hypercalcemia or fever of unknown origin",
+        "Cystic or complex renal mass that is harder to characterize on ultrasound"
+      ],
+      "hard": [
+        "Younger patient with a hereditary syndrome such as von Hippel-Lindau disease and multifocal or bilateral tumors",
+        "Patient on dialysis with acquired cystic kidney disease, where symptoms are attributed to uremia",
+        "Renal mass with inferior vena cava tumor thrombus presenting as leg edema or abdominal distention",
+        "Metastatic disease presenting with bone pain, pathologic fracture or neurologic symptoms before the kidney primary is known",
+        "Fat-poor angiomyolipoma or oncocytoma mimicking renal cell carcinoma on imaging"
+      ]
+    }
+  }
+}

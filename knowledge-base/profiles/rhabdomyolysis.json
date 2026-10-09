@@ -1,0 +1,1901 @@
+{
+  "schema_version": "0.2",
+  "slug": "rhabdomyolysis",
+  "triage": {
+    "name": "Rhabdomyolysis",
+    "case_suitable": true,
+    "reason": "Acute presentation with muscle pain, weakness and dark urine after a trigger; classic case with clear labs (CK, myoglobin) and important complications to recognize.",
+    "kind": "disease",
+    "category": "muscle injury / acute kidney injury risk",
+    "organ_systems": [
+      "musculoskeletal",
+      "renal"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "emergency",
+      "surgery",
+      "familyMedicine"
+    ],
+    "commonness": "uncommon",
+    "settings": [
+      "emergency",
+      "inpatient",
+      "icu"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:24:24Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:48:57Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:49:13Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:49:31Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:49:45Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:49:53Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'ecg' to 'ECG'",
+        "auto-repaired: workup: 'ck' was in ['initial', 'confirmatory'], kept ['initial']",
+        "auto-repaired: workup: 'mri of the affected limb without contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'mri of the affected limb without contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "exam: term 'Dry oral mucosa' not found in SNOMED CT",
+        "exam: term 'Focal neurologic deficit' not found in SNOMED CT",
+        "differential acute-myocardial-infarction: no profile yet",
+        "differential acute-kidney-injury: no profile yet",
+        "differential hematuria: no profile yet",
+        "differential myositis: no profile yet",
+        "differential fibromyalgia: no profile yet",
+        "differential polymyalgia-rheumatica: no profile yet",
+        "differential viral-myositis: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 18,
+      "typical_max": 65,
+      "peak": "20–50",
+      "possible_min": 1,
+      "possible_max": 100
+    },
+    "sex": "male_predominant",
+    "demographics": [
+      "More common in males, reflecting higher rates of trauma, exertion and substance use",
+      "Occurs in athletes, military recruits and people doing unaccustomed strenuous exercise",
+      "Seen in patients immobilized after falls, overdose or stroke"
+    ],
+    "risk_factors": [
+      {
+        "text": "Crush injury or major trauma",
+        "strength": "strong"
+      },
+      {
+        "text": "Unaccustomed strenuous exertion (marathon, military training, CrossFit)",
+        "strength": "strong"
+      },
+      {
+        "text": "Prolonged immobilization (fall, overdose, stroke, restraint)",
+        "strength": "strong"
+      },
+      {
+        "text": "Cocaine, amphetamine or opioid use",
+        "strength": "strong"
+      },
+      {
+        "text": "Statins, especially with fibrates or in high dose",
+        "strength": "moderate"
+      },
+      {
+        "text": "Neuroleptic malignant syndrome or serotonin syndrome",
+        "strength": "moderate"
+      },
+      {
+        "text": "Heat stroke or severe dehydration",
+        "strength": "moderate"
+      },
+      {
+        "text": "Seizures or severe shivering",
+        "strength": "moderate"
+      },
+      {
+        "text": "Inherited metabolic or mitochondrial myopathy",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Chronic kidney disease",
+      "Diabetes mellitus",
+      "Hypothyroidism",
+      "Peripheral arterial disease",
+      "Sickle cell trait"
+    ],
+    "family_history": [
+      "Inherited myopathy or metabolic muscle disease"
+    ],
+    "social_history": [
+      "Recent heavy alcohol use",
+      "Illicit stimulant use",
+      "Recent incarceration or restraint",
+      "Military or first-responder training"
+    ],
+    "exposures": [
+      "Crush injury",
+      "Extreme heat",
+      "Snake or insect envenomation",
+      "Carbon monoxide",
+      "Toxic mushrooms"
+    ],
+    "risk_medications": [
+      "simvastatin",
+      "atorvastatin",
+      "rosuvastatin",
+      "gemfibrozil",
+      "fenofibrate",
+      "haloperidol",
+      "olanzapine",
+      "risperidone",
+      "lithium",
+      "colchicine",
+      "cyclosporine",
+      "prednisone",
+      "amphetamine",
+      "cocaine",
+      "heroin"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My muscles ache all over",
+        "frequency": "almost_always",
+        "term": "Myalgia",
+        "snomed_verified": true
+      },
+      {
+        "text": "My urine looks dark, like cola or tea",
+        "frequency": "common",
+        "term": "Urine looks dark",
+        "snomed_verified": true
+      },
+      {
+        "text": "I feel weak and can't get up",
+        "frequency": "common",
+        "term": "Muscle weakness",
+        "snomed_verified": true
+      },
+      {
+        "text": "My legs are swollen and sore",
+        "frequency": "sometimes",
+        "term": "Muscle swelling",
+        "snomed_verified": true
+      }
+    ],
+    "hpi": {
+      "onset": "Acute, over hours to a day or two after a trigger such as exertion, trauma, immobilization or drug use",
+      "duration": "Hours to several days at presentation",
+      "progression": "Muscle pain and weakness worsen over hours; dark urine appears as muscle breakdown continues; swelling and reduced urine output may follow",
+      "location": "Diffuse, often worst in the thighs, calves, shoulders and lower back",
+      "radiation": "Usually none",
+      "quality": "Deep, aching and cramping; muscles feel tender and tight",
+      "severity": "Moderate to severe; pain 6–9/10 and weakness that can make walking or standing difficult",
+      "timing": "Constant, worse with any movement",
+      "aggravating": [
+        "Walking",
+        "Standing up",
+        "Pressing on the muscles",
+        "Any exertion"
+      ],
+      "relieving": [
+        "Rest",
+        "IV fluids",
+        "Pain medication"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Urine looks dark, like cola or tea",
+          "frequency": "common",
+          "term": "Urine looks dark",
+          "snomed_verified": true
+        },
+        {
+          "text": "Muscle weakness",
+          "frequency": "common",
+          "term": "Muscle weakness",
+          "snomed_verified": true
+        },
+        {
+          "text": "Muscle swelling and tenderness",
+          "frequency": "common",
+          "term": "Muscle swelling",
+          "snomed_verified": true
+        },
+        {
+          "text": "Nausea",
+          "frequency": "common",
+          "term": "Nausea",
+          "snomed_verified": true
+        },
+        {
+          "text": "Vomiting",
+          "frequency": "sometimes",
+          "term": "Vomiting",
+          "snomed_verified": true
+        },
+        {
+          "text": "Passing much less urine than usual",
+          "frequency": "sometimes",
+          "term": "Decreased urine output",
+          "snomed_verified": true
+        },
+        {
+          "text": "Feeling very tired",
+          "frequency": "common",
+          "term": "Fatigue",
+          "snomed_verified": true
+        },
+        {
+          "text": "Fever",
+          "frequency": "sometimes",
+          "term": "Fever",
+          "snomed_verified": true
+        },
+        {
+          "text": "Confusion or feeling out of it",
+          "frequency": "sometimes",
+          "term": "Confusion",
+          "snomed_verified": true
+        },
+        {
+          "text": "Racing or irregular heartbeat",
+          "frequency": "rare",
+          "term": "Palpitations",
+          "snomed_verified": true
+        }
+      ],
+      "pertinent_negatives": [
+        "Joint pain or joint swelling",
+        "Rash",
+        "Recent sore throat or upper respiratory infection",
+        "Chronic widespread pain for more than three months",
+        "Morning stiffness lasting more than an hour",
+        "New focal neurologic deficit",
+        "Chest pain",
+        "Shortness of breath at rest"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Feeling very tired",
+            "frequency": "common",
+            "term": "Fatigue",
+            "snomed_verified": true
+          },
+          {
+            "text": "Fever",
+            "frequency": "sometimes",
+            "term": "Fever",
+            "snomed_verified": true
+          },
+          {
+            "text": "Feeling generally unwell",
+            "frequency": "common",
+            "term": "Malaise",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Weight loss",
+          "Night sweats"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Muscle pain all over",
+            "frequency": "almost_always",
+            "term": "Myalgia",
+            "snomed_verified": true
+          },
+          {
+            "text": "Muscle weakness",
+            "frequency": "common",
+            "term": "Muscle weakness",
+            "snomed_verified": true
+          },
+          {
+            "text": "Muscle swelling and tenderness",
+            "frequency": "common",
+            "term": "Muscle swelling",
+            "snomed_verified": true
+          },
+          {
+            "text": "Muscle cramps",
+            "frequency": "sometimes",
+            "term": "Muscle cramp",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Joint swelling",
+          "Joint redness",
+          "Morning stiffness lasting more than an hour"
+        ],
+        "argues_against": [
+          "Symmetrical small-joint arthritis",
+          "Chronic widespread pain for more than three months"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [
+          {
+            "text": "Urine looks dark, like cola or tea",
+            "frequency": "common",
+            "term": "Urine looks dark",
+            "snomed_verified": true
+          },
+          {
+            "text": "Passing much less urine than usual",
+            "frequency": "sometimes",
+            "term": "Decreased urine output",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Burning with urination",
+          "Blood clots in urine",
+          "Flank pain"
+        ],
+        "argues_against": [
+          "Colicky flank pain radiating to the groin",
+          "Dysuria with frequency"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Nausea",
+            "frequency": "common",
+            "term": "Nausea",
+            "snomed_verified": true
+          },
+          {
+            "text": "Vomiting",
+            "frequency": "sometimes",
+            "term": "Vomiting",
+            "snomed_verified": true
+          },
+          {
+            "text": "Abdominal pain",
+            "frequency": "sometimes",
+            "term": "Abdominal pain",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Blood in stool",
+          "Jaundice"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [
+          {
+            "text": "Racing or irregular heartbeat",
+            "frequency": "rare",
+            "term": "Palpitations",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Chest pain",
+          "Leg swelling",
+          "Fainting"
+        ],
+        "argues_against": [
+          "Chest pain with exertion",
+          "Orthopnea"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Confusion",
+            "frequency": "sometimes",
+            "term": "Confusion",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "New focal weakness",
+          "Numbness or tingling",
+          "Seizure"
+        ],
+        "argues_against": [
+          "Sudden focal neurologic deficit",
+          "Sensory level"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [],
+        "negatives": [
+          "Rash",
+          "Skin ulcers",
+          "Bruising over the muscles"
+        ],
+        "argues_against": [
+          "Heliotrope rash",
+          "Gottron papules"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Infants and young children may present with irritability, poor feeding, vomiting and lethargy rather than reporting muscle pain; viral myositis is a common trigger.",
+        "missing_classic_features": [
+          "Clear history of dark urine",
+          "Reported muscle pain"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "May present with falls, immobility, confusion or reduced urine output after a long lie; muscle pain and dark urine are often not reported.",
+        "missing_classic_features": [
+          "Myalgia",
+          "Urine looks dark"
+        ]
+      },
+      {
+        "population": "renal_impairment",
+        "how_it_differs": "Patients with chronic kidney disease develop acute kidney injury and hyperkalemia earlier and with less muscle breakdown, so dark urine may be absent.",
+        "missing_classic_features": [
+          "Urine looks dark",
+          "Marked muscle swelling"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Rhabdomyolysis is rare in pregnancy but can occur with hyperemesis, seizures or trauma; dark urine may be attributed to other causes and the diagnosis delayed.",
+        "missing_classic_features": [
+          "Clear trigger history"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Alert, uncomfortable, able to walk with effort; muscles tender to touch",
+      "moderate": "Ill-appearing, prefers to lie still, grimaces when moving or when muscles are palpated; may need help standing",
+      "severe": "Toxic-appearing, weak, diaphoretic, visibly swollen limbs, reluctant to move; may be confused",
+      "critical": "Lethargic or obtunded, pale, cold, clammy, with marked limb swelling and little spontaneous movement"
+    },
+    "findings": [
+      {
+        "id": "muscle-tenderness",
+        "region": "musculoskeletal",
+        "maneuver": "Palpate the large muscle groups of the thighs, calves, shoulders and lower back",
+        "finding": "Diffuse muscle tenderness",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Muscle tenderness",
+        "snomed_id": "27904004",
+        "snomed_verified": true
+      },
+      {
+        "id": "muscle-weakness",
+        "region": "musculoskeletal",
+        "maneuver": "Ask the patient to stand from a chair, walk a few steps, or resist hip and shoulder movement",
+        "finding": "Proximal muscle weakness, worse than pain alone would explain",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "essential",
+        "term": "Muscle weakness",
+        "snomed_id": "26544005",
+        "snomed_verified": true
+      },
+      {
+        "id": "muscle-swelling",
+        "region": "musculoskeletal",
+        "maneuver": "Inspect and palpate the thighs, calves and shoulders for enlargement and tightness",
+        "finding": "Muscle swelling with a tight, firm feel",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Muscle swelling",
+        "snomed_id": "30092007",
+        "snomed_verified": true
+      },
+      {
+        "id": "compartment-tightness",
+        "region": "extremities",
+        "maneuver": "Palpate the affected limb compartments and passively stretch the fingers or toes",
+        "finding": "Compartment tenseness with pain on passive stretch, suggesting compartment syndrome",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Compartment syndrome",
+        "snomed_id": "111245002",
+        "snomed_verified": true
+      },
+      {
+        "id": "dark-urine",
+        "region": "genitourinary",
+        "maneuver": "Inspect the urine in the collection container or catheter tubing",
+        "finding": "Tea- or cola-colored urine",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Urine looks dark",
+        "snomed_id": "249274008",
+        "snomed_verified": true
+      },
+      {
+        "id": "dry-mucous-membranes",
+        "region": "heent",
+        "maneuver": "Inspect the oral mucosa and tongue",
+        "finding": "Dry oral mucosa, suggesting dehydration",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Dry oral mucosa",
+        "snomed_id": "87715008",
+        "snomed_verified": false
+      },
+      {
+        "id": "tachycardia",
+        "region": "cardiac",
+        "maneuver": "Palpate the radial pulse or auscultate the heart",
+        "finding": "Heart rate above 100/min",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Tachycardia",
+        "snomed_id": "3424008",
+        "snomed_verified": true
+      },
+      {
+        "id": "hypotension",
+        "region": "cardiac",
+        "maneuver": "Measure blood pressure with the patient supine and after sitting up",
+        "finding": "Systolic blood pressure below 90 mm Hg or a drop on standing",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "essential",
+        "term": "Hypotension",
+        "snomed_id": "45007003",
+        "snomed_verified": true
+      },
+      {
+        "id": "confusion",
+        "region": "mental_status",
+        "maneuver": "Assess orientation to person, place and time and attention",
+        "finding": "Disorientation or inattention",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Confusion",
+        "snomed_id": "40917007",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-focal-neurologic-deficit",
+        "region": "neuro",
+        "maneuver": "Test strength, sensation and reflexes in all four limbs",
+        "finding": "No focal weakness, sensory loss or reflex asymmetry",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Focal neurologic deficit",
+        "snomed_id": "29610001",
+        "snomed_verified": false
+      },
+      {
+        "id": "no-joint-swelling",
+        "region": "musculoskeletal",
+        "maneuver": "Inspect and palpate the small joints of the hands, wrists and knees",
+        "finding": "No joint swelling, warmth or redness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Joint swelling",
+        "snomed_id": "298146001",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-rash",
+        "region": "skin",
+        "maneuver": "Inspect the skin, including the eyelids, knuckles and extensor surfaces",
+        "finding": "No rash, heliotrope discoloration or Gottron papules",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Rash",
+        "snomed_id": "271807003",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-costovertebral-angle-tenderness",
+        "region": "abdomen",
+        "maneuver": "Percuss the costovertebral angles",
+        "finding": "No costovertebral angle tenderness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Costovertebral angle tenderness",
+        "snomed_id": "30081000119105",
+        "snomed_verified": true
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 98.0,
+        "max": 100.0
+      },
+      "moderate": {
+        "min": 99.0,
+        "max": 101.0
+      },
+      "severe": {
+        "min": 100.0,
+        "max": 102.5
+      },
+      "critical": {
+        "min": 101.0,
+        "max": 104.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 70,
+        "max": 100
+      },
+      "moderate": {
+        "min": 90,
+        "max": 115
+      },
+      "severe": {
+        "min": 105,
+        "max": 130
+      },
+      "critical": {
+        "min": 120,
+        "max": 150
+      }
+    },
+    "rr": {
+      "moderate": {
+        "min": 16,
+        "max": 22
+      },
+      "severe": {
+        "min": 20,
+        "max": 28
+      },
+      "critical": {
+        "min": 24,
+        "max": 34
+      }
+    },
+    "sbp": {
+      "severe": {
+        "min": 85,
+        "max": 105
+      },
+      "critical": {
+        "min": 70,
+        "max": 90
+      }
+    },
+    "dbp": {
+      "severe": {
+        "min": 50,
+        "max": 65
+      },
+      "critical": {
+        "min": 40,
+        "max": 55
+      }
+    },
+    "spo2": {
+      "severe": {
+        "min": 92,
+        "max": 96
+      },
+      "critical": {
+        "min": 88,
+        "max": 93
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "ck",
+      "ranges": {
+        "mild": {
+          "min": 1000,
+          "max": 5000
+        },
+        "moderate": {
+          "min": 5000,
+          "max": 20000
+        },
+        "severe": {
+          "min": 20000,
+          "max": 100000
+        },
+        "critical": {
+          "min": 100000,
+          "max": 500000
+        }
+      },
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "The defining lab; values above 5 times the upper limit of normal are used to define clinically significant rhabdomyolysis. CK peaks in 24-72 hours and falls by roughly half each day once the trigger stops."
+    },
+    {
+      "test_id": "k",
+      "ranges": {
+        "moderate": {
+          "min": 5.1,
+          "max": 5.8
+        },
+        "severe": {
+          "min": 5.6,
+          "max": 6.5
+        },
+        "critical": {
+          "min": 6.0,
+          "max": 8.0
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "Potassium leaks from injured muscle; hyperkalemia is the main early cause of death and is worse with acute kidney injury."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "mild": {
+          "min": 1.2,
+          "max": 1.6
+        },
+        "moderate": {
+          "min": 1.5,
+          "max": 2.5
+        },
+        "severe": {
+          "min": 2.5,
+          "max": 5.0
+        },
+        "critical": {
+          "min": 4.0,
+          "max": 10.0
+        }
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "Rises early and can rise faster than expected for the degree of dehydration; a low BUN/creatinine ratio favors rhabdomyolysis over prerenal azotemia."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "mild": {
+          "min": 15,
+          "max": 25
+        },
+        "moderate": {
+          "min": 20,
+          "max": 40
+        },
+        "severe": {
+          "min": 30,
+          "max": 60
+        },
+        "critical": {
+          "min": 40,
+          "max": 90
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Often rises less than creatinine, giving a low BUN/creatinine ratio."
+    },
+    {
+      "test_id": "phos",
+      "ranges": {
+        "moderate": {
+          "min": 4.6,
+          "max": 6.0
+        },
+        "severe": {
+          "min": 5.5,
+          "max": 8.0
+        },
+        "critical": {
+          "min": 7.0,
+          "max": 10.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Released from damaged muscle; hyperphosphatemia with hypocalcemia is characteristic."
+    },
+    {
+      "test_id": "ca",
+      "ranges": {
+        "moderate": {
+          "min": 7.6,
+          "max": 8.4
+        },
+        "severe": {
+          "min": 6.8,
+          "max": 7.8
+        },
+        "critical": {
+          "min": 6.0,
+          "max": 7.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Hypocalcemia from calcium depositing in injured muscle; it can later rebound to hypercalcemia during recovery."
+    },
+    {
+      "test_id": "ast",
+      "ranges": {
+        "moderate": {
+          "min": 60,
+          "max": 200
+        },
+        "severe": {
+          "min": 150,
+          "max": 600
+        },
+        "critical": {
+          "min": 400,
+          "max": 2000
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Comes from muscle as well as liver; a high AST with a normal or only mildly raised ALT points to muscle injury."
+    },
+    {
+      "test_id": "alt",
+      "ranges": {
+        "moderate": {
+          "min": 60,
+          "max": 150
+        },
+        "severe": {
+          "min": 120,
+          "max": 300
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Rises less than AST in muscle injury; a marked rise suggests liver involvement instead."
+    },
+    {
+      "test_id": "ldh",
+      "ranges": {
+        "moderate": {
+          "min": 300,
+          "max": 600
+        },
+        "severe": {
+          "min": 500,
+          "max": 1200
+        },
+        "critical": {
+          "min": 900,
+          "max": 2500
+        }
+      },
+      "frequency": "common",
+      "importance": "optional"
+    },
+    {
+      "test_id": "ua_blood",
+      "qualitative": {
+        "mild": "Trace",
+        "moderate": "1+",
+        "severe": "2+",
+        "critical": "3+"
+      },
+      "frequency": "common",
+      "importance": "essential",
+      "caveat": "The dipstick is positive for blood because of myoglobin, but microscopy shows few or no red cells. This mismatch is a key clue."
+    },
+    {
+      "test_id": "ua_rbc",
+      "ranges": {
+        "mild": {
+          "min": 0,
+          "max": 2
+        },
+        "moderate": {
+          "min": 0,
+          "max": 5
+        },
+        "severe": {
+          "min": 0,
+          "max": 10
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Few red cells despite a positive blood dipstick, because the pigment is myoglobin rather than intact red cells."
+    },
+    {
+      "test_id": "ua_protein",
+      "qualitative": {
+        "moderate": "Trace",
+        "severe": "1+"
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "ua_casts",
+      "qualitative": {
+        "severe": "Granular (muddy brown)",
+        "critical": "Granular (muddy brown)"
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Muddy brown granular casts indicate acute tubular injury from myoglobin."
+    },
+    {
+      "test_id": "hco3",
+      "ranges": {
+        "moderate": {
+          "min": 18,
+          "max": 22
+        },
+        "severe": {
+          "min": 14,
+          "max": 20
+        },
+        "critical": {
+          "min": 10,
+          "max": 18
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Low bicarbonate from metabolic acidosis and acute kidney injury."
+    },
+    {
+      "test_id": "uric_acid",
+      "ranges": {
+        "moderate": {
+          "min": 7.5,
+          "max": 10.0
+        },
+        "severe": {
+          "min": 9.0,
+          "max": 13.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Released from damaged muscle nuclei."
+    },
+    {
+      "test_id": "pt",
+      "ranges": {
+        "severe": {
+          "min": 14.0,
+          "max": 18.0
+        },
+        "critical": {
+          "min": 16.0,
+          "max": 25.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Prolongs with disseminated intravascular coagulation or liver injury."
+    },
+    {
+      "test_id": "inr",
+      "ranges": {
+        "severe": {
+          "min": 1.2,
+          "max": 1.8
+        },
+        "critical": {
+          "min": 1.5,
+          "max": 2.5
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "aptt",
+      "ranges": {
+        "severe": {
+          "min": 36,
+          "max": 50
+        },
+        "critical": {
+          "min": 45,
+          "max": 70
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "fibrinogen",
+      "ranges": {
+        "severe": {
+          "min": 100,
+          "max": 190
+        },
+        "critical": {
+          "min": 60,
+          "max": 150
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Falls with disseminated intravascular coagulation, which can complicate severe rhabdomyolysis."
+    },
+    {
+      "test_id": "ph",
+      "ranges": {
+        "severe": {
+          "min": 7.2,
+          "max": 7.34
+        },
+        "critical": {
+          "min": 7.0,
+          "max": 7.25
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Acidemia worsens myoglobin kidney injury and increases the risk of arrhythmia from hyperkalemia."
+    },
+    {
+      "test_id": "base_excess",
+      "ranges": {
+        "severe": {
+          "min": -10,
+          "max": -3
+        },
+        "critical": {
+          "min": -18,
+          "max": -6
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "hs_tnt",
+      "ranges": {
+        "severe": {
+          "min": 25,
+          "max": 100
+        },
+        "critical": {
+          "min": 60,
+          "max": 300
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Can rise from myocardial injury in cocaine or stimulant toxicity, or from demand ischemia; interpret with the ECG and symptoms."
+    },
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "moderate": {
+          "min": 100,
+          "max": 180
+        },
+        "severe": {
+          "min": 140,
+          "max": 300
+        },
+        "critical": {
+          "min": 200,
+          "max": 500
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Stress hyperglycemia; marked hyperglycemia should prompt consideration of diabetic ketoacidosis as the cause."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Negative. Required in anyone who could be pregnant before imaging and to guide safe treatment."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "t_wave",
+        "finding": "Tall, peaked T waves",
+        "frequency": "common",
+        "leads": [
+          "II",
+          "III",
+          "aVF",
+          "V2",
+          "V3",
+          "V4"
+        ],
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "pr",
+        "finding": "Prolonged PR interval",
+        "frequency": "sometimes",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "qrs",
+        "finding": "Widened QRS complex",
+        "frequency": "sometimes",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Sinus bradycardia or junctional rhythm",
+        "frequency": "sometimes",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Ventricular tachycardia or ventricular fibrillation",
+        "frequency": "rare",
+        "min_severity": "critical"
+      },
+      {
+        "feature": "other",
+        "finding": "Sine-wave pattern of severe hyperkalemia",
+        "frequency": "rare",
+        "min_severity": "critical"
+      },
+      {
+        "feature": "st",
+        "finding": "ST elevation or depression from myocardial injury in stimulant toxicity",
+        "frequency": "rare",
+        "min_severity": "severe"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "CT of the affected limb without contrast",
+      "modality": "ct",
+      "preferred_when": "Concern for compartment syndrome or when the extent of muscle injury is unclear",
+      "findings": [
+        {
+          "text": "Swollen, hypodense muscle with loss of normal architecture",
+          "frequency": "common"
+        },
+        {
+          "text": "Muscle edema and stranding of the surrounding fat",
+          "frequency": "common"
+        },
+        {
+          "text": "Fluid collection or hematoma within the muscle",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "MRI of the affected limb without contrast",
+      "modality": "mri",
+      "preferred_when": "When the diagnosis is uncertain or the extent of muscle necrosis needs defining",
+      "findings": [
+        {
+          "text": "Muscle edema with high T2 signal in the affected compartments",
+          "frequency": "common"
+        },
+        {
+          "text": "Patchy areas of muscle necrosis",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Ultrasound of the affected limb",
+      "modality": "ultrasound",
+      "preferred_when": "Bedside assessment of swelling or to look for a fluid collection",
+      "findings": [
+        {
+          "text": "Diffusely swollen, echogenic muscle",
+          "frequency": "common"
+        },
+        {
+          "text": "Fluid collection or hematoma",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Renal ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "Acute kidney injury when obstruction or chronic kidney disease is a concern",
+      "findings": [
+        {
+          "text": "Normal or increased echogenicity of the kidneys without hydronephrosis",
+          "frequency": "common"
+        },
+        {
+          "text": "Hydronephrosis suggesting obstruction as an alternative cause",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Chest x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Usually normal",
+          "frequency": "common"
+        },
+        {
+          "text": "Findings of aspiration or pulmonary edema in the critically ill",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "ck",
+        "why": "The key test; a markedly raised CK confirms muscle breakdown and its level tracks severity"
+      },
+      {
+        "test": "bmp",
+        "why": "Looks for hyperkalemia, acute kidney injury, hypocalcemia and acidosis"
+      },
+      {
+        "test": "ua",
+        "why": "Blood-positive dipstick with few red cells suggests myoglobin; also looks for casts and other causes"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy before imaging and guides safe treatment"
+      },
+      {
+        "test": "ECG",
+        "why": "Detects the peaked T waves and conduction changes of hyperkalemia"
+      },
+      {
+        "test": "cbc",
+        "why": "Baseline counts and to look for infection or bleeding as a trigger"
+      },
+      {
+        "test": "ast",
+        "why": "A high AST with a lower ALT supports muscle rather than liver injury"
+      },
+      {
+        "test": "phos",
+        "why": "Hyperphosphatemia supports muscle breakdown and guides calcium management"
+      },
+      {
+        "test": "ca",
+        "why": "Hypocalcemia is common and affects monitoring and treatment"
+      },
+      {
+        "test": "abg",
+        "why": "Assesses acidosis and oxygenation in moderate to severe cases",
+        "only_if": "moderate or severe illness, acidosis suspected, or the patient is critically ill"
+      },
+      {
+        "test": "hs_tnt",
+        "why": "Looks for myocardial injury in stimulant toxicity or demand ischemia",
+        "only_if": "chest pain, stimulant use, or an abnormal ECG"
+      },
+      {
+        "test": "coag",
+        "why": "Looks for disseminated intravascular coagulation in severe cases",
+        "only_if": "bleeding, petechiae, or critical illness"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "ldh",
+        "why": "Supports muscle injury when raised"
+      },
+      {
+        "test": "uric_acid",
+        "why": "Rises with muscle breakdown"
+      },
+      {
+        "test": "mg",
+        "why": "Low magnesium can worsen arrhythmia risk and is corrected with potassium"
+      },
+      {
+        "test": "Renal ultrasound",
+        "why": "Rules out obstruction when the cause of acute kidney injury is unclear",
+        "only_if": "acute kidney injury with no clear cause or a history of stones"
+      },
+      {
+        "test": "CT of the affected limb without contrast",
+        "why": "Defines the extent of muscle injury and looks for a collection",
+        "only_if": "marked limb swelling, severe pain, or concern for compartment syndrome"
+      },
+      {
+        "test": "MRI of the affected limb without contrast",
+        "why": "Defines the extent of muscle necrosis when the diagnosis is uncertain",
+        "only_if": "uncertain diagnosis or need to map the involved muscle"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Lipid panel (fasting)",
+        "why": "Not part of the acute workup; statin use is a trigger but the lipid panel does not change management now"
+      },
+      {
+        "test": "tsh",
+        "why": "Hypothyroidism is a predisposing factor but thyroid testing does not help the acute diagnosis"
+      },
+      {
+        "test": "esr",
+        "why": "Nonspecific and does not distinguish rhabdomyolysis from its look-alikes"
+      },
+      {
+        "test": "crp",
+        "why": "Nonspecific; adds nothing to the CK and urinalysis"
+      },
+      {
+        "test": "Chest x-ray",
+        "why": "Not routine; only for respiratory symptoms or suspected aspiration"
+      },
+      {
+        "test": "MRI of the affected limb without contrast",
+        "why": "Not routine; reserved for uncertain diagnosis or mapping of involved muscle"
+      }
+    ],
+    "decision_points": [
+      "Check the potassium and ECG early; hyperkalemia is the main early cause of death",
+      "Start aggressive IV fluids as soon as the diagnosis is suspected, before the CK result returns",
+      "A positive urine blood dipstick with few red cells on microscopy points to myoglobin rather than hematuria",
+      "Watch for compartment syndrome in a swollen, tense limb and involve surgery early",
+      "Pregnancy test before any imaging in anyone who could be pregnant"
+    ],
+    "criteria": [
+      {
+        "name": "Clinical definition of rhabdomyolysis",
+        "summary": "A compatible history (trauma, exertion, immobilization, drugs or seizures) with a creatine kinase above five times the upper limit of normal, often with dark urine and a positive urine blood dipstick but few red cells on microscopy.",
+        "items": [
+          "Creatine kinase above five times the upper limit of normal",
+          "Compatible trigger or muscle symptoms",
+          "Dark urine or a positive blood dipstick with few red cells"
+        ]
+      }
+    ],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Acute myocardial infarction",
+      "slug": "acute-myocardial-infarction",
+      "why_considered": "Chest discomfort, nausea, diaphoresis and a raised troponin can occur in rhabdomyolysis from stimulant toxicity or demand ischemia, and both can present with acute distress.",
+      "must_not_miss": true,
+      "trigger": "Chest pain, pressure or an abnormal ECG in a patient with muscle symptoms",
+      "discriminators": {
+        "history": [
+          "Chest pressure or heaviness radiating to the arm or jaw",
+          "Shortness of breath and diaphoresis",
+          "Known coronary disease or cardiac risk factors"
+        ],
+        "exam": [
+          "S3 gallop, new murmur or pulmonary crackles",
+          "Diaphoresis and anxiety"
+        ],
+        "labs": [
+          "Troponin rising in a typical pattern rather than a single modest elevation",
+          "Creatine kinase usually normal or only mildly raised unless there is concurrent muscle injury"
+        ],
+        "ecg": [
+          "ST elevation or depression in a coronary distribution",
+          "New Q waves or reciprocal changes"
+        ],
+        "imaging": [
+          "Regional wall motion abnormality on echocardiography",
+          "Coronary stenosis on angiography"
+        ]
+      }
+    },
+    {
+      "name": "Acute kidney injury from another cause",
+      "slug": "acute-kidney-injury",
+      "why_considered": "Reduced urine output, a rising creatinine and dark urine are shared with rhabdomyolysis, and dehydration often coexists.",
+      "must_not_miss": true,
+      "trigger": "Rising creatinine with little or no muscle pain or weakness",
+      "discriminators": {
+        "history": [
+          "Recent nephrotoxic drug exposure or contrast",
+          "Poor oral intake with vomiting or diarrhea",
+          "No trigger of trauma, exertion or immobilization"
+        ],
+        "exam": [
+          "Signs of volume depletion or overload without muscle tenderness",
+          "No limb swelling or compartment tenseness"
+        ],
+        "labs": [
+          "Creatine kinase normal or only mildly raised",
+          "Urine dipstick negative for blood or positive with many red cells rather than myoglobin",
+          "BUN/creatinine ratio high in prerenal states"
+        ],
+        "imaging": [
+          "Renal ultrasound showing hydronephrosis if obstruction is the cause",
+          "Small echogenic kidneys suggesting chronic disease"
+        ]
+      }
+    },
+    {
+      "name": "Hematuria from urinary tract pathology",
+      "slug": "hematuria",
+      "why_considered": "Dark or bloody urine is a common reason patients present, and a positive urine blood dipstick is seen in both.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Colicky flank pain radiating to the groin",
+          "Dysuria, frequency or urgency",
+          "Passage of clots"
+        ],
+        "exam": [
+          "Costovertebral angle tenderness",
+          "Suprapubic tenderness"
+        ],
+        "labs": [
+          "Urine microscopy showing many red cells or red cell casts",
+          "Creatine kinase normal"
+        ],
+        "imaging": [
+          "Stone or mass on CT urography",
+          "Hydronephrosis on ultrasound"
+        ]
+      }
+    },
+    {
+      "name": "Inflammatory myositis",
+      "slug": "myositis",
+      "why_considered": "Muscle pain and weakness with a raised creatine kinase overlap closely with rhabdomyolysis.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Weeks to months of progressive proximal weakness",
+          "Difficulty rising from a chair or combing hair",
+          "No acute trigger such as trauma, exertion or drugs"
+        ],
+        "exam": [
+          "Symmetrical proximal weakness without marked tenderness",
+          "Heliotrope rash or Gottron papules in dermatomyositis"
+        ],
+        "labs": [
+          "Creatine kinase elevated but usually lower and stable rather than rapidly rising",
+          "Positive antinuclear antibody or myositis-specific antibodies",
+          "Aldolase elevated"
+        ],
+        "imaging": [
+          "Muscle edema on MRI in a symmetrical distribution",
+          "Muscle biopsy showing inflammation"
+        ]
+      }
+    },
+    {
+      "name": "Hypothyroidism-related myopathy",
+      "slug": "hypothyroidism",
+      "why_considered": "Hypothyroidism causes muscle aches, weakness and a mildly raised creatine kinase and is a predisposing factor for rhabdomyolysis.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Weight gain, cold intolerance and constipation",
+          "Slow onset over months",
+          "No acute trigger"
+        ],
+        "exam": [
+          "Dry skin, bradycardia, delayed relaxation of reflexes",
+          "Diffuse non-tender muscle enlargement"
+        ],
+        "labs": [
+          "Thyroid-stimulating hormone elevated with low free thyroxine",
+          "Creatine kinase mildly raised and stable"
+        ]
+      }
+    },
+    {
+      "name": "Fibromyalgia",
+      "slug": "fibromyalgia",
+      "why_considered": "Chronic widespread muscle pain is a common reason patients report myalgia and may be confused with muscle injury.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Widespread pain for more than three months",
+          "Fatigue and unrefreshing sleep",
+          "No acute trigger or dark urine"
+        ],
+        "exam": [
+          "Diffuse tenderness without swelling or weakness",
+          "Normal strength testing"
+        ],
+        "labs": [
+          "Creatine kinase normal",
+          "Urinalysis normal"
+        ]
+      }
+    },
+    {
+      "name": "Polymyalgia rheumatica",
+      "slug": "polymyalgia-rheumatica",
+      "why_considered": "Muscle aching and stiffness in the shoulders and hips can mimic muscle injury, especially in older adults.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Morning stiffness lasting more than an hour",
+          "Age over 50 with gradual onset",
+          "No trigger or dark urine"
+        ],
+        "exam": [
+          "Pain with movement but preserved strength",
+          "No muscle tenderness or swelling"
+        ],
+        "labs": [
+          "Erythrocyte sedimentation rate and C-reactive protein markedly elevated",
+          "Creatine kinase normal"
+        ]
+      }
+    },
+    {
+      "name": "Viral myositis",
+      "slug": "viral-myositis",
+      "why_considered": "Viral infection can cause muscle pain, weakness and a raised creatine kinase, particularly in children.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Recent upper respiratory infection or viral prodrome",
+          "Fever and malaise preceding muscle pain",
+          "No trauma, exertion or drug trigger"
+        ],
+        "exam": [
+          "Diffuse muscle tenderness, often milder than in rhabdomyolysis",
+          "No compartment tenseness"
+        ],
+        "labs": [
+          "Creatine kinase usually lower than in severe rhabdomyolysis",
+          "Urine dipstick may be negative for blood",
+          "Viral serology or polymerase chain reaction positive when tested"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Muscle aches and mild weakness after a clear trigger, creatine kinase 1000-5000 U/L, normal or near-normal kidney function, no dark urine or only trace pigment, and no electrolyte disturbance.",
+      "moderate": "Marked muscle pain and weakness with dark urine, creatine kinase 5000-20000 U/L, early acute kidney injury, hyperkalemia or hypocalcemia, and tachycardia or mild dehydration.",
+      "severe": "Creatine kinase 20000-100000 U/L with established acute kidney injury, significant hyperkalemia, hypocalcemia, acidosis, hypotension or confusion, and possible compartment syndrome.",
+      "critical": "Creatine kinase above 100000 U/L with life-threatening hyperkalemia, severe acute kidney injury requiring dialysis, refractory shock, disseminated intravascular coagulation or arrhythmia."
+    },
+    "red_flags": [
+      {
+        "finding": "Potassium above 6.0 mmol/L or peaked T waves on ECG",
+        "meaning": "Life-threatening hyperkalemia; treat immediately with calcium, insulin and glucose, and consider dialysis"
+      },
+      {
+        "finding": "Urine output below 0.5 mL/kg/hour or a rapidly rising creatinine",
+        "meaning": "Acute kidney injury from myoglobin; needs aggressive fluids and possibly renal replacement therapy"
+      },
+      {
+        "finding": "A tense, swollen limb with pain on passive stretch",
+        "meaning": "Compartment syndrome; needs urgent surgical evaluation and possibly fasciotomy"
+      },
+      {
+        "finding": "Hypotension or heart rate above 130/min",
+        "meaning": "Shock from hypovolemia, sepsis or arrhythmia; needs resuscitation and monitoring"
+      },
+      {
+        "finding": "Confusion, lethargy or reduced consciousness",
+        "meaning": "Severe metabolic derangement, cerebral edema or an alternative diagnosis such as neuroleptic malignant syndrome"
+      },
+      {
+        "finding": "Bleeding, petechiae or a falling fibrinogen",
+        "meaning": "Disseminated intravascular coagulation complicating severe rhabdomyolysis"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Acute kidney injury",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "common",
+        "clues": [
+          "Dark urine with a positive blood dipstick but few red cells",
+          "Rising creatinine with a low BUN/creatinine ratio",
+          "Muddy brown granular casts on urine microscopy",
+          "Reduced urine output"
+        ]
+      },
+      {
+        "name": "Hyperkalemia",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "common",
+        "clues": [
+          "Peaked T waves and a widened QRS on ECG",
+          "Potassium above 5.5 mmol/L",
+          "Muscle weakness or palpitations"
+        ]
+      },
+      {
+        "name": "Compartment syndrome",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Tense, swollen limb",
+          "Pain on passive stretch of the fingers or toes",
+          "Pallor, paresthesia or pulselessness late in the course"
+        ]
+      },
+      {
+        "name": "Metabolic acidosis",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Low bicarbonate and low pH on blood gas",
+          "Kussmaul respirations in severe cases"
+        ]
+      },
+      {
+        "name": "Hypocalcemia",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Calcium below 8.0 mg/dL",
+          "Perioral numbness or carpopedal spasm",
+          "Prolonged QT interval on ECG"
+        ]
+      },
+      {
+        "name": "Disseminated intravascular coagulation",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Bleeding from puncture sites or petechiae",
+          "Prolonged PT and aPTT with low fibrinogen",
+          "Falling platelets"
+        ]
+      },
+      {
+        "name": "Hypercalcemia during recovery",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Calcium rising above normal days into recovery",
+          "Nausea, constipation or confusion"
+        ]
+      },
+      {
+        "name": "Chronic kidney disease",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Persistently raised creatinine after the acute episode",
+          "Proteinuria or reduced estimated glomerular filtration rate on follow-up"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Infants and young children may present with irritability, poor feeding, vomiting and lethargy rather than reporting muscle pain; viral myositis is a common trigger and the creatine kinase is often lower than in adults."
+      },
+      {
+        "population": "older_adults",
+        "differences": "May present with falls, immobility, confusion or reduced urine output after a long lie; muscle pain and dark urine are often not reported, and acute kidney injury develops earlier."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "Patients with chronic kidney disease develop acute kidney injury and hyperkalemia earlier and with less muscle breakdown, so dark urine may be absent and dialysis may be needed sooner."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Rare in pregnancy but can occur with hyperemesis, seizures or trauma; dark urine may be attributed to other causes and the diagnosis delayed, and aggressive fluids are needed to protect both mother and fetus."
+      },
+      {
+        "population": "hepatic_impairment",
+        "differences": "Coagulopathy may be worse and the AST and ALT are harder to interpret because both liver and muscle contribute; monitor for bleeding and adjust fluid and electrolyte management."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "What were you doing in the hours to days before this started — any heavy or unaccustomed exercise, trauma, a fall, or a long period lying on the floor?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "A trigger such as crush injury, unaccustomed exertion, prolonged immobilization, seizure or heat exposure"
+      },
+      {
+        "question": "When did the muscle pain and weakness start, and how fast have they gotten worse?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Acute onset over hours to a day or two after a trigger, worsening over hours"
+      },
+      {
+        "question": "Where do you feel the pain and weakness most — thighs, calves, shoulders, back?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Diffuse aching and cramping worst in the large proximal and calf muscle groups"
+      },
+      {
+        "question": "What does your urine look like — has it been dark like cola or tea?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Tea- or cola-colored urine from myoglobinuria"
+      },
+      {
+        "question": "How much urine have you been passing, and has it slowed down?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Reduced urine output suggesting acute kidney injury"
+      },
+      {
+        "question": "Have you had any fever, nausea, vomiting or confusion?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Fever, nausea and vomiting are common; confusion suggests severe metabolic derangement"
+      },
+      {
+        "question": "Have you taken any cocaine, amphetamines, heroin or other drugs, or drunk heavily recently?",
+        "category": "social",
+        "importance": "essential",
+        "looking_for": "Stimulant or opioid use as a trigger, including immobilization after overdose"
+      },
+      {
+        "question": "Which medications do you take, especially cholesterol-lowering drugs, and have any doses changed recently?",
+        "category": "medications",
+        "importance": "essential",
+        "looking_for": "Statins, especially with fibrates or in high dose, as a trigger"
+      },
+      {
+        "question": "Have you ever had a seizure, or been told you have a muscle or metabolic disease?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Seizures, inherited myopathy or metabolic muscle disease as predisposing factors"
+      },
+      {
+        "question": "Do you have kidney disease, diabetes or thyroid problems?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Chronic kidney disease, diabetes or hypothyroidism, which lower the threshold for injury and complications"
+      },
+      {
+        "question": "Has anyone in your family had muscle disease or problems with anesthesia?",
+        "category": "family",
+        "importance": "optional",
+        "looking_for": "Inherited myopathy or metabolic muscle disease"
+      },
+      {
+        "question": "Do your joints hurt or swell, or have you had a rash or a recent sore throat or viral illness?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Absent; joint pain, rash or a viral prodrome point toward myositis or viral myositis instead"
+      },
+      {
+        "question": "Have you had any chest pain, shortness of breath or a racing heartbeat?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Chest pain or palpitations suggesting myocardial injury or hyperkalemic arrhythmia"
+      },
+      {
+        "question": "Could you be pregnant? When was your last period?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Excludes pregnancy before imaging and guides safe treatment"
+      }
+    ],
+    "accepted_names": [
+      "Rhabdomyolysis",
+      "Rhabdo",
+      "Myoglobinuric acute kidney injury",
+      "Crush syndrome"
+    ],
+    "reasoning_points": [
+      "An acute trigger such as crush injury, unaccustomed exertion, prolonged immobilization, seizure, heat exposure or stimulant or statin use",
+      "Diffuse muscle pain, tenderness and weakness with swelling of the large muscle groups",
+      "Tea- or cola-colored urine with a positive urine blood dipstick but few red cells on microscopy, indicating myoglobin rather than hematuria",
+      "A markedly elevated creatine kinase, above five times the upper limit of normal, confirming muscle breakdown",
+      "Supporting labs of hyperkalemia, hyperphosphatemia, hypocalcemia, a raised AST with a lower ALT, and a low BUN/creatinine ratio",
+      "Complications recognized early: acute kidney injury, hyperkalemia, metabolic acidosis and compartment syndrome",
+      "Look-alikes excluded, including acute myocardial infarction, other causes of acute kidney injury, hematuria, inflammatory myositis, hypothyroid myopathy, fibromyalgia and polymyalgia rheumatica"
+    ],
+    "difficulty": {
+      "easy": [
+        "Young adult with classic trigger such as a marathon, military training or crush injury",
+        "Diffuse muscle pain and weakness with dark cola-colored urine",
+        "Markedly elevated creatine kinase with a positive urine blood dipstick and few red cells",
+        "Hyperkalemia with peaked T waves on ECG"
+      ],
+      "medium": [
+        "Older adult found after a long lie with falls, immobility and reduced urine output but no reported muscle pain",
+        "Statin plus fibrate use with muscle aches and a modestly raised creatine kinase",
+        "Patient with chronic kidney disease who develops acute kidney injury and hyperkalemia with less muscle breakdown",
+        "Cocaine or stimulant use with chest discomfort and a raised troponin that must be distinguished from myocardial infarction"
+      ],
+      "hard": [
+        "Child with irritability, poor feeding and vomiting after a viral illness rather than reported muscle pain",
+        "Confused or obtunded patient with no history, where neuroleptic malignant syndrome or serotonin syndrome is also possible",
+        "Swollen tense limb where compartment syndrome must be recognized and surgery involved early",
+        "Severe case with disseminated intravascular coagulation, acidosis and shock where the trigger is unclear",
+        "Pregnant patient with dark urine attributed to another cause, delaying the diagnosis"
+      ]
+    }
+  }
+}

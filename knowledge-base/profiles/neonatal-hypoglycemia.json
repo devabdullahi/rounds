@@ -1,0 +1,1628 @@
+{
+  "schema_version": "0.2",
+  "slug": "neonatal-hypoglycemia",
+  "triage": {
+    "name": "Neonatal hypoglycemia",
+    "case_suitable": true,
+    "reason": "Infant of a diabetic mother or growth-restricted infant with jitteriness, lethargy or poor feeding; a very common problem diagnosed by bedside glucose with a broad differential.",
+    "kind": "disease",
+    "category": "neonatal metabolic disorder",
+    "organ_systems": [
+      "endocrine"
+    ],
+    "primary_clerkship": "pediatrics",
+    "secondary_clerkships": [
+      "familyMedicine",
+      "obgyn",
+      "emergency"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "inpatient",
+      "labor_delivery",
+      "pediatric_clinic"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:23:53Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:40:54Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:41:15Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:41:41Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:41:53Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:42:00Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: 'glucose' was in ['initial', 'confirmatory'], kept ['initial']",
+        "presentation: term 'Pallor' not found in SNOMED CT",
+        "presentation: term 'Pallor' not found in SNOMED CT",
+        "presentation: term 'Pallor' not found in SNOMED CT",
+        "differential neonatal-hypocalcemia: no profile yet",
+        "differential hypoxic-ischemic-encephalopathy: no profile yet",
+        "differential inborn-error-of-metabolism: no profile yet",
+        "differential congenital-adrenal-hyperplasia: no profile yet",
+        "differential neonatal-polycythemia: no profile yet",
+        "differential congenital-hypothyroidism: no profile yet",
+        "differential congenital-heart-disease: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 0,
+      "typical_max": 1,
+      "peak": "first 48 hours of life",
+      "possible_min": 0,
+      "possible_max": 1
+    },
+    "sex": "either",
+    "demographics": [
+      "Occurs in newborns; incidence is highest in preterm and small-for-gestational-age infants",
+      "More common in infants of diabetic mothers and in late-preterm infants",
+      "Seen in both term and preterm newborns"
+    ],
+    "risk_factors": [
+      {
+        "text": "Infant of a diabetic mother",
+        "strength": "strong"
+      },
+      {
+        "text": "Preterm birth",
+        "strength": "strong"
+      },
+      {
+        "text": "Small for gestational age or intrauterine growth restriction",
+        "strength": "strong"
+      },
+      {
+        "text": "Large for gestational age",
+        "strength": "moderate"
+      },
+      {
+        "text": "Perinatal stress (asphyxia, sepsis, hypothermia)",
+        "strength": "moderate"
+      },
+      {
+        "text": "Maternal beta-blocker or corticosteroid use near delivery",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Prematurity",
+      "Intrauterine growth restriction",
+      "Perinatal asphyxia",
+      "Neonatal sepsis",
+      "Congenital heart disease",
+      "Inborn errors of metabolism"
+    ],
+    "family_history": [
+      "Family history of neonatal hypoglycemia or metabolic disorder"
+    ],
+    "social_history": [],
+    "exposures": [
+      "Maternal diabetes",
+      "Maternal beta-blockers or corticosteroids",
+      "Peripartum stress"
+    ],
+    "risk_medications": [
+      "insulin",
+      "glyburide",
+      "metformin",
+      "betamethasone",
+      "dexamethasone",
+      "labetalol",
+      "propranolol"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My baby is shaky and jittery",
+        "frequency": "common",
+        "term": "Neonatal jitteriness",
+        "snomed_verified": true
+      },
+      {
+        "text": "My baby is sleepy and hard to wake for feeds",
+        "frequency": "common",
+        "term": "Lethargy",
+        "snomed_verified": true
+      },
+      {
+        "text": "My baby is not feeding well",
+        "frequency": "common",
+        "term": "Poor feeding",
+        "snomed_verified": true
+      },
+      {
+        "text": "My baby's skin looks pale and sweaty",
+        "frequency": "sometimes",
+        "term": "Pallor",
+        "snomed_verified": false
+      }
+    ],
+    "hpi": {
+      "onset": "Within the first hours to days of life, often in the first 24–48 hours",
+      "duration": "Hours to days; may be transient or recurrent depending on cause",
+      "progression": "Symptoms may be intermittent and worsen with feeding delays or stress; can progress to seizures or apnea if untreated",
+      "location": "Generalized; no focal location",
+      "radiation": "Not applicable",
+      "quality": "Neurologic and autonomic signs such as jitteriness, lethargy, poor feeding, sweating, and pallor",
+      "severity": "Mild to severe; can be asymptomatic or progress to seizures",
+      "timing": "Often worse when feeding is delayed or during the first 1–2 days of life",
+      "aggravating": [
+        "Delayed feeding",
+        "Cold stress",
+        "Sepsis"
+      ],
+      "relieving": [
+        "Feeding",
+        "Glucose administration"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Jitteriness or tremors",
+          "frequency": "common",
+          "term": "Neonatal jitteriness",
+          "snomed_verified": true
+        },
+        {
+          "text": "Lethargy or poor responsiveness",
+          "frequency": "common",
+          "term": "Lethargy",
+          "snomed_verified": true
+        },
+        {
+          "text": "Poor feeding",
+          "frequency": "common",
+          "term": "Poor feeding",
+          "snomed_verified": true
+        },
+        {
+          "text": "Irritability",
+          "frequency": "sometimes",
+          "term": "Irritability",
+          "snomed_verified": true
+        },
+        {
+          "text": "Sweating",
+          "frequency": "sometimes",
+          "term": "Sweating",
+          "snomed_verified": true
+        },
+        {
+          "text": "Pallor",
+          "frequency": "sometimes",
+          "term": "Pallor",
+          "snomed_verified": false
+        },
+        {
+          "text": "Hypothermia",
+          "frequency": "sometimes",
+          "term": "Hypothermia",
+          "snomed_verified": true
+        },
+        {
+          "text": "Seizures",
+          "frequency": "rare",
+          "term": "Seizure",
+          "snomed_verified": true
+        },
+        {
+          "text": "Apnea",
+          "frequency": "rare",
+          "term": "Apnea",
+          "snomed_verified": true
+        }
+      ],
+      "pertinent_negatives": [
+        "Fever",
+        "Vomiting",
+        "Diarrhea",
+        "Bulging fontanelle",
+        "Focal neurologic deficit",
+        "Respiratory distress at birth"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Lethargy",
+            "frequency": "common",
+            "term": "Lethargy",
+            "snomed_verified": true
+          },
+          {
+            "text": "Poor feeding",
+            "frequency": "common",
+            "term": "Poor feeding",
+            "snomed_verified": true
+          },
+          {
+            "text": "Hypothermia",
+            "frequency": "sometimes",
+            "term": "Hypothermia",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Fever",
+          "Weight loss"
+        ],
+        "argues_against": [
+          "Sepsis"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Jitteriness",
+            "frequency": "common",
+            "term": "Neonatal jitteriness",
+            "snomed_verified": true
+          },
+          {
+            "text": "Irritability",
+            "frequency": "sometimes",
+            "term": "Irritability",
+            "snomed_verified": true
+          },
+          {
+            "text": "Seizures",
+            "frequency": "rare",
+            "term": "Seizure",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Bulging fontanelle",
+          "Focal neurologic deficit",
+          "Abnormal tone"
+        ],
+        "argues_against": [
+          "Intracranial hemorrhage",
+          "Meningitis"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [
+          {
+            "text": "Pallor",
+            "frequency": "sometimes",
+            "term": "Pallor",
+            "snomed_verified": false
+          },
+          {
+            "text": "Sweating",
+            "frequency": "sometimes",
+            "term": "Sweating",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Cyanosis",
+          "Murmur",
+          "Tachycardia"
+        ],
+        "argues_against": [
+          "Congenital heart disease"
+        ]
+      },
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "Apnea",
+            "frequency": "rare",
+            "term": "Apnea",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Tachypnea",
+          "Grunting",
+          "Retractions"
+        ],
+        "argues_against": [
+          "Respiratory distress syndrome"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Poor feeding",
+            "frequency": "common",
+            "term": "Poor feeding",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Vomiting",
+          "Diarrhea",
+          "Abdominal distension"
+        ],
+        "argues_against": [
+          "Necrotizing enterocolitis"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "infants",
+        "how_it_differs": "Preterm and small-for-gestational-age infants may have no classic signs and are detected only by screening glucose; symptoms can be subtle such as temperature instability or apnea.",
+        "missing_classic_features": [
+          "Jitteriness",
+          "Lethargy",
+          "Poor feeding"
+        ]
+      },
+      {
+        "population": "children",
+        "how_it_differs": "Not applicable; this condition occurs in newborns.",
+        "missing_classic_features": []
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Alert but jittery or easily startled; otherwise well-appearing",
+      "moderate": "Lethargic and difficult to arouse for feeds; jittery when handled",
+      "severe": "Poorly responsive, hypotonic, pale and sweaty; may have a seizure",
+      "critical": "Unresponsive or actively seizing, apneic, pale and mottled"
+    },
+    "findings": [
+      {
+        "id": "jitteriness",
+        "region": "neuro",
+        "maneuver": "Observe the infant at rest and during handling; hold a limb gently to see if the tremor stops",
+        "finding": "Fine, rapid tremor of the limbs that is suppressed by gentle restraint",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "essential",
+        "term": "Neonatal jitteriness",
+        "snomed_verified": true
+      },
+      {
+        "id": "lethargy",
+        "region": "mental_status",
+        "maneuver": "Observe alertness and attempt to arouse the infant for a feed",
+        "finding": "Reduced alertness, difficult to wake, poor feeding effort",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "essential",
+        "term": "Lethargy",
+        "snomed_verified": true
+      },
+      {
+        "id": "irritability",
+        "region": "mental_status",
+        "maneuver": "Observe the infant's response to handling and feeding",
+        "finding": "High-pitched cry and excessive fussiness with handling",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Irritability",
+        "snomed_verified": true
+      },
+      {
+        "id": "hypotonia",
+        "region": "musculoskeletal",
+        "maneuver": "Assess limb and truncal tone with passive movement and ventral suspension",
+        "finding": "Reduced muscle tone; infant feels floppy",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Hypotonia",
+        "snomed_verified": true
+      },
+      {
+        "id": "seizure",
+        "region": "neuro",
+        "maneuver": "Observe for abnormal repetitive movements; if suspected, examine for subtle motor automatisms",
+        "finding": "Focal or generalized seizure activity, sometimes subtle (eye deviation, lip smacking, cycling movements)",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Seizure",
+        "snomed_verified": true
+      },
+      {
+        "id": "apnea",
+        "region": "lung",
+        "maneuver": "Observe breathing pattern and respiratory effort",
+        "finding": "Pause in breathing lasting more than 20 seconds or with bradycardia/desaturation",
+        "frequency": "rare",
+        "min_severity": "critical",
+        "significance": "supports",
+        "importance": "essential",
+        "term": "Apnea",
+        "snomed_verified": true
+      },
+      {
+        "id": "pale-complexion",
+        "region": "skin",
+        "maneuver": "Inspect the skin color in good light",
+        "finding": "Pale, mottled or dusky skin color",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Pale complexion",
+        "snomed_verified": true
+      },
+      {
+        "id": "sweating",
+        "region": "skin",
+        "maneuver": "Palpate the skin for moisture",
+        "finding": "Diaphoresis, especially over the forehead and trunk",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Sweating",
+        "snomed_verified": true
+      },
+      {
+        "id": "hypothermia",
+        "region": "general",
+        "maneuver": "Measure axillary temperature with a low-reading thermometer",
+        "finding": "Axillary temperature below 36.5°C (97.7°F)",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Hypothermia",
+        "snomed_verified": true
+      },
+      {
+        "id": "normal-anterior-fontanelle",
+        "region": "heent",
+        "maneuver": "Palpate the anterior fontanelle with the infant upright and at rest",
+        "finding": "Anterior fontanelle is soft, flat and normal in size",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Anterior fontanelle palpable anterior",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-respiratory-distress",
+        "region": "lung",
+        "maneuver": "Auscultate the lungs and observe respiratory effort",
+        "finding": "Clear breath sounds, no grunting, retractions or tachypnea",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Normal breath sounds",
+        "snomed_verified": true
+      },
+      {
+        "id": "normal-heart-exam",
+        "region": "cardiac",
+        "maneuver": "Auscultate the heart and palpate peripheral pulses",
+        "finding": "Normal S1 and S2, no murmur, regular rate and rhythm, strong peripheral pulses",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Normal heart sounds",
+        "snomed_verified": true
+      },
+      {
+        "id": "normal-abdomen",
+        "region": "abdomen",
+        "maneuver": "Inspect and gently palpate the abdomen",
+        "finding": "Soft, non-distended abdomen without tenderness or masses",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Abdomen soft",
+        "snomed_verified": true
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 97.7,
+        "max": 99.5
+      },
+      "moderate": {
+        "min": 97.0,
+        "max": 98.6
+      },
+      "severe": {
+        "min": 96.0,
+        "max": 97.7
+      },
+      "critical": {
+        "min": 95.0,
+        "max": 97.0
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 100,
+        "max": 160
+      },
+      "moderate": {
+        "min": 120,
+        "max": 180
+      },
+      "severe": {
+        "min": 140,
+        "max": 200
+      },
+      "critical": {
+        "min": 80,
+        "max": 220
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 30,
+        "max": 60
+      },
+      "moderate": {
+        "min": 40,
+        "max": 70
+      },
+      "severe": {
+        "min": 50,
+        "max": 80
+      },
+      "critical": {
+        "min": 20,
+        "max": 90
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 60,
+        "max": 90
+      },
+      "moderate": {
+        "min": 55,
+        "max": 85
+      },
+      "severe": {
+        "min": 50,
+        "max": 80
+      },
+      "critical": {
+        "min": 40,
+        "max": 70
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 30,
+        "max": 60
+      },
+      "moderate": {
+        "min": 25,
+        "max": 55
+      },
+      "severe": {
+        "min": 20,
+        "max": 50
+      },
+      "critical": {
+        "min": 15,
+        "max": 45
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 95,
+        "max": 100
+      },
+      "moderate": {
+        "min": 92,
+        "max": 98
+      },
+      "severe": {
+        "min": 88,
+        "max": 95
+      },
+      "critical": {
+        "min": 80,
+        "max": 92
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "mild": {
+          "min": 45,
+          "max": 54
+        },
+        "moderate": {
+          "min": 36,
+          "max": 45
+        },
+        "severe": {
+          "min": 25,
+          "max": 36
+        },
+        "critical": {
+          "min": 10,
+          "max": 25
+        }
+      },
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Bedside (heel-stick) glucose is the screening test; any value below 45 mg/dL in a newborn needs confirmation by a laboratory serum glucose before treatment is escalated. Values are lower in the first hours of life and in preterm infants."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "moderate": {
+          "min": 2.2,
+          "max": 4.0
+        },
+        "severe": {
+          "min": 3.5,
+          "max": 8.0
+        },
+        "critical": {
+          "min": 5.0,
+          "max": 12.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Persistent lactic acidosis with hypoglycemia suggests sepsis, asphyxia or an inborn error of metabolism rather than simple transient hypoglycemia."
+    },
+    {
+      "test_id": "hco3",
+      "ranges": {
+        "moderate": {
+          "min": 18,
+          "max": 22
+        },
+        "severe": {
+          "min": 12,
+          "max": 18
+        },
+        "critical": {
+          "min": 8,
+          "max": 14
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Low bicarbonate accompanies metabolic acidosis from sepsis, asphyxia or a metabolic disorder."
+    },
+    {
+      "test_id": "ammonia",
+      "ranges": {
+        "moderate": {
+          "min": 60,
+          "max": 120
+        },
+        "severe": {
+          "min": 100,
+          "max": 250
+        },
+        "critical": {
+          "min": 200,
+          "max": 500
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Order when hypoglycemia is persistent or recurrent, or when there is vomiting, lethargy or acidosis; hyperammonemia points to an inborn error of metabolism."
+    },
+    {
+      "test_id": "cortisol_am",
+      "ranges": {
+        "mild": {
+          "min": 3,
+          "max": 5
+        },
+        "moderate": {
+          "min": 1,
+          "max": 3
+        },
+        "severe": {
+          "min": 0,
+          "max": 1
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "A low cortisol during hypoglycemia is inappropriately normal and suggests adrenal insufficiency or congenital adrenal hyperplasia."
+    },
+    {
+      "test_id": "tsh",
+      "ranges": {
+        "moderate": {
+          "min": 5.0,
+          "max": 15.0
+        },
+        "severe": {
+          "min": 10.0,
+          "max": 40.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Congenital hypothyroidism can present with hypoglycemia and prolonged jaundice; part of the newborn screen."
+    },
+    {
+      "test_id": "ca",
+      "ranges": {
+        "mild": {
+          "min": 7.8,
+          "max": 8.5
+        },
+        "moderate": {
+          "min": 7.0,
+          "max": 7.8
+        },
+        "severe": {
+          "min": 6.0,
+          "max": 7.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hypocalcemia commonly coexists in infants of diabetic mothers and in preterm or asphyxiated infants and can cause jitteriness on its own."
+    },
+    {
+      "test_id": "mg",
+      "ranges": {
+        "mild": {
+          "min": 1.4,
+          "max": 1.7
+        },
+        "moderate": {
+          "min": 1.0,
+          "max": 1.4
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Hypomagnesemia can cause refractory hypocalcemia and jitteriness."
+    },
+    {
+      "test_id": "hct",
+      "ranges": {
+        "mild": {
+          "min": 55,
+          "max": 65
+        },
+        "moderate": {
+          "min": 60,
+          "max": 70
+        },
+        "severe": {
+          "min": 65,
+          "max": 75
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Polycythemia (venous hematocrit above 65%) causes hypoglycemia by increased glucose consumption and hyperviscosity."
+    },
+    {
+      "test_id": "plt",
+      "ranges": {
+        "mild": {
+          "min": 100,
+          "max": 150
+        },
+        "moderate": {
+          "min": 50,
+          "max": 100
+        },
+        "severe": {
+          "min": 20,
+          "max": 50
+        },
+        "critical": {
+          "min": 10,
+          "max": 30
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Thrombocytopenia with hypoglycemia raises concern for sepsis or a congenital infection."
+    },
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "mild": {
+          "min": 11.0,
+          "max": 20.0
+        },
+        "moderate": {
+          "min": 18.0,
+          "max": 30.0
+        },
+        "severe": {
+          "min": 25.0,
+          "max": 45.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Leukocytosis or leukopenia supports sepsis, which both causes and complicates hypoglycemia."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "moderate": {
+          "min": 1.0,
+          "max": 5.0
+        },
+        "severe": {
+          "min": 4.0,
+          "max": 15.0
+        },
+        "critical": {
+          "min": 10.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Supports sepsis; may be normal early in neonatal infection."
+    },
+    {
+      "test_id": "tbili",
+      "ranges": {
+        "mild": {
+          "min": 1.3,
+          "max": 8.0
+        },
+        "moderate": {
+          "min": 6.0,
+          "max": 15.0
+        },
+        "severe": {
+          "min": 12.0,
+          "max": 25.0
+        },
+        "critical": {
+          "min": 20.0,
+          "max": 35.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Jaundice with hypoglycemia suggests hemolysis, sepsis or a metabolic disorder."
+    },
+    {
+      "test_id": "csf_glucose",
+      "ranges": {
+        "mild": {
+          "min": 30,
+          "max": 40
+        },
+        "moderate": {
+          "min": 20,
+          "max": 30
+        },
+        "severe": {
+          "min": 10,
+          "max": 20
+        },
+        "critical": {
+          "min": 0,
+          "max": 10
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Low CSF glucose relative to serum supports meningitis; CSF glucose normally runs about two-thirds of serum glucose."
+    },
+    {
+      "test_id": "csf_wbc",
+      "ranges": {
+        "mild": {
+          "min": 6,
+          "max": 20
+        },
+        "moderate": {
+          "min": 15,
+          "max": 100
+        },
+        "severe": {
+          "min": 50,
+          "max": 500
+        },
+        "critical": {
+          "min": 100,
+          "max": 2000
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Pleocytosis supports meningitis or congenital infection as the cause of the hypoglycemia."
+    },
+    {
+      "test_id": "csf_protein",
+      "ranges": {
+        "mild": {
+          "min": 46,
+          "max": 90
+        },
+        "moderate": {
+          "min": 80,
+          "max": 150
+        },
+        "severe": {
+          "min": 120,
+          "max": 300
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Elevated protein accompanies meningitis or congenital infection."
+    }
+  ],
+  "imaging": [
+    {
+      "study": "Cranial ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "Suspected intracranial hemorrhage or hypoxic-ischemic injury in a sick or seizing newborn",
+      "findings": [
+        {
+          "text": "Normal brain parenchyma and no hemorrhage",
+          "frequency": "common"
+        },
+        {
+          "text": "Periventricular or germinal matrix hemorrhage",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Diffuse increased echogenicity of white matter suggesting hypoxic-ischemic injury",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "MRI brain without contrast",
+      "modality": "mri",
+      "preferred_when": "Persistent seizures or suspected hypoglycemic brain injury after glucose is corrected",
+      "findings": [
+        {
+          "text": "Normal brain MRI",
+          "frequency": "common"
+        },
+        {
+          "text": "Bilateral occipital and posterior parietal cortical and white matter injury",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Restricted diffusion in the posterior cerebral regions on diffusion-weighted imaging",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Echocardiogram",
+      "modality": "echo",
+      "preferred_when": "Suspected congenital heart disease or shock with hypoglycemia",
+      "findings": [
+        {
+          "text": "Normal cardiac structure and function",
+          "frequency": "common"
+        },
+        {
+          "text": "Structural congenital heart defect",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Abdominal ultrasound",
+      "modality": "ultrasound",
+      "findings": [
+        {
+          "text": "Normal abdominal organs",
+          "frequency": "common"
+        },
+        {
+          "text": "Adrenal hemorrhage or mass",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "glucose",
+        "why": "Bedside heel-stick glucose is the first test in any symptomatic or at-risk newborn; confirm any low value with a laboratory serum glucose"
+      },
+      {
+        "test": "cbc",
+        "why": "Looks for infection, polycythemia and thrombocytopenia"
+      },
+      {
+        "test": "bmp",
+        "why": "Assesses glucose, electrolytes, calcium and acid-base status"
+      },
+      {
+        "test": "ca",
+        "why": "Hypocalcemia is a common coexisting cause of jitteriness in at-risk infants"
+      },
+      {
+        "test": "mg",
+        "why": "Hypomagnesemia can cause refractory hypocalcemia"
+      },
+      {
+        "test": "lactate",
+        "why": "Screens for sepsis, asphyxia or a metabolic disorder when hypoglycemia is persistent"
+      },
+      {
+        "test": "blood culture",
+        "why": "Ordered with the initial sepsis evaluation in a symptomatic or unstable newborn",
+        "only_if": "sepsis is suspected (ill-appearing, temperature instability, risk factors)"
+      },
+      {
+        "test": "csf",
+        "why": "Lumbar puncture as part of the sepsis evaluation when meningitis is suspected",
+        "only_if": "meningitis or sepsis is suspected and the infant is stable enough for the procedure"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "ammonia",
+        "why": "Confirms an inborn error of metabolism when hypoglycemia is persistent or recurrent despite feeding"
+      },
+      {
+        "test": "cortisol_am",
+        "why": "Confirms adrenal insufficiency when hypoglycemia is refractory with an inappropriately normal cortisol"
+      },
+      {
+        "test": "tsh",
+        "why": "Confirms congenital hypothyroidism when the newborn screen is abnormal or hypoglycemia persists"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "crp",
+        "why": "Supports sepsis as the underlying cause"
+      },
+      {
+        "test": "tbili",
+        "why": "Jaundice with hypoglycemia suggests hemolysis, sepsis or a metabolic disorder"
+      },
+      {
+        "test": "hct",
+        "why": "Polycythemia is a treatable cause of neonatal hypoglycemia"
+      },
+      {
+        "test": "Cranial ultrasound",
+        "why": "Looks for hemorrhage or hypoxic-ischemic injury in a seizing or encephalopathic newborn",
+        "only_if": "seizure, suspected intracranial hemorrhage or hypoxic-ischemic encephalopathy"
+      },
+      {
+        "test": "MRI brain without contrast",
+        "why": "Defines hypoglycemic brain injury after glucose is corrected",
+        "only_if": "persistent seizures or suspected brain injury"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "hcg",
+        "why": "Not applicable in a newborn"
+      },
+      {
+        "test": "a1c",
+        "why": "Reflects long-term glucose control and has no role in the newborn; maternal diabetes is assessed from the mother's history"
+      },
+      {
+        "test": "lipase",
+        "why": "No role in neonatal hypoglycemia"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in neonatal hypoglycemia"
+      },
+      {
+        "test": "Echocardiogram",
+        "why": "Only if congenital heart disease or shock is suspected",
+        "only_if": "suspected congenital heart disease or shock"
+      },
+      {
+        "test": "Abdominal ultrasound",
+        "why": "Only if an adrenal cause is suspected",
+        "only_if": "suspected adrenal hemorrhage or mass"
+      }
+    ],
+    "decision_points": [
+      "Check a bedside glucose in every symptomatic newborn and in all at-risk infants (preterm, small or large for gestational age, infant of a diabetic mother) within the first hours of life",
+      "Confirm any low bedside glucose with a laboratory serum glucose before escalating treatment",
+      "Treat and recheck glucose within 30 minutes of any intervention; persistent or recurrent hypoglycemia needs a broader metabolic and endocrine workup",
+      "Draw the critical metabolic sample (lactate, ammonia, cortisol, insulin) before correcting glucose when an inborn error or hyperinsulinism is suspected",
+      "A seizing or apneic newborn is treated for hypoglycemia immediately while the workup proceeds"
+    ],
+    "criteria": [
+      {
+        "name": "Neonatal hypoglycemia thresholds",
+        "summary": "A newborn is considered hypoglycemic when the blood glucose is below about 45 mg/dL, with lower thresholds and closer monitoring in the first hours of life; values below 25–35 mg/dL are severe and require immediate treatment. Thresholds vary slightly by guideline and by whether the infant is symptomatic.",
+        "items": [
+          "Bedside glucose below 45 mg/dL prompts confirmation and treatment",
+          "Symptomatic infants are treated at any low value",
+          "Persistent or recurrent hypoglycemia after feeding and IV glucose suggests hyperinsulinism or an inborn error of metabolism"
+        ]
+      }
+    ],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Neonatal sepsis",
+      "slug": "neonatal-sepsis",
+      "why_considered": "Sepsis is both a cause and a mimic of neonatal hypoglycemia; both present with lethargy, poor feeding, temperature instability and jitteriness in the first days of life.",
+      "must_not_miss": true,
+      "trigger": "Ill-appearing, unstable temperature, or risk factors for infection (prolonged rupture of membranes, maternal fever, group B streptococcus colonization)",
+      "discriminators": {
+        "history": [
+          "Maternal fever, prolonged rupture of membranes or chorioamnionitis",
+          "Onset of poor feeding and lethargy rather than isolated jitteriness",
+          "Temperature instability (fever or hypothermia)"
+        ],
+        "exam": [
+          "Ill-appearing, mottled or dusky infant",
+          "Tachycardia, tachypnea or apnea",
+          "Signs of shock (poor perfusion, prolonged capillary refill)"
+        ],
+        "labs": [
+          "Leukocytosis or leukopenia with left shift",
+          "Elevated CRP",
+          "Positive blood culture",
+          "Lactic acidosis",
+          "Low CSF glucose with pleocytosis if meningitis"
+        ],
+        "imaging": [
+          "Chest radiograph may show pneumonia"
+        ]
+      }
+    },
+    {
+      "name": "Hypocalcemia of the newborn",
+      "slug": "neonatal-hypocalcemia",
+      "why_considered": "Hypocalcemia causes jitteriness, tremors and irritability that look identical to hypoglycemia and frequently coexists in infants of diabetic mothers, preterm and asphyxiated infants.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Infant of a diabetic mother, preterm or asphyxiated infant",
+          "Jitteriness that persists after feeding and glucose correction"
+        ],
+        "exam": [
+          "Jitteriness and hyperreflexia",
+          "Normal glucose on bedside testing",
+          "May have prolonged QT on ECG"
+        ],
+        "labs": [
+          "Low serum calcium (below about 7 mg/dL in term infants)",
+          "Low or inappropriately normal magnesium",
+          "Normal or near-normal glucose"
+        ],
+        "ecg": [
+          "Prolonged QT interval"
+        ]
+      }
+    },
+    {
+      "name": "Hypoxic-ischemic encephalopathy",
+      "slug": "hypoxic-ischemic-encephalopathy",
+      "why_considered": "Perinatal asphyxia causes lethargy, poor feeding, seizures and hypoglycemia, and is a common cause of neonatal encephalopathy.",
+      "must_not_miss": true,
+      "trigger": "Sentinel event at delivery (shoulder dystocia, cord prolapse, placental abruption), low Apgar scores, or need for resuscitation",
+      "discriminators": {
+        "history": [
+          "Sentinel event at delivery or difficult resuscitation",
+          "Low Apgar scores",
+          "Seizures in the first 24 hours"
+        ],
+        "exam": [
+          "Abnormal tone (hypotonia or hypertonia)",
+          "Depressed or absent reflexes",
+          "Seizures, often subtle"
+        ],
+        "labs": [
+          "Metabolic acidosis with elevated lactate",
+          "Elevated creatinine and liver enzymes",
+          "Hypoglycemia may be present but is not the primary cause"
+        ],
+        "imaging": [
+          "Cranial ultrasound or MRI showing diffuse or posterior cerebral injury",
+          "Restricted diffusion on diffusion-weighted MRI"
+        ]
+      }
+    },
+    {
+      "name": "Inborn error of metabolism",
+      "slug": "inborn-error-of-metabolism",
+      "why_considered": "Disorders of gluconeogenesis, fatty acid oxidation and amino acid metabolism present with persistent or recurrent hypoglycemia, lethargy, vomiting and acidosis that does not resolve with feeding.",
+      "must_not_miss": true,
+      "trigger": "Hypoglycemia that persists or recurs despite feeding and IV glucose, especially with vomiting, acidosis or a family history of neonatal death",
+      "discriminators": {
+        "history": [
+          "Consanguinity or family history of neonatal death or metabolic disease",
+          "Symptoms worsen with fasting or illness",
+          "Vomiting and poor feeding"
+        ],
+        "exam": [
+          "Lethargy progressing to coma",
+          "Hepatomegaly",
+          "Abnormal odor (e.g., maple syrup, sweaty feet)"
+        ],
+        "labs": [
+          "Persistent hypoglycemia despite glucose administration",
+          "Metabolic acidosis with elevated lactate",
+          "Hyperammonemia",
+          "Low or inappropriately normal cortisol",
+          "Abnormal newborn screen or plasma acylcarnitine profile"
+        ]
+      }
+    },
+    {
+      "name": "Congenital adrenal hyperplasia",
+      "slug": "congenital-adrenal-hyperplasia",
+      "why_considered": "Adrenal insufficiency causes hypoglycemia, lethargy, poor feeding and shock in the newborn period.",
+      "must_not_miss": true,
+      "trigger": "Hypoglycemia with hypotension, hyponatremia, hyperkalemia or ambiguous genitalia",
+      "discriminators": {
+        "history": [
+          "Family history of congenital adrenal hyperplasia",
+          "Progressive lethargy and poor feeding over the first weeks",
+          "Vomiting"
+        ],
+        "exam": [
+          "Ambiguous genitalia in a 46,XX infant",
+          "Hypotension and poor perfusion",
+          "Hyperpigmentation"
+        ],
+        "labs": [
+          "Hyponatremia and hyperkalemia",
+          "Low cortisol with elevated ACTH",
+          "Elevated 17-hydroxyprogesterone"
+        ]
+      }
+    },
+    {
+      "name": "Polycythemia of the newborn",
+      "slug": "neonatal-polycythemia",
+      "why_considered": "Increased red cell mass causes hypoglycemia through increased glucose consumption and hyperviscosity, and presents with jitteriness, lethargy and poor feeding.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Infant of a diabetic mother, twin-twin transfusion, or delayed cord clamping",
+          "Plethora and poor feeding"
+        ],
+        "exam": [
+          "Ruddy or plethoric skin",
+          "Tachycardia and tachypnea",
+          "May have seizures"
+        ],
+        "labs": [
+          "Venous hematocrit above 65%",
+          "Hypoglycemia",
+          "Normal or low platelet count"
+        ]
+      }
+    },
+    {
+      "name": "Congenital hypothyroidism",
+      "slug": "congenital-hypothyroidism",
+      "why_considered": "Congenital hypothyroidism can present with hypoglycemia, lethargy, poor feeding, hypothermia and prolonged jaundice in the newborn period.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Prolonged jaundice",
+          "Constipation",
+          "Large fontanelle and macroglossia"
+        ],
+        "exam": [
+          "Hypothermia",
+          "Bradycardia",
+          "Umbilical hernia",
+          "Hypotonia"
+        ],
+        "labs": [
+          "Elevated TSH with low free T4",
+          "Hypoglycemia",
+          "Elevated bilirubin"
+        ]
+      }
+    },
+    {
+      "name": "Congenital heart disease",
+      "slug": "congenital-heart-disease",
+      "why_considered": "Critical congenital heart disease can present with shock, poor feeding, lethargy and hypoglycemia in the first days of life.",
+      "must_not_miss": true,
+      "trigger": "Cyanosis, murmur, weak pulses, or differential cyanosis with shock",
+      "discriminators": {
+        "history": [
+          "Antenatal diagnosis of cardiac defect",
+          "Poor feeding and sweating with feeds",
+          "Cyanosis noted at home or in the nursery"
+        ],
+        "exam": [
+          "Murmur",
+          "Weak or absent femoral pulses",
+          "Cyanosis or differential cyanosis",
+          "Hepatomegaly"
+        ],
+        "labs": [
+          "Hypoglycemia may be present",
+          "Metabolic acidosis",
+          "Hyperoxia test fails to raise PaO2"
+        ],
+        "imaging": [
+          "Echocardiogram showing structural defect"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Asymptomatic or mildly jittery infant with a bedside glucose of 45–54 mg/dL; feeding well and otherwise well-appearing",
+      "moderate": "Lethargic, difficult to arouse for feeds, jittery when handled, with a glucose of 36–45 mg/dL; may have hypothermia or pallor",
+      "severe": "Poorly responsive, hypotonic, pale and sweaty, or with a seizure; glucose 25–36 mg/dL",
+      "critical": "Unresponsive or actively seizing, apneic, pale and mottled with glucose below 25 mg/dL; risk of hypoglycemic brain injury"
+    },
+    "red_flags": [
+      {
+        "finding": "Seizure or apnea",
+        "meaning": "Severe hypoglycemia with risk of brain injury; treat immediately and confirm glucose"
+      },
+      {
+        "finding": "Glucose below 25 mg/dL",
+        "meaning": "Critical hypoglycemia requiring immediate IV dextrose"
+      },
+      {
+        "finding": "Persistent or recurrent hypoglycemia despite feeding and IV glucose",
+        "meaning": "Suggests hyperinsulinism or an inborn error of metabolism; needs a metabolic workup"
+      },
+      {
+        "finding": "Ill-appearing, mottled or hypotensive infant",
+        "meaning": "Consider sepsis, congenital heart disease or adrenal insufficiency"
+      },
+      {
+        "finding": "Vomiting, acidosis or hyperammonemia",
+        "meaning": "Points to an inborn error of metabolism"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Hypoglycemic brain injury",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Prolonged or recurrent severe hypoglycemia",
+          "Seizures",
+          "Bilateral occipital and posterior parietal injury on MRI"
+        ]
+      },
+      {
+        "name": "Seizures",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Glucose below 25–35 mg/dL",
+          "Subtle motor automatisms or eye deviation"
+        ]
+      },
+      {
+        "name": "Developmental delay or neurodevelopmental impairment",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "History of severe or recurrent neonatal hypoglycemia",
+          "Abnormal neuroimaging"
+        ]
+      },
+      {
+        "name": "Recurrent hypoglycemia",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Hypoglycemia recurring after feeding and IV glucose",
+          "Underlying hyperinsulinism or metabolic disorder"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "infants",
+        "differences": "Preterm and small-for-gestational-age infants may have no classic signs and are detected only by screening glucose; symptoms can be subtle such as temperature instability or apnea. Thresholds are lower in the first hours of life and in preterm infants."
+      },
+      {
+        "population": "children",
+        "differences": "Not applicable; this condition occurs in newborns."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Maternal diabetes, beta-blocker or corticosteroid use near delivery increases the risk of neonatal hypoglycemia; infants of diabetic mothers are screened closely."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "When did the symptoms start, and how old is the baby now?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Onset within the first hours to 48 hours of life, consistent with the typical timing of neonatal hypoglycemia"
+      },
+      {
+        "question": "What exactly have you noticed — jitteriness, sleepiness, poor feeding, sweating, or a change in skin color?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Neurologic and autonomic signs such as jitteriness, lethargy, poor feeding, sweating or pallor"
+      },
+      {
+        "question": "Does the jitteriness stop when you gently hold the limb still?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Tremor suppressed by gentle restraint, which favors jitteriness over a true seizure"
+      },
+      {
+        "question": "Has the baby had any episodes of stiffening, eye deviation, lip smacking or cycling movements?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Subtle or overt seizures, which indicate severe hypoglycemia and risk of brain injury"
+      },
+      {
+        "question": "Has the baby had any pauses in breathing or turned blue?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Apnea, which occurs with severe hypoglycemia and also suggests sepsis"
+      },
+      {
+        "question": "How has feeding been going — is the baby waking for feeds and taking them well?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Poor feeding or difficulty arousing for feeds, a common presenting sign and a cause of worsening hypoglycemia"
+      },
+      {
+        "question": "How many weeks was the baby born, and what was the birth weight?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Preterm birth, small for gestational age or large for gestational age, all strong risk factors"
+      },
+      {
+        "question": "Did you have diabetes during pregnancy, and how was it managed?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Infant of a diabetic mother, the classic risk factor for neonatal hypoglycemia"
+      },
+      {
+        "question": "Were there any problems around delivery — a difficult delivery, low Apgar scores, or a need for resuscitation?",
+        "category": "obstetric",
+        "importance": "important",
+        "looking_for": "Perinatal stress or asphyxia, which causes hypoglycemia and hypoxic-ischemic encephalopathy"
+      },
+      {
+        "question": "Was the baby's temperature checked — has it been low?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Hypothermia, which both accompanies and worsens hypoglycemia and suggests sepsis"
+      },
+      {
+        "question": "Has the baby been ill-appearing, mottled, or felt cool and clammy?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Signs of sepsis or shock, which must not be missed as a cause or complication"
+      },
+      {
+        "question": "What medications were you taking near the end of pregnancy, especially for blood pressure or to mature the baby's lungs?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Maternal beta-blockers or corticosteroids, which increase the risk of neonatal hypoglycemia"
+      },
+      {
+        "question": "Is there any family history of low blood sugar in newborns, metabolic disease, or a baby who died in the newborn period?",
+        "category": "family",
+        "importance": "important",
+        "looking_for": "An inborn error of metabolism or a familial form of hyperinsulinism"
+      },
+      {
+        "question": "Has the baby been vomiting or having any diarrhea?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Vomiting suggests an inborn error of metabolism; diarrhea is uncommon and argues against it"
+      },
+      {
+        "question": "Has the baby had a fever or been unusually warm?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Fever or temperature instability, which raises concern for sepsis"
+      }
+    ],
+    "accepted_names": [
+      "Neonatal hypoglycemia",
+      "Hypoglycemia of the newborn",
+      "Low blood sugar in the newborn",
+      "Neonatal low blood glucose"
+    ],
+    "reasoning_points": [
+      "The infant is in the first hours to days of life, the typical window for neonatal hypoglycemia",
+      "Symptoms are neurologic and autonomic — jitteriness, lethargy, poor feeding, sweating, pallor, hypothermia — and are nonspecific",
+      "There is a strong risk factor such as maternal diabetes, prematurity, small or large for gestational age, or perinatal stress",
+      "A bedside heel-stick glucose is low (below about 45 mg/dL) and is confirmed with a laboratory serum glucose",
+      "The jitteriness is suppressed by gentle restraint, distinguishing it from a true seizure",
+      "Symptoms improve after feeding or glucose administration, supporting hypoglycemia as the cause",
+      "Persistent or recurrent hypoglycemia after feeding and IV glucose points to hyperinsulinism or an inborn error of metabolism",
+      "Look-alikes such as sepsis, hypocalcemia, hypoxic-ischemic encephalopathy, congenital heart disease and adrenal insufficiency are considered and excluded"
+    ],
+    "difficulty": {
+      "easy": [
+        "Infant of a diabetic mother in the first 24 hours of life",
+        "Classic jitteriness and poor feeding",
+        "Bedside glucose clearly low and confirmed on serum glucose",
+        "Symptoms resolve after feeding or IV dextrose"
+      ],
+      "medium": [
+        "Preterm or small-for-gestational-age infant with subtle signs such as temperature instability or apnea",
+        "Jitteriness that persists after glucose correction, suggesting coexisting hypocalcemia",
+        "Large-for-gestational-age infant with a normal exam but an abnormal screening glucose",
+        "Infant with polycythemia and hypoglycemia"
+      ],
+      "hard": [
+        "Asymptomatic at-risk infant detected only by protocol screening",
+        "Persistent or recurrent hypoglycemia despite feeding and IV glucose, suggesting hyperinsulinism or an inborn error of metabolism",
+        "Ill-appearing infant with hypoglycemia and shock, where sepsis or congenital heart disease is the real problem",
+        "Seizing newborn with subtle motor automatisms mistaken for benign jitteriness",
+        "Infant with hypoglycemia, vomiting and acidosis pointing to a metabolic disorder"
+      ]
+    }
+  }
+}

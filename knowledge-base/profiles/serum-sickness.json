@@ -1,0 +1,1292 @@
+{
+  "schema_version": "0.2",
+  "slug": "serum-sickness",
+  "triage": {
+    "name": "Serum sickness",
+    "case_suitable": true,
+    "reason": "Fever, urticaria, arthralgias and lymphadenopathy days after a new drug; classic immune-complex reaction reachable by exposure history and exam.",
+    "kind": "disease",
+    "category": "immune complex hypersensitivity",
+    "organ_systems": [
+      "blood",
+      "musculoskeletal"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "emergency",
+      "familyMedicine",
+      "pediatrics"
+    ],
+    "commonness": "rare",
+    "settings": [
+      "clinic",
+      "emergency",
+      "inpatient"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:24:24Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:50:19Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:50:34Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:50:44Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:50:56Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:51:02Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'c3' to 'C3'",
+        "auto-repaired: workup: renamed 'c4' to 'C4'",
+        "auto-repaired: workup: renamed 'ana' to 'ANA'",
+        "auto-repaired: workup: renamed 'rf' to 'RF'",
+        "auto-repaired: workup: renamed 'anti_ccp' to 'Anti ccp'",
+        "auto-repaired: labs: dropped 'c3' (not in the reference table)",
+        "auto-repaired: labs: dropped 'c4' (not in the reference table)",
+        "exam: term 'Cardiac murmur' not found in SNOMED CT",
+        "exam: term 'Neurological examination normal' not found in SNOMED CT",
+        "differential anaphylaxis: no profile yet",
+        "differential urticarial-vasculitis: no profile yet",
+        "differential acute-rheumatic-fever: no profile yet",
+        "differential infective-endocarditis: no profile yet",
+        "differential viral-exanthem: no profile yet",
+        "differential systemic-lupus-erythematosus: no profile yet",
+        "differential adult-onset-still-disease: no profile yet",
+        "differential disseminated-gonococcal-infection: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 20,
+      "typical_max": 60,
+      "peak": "20–40",
+      "possible_min": 1,
+      "possible_max": 90
+    },
+    "sex": "either",
+    "demographics": [
+      "No consistent sex predominance",
+      "Can occur at any age after exposure to the trigger"
+    ],
+    "risk_factors": [
+      {
+        "text": "Recent exposure to a new medication, especially beta-lactam antibiotics",
+        "strength": "strong"
+      },
+      {
+        "text": "Exposure to foreign serum or antivenom",
+        "strength": "strong"
+      },
+      {
+        "text": "Prior sensitization to the same agent",
+        "strength": "moderate"
+      },
+      {
+        "text": "Higher dose or longer duration of the offending drug",
+        "strength": "moderate"
+      }
+    ],
+    "comorbidities": [],
+    "family_history": [],
+    "social_history": [],
+    "exposures": [
+      "Beta-lactam antibiotics (penicillins, cephalosporins)",
+      "Sulfonamides",
+      "Antivenom or snake antivenom",
+      "Monoclonal antibodies",
+      "Other foreign proteins or drugs"
+    ],
+    "risk_medications": [
+      "penicillin",
+      "amoxicillin",
+      "cephalexin",
+      "cefaclor",
+      "sulfamethoxazole",
+      "trimethoprim",
+      "minocycline",
+      "bupropion",
+      "allopurinol",
+      "infliximab",
+      "rituximab",
+      "omalizumab"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I have a fever and a rash that started a few days ago",
+        "frequency": "almost_always",
+        "term": "Fever",
+        "snomed_verified": true
+      },
+      {
+        "text": "My joints are really aching",
+        "frequency": "common",
+        "term": "Arthralgia",
+        "snomed_verified": true
+      },
+      {
+        "text": "I feel itchy all over",
+        "frequency": "common",
+        "term": "Pruritus",
+        "snomed_verified": true
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual, typically 1–2 weeks after starting the offending medication or exposure",
+      "duration": "Symptoms usually last 1–2 weeks after stopping the trigger",
+      "progression": "Fever and rash appear first, followed by joint pain and swelling; symptoms resolve gradually once the trigger is removed",
+      "location": "Rash often starts on the trunk or at the injection site and spreads; joint pain is symmetric and affects multiple joints",
+      "radiation": "Joint pain does not radiate",
+      "quality": "Rash is itchy and raised; joint pain is aching and stiff",
+      "severity": "Moderate; fever can be high, joint pain can limit movement",
+      "timing": "Continuous fever; rash and joint pain persist until the trigger is cleared",
+      "aggravating": [
+        "Continued exposure to the trigger",
+        "Movement of affected joints"
+      ],
+      "relieving": [
+        "Stopping the offending medication",
+        "Antihistamines for itching",
+        "NSAIDs for joint pain"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Fever",
+          "frequency": "almost_always",
+          "term": "Fever",
+          "snomed_verified": true
+        },
+        {
+          "text": "Itchy raised rash",
+          "frequency": "almost_always",
+          "term": "Urticaria",
+          "snomed_verified": true
+        },
+        {
+          "text": "Joint pain",
+          "frequency": "common",
+          "term": "Arthralgia",
+          "snomed_verified": true
+        },
+        {
+          "text": "Swollen lymph nodes",
+          "frequency": "common",
+          "term": "Lymphadenopathy",
+          "snomed_verified": true
+        },
+        {
+          "text": "Swelling of the face or lips",
+          "frequency": "sometimes",
+          "term": "Angioedema",
+          "snomed_verified": true
+        },
+        {
+          "text": "Nausea",
+          "frequency": "sometimes",
+          "term": "Nausea",
+          "snomed_verified": true
+        },
+        {
+          "text": "Abdominal pain",
+          "frequency": "sometimes",
+          "term": "Abdominal pain",
+          "snomed_verified": true
+        },
+        {
+          "text": "Headache",
+          "frequency": "sometimes",
+          "term": "Headache",
+          "snomed_verified": true
+        }
+      ],
+      "pertinent_negatives": [
+        "Recent tick bite or erythema migrans",
+        "Recent sore throat or streptococcal infection",
+        "Joint pain that is monoarticular or migratory",
+        "Rash that is petechial or purpuric",
+        "Recent travel to an area with endemic dengue or chikungunya",
+        "No new medication or foreign protein exposure"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fever",
+            "frequency": "almost_always",
+            "term": "Fever",
+            "snomed_verified": true
+          },
+          {
+            "text": "Fatigue",
+            "frequency": "common",
+            "term": "Fatigue",
+            "snomed_verified": true
+          },
+          {
+            "text": "Malaise",
+            "frequency": "common",
+            "term": "Malaise",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Weight loss",
+          "Night sweats"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [
+          {
+            "text": "Itchy raised rash",
+            "frequency": "almost_always",
+            "term": "Urticaria",
+            "snomed_verified": true
+          },
+          {
+            "text": "Itching",
+            "frequency": "common",
+            "term": "Pruritus",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Petechiae",
+          "Purpura",
+          "Skin necrosis"
+        ],
+        "argues_against": [
+          "Petechial or purpuric rash"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Joint pain",
+            "frequency": "common",
+            "term": "Arthralgia",
+            "snomed_verified": true
+          },
+          {
+            "text": "Joint swelling",
+            "frequency": "sometimes",
+            "term": "Joint swelling",
+            "snomed_verified": true
+          },
+          {
+            "text": "Muscle pain",
+            "frequency": "sometimes",
+            "term": "Myalgia",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Joint deformity",
+          "Morning stiffness lasting more than an hour"
+        ],
+        "argues_against": [
+          "Chronic symmetric small joint arthritis"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Nausea",
+            "frequency": "sometimes",
+            "term": "Nausea",
+            "snomed_verified": true
+          },
+          {
+            "text": "Abdominal pain",
+            "frequency": "sometimes",
+            "term": "Abdominal pain",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Vomiting blood",
+          "Bloody diarrhea",
+          "Jaundice"
+        ],
+        "argues_against": [
+          "Severe abdominal pain with peritoneal signs"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Headache",
+            "frequency": "sometimes",
+            "term": "Headache",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Confusion",
+          "Seizure",
+          "Focal weakness"
+        ],
+        "argues_against": [
+          "Altered mental status"
+        ]
+      },
+      {
+        "system": "allergic_immunologic",
+        "positives": [
+          {
+            "text": "Swelling of the face or lips",
+            "frequency": "sometimes",
+            "term": "Angioedema",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Wheezing",
+          "Stridor",
+          "Hypotension"
+        ],
+        "argues_against": [
+          "Anaphylaxis"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Children may present with fever, rash and irritability without clearly describing joint pain; lymphadenopathy and rash may be more prominent.",
+        "missing_classic_features": [
+          "Arthralgia",
+          "Clear temporal relationship to a new medication"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "Fever and rash may be less pronounced, and joint pain may be attributed to underlying osteoarthritis.",
+        "missing_classic_features": [
+          "High fever",
+          "Prominent urticaria"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "The immune-complex reaction may be blunted, with milder or atypical rash and less fever.",
+        "missing_classic_features": [
+          "Urticaria",
+          "Fever"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Well-appearing, mildly uncomfortable, afebrile or low-grade fever, able to move about",
+      "moderate": "Ill-appearing but not toxic, febrile, itchy and uncomfortable, moves cautiously because of joint pain",
+      "severe": "Toxic-appearing, high fever, visibly distressed by itching and joint pain, prefers to lie still",
+      "critical": "Very ill-appearing, diaphoretic, hypotensive or in respiratory distress from airway swelling"
+    },
+    "findings": [
+      {
+        "id": "urticaria",
+        "region": "skin",
+        "maneuver": "Inspect the skin over the trunk, extremities and at the injection or exposure site",
+        "finding": "Raised, blanching, erythematous wheals that may coalesce and migrate",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Urticaria",
+        "snomed_verified": true
+      },
+      {
+        "id": "dermatographism",
+        "region": "skin",
+        "maneuver": "Stroke the skin firmly with a blunt object or fingernail",
+        "finding": "A raised linear wheal appears along the stroke line",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Dermatographia",
+        "snomed_verified": true
+      },
+      {
+        "id": "fever-exam",
+        "region": "general",
+        "maneuver": "Measure the temperature and assess for rigors or sweating",
+        "finding": "Elevated temperature, often with chills or sweats",
+        "frequency": "almost_always",
+        "significance": "supports",
+        "importance": "essential",
+        "term": "Fever",
+        "snomed_verified": true
+      },
+      {
+        "id": "lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the cervical, axillary and inguinal lymph node basins",
+        "finding": "Tender, enlarged, mobile lymph nodes, often generalized",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Lymphadenopathy",
+        "snomed_verified": true
+      },
+      {
+        "id": "joint-tenderness",
+        "region": "musculoskeletal",
+        "maneuver": "Palpate and passively move the wrists, knees, ankles and small joints of the hands",
+        "finding": "Tenderness on palpation and with passive range of motion in multiple joints",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "essential",
+        "term": "Joint tenderness",
+        "snomed_verified": true
+      },
+      {
+        "id": "joint-swelling",
+        "region": "musculoskeletal",
+        "maneuver": "Inspect and palpate the affected joints for effusion or soft tissue swelling",
+        "finding": "Mild symmetric soft tissue swelling or effusion without deformity",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Joint swelling",
+        "snomed_verified": true
+      },
+      {
+        "id": "angioedema",
+        "region": "heent",
+        "maneuver": "Inspect the lips, tongue, periorbital area and oropharynx",
+        "finding": "Non-pitting swelling of the lips, eyelids or face",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Angioedema",
+        "snomed_verified": true
+      },
+      {
+        "id": "abdominal-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen in all four quadrants",
+        "finding": "Mild diffuse abdominal tenderness without guarding or rebound",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Abdominal tenderness",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-murmur",
+        "region": "cardiac",
+        "maneuver": "Auscultate the heart at the apex and base",
+        "finding": "No new murmur or rub",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Cardiac murmur",
+        "snomed_verified": false
+      },
+      {
+        "id": "no-rales",
+        "region": "lung",
+        "maneuver": "Auscultate the lungs bilaterally",
+        "finding": "Clear breath sounds without crackles or wheeze",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Rales",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-stridor",
+        "region": "neck",
+        "maneuver": "Listen over the neck and assess the voice and breathing",
+        "finding": "No stridor or hoarseness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Stridor",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-purpura",
+        "region": "skin",
+        "maneuver": "Inspect the skin for non-blanching lesions",
+        "finding": "No petechiae or purpura",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Purpura",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-focal-neurologic-deficit",
+        "region": "neuro",
+        "maneuver": "Perform a brief neurologic screen including strength, sensation and cranial nerves",
+        "finding": "No focal weakness, sensory loss or cranial nerve abnormality",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Neurological examination normal",
+        "snomed_verified": false
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 98.6,
+        "max": 100.4
+      },
+      "moderate": {
+        "min": 100.0,
+        "max": 102.0
+      },
+      "severe": {
+        "min": 101.5,
+        "max": 103.5
+      },
+      "critical": {
+        "min": 102.0,
+        "max": 104.5
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 70,
+        "max": 100
+      },
+      "moderate": {
+        "min": 90,
+        "max": 115
+      },
+      "severe": {
+        "min": 105,
+        "max": 130
+      },
+      "critical": {
+        "min": 120,
+        "max": 150
+      }
+    },
+    "rr": {
+      "severe": {
+        "min": 18,
+        "max": 24
+      },
+      "critical": {
+        "min": 22,
+        "max": 32
+      }
+    },
+    "sbp": {
+      "critical": {
+        "min": 75,
+        "max": 95
+      }
+    },
+    "dbp": {
+      "critical": {
+        "min": 40,
+        "max": 60
+      }
+    },
+    "spo2": {
+      "critical": {
+        "min": 88,
+        "max": 94
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "esr",
+      "ranges": {
+        "mild": {
+          "min": 20,
+          "max": 40
+        },
+        "moderate": {
+          "min": 35,
+          "max": 60
+        },
+        "severe": {
+          "min": 50,
+          "max": 90
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Nonspecific; supports an inflammatory process but does not confirm serum sickness."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "mild": {
+          "min": 1.0,
+          "max": 3.0
+        },
+        "moderate": {
+          "min": 2.5,
+          "max": 8.0
+        },
+        "severe": {
+          "min": 6.0,
+          "max": 15.0
+        }
+      },
+      "frequency": "common",
+      "importance": "optional",
+      "caveat": "Nonspecific acute-phase reactant; useful for tracking but not diagnostic."
+    },
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "mild": {
+          "min": 11.0,
+          "max": 14.0
+        },
+        "moderate": {
+          "min": 13.0,
+          "max": 18.0
+        },
+        "severe": {
+          "min": 16.0,
+          "max": 22.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Mild leukocytosis is common; marked leukocytosis or left shift should prompt consideration of infection."
+    },
+    {
+      "test_id": "eos_pct",
+      "ranges": {
+        "mild": {
+          "min": 4,
+          "max": 8
+        },
+        "moderate": {
+          "min": 6,
+          "max": 12
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Eosinophilia is inconsistent and not required for diagnosis."
+    },
+    {
+      "test_id": "plt",
+      "ranges": {
+        "mild": {
+          "min": 120,
+          "max": 150
+        },
+        "moderate": {
+          "min": 90,
+          "max": 140
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Mild thrombocytopenia can occur; severe thrombocytopenia suggests another diagnosis."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "mild": {
+          "min": 1.1,
+          "max": 1.5
+        },
+        "moderate": {
+          "min": 1.4,
+          "max": 2.2
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 4.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Rises with immune-complex glomerulonephritis; check urine for protein and blood if elevated."
+    },
+    {
+      "test_id": "ua_protein",
+      "qualitative": {
+        "mild": "Trace",
+        "moderate": "1+",
+        "severe": "2+"
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Proteinuria suggests renal involvement; quantify with urine protein-to-creatinine ratio if present."
+    },
+    {
+      "test_id": "ua_blood",
+      "qualitative": {
+        "mild": "Trace",
+        "moderate": "1+",
+        "severe": "2+"
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hematuria with proteinuria raises concern for glomerulonephritis."
+    }
+  ],
+  "imaging": [
+    {
+      "study": "Chest x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Usually normal; no infiltrate, effusion or cardiomegaly",
+          "frequency": "almost_always"
+        }
+      ]
+    },
+    {
+      "study": "Echocardiogram",
+      "modality": "echo",
+      "findings": [
+        {
+          "text": "Normal valves and systolic function; no vegetation or pericardial effusion",
+          "frequency": "almost_always"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Assesses for leukocytosis, eosinophilia and thrombocytopenia"
+      },
+      {
+        "test": "bmp",
+        "why": "Checks renal function for immune-complex glomerulonephritis"
+      },
+      {
+        "test": "ua",
+        "why": "Screens for proteinuria and hematuria from renal involvement"
+      },
+      {
+        "test": "esr",
+        "why": "Supports an inflammatory process"
+      },
+      {
+        "test": "crp",
+        "why": "Adds an acute-phase marker and helps track response"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "C3",
+        "why": "Low complement supports immune-complex consumption",
+        "only_if": "renal or systemic features are prominent"
+      },
+      {
+        "test": "C4",
+        "why": "Low C4 with low C3 further supports immune-complex disease",
+        "only_if": "renal or systemic features are prominent"
+      },
+      {
+        "test": "Chest x-ray",
+        "why": "Looks for an alternative cause of fever and rash such as pneumonia",
+        "only_if": "respiratory symptoms or hypoxia are present"
+      },
+      {
+        "test": "Echocardiogram",
+        "why": "Excludes endocarditis when a murmur or persistent fever is present",
+        "only_if": "a new murmur or risk factors for endocarditis are present"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "blood cultures",
+        "why": "Not routinely needed unless infection is suspected"
+      },
+      {
+        "test": "ANA",
+        "why": "Not indicated for acute post-drug fever, rash and arthralgia"
+      },
+      {
+        "test": "RF",
+        "why": "Not indicated for acute symmetric polyarthralgia without chronic synovitis"
+      },
+      {
+        "test": "Anti ccp",
+        "why": "Not indicated for acute post-drug arthralgia"
+      },
+      {
+        "test": "skin biopsy",
+        "why": "Rarely changes management; histology is nonspecific"
+      },
+      {
+        "test": "serum protein electrophoresis",
+        "why": "No role in acute serum sickness"
+      }
+    ],
+    "decision_points": [
+      "Diagnosis is clinical: recent exposure to a drug or foreign protein plus fever, urticaria and arthralgia 1–2 weeks later",
+      "Stop the offending agent; symptoms usually resolve within 1–2 weeks",
+      "Check urine protein and creatinine to detect immune-complex glomerulonephritis",
+      "Consider infection (endocarditis, viral exanthem) when fever is high or a murmur is present"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Anaphylaxis",
+      "slug": "anaphylaxis",
+      "why_considered": "Both follow drug or foreign protein exposure and cause urticaria, angioedema and systemic symptoms.",
+      "must_not_miss": true,
+      "trigger": "Urticaria with hypotension, wheeze, stridor or airway swelling minutes to hours after exposure",
+      "discriminators": {
+        "history": [
+          "Onset within minutes to a few hours of exposure, not 1–2 weeks later",
+          "Rapidly progressive difficulty breathing or throat tightness",
+          "Prior immediate reaction to the same agent"
+        ],
+        "exam": [
+          "Hypotension or tachycardia disproportionate to fever",
+          "Wheeze, stridor or hoarseness",
+          "No significant fever or polyarthralgia"
+        ],
+        "labs": [
+          "Serum tryptase may be elevated acutely",
+          "No immune-complex features such as low complement"
+        ],
+        "imaging": [
+          "Chest x-ray usually normal; no role in diagnosis"
+        ]
+      }
+    },
+    {
+      "name": "Urticarial vasculitis",
+      "slug": "urticarial-vasculitis",
+      "why_considered": "Persistent urticarial wheals with fever and arthralgia can mimic serum sickness.",
+      "must_not_miss": true,
+      "trigger": "Individual wheals that last more than 24 hours, burn more than itch, and leave bruising or discoloration",
+      "discriminators": {
+        "history": [
+          "Wheals persist in the same location for more than 24 hours",
+          "Lesions are painful or burning and may leave residual purpura or hyperpigmentation",
+          "Often no clear new drug exposure"
+        ],
+        "exam": [
+          "Wheals with purpuric or dusky centers",
+          "May have systemic findings such as renal or pulmonary involvement"
+        ],
+        "labs": [
+          "Low complement (C3, C4) is common",
+          "Elevated ESR and CRP",
+          "Urinalysis may show proteinuria or hematuria"
+        ],
+        "imaging": [
+          "Chest x-ray may show pulmonary involvement in hypocomplementemic disease"
+        ]
+      }
+    },
+    {
+      "name": "Acute rheumatic fever",
+      "slug": "acute-rheumatic-fever",
+      "why_considered": "Fever, migratory polyarthritis and rash after a preceding infection.",
+      "must_not_miss": true,
+      "trigger": "Migratory large-joint arthritis 2–4 weeks after pharyngitis, with evidence of recent streptococcal infection",
+      "discriminators": {
+        "history": [
+          "Preceding sore throat 2–4 weeks earlier",
+          "Migratory arthritis of large joints",
+          "No new medication exposure"
+        ],
+        "exam": [
+          "Erythema marginatum, subcutaneous nodules or chorea",
+          "New or changing cardiac murmur"
+        ],
+        "labs": [
+          "Elevated or rising antistreptolysin O or anti-DNase B",
+          "Positive rapid streptococcal antigen or throat culture",
+          "Markers of inflammation elevated"
+        ],
+        "imaging": [
+          "Echocardiogram may show valvular regurgitation or thickening"
+        ]
+      }
+    },
+    {
+      "name": "Infective endocarditis",
+      "slug": "infective-endocarditis",
+      "why_considered": "Fever, rash and arthralgia with a new murmur can overlap with serum sickness.",
+      "must_not_miss": true,
+      "trigger": "Persistent fever with a new murmur, embolic phenomena or risk factors such as injection drug use or prosthetic valves",
+      "discriminators": {
+        "history": [
+          "Risk factors for bacteremia (injection drug use, indwelling lines, valvular disease)",
+          "Night sweats, weight loss, malaise over weeks",
+          "No temporal link to a new medication"
+        ],
+        "exam": [
+          "New or changing cardiac murmur",
+          "Splinter hemorrhages, Janeway lesions, Osler nodes or Roth spots",
+          "Splenomegaly"
+        ],
+        "labs": [
+          "Positive blood cultures",
+          "Anemia and elevated inflammatory markers",
+          "Urinalysis may show hematuria from immune-complex glomerulonephritis"
+        ],
+        "imaging": [
+          "Echocardiogram showing vegetations or valve destruction"
+        ]
+      }
+    },
+    {
+      "name": "Viral exanthem",
+      "slug": "viral-exanthem",
+      "why_considered": "Fever and a widespread rash are common in viral illnesses and can be mistaken for a drug reaction.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Prodromal upper respiratory or gastrointestinal symptoms",
+          "Sick contacts or seasonal pattern",
+          "Rash often maculopapular rather than urticarial"
+        ],
+        "exam": [
+          "Pharyngitis, conjunctivitis or lymphadenopathy",
+          "Rash blanching and morbilliform rather than raised wheals"
+        ],
+        "labs": [
+          "Leukopenia or lymphocytosis rather than leukocytosis",
+          "Specific viral testing when indicated"
+        ]
+      }
+    },
+    {
+      "name": "Systemic lupus erythematosus",
+      "slug": "systemic-lupus-erythematosus",
+      "why_considered": "Fever, rash, arthralgia and lymphadenopathy with immune-complex features can resemble serum sickness.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Chronic or recurrent symptoms over months",
+          "Photosensitivity, oral ulcers, Raynaud phenomenon",
+          "No clear single new drug trigger"
+        ],
+        "exam": [
+          "Malar or discoid rash",
+          "Oral ulcers, alopecia, serositis"
+        ],
+        "labs": [
+          "Positive ANA and anti-double-stranded DNA",
+          "Low complement during flares",
+          "Cytopenias"
+        ]
+      }
+    },
+    {
+      "name": "Still disease (adult-onset)",
+      "slug": "adult-onset-still-disease",
+      "why_considered": "High fever, evanescent rash and polyarthralgia are shared features.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Daily spiking fevers with a salmon-colored rash that appears with fever",
+          "Symptoms persist for weeks without a drug trigger"
+        ],
+        "exam": [
+          "Evanescent rash on trunk and extremities",
+          "Arthritis and lymphadenopathy"
+        ],
+        "labs": [
+          "Very high ferritin",
+          "Elevated ESR and CRP",
+          "Negative rheumatoid factor and ANA"
+        ]
+      }
+    },
+    {
+      "name": "Disseminated gonococcal infection",
+      "slug": "disseminated-gonococcal-infection",
+      "why_considered": "Fever, rash and polyarthralgia in a sexually active patient.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "New or multiple sexual partners",
+          "Migratory polyarthralgia with tenosynovitis",
+          "No new medication exposure"
+        ],
+        "exam": [
+          "Pustular rash on distal extremities",
+          "Tenosynovitis and monoarticular arthritis"
+        ],
+        "labs": [
+          "Positive nucleic acid amplification testing for gonorrhea",
+          "Positive cultures from blood, joint or mucosal sites"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Low-grade fever, limited urticaria and mild arthralgia; patient is comfortable and able to carry out daily activities.",
+      "moderate": "Prominent urticaria with itching, fever, symmetric polyarthralgia and lymphadenopathy; discomfort limits activity but no organ involvement.",
+      "severe": "High fever, extensive or coalescing urticaria, significant joint swelling, angioedema or evidence of renal involvement such as proteinuria or rising creatinine.",
+      "critical": "Airway compromise from angioedema, hypotension, or rapidly progressive glomerulonephritis with renal failure."
+    },
+    "red_flags": [
+      {
+        "finding": "Stridor, hoarseness or difficulty swallowing",
+        "meaning": "Airway angioedema; risk of obstruction and need for immediate airway management."
+      },
+      {
+        "finding": "Hypotension or tachycardia out of proportion to fever",
+        "meaning": "Anaphylaxis or severe systemic reaction; treat as an emergency."
+      },
+      {
+        "finding": "Wheezing or hypoxia",
+        "meaning": "Bronchospasm or pulmonary involvement; requires urgent assessment."
+      },
+      {
+        "finding": "Gross hematuria, oliguria or rising creatinine",
+        "meaning": "Immune-complex glomerulonephritis; needs renal monitoring and possible referral."
+      },
+      {
+        "finding": "Persistent high fever with a new murmur",
+        "meaning": "Consider infective endocarditis rather than serum sickness."
+      }
+    ],
+    "complications": [
+      {
+        "name": "Immune-complex glomerulonephritis",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Proteinuria or hematuria on urinalysis",
+          "Rising creatinine",
+          "Hypertension or edema"
+        ]
+      },
+      {
+        "name": "Airway angioedema",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Lip, tongue or facial swelling",
+          "Stridor or voice change",
+          "Difficulty breathing"
+        ]
+      },
+      {
+        "name": "Peripheral neuropathy",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Numbness, paresthesias or weakness in a limb",
+          "Reduced reflexes"
+        ]
+      },
+      {
+        "name": "Persistent arthralgia or joint stiffness",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Joint pain lasting beyond 2 weeks after stopping the trigger",
+          "Mild swelling without deformity"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "May present with fever, rash and irritability without clearly localizing joint pain; lymphadenopathy and rash can be more prominent, and the temporal link to a new medication may be missed."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Fever and rash may be less pronounced, and joint pain may be attributed to underlying osteoarthritis; a lower threshold for checking renal function is reasonable."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "The immune-complex reaction may be blunted, with milder or atypical rash and less fever, making the diagnosis harder to recognize."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Diagnosis and management are similar, but medication choices for symptom control must account for fetal safety; antihistamines and acetaminophen are generally preferred over NSAIDs, especially in the third trimester."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "Baseline reduced renal function increases the risk and impact of immune-complex glomerulonephritis; monitor creatinine and urinalysis closely."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "Have you started any new medication in the last 1–3 weeks?",
+        "category": "medications",
+        "importance": "essential",
+        "looking_for": "A new beta-lactam antibiotic, sulfonamide, or other drug started 1–2 weeks before symptoms; the key trigger"
+      },
+      {
+        "question": "Have you received any antivenom, foreign serum, or a monoclonal antibody infusion recently?",
+        "category": "medications",
+        "importance": "essential",
+        "looking_for": "Exposure to foreign protein or biologic 1–2 weeks earlier"
+      },
+      {
+        "question": "When did the fever and rash start relative to the new medication?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Gradual onset 1–2 weeks after starting the drug, not minutes to hours"
+      },
+      {
+        "question": "What does the rash look like, and is it itchy?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Raised, itchy, blanching wheals (urticaria) that may move around"
+      },
+      {
+        "question": "Do your joints hurt or feel swollen? Which ones?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Symmetric aching and stiffness in multiple joints, especially wrists, knees and ankles"
+      },
+      {
+        "question": "Have you noticed any swelling of your lips, tongue, face or throat?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Angioedema; airway involvement is an emergency"
+      },
+      {
+        "question": "Any trouble breathing, wheezing, or throat tightness?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Airway compromise or anaphylaxis rather than serum sickness"
+      },
+      {
+        "question": "Have you had a sore throat or strep infection in the past month?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Recent streptococcal infection suggesting acute rheumatic fever"
+      },
+      {
+        "question": "Have you noticed any tick bite or a spreading rash after a tick bite?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Erythema migrans suggesting Lyme disease"
+      },
+      {
+        "question": "Any burning with urination, blood in the urine, or decreased urine output?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Renal involvement from immune-complex glomerulonephritis"
+      },
+      {
+        "question": "Have you had any weight loss, night sweats, or fevers over several weeks?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Chronic systemic illness such as endocarditis or malignancy"
+      },
+      {
+        "question": "Have you ever had a reaction to this medication or a similar one before?",
+        "category": "allergies",
+        "importance": "important",
+        "looking_for": "Prior sensitization to the same agent"
+      },
+      {
+        "question": "Do you have any history of lupus, rheumatoid arthritis, or other autoimmune disease?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Alternative chronic inflammatory or immune-complex disease"
+      },
+      {
+        "question": "Any new sexual partners or genital discharge?",
+        "category": "sexual",
+        "importance": "optional",
+        "looking_for": "Disseminated gonococcal infection as an alternative cause of fever, rash and arthralgia"
+      }
+    ],
+    "accepted_names": [
+      "Serum sickness",
+      "Serum sickness reaction",
+      "Serum sickness-like reaction",
+      "Immune complex hypersensitivity reaction"
+    ],
+    "reasoning_points": [
+      "New medication or foreign protein exposure 1–2 weeks before symptom onset",
+      "Fever with an itchy urticarial rash",
+      "Symmetric polyarthralgia or arthritis",
+      "Lymphadenopathy and sometimes angioedema",
+      "Symptoms resolve after stopping the offending agent",
+      "Alternative diagnoses such as anaphylaxis, urticarial vasculitis, acute rheumatic fever, infective endocarditis and viral exanthem are considered and excluded",
+      "Renal function and urinalysis checked for immune-complex glomerulonephritis"
+    ],
+    "difficulty": {
+      "easy": [
+        "Clear new beta-lactam antibiotic started 1–2 weeks earlier",
+        "Classic triad of fever, urticaria and polyarthralgia",
+        "Lymphadenopathy on exam",
+        "Symptoms improve after stopping the drug"
+      ],
+      "medium": [
+        "Trigger is a less obvious drug such as a sulfonamide, minocycline or bupropion",
+        "Prominent angioedema or abdominal pain without obvious rash",
+        "Older adult whose joint pain is attributed to osteoarthritis",
+        "Mild leukocytosis and elevated ESR with no clear source"
+      ],
+      "hard": [
+        "No clear medication history and the trigger is only found on careful review",
+        "Predominant renal involvement with proteinuria or rising creatinine",
+        "Child with fever, rash and irritability who cannot describe joint pain",
+        "Immunocompromised patient with blunted or atypical rash and fever",
+        "Overlap with urticarial vasculitis or early systemic lupus erythematosus"
+      ]
+    }
+  }
+}

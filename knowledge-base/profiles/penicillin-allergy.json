@@ -1,0 +1,1356 @@
+{
+  "schema_version": "0.2",
+  "slug": "penicillin-allergy",
+  "triage": {
+    "name": "Penicillin allergy",
+    "case_suitable": true,
+    "reason": "Very common clinical problem with a clear history-based assessment (timing, symptoms, reaction type) and important implications for antibiotic choice.",
+    "kind": "disease",
+    "category": "drug hypersensitivity",
+    "organ_systems": [
+      "blood"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "familyMedicine",
+      "pediatrics",
+      "emergency"
+    ],
+    "commonness": "very_common",
+    "settings": [
+      "clinic",
+      "inpatient",
+      "emergency"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:24:24Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:49:36Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:49:51Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:49:59Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:50:09Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "11",
+        "generated_at": "2026-10-09T06:50:16Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'tryptase' to 'Tryptase'",
+        "auto-repaired: labs: dropped 'tryptase' (not in the reference table)",
+        "differential viral-exanthem: no profile yet",
+        "differential anaphylaxis: no profile yet",
+        "differential stevens-johnson-syndrome: no profile yet",
+        "differential dress-syndrome: no profile yet",
+        "differential chronic-urticaria: no profile yet",
+        "differential infectious-mononucleosis: no profile yet",
+        "differential serum-sickness-like-reaction: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 1,
+      "typical_max": 90,
+      "peak": "any age; most commonly reported in adults",
+      "possible_min": 0,
+      "possible_max": 110
+    },
+    "sex": "either",
+    "demographics": [
+      "Reported in about 10% of the general population, but fewer than 1 in 10 of those reports are confirmed by testing",
+      "More commonly reported in adults than children",
+      "More common in people with frequent antibiotic exposure or healthcare contact"
+    ],
+    "risk_factors": [
+      {
+        "text": "Prior reaction to a penicillin or another beta-lactam antibiotic",
+        "strength": "strong"
+      },
+      {
+        "text": "Family history of penicillin allergy",
+        "strength": "moderate"
+      },
+      {
+        "text": "Frequent or repeated antibiotic use",
+        "strength": "moderate"
+      },
+      {
+        "text": "Atopic disease such as asthma, eczema or allergic rhinitis",
+        "strength": "weak"
+      },
+      {
+        "text": "Healthcare exposure or hospitalization",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Asthma",
+      "Atopic dermatitis",
+      "Allergic rhinitis",
+      "Cystic fibrosis",
+      "Recurrent infections requiring antibiotics"
+    ],
+    "family_history": [
+      "Penicillin allergy in a parent or sibling",
+      "Other drug allergies in the family"
+    ],
+    "social_history": [],
+    "exposures": [
+      "Penicillin or another beta-lactam antibiotic",
+      "Amoxicillin",
+      "Amoxicillin-clavulanate",
+      "Piperacillin-tazobactam",
+      "Cephalosporins",
+      "Carbapenems"
+    ],
+    "risk_medications": [
+      "penicillin g",
+      "amoxicillin",
+      "ampicillin",
+      "amoxicillin-clavulanate",
+      "piperacillin-tazobactam",
+      "cefazolin",
+      "ceftriaxone",
+      "meropenem"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I was told I'm allergic to penicillin",
+        "frequency": "almost_always",
+        "term": "Penicillin allergy",
+        "snomed_verified": true
+      },
+      {
+        "text": "I broke out in a rash after taking amoxicillin",
+        "frequency": "common",
+        "term": "Drug rash",
+        "snomed_verified": true
+      },
+      {
+        "text": "My face and lips swelled up after an antibiotic",
+        "frequency": "sometimes",
+        "term": "Angioedema",
+        "snomed_verified": true
+      },
+      {
+        "text": "I had trouble breathing after a penicillin shot",
+        "frequency": "sometimes",
+        "term": "Dyspnea",
+        "snomed_verified": true
+      }
+    ],
+    "hpi": {
+      "onset": "Symptoms begin within minutes to hours after the dose in immediate reactions, or days to weeks after starting the drug in delayed reactions",
+      "duration": "Immediate reactions last minutes to hours; delayed rashes can last days to weeks",
+      "progression": "Immediate reactions can progress quickly from itching and rash to swelling, wheezing and low blood pressure; delayed reactions evolve over days and may spread",
+      "location": "Skin is most often involved, especially the trunk, arms and legs; swelling can affect the face, lips, tongue or throat",
+      "radiation": "Usually none",
+      "quality": "Itchy raised rash, hives, or swelling of the skin and soft tissues",
+      "severity": "Ranges from mild itching and a few hives to severe breathing difficulty and collapse",
+      "timing": "Tied to the antibiotic dose; immediate reactions occur within 1–6 hours, delayed reactions after 1–14 days",
+      "aggravating": [
+        "Taking the antibiotic again",
+        "Re-exposure to penicillin or a related beta-lactam"
+      ],
+      "relieving": [
+        "Stopping the antibiotic",
+        "Antihistamines",
+        "Epinephrine for severe reactions"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Itchy skin",
+          "frequency": "common",
+          "term": "Pruritus",
+          "snomed_verified": true
+        },
+        {
+          "text": "Hives",
+          "frequency": "common",
+          "term": "Urticaria",
+          "snomed_verified": true
+        },
+        {
+          "text": "Rash",
+          "frequency": "common",
+          "term": "Drug rash",
+          "snomed_verified": true
+        },
+        {
+          "text": "Swelling of the face, lips or tongue",
+          "frequency": "sometimes",
+          "term": "Angioedema",
+          "snomed_verified": true
+        },
+        {
+          "text": "Wheezing",
+          "frequency": "sometimes",
+          "term": "Wheezing",
+          "snomed_verified": true
+        },
+        {
+          "text": "Shortness of breath",
+          "frequency": "sometimes",
+          "term": "Dyspnea",
+          "snomed_verified": true
+        },
+        {
+          "text": "Feeling faint or lightheaded",
+          "frequency": "sometimes",
+          "term": "Lightheadedness",
+          "snomed_verified": true
+        },
+        {
+          "text": "Nausea",
+          "frequency": "sometimes",
+          "term": "Nausea",
+          "snomed_verified": true
+        },
+        {
+          "text": "Vomiting",
+          "frequency": "sometimes",
+          "term": "Vomiting",
+          "snomed_verified": true
+        },
+        {
+          "text": "Diarrhea",
+          "frequency": "sometimes",
+          "term": "Diarrhea",
+          "snomed_verified": true
+        },
+        {
+          "text": "Fever",
+          "frequency": "rare",
+          "term": "Fever",
+          "snomed_verified": true
+        },
+        {
+          "text": "Peeling of skin",
+          "frequency": "rare",
+          "term": "Peeling of skin",
+          "snomed_verified": true
+        }
+      ],
+      "pertinent_negatives": [
+        "No reaction when the antibiotic was taken in the past",
+        "No symptoms without antibiotic exposure",
+        "No chronic rash or hives unrelated to drugs",
+        "No known autoimmune disease",
+        "No recent infection with fever and rash before the antibiotic"
+      ]
+    },
+    "ros": [
+      {
+        "system": "skin",
+        "positives": [
+          {
+            "text": "Itchy skin",
+            "frequency": "common",
+            "term": "Pruritus",
+            "snomed_verified": true
+          },
+          {
+            "text": "Hives",
+            "frequency": "common",
+            "term": "Urticaria",
+            "snomed_verified": true
+          },
+          {
+            "text": "Rash",
+            "frequency": "common",
+            "term": "Drug rash",
+            "snomed_verified": true
+          },
+          {
+            "text": "Peeling of skin",
+            "frequency": "rare",
+            "term": "Peeling of skin",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Blisters",
+          "Skin pain",
+          "Mucosal sores"
+        ],
+        "argues_against": [
+          "Stevens-Johnson syndrome",
+          "Toxic epidermal necrolysis"
+        ]
+      },
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "Wheezing",
+            "frequency": "sometimes",
+            "term": "Wheezing",
+            "snomed_verified": true
+          },
+          {
+            "text": "Shortness of breath",
+            "frequency": "sometimes",
+            "term": "Dyspnea",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Cough",
+          "Chest tightness"
+        ],
+        "argues_against": [
+          "Asthma exacerbation unrelated to the drug"
+        ]
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [
+          {
+            "text": "Feeling faint or lightheaded",
+            "frequency": "sometimes",
+            "term": "Lightheadedness",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Chest pain",
+          "Palpitations"
+        ],
+        "argues_against": [
+          "Cardiac cause of collapse"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Nausea",
+            "frequency": "sometimes",
+            "term": "Nausea",
+            "snomed_verified": true
+          },
+          {
+            "text": "Vomiting",
+            "frequency": "sometimes",
+            "term": "Vomiting",
+            "snomed_verified": true
+          },
+          {
+            "text": "Diarrhea",
+            "frequency": "sometimes",
+            "term": "Diarrhea",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Blood in stool",
+          "Abdominal pain"
+        ],
+        "argues_against": [
+          "Infectious gastroenteritis"
+        ]
+      },
+      {
+        "system": "allergic_immunologic",
+        "positives": [
+          {
+            "text": "Swelling of the face, lips or tongue",
+            "frequency": "sometimes",
+            "term": "Angioedema",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Seasonal allergy symptoms",
+          "Food allergy"
+        ],
+        "argues_against": [
+          "Chronic urticaria",
+          "Mastocytosis"
+        ]
+      },
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fever",
+            "frequency": "rare",
+            "term": "Fever",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Weight loss",
+          "Night sweats"
+        ],
+        "argues_against": [
+          "Systemic infection"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Children often have a mild maculopapular rash with amoxicillin, especially when they have a viral illness such as Epstein-Barr virus; this is frequently not a true allergy.",
+        "missing_classic_features": [
+          "Urticaria",
+          "Angioedema",
+          "Anaphylaxis"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "Older adults may have had a reaction many years ago and cannot recall the details; the history is often vague and the risk of a true reaction is lower.",
+        "missing_classic_features": [
+          "Clear timing of the reaction",
+          "Details of the rash"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Pregnancy can be associated with new rashes and itching, which may be confused with a drug reaction; true penicillin allergy does not change with pregnancy but management of antibiotics differs.",
+        "missing_classic_features": [
+          "Clear relationship to the antibiotic dose"
+        ]
+      },
+      {
+        "population": "immunocompromised",
+        "how_it_differs": "Immunocompromised patients may have blunted allergic responses, so severe reactions can be less obvious, and infections can mimic drug reactions.",
+        "missing_classic_features": [
+          "Prominent rash",
+          "Urticaria"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Comfortable, no distress; may have itching or a few hives",
+      "moderate": "Uncomfortable, scratching, visible rash or swelling but no respiratory or circulatory compromise",
+      "severe": "Anxious and distressed, with facial or airway swelling, wheezing or hoarseness",
+      "critical": "Toxic or moribund, pale, diaphoretic, hypotensive, with altered mental status"
+    },
+    "findings": [
+      {
+        "id": "urticaria",
+        "region": "skin",
+        "maneuver": "Inspect the skin over the trunk, arms and legs",
+        "finding": "Raised, blanching, itchy wheals (hives)",
+        "frequency": "common",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Urticaria",
+        "snomed_verified": true
+      },
+      {
+        "id": "morbilliform-rash",
+        "region": "skin",
+        "maneuver": "Inspect the skin over the trunk and extremities",
+        "finding": "Diffuse maculopapular rash",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Maculopapular rash",
+        "snomed_verified": true
+      },
+      {
+        "id": "angioedema",
+        "region": "heent",
+        "maneuver": "Inspect and palpate the face, lips, tongue and periorbital area",
+        "finding": "Non-pitting swelling of the lips, tongue, eyelids or face",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Angioedema",
+        "snomed_verified": true
+      },
+      {
+        "id": "wheezing",
+        "region": "lung",
+        "maneuver": "Auscultate the lungs",
+        "finding": "Diffuse expiratory wheezing",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Wheezing",
+        "snomed_verified": true
+      },
+      {
+        "id": "stridor",
+        "region": "neck",
+        "maneuver": "Auscultate over the trachea and listen to the patient's breathing",
+        "finding": "High-pitched inspiratory stridor",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Stridor",
+        "snomed_verified": true
+      },
+      {
+        "id": "hypotension",
+        "region": "general",
+        "maneuver": "Measure the blood pressure",
+        "finding": "Low blood pressure with signs of poor perfusion",
+        "frequency": "rare",
+        "min_severity": "critical",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Hypotension",
+        "snomed_verified": true
+      },
+      {
+        "id": "tachycardia",
+        "region": "cardiac",
+        "maneuver": "Palpate the radial pulse or auscultate the heart",
+        "finding": "Heart rate above the normal range for age",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Tachycardia",
+        "snomed_verified": true
+      },
+      {
+        "id": "peeling-skin",
+        "region": "skin",
+        "maneuver": "Inspect the skin for blistering or sheet-like detachment, especially at pressure points and mucosae",
+        "finding": "Peeling or sloughing of the skin",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Peeling of skin",
+        "snomed_verified": true
+      },
+      {
+        "id": "mucosal-erosions",
+        "region": "heent",
+        "maneuver": "Inspect the oral, ocular and genital mucosae",
+        "finding": "Painful erosions or ulcerations of the mucous membranes",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Mucosal ulceration",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-rash",
+        "region": "skin",
+        "maneuver": "Inspect the skin over the trunk, arms and legs",
+        "finding": "No rash or hives",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Skin rash",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-wheezing",
+        "region": "lung",
+        "maneuver": "Auscultate the lungs",
+        "finding": "No wheezing or stridor",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Wheezing",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-hypotension",
+        "region": "general",
+        "maneuver": "Measure the blood pressure",
+        "finding": "Normal blood pressure without orthostatic change",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Hypotension",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-angioedema",
+        "region": "heent",
+        "maneuver": "Inspect and palpate the face, lips, tongue and periorbital area",
+        "finding": "No swelling of the face, lips or tongue",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Angioedema",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-mucosal-involvement",
+        "region": "heent",
+        "maneuver": "Inspect the oral, ocular and genital mucosae",
+        "finding": "No mucosal erosions or ulcerations",
+        "frequency": "common",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Mucosal ulceration",
+        "snomed_verified": true
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "mild": {
+        "min": 98.0,
+        "max": 99.5
+      },
+      "moderate": {
+        "min": 98.0,
+        "max": 100.4
+      },
+      "severe": {
+        "min": 98.0,
+        "max": 101.0
+      },
+      "critical": {
+        "min": 97.0,
+        "max": 101.5
+      }
+    },
+    "hr": {
+      "mild": {
+        "min": 60,
+        "max": 100
+      },
+      "moderate": {
+        "min": 80,
+        "max": 120
+      },
+      "severe": {
+        "min": 100,
+        "max": 140
+      },
+      "critical": {
+        "min": 110,
+        "max": 160
+      }
+    },
+    "rr": {
+      "mild": {
+        "min": 12,
+        "max": 20
+      },
+      "moderate": {
+        "min": 16,
+        "max": 24
+      },
+      "severe": {
+        "min": 20,
+        "max": 32
+      },
+      "critical": {
+        "min": 24,
+        "max": 40
+      }
+    },
+    "sbp": {
+      "mild": {
+        "min": 100,
+        "max": 130
+      },
+      "moderate": {
+        "min": 90,
+        "max": 120
+      },
+      "severe": {
+        "min": 80,
+        "max": 110
+      },
+      "critical": {
+        "min": 60,
+        "max": 90
+      }
+    },
+    "dbp": {
+      "mild": {
+        "min": 60,
+        "max": 80
+      },
+      "moderate": {
+        "min": 55,
+        "max": 75
+      },
+      "severe": {
+        "min": 50,
+        "max": 70
+      },
+      "critical": {
+        "min": 30,
+        "max": 60
+      }
+    },
+    "spo2": {
+      "mild": {
+        "min": 95,
+        "max": 100
+      },
+      "moderate": {
+        "min": 92,
+        "max": 98
+      },
+      "severe": {
+        "min": 88,
+        "max": 94
+      },
+      "critical": {
+        "min": 80,
+        "max": 92
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "eos_pct",
+      "ranges": {
+        "mild": {
+          "min": 4,
+          "max": 8
+        },
+        "moderate": {
+          "min": 6,
+          "max": 12
+        },
+        "severe": {
+          "min": 8,
+          "max": 20
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Mild eosinophilia can accompany a drug reaction but is nonspecific; marked eosinophilia with rash and organ involvement suggests DRESS."
+    },
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "mild": {
+          "min": 11.0,
+          "max": 14.0
+        },
+        "moderate": {
+          "min": 12.0,
+          "max": 18.0
+        },
+        "severe": {
+          "min": 15.0,
+          "max": 25.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Leukocytosis is not expected in uncomplicated urticaria; consider infection or a severe systemic drug reaction."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "moderate": {
+          "min": 1.2,
+          "max": 1.8
+        },
+        "severe": {
+          "min": 1.5,
+          "max": 3.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Rises in drug reaction with eosinophilia and systemic symptoms (DRESS) or interstitial nephritis."
+    },
+    {
+      "test_id": "ast",
+      "ranges": {
+        "moderate": {
+          "min": 45,
+          "max": 120
+        },
+        "severe": {
+          "min": 100,
+          "max": 400
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Transaminitis suggests a systemic delayed drug reaction such as DRESS."
+    },
+    {
+      "test_id": "alt",
+      "ranges": {
+        "moderate": {
+          "min": 60,
+          "max": 150
+        },
+        "severe": {
+          "min": 120,
+          "max": 500
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional"
+    },
+    {
+      "test_id": "tbili",
+      "ranges": {
+        "moderate": {
+          "min": 1.3,
+          "max": 2.5
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 5.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional"
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "moderate": {
+          "min": 1.5,
+          "max": 6.0
+        },
+        "severe": {
+          "min": 4.0,
+          "max": 15.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Nonspecific; may be elevated in a severe systemic drug reaction or in the infection being treated."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rate",
+        "finding": "Sinus tachycardia",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "leads": [
+          "II"
+        ]
+      },
+      {
+        "feature": "other",
+        "finding": "Nonspecific ST-T changes with hypotension or poor perfusion",
+        "frequency": "rare",
+        "min_severity": "critical"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Chest x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Usually normal; no infiltrate in anaphylaxis or isolated drug rash",
+          "frequency": "common"
+        },
+        {
+          "text": "Hyperinflation with flattened diaphragms when there is severe bronchospasm",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Looks for eosinophilia or leukocytosis suggesting a systemic drug reaction rather than a simple rash"
+      },
+      {
+        "test": "bmp",
+        "why": "Assesses renal function if a severe delayed reaction or dehydration is suspected"
+      },
+      {
+        "test": "Skin prick test to penicillin",
+        "why": "Detects penicillin-specific IgE in a patient with a history of an immediate reaction; must be done with the major and minor determinants plus histamine and saline controls",
+        "only_if": "history of an immediate reaction (urticaria, angioedema, wheezing or hypotension within 1–6 hours of a dose) and the patient is not currently reacting"
+      },
+      {
+        "test": "Intradermal test to penicillin",
+        "why": "Increases sensitivity over skin prick testing for IgE-mediated penicillin allergy",
+        "only_if": "skin prick testing is negative and the history suggests an immediate reaction"
+      },
+      {
+        "test": "Serum specific IgE to penicillin",
+        "why": "Alternative when skin testing is not available or is contraindicated",
+        "only_if": "skin testing cannot be performed"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Oral amoxicillin challenge",
+        "why": "The reference standard: a graded oral challenge confirms or excludes penicillin allergy when skin testing is negative or when the history is low risk",
+        "only_if": "skin testing is negative, or the history is low risk (reaction more than 10 years ago, unknown or non-urticarial rash, no severe features) and the patient is not currently reacting"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "Patch testing",
+        "why": "Occasionally used to evaluate a delayed eczematous or contact reaction to a beta-lactam",
+        "only_if": "delayed eczematous reaction is suspected"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Chest x-ray",
+        "why": "Not needed for an isolated drug rash or uncomplicated urticaria; order only if pneumonia or another pulmonary process is suspected"
+      },
+      {
+        "test": "Tryptase",
+        "why": "Not part of routine evaluation; only useful during an acute severe reaction"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in drug allergy"
+      },
+      {
+        "test": "esr",
+        "why": "Nonspecific and does not change management"
+      },
+      {
+        "test": "procalcitonin",
+        "why": "Does not distinguish a drug reaction from infection reliably in this setting"
+      },
+      {
+        "test": "Skin or wound culture",
+        "why": "Not relevant unless a secondary skin infection is suspected"
+      }
+    ],
+    "decision_points": [
+      "Confirm the reaction history: timing after the dose, symptoms, and whether it was immediate (minutes to hours) or delayed (days to weeks)",
+      "Do not skin test or challenge a patient who is currently reacting or who has a history of a severe reaction such as anaphylaxis, Stevens-Johnson syndrome, toxic epidermal necrolysis, DRESS or interstitial nephritis",
+      "Skin testing and challenge should be done where resuscitation equipment and trained staff are available",
+      "A negative skin test followed by a negative oral challenge allows the penicillin allergy label to be removed",
+      "For a patient with a severe reaction history, avoid penicillins and choose an alternative class rather than testing"
+    ],
+    "criteria": [],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Viral exanthem",
+      "slug": "viral-exanthem",
+      "why_considered": "A maculopapular rash appearing during antibiotic treatment is often caused by the viral illness being treated, especially in children.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Rash appears with or shortly after fever and other viral symptoms",
+          "Rash is not clearly tied to the timing of the antibiotic dose",
+          "Similar rash occurred with a different antibiotic or without antibiotics",
+          "Sick contacts or a known viral illness"
+        ],
+        "exam": [
+          "Diffuse maculopapular rash without hives or swelling",
+          "No mucosal involvement",
+          "No wheezing or hypotension"
+        ],
+        "labs": [
+          "Nonspecific mild leukopenia or lymphocytosis",
+          "No eosinophilia"
+        ]
+      }
+    },
+    {
+      "name": "Anaphylaxis",
+      "slug": "anaphylaxis",
+      "why_considered": "Penicillin is a common trigger of anaphylaxis, and the same exposure can cause a mild rash or a life-threatening reaction.",
+      "must_not_miss": true,
+      "trigger": "Hypotension, airway swelling, or severe bronchospasm after a penicillin dose",
+      "discriminators": {
+        "history": [
+          "Symptoms begin within minutes of the dose",
+          "Rapid progression over minutes to an hour",
+          "Feeling faint, throat tightness, or difficulty breathing"
+        ],
+        "exam": [
+          "Hypotension and tachycardia",
+          "Stridor, hoarseness, or diffuse wheezing",
+          "Urticaria and angioedema"
+        ],
+        "labs": [
+          "No routine lab confirms it; serum tryptase may be elevated during the acute event"
+        ]
+      }
+    },
+    {
+      "name": "Stevens-Johnson syndrome / toxic epidermal necrolysis",
+      "slug": "stevens-johnson-syndrome",
+      "why_considered": "A severe delayed drug reaction that can begin with a rash and fever after starting an antibiotic.",
+      "must_not_miss": true,
+      "trigger": "Painful skin, blistering, or mucosal erosions after starting a drug",
+      "discriminators": {
+        "history": [
+          "Rash begins 1–3 weeks after starting the drug",
+          "Skin pain and a burning sensation",
+          "Fever and malaise",
+          "Mouth, eye, or genital sores"
+        ],
+        "exam": [
+          "Blistering or sheet-like skin detachment",
+          "Positive Nikolsky sign",
+          "Erosions of the oral, ocular, or genital mucosae"
+        ],
+        "labs": [
+          "Elevated transaminases and creatinine in severe cases",
+          "Leukopenia or leukocytosis"
+        ]
+      }
+    },
+    {
+      "name": "DRESS syndrome",
+      "slug": "dress-syndrome",
+      "why_considered": "A delayed drug reaction with rash, fever, and organ involvement that can be mistaken for a simple penicillin rash.",
+      "must_not_miss": true,
+      "trigger": "Rash with fever, facial swelling, and eosinophilia 2–8 weeks after starting a drug",
+      "discriminators": {
+        "history": [
+          "Rash begins 2–8 weeks after starting the drug",
+          "Fever and malaise",
+          "Facial swelling"
+        ],
+        "exam": [
+          "Diffuse maculopapular rash",
+          "Facial edema",
+          "Lymphadenopathy",
+          "Hepatomegaly"
+        ],
+        "labs": [
+          "Marked eosinophilia",
+          "Elevated transaminases",
+          "Elevated creatinine",
+          "Atypical lymphocytes"
+        ]
+      }
+    },
+    {
+      "name": "Chronic spontaneous urticaria",
+      "slug": "chronic-urticaria",
+      "why_considered": "Recurrent hives can be mistaken for a drug reaction, especially when the patient is taking antibiotics.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Hives occur without antibiotic exposure",
+          "Recurrent episodes over weeks to months",
+          "No clear relationship to a dose"
+        ],
+        "exam": [
+          "Urticaria without angioedema or respiratory symptoms",
+          "No fever or mucosal involvement"
+        ],
+        "labs": [
+          "Usually normal; no eosinophilia"
+        ]
+      }
+    },
+    {
+      "name": "Infectious mononucleosis",
+      "slug": "infectious-mononucleosis",
+      "why_considered": "A maculopapular rash after amoxicillin is common in Epstein-Barr virus infection and is often mislabeled as penicillin allergy.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Sore throat, fever, and fatigue before the rash",
+          "Rash appears after starting amoxicillin",
+          "Sick contacts"
+        ],
+        "exam": [
+          "Exudative pharyngitis",
+          "Posterior cervical lymphadenopathy",
+          "Splenomegaly"
+        ],
+        "labs": [
+          "Lymphocytosis with atypical lymphocytes",
+          "Positive heterophile antibody or EBV serology"
+        ]
+      }
+    },
+    {
+      "name": "Serum sickness-like reaction",
+      "slug": "serum-sickness-like-reaction",
+      "why_considered": "A delayed reaction with rash, fever, and joint pain that can follow antibiotic exposure.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Rash begins 1–3 weeks after starting the drug",
+          "Fever and joint pain",
+          "No mucosal involvement"
+        ],
+        "exam": [
+          "Urticarial or maculopapular rash",
+          "Joint tenderness or swelling",
+          "Lymphadenopathy"
+        ],
+        "labs": [
+          "Mild leukocytosis",
+          "Elevated inflammatory markers"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Itching or a few hives without swelling, breathing difficulty, or low blood pressure; the patient is comfortable and stable.",
+      "moderate": "Widespread urticaria or a maculopapular rash with facial or lip swelling but no airway compromise or hypotension.",
+      "severe": "Airway swelling, wheezing, or hoarseness with normal blood pressure, or a severe delayed reaction with skin pain, blistering, or mucosal erosions.",
+      "critical": "Anaphylaxis with hypotension, poor perfusion, or altered mental status; or toxic epidermal necrolysis with extensive skin detachment."
+    },
+    "red_flags": [
+      {
+        "finding": "Hypotension or feeling faint after a penicillin dose",
+        "meaning": "Anaphylaxis; give epinephrine and call for help immediately"
+      },
+      {
+        "finding": "Stridor, hoarseness, or throat tightness",
+        "meaning": "Upper airway swelling; risk of complete airway obstruction"
+      },
+      {
+        "finding": "Diffuse wheezing or shortness of breath",
+        "meaning": "Bronchospasm from anaphylaxis"
+      },
+      {
+        "finding": "Skin pain, blistering, or mucosal erosions",
+        "meaning": "Stevens-Johnson syndrome or toxic epidermal necrolysis; stop the drug and admit"
+      },
+      {
+        "finding": "Fever, facial swelling, and eosinophilia weeks after starting the drug",
+        "meaning": "DRESS syndrome; stop the drug and evaluate for organ involvement"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Anaphylaxis",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Symptoms within minutes of the dose",
+          "Hypotension",
+          "Airway swelling",
+          "Wheezing"
+        ]
+      },
+      {
+        "name": "Stevens-Johnson syndrome / toxic epidermal necrolysis",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Skin pain",
+          "Blistering or skin detachment",
+          "Mucosal erosions",
+          "Fever"
+        ]
+      },
+      {
+        "name": "DRESS syndrome",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Fever",
+          "Facial swelling",
+          "Eosinophilia",
+          "Transaminitis"
+        ]
+      },
+      {
+        "name": "Interstitial nephritis",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Rising creatinine",
+          "Eosinophilia",
+          "Rash"
+        ]
+      },
+      {
+        "name": "Serum sickness-like reaction",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "rare",
+        "clues": [
+          "Fever",
+          "Joint pain",
+          "Urticarial rash"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Mild maculopapular rashes with amoxicillin are common, especially with viral infections such as Epstein-Barr virus, and are often not true allergy; many children can be delabeled after evaluation."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Reactions are often remote and poorly recalled; the risk of a true reaction is lower, but severe delayed reactions can still occur."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Penicillin allergy limits antibiotic options for conditions such as syphilis and group B streptococcus; skin testing and challenge can be done safely in pregnancy when indicated."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Allergic responses may be blunted, and infections can mimic drug reactions; a low threshold for evaluation is needed."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "What exactly happened when you took the penicillin or amoxicillin?",
+        "category": "allergies",
+        "importance": "essential",
+        "looking_for": "A specific description of the reaction: hives, rash, swelling, breathing trouble, or just nausea or diarrhea"
+      },
+      {
+        "question": "How soon after the dose did the symptoms start?",
+        "category": "allergies",
+        "importance": "essential",
+        "looking_for": "Within 1–6 hours suggests an immediate, IgE-mediated reaction; days to weeks suggests a delayed reaction"
+      },
+      {
+        "question": "How long ago did the reaction happen?",
+        "category": "allergies",
+        "importance": "important",
+        "looking_for": "More than 10 years ago lowers the chance that the allergy is still present"
+      },
+      {
+        "question": "How was the reaction treated, and did it go away on its own or with medicine?",
+        "category": "allergies",
+        "importance": "important",
+        "looking_for": "Needed epinephrine, an emergency visit, or hospitalization suggests a more severe reaction"
+      },
+      {
+        "question": "Have you taken any penicillin or related antibiotic since then?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Tolerating a later course makes a true allergy much less likely"
+      },
+      {
+        "question": "What other antibiotics or medicines have you taken without a problem?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Tolerance of cephalosporins or other beta-lactams lowers the risk of a cross-reactive allergy"
+      },
+      {
+        "question": "Have you ever had a reaction to a cephalosporin, carbapenem, or other antibiotic?",
+        "category": "allergies",
+        "importance": "important",
+        "looking_for": "Multiple beta-lactam reactions raise concern for a true class-wide allergy"
+      },
+      {
+        "question": "Do you have hives, swelling, or trouble breathing right now?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Any current airway swelling, wheezing, or hypotension means an acute reaction is in progress"
+      },
+      {
+        "question": "Have you ever had a reaction with skin pain, blistering, peeling, or sores in your mouth or eyes?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Suggests Stevens-Johnson syndrome or toxic epidermal necrolysis; avoid all penicillins"
+      },
+      {
+        "question": "Have you ever had a reaction with fever, facial swelling, and feeling very unwell weeks after starting an antibiotic?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Suggests DRESS syndrome; avoid all penicillins"
+      },
+      {
+        "question": "Do you have asthma, eczema, or seasonal allergies?",
+        "category": "pmh",
+        "importance": "optional",
+        "looking_for": "Atopy is common but does not by itself confirm a drug allergy"
+      },
+      {
+        "question": "Does anyone in your family have a penicillin or other drug allergy?",
+        "category": "family",
+        "importance": "optional",
+        "looking_for": "Family history is a weak risk factor and does not change management"
+      }
+    ],
+    "accepted_names": [
+      "Penicillin allergy",
+      "Penicillin hypersensitivity",
+      "Beta-lactam allergy",
+      "Drug allergy to penicillin"
+    ],
+    "reasoning_points": [
+      "The reaction history is the key step: timing after the dose separates immediate (minutes to hours) from delayed (days to weeks) reactions",
+      "Symptoms of hives, swelling, wheezing, or low blood pressure suggest an IgE-mediated immediate reaction",
+      "A mild maculopapular rash days after starting amoxicillin, especially in a child with a viral illness, is often not a true allergy",
+      "Gastrointestinal symptoms alone such as nausea or diarrhea are not a true allergy",
+      "A severe reaction history (anaphylaxis, Stevens-Johnson syndrome, toxic epidermal necrolysis, DRESS, or interstitial nephritis) means penicillins should be avoided",
+      "A low-risk history or negative skin testing can be followed by a graded oral amoxicillin challenge to remove the label",
+      "Removing an unconfirmed penicillin allergy label improves antibiotic choice and reduces resistant infections"
+    ],
+    "difficulty": {
+      "easy": [
+        "Adult who reports hives and lip swelling within an hour of a penicillin dose",
+        "Clear timing and clear symptoms of an immediate reaction",
+        "No current symptoms and no severe features",
+        "History is consistent and easy to classify"
+      ],
+      "medium": [
+        "Child with a maculopapular rash days after amoxicillin during a viral illness",
+        "Reaction happened more than 10 years ago and details are vague",
+        "Patient reports only nausea or diarrhea after penicillin",
+        "Patient has tolerated a cephalosporin since the reported reaction"
+      ],
+      "hard": [
+        "Older adult who cannot recall the reaction at all",
+        "Patient with a history of anaphylaxis who now needs a penicillin for syphilis or group B streptococcus",
+        "Multiple reported antibiotic allergies with unclear details",
+        "Pregnant patient needing a beta-lactam and the history is uncertain",
+        "Patient with a severe delayed reaction such as DRESS or Stevens-Johnson syndrome"
+      ]
+    }
+  }
+}
