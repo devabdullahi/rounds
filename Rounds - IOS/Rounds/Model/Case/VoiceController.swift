@@ -20,7 +20,8 @@ final class VoiceController: NSObject, AVSpeechSynthesizerDelegate {
         static let levelFloorDb: Float = -50          // dB mapped to level 0
         static let levelRangeDb: Float = 40           // dB span mapped to 0…1
         static let smoothing: CGFloat = 0.35          // new-sample weight
-        static let speechRate: Float = 0.5
+        static let slowestRate: Float = 0.35         // Settings speed 0
+        static let fastestRate: Float = 0.65         // Settings speed 1; 0.5 in between is the natural rate
         static let speechPitch: Float = 0.9
     }
 
@@ -157,7 +158,8 @@ final class VoiceController: NSObject, AVSpeechSynthesizerDelegate {
     }
 
     private func checkSilence() {
-        guard phase == .listening, !transcript.isEmpty,
+        // With auto-send off in Settings, only a tap on the orb ends the turn.
+        guard Preferences.autoSend, phase == .listening, !transcript.isEmpty,
               Date().timeIntervalSince(lastVoiceAt) > VOICE.silenceToSend else { return }
         finishTurn()
     }
@@ -196,7 +198,7 @@ final class VoiceController: NSObject, AVSpeechSynthesizerDelegate {
         stopAudio()
         let u = AVSpeechUtterance(string: text)
         u.voice = AVSpeechSynthesisVoice(language: "en-US")
-        u.rate = VOICE.speechRate
+        u.rate = VOICE.slowestRate + (VOICE.fastestRate - VOICE.slowestRate) * Float(Preferences.voiceSpeed)
         u.pitchMultiplier = VOICE.speechPitch
         withAnimation(Springs.slide) { phase = .patientSpeaking }
         synth.speak(u)

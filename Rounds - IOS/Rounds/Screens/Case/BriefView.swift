@@ -5,11 +5,9 @@ struct BriefView: View {
     @Environment(CaseRouter.self) private var router
     @Bindable var session: CaseSession
     /// Last chosen limit, remembered across cases. 0 = untimed.
-    @AppStorage("timeLimitMinutes") private var savedLimit = 10
+    @AppStorage(TimeLimit.storageKey) private var savedLimit = TimeLimit.defaultMinutes
 
     private var clockRunning: Bool { session.startedAt != nil }
-
-    private let limits: [(Int, String)] = [(5, "5 min"), (10, "10"), (15, "15"), (20, "20"), (0, "Off")]
 
     private var c: ClinicalCase { session.clinical }
 
@@ -68,9 +66,9 @@ struct BriefView: View {
                         }
                         VStack(alignment: .leading, spacing: 8) {
                             FieldLabel("Time limit")
-                            Segmented(options: limits, selection: Binding(
+                            Segmented(options: TimeLimit.options, selection: Binding(
                                 get: { savedLimit },
-                                set: { savedLimit = $0; session.timeLimitMinutes = $0 == 0 ? nil : $0 }
+                                set: { savedLimit = $0; session.timeLimitMinutes = TimeLimit.minutes($0) }
                             ))
                             .accessibilityLabel("Time limit")
                             .disabled(clockRunning)
@@ -104,7 +102,7 @@ struct BriefView: View {
         }
         .background(Theme.bg)
         .onAppear {
-            if session.startedAt == nil { session.timeLimitMinutes = savedLimit == 0 ? nil : savedLimit }
+            if session.startedAt == nil { session.timeLimitMinutes = TimeLimit.minutes(savedLimit) }
         }
     }
 

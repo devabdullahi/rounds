@@ -93,11 +93,7 @@ struct GenerateCardsView: View {
             }
         }
         // The sheet covers Flashcards, whose own alert can't show until it closes.
-        .alert("Something went wrong", isPresented: Binding(get: { store.problem != nil }, set: { if !$0 { store.problem = nil } })) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text(store.problem ?? "")
-        }
+        .problemAlert(Binding(get: { store.problem }, set: { store.problem = $0 }))
     }
 
     // MARK: Form

@@ -45,6 +45,10 @@ struct InterviewView: View {
     /// Patient replies already in the chat when the last spoken question went out; only a newer one is
     /// the answer to speak (the question itself changes the message count first).
     @State private var repliesBeforeQuestion = 0
+    @AppStorage(Preferences.showRevealsKey) private var showReveals = Preferences.showRevealsDefault
+    @AppStorage(Preferences.showCoverageKey) private var showCoverage = Preferences.showCoverageDefault
+    @AppStorage(Preferences.voiceModeKey) private var voiceMode = Preferences.voiceModeDefault
+    @AppStorage(Preferences.autoSendKey) private var autoSend = Preferences.autoSendDefault
 
     private var c: ClinicalCase { session.clinical }
 
@@ -172,7 +176,8 @@ struct InterviewView: View {
             }
             .padding(.horizontal, 8)
             Group {
-                if session.examMode { questionCount } else { coverageMeter }
+                // With the meter turned off, the plain question count keeps the header's shape.
+                if session.examMode || !showCoverage { questionCount } else { coverageMeter }
             }
             .padding(.horizontal, 8)
         }
@@ -312,9 +317,12 @@ struct InterviewView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .transition(.asymmetric(insertion: .offset(x: -20, y: BUBBLE.offsetY).combined(with: .opacity), removal: .opacity))
         case .reveal:
-            Pill(text: m.text, glyph: .check)
-                .frame(maxWidth: .infinity)
-                .transition(.scale(scale: REVEAL.initialScale).combined(with: .opacity).animation(Springs.pop))
+            // Exam mode never adds reveal messages; this is the Settings switch for practice mode.
+            if showReveals {
+                Pill(text: m.text, glyph: .check)
+                    .frame(maxWidth: .infinity)
+                    .transition(.scale(scale: REVEAL.initialScale).combined(with: .opacity).animation(Springs.pop))
+            }
         case .problem:
             // A failed request: say what went wrong so the student can resend.
             Pill(text: m.text, fg: Theme.warnText, bg: Theme.warn.opacity(0.12), glyph: .circleX)
@@ -362,7 +370,8 @@ struct InterviewView: View {
                     .accessibilityLabel("Ask the patient")
                 let hasText = !draft.trimmingCharacters(in: .whitespaces).isEmpty
                 ZStack {
-                    if hasText {
+                    // Voice mode off in Settings: the send button stays, greyed until there's text.
+                    if hasText || !voiceMode {
                         Button(action: send) {
                             AppIcon(.arrowUp, size: 22)
                                 .foregroundStyle(.white)
@@ -370,7 +379,7 @@ struct InterviewView: View {
                                 .glassCircle(tint: Theme.accent)
                         }
                         .accessibilityLabel("Send")
-                        .disabled(session.isPatientTyping)
+                        .disabled(session.isPatientTyping || !hasText)
                         .transition(.scale(scale: 0.6).combined(with: .opacity))
                     } else {
                         Button(action: startVoice) {
@@ -404,9 +413,9 @@ struct InterviewView: View {
 
     private var voiceStatus: String {
         switch voice.phase {
-        case .listening: voice.transcript.isEmpty ? "Your turn. Speak to \(c.name.split(separator: " ").first ?? "")." : "Listening…"
-        case .thinking: "\(c.name.split(separator: " ").first ?? "") is thinking…"
-        case .patientSpeaking: "\(c.name.split(separator: " ").first ?? "") is answering"
+        case .listening: voice.transcript.isEmpty ? "Your turn. Speak to \(c.firstName)." : "Listening…"
+        case .thinking: "\(c.firstName) is thinking…"
+        case .patientSpeaking: "\(c.firstName) is answering"
         case .unavailable(let why): why
         case .idle: ""
         }
@@ -414,7 +423,7 @@ struct InterviewView: View {
 
     private var voiceHint: String {
         switch voice.phase {
-        case .listening: "Pause to send, or tap the orb"
+        case .listening: autoSend ? "Pause to send, or tap the orb" : "Tap the orb to send"
         case .patientSpeaking: "Tap the orb to interrupt"
         default: " "
         }

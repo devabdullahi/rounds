@@ -220,3 +220,8 @@ extension CaseSession {
         ]
 }
 #endif
+
+/// Lets a running case drive `.fullScreenCover(item:)`: each session is its own identity.
+extension CaseSession: Identifiable {
+    nonisolated var id: ObjectIdentifier { ObjectIdentifier(self) }
+}

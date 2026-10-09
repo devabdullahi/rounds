@@ -84,7 +84,7 @@ struct Segmented<T: Hashable>: View {
         }
         .frame(height: SEG.height)
         .background(Theme.track, in: RoundedRectangle(cornerRadius: SEG.radius, style: .continuous))
-        .sensoryFeedback(.selection, trigger: shownIndex)
+        .haptic(.selection, trigger: shownIndex)
         .accessibilityRepresentation {
             Picker("", selection: $selection) {
                 ForEach(Array(options.enumerated()), id: \.offset) { _, option in

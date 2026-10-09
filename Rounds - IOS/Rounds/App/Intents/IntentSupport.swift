@@ -7,7 +7,7 @@ import UIKit
 enum IntentSupport {
     /// Intents act on the student's account, so they wait until someone has signed in on this
     /// device (otherwise the case service would quietly start a guest session).
-    static var isSignedIn: Bool { UserDefaults.standard.bool(forKey: "signedIn") }
+    static var isSignedIn: Bool { UserDefaults.standard.bool(forKey: AuthModel.signedInKey) }
     static let signInFirst: IntentDialog = "Open Rounds and sign in first."
 
     /// The focus the student picked in the app, or a mix.

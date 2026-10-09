@@ -1,5 +1,4 @@
-import SwiftUI
-import Observation
+import Foundation
 
 /// The server's verdict on a submitted attempt.
 struct Grade {

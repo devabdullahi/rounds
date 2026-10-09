@@ -1,8 +1,9 @@
+#if DEBUG
 import SwiftUI
 
 /// Dev shortcut past auth. Compiled out of release builds.
 struct DevSkipButton: View {
-    @AppStorage("signedIn") private var signedIn = false
+    @AppStorage(AuthModel.signedInKey) private var signedIn = false
 
     var body: some View {
         Button {
@@ -31,3 +32,4 @@ extension View {
         }
     }
 }
+#endif

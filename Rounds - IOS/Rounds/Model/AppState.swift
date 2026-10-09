@@ -43,7 +43,6 @@ final class AppState {
     /// `-screen home-empty`: shows the empty-ward card without skipping anyone for real.
     var debugEmptyWard = false
 
-    #if DEBUG
     /// `-screen patients-select` / `patients-swipe`: the Patients tab opens in that state.
     var debugPatientsMode: String?
 
@@ -59,13 +58,11 @@ final class AppState {
         isPreparingCondition = true
     }
     #endif
-    #endif
 
     /// Beds the student swiped away on the deck. Kept on this device so they don't come back;
     /// the patients stay on the Patients tab.
     private(set) var skipped: Set<String> = Set(UserDefaults.standard.stringArray(forKey: AppState.skippedStorageKey) ?? [])
     static let skippedStorageKey = "skippedBeds"
-    /// Organ systems that have patients on the ward, for filter chips.
     /// Days in a row with a graded case, ending today or yesterday (see `Streak`).
     var streak: Int {
         if showcasing { return Self.showcaseStreak }
@@ -119,6 +116,7 @@ final class AppState {
     /// Distinct red flags missed on the latest graded attempts, which "Include what I missed" turns into cards.
     var missedRedFlagCount: Int { Set(ward.flatMap { $0.misses.map(\.flag) }).count }
 
+    /// Organ systems that have patients on the ward, for filter chips.
     var wardSystems: [OrganSystem] { OrganSystem.allCases.filter { s in ward.contains { $0.system == s } } }
 
     var lastGrade: Grade?
@@ -254,7 +252,10 @@ final class AppState {
         defer { openingBed = nil }
         do {
             let clinical = try await cases.loadCase(bed: bed)
-            activeCase = CaseSession(clinical: clinical, service: cases)
+            let session = CaseSession(clinical: clinical, service: cases)
+            // The door note can still switch it; this is just where it starts.
+            session.examMode = Preferences.examByDefault
+            activeCase = session
         } catch {
             problem = error.localizedDescription
         }
@@ -287,9 +288,11 @@ final class AppState {
         await reminders?.announce(title: title, body: body)
     }
 
-    /// Moves the reminder to two hours before the streak resets, or clears it with no streak.
-    private func updateReminder() async {
-        let reminder = showcasing ? nil : StreakReminder.plan(days: streak, timeLeft: streakTimeLeft)
+    /// Moves the reminder to two hours before the streak resets, or clears it with no streak or
+    /// when the student turned streak alerts off. Settings calls it when that switch changes.
+    func updateReminder() async {
+        let alertsOn = !showcasing && Preferences.streakAlerts
+        let reminder = alertsOn ? StreakReminder.plan(days: streak, timeLeft: streakTimeLeft) : nil
         await reminders?.schedule(reminder)
     }
 

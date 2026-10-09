@@ -79,7 +79,7 @@ struct SwipeToDelete: ViewModifier {
         .clipped()
         .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { width = $0 }
         .simultaneousGesture(drag, including: enabled ? .all : .subviews)
-        .sensoryFeedback(.impact(weight: .medium), trigger: pastFull) { _, now in now }
+        .haptic(.impact(weight: .medium), trigger: pastFull) { _, now in now }
         .onChange(of: openRow) { _, now in if now != id && offset != 0 { close() } }
         .onChange(of: enabled) { _, on in if !on { close() } }
         .onAppear { if openRow == id { offset = Self.debugOpenSide * ACTION.width } }
