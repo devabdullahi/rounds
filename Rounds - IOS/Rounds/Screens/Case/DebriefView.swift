@@ -7,15 +7,33 @@ import SwiftUI
  *  300ms   verdict pill pops
  *  450ms   rating counts up old → new, delta badge pops
  *  900ms   attending feedback rows slide up (staggered 120ms)
- * 1500ms   summary rows fade in
+ * 1350ms   "About <diagnosis>" card rises, y 14 → 0
+ * 1650ms   "What else it could have been" card rises, y 14 → 0
+ * 1950ms   summary rows + "Learn more" fade in
+ *
+ * Reduce Motion: the same order, fades only (no offsets, no springs).
+ * Teaching cards are skipped on older grades, keeping the same marks.
  * ───────────────────────────────────────────────────────── */
 
 private enum TIMING {
-    static let card     = 0.00   // score card scales in
-    static let verdict  = 0.30   // verdict pill pops
-    static let rating   = 0.45   // rating ticks to new value
-    static let feedback = 0.90   // attending notes stagger in
-    static let summary  = 1.50   // streak / casebook rows
+    static let card         = 0.00   // score card scales in
+    static let verdict      = 0.30   // verdict pill pops
+    static let rating       = 0.45   // rating ticks to new value
+    static let feedback     = 0.90   // attending notes stagger in
+    static let about        = 1.35   // condition teaching card
+    static let differential = 1.65   // alternatives vs. the student's list
+    static let summary      = 1.95   // streak / casebook rows
+}
+
+/// Stage index reached at each TIMING mark, so sections read by name rather than by number.
+private enum STAGE {
+    static let card = 0, verdict = 1, rating = 2, feedback = 3, about = 4, differential = 5, summary = 6
+}
+
+private enum TEACHING {
+    static let offsetY: CGFloat = 14
+    static let spring = Springs.slide
+    static let fade = Animation.easeOut(duration: 0.3)
 }
 
 private enum SCORECARD {
@@ -41,6 +59,7 @@ struct DebriefView: View {
     @State private var showMisses = false
     @Environment(\.reference) private var reference
     @State private var assist = ReferenceAssist()
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         VStack(spacing: 0) {
@@ -62,6 +81,7 @@ struct DebriefView: View {
                     VStack(alignment: .leading, spacing: 14) {
                         scoreCard(grade)
                         attendingCard(grade)
+                        teaching(grade)
                         summary(grade)
                         if !assist.topics.isEmpty { learnMore }
                     }
@@ -139,7 +159,7 @@ struct DebriefView: View {
                 .foregroundStyle(Theme.faint)
         }
         .padding(.top, 6)
-        .opacity(stage >= 4 ? 1 : 0)
+        .opacity(stage >= STAGE.summary ? 1 : 0)
         .animation(.easeOut(duration: 0.35).delay(0.15), value: stage)
     }
 
@@ -167,13 +187,13 @@ struct DebriefView: View {
         grade = g
         // The diagnosis is only known once graded, so reading links load now.
         Task { await assist.loadTopics(for: g.diagnosis) }
-        let marks = [TIMING.card, TIMING.verdict, TIMING.rating, TIMING.feedback, TIMING.summary]
+        let marks = [TIMING.card, TIMING.verdict, TIMING.rating, TIMING.feedback, TIMING.about, TIMING.differential, TIMING.summary]
         var elapsed = 0.0
         for (i, at) in marks.enumerated() {
             try? await Task.sleep(for: .seconds(at - elapsed))
             elapsed = at
             withAnimation(.easeOut(duration: 0.3)) { stage = i }
-            if i == 2 { withAnimation(.snappy(duration: 0.8)) { app.record(g, session: session) } }
+            if i == STAGE.rating { withAnimation(.snappy(duration: 0.8)) { app.record(g, session: session) } }
         }
         // Once the grade has fully landed, any badge it earned gets its moment here, at the peak.
         try? await Task.sleep(for: .seconds(0.6))
@@ -198,14 +218,14 @@ struct DebriefView: View {
             Pill(text: g.verdict,
                  fg: g.score >= 85 ? Theme.good : g.score >= 60 ? Theme.dim : Theme.warnText,
                  bg: g.score >= 85 ? Theme.goodSoft : g.score >= 60 ? Theme.track : Theme.warnSoft)
-                .scaleEffect(stage >= 1 ? 1 : 0.8)
-                .opacity(stage >= 1 ? 1 : 0)
+                .scaleEffect(stage >= STAGE.verdict ? 1 : 0.8)
+                .opacity(stage >= STAGE.verdict ? 1 : 0)
                 .animation(Springs.pop, value: stage)
 
             // Case score leads: this is what the student just earned.
             VStack(alignment: .leading, spacing: 2) {
                 HStack(alignment: .firstTextBaseline, spacing: 2) {
-                    Text("\(stage >= 0 ? g.score : 0)")
+                    Text("\(stage >= STAGE.card ? g.score : 0)")
                         .font(.score(56))
                         .tracking(-1.5)
                         .contentTransition(.numericText(value: Double(g.score)))
@@ -221,25 +241,25 @@ struct DebriefView: View {
             VStack(alignment: .leading, spacing: 6) {
                 HStack(alignment: .firstTextBaseline) {
                     Text("Rating").font(.system(size: 13)).foregroundStyle(Theme.muted)
-                    Text((stage >= 2 ? app.rating : startRating).formatted())
+                    Text((stage >= STAGE.rating ? app.rating : startRating).formatted())
                         .font(.score(15))
                         .contentTransition(.numericText(value: Double(app.rating)))
                     Text(g.ratingDelta >= 0 ? "+\(g.ratingDelta)" : "\(g.ratingDelta)")
                         .font(.system(size: 15, weight: .bold))
                         .foregroundStyle(g.ratingDelta >= 0 ? Theme.good : Theme.warn)
-                        .scaleEffect(stage >= 2 ? 1 : 0.6)
-                        .opacity(stage >= 2 ? 1 : 0)
+                        .scaleEffect(stage >= STAGE.rating ? 1 : 0.6)
+                        .opacity(stage >= STAGE.rating ? 1 : 0)
                         .animation(Springs.pop, value: stage)
                     Spacer()
                     Text(app.tier.toNextLabel(app.rating)).font(.system(size: 13)).foregroundStyle(Theme.muted)
                 }
-                ProgressBar(value: stage >= 2 ? app.tierProgress : RatingTier.of(startRating).progress(startRating), height: 4)
+                ProgressBar(value: stage >= STAGE.rating ? app.tierProgress : RatingTier.of(startRating).progress(startRating), height: 4)
             }
             .padding(.top, 4)
         }
         .card(radius: 20, padding: 18)
-        .scaleEffect(stage >= 0 ? 1 : SCORECARD.initialScale)
-        .opacity(stage >= 0 ? 1 : 0)
+        .scaleEffect(stage >= STAGE.card ? 1 : SCORECARD.initialScale)
+        .opacity(stage >= STAGE.card ? 1 : 0)
         .animation(SCORECARD.spring, value: stage)
     }
 
@@ -268,13 +288,31 @@ struct DebriefView: View {
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 10)
-                .opacity(stage >= 3 ? 1 : 0)
-                .offset(y: stage >= 3 ? 0 : FEEDBACK.offsetY)
+                .opacity(stage >= STAGE.feedback ? 1 : 0)
+                .offset(y: stage >= STAGE.feedback ? 0 : FEEDBACK.offsetY)
                 .animation(FEEDBACK.spring.delay(Double(i) * FEEDBACK.stagger), value: stage)
             }
             Color.clear.frame(height: 4)
         }
         .listSurface()
+    }
+
+    /// What the case teaches once the answer is out. Older grades carry none of it, so nothing shows.
+    @ViewBuilder
+    private func teaching(_ g: Grade) -> some View {
+        if let about = g.about {
+            ConditionAboutCard(diagnosis: g.diagnosis, about: about)
+                .modifier(reveal(at: STAGE.about))
+        }
+        if !g.differential.isEmpty {
+            DifferentialReviewCard(items: g.differential, extrasNote: DifferentialReview.extrasNote(g.yourExtras))
+                .modifier(reveal(at: STAGE.differential))
+        }
+    }
+
+    private func reveal(at mark: Int) -> StageReveal {
+        StageReveal(shown: stage >= mark, offsetY: reduceMotion ? 0 : TEACHING.offsetY,
+                    animation: reduceMotion ? TEACHING.fade : TEACHING.spring)
     }
 
     private func summary(_ g: Grade) -> some View {
@@ -310,7 +348,7 @@ struct DebriefView: View {
             }
         }
         .listSurface()
-        .opacity(stage >= 4 ? 1 : 0)
+        .opacity(stage >= STAGE.summary ? 1 : 0)
         .animation(.easeOut(duration: 0.35), value: stage)
     }
 
@@ -380,5 +418,19 @@ struct DebriefView: View {
     private var shareText: String {
         guard let grade else { return "Rounds" }
         return "Rounds: \(grade.score)/100 on \(session.clinical.name), \(session.clinical.age). \(grade.verdict)."
+    }
+}
+
+/// Fades a debrief section in (and slides it up, unless Reduce Motion) once the staged reveal reaches it.
+private struct StageReveal: ViewModifier {
+    let shown: Bool
+    let offsetY: CGFloat
+    let animation: Animation
+
+    func body(content: Content) -> some View {
+        content
+            .opacity(shown ? 1 : 0)
+            .offset(y: shown ? 0 : offsetY)
+            .animation(animation, value: shown)
     }
 }

@@ -4,7 +4,8 @@
 //   2. Pick a validated condition profile that matches their study focus, and queue one new
 //      condition in that focus for prepare-profile to write in the background (prefetch.ts). When
 //      the focus has no profile at all yet, reply 202 "preparing" and the app asks again shortly.
-//   3. Plan the patient in code (severity, age, sex, findings, vitals, lab values).
+//   3. Plan the patient in code (severity, age, sex, findings, vitals, lab values), and pick a
+//      synthetic background record of the same sex and a close age (background.ts), if one fits.
 //   4. Have the LLM write the person around that plan: door note, voice, facts, exam findings,
 //      study reports, test prices. It never chooses numbers or the diagnosis.
 //   5. Check the writing (structure, no diagnosis leaks) and retry once with the problems.
@@ -18,6 +19,7 @@ import { flag, type Patient, TESTS } from "../_shared/labs.ts";
 import { type Focus, parseFocus } from "../_shared/focus.ts";
 import { prepareNext } from "../_shared/prefetch.ts";
 import { refundQuota, takeQuota } from "../_shared/quota.ts";
+import { MAX_AGE_GAP, type PatientBackground, pickBackground } from "./background.ts";
 import { bedCode } from "./bedcode.ts";
 import { buildRubric, checkWriting, neutralIds, type Writing, writerPrompt } from "./writer.ts";
 
@@ -68,7 +70,8 @@ async function writeCase(userId: string, profile: Profile, clerkships: string[],
   const dermatology = focus.kind === "rotation" && focus.value === "dermatology";
   const plan = planCase(profile, Math.random, { psychology, dermatology });
   const terms = leakTerms(profile);
-  let user = writerPrompt(profile, plan);
+  const background = await findBackground(plan, [profile.triage.name, ...acceptedNames(profile.teaching.accepted_names, synonyms)]);
+  let user = writerPrompt(profile, plan, background);
   let writing: Writing | null = null;
   let problems: string[] = [];
   for (let attempt = 0; attempt < 2; attempt++) {
@@ -86,8 +89,23 @@ async function writeCase(userId: string, profile: Profile, clerkships: string[],
     throw new HttpError(502, "the patient couldn't be written; try again");
   }
 
-  const caseId = await save(userId, profile, clerkships, systems, synonyms, plan, neutralIds(writing), focus);
+  const caseId = await save(userId, profile, clerkships, systems, synonyms, plan, neutralIds(writing), focus, background?.id ?? null);
   return json({ case_id: caseId, model: currentModel() });
+}
+
+/** A synthetic background for the planned patient, or null when none fits or the table can't be
+ *  read: a background only adds texture, so it never stops a case from being written. */
+async function findBackground(plan: CasePlan, diagnosisNames: string[]): Promise<PatientBackground | null> {
+  try {
+    const rows = await sql<PatientBackground[]>`
+      select id, age, sex, marital, conditions, medications, allergies, smoking, social
+      from private.patient_backgrounds
+      where sex = ${plan.sex} and age between ${plan.age - MAX_AGE_GAP} and ${plan.age + MAX_AGE_GAP}`;
+    return pickBackground(rows, plan, diagnosisNames, Math.random);
+  } catch (error) {
+    console.error("generate-case: background lookup failed", error);
+    return null;
+  }
 }
 
 /** The specialty a case files under: the one the student picked, when the condition belongs to it
@@ -122,7 +140,7 @@ function doorVitals(plan: CasePlan) {
   return out.map((x) => ({ ...x, label: VITAL_LABELS[x.id] }));
 }
 
-async function save(userId: string, profile: Profile, clerkships: string[], systems: string[], synonyms: string[], plan: CasePlan, w: Writing, focus: Focus): Promise<string> {
+async function save(userId: string, profile: Profile, clerkships: string[], systems: string[], synonyms: string[], plan: CasePlan, w: Writing, focus: Focus, backgroundId: string | null): Promise<string> {
   const meta = new Map(w.test_meta.map((m) => [m.test_id, m]));
   const reports = new Map(w.studies.map((s) => [s.test_id, s]));
   const tests = plan.tests.map((t) => {
@@ -155,11 +173,11 @@ async function save(userId: string, profile: Profile, clerkships: string[], syst
               ({ id, name, detail, cost, turnaround_s, delays_care_min })))},
             ${w.facts.filter((f) => f.importance !== "optional").length})`;
         await tx`
-          insert into private.case_content (case_id, facts, exam, tests, answer_key, condition_slug, severity, persona, rubric, focus)
+          insert into private.case_content (case_id, facts, exam, tests, answer_key, condition_slug, severity, persona, rubric, focus, background_id)
           values (${id}, ${tx.json(w.facts)}, ${tx.json(w.maneuvers)}, ${tx.json(tests)},
             ${tx.json({ diagnosis: profile.triage.name, accepted: acceptedNames(profile.teaching.accepted_names, synonyms) })},
             ${profile.slug}, ${plan.severity}, ${tx.json({ ...w.persona, name: w.patient.name, age: plan.age, sex: plan.sex, pregnant: plan.pregnant, model: currentModel(), prompt_version: PROMPT_VERSION })},
-            ${tx.json(buildRubric(profile, plan, w, tests))}, ${focus.stored})`;
+            ${tx.json(buildRubric(profile, plan, w, tests))}, ${focus.stored}, ${backgroundId})`;
       });
       return id;
     } catch (error) {

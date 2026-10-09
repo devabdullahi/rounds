@@ -33,6 +33,8 @@ final class CaseSession {
     var differential: [String] = []
     var plan = ""
     private(set) var grade: Grade?
+    /// The grading request in flight, shared by the hand-off and the debrief.
+    @ObservationIgnored private var grading: Task<Grade, Error>?
 
     init(clinical: ClinicalCase, service: any CaseService) {
         self.clinical = clinical
@@ -177,11 +179,21 @@ final class CaseSession {
     // MARK: Grading
 
     /// Sends the diagnosis and plan; the server grades from everything logged on the attempt.
+    /// Grades the case once. The hand-off starts it while the attending "reads", and the debrief
+    /// awaits the same request, so the case is never submitted twice.
     func submit() async throws -> Grade {
         if let grade { return grade }
-        let g = try await service.submit(attempt: attempt(), diagnosis: diagnosis, differential: differential, plan: plan)
-        grade = g
-        return g
+        if let grading { return try await grading.value }
+        let task = Task { try await service.submit(attempt: attempt(), diagnosis: diagnosis, differential: differential, plan: plan) }
+        grading = task
+        do {
+            let g = try await task.value
+            grade = g
+            return g
+        } catch {
+            grading = nil   // the debrief can try again
+            throw error
+        }
     }
 }
 

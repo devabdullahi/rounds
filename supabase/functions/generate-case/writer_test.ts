@@ -1,7 +1,7 @@
 import { assert, assertEquals } from "jsr:@std/assert@1";
 import { leakTerms, planCase, type Profile } from "../_shared/casegen.ts";
 import { seeded } from "../_shared/labs.ts";
-import { buildRubric, checkWriting, neutralIds, type Writing } from "./writer.ts";
+import { buildRubric, checkWriting, neutralIds, type Writing, writerPrompt } from "./writer.ts";
 
 const dir = new URL("../../../knowledge-base/profiles/", import.meta.url);
 let profile: Profile | null = null;
@@ -87,4 +87,23 @@ Deno.test("the rubric weighs essential facts double and keeps only key maneuvers
   assert(r.red_flags[0].why.length > 0);
   assertEquals(r.indicated_tests.map((t) => t.id), tests.filter((t) => t.role === "indicated").map((t) => t.id));
   assert(r.must_not_miss.includes(mustNotMiss));
+});
+
+Deno.test("coding wording from a synthetic record is caught, in replies and the persona", () => {
+  const w = goodWriting();
+  w.facts[5] = { ...w.facts[5], reply: "I'm allergic to Peanut (substance)." };
+  w.persona = { ...w.persona, background: "Has Chronic sinusitis (disorder)." };
+  const problem = checkWriting(w, plan, terms).find((p) => p.startsWith("uses coding wording"));
+  assert(problem?.includes("(substance)") && problem.includes("(disorder)"), problem);
+});
+
+Deno.test("a background goes to the writer cleaned, and only when there is one", () => {
+  assert(!writerPrompt(profile!, plan).includes("Patient background (synthetic record)"));
+  const prompt = writerPrompt(profile!, plan, {
+    id: "x", age: plan.age, sex: plan.sex, marital: "M", conditions: ["Hypertension (disorder)"],
+    medications: [{ name: "lisinopril 10 MG Oral Tablet" }], allergies: ["Peanut (substance)"], smoking: "Ex-smoker", social: [],
+  });
+  assert(prompt.includes("Patient background (synthetic record)"));
+  assert(prompt.includes("lisinopril 10 MG Oral Tablet") && prompt.includes('"Peanut"'));
+  assert(!prompt.includes("Peanut (substance)") &&!prompt.includes("Hypertension (disorder)"));
 });

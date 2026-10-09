@@ -104,6 +104,12 @@ struct LiveCaseService: CaseService {
         return r.grade
     }
 
+    /// Maps the server's grade JSON to a `Grade`. Exposed so tests can check the wire mapping
+    /// (including older grades without the teaching fields) without a network call.
+    static func decodeGrade(from data: Data) throws -> Grade {
+        try JSONDecoder().decode(GradeRow.self, from: data).grade
+    }
+
     // MARK: Plumbing
 
     private func invoke<Body: Encodable, Reply: Decodable>(_ function: String, _ body: Body) async throws -> Reply {
@@ -281,13 +287,36 @@ private struct GradeRow: Decodable {
     let verdict: String
     let rating_delta: Int
     let rating: Int
+    struct AboutRow: Decodable {
+        let summary_points: [String]?
+        let symptoms: [String]?
+        let risk_factors: [String]?
+    }
+    struct DifferentialRow: Decodable {
+        let name: String
+        let must_not_miss: Bool?
+        let why: String?
+        let tell_apart: [String]?
+        let in_yours: Bool?
+    }
     let feedback: [FeedbackRow]
     let missed_red_flags: [MissRow]
+    // Teaching fields: absent on grades made before the debrief taught the condition.
+    let about: AboutRow?
+    let differential: [DifferentialRow]?
+    let your_extras: [String]?
 
     var grade: Grade {
         Grade(score: score, diagnosisCorrect: diagnosis_correct, diagnosis: diagnosis, verdict: verdict,
               ratingDelta: rating_delta, rating: rating,
               feedback: feedback.map { Feedback(tone: $0.tone == "good" ? .good : .miss, title: $0.title, detail: $0.detail, coversMiss: $0.covers_miss) },
-              missedRedFlags: missed_red_flags.map { Miss(flag: $0.flag, why: $0.why) })
+              missedRedFlags: missed_red_flags.map { Miss(flag: $0.flag, why: $0.why) },
+              about: about.map { ConditionAbout(summaryPoints: $0.summary_points ?? [], symptoms: $0.symptoms ?? [], riskFactors: $0.risk_factors ?? []) }
+                  .flatMap { $0.isEmpty ? nil : $0 },
+              differential: (differential ?? []).map {
+                  DifferentialReview(name: $0.name, mustNotMiss: $0.must_not_miss ?? false, why: $0.why ?? "",
+                                     tellApart: $0.tell_apart ?? [], inYours: $0.in_yours ?? false)
+              },
+              yourExtras: your_extras ?? [])
     }
 }
