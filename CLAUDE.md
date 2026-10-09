@@ -6,6 +6,9 @@ AI roleplay practice app for **US medical students**: the student interviews a f
 |---|---|
 | `Rounds - IOS/` | SwiftUI app, iOS 17+, XcodeGen (`project.yml` is the source of truth) |
 | `supabase/` | Postgres schema + RLS (`migrations/`), `seed.sql`, edge functions (`functions/`) |
+| `knowledge-base/` | Condition catalog (`conditions*.jsonl`, `triage`, `specialties`, `systems`), condition profiles (`profiles/`), schema; `licensed/` is git-ignored |
+| `tools/` | Python pipeline: `kb-import/` (MedlinePlus, MeSH, UMLS/SNOMED import), `kb-generate/` (AI triage, tagging, profiles, loaders) |
+| `website/` | Marketing site (static HTML/CSS/JS, app recordings in `media/`) |
 
 Current phase: **live backend, pre-launch.** The app talks to the cloud Supabase project (`mpyxaefnytviwnjuqtbu`, linked; `supabase/cloud.env` holds the DB password, git-ignored): accounts (email code, Apple, Google), cases and patient chat, grading, flashcards, profile photos. Edge functions are deployed with `supabase functions deploy <name>`, migrations with `supabase db push --linked`. Reference data (`Services/Reference/`) is still mock. Changes to cloud data, deploys and pushes affect the real project: say what you'll change first. Don't create new cloud projects or add keys unless asked.
 
@@ -22,9 +25,14 @@ xcrun simctl launch booted com.abdul.rounds -screen <name>   # names listed in A
 supabase db reset                        # local DB from migrations + seed (needs Docker; optional)
 supabase db push --linked -p "$SUPABASE_DB_PASSWORD"   # apply new migrations to the cloud
 supabase functions deploy <name> --project-ref mpyxaefnytviwnjuqtbu
+
+cd tools/kb-generate                    # condition catalog (see its README for the full order)
+python3 generate.py triage              # triage new conditions
+python3 tag_specialties.py && python3 tag_systems.py
+python3 load_conditions.py              # regenerate supabase/seed_conditions.sql + profilegen assets
 ```
 
-Never edit `Rounds.xcodeproj` by hand; change `project.yml` and regenerate.
+Never edit `Rounds.xcodeproj` by hand; change `project.yml` and regenerate. If the simulator id above is gone, pick one with `xcrun simctl list devices available`; with no iOS runtime installed, compile-check with `-destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO build-for-testing`.
 
 ## Workflow
 
@@ -60,7 +68,7 @@ Rules that follow from this:
 - **MV first.** Views read `@Observable` models (`AppState`, `CaseSession`) via `@Environment` or `@State`. Add a per-screen view model only when a screen owns real async work or logic worth testing.
 - Navigation is value-based: `NavigationStack(path:)` with `Hashable` step enums (`AuthStep`, `CaseStep`). Don't use string routes.
 - One screen per file in `Screens/`; shared pieces in `Components/`; tokens in `Theme/Theme.swift`.
-- Inside each layer, files sit in feature folders: `Screens/{Auth,Onboarding,Home,Case,Patients,Cards,Profile}`, `Model/{Account,Study,Case,Performance,Badges,Cards}`, `Components/{Buttons,Layout,Indicators,Icons,ECG,Onboarding,Focus,Badges,Case}`, `Services/{Auth,Cards,Cases,Reference}` (with `Errors/`, `Providers/`, `Protocols/`, `Models/`, `Mocks/` where they help), `App/Navigation`, and matching `RoundsTests/` folders. Put a new file in the folder of its feature; add a folder only when a feature has no home.
+- Inside each layer, files sit in feature folders: `Screens/{Auth,Onboarding,Home,Case,Patients,Cards,Profile}`, `Model/{Account,Assistant,Study,Case,Performance,Badges,Cards}`, `Components/{Buttons,Layout,Indicators,Icons,ECG,Onboarding,Focus,Badges,Case,Camera}`, `Services/{Auth,Cards,Cases,Notifications,Reference}` (with `Errors/`, `Providers/`, `Protocols/`, `Models/`, `Mocks/` where they help), `App/{Navigation,Intents}`, and matching `RoundsTests/` folders. Put a new file in the folder of its feature; add a folder only when a feature has no home.
 - Persist small user preferences with `@AppStorage` keys declared as `static let storageKey` on the owning type (see `StudyFocus`).
 
 ## Concurrency (Swift 6 rules, even in Swift 5 mode)
@@ -108,6 +116,11 @@ Prefer springs. Drive sequences with stage state from one `.task`, and continuou
 - Cases are original writing about fictional patients. Never copy question-bank items (UWorld, NBME, USMLE, AMBOSS), textbook wording, or "NCLEX"/"USMLE" branding. Facts are fine; wording must be ours.
 - US terms and units: CBC/BMP, mg/dL, °F, ACC/AHA guidelines, acetaminophen. Tag every case with one `Clerkship` and one `OrganSystem`; students browse by these topics, never by training year.
 - Never store or request real patient data.
+
+## Licensed data
+
+- SNOMED CT content (via UMLS, UMLS Affiliate License) may live in our database and in `knowledge-base/licensed/` (git-ignored), never in git, seed files, the app bundle or client responses. Profiles store only `snomed_verified` flags.
+- Never say NLM or UMLS "approved" or "endorsed" Rounds; say the app uses their data under license.
 
 ## Testing
 
