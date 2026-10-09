@@ -8,6 +8,15 @@ Reference material for **drafting fictional cases**. Each file has one JSON reco
 | `drugs.jsonl` | Common prescription generics: indications, dosing, contraindications, boxed warning, interactions | `drugs.py` |
 | `reference_ranges.json` | Adult normal ranges in US units for 108 tests and vitals: sex-specific ranges, critical values, report decimals, formulas for derived values | Written by hand (teaching values, not clinical) |
 | `cdc_pages.jsonl` | CDC overview pages linked by `condition_id` (mostly infectious and chronic disease) | `cdc.py` (run after `build_kb`) |
+| `conditions_core.jsonl` | Core hospital diagnoses MedlinePlus lacks (DKA, preeclampsia…), same shape as `conditions.jsonl`; wins on a slug collision | `clinical_tables.py` |
+| `rxnorm.jsonl` | Drugs normalized to RxNorm: ingredient RXCUIs, brands, FDA classes, MED-RT may-treat / contraindications | `rxnorm.py` |
+| `triage.jsonl` | Stage 0 per condition: case-suitable, kind, clerkships, commonness, settings | `tools/kb-generate/generate.py triage` |
+| `specialties.jsonl` | Specialties that manage each case-suitable condition (study topics beside the rotations) | `tools/kb-generate/tag_specialties.py` |
+| `systems.jsonl` | Organ systems (up to three) per case-suitable condition, from the full 14-system list | `tools/kb-generate/tag_systems.py` |
+| `profiles/` | One generated condition profile per slug (schema in `schema/`) | `tools/kb-generate/generate.py profile` (the app also writes them on demand) |
+| `schema/` | Condition profile JSON Schema and a worked example | Written by hand |
+| `coverage-gaps.md` | Which core conditions have a catalog entry, a passing profile and a SNOMED match | `coverage_gaps.py` |
+| `licensed/` | **Git-ignored.** SNOMED CT maps (`snomed.jsonl`, `finding_snomed.jsonl`), VSAC value sets, the Clinical Tables full list, Synthea backgrounds. Usable in Rounds, not redistributable | `snomed.py`, `snomed_findings.py`, `vsac.py`, `clinical_tables.py`, `tools/synthea/backgrounds.py` |
 
 ```bash
 cd tools/kb-import
@@ -15,6 +24,8 @@ python3 -m build_kb  # --limit 20 for a quick trial
 python3 drugs.py      # openFDA: 1,000 requests/day without OPENFDA_API_KEY; cached, so reruns resume
 python3 cdc.py
 ```
+
+The full run order is in [`tools/kb-import/README.md`](../tools/kb-import/README.md) and [`tools/kb-generate/README.md`](../tools/kb-generate/README.md). Builders without a path live in `tools/kb-import/`.
 
 Downloads and API responses are cached in `tools/kb-import/.cache/`, which is git-ignored.
 
@@ -31,7 +42,7 @@ Downloads and API responses are cached in `tools/kb-import/.cache/`, which is gi
 |---|---|---|
 | `name`, `also_called` | MedlinePlus | Diagnosis label and synonyms for answer matching |
 | `kind` | MeSH tree | `symptom`: use as a presenting complaint. `disease`: can be the hidden diagnosis |
-| `organ_systems` | MeSH tree → `OrganSystem` raw values | Tags a case for topic browsing. Empty when there's no single system (e.g. infections) |
+| `organ_systems` | MeSH tree → `OrganSystem` raw values | A hint only. The organ systems the app browses by come from `systems.jsonl` (`tag_systems.py`, with MeSH as a floor), falling back to triage's when a condition has no row there |
 | `mesh[].scope_note`, `entry_terms` | MeSH | Definition and alternate names |
 | `icd10cm_candidates` | NLM Clinical Tables | Candidate codes to review |
 | `summary` | MedlinePlus | Plain-language background: symptoms, causes, who gets it |

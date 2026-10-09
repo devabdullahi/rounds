@@ -104,10 +104,13 @@ def main() -> None:
                 by_parent.setdefault(parent_tree(tree), set()).add(c["name"])
 
     records, unmatched = [], []
+    added: set[str] = set()
     for clerkship, items in json.loads(CORE.read_text())["clerkships"].items():
         for names in items:
             name = names[0]
-            if any(norm(n) in known for n in names):
+            # A condition can sit under two specialties (iron deficiency anemia: internal medicine and
+            # nutrition); it is imported once.
+            if any(norm(n) in known for n in names) or norm(name) in added:
                 continue
             ct = next((by_name[norm(n)] for n in names if norm(n) in by_name), None)
             snomed = next((c for n in names if (c := concept(n))), None)
@@ -125,6 +128,7 @@ def main() -> None:
             broader = [by_medlineplus[u] for u in linked_topics(ct) if u in by_medlineplus]
             siblings = sorted({s for tree in trees for s in by_parent.get(parent_tree(tree), ())})
             summary = " ".join(f"(Broader MedlinePlus topic: {b['name']}) {b['summary']}" for b in broader[:1])
+            added.add(norm(name))
             records.append({
                 "id": f"ct-{ct['key_id']}" if ct else f"core-{slug(name)}",
                 "name": name,

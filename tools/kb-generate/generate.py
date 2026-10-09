@@ -8,14 +8,19 @@
 
 Model and keys come from .env (see .env.example). Every stage is validated against the schema and
 the rule checks; a failing stage is retried once with the errors, then saved as failed for review.
+
+Output goes to knowledge-base/, or to KB_OUT when set. LLM_PROVIDER=mock always writes to KB_OUT or
+a temp folder, so a dry run can't touch real triage or profiles.
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import sys
+import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -26,8 +31,23 @@ from terminology import check_terms, term_summary
 HERE = Path(__file__).resolve().parent
 KB = HERE.parents[1] / "knowledge-base"
 PROMPTS = HERE / "prompts"
-PROFILES = KB / "profiles"
-TRIAGE = KB / "triage.jsonl"
+TRIAGE = KB / "triage.jsonl"  # the real triage: what load_conditions.py and the taggers read
+
+
+def output_dir() -> Path:
+    """Where this run writes. The mock provider replays the appendicitis example for every
+    condition, so a mock run writes to KB_OUT or a fresh temp folder and never overwrites real
+    triage, tags or profiles. A real run writes to knowledge-base/ unless KB_OUT says otherwise."""
+    if os.environ.get("KB_OUT"):
+        return Path(os.environ["KB_OUT"]).expanduser().resolve()
+    if os.environ.get("LLM_PROVIDER") == "mock":  # llm already merged .env into the environment
+        return Path(tempfile.mkdtemp(prefix="kb-mock-"))
+    return KB
+
+
+OUT = output_dir()
+PROFILES = OUT / "profiles"
+TRIAGE_OUT = OUT / "triage.jsonl"
 EXAMPLE = json.loads((KB / "schema" / "examples" / "acute-appendicitis.json").read_text())
 
 # Bump when a prompt changes so regenerated profiles can be told apart.
@@ -67,26 +87,48 @@ def fill(template: str, **values: str) -> str:
 
 
 def load_conditions() -> dict[str, dict]:
-    """MedlinePlus conditions plus the core conditions it lacks (tools/kb-import/clinical_tables.py)."""
-    rows = [json.loads(line) for name in ("conditions.jsonl", "conditions_core.jsonl")
-            if (KB / name).exists() for line in (KB / name).open()]
-    return {slugify(r["name"]): r for r in rows}
+    """MedlinePlus conditions plus the core conditions it lacks (tools/kb-import/clinical_tables.py).
+
+    Keyed by slugified name, so a later record with the same slug (a core condition matching a
+    MedlinePlus topic, or a row repeated in one file) replaces the earlier one. That precedence is
+    kept so the data doesn't change, but collisions are printed so a swap is never silent."""
+    conditions: dict[str, dict] = {}
+    collisions: list[str] = []
+    for name in ("conditions.jsonl", "conditions_core.jsonl"):
+        if not (KB / name).exists():
+            continue
+        for row in map(json.loads, (KB / name).open()):
+            slug = slugify(row["name"])
+            if slug in conditions:
+                same = conditions[slug].get("id") == row.get("id")
+                collisions.append(f"{slug} ({name}, {'duplicate row' if same else 'replaces ' + str(conditions[slug].get('id'))})")
+            conditions[slug] = row
+    if collisions:
+        print(f"warning: {len(collisions)} slug collision(s), later record kept: {'; '.join(collisions)}", file=sys.stderr)
+    return conditions
 
 
-def load_triage() -> dict[str, dict]:
-    if not TRIAGE.exists():
+def load_triage(path: Path = TRIAGE) -> dict[str, dict]:
+    if not path.exists():
         return {}
-    return {r["slug"]: r for r in map(json.loads, TRIAGE.open())}
+    return {r["slug"]: r for r in map(json.loads, path.open())}
+
+
+def working_triage() -> dict[str, dict]:
+    """Triage for profile runs: this run's output when it has some (a mock dry run's own triage),
+    else the real file, read only."""
+    return load_triage(TRIAGE_OUT if TRIAGE_OUT.exists() else TRIAGE)
 
 
 # MARK: - Stage 0: triage
 
 def run_triage(limit: int | None) -> None:
     conditions = load_conditions()
-    done = load_triage()
+    done = load_triage(TRIAGE_OUT)
     todo = [s for s in conditions if s not in done][:limit]
     provider, model = llm.current()
-    print(f"triage: {len(todo)} to do, {len(done)} done, model {provider}/{model}", file=sys.stderr)
+    print(f"triage: {len(todo)} to do, {len(done)} done, model {provider}/{model}, writing {TRIAGE_OUT}", file=sys.stderr)
+    OUT.mkdir(parents=True, exist_ok=True)
 
     for start in range(0, len(todo), TRIAGE_BATCH):
         batch = todo[start:start + TRIAGE_BATCH]
@@ -101,7 +143,7 @@ def run_triage(limit: int | None) -> None:
                     example=json.dumps(EXAMPLE["triage"]),
                     conditions=json.dumps(listing, indent=1, ensure_ascii=False))
         results = triage_batch(user)
-        with TRIAGE.open("a") as f:
+        with TRIAGE_OUT.open("a") as f:
             for s in batch:
                 triage = results.get(s)
                 errors = ["missing from reply"] if triage is None else section_errors("triage", triage)
@@ -293,7 +335,7 @@ def save(profile: dict, stage_errors: list[str], repairs: list[str] | None = Non
     PROFILES.mkdir(parents=True, exist_ok=True)
     path = PROFILES / f"{profile['slug']}.json"
     path.write_text(json.dumps(profile, indent=2, ensure_ascii=False) + "\n")
-    print(f"  saved {path.relative_to(KB.parent)} ({profile['generation']['validation']['status']})", file=sys.stderr)
+    print(f"  saved {path} ({profile['generation']['validation']['status']})", file=sys.stderr)
 
 
 def top_suitable(triage: dict[str, dict], count: int) -> list[str]:
@@ -316,11 +358,13 @@ def main() -> None:
     c = sub.add_parser("check")
     c.add_argument("slugs", nargs="*")
     args = parser.parse_args()
+    if OUT != KB:
+        print(f"writing to {OUT}, not knowledge-base/ (KB_OUT or LLM_PROVIDER=mock)", file=sys.stderr)
 
     if args.command == "triage":
         run_triage(args.limit)
     elif args.command == "profile":
-        triage = load_triage()
+        triage = working_triage()
         slugs = args.slugs or top_suitable(triage, args.top or 10)
         conditions = load_conditions()
         for slug in slugs:

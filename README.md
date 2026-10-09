@@ -27,10 +27,24 @@ A clinical-reasoning trainer for US medical students. Take a fictional patient's
 | Folder | What it is |
 | --- | --- |
 | `Rounds - IOS/` | SwiftUI iOS app (iOS 17+). XcodeGen: run `xcodegen generate`, then open `Rounds.xcodeproj`. |
-| `supabase/` | Postgres schema and row-level security (`migrations/`), seed data, and edge functions: `generate-case` writes a patient, `case-session` runs and grades the encounter. |
+| `supabase/` | Postgres schema and row-level security (`migrations/`), seed data, and edge functions (below). |
 | `knowledge-base/` | Sources, lab reference ranges, the profile schema (`schema/`) and generated profiles (`profiles/`). See its README for licenses. |
-| `tools/kb-import/` | Scripts that download the public-domain sources. |
-| `tools/kb-generate/` | The profile generator (triage, staged generation, validation, auto-repair) and its prompts. |
+| `tools/kb-import/` | Scripts that download the public-domain sources (and licensed SNOMED CT maps, kept out of git). |
+| `tools/kb-generate/` | The profile generator (triage, topic tagging, staged generation, validation, auto-repair), its prompts, and the exports to `supabase/`. |
+| `website/` | The one-page marketing site (static HTML, CSS and JS). |
+
+### Edge functions
+
+| Function | Job |
+| --- | --- |
+| `generate-case` | Plans a case from a condition profile and writes the fictional patient. |
+| `case-session` | Runs the encounter (patient replies, exam, tests) and grades it. |
+| `prepare-profile` | Writes a missing condition profile on demand, one stage per call (internal, service role only). |
+| `generate-cards` | Writes flashcard decks from topics, the student's mistakes, or their notes. |
+| `send-welcome` | Sends the one-time welcome email through SES after onboarding. |
+| `delete-account` | Deletes the caller's account and everything that hangs off it. |
+
+`grade-attempt` and `patient-reply` are unused stubs from the first design; `case-session` does both jobs.
 
 ## Run it locally
 
