@@ -198,7 +198,8 @@ struct GenerateCardsView: View {
                 VStack(spacing: 0) {
                     mistakeRow(.target, wrongDiagnoses == 1 ? "1 diagnosis you got wrong" : "\(wrongDiagnoses) diagnoses you got wrong")
                     Hairline()
-                    mistakeRow(.siren, app.missedRedFlagCount == 1 ? "1 red flag you missed" : "\(app.missedRedFlagCount) red flags you missed")
+                    mistakeRow(.siren, app.missedRedFlagCount == 1 ? "1 red flag you missed" : "\(app.missedRedFlagCount) red flags you missed",
+                               tint: Theme.warn)   // red flags are red everywhere else
                 }
                 .listSurface()
                 Text("Cards focus on what tells each condition apart and what you can't miss.")
@@ -211,9 +212,9 @@ struct GenerateCardsView: View {
         }
     }
 
-    private func mistakeRow(_ glyph: IconGlyph, _ text: String) -> some View {
+    private func mistakeRow(_ glyph: IconGlyph, _ text: String, tint: Color = Theme.accent) -> some View {
         HStack(spacing: 12) {
-            AppIcon(glyph, size: 18).foregroundStyle(Theme.accent)
+            AppIcon(glyph, size: 18).foregroundStyle(tint)
             Text(text).font(.system(size: 16))
             Spacer(minLength: 0)
         }
