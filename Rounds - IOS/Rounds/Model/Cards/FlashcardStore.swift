@@ -14,6 +14,28 @@ final class FlashcardStore {
     private(set) var isGenerating = false
     /// Text is being read out of picked notes (on the device).
     private(set) var isReadingNotes = false
+    /// The study round in progress: cards still to go (a missed card comes back at the end) and the
+    /// score so far. Kept on the store, not the screen, so leaving the Flashcards tab and coming
+    /// back finds the student where they were.
+    var queue: [Flashcard] = []
+    var known = 0
+    var missed = 0
+    /// A round has been dealt this app session; returning to the tab resumes it instead.
+    private(set) var roundStarted = false
+
+    /// Starts the selected deck from its first card, with a fresh score.
+    func startRound() {
+        queue = studying.map { $0.copy() }
+        known = 0
+        missed = 0
+        roundStarted = true
+    }
+
+    /// The first visit deals a round; later visits keep the one in progress.
+    func startRoundIfNeeded() {
+        if !roundStarted { startRound() }
+    }
+
     /// Deck being studied; nil studies every card.
     var selectedDeck: String?
     var problem: String?
