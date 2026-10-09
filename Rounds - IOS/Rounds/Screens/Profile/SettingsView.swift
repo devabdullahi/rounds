@@ -29,6 +29,8 @@ struct SettingsView: View {
     @AppStorage(Preferences.voiceModeKey) private var voiceMode = Preferences.voiceModeDefault
     @AppStorage(Preferences.autoSendKey) private var autoSend = Preferences.autoSendDefault
     @AppStorage(Preferences.voiceSpeedKey) private var voiceSpeed = Preferences.voiceSpeedDefault
+    /// Whether iOS has a non-robotic voice installed; checked once, when Settings opens.
+    @State private var hasNaturalVoice = PatientVoice.hasNaturalVoice()
     @AppStorage(Preferences.showRevealsKey) private var showReveals = Preferences.showRevealsDefault
     @AppStorage(Preferences.showCoverageKey) private var showCoverage = Preferences.showCoverageDefault
     @AppStorage(Preferences.hapticsKey) private var haptics = Preferences.hapticsDefault
@@ -96,6 +98,12 @@ struct SettingsView: View {
                                     .tint(Theme.accent)
                                     .accessibilityLabel("Patient voice speed")
                                 Text("Faster").font(.system(size: 13)).foregroundStyle(Theme.muted)
+                            }
+                            if !hasNaturalVoice {
+                                Text("For a natural patient voice, download an Enhanced or Premium English voice in iOS Settings › Accessibility › Spoken Content › Voices.")
+                                    .font(.system(size: 13))
+                                    .foregroundStyle(Theme.muted)
+                                    .fixedSize(horizontal: false, vertical: true)
                             }
                         }
                         .padding(16)

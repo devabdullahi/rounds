@@ -104,6 +104,7 @@ struct InterviewView: View {
                 repliesBeforeQuestion = session.messages.filter { $0.kind == .patient }.count
                 session.ask(text)
             }
+            voice.usePatient(sex: c.sex, age: c.age, seed: c.bed)
             session.startClockIfNeeded()
             tab = .history
             #if DEBUG
