@@ -9,7 +9,7 @@ enum IntentTopic: String, AppEnum {
     case nephrology, ophthalmology, orthopedicSurgery, otolaryngology, rehabilitation, rheumatology, urology
     case neonatology, nutrition
     case cardiovascular, respiratory, gastrointestinal, renal, nervous, endocrine, blood, musculoskeletal
-    case reproductive, behavioral
+    case reproductive, behavioral, skin, eye, ent, immune
 
     static let typeDisplayRepresentation: TypeDisplayRepresentation = "Topic"
 
@@ -23,7 +23,7 @@ enum IntentTopic: String, AppEnum {
         .neurology: DisplayRepresentation(title: "Neurology", synonyms: ["neuro"]),
         .emergency: DisplayRepresentation(title: "Emergency medicine", synonyms: ["emergency", "EM", "ER"]),
         .clinicalPsychology: DisplayRepresentation(title: "Clinical psychology", synonyms: ["psychology"]),
-        .dermatology: DisplayRepresentation(title: "Dermatology", synonyms: ["derm", "skin"]),
+        .dermatology: DisplayRepresentation(title: "Dermatology", synonyms: ["derm"]),
         .allergyImmunology: DisplayRepresentation(title: "Allergy and immunology", synonyms: ["allergy", "immunology", "allergies"]),
         .cardiology: DisplayRepresentation(title: "Cardiology", synonyms: ["cardio", "vascular", "cardiology and vascular"]),
         .endocrinology: DisplayRepresentation(title: "Endocrinology", synonyms: ["endo", "diabetes", "thyroid"]),
@@ -31,9 +31,9 @@ enum IntentTopic: String, AppEnum {
         .hematologyOncology: DisplayRepresentation(title: "Hematology oncology", synonyms: ["heme onc", "oncology", "cancer"]),
         .infectiousDisease: DisplayRepresentation(title: "Infectious disease", synonyms: ["ID", "infections", "infectious"]),
         .nephrology: DisplayRepresentation(title: "Nephrology", synonyms: ["nephro", "kidney disease"]),
-        .ophthalmology: DisplayRepresentation(title: "Ophthalmology", synonyms: ["optho", "eyes", "eye"]),
+        .ophthalmology: DisplayRepresentation(title: "Ophthalmology", synonyms: ["optho", "eye doctor"]),
         .orthopedicSurgery: DisplayRepresentation(title: "Orthopedic surgery", synonyms: ["ortho", "orthopedics"]),
-        .otolaryngology: DisplayRepresentation(title: "Otolaryngology", synonyms: ["ENT", "ear nose and throat"]),
+        .otolaryngology: DisplayRepresentation(title: "Otolaryngology", synonyms: ["ENT"]),
         .rehabilitation: DisplayRepresentation(title: "Physical medicine and rehab", synonyms: ["PM&R", "rehab", "rehabilitation"]),
         .rheumatology: DisplayRepresentation(title: "Rheumatology", synonyms: ["rheum", "rheumatology"]),
         .urology: DisplayRepresentation(title: "Urology", synonyms: ["uro", "urologic"]),
@@ -46,6 +46,10 @@ enum IntentTopic: String, AppEnum {
         .nervous: DisplayRepresentation(title: "Nervous system", synonyms: ["nervous", "neurologic"]),
         .endocrine: DisplayRepresentation(title: "Endocrine system", synonyms: ["endocrine", "hormones"]),
         .blood: DisplayRepresentation(title: "Blood", synonyms: ["hematology", "heme"]),
+        .skin: DisplayRepresentation(title: "Skin", synonyms: ["rash", "rashes", "skin conditions"]),
+        .eye: DisplayRepresentation(title: "Eye", synonyms: ["eyes", "vision"]),
+        .ent: DisplayRepresentation(title: "Ear, nose and throat", synonyms: ["ear nose and throat", "ears", "throat", "sinuses"]),
+        .immune: DisplayRepresentation(title: "Immune system", synonyms: ["immune", "autoimmune", "allergic reactions"]),
         .musculoskeletal: DisplayRepresentation(title: "Musculoskeletal", synonyms: ["MSK", "muscles and bones"]),
         .reproductive: DisplayRepresentation(title: "Reproductive", synonyms: ["reproductive system"]),
         .behavioral: DisplayRepresentation(title: "Behavioral", synonyms: ["behavioral health"]),

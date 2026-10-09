@@ -134,12 +134,15 @@ async function finish(slug: string, profile: Json, repairs: string[]): Promise<v
   };
   const t = profile.triage;
   // Study topics come from the catalog: triage rotations plus tagged specialties (tag_specialties.py).
-  const [catalog] = await sql<{ clerkships: string[] }[]>`select clerkships from private.conditions where slug = ${slug}`;
+  const [catalog] = await sql<{ clerkships: string[]; organ_systems: string[] }[]>`
+    select clerkships, organ_systems from private.conditions where slug = ${slug}`;
+  // Body systems too: the catalog's re-filing (tag_systems.py) beats triage's ten-system pick.
+  const systems = catalog?.organ_systems?.length ? catalog.organ_systems : t.organ_systems ?? [];
   const clerkships = [...new Set([t.primary_clerkship, ...(t.secondary_clerkships ?? []), ...(catalog?.clerkships ?? [])])];
   await sql.begin(async (tx) => {
     await tx`
       insert into private.condition_profiles (slug, name, primary_clerkship, clerkships, organ_systems, validation, review, profile)
-      values (${slug}, ${t.name}, ${t.primary_clerkship}, ${clerkships}, ${t.organ_systems ?? []}, ${status}, 'pending', ${tx.json(profile)})
+      values (${slug}, ${t.name}, ${t.primary_clerkship}, ${clerkships}, ${systems}, ${status}, 'pending', ${tx.json(profile)})
       on conflict (slug) do update set validation = excluded.validation, profile = excluded.profile, updated_at = now()`;
     await tx`update private.profile_jobs set status = ${status === "passed" ? "done" : "failed"}, profile = ${tx.json(profile)},
       locked_at = null, updated_at = now() where slug = ${slug}`;

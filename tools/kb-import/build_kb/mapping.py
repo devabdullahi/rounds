@@ -23,9 +23,13 @@ ORGAN_SYSTEM_BY_TREE = {
     "C19": "endocrine",
     "C18": "endocrine",          # nutritional and metabolic
     "C15": "blood",
-    "C20": "blood",              # immune
+    "C20": "immune",
     "C05": "musculoskeletal",
-    "C17": "musculoskeletal",    # skin and connective tissue
+    "C17": "skin",               # skin and connective tissue: skin unless under connective tissue
+    "C17.300": "musculoskeletal",  # connective tissue diseases
+    "C17.800.090": "reproductive",  # MeSH files breast diseases under skin
+    "C11": "eye",
+    "C09": "ent",                # otorhinolaryngologic
     "F03": "behavioral",
 }
 
