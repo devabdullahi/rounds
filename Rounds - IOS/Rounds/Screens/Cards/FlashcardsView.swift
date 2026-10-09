@@ -73,9 +73,6 @@ struct FlashcardsView: View {
 
     @Environment(AppState.self) private var app
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var queue: [Flashcard] = []
-    @State private var known = 0
-    @State private var missed = 0
     @State private var flipped = false
     @State private var verdict: Verdict?
     @State private var dealt = flashcardsHaveDealt
@@ -125,7 +122,7 @@ struct FlashcardsView: View {
 
             if store.decks.count > 1 { deckChips }
 
-            if total > 0 { ProgressBar(value: Double(known) / Double(total), height: 4) }
+            if total > 0 { ProgressBar(value: Double(store.known) / Double(total), height: 4) }
 
             // Nothing until the first load lands, then: no cards, a finished deck, or the deck.
             // The summary needs answered cards, so an empty queue mid-load never reads "0 / 0".
@@ -133,8 +130,8 @@ struct FlashcardsView: View {
                 Color.clear.frame(maxHeight: .infinity)
             } else if store.cards.isEmpty {
                 emptyState
-            } else if queue.isEmpty {
-                if known + missed > 0 {
+            } else if store.queue.isEmpty {
+                if store.known + store.missed > 0 {
                     summary.transition(.opacity.combined(with: .scale(scale: 0.96)))
                 }
             } else {
@@ -167,7 +164,7 @@ struct FlashcardsView: View {
                     draft.deck = Flashcard.myDeck
                     guard let saved = await store.add(draft) else { return }
                     if store.selectedDeck == nil || store.selectedDeck == saved.deck {
-                        withAnimation(FLIGHT.spring) { queue.insert(saved, at: 0); flipped = false }
+                        withAnimation(FLIGHT.spring) { store.queue.insert(saved, at: 0); flipped = false }
                     }
                 }
             }
@@ -197,10 +194,11 @@ struct FlashcardsView: View {
         }
         .overlay(alignment: .bottom) { noticeToast }
         .onChange(of: store.selectedDeck) { resetQueue() }
-        .onChange(of: store.cards.count) { if queue.isEmpty { resetQueue() } }
+        .onChange(of: store.cards.count) { if store.queue.isEmpty { resetQueue() } }
         .task {
             await store.load()
-            resetQueue()
+            // The task runs each time the tab reappears: only the first visit deals a round.
+            store.startRoundIfNeeded()
             await dealIn()
             #if DEBUG
             switch DebugLaunch.screen {
@@ -294,7 +292,7 @@ struct FlashcardsView: View {
     // MARK: Deck
 
     private var deck: some View {
-        let shown = Array(queue.prefix(DECK.visible).enumerated())
+        let shown = Array(store.queue.prefix(DECK.visible).enumerated())
         return ZStack {
             ForEach(shown.reversed(), id: \.element.id) { depth, card in
                 CardFace(card: card,
@@ -306,7 +304,7 @@ struct FlashcardsView: View {
                     .offset(y: dealt ? 0 : DECK.dealFrom)
                     .rotationEffect(.degrees(dealt ? 0 : DECK.fan * Double(depth - 1)))
                     .animation(reduceMotion ? nil : DECK.deal.delay(TIMING.dealStart + Double(DECK.visible - 1 - depth) * TIMING.dealStagger), value: dealt)
-                    .animation(FLIGHT.spring, value: queue)
+                    .animation(FLIGHT.spring, value: store.queue)
                     .zIndex(Double(DECK.visible - depth))
                     .onTapGesture { if depth == 0 { flip() } }
                     .transition(flyOff)
@@ -358,8 +356,8 @@ struct FlashcardsView: View {
             AppIcon(.cards, size: 44).foregroundStyle(Theme.accent)
             Text("Deck complete").font(.system(size: 24, weight: .bold))
             HStack(spacing: 28) {
-                stat("\(known)", "Knew it", Theme.correct)
-                stat("\(missed)", "Practised again", Theme.wrong)
+                stat("\(store.known)", "Knew it", Theme.correct)
+                stat("\(store.missed)", "Practised again", Theme.wrong)
             }
             Button("Study again", action: restart)
                 .buttonStyle(PrimaryButtonStyle(height: 52))
@@ -395,16 +393,16 @@ struct FlashcardsView: View {
     }
 
     private func answer(_ v: Verdict) {
-        guard !busy, let card = queue.first else { return }
+        guard !busy, let card = store.queue.first else { return }
         busy = true
         withAnimation(.easeOut(duration: 0.15)) { verdict = v }
         Task { @MainActor in
             try? await Task.sleep(for: .seconds(TIMING.verdictHold))
             withAnimation(FLIGHT.spring) {
-                queue.removeFirst()
-                if v == .correct { known += 1; store.recordKnown() } else {
-                    missed += 1
-                    queue.append(card.copy())  // comes back later
+                store.queue.removeFirst()
+                if v == .correct { store.known += 1; store.recordKnown() } else {
+                    store.missed += 1
+                    store.queue.append(card.copy())  // comes back later
                 }
                 flipped = false
             }
@@ -416,8 +414,8 @@ struct FlashcardsView: View {
 
     /// Starts the selected deck from its first card.
     private func resetQueue() {
-        queue = store.studying.map { $0.copy() }
-        known = 0; missed = 0; flipped = false
+        store.startRound()
+        flipped = false
     }
 
     private func openPendingAdd() {
@@ -431,8 +429,8 @@ struct FlashcardsView: View {
 
     private func restart() {
         withAnimation(Springs.card) {
-            queue = store.studying.map { $0.copy() }
-            known = 0; missed = 0; flipped = false
+            store.startRound()
+            flipped = false
             dealt = false; controlsShown = false; hintShown = false
         }
         Task { await dealIn(force: true) }
