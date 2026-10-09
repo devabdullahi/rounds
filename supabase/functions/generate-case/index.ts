@@ -17,7 +17,8 @@ import { acceptedNames, caseBudget, type CasePlan, leakTerms, planCase, type Pro
 import { flag, type Patient, TESTS } from "../_shared/labs.ts";
 import { type Focus, parseFocus } from "../_shared/focus.ts";
 import { prepareNext } from "../_shared/prefetch.ts";
-import { withQuota } from "../_shared/quota.ts";
+import { refundQuota, takeQuota } from "../_shared/quota.ts";
+import { bedCode } from "./bedcode.ts";
 import { buildRubric, checkWriting, neutralIds, type Writing, writerPrompt } from "./writer.ts";
 
 type Request = { focus?: string };
@@ -36,15 +37,28 @@ serve(async (req) => {
       and (${focus.kind !== "rotation"} or ${focus.value} = any(clerkships))
       and (${focus.kind !== "system"} or ${focus.value} = any(organ_systems))
     order by random() limit 1`;
-  const queued = await prepareNext(focus);
   if (rows.length === 0) {
+    const queued = await prepareNext(focus);
     if (queued.inFlight) return json({ status: "preparing" }, 202);
     throw new HttpError(404, "no conditions available for this focus yet");
   }
   const { profile, clerkships, organ_systems: systems, synonyms } = rows[0];
 
   // A new patient costs a model call, so it counts against the daily limit (refunded on failure).
-  return withQuota(userId, "case", () => writeCase(userId, profile, clerkships, systems, synonyms, focus));
+  // The quota comes first: a student over the limit mustn't start background profile writing either.
+  await takeQuota(userId, "case");
+  try {
+    try {
+      await prepareNext(focus);
+    } catch (error) {
+      // Prefetch only speeds up the next case; it must not cost the student this one.
+      console.error("prepare next before writing", error);
+    }
+    return await writeCase(userId, profile, clerkships, systems, synonyms, focus);
+  } catch (error) {
+    await refundQuota(userId, "case");
+    throw error;
+  }
 });
 
 /** Plans the patient in code, has the model write them, checks the writing, and saves the case. */
@@ -88,11 +102,6 @@ function caseClerkship(profile: Profile, topics: string[], focus: Focus): string
 function caseSystem(profile: Profile, systems: string[], focus: Focus): string {
   if (focus.kind === "system" && systems.includes(focus.value)) return focus.value;
   return systems[0] ?? profile.triage.organ_systems[0];
-}
-
-function bedCode(): string {
-  const letters = "ABCDEFGHJKLMNPRSTUVWXYZ";
-  return letters[Math.floor(Math.random() * letters.length)] + String(Math.floor(Math.random() * 90) + 10);
 }
 
 const VITAL_LABELS: Record<string, string> = { hr: "HR", sbp: "BP", rr: "RR", spo2: "SpO₂", temp: "Temp" };

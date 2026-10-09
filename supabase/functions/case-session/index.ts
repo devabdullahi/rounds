@@ -7,6 +7,10 @@
 //   submit   {attempt_id, diagnosis, differential, plan} → grade (and queues the next condition
 //            in the case's focus, see _shared/prefetch.ts)
 //
+// Only a student's first submitted attempt on a case moves their rating; a restart after seeing the
+// answer is graded as usual but unrated. A submission past the chosen time limit is graded and
+// marked over time. Asking and submitting each cost a unit of the daily allowance (_shared/quota.ts).
+//
 // Every action verifies the caller, then loads the attempt only if it belongs to them. The patient
 // LLM sees the persona and revealable facts, never the diagnosis or rubric; its reply is checked for
 // diagnosis names, and replies that match no fact get a second check for invented facts.
@@ -14,10 +18,10 @@
 import { body, callerId, HttpError, json, serve } from "../_shared/http.ts";
 import { sql } from "../_shared/db.ts";
 import { completeJSON } from "../_shared/llm.ts";
-import { leaks } from "../_shared/casegen.ts";
 import { GRADER, PATIENT, REPLY_CHECKER } from "../_shared/prompts.ts";
 import { patientPrompt } from "../_shared/patientprompt.ts";
-import { type Actions, grade, matchesDiagnosis, type Rubric } from "./grade.ts";
+import { type Actions, grade, isSingleDiagnosis, matchesDiagnosis, type Rubric, unrated } from "./grade.ts";
+import { namedDiagnoses } from "./leak.ts";
 import { parseFocus } from "../_shared/focus.ts";
 import { prepareNext } from "../_shared/prefetch.ts";
 import { withQuota } from "../_shared/quota.ts";
@@ -29,6 +33,7 @@ type Test = { id: string; name: string; cost: number; turnaround_s: number; dela
 type Turn = { role: "student" | "patient"; text: string; facts?: string[]; conduct?: Conduct };
 type Attempt = {
   id: string; case_id: string; exam_mode: boolean; submitted_at: string | null; transcript: Turn[];
+  started_at: Date; time_limit_minutes: number | null;
   revealed_facts: string[]; examined: string[]; ordered_tests: { id: string; at: string }[];
 };
 type Content = {
@@ -38,6 +43,11 @@ type Content = {
 };
 
 const LIMITS = { question: 500, diagnosis: 200, plan: 2000, differential: 10, transcriptTurns: 12 };
+/** Facts one reply may reveal; the model lists the most relevant first. More would let one broad
+ *  question ("tell me everything") empty the script. */
+const MAX_FACTS_PER_REPLY = 3;
+/** Slack on a timed attempt for the submit tap and network before it counts as over time. */
+const GRACE_MINUTES = 2;
 
 serve(async (req) => {
   const userId = await callerId(req);
@@ -48,7 +58,8 @@ serve(async (req) => {
     case "ask": return json(await withQuota(userId, "question", () => ask(userId, input)));
     case "examine": return json(await examine(userId, input));
     case "order": return json(await order(userId, input));
-    case "submit": return json(await submit(userId, input));
+    // Grading costs a model call too, and a quota keeps restart-and-resubmit loops bounded.
+    case "submit": return json(await withQuota(userId, "grade", () => submit(userId, input)));
     default: throw new HttpError(400, "unknown action");
   }
 });
@@ -62,7 +73,7 @@ function text(value: unknown, field: string, max: number, required = true): stri
 async function loadAttempt(userId: string, attemptId: unknown, open = true): Promise<{ attempt: Attempt; content: Content }> {
   if (typeof attemptId !== "string" || !/^[0-9a-f-]{36}$/.test(attemptId)) throw new HttpError(400, "attempt_id required");
   const rows = await sql<(Attempt & Content)[]>`
-    select a.id, a.case_id, a.exam_mode, a.submitted_at, a.transcript, a.revealed_facts, a.examined, a.ordered_tests,
+    select a.id, a.case_id, a.exam_mode, a.submitted_at, a.started_at, a.time_limit_minutes, a.transcript, a.revealed_facts, a.examined, a.ordered_tests,
            c.facts, c.exam, c.tests, c.persona, c.answer_key, c.rubric, c.focus
     from public.attempts a join private.case_content c on c.case_id = a.case_id
     where a.id = ${attemptId} and a.user_id = ${userId}`;
@@ -114,15 +125,14 @@ async function ask(userId: string, input: Record<string, unknown>) {
     if (conduct === "clinical") {
       const answer = await completeJSON<{ conduct: string; fact_ids: string[]; seen_ids?: string[]; reply: string }>(PATIENT, prompt, 400);
       conduct = parseConduct(answer.conduct);
-      used = (answer.fact_ids ?? []).filter((id) => known.has(id));
+      used = [...new Set(answer.fact_ids ?? [])].filter((id) => known.has(id)).slice(0, MAX_FACTS_PER_REPLY);
       looked = (answer.seen_ids ?? []).filter((id) => content.exam.some((m) => m.id === id));
       reply = (answer.reply ?? "").trim() || reply;
     }
-    const terms = [content.answer_key.diagnosis, ...content.answer_key.accepted].map((t) => t.toLowerCase()).filter((t) => t.length > 3);
     if (conduct !== "clinical") {
       used = [];
       reply = conductReply(conduct, strikes(attempt.transcript) + (conduct === "inappropriate" ? 1 : 0));
-    } else if (leaks(reply, terms).length > 0) {
+    } else if (namedDiagnoses(reply, [content.answer_key.diagnosis, ...content.answer_key.accepted]).length > 0) {
       // Never let the patient name the diagnosis: fall back to the scripted wording.
       reply = used.length ? used.map((id) => known.get(id)!.reply).join(" ") : String(persona.fallback);
     } else if (used.length === 0 && looked.length === 0 && await addsFacts(reply)) {
@@ -135,17 +145,25 @@ async function ask(userId: string, input: Record<string, unknown>) {
   }
 
   const fresh = used.filter((id) => !attempt.revealed_facts.includes(id));
-  const revealed = [...attempt.revealed_facts, ...fresh];
   const asked: Turn = conduct === "clinical" ? { role: "student", text: question } : { role: "student", text: question, conduct };
-  const transcript = [...attempt.transcript, asked, { role: "patient", text: reply, facts: used }];
-  await sql`update public.attempts set transcript = ${sql.json(transcript)}, revealed_facts = ${revealed}
-            where id = ${attempt.id} and submitted_at is null`;
+  const turns: Turn[] = [asked, { role: "patient", text: reply, facts: used }];
+  // Appended in SQL, not written back whole, so two questions in flight can't drop each other's turns.
+  const [row] = await sql<{ revealed_facts: string[] }[]>`
+    update public.attempts set transcript = transcript || ${sql.json(turns)},
+      revealed_facts = revealed_facts || array(select f from unnest(${used}::text[]) f where not f = any(revealed_facts))
+    where id = ${attempt.id} and submitted_at is null
+    returning revealed_facts`;
+  if (!row) throw new HttpError(409, "attempt already submitted");
+  const revealed = row.revealed_facts;
 
+  // Exam mode shows no progress while the case runs. The app requires these fields, so they come
+  // back empty rather than missing.
+  if (attempt.exam_mode) return { reply, conduct, revealed: [], revealed_ids: [], coverage: { got: 0, total: 0 } };
   const key = content.rubric.key_facts;
   return {
     reply,
     conduct,
-    revealed: attempt.exam_mode ? [] : fresh.map((id) => ({ id, label: known.get(id)!.label })),
+    revealed: fresh.map((id) => ({ id, label: known.get(id)!.label })),
     revealed_ids: revealed,
     coverage: { got: key.filter((f) => revealed.includes(f.id)).length, total: key.length },
   };
@@ -169,7 +187,9 @@ async function examine(userId: string, input: Record<string, unknown>) {
   const maneuver = content.exam.find((m) => m.id === id);
   if (!maneuver) throw new HttpError(404, "maneuver not found");
   if (!attempt.examined.includes(id)) {
-    await sql`update public.attempts set examined = array_append(examined, ${id}) where id = ${attempt.id} and submitted_at is null`;
+    // The membership test runs in SQL too, so a double tap can't record the maneuver twice.
+    await sql`update public.attempts set examined = array_append(examined, ${id})
+              where id = ${attempt.id} and submitted_at is null and not ${id} = any(examined)`;
   }
   return { finding: maneuver.finding };
 }
@@ -180,8 +200,9 @@ async function order(userId: string, input: Record<string, unknown>) {
   const test = content.tests.find((t) => t.id === id);
   if (!test) throw new HttpError(404, "test not found");
   if (!attempt.ordered_tests.some((t) => t.id === id)) {
-    const ordered = [...attempt.ordered_tests, { id, at: new Date().toISOString() }];
-    await sql`update public.attempts set ordered_tests = ${sql.json(ordered)} where id = ${attempt.id} and submitted_at is null`;
+    // Appended in SQL and skipped if already there, so concurrent orders keep each other.
+    await sql`update public.attempts set ordered_tests = ordered_tests || ${sql.json([{ id, at: new Date().toISOString() }])}
+              where id = ${attempt.id} and submitted_at is null and not ordered_tests @> ${sql.json([{ id }])}`;
   }
   return { result: test.result, abnormal: test.abnormal, turnaround_s: test.turnaround_s };
 }
@@ -199,24 +220,44 @@ async function submit(userId: string, input: Record<string, unknown>) {
 
   const rubric = content.rubric;
   const ordered = attempt.ordered_tests.map((t) => t.id);
+  const deadline = attempt.time_limit_minutes === null
+    ? null
+    : new Date(attempt.started_at).getTime() + (attempt.time_limit_minutes + GRACE_MINUTES) * 60_000;
   const actions: Actions = {
     revealed: attempt.revealed_facts, examined: attempt.examined, ordered, budget,
     spent: content.tests.filter((t) => ordered.includes(t.id)).reduce((s, t) => s + t.cost, 0),
+    overTime: deadline !== null && Date.now() > deadline,
   };
-  const judged = await judge(rubric, diagnosis, plan);
-  const result = grade(rubric, actions, judged);
+  let judged;
+  try {
+    judged = await judge(rubric, diagnosis, differential, plan);
+  } catch (error) {
+    console.error("grading failed", error);
+    throw new HttpError(502, "grading failed; try again");
+  }
+  const graded = grade(rubric, actions, judged);
 
-  const [profile] = await sql<{ rating: number }[]>`
-    with graded as (
-      update public.attempts set diagnosis = ${diagnosis}, differential = ${differential}, plan = ${plan},
-        submitted_at = now(), score = ${result.score}, grade = ${sql.json(result)}
-      where id = ${attempt.id} and submitted_at is null
-      returning user_id
-    )
-    update public.profiles p set rating = p.rating + ${result.rating_delta}
-    from graded where p.id = graded.user_id
-    returning p.rating`;
-  if (!profile) throw new HttpError(409, "attempt already submitted");
+  const saved = await sql.begin(async (tx) => {
+    // One submit at a time per student and case, so two attempts submitted together can't both be
+    // the "first" and both move the rating.
+    await tx`select pg_advisory_xact_lock(hashtext(${`${userId}:${attempt.case_id}`}))`;
+    const [{ repeat }] = await tx<{ repeat: boolean }[]>`
+      select exists (select 1 from public.attempts
+                     where user_id = ${userId} and case_id = ${attempt.case_id} and submitted_at is not null) as repeat`;
+    const result = repeat ? unrated(graded) : graded;
+    const [profile] = await tx<{ rating: number }[]>`
+      with graded as (
+        update public.attempts set diagnosis = ${diagnosis}, differential = ${differential}, plan = ${plan},
+          submitted_at = now(), score = ${result.score}, grade = ${tx.json(result)}
+        where id = ${attempt.id} and submitted_at is null
+        returning user_id
+      )
+      update public.profiles p set rating = p.rating + ${result.rating_delta}
+      from graded where p.id = graded.user_id
+      returning p.rating`;
+    return profile ? { ...result, rating: profile.rating } : null;
+  });
+  if (!saved) throw new HttpError(409, "attempt already submitted");
   // The student's next case in this topic should find a fresh condition ready. A failure here
   // must not cost them their grade.
   try {
@@ -224,20 +265,37 @@ async function submit(userId: string, input: Record<string, unknown>) {
   } catch (error) {
     console.error("prepare next after grading", error);
   }
-  return { ...result, rating: profile.rating };
+  return saved;
 }
 
-async function judge(r: Rubric, diagnosis: string, plan: string) {
+/** Keeps the student's text inside its delimiters: a typed closing tag can't end the block early. */
+function quoted(text: string): string {
+  return text.replace(/<\/?student_[a-z]*>/gi, "");
+}
+
+async function judge(r: Rubric, diagnosis: string, differential: string[], plan: string) {
   const exact = matchesDiagnosis(diagnosis, [r.diagnosis, ...r.accepted]);
   const verdict = await completeJSON<{ diagnosis_correct: boolean; plan_appropriate: boolean; plan_note: string }>(
     GRADER,
     `Correct diagnosis: ${r.diagnosis} (accepted: ${r.accepted.join(", ")}); severity ${r.severity}.
-Student diagnosis: ${JSON.stringify(diagnosis)}
-Student plan: ${JSON.stringify(plan || "(none)")}`,
+
+<student_diagnosis>
+${quoted(diagnosis)}
+</student_diagnosis>
+
+<student_differential>
+${quoted(differential.join("; ") || "(none)")}
+</student_differential>
+
+<student_plan>
+${quoted(plan || "(none)")}
+</student_plan>`,
     200,
   );
   return {
-    diagnosisCorrect: exact || verdict.diagnosis_correct === true,
+    // The model may only widen the match to a close synonym of one committed answer; it can never
+    // accept a list or a negation that the word match rejected.
+    diagnosisCorrect: exact || (verdict.diagnosis_correct === true && isSingleDiagnosis(diagnosis)),
     planAppropriate: !!plan && verdict.plan_appropriate === true,
     planNote: plan ? (verdict.plan_note ?? "") : "No plan was given.",
   };

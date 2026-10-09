@@ -1,5 +1,5 @@
 import { assert, assertEquals } from "jsr:@std/assert@1";
-import { grade, matchesDiagnosis, type Rubric } from "./grade.ts";
+import { grade, isSingleDiagnosis, matchesDiagnosis, type Rubric, unrated } from "./grade.ts";
 
 const rubric: Rubric = {
   diagnosis: "Acute appendicitis", accepted: ["Appendicitis"], reasoning_points: ["Migrating pain", "RLQ tenderness"], severity: "moderate",
@@ -62,4 +62,64 @@ Deno.test("test penalties never show as negative points", () => {
   const g = grade(rubric, { revealed: [], examined: [], ordered: ["abdominal_x_ray"], spent: 500, budget: 300 },
     { diagnosisCorrect: false, planAppropriate: false, planNote: "" });
   assertEquals(g.breakdown.tests.got, 0);
+});
+
+const appendicitis = ["Acute appendicitis", "Appendicitis"];
+const mi = ["Myocardial infarction", "MI", "Heart attack"];
+const matching: [string, string[], boolean][] = [
+  // one right answer, however it's hedged or written
+  ["Appendicitis", appendicitis, true],
+  ["probably acute appendicitis", appendicitis, true],
+  ["Most likely appendicitis.", appendicitis, true],
+  ["MI", mi, true],
+  ["Acute MI", mi, true],
+  ["heart attack", mi, true],
+  ["Hand, foot and mouth disease", ["Hand, foot and mouth disease"], true],
+  // one wrong answer
+  ["Mesenteric adenitis", appendicitis, false],
+  ["STEMI", ["MI"], false],
+  ["Mild", appendicitis, false],
+  // shotgun lists
+  ["pneumonia, PE, MI, appendicitis", appendicitis, false],
+  ["appendicitis or ovarian torsion", appendicitis, false],
+  ["Appendicitis / diverticulitis", appendicitis, false],
+  ["MI and PE", mi, false],
+  ["appendicitis vs mesenteric adenitis", appendicitis, false],
+  // negations
+  ["not appendicitis", appendicitis, false],
+  ["Rule out appendicitis", appendicitis, false],
+  ["r/o MI", mi, false],
+  ["no MI", mi, false],
+  ["not acute appendicitis", appendicitis, false],
+];
+for (const [answer, accepted, want] of matching) {
+  Deno.test(`diagnosis match: ${JSON.stringify(answer)} → ${want}`, () => assertEquals(matchesDiagnosis(answer, accepted), want));
+}
+
+const single: [string, boolean][] = [
+  ["Appy", true],
+  ["probably an inflamed appendix", true],
+  ["appendicitis, PE", false],
+  ["not PE", false],
+  ["r/o appendicitis", false],
+];
+for (const [answer, want] of single) {
+  Deno.test(`single diagnosis: ${JSON.stringify(answer)} → ${want}`, () => assertEquals(isSingleDiagnosis(answer), want));
+}
+
+Deno.test("a late submission is graded and says it was over time", () => {
+  const g = grade(rubric, { revealed: ["onset", "migration", "appetite", "lmp"], examined: ["rlq"], ordered: ["hcg", "cbc"], spent: 50, budget: 300, overTime: true }, right);
+  assertEquals(g.score, 100);
+  assertEquals(g.over_time, true);
+  assertEquals(g.feedback[0].title, "Over the time limit");
+});
+
+Deno.test("a repeat attempt keeps its score but doesn't move the rating", () => {
+  const first = grade(rubric, { revealed: ["onset", "migration", "appetite", "lmp"], examined: ["rlq"], ordered: ["hcg", "cbc"], spent: 50, budget: 300 }, right);
+  assertEquals(first.rated, true);
+  assert(first.rating_delta > 0);
+  const again = unrated(first);
+  assertEquals(again.score, first.score);
+  assertEquals(again.rating_delta, 0);
+  assertEquals(again.rated, false);
 });

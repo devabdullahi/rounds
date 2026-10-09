@@ -9,6 +9,10 @@ declare const EdgeRuntime: { waitUntil(promise: Promise<unknown>): void };
 
 /** A job untouched this long is assumed dead (a call that hit the time limit) and is restarted. */
 const STALE = "4 minutes";
+/** A job that failed (the model or a lookup stayed down) is tried again after this long, so an
+ *  outage doesn't keep its condition out of rotation forever. Jobs whose profile was written and
+ *  failed validation aren't retried: the condition already has a (failed) profile. */
+const RETRY_FAILED_AFTER = "1 hour";
 
 export type Queued = { slug: string | null; inFlight: boolean };
 
@@ -42,7 +46,21 @@ export async function queueNext(focus: Focus): Promise<Queued> {
     limit 1
     on conflict (slug) do nothing
     returning slug`;
-  return { slug: added[0]?.slug ?? null, inFlight: added.length > 0 };
+  if (added.length) return { slug: added[0].slug, inFlight: true };
+
+  // Nothing new to write: give a job that failed a while ago another run, from where it stopped.
+  const retried = await sql<{ slug: string }[]>`
+    update private.profile_jobs set status = 'queued', outages = 0, locked_at = null, updated_at = now()
+    where slug = (
+      select j.slug from private.profile_jobs j join private.conditions c using (slug)
+      where j.status = 'failed' and j.updated_at < now() - ${RETRY_FAILED_AFTER}::interval
+        and (${rotation}::text is null or ${rotation} = any(c.clerkships))
+        and (${system}::text is null or ${system} = any(c.organ_systems))
+        and not exists (select 1 from private.condition_profiles p where p.slug = j.slug)
+      order by j.updated_at limit 1
+      for update of j skip locked)
+    returning slug`;
+  return { slug: retried[0]?.slug ?? null, inFlight: retried.length > 0 };
 }
 
 /** Asks prepare-profile to advance a job. Returns once the request is accepted, not when it's done. */

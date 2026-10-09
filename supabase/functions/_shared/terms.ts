@@ -14,7 +14,7 @@ const PARALLEL = 4;
 
 // deno-lint-ignore no-explicit-any
 type Json = any;
-type Check = { ok: boolean; suggestions: string[] };
+export type Check = { ok: boolean; suggestions: string[] };
 
 export function umlsKey(): string {
   const key = Deno.env.get("UMLS_API_KEY");
@@ -33,7 +33,8 @@ function umls(path: string, params: Record<string, string | number>, missing: Js
   return getJSON(`${UMLS}${path}`, { ...params, apiKey: umlsKey() }, missing);
 }
 
-async function lookupSnomed(term: string): Promise<boolean> {
+/** True when SNOMED CT has the term as a finding or disorder (exact or normalized match). Uncached. */
+export async function lookupSnomed(term: string): Promise<boolean> {
   for (const searchType of ["exact", "normalizedString"]) {
     const data = await umls("/search/current", { string: term, sabs: "SNOMEDCT_US", returnIdType: "code", searchType, pageSize: 5 });
     const hits = (data.result?.results ?? []).filter((r: Json) => r.ui && r.ui !== "NONE").slice(0, 3);
@@ -96,21 +97,27 @@ export function snomedCheck(term: string): Promise<Check> {
   });
 }
 
-export function rxnormCheck(name: string): Promise<Check> {
-  return cached("rxnorm", name, async () => {
-    const exact = await getJSON(`${RXNAV}/rxcui.json`, { name, search: 2 });
-    if (exact.idGroup?.rxnormId?.length) return { ok: true, suggestions: [] };
-    const approx = await getJSON(`${RXNAV}/approximateTerm.json`, { term: name, maxEntries: 1 });
-    return { ok: Boolean(approx.approximateGroup?.candidate?.length), suggestions: [] };
-  });
+/** True when RxNorm knows the drug name, exactly or by approximate match. Uncached. */
+export async function lookupRxnorm(name: string): Promise<boolean> {
+  const exact = await getJSON(`${RXNAV}/rxcui.json`, { name, search: 2 });
+  if (exact.idGroup?.rxnormId?.length) return true;
+  const approx = await getJSON(`${RXNAV}/approximateTerm.json`, { term: name, maxEntries: 1 });
+  return Boolean(approx.approximateGroup?.candidate?.length);
 }
+
+export function rxnormCheck(name: string): Promise<Check> {
+  return cached("rxnorm", name, async () => ({ ok: await lookupRxnorm(name), suggestions: [] }));
+}
+
+/** The cached lookups checkTerms uses; tests pass their own to stay off the database. */
+export type TermCheckers = { snomed: (term: string) => Promise<Check>; rxnorm: (name: string) => Promise<Check> };
 
 async function inBatches<T>(items: T[], work: (item: T) => Promise<void>): Promise<void> {
   for (let i = 0; i < items.length; i += PARALLEL) await Promise.all(items.slice(i, i + PARALLEL).map(work));
 }
 
 /** Marks verified terms on a stage's output in place; returns errors for missing or unknown ones. */
-export async function checkTerms(output: Json): Promise<string[]> {
+export async function checkTerms(output: Json, checkers: TermCheckers = { snomed: snomedCheck, rxnorm: rxnormCheck }): Promise<string[]> {
   const errors: string[] = [];
   for (const section of ["presentation", "exam"] as const) {
     await inBatches(findingItems(section, output), async (item) => {
@@ -120,7 +127,7 @@ export async function checkTerms(output: Json): Promise<string[]> {
         errors.push(`${section}: '${label}' has no term; add its standard clinical name`);
         return;
       }
-      const check = await snomedCheck(term);
+      const check = await checkers.snomed(term);
       item.snomed_verified = check.ok;
       if (!check.ok) {
         const hint = check.suggestions.length
@@ -131,7 +138,7 @@ export async function checkTerms(output: Json): Promise<string[]> {
     });
   }
   await inBatches<string>(output.patient?.risk_medications ?? [], async (drug) => {
-    if (!(await rxnormCheck(drug)).ok) errors.push(`patient.risk_medications: '${drug}' isn't an RxNorm drug; use the generic name`);
+    if (!(await checkers.rxnorm(drug)).ok) errors.push(`patient.risk_medications: '${drug}' isn't an RxNorm drug; use the generic name`);
   });
   return errors;
 }
