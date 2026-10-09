@@ -25,6 +25,10 @@ private enum VOICEPANEL {
     static let spring = Animation.spring(response: 0.38, dampingFraction: 0.86)
 }
 
+private enum MONITOR {
+    static let spring = Animation.spring(response: 0.32, dampingFraction: 0.9)   // hides while typing
+}
+
 private enum REVEAL {
     static let initialScale: CGFloat = 0.8
 }
@@ -44,6 +48,14 @@ struct InterviewView: View {
     var body: some View {
         VStack(spacing: 0) {
             topBar
+            // The patient on the monitor while you talk. It steps aside while typing, when the
+            // keyboard leaves the chat little room.
+            if tab == .history && !inputFocused {
+                PatientMonitor(vitals: c.vitals)
+                    .padding(.horizontal, 20)
+                    .padding(.top, 10)
+                    .transition(.opacity.combined(with: .move(edge: .top)))
+            }
             Group {
                 switch tab {
                 case .history: chat
@@ -66,6 +78,7 @@ struct InterviewView: View {
             }
         }
         .animation(VOICEPANEL.spring, value: voice.isActive)
+        .animation(MONITOR.spring, value: inputFocused)
         .background(Theme.bg)
         .onDisappear { voice.end() }
         .onChange(of: session.messages.count) {
@@ -82,6 +95,9 @@ struct InterviewView: View {
             if DebugLaunch.screen == "examine" { tab = .examine }
             if DebugLaunch.screen == "interview-exam" || DebugLaunch.screen == "interview-exam-chat" { session.examMode = true }
             if ["interview-chat", "interview-exam-chat", "interview-findings"].contains(DebugLaunch.screen) { session.debugSeedChat() }
+            if DebugLaunch.screen == "demo-interview" {
+                Task { try? await Task.sleep(for: .seconds(1.5)); await session.debugPlayChat() }
+            }
             if DebugLaunch.screen == "interview-findings" {
                 Task { try? await Task.sleep(for: .seconds(1)); showingFindings = true }
             }
@@ -243,6 +259,12 @@ struct InterviewView: View {
             }
             .scrollIndicators(.hidden)
             .scrollDismissesKeyboard(.interactively)
+            // Older messages fade out under the monitor instead of being sliced at its edge.
+            .overlay(alignment: .top) {
+                LinearGradient(colors: [Theme.bg, Theme.bg.opacity(0)], startPoint: .top, endPoint: .bottom)
+                    .frame(height: 18)
+                    .allowsHitTesting(false)
+            }
             .overlay(alignment: .bottom) {
                 LinearGradient(colors: [Theme.bg.opacity(0), Theme.bg], startPoint: .top, endPoint: .bottom)
                     .frame(height: 40)

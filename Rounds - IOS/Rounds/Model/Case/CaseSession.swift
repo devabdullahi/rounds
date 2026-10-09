@@ -178,7 +178,25 @@ extension CaseSession {
     /// `-screen interview-chat` / `interview-exam-chat`: a short fictional exchange for screenshots,
     /// with reveal chips only in practice mode (as in a real case).
     func debugSeedChat() {
-        let lines: [(ChatMessage.Kind, String)] = [
+        messages = Self.debugLines.filter { !examMode || $0.0 != .reveal }.map { ChatMessage(kind: $0.0, text: $0.1) }
+    }
+
+    /// `-screen demo-interview`: the same exchange played out over time, with the patient typing
+    /// before each reply, so the real interview screen can be screen-recorded for the website.
+    func debugPlayChat() async {
+        messages = []
+        for (kind, text) in Self.debugLines where !examMode || kind != .reveal {
+            if kind == .patient {
+                isPatientTyping = true
+                try? await Task.sleep(for: .seconds(1.2))
+                isPatientTyping = false
+            }
+            messages.append(ChatMessage(kind: kind, text: text))
+            try? await Task.sleep(for: .seconds(kind == .reveal ? 0.9 : 1.0))
+        }
+    }
+
+    private static let debugLines: [(ChatMessage.Kind, String)] = [
             (.doctor, "Hi, I'm a student doctor. What brings you in today?"),
             (.patient, "I've had this painful sore inside my mouth for about four days. It hurts to eat."),
             (.reveal, "Onset: 4 days"),
@@ -188,7 +206,5 @@ extension CaseSession {
             (.doctor, "Any fever, rash, or sores anywhere else?"),
             (.patient, "No fever. Nothing anywhere else that I've noticed."),
         ]
-        messages = lines.filter { !examMode || $0.0 != .reveal }.map { ChatMessage(kind: $0.0, text: $0.1) }
-    }
 }
 #endif

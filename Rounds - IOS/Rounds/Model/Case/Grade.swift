@@ -17,12 +17,14 @@ struct Grade {
 
 #if DEBUG
 extension Grade {
-    /// A fictional, partly wrong grade for the `debrief-graded` screen.
+    /// A fictional grade for the `debrief-graded` screen, matching the `demo-interview` patient
+    /// (recurrent mouth sores): the right call, with one thing missed.
     static let debugSample = Grade(
-        score: 64, diagnosisCorrect: false, diagnosis: "Acute cholecystitis",
-        verdict: "Close, but the fever and Murphy sign pointed past biliary colic.", ratingDelta: -8, rating: 1292,
-        feedback: [Feedback(tone: .good, title: "Focused history", detail: "You pinned down the pain's timing and its link to meals."),
-                   Feedback(tone: .miss, title: "Fever not followed up", detail: "A fever with right upper quadrant pain calls for a CBC and an ultrasound.", coversMiss: "Fever with RUQ pain")],
-        missedRedFlags: [Miss(flag: "Fever with RUQ pain", why: "Suggests inflammation or infection, not simple colic.")])
+        score: 86, diagnosisCorrect: true, diagnosis: "Recurrent aphthous stomatitis",
+        verdict: "Right call. You ruled out fever and spread before settling on it.", ratingDelta: 12, rating: 1312,
+        feedback: [Feedback(tone: .good, title: "Focused history", detail: "You pinned down timing, recurrence and stress as a trigger."),
+                   Feedback(tone: .miss, title: "Bowel symptoms not asked", detail: "Recurrent mouth ulcers can come with Crohn's or celiac disease; ask about diarrhea and weight loss.",
+                            coversMiss: "Bowel symptoms")],
+        missedRedFlags: [Miss(flag: "Bowel symptoms", why: "Mouth ulcers can be the first sign of inflammatory bowel disease.")])
 }
 #endif

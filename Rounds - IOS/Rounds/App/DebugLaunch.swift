@@ -86,7 +86,7 @@ enum DebugLaunch {
             // Case screens open the newest generated patient (admit one first from Home).
             let path: [CaseStep]
             switch screen {
-            case "interview", "interview-exam", "interview-chat", "interview-exam-chat", "interview-findings", "voice-listen", "voice-patient", "examine": path = [.interview]
+            case "interview", "demo-interview", "interview-exam", "interview-chat", "interview-exam-chat", "interview-findings", "voice-listen", "voice-patient", "examine": path = [.interview]
             case "workup": path = [.interview, .workup]
             case "diagnosis", "diagnosis-suggest", "diagnosis-ddx", "diagnosis-ddx-add": path = [.interview, .workup, .diagnosis]
             case "handoff": path = [.interview, .workup, .diagnosis, .handoff]
