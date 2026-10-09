@@ -43,6 +43,27 @@ async function lookupSnomed(term: string): Promise<boolean> {
       if (FINDING_TAGS.some((t) => fsn.endsWith(t))) return true;
     }
   }
+  return await viaUmls(term);
+}
+
+/** The term names a UMLS concept in any vocabulary (MeSH, MedDRA, …) that SNOMED CT also has as a
+ *  finding or disorder: "Fecal incontinence" is SNOMED's "Incontinence of feces". Still a whole-name
+ *  match on a real concept, so invented terms stay out. (Port of terminology.py's _via_umls.) */
+async function viaUmls(term: string): Promise<boolean> {
+  for (const searchType of ["exact", "normalizedString"]) {
+    const data = await umls("/search/current", { string: term, searchType, pageSize: 3 });
+    const hits = (data.result?.results ?? []).filter((r: Json) => r.ui && r.ui !== "NONE").slice(0, 3);
+    for (const hit of hits) {
+      const codes = await umls(`/content/current/CUI/${hit.ui}/atoms`, { sabs: "SNOMEDCT_US", pageSize: 5 }, { result: [] });
+      for (const atom of codes.result ?? []) {
+        const code = String(atom.code ?? "").split("/").pop();
+        if (!code) continue;
+        const atoms = await umls(`/content/current/source/SNOMEDCT_US/${code}/atoms`, { language: "ENG", pageSize: 100 }, { result: [] });
+        const fsn: string = (atoms.result ?? []).find((a: Json) => a.termType === "FN")?.name ?? "";
+        if (FINDING_TAGS.some((t) => fsn.endsWith(t))) return true;
+      }
+    }
+  }
   return false;
 }
 

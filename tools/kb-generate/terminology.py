@@ -40,6 +40,24 @@ def _lookup(term: str) -> bool:
             fsn = next((a["name"] for a in atoms(hit["ui"]) if a.get("termType") == "FN"), "")
             if fsn.endswith(FINDING_TAGS):
                 return True
+    return _via_umls(term)
+
+
+def _via_umls(term: str) -> bool:
+    """The term names a UMLS concept in any vocabulary (MeSH, MedDRA, …) that SNOMED CT also has as a
+    finding or disorder: "Fecal incontinence" is SNOMED's "Incontinence of feces". Still a whole-name
+    match on a real concept, so invented terms stay out."""
+    for search_type in ("exact", "normalizedString"):
+        data = get(f"cui-{search_type}-{slug(term)}", "/search/current",
+                   {"string": term, "searchType": search_type, "pageSize": 3})
+        for hit in [r for r in data["result"]["results"] if r.get("ui") and r["ui"] != "NONE"][:3]:
+            codes = get(f"cui-snomed-codes-{hit['ui']}", f"/content/current/CUI/{hit['ui']}/atoms",
+                        {"sabs": "SNOMEDCT_US", "pageSize": 5}, missing={"result": []})
+            for atom in (codes.get("result") or []) if isinstance(codes, dict) else []:
+                code = atom.get("code", "").rsplit("/", 1)[-1]
+                fsn = next((a["name"] for a in atoms(code) if a.get("termType") == "FN"), "") if code else ""
+                if fsn.endswith(FINDING_TAGS):
+                    return True
     return False
 
 
