@@ -3,6 +3,7 @@ import SwiftUI
 /// Signed out → account flow; signed in → the app. Mock flag only until auth exists.
 struct RootView: View {
     @AppStorage("signedIn") private var signedIn = false
+    @Environment(AppState.self) private var app
     /// Fresh on every cold launch (process start), so the splash replays each time the app is reopened
     /// after being closed. Signed-out launches skip it: the welcome screen plays the same heart trace.
     @State private var showSplash = RootView.splashOnLaunch
@@ -28,6 +29,8 @@ struct RootView: View {
             }
         }
         .animation(.easeInOut(duration: 0.35), value: signedIn)
+        // Signing out (or deleting the account) leaves nothing of that account behind for the next one.
+        .onChange(of: signedIn) { _, now in if !now { app.reset() } }
         .background(Theme.bg.ignoresSafeArea())
     }
 }

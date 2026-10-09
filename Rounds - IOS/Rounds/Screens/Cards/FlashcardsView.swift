@@ -399,7 +399,8 @@ struct FlashcardsView: View {
         Task { @MainActor in
             try? await Task.sleep(for: .seconds(TIMING.verdictHold))
             withAnimation(FLIGHT.spring) {
-                store.queue.removeFirst()
+                // The card answered, wherever it now sits (the queue can change during the hold).
+                if let i = store.queue.firstIndex(where: { $0.id == card.id }) { store.queue.remove(at: i) }
                 if v == .correct { store.known += 1; store.recordKnown() } else {
                     store.missed += 1
                     store.queue.append(card.copy())  // comes back later

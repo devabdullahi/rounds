@@ -42,6 +42,9 @@ struct InterviewView: View {
     @State private var draft = ""
     @FocusState private var inputFocused: Bool
     @State private var voice = VoiceController()
+    /// Patient replies already in the chat when the last spoken question went out; only a newer one is
+    /// the answer to speak (the question itself changes the message count first).
+    @State private var repliesBeforeQuestion = 0
 
     private var c: ClinicalCase { session.clinical }
 
@@ -82,13 +85,21 @@ struct InterviewView: View {
         .background(Theme.bg)
         .onDisappear { voice.end() }
         .onChange(of: session.messages.count) {
-            // Patient answered while we're in voice mode: say it out loud.
-            guard voice.phase == .thinking,
-                  let reply = session.messages.last(where: { $0.kind == .patient }) else { return }
-            voice.speak(reply.text)
+            guard voice.phase == .thinking else { return }
+            let replies = session.messages.filter { $0.kind == .patient }
+            if replies.count > repliesBeforeQuestion, let reply = replies.last {
+                // The patient answered the spoken question: say it out loud.
+                voice.speak(reply.text)
+            } else if session.messages.last?.kind == .problem {
+                // The question failed; stop waiting on an answer that won't come (the error shows in the chat).
+                voice.end()
+            }
         }
         .onAppear {
-            voice.onUtterance = { [session] text in session.ask(text) }
+            voice.onUtterance = { [session] text in
+                repliesBeforeQuestion = session.messages.filter { $0.kind == .patient }.count
+                session.ask(text)
+            }
             session.startClockIfNeeded()
             tab = .history
             #if DEBUG

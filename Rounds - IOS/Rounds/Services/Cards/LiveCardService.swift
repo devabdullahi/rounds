@@ -5,8 +5,12 @@ struct LiveCardService: CardService {
     let client: SupabaseClient
 
     private func userID() async throws -> UUID {
-        if let session = try? await client.auth.session { return session.user.id }
-        return try await client.auth.signInAnonymously().user.id
+        do {
+            return try await client.auth.session.user.id
+        } catch AuthError.sessionMissing {
+            // As LiveCaseService.ensureSignedIn: only a missing session starts a guest one.
+            return try await client.auth.signInAnonymously().user.id
+        }
     }
 
     func cards() async throws -> [Flashcard] {

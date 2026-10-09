@@ -24,8 +24,9 @@ enum IntentSupport {
     /// time from iOS and hands its result to `later` instead; nil means it's still running.
     static func run(waitingUpTo limit: Duration, _ work: @escaping @MainActor () async -> Bool,
                     later: @escaping @MainActor (Bool) async -> Void) async -> Bool? {
-        let background = UIApplication.shared.beginBackgroundTask(withName: "Rounds intent")
         let job = Task { @MainActor in await work() }
+        // If iOS runs out of background time, give it back (cancelling the work) instead of being killed.
+        let background = BackgroundTime(name: "Rounds intent") { job.cancel() }
         let early: Bool? = await withTaskGroup(of: Bool?.self) { group in
             group.addTask { await job.value }
             group.addTask { try? await Task.sleep(for: limit); return nil }
@@ -34,11 +35,11 @@ enum IntentSupport {
             return first
         }
         if early != nil {
-            UIApplication.shared.endBackgroundTask(background)
+            background.end()
         } else {
             Task { @MainActor in
                 await later(await job.value)
-                UIApplication.shared.endBackgroundTask(background)
+                background.end()
             }
         }
         return early
@@ -46,4 +47,26 @@ enum IntentSupport {
 
     /// How long Siri waits on a deck before the app says it'll notify instead.
     static let deckWait: Duration = .seconds(20)
+}
+
+/// A stretch of background time from iOS that ends exactly once: when the work finishes, or when
+/// iOS says time is up (then `onExpire` runs first).
+@MainActor
+private final class BackgroundTime {
+    private var id = UIBackgroundTaskIdentifier.invalid
+
+    init(name: String, onExpire: @escaping @MainActor () -> Void) {
+        id = UIApplication.shared.beginBackgroundTask(withName: name) { [weak self] in
+            MainActor.assumeIsolated {
+                onExpire()
+                self?.end()
+            }
+        }
+    }
+
+    func end() {
+        guard id != .invalid else { return }
+        UIApplication.shared.endBackgroundTask(id)
+        id = .invalid
+    }
 }

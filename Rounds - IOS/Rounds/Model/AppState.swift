@@ -311,6 +311,30 @@ final class AppState {
     /// Unlocks waiting to be shown, biggest first.
     private(set) var pendingUnlocks: [BadgeStatus] = []
 
+    /// Forgets the last account on sign-out: its patients, grades, rating, open case, badge moments
+    /// and study state. Device-wide keys (badges seen, patients skipped, cards known) are cleared too,
+    /// so the next account neither inherits them nor sees its own badges replay; the first load after
+    /// sign-in records what that account has already earned without celebrating it.
+    func reset() {
+        ward = []
+        graded = []
+        rating = Self.residentFloor
+        lastGrade = nil
+        activeCase = nil
+        problem = nil
+        pendingUnlocks = []
+        debriefSettled = false
+        hasLoadedRecord = false
+        seenBadges = nil
+        UserDefaults.standard.removeObject(forKey: Self.seenBadgesStorageKey)
+        skipped = []
+        UserDefaults.standard.removeObject(forKey: Self.skippedStorageKey)
+        returnToPatients = false
+        reviewMistakesRequested = false
+        showTodayRequested = false
+        flashcards.reset()
+    }
+
     /// Queues any badge that unlocked since the last check.
     func checkUnlocks() {
         // Nothing was earned in the showcase, so nothing is celebrated. Before the first load the
