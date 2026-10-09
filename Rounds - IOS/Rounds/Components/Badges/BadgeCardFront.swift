@@ -1,15 +1,18 @@
 import SwiftUI
 
 /// An earned card: name bar and rarity gem, art window, type line, how it was earned, set number.
+/// Compact cards (the collection grid, drawn at about 60%) keep only the name and a bigger art window,
+/// because the small print would shrink below a readable size; the full card is a tap away.
 struct BadgeCardFront: View {
     let status: BadgeStatus
+    var compact = false
     private var ink: Color { status.badge.rarity.ink }
 
     var body: some View {
         VStack(spacing: 6) {
             HStack {
                 Text(status.badge.name)
-                    .font(.system(size: 13, weight: .heavy))
+                    .font(.system(size: compact ? 20 : 13, weight: .heavy))
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
                 Spacer(minLength: 4)
@@ -17,7 +20,7 @@ struct BadgeCardFront: View {
                     .shadow(color: ink, radius: 3)
             }
             .padding(.horizontal, 4)
-            .frame(height: 20)
+            .frame(height: compact ? 28 : 20)
 
             ZStack {
                 RadialGradient(colors: [ink.opacity(0.38), Theme.cardBack], center: .init(x: 0.5, y: 0.45),
@@ -26,41 +29,16 @@ struct BadgeCardFront: View {
                     .stroke(ink.opacity(0.35), lineWidth: 1.5)
                     .frame(height: 26)
                     .offset(y: 26)
-                AppIcon(status.badge.glyph, size: 54)
+                Image(badge: status.badge.art).resizable().scaledToFit()
+                    .frame(width: compact ? 96 : 58, height: compact ? 96 : 58)
                     .foregroundStyle(.white)
                     .shadow(color: ink, radius: 8)
             }
-            .frame(height: 108)
+            .frame(maxHeight: compact ? .infinity : 108)
             .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: 8, style: .continuous).strokeBorder(ink, lineWidth: 1))
 
-            HStack {
-                Text(status.badge.group.label.uppercased())
-                Spacer()
-                Text(status.badge.rarity.label.uppercased())
-            }
-            .font(.system(size: 9, weight: .bold))
-            .tracking(0.8)
-            .foregroundStyle(ink)
-            .padding(.horizontal, 4)
-
-            Text(status.badge.detail)
-                .font(.system(size: 10.5))
-                .lineSpacing(2)
-                .foregroundStyle(Theme.cardInk)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                .padding(.horizontal, 8)
-                .padding(.vertical, 7)
-                .background(Color.white.opacity(0.05), in: RoundedRectangle(cornerRadius: 6, style: .continuous))
-
-            HStack {
-                Text(status.setNumber)
-                Spacer()
-                Text("ROUNDS")
-            }
-            .font(.mono(9, weight: .medium))
-            .foregroundStyle(Theme.rarityCommon)
-            .padding(.horizontal, 4)
+            if !compact { details }
         }
         .foregroundStyle(.white)
         .padding(8)
@@ -72,6 +50,38 @@ struct BadgeCardFront: View {
         }
         .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).strokeBorder(ink, lineWidth: 2))
         .shadow(color: ink.opacity(0.3), radius: 9)
+    }
+
+    /// Type line, how it was earned, and set number: the small print of a full-size card.
+    @ViewBuilder private var details: some View {
+            HStack {
+                Text(status.badge.group.label.uppercased())
+                Spacer()
+                Text(status.badge.rarity.label.uppercased())
+            }
+            .font(.system(size: 9, weight: .bold))
+            .tracking(0.8)
+            .foregroundStyle(ink)
+            .padding(.horizontal, 4)
+
+            Text(status.badge.achieved)
+                .font(.system(size: 10.5))
+                .lineSpacing(2)
+                .foregroundStyle(Theme.cardInk)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 7)
+                .background(Color.white.opacity(0.05), in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+
+            HStack {
+                Text(status.setNumber)
+                Spacer()
+                // The day it was earned, where graded cases show it.
+                Text(status.earnedAt.map { $0.formatted(.dateTime.month(.abbreviated).day()).uppercased() } ?? "ROUNDS")
+            }
+            .font(.mono(9, weight: .medium))
+            .foregroundStyle(Theme.rarityCommon)
+            .padding(.horizontal, 4)
     }
 }
 

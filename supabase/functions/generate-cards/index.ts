@@ -6,6 +6,9 @@
 //   4. Have the LLM word cards from those facts only; check each cites a given source.
 //   5. Save the cards as the student's own (they can clear them) and return them.
 //
+// Mistakes mode: with `mistakes` set, cards come from the student's own errors: the conditions
+// of their recent cases graded with a wrong diagnosis, plus the red flags they missed.
+//
 // Notes mode (early preview): with `notes` set, cards are written from text the app read out of
 // the student's own PDF or photos instead of from condition profiles. The notes are only passed
 // to the model; they're never stored, and the cards are checked the same way.
@@ -18,7 +21,7 @@ import { CARD_WRITER, NOTES_CARD_WRITER } from "../_shared/prompts.ts";
 import { remainingToday, withQuota } from "../_shared/quota.ts";
 import { deckTitle, mentionsSource } from "../_shared/notescards.ts";
 
-type Request = { topics?: string[]; count?: number; include_misses?: boolean; deck?: string; notes?: string };
+type Request = { topics?: string[]; count?: number; include_misses?: boolean; deck?: string; notes?: string; mistakes?: boolean };
 type Card = { topic: string; front: string; back: string; source: string };
 
 const COUNTS = [10, 20, 30, 50];
@@ -55,6 +58,28 @@ serve(async (req) => {
       }));
   }
 
+  if (input.mistakes === true) {
+    // The conditions behind the student's 20 most recent wrong diagnoses, newest first.
+    const wrong = await sql<{ profile: Profile }[]>`
+      select p.profile from private.condition_profiles p
+      join (
+        select cc.condition_slug as slug, max(a.submitted_at) as last
+        from public.attempts a join private.case_content cc on cc.case_id = a.case_id
+        where a.user_id = ${userId} and a.submitted_at is not null and cc.condition_slug is not null
+          and coalesce((a.grade ->> 'diagnosis_correct')::boolean, false) = false
+        group by cc.condition_slug order by last desc limit 20
+      ) w on w.slug = p.slug
+      where p.validation = 'passed' and p.review <> 'rejected'`;
+    const sets: CardFacts[] = wrong.map((r) => cardFacts(r.profile)).filter((s) => s.facts.length > 0);
+    const misses = await recentMisses(userId);
+    if (misses) sets.push(misses);
+    if (sets.length === 0) throw new HttpError(404, "no mistakes to study yet; finish a few graded cases first");
+    const user = `Write ${count} cards. These are conditions the student misdiagnosed and red flags they missed: focus each card on what tells the condition apart and what must not be missed.\nFact sets:\n${JSON.stringify(sets)}`;
+    // A few mistakes may support only a few good cards, so any usable card counts.
+    return withQuota(userId, "cards", () =>
+      writeCards(userId, deck, count, CARD_WRITER, user, new Set(sets.map((s) => s.source)), { minShare: 0 }));
+  }
+
   const rotations = topics.filter((t) => t.startsWith("rotation:")).map((t) => t.split(":")[1]);
   const systems = topics.filter((t) => t.startsWith("system:")).map((t) => t.split(":")[1]);
   const rows = await sql<{ profile: Profile }[]>`
@@ -66,12 +91,7 @@ serve(async (req) => {
 
   const sets: CardFacts[] = rows.map((r) => cardFacts(r.profile)).filter((s) => s.facts.length > 0);
   if (input.include_misses) {
-    const graded = await sql<{ misses: { flag: string; why: string }[] }[]>`
-      select coalesce(grade -> 'missed_red_flags', '[]'::jsonb) as misses from public.attempts
-      where user_id = ${userId} and submitted_at is not null
-      order by submitted_at desc limit 20`;
-    const unique = new Map(graded.flatMap((g) => g.misses).map((m) => [m.flag, m]));
-    const misses = missFacts([...unique.values()]);
+    const misses = await recentMisses(userId);
     if (misses) sets.push(misses);
   }
 
@@ -79,6 +99,16 @@ serve(async (req) => {
   const user = `Write ${count} cards.\nFact sets:\n${JSON.stringify(sets)}`;
   return withQuota(userId, "cards", () => writeCards(userId, deck, count, CARD_WRITER, user, new Set(sets.map((s) => s.source))));
 });
+
+/** Red flags the student missed across their 20 most recent graded cases, as one fact set. */
+async function recentMisses(userId: string): Promise<CardFacts | null> {
+  const graded = await sql<{ misses: { flag: string; why: string }[] }[]>`
+    select coalesce(grade -> 'missed_red_flags', '[]'::jsonb) as misses from public.attempts
+    where user_id = ${userId} and submitted_at is not null
+    order by submitted_at desc limit 20`;
+  const unique = new Map(graded.flatMap((g) => g.misses).map((m) => [m.flag, m]));
+  return missFacts([...unique.values()]);
+}
 
 /** Has the model write the cards, checks each cites an allowed source, and saves them to the deck. */
 async function writeCards(

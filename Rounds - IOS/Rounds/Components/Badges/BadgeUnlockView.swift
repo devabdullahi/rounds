@@ -11,6 +11,12 @@ import SwiftUI
  * 1500ms   rarity label, name and how it was earned rise; success haptic;
  *          the Add to collection button appears
  *
+ * Bigger for rarer cards, so the big moments stay special (the times
+ * above are Epic and Legendary):
+ *   Common     no charge-up: flips at 350ms, no shards, light tap
+ *   Rare       shorter charge (500ms), 5 shards, medium impact
+ *   Legendary  14 shards instead of 9
+ *
  * Tap anywhere to skip to the end. Reduce Motion: the front at once,
  * caption and button, success haptic only.
  * ───────────────────────────────────────────────────────── */
@@ -26,8 +32,40 @@ private enum TIMING {
 private enum BURST {
     static let flip = Animation.spring(response: 0.42, dampingFraction: 0.72)
     static let shardDistance: CGFloat = 160
-    static let shardCount = 9
     static let cardScale: CGFloat = 1.2
+}
+
+/// How big the moment is for a rarity: rarer cards charge longer and burst bigger.
+private struct Intensity {
+    var charge: Double          // s, charge-up starts
+    var chargeLength: Double    // s, glow build (0: none)
+    var taps: [Double]          // s after the charge starts
+    var burst: Double           // s, flash + flip
+    var caption: Double         // s, text and button
+    var shards: Int
+    var flash: Bool
+    var impact: SensoryFeedback.Weight
+
+    init(_ rarity: Badge.Rarity) {
+        switch rarity {
+        case .common:
+            self = Intensity(charge: 0, chargeLength: 0, taps: [], burst: 0.35, caption: 0.8, shards: 0, flash: false, impact: .light)
+        case .rare:
+            self = Intensity(charge: 0.1, chargeLength: 0.5, taps: [0.25, 0.4], burst: 0.6, caption: 1.05, shards: 5, flash: true, impact: .medium)
+        case .epic:
+            self = Intensity(charge: TIMING.charge, chargeLength: TIMING.chargeLength, taps: TIMING.taps, burst: TIMING.burst,
+                             caption: TIMING.caption, shards: 9, flash: true, impact: .heavy)
+        case .legendary:
+            self = Intensity(charge: TIMING.charge, chargeLength: TIMING.chargeLength, taps: TIMING.taps, burst: TIMING.burst,
+                             caption: TIMING.caption, shards: 14, flash: true, impact: .heavy)
+        }
+    }
+
+    private init(charge: Double, chargeLength: Double, taps: [Double], burst: Double, caption: Double,
+                 shards: Int, flash: Bool, impact: SensoryFeedback.Weight) {
+        self.charge = charge; self.chargeLength = chargeLength; self.taps = taps; self.burst = burst
+        self.caption = caption; self.shards = shards; self.flash = flash; self.impact = impact
+    }
 }
 
 /// The moment a badge unlocks: the card back charges up in its rarity color, bursts, and turns
@@ -54,6 +92,7 @@ struct BadgeUnlockView: View {
     @State private var taps = 0
 
     private var ink: Color { status.badge.rarity.ink }
+    private var intensity: Intensity { Intensity(status.badge.rarity) }
 
     var body: some View {
         ZStack {
@@ -70,7 +109,7 @@ struct BadgeUnlockView: View {
 
             VStack(spacing: 28) {
                 ZStack {
-                    ForEach(0..<BURST.shardCount, id: \.self) { i in shard(i) }
+                    ForEach(0..<intensity.shards, id: \.self) { i in shard(i) }
                     FlipCard(angle: angle, status: status)
                         .shadow(color: ink.opacity(0.9 * charge), radius: 4 + 46 * charge)
                         .offset(y: hover ? -6 : 0)
@@ -89,7 +128,7 @@ struct BadgeUnlockView: View {
                         .font(.system(size: 28, weight: .bold))
                         .tracking(-0.4)
                         .foregroundStyle(.white)
-                    Text(status.badge.detail)
+                    Text(status.badge.achieved)
                         .font(.system(size: 16))
                         .foregroundStyle(Theme.cardInk)
                         .multilineTextAlignment(.center)
@@ -106,7 +145,7 @@ struct BadgeUnlockView: View {
         .contentShape(Rectangle())
         .onTapGesture { if stage < .done { skip() } }
         .sensoryFeedback(.impact(weight: .light), trigger: taps)
-        .sensoryFeedback(.impact(weight: .heavy), trigger: stage) { _, new in new == .burst }
+        .sensoryFeedback(.impact(weight: intensity.impact), trigger: stage) { _, new in new == .burst }
         .sensoryFeedback(.success, trigger: stage) { _, new in new == .done }
         .accessibilityElement(children: .contain)
         .accessibilityAddTraits(.isModal)
@@ -115,7 +154,7 @@ struct BadgeUnlockView: View {
 
     /// One shard of the burst, flying out along its own angle.
     private func shard(_ index: Int) -> some View {
-        let angle = Double(index) / Double(BURST.shardCount) * 2 * .pi
+        let angle = Double(index) / Double(max(1, intensity.shards)) * 2 * .pi
         let distance = BURST.shardDistance * CGFloat(max(0, shards))
         return Rectangle()
             .fill(ink)
@@ -133,29 +172,34 @@ struct BadgeUnlockView: View {
             return !Task.isCancelled && stage < .done
         }
 
+        let moment = intensity
         withAnimation(.easeOut(duration: 0.3)) { stage = .rising }
-        guard await wait(until: TIMING.charge) else { return }
-        stage = .charging
-        withAnimation(.easeIn(duration: TIMING.chargeLength)) { charge = 1 }
-        withAnimation(.easeInOut(duration: 0.15).repeatCount(6, autoreverses: true)) { hover = true }
-        for tap in TIMING.taps {
-            guard await wait(until: TIMING.charge + tap) else { return }
-            taps += 1
+        if moment.chargeLength > 0 {
+            guard await wait(until: moment.charge) else { return }
+            stage = .charging
+            withAnimation(.easeIn(duration: moment.chargeLength)) { charge = 1 }
+            withAnimation(.easeInOut(duration: 0.15).repeatCount(moment.taps.count * 2, autoreverses: true)) { hover = true }
+            for tap in moment.taps {
+                guard await wait(until: moment.charge + tap) else { return }
+                taps += 1
+            }
         }
 
-        guard await wait(until: TIMING.burst) else { return }
+        guard await wait(until: moment.burst) else { return }
         var still = Transaction(); still.disablesAnimations = true
         withTransaction(still) { hover = false; shards = 0 }
         stage = .burst
-        withAnimation(.easeOut(duration: 0.15)) { flashOpacity = 1; flashScale = 0.8 }
-        withAnimation(.easeOut(duration: 0.6)) { flashScale = 1.4 }
+        if moment.flash {
+            withAnimation(.easeOut(duration: 0.15)) { flashOpacity = 1; flashScale = 0.8 }
+            withAnimation(.easeOut(duration: 0.6)) { flashScale = 1.4 }
+        }
         withAnimation(.easeOut(duration: 0.64)) { shards = 1 }
         withAnimation(BURST.flip) { angle = 180 }
         withAnimation(.easeOut(duration: 0.5)) { charge = 0.35 }
-        guard await wait(until: TIMING.burst + 0.2) else { return }
+        guard await wait(until: moment.burst + 0.2) else { return }
         withAnimation(.easeOut(duration: 0.4)) { flashOpacity = 0 }
 
-        guard await wait(until: TIMING.caption) else { return }
+        guard await wait(until: moment.caption) else { return }
         withAnimation(.easeOut(duration: 0.32)) { stage = .done }
     }
 

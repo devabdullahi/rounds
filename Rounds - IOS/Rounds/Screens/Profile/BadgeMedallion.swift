@@ -11,7 +11,10 @@ struct BadgeMedallion: View {
                 .fill(status.unlocked ? Theme.accent.opacity(0.16) : Theme.text.opacity(0.06))
             Circle()
                 .strokeBorder(status.unlocked ? Theme.accent.opacity(0.55) : Theme.text.opacity(0.10), lineWidth: 2)
-            AppIcon(status.badge.glyph, size: size * 0.42)
+            Image(badge: status.badge.art)
+                .resizable()
+                .scaledToFit()
+                .frame(width: size * 0.5, height: size * 0.5)
                 .foregroundStyle(status.unlocked ? Theme.accent : Theme.faint)
                 .opacity(status.unlocked ? 1 : 0.45)
             if !status.unlocked {

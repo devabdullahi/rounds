@@ -9,13 +9,8 @@ final class AppState {
     /// Flashcard decks: built-in plus the student's own and generated ones.
     let flashcards: FlashcardStore
 
-    // Sample stats until the profile screen reads them from the server.
-    var rating = 1482
-    var patientsSeen = 216
-    var rightDiagnosisRate = 0.71
-    var redFlagRate = 0.72
-    var rotationDone = 9
-    let rotationTotal = 20
+    /// The server's rating, loaded on refresh and updated by each grade; every account starts at 1200.
+    var rating = AppState.residentFloor
 
     /// The student's generated patients, newest first.
     private(set) var ward: [WardPatient] = []
@@ -73,6 +68,7 @@ final class AppState {
     /// Organ systems that have patients on the ward, for filter chips.
     /// Days in a row with a graded case, ending today or yesterday (see `Streak`).
     var streak: Int {
+        if showcasing { return Self.showcaseStreak }
         #if DEBUG
         if let debugStreak { return debugStreak }
         #endif
@@ -84,6 +80,7 @@ final class AppState {
     #endif
     /// Time before the streak resets, while there is one.
     var streakTimeLeft: TimeInterval? {
+        if showcasing { return 23 * 3600 }
         #if DEBUG
         if let debugStreak { return debugStreak > 0 ? 18.5 * 3600 : nil }
         #endif
@@ -93,7 +90,31 @@ final class AppState {
     var showingStreak = false
 
     /// The longest such run so far.
-    var bestStreak: Int { Streak.best(graded.map(\.submittedAt)) }
+    var bestStreak: Int { showcasing ? Self.showcaseStreak : Streak.best(graded.map(\.submittedAt)) }
+
+    // MARK: Guest showcase
+
+    #if DEBUG
+    /// Development builds, signed out: every badge shows as earned and the streak is maxed, to show
+    /// the whole collection. Set by the tab view from the sign-in state. Never in release builds.
+    var guestShowcase = false
+    #endif
+    /// The guest showcase is on (development builds only).
+    var showcasing: Bool {
+        #if DEBUG
+        guestShowcase
+        #else
+        false
+        #endif
+    }
+    /// The longest streak any badge asks for, with the flame at full heat.
+    static let showcaseStreak = 100
+
+    /// Badges as the screens show them: the real record, or all earned in the guest showcase.
+    var badgeStatuses: [BadgeStatus] {
+        let statuses = BadgeCatalog.status(for: badgeRecord)
+        return showcasing ? statuses.map { $0.unlocked ? $0 : $0.asUnlocked() } : statuses
+    }
 
     /// Distinct red flags missed on the latest graded attempts, which "Include what I missed" turns into cards.
     var missedRedFlagCount: Int { Set(ward.flatMap { $0.misses.map(\.flag) }).count }
@@ -104,18 +125,34 @@ final class AppState {
     var activeCase: CaseSession?
     var debugInitialPath: [CaseStep] = []
 
-    nonisolated static let fellowThreshold = 1600
     nonisolated static let residentFloor = 1200
 
-    init(cases: (any CaseService)?, cards: (any CardService)?) {
+    /// The streak reminder on this device; nil in tests and previews.
+    private let reminders: (any ReminderService)?
+
+    init(cases: (any CaseService)?, cards: (any CardService)?, reminders: (any ReminderService)? = nil) {
         self.cases = cases
+        self.reminders = reminders
         self.flashcards = FlashcardStore(service: cards)
+        flashcards.onProgress = { [weak self] in self?.checkUnlocks() }
     }
 
-    var tierProgress: Double {
-        Double(rating - Self.residentFloor) / Double(Self.fellowThreshold - Self.residentFloor)
+    var tier: RatingTier { .of(rating) }
+    var tierProgress: Double { tier.progress(rating) }
+
+    /// Graded cases, counting one just finished before the server's copy arrives.
+    var patientsSeen: Int { graded.count }
+    /// Share of graded cases with the right diagnosis; nil before the first one.
+    var rightDiagnosisRate: Double? {
+        graded.isEmpty ? nil : Double(graded.filter(\.diagnosisCorrect).count) / Double(graded.count)
     }
-    var toNextTier: Int { max(0, Self.fellowThreshold - rating) }
+    /// "71%", or a dash before the first graded case.
+    var rightDiagnosisText: String { rightDiagnosisRate.map { "\(Int(($0 * 100).rounded()))%" } ?? "–" }
+
+    /// Progress through a focus, from graded cases; nil before the condition counts load.
+    func focusProgress(_ selection: FocusSelection) -> FocusProgress? {
+        .of(graded, in: selection, counts: topicCounts)
+    }
 
     /// Conditions a focus can draw from; nil before the counts load.
     func conditionCount(for focus: StudyFocus) -> Int? {
@@ -133,11 +170,17 @@ final class AppState {
             async let ward = cases.ward()
             async let counts = cases.topicCounts()
             async let graded = cases.gradedCases()
+            async let rating = cases.rating()
+            // Decks count toward badges too, so they load before the first unlock check.
+            await flashcards.load()
             self.ward = try await ward
             self.topicCounts = try await counts
             self.graded = try await graded
+            self.rating = try await rating ?? Self.residentFloor
             problem = nil
+            hasLoadedRecord = true
             checkUnlocks()
+            await updateReminder()
         } catch {
             problem = error.localizedDescription
         }
@@ -197,17 +240,36 @@ final class AppState {
 
     /// Set when a graded case closes; the tab view switches to Patients and clears it.
     var returnToPatients = false
+    /// Set from the debrief's "Make cards"; the tab view opens Cards, whose Generate sheet starts on
+    /// Mistakes and clears it.
+    var reviewMistakesRequested = false
 
-    /// Closes a graded case and lands on the ward.
-    func finishCase() {
-        returnToPatients = true
+    /// Closes a graded case and lands on the ward, or on a mistakes deck when the student asked for one.
+    func finishCase(reviewingMistakes: Bool = false) {
+        debriefSettled = false
+        if reviewingMistakes { reviewMistakesRequested = true } else { returnToPatients = true }
         activeCase = nil
-        // The graded case may have unlocked a badge; the refresh queues its moment.
-        Task { await refresh() }
+        Task {
+            // Right after a finished case is when a streak reminder makes sense to ask about; the
+            // system prompts only the first time.
+            _ = await reminders?.requestPermission()
+            // The graded case may have unlocked a badge; the refresh queues its moment.
+            await refresh()
+        }
+    }
+
+    /// Moves the reminder to two hours before the streak resets, or clears it with no streak.
+    private func updateReminder() async {
+        let reminder = showcasing ? nil : StreakReminder.plan(days: streak, timeLeft: streakTimeLeft)
+        await reminders?.schedule(reminder)
     }
 
     /// Everything badges are judged on.
-    var badgeRecord: BadgeRecord { BadgeRecord(rating: rating, bestStreak: bestStreak, cases: graded) }
+    var badgeRecord: BadgeRecord {
+        BadgeRecord(rating: rating, bestStreak: bestStreak, cases: graded,
+                    decksGenerated: flashcards.generatedDecks, notesDecks: flashcards.notesDecks,
+                    missDecks: flashcards.missDecks, cardsKnown: flashcards.knownTotal)
+    }
 
     // MARK: Badge unlocks
 
@@ -215,11 +277,16 @@ final class AppState {
     /// check, which records what's already earned without celebrating it.
     private var seenBadges: Set<String>? = UserDefaults.standard.stringArray(forKey: AppState.seenBadgesStorageKey).map(Set.init)
     static let seenBadgesStorageKey = "seenBadges"
+    /// The debrief has finished revealing the grade, so a badge unlock can take the stage.
+    var debriefSettled = false
     /// Unlocks waiting to be shown, biggest first.
     private(set) var pendingUnlocks: [BadgeStatus] = []
 
     /// Queues any badge that unlocked since the last check.
     func checkUnlocks() {
+        // Nothing was earned in the showcase, so nothing is celebrated. Before the first load the
+        // record is incomplete, and judging it would celebrate old badges as new.
+        guard !showcasing, hasLoadedRecord else { return }
         let statuses = BadgeCatalog.status(for: badgeRecord)
         guard let seen = seenBadges else {
             markSeen(statuses.filter(\.unlocked).map(\.id))
@@ -228,6 +295,9 @@ final class AppState {
         let new = BadgeCatalog.newlyUnlocked(statuses, seen: seen)
         pendingUnlocks += new.filter { n in !pendingUnlocks.contains { $0.id == n.id } }
     }
+
+    /// Set once cases and decks have loaded, so unlock checks see the whole record.
+    private var hasLoadedRecord = false
 
     /// The student has seen this unlock. Only real unlocks are remembered, so a test run never
     /// spends the moment a badge will have when it's actually earned.
@@ -279,11 +349,17 @@ final class AppState {
         UserDefaults.standard.set(Array(skipped), forKey: Self.skippedStorageKey)
     }
 
-    func record(_ grade: Grade, patient: String) {
+    /// Takes a fresh grade into the record at once, so badges it earns unlock on the debrief, at the
+    /// moment of success, not later on another tab. The next refresh replaces it with the server's copy.
+    func record(_ grade: Grade, session: CaseSession) {
+        let patient = session.clinical.bed
+        graded.insert(GradedCase(id: "local-\(UUID().uuidString)", submittedAt: .now, score: grade.score,
+                                 diagnosisCorrect: grade.diagnosisCorrect, missedRedFlags: grade.missedRedFlags.count,
+                                 clerkship: session.clinical.clerkship, system: session.clinical.system, breakdown: [:],
+                                 examMode: session.examMode, timed: session.isTimed, caseID: patient), at: 0)
+        checkUnlocks()
         lastGrade = grade
         rating = grade.rating
-        patientsSeen += 1
-        rotationDone = min(rotationTotal, rotationDone + 1)
         if let i = ward.firstIndex(where: { $0.id == patient }) {
             ward[i].misses = grade.missedRedFlags
             ward[i].lastScore = grade.score

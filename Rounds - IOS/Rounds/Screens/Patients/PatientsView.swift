@@ -460,18 +460,21 @@ struct PatientsView: View {
             HStack(alignment: .top, spacing: 12) {
                 VStack(alignment: .leading, spacing: 0) {
                     Text("Correct diagnosis").font(.system(size: 13)).foregroundStyle(Theme.muted)
-                    Text("\(Int(app.rightDiagnosisRate * 100))%").font(.mono(26))
-                    Text("up from 64%").font(.system(size: 13)).foregroundStyle(Theme.good)
+                    Text(app.rightDiagnosisText).font(.mono(26))
                 }
                 .card(padding: 14, fillHeight: true)
+                // Progress through the student's own focus, not a fixed rotation.
+                let focus = FocusSelection(stored: focusStored)
+                let progress = app.focusProgress(focus)
                 VStack(alignment: .leading, spacing: 0) {
-                    // Progress through the student's own focus, not a fixed rotation.
-                    Text(FocusSelection(stored: focusStored).isMix ? "All topics" : FocusSelection(stored: focusStored).label)
+                    Text(focus.isMix ? "All topics" : focus.label)
                         .font(.system(size: 13)).foregroundStyle(Theme.muted).lineLimit(1)
-                    Text("\(app.rotationDone)/\(app.rotationTotal)").font(.mono(26))
-                    ProgressBar(value: Double(app.rotationDone) / Double(app.rotationTotal), height: 4)
+                    Text(progress.map { "\($0.done)/\($0.total)" } ?? "–").font(.mono(26))
+                    ProgressBar(value: progress?.share ?? 0, height: 4)
                         .padding(.top, 6)
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(progress.map { "\(focus.isMix ? "All topics" : focus.label): \($0.done) of \($0.total) conditions seen" } ?? "")
                 .card(padding: 14, fillHeight: true)
             }
             .fixedSize(horizontal: false, vertical: true)

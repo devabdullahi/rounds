@@ -40,6 +40,7 @@ struct SettingsView: View {
     @AppStorage(StudyFocus.storageKey) private var focusStored = ""
     @State private var editingFocus = false
     @State private var editingProfile = false
+    @State private var showingCredits = false
 
     private let limits: [(Int, String)] = [(5, "5 min"), (10, "10"), (15, "15"), (20, "20"), (0, "Off")]
 
@@ -131,6 +132,8 @@ struct SettingsView: View {
                         navRow(.shield, "Privacy")
                         Hairline()
                         navRow(.fileText, "Terms")
+                        Hairline()
+                        navRow(.info, "Acknowledgements") { showingCredits = true }
                     }
 
                     VStack(spacing: 10) {
@@ -183,6 +186,7 @@ struct SettingsView: View {
             Text("Your patients, grades, flashcards and badges are deleted for good. This can't be undone.")
         }
         .sheet(isPresented: $editingProfile) { EditProfileView() }
+        .sheet(isPresented: $showingCredits) { AcknowledgementsView() }
         .alert("Something went wrong", isPresented: Binding(get: { auth.problem != nil }, set: { if !$0 { auth.problem = nil } })) {
             Button("OK", role: .cancel) {}
         } message: {

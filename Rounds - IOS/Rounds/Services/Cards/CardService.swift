@@ -11,6 +11,8 @@ protocol CardService: Sendable {
     func generate(topics: [String], count: Int, includeMisses: Bool, deck: String) async throws -> GeneratedDeck
     /// Writes a deck from text read out of the student's own notes (early preview).
     func generate(notes: String, count: Int, deck: String) async throws -> GeneratedDeck
+    /// Writes a deck from the student's own mistakes: conditions they misdiagnosed and red flags they missed.
+    func generateFromMistakes(count: Int, deck: String) async throws -> GeneratedDeck
     /// Deletes every card the student wrote or generated. Built-in decks stay.
     func clearMine() async throws
 }

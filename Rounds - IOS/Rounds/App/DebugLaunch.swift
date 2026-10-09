@@ -55,7 +55,7 @@ enum DebugLaunch {
         switch screen {
         case "patients": tab = .patients
         case "cards", "cards-flip", "cards-correct", "cards-unknown", "cards-new", "cards-new-color", "cards-new-answer",
-             "cards-add", "cards-generate", "cards-generate-notes", "cards-generate-notes-pick": tab = .cards
+             "cards-add", "cards-generate", "cards-generate-notes", "cards-generate-notes-pick", "cards-generate-mistakes": tab = .cards
         case "patients-open": tab = .patients; expandedPatient = "R2"
         case "profile", "settings", "profile-weakspots", "profile-badges", "profile-edit": tab = .profile
         case "home", "focus-sheet", "splash", "home-swipe-right", "home-swipe-left": tab = .today
@@ -90,7 +90,7 @@ enum DebugLaunch {
             case "workup": path = [.interview, .workup]
             case "diagnosis", "diagnosis-suggest", "diagnosis-ddx", "diagnosis-ddx-add": path = [.interview, .workup, .diagnosis]
             case "handoff": path = [.interview, .workup, .diagnosis, .handoff]
-            case "debrief": path = [.interview, .workup, .diagnosis, .handoff, .debrief]
+            case "debrief", "debrief-graded": path = [.interview, .workup, .diagnosis, .handoff, .debrief]
             default: path = []
             }
             app.debugInitialPath = path

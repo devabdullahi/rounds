@@ -82,6 +82,8 @@ struct FlashcardsView: View {
     @State private var composing = false
     @State private var choosingAdd = false
     @State private var generating = false
+    /// Opens the Generate sheet on Mistakes (from a debrief) instead of Topics.
+    @State private var generateFromMistakes = false
     @State private var confirmingClear = false
     /// Set by the add sheet; the matching sheet opens once it has closed.
     @State private var pendingAdd: AddCardsSheet.Choice?
@@ -167,8 +169,15 @@ struct FlashcardsView: View {
                 }
             }
         }
+        .onChange(of: app.reviewMistakesRequested, initial: true) { _, go in
+            guard go else { return }
+            app.reviewMistakesRequested = false
+            generateFromMistakes = true
+            generating = true
+        }
+        .onChange(of: generating) { _, open in if !open { generateFromMistakes = false } }
         .sheet(isPresented: $generating) {
-            GenerateCardsView()
+            GenerateCardsView(startWithMistakes: generateFromMistakes)
         }
         .alert("Clear all your flashcards?", isPresented: $confirmingClear) {
             Button("Clear \(store.mineCount) cards", role: .destructive) {
@@ -198,7 +207,7 @@ struct FlashcardsView: View {
             case "cards-unknown": flipped = true; verdict = .unknown
             case "cards-new", "cards-new-color", "cards-new-answer": composing = true
             case "cards-add": choosingAdd = true
-            case "cards-generate", "cards-generate-notes", "cards-generate-notes-pick": generating = true
+            case "cards-generate", "cards-generate-notes", "cards-generate-notes-pick", "cards-generate-mistakes": generating = true
             default: break
             }
             #endif
@@ -391,7 +400,7 @@ struct FlashcardsView: View {
             try? await Task.sleep(for: .seconds(TIMING.verdictHold))
             withAnimation(FLIGHT.spring) {
                 store.queue.removeFirst()
-                if v == .correct { store.known += 1 } else {
+                if v == .correct { store.known += 1; store.recordKnown() } else {
                     store.missed += 1
                     store.queue.append(card.copy())  // comes back later
                 }

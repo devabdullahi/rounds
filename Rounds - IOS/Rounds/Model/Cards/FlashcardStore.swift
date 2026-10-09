@@ -7,7 +7,10 @@ import Observation
 final class FlashcardStore {
     private let service: (any CardService)?
 
-    private(set) var cards: [Flashcard] = []
+    private(set) var cards: [Flashcard] = [] { didSet { onProgress?() } }
+    /// Called when study progress changes (a card known, a deck added), so badges it earns unlock
+    /// in the moment instead of at the next refresh.
+    @ObservationIgnored var onProgress: (() -> Void)?
     private(set) var isLoading = false
     /// The first load has finished (successfully or not), so "no cards" is known, not assumed.
     private(set) var hasLoaded = false
@@ -46,6 +49,26 @@ final class FlashcardStore {
     private(set) var allowance: DeckAllowance?
     /// The allowance if it still describes today.
     var allowanceToday: DeckAllowance? { allowance.flatMap { $0.isCurrent() ? $0 : nil } }
+
+    /// Cards marked "Knew it", all time, on this device (the Card shark badge).
+    static let knownTotalKey = "flashcardsKnownTotal"
+    private(set) var knownTotal = UserDefaults.standard.integer(forKey: FlashcardStore.knownTotalKey)
+
+    /// Counts one more card the student knew.
+    func recordKnown() {
+        knownTotal += 1
+        UserDefaults.standard.set(knownTotal, forKey: Self.knownTotalKey)
+        onProgress?()
+    }
+
+    /// Decks the student generated (cards with a source), for the study badges.
+    var generatedDecks: Int { Set(cards.filter { $0.isMine && $0.source != nil }.map(\.deck)).count }
+    /// Decks made from the student's notes.
+    var notesDecks: Int { Set(cards.filter { $0.isMine && $0.source == "notes" }.map(\.deck)).count }
+    /// Decks built from the student's mistakes: a mistakes review, or any deck with missed-red-flag cards.
+    var missDecks: Int {
+        Set(cards.filter { $0.isMine && ($0.source == "missed" || $0.deck == Self.mistakesDeck) }.map(\.deck)).count
+    }
 
     /// How many cards the generate screen offers.
     static let generateCounts = [10, 20, 30, 50]
@@ -145,6 +168,27 @@ final class FlashcardStore {
             return nil
         }
         return notes
+    }
+
+    /// The deck a mistakes review is saved to.
+    static let mistakesDeck = "My mistakes"
+
+    /// Generates a deck from the student's mistakes and switches to it. Returns false if it failed.
+    func generateFromMistakes(count: Int) async -> Bool {
+        guard let service, !isGenerating else { return false }
+        isGenerating = true
+        defer { isGenerating = false }
+        do {
+            let generated = try await service.generateFromMistakes(count: count, deck: Self.mistakesDeck)
+            if let left = generated.allowance { allowance = left }
+            cards.append(contentsOf: generated.cards)
+            selectedDeck = generated.deck
+            notice = "\(generated.cards.count) cards added to \(generated.deck)"
+            return true
+        } catch {
+            problem = error.localizedDescription
+            return false
+        }
     }
 
     /// Generates a deck from the student's notes and switches to it. Returns false if it failed.

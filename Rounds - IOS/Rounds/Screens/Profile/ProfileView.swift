@@ -14,7 +14,6 @@ struct ProfileView: View {
     enum Route: Hashable { case settings, weakSpots, badges }
 
     @State private var path: [Route] = []
-    @State private var showInventoryHelp = false
     @State private var editingProfile = false
 
     var body: some View {
@@ -28,7 +27,6 @@ struct ProfileView: View {
                     case .badges: BadgesView()
                     }
                 }
-                .sheet(isPresented: $showInventoryHelp) { inventoryHelp }
                 .sheet(isPresented: $editingProfile) { EditProfileView() }
         }
         #if DEBUG
@@ -61,32 +59,14 @@ struct ProfileView: View {
 
                 HStack(alignment: .top, spacing: 10) {
                     statTile("\(app.patientsSeen)", "Patients seen")
-                    statTile("\(Int(app.rightDiagnosisRate * 100))%", "Correct diagnosis")
+                    statTile(app.rightDiagnosisText, "Correct diagnosis")
                     statTile("\(app.bestStreak)", "Best streak")
                 }
                 .fixedSize(horizontal: false, vertical: true)
 
                 weakSpotsCard
 
-                HStack(alignment: .top, spacing: 10) {
-                    Button { showInventoryHelp = true } label: {
-                        VStack(alignment: .leading, spacing: 2) {
-                            HStack(spacing: 4) {
-                                Text("Inventory").font(.system(size: 13)).foregroundStyle(Theme.muted)
-                                AppIcon(.info, size: 13).foregroundStyle(Theme.faint)
-                            }
-                            Text("1 Consult").font(.system(size: 15, weight: .semibold))
-                            Text("2 Streak freezes").font(.system(size: 15, weight: .semibold))
-                        }
-                        .foregroundStyle(Theme.text)
-                        .card(padding: 14, fillHeight: true)
-                    }
-                    .buttonStyle(PressableStyle())
-                    .accessibilityHint("Explains consults and streak freezes")
-
-                    badgesCard
-                }
-                .fixedSize(horizontal: false, vertical: true)
+                badgesCard
             }
             .padding(.horizontal, 20)
             .padding(.top, 8)
@@ -125,18 +105,14 @@ struct ProfileView: View {
                 Spacer()
                 VStack(alignment: .trailing, spacing: 0) {
                     Text(app.rating.formatted()).font(.score(22)).contentTransition(.numericText())
-                    Text("Silver tier").font(.system(size: 13)).foregroundStyle(Theme.muted)
+                    Text(app.tier.label).font(.system(size: 13)).foregroundStyle(Theme.muted)
                 }
             }
-            VStack(spacing: 4) {
+            VStack(alignment: .leading, spacing: 4) {
                 ProgressBar(value: app.tierProgress)
-                HStack {
-                    Text("\(app.toNextTier) to Gold")
-                    Spacer()
-                    Text("Season ends Dec 1")
-                }
-                .font(.system(size: 13))
-                .foregroundStyle(Theme.muted)
+                Text(app.tier.toNextLabel(app.rating))
+                    .font(.system(size: 13))
+                    .foregroundStyle(Theme.muted)
             }
         }
         .card(radius: 20)
@@ -204,13 +180,17 @@ struct ProfileView: View {
         .accessibilityHint("Shows every category, with a time filter")
     }
 
-    /// Three badges and the unlocked count; opens the full list. Shows the latest earned ones,
-    /// then the locked one closest to unlocking.
+    /// Six badges and the unlocked count; opens the full list. Shows the latest earned ones, then
+    /// the locked ones closest to unlocking.
     private var badgesCard: some View {
-        let statuses = BadgeCatalog.status(for: app.badgeRecord)
+        let statuses = app.badgeStatuses
         let unlocked = statuses.filter(\.unlocked)
-        let earned = Array(unlocked.suffix(2))
-        let next = statuses.filter { !$0.unlocked }.sorted { $0.progress > $1.progress }.prefix(3 - earned.count)
+        let earned = Array(unlocked.sorted { ($0.earnedAt ?? .distantPast) < ($1.earnedAt ?? .distantPast) }.suffix(3))
+        let close = BadgeCatalog.nearest(statuses, limit: 6 - earned.count)
+        // A new student is close to almost nothing, so the easiest locked cards fill the row.
+        let easiest = statuses.filter { s in !s.unlocked && !s.hidden && !close.contains { $0.badge.id == s.badge.id } }
+            .sorted { $0.badge.rarity < $1.badge.rarity }
+        let next = close + easiest.prefix(6 - earned.count - close.count)
         return Button { path.append(.badges) } label: {
             VStack(alignment: .leading, spacing: 8) {
                 HStack(spacing: 4) {
@@ -220,7 +200,7 @@ struct ProfileView: View {
                 }
                 HStack(spacing: 6) {
                     ForEach(earned + next) { status in
-                        BadgeMedallion(status: status, size: 34).frame(maxWidth: .infinity)
+                        BadgeMedallion(status: status, size: 40).frame(maxWidth: .infinity)
                     }
                 }
             }
@@ -230,32 +210,5 @@ struct ProfileView: View {
         .buttonStyle(PressableStyle())
         .accessibilityLabel("Badges, \(unlocked.count) of \(statuses.count) unlocked")
         .accessibilityHint("Shows every badge")
-    }
-
-    private var inventoryHelp: some View {
-        VStack(alignment: .leading, spacing: 18) {
-            Text("Inventory").font(.system(size: 22, weight: .bold))
-            helpRow(.messageSquare, "Consult", "Once per case, ask Dr. Okafor for a nudge. Using one caps that case at 90. You earn one every 3 days of streak.")
-            helpRow(.flame, "Streak freeze", "Covers a missed day so your streak survives. Used automatically. Earned at 7- and 30-day streaks.")
-            Spacer(minLength: 0)
-        }
-        .padding(24)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Theme.surface.ignoresSafeArea())
-        .presentationDetents([.height(300)])
-        .presentationDragIndicator(.visible)
-    }
-
-    private func helpRow(_ glyph: IconGlyph, _ title: String, _ body: String) -> some View {
-        HStack(alignment: .top, spacing: 12) {
-            AppIcon(glyph, size: 18)
-                .foregroundStyle(Theme.accent)
-                .frame(width: 32, height: 32)
-                .background(Theme.accentSoft, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
-            VStack(alignment: .leading, spacing: 3) {
-                Text(title).font(.system(size: 16, weight: .semibold))
-                Text(body).font(.system(size: 14)).foregroundStyle(Theme.muted).lineSpacing(2)
-            }
-        }
     }
 }

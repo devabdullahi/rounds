@@ -12,6 +12,9 @@ protocol CaseService: Sendable {
     /// Every submitted case the student has been graded on, newest first: what the profile's
     /// points breakdown and badges are built from.
     func gradedCases() async throws -> [GradedCase]
+    /// The student's rating, as the server last set it after grading; nil when the account has no
+    /// profile row yet (a guest who hasn't been graded).
+    func rating() async throws -> Int?
 
     /// How many conditions each topic can draw from, keyed by `StudyFocus.stored`.
     func topicCounts() async throws -> [String: Int]

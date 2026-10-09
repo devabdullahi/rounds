@@ -149,7 +149,12 @@ struct DebriefView: View {
         gradingProblem = nil
         let g: Grade
         do {
+            #if DEBUG
+            // A fixed, partly wrong grade, so the debrief can be checked without grading a real case.
+            g = DebugLaunch.screen == "debrief-graded" ? .debugSample : try await session.submit()
+            #else
             g = try await session.submit()
+            #endif
         } catch {
             gradingProblem = error.localizedDescription
             return
@@ -163,8 +168,11 @@ struct DebriefView: View {
             try? await Task.sleep(for: .seconds(at - elapsed))
             elapsed = at
             withAnimation(.easeOut(duration: 0.3)) { stage = i }
-            if i == 2 { withAnimation(.snappy(duration: 0.8)) { app.record(g, patient: session.clinical.bed) } }
+            if i == 2 { withAnimation(.snappy(duration: 0.8)) { app.record(g, session: session) } }
         }
+        // Once the grade has fully landed, any badge it earned gets its moment here, at the peak.
+        try? await Task.sleep(for: .seconds(0.6))
+        app.debriefSettled = true
     }
 
     /// Closes this debrief and opens the same patient again as a fresh attempt.
@@ -218,9 +226,9 @@ struct DebriefView: View {
                         .opacity(stage >= 2 ? 1 : 0)
                         .animation(Springs.pop, value: stage)
                     Spacer()
-                    Text("\(app.toNextTier) to Gold").font(.system(size: 13)).foregroundStyle(Theme.muted)
+                    Text(app.tier.toNextLabel(app.rating)).font(.system(size: 13)).foregroundStyle(Theme.muted)
                 }
-                ProgressBar(value: stage >= 2 ? app.tierProgress : Double(startRating - AppState.residentFloor) / Double(AppState.fellowThreshold - AppState.residentFloor), height: 4)
+                ProgressBar(value: stage >= 2 ? app.tierProgress : RatingTier.of(startRating).progress(startRating), height: 4)
             }
             .padding(.top, 4)
         }
@@ -270,7 +278,31 @@ struct DebriefView: View {
             Hairline()
             missesRow(g)
             Hairline()
+            if !g.diagnosisCorrect || !g.missedRedFlags.isEmpty {
+                // Straight from the mistake to studying it, while it still stings.
+                Button { app.finishCase(reviewingMistakes: true) } label: {
+                    HStack {
+                        Text("Mistakes")
+                        Spacer()
+                        Text("Make cards").fontWeight(.semibold).foregroundStyle(Theme.accent)
+                        AppIcon(.chevronRight, size: 14).foregroundStyle(Theme.faint)
+                    }
+                    .font(.system(size: 15))
+                    .foregroundStyle(Theme.text)
+                    .padding(.horizontal, 16)
+                    .frame(minHeight: 48)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(PressableStyle())
+                .accessibilityHint("Closes the case and makes flashcards from your mistakes")
+                Hairline()
+            }
             summaryRow("Casebook", "Patient #\(app.patientsSeen) added")
+            // Almost there: the badge closest to done, so the next case has a target.
+            if let next = BadgeCatalog.nearest(app.badgeStatuses, limit: 1).first {
+                Hairline()
+                summaryRow("Next badge", next.nudge)
+            }
         }
         .listSurface()
         .opacity(stage >= 4 ? 1 : 0)

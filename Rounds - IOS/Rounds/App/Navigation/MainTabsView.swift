@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MainTabsView: View {
     @Environment(AppState.self) private var app
+    @Environment(AuthModel.self) private var auth
     @State private var tab: Tab = .today
     @State private var debugExpanded: String?
 
@@ -29,6 +30,10 @@ struct MainTabsView: View {
             #endif
         }
         .task { await app.refresh() }
+        #if DEBUG
+        // Development builds: a guest (signed out) sees every badge earned and a maxed streak.
+        .onChange(of: auth.account == nil, initial: true) { _, guest in app.guestShowcase = guest }
+        #endif
         .alert("Something went wrong", isPresented: Binding(get: { app.problem != nil }, set: { if !$0 { app.problem = nil } })) {
             Button("Try again") { Task { await app.refresh() } }
             Button("OK", role: .cancel) {}
@@ -40,6 +45,9 @@ struct MainTabsView: View {
             guard go else { return }
             tab = .patients
             app.returnToPatients = false
+        }
+        .onChange(of: app.reviewMistakesRequested) { _, go in
+            if go { tab = .cards }
         }
         // The streak, big and centred, over the tabs.
         .overlay {

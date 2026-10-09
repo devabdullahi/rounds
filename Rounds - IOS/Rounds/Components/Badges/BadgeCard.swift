@@ -5,22 +5,27 @@ import SwiftUI
 struct BadgeCard: View {
     let status: BadgeStatus
     var scale: CGFloat = 1
+    /// Name and art only, for small sizes where the small print can't be read.
+    var compact = false
 
     static let size = CGSize(width: 180, height: 252)
 
     var body: some View {
         Group {
             if status.unlocked {
-                BadgeCardFront(status: status)
+                BadgeCardFront(status: status, compact: compact)
+            } else if status.hidden {
+                BadgeCardBack(progress: nil, secret: true)
             } else {
-                BadgeCardBack(progress: status.progress, label: status.compactProgressLabel)
+                BadgeCardBack(progress: status.progress, label: status.toGoLabel)
             }
         }
         .scaleEffect(scale, anchor: .topLeading)
         .frame(width: Self.size.width * scale, height: Self.size.height * scale, alignment: .topLeading)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(status.badge.name), \(status.badge.rarity.label) card, "
-                            + (status.unlocked ? "collected" : "locked, \(status.progressLabel)"))
+        .accessibilityLabel(status.hidden ? "Secret card, locked"
+                            : "\(status.badge.name), \(status.badge.rarity.label) card, "
+                            + (status.unlocked ? "collected" : "locked, \(status.toGoLabel)"))
     }
 }
 
