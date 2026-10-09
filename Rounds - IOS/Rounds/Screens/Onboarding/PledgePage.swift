@@ -57,8 +57,8 @@ struct PledgePage: View {
         }
         .padding(.horizontal, 20)
         .padding(.top, 12)
-        .sensoryFeedback(.impact(weight: .light), trigger: heart.quarter) { old, new in new > old && new < 4 }
-        .sensoryFeedback(.success, trigger: heart.isDone) { _, done in done }
+        .haptic(.impact(weight: .light), trigger: heart.quarter) { old, new in new > old && new < 4 }
+        .haptic(.success, trigger: heart.isDone) { _, done in done }
         .onChange(of: heart.isDone) { _, done in
             if done { AccessibilityNotification.Announcement("Promise made").post() }
         }

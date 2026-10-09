@@ -3,9 +3,6 @@ import SwiftUI
 /* ─────────────────────────────────────────────────────────
  * ANIMATION STORYBOARD · Settings
  *
- *   reminder on    "Remind me at" row drops in under the toggle
- *                  (shared Disclosure motion: 6pt drop + fade)
- *   reminder off   row fades out in 120ms, section closes
  *   voice off      dependent rows dim to 40% (they stay in place:
  *                  greyed, not removed, so nothing jumps)
  *   appearance     whole app recolors through the system transition
@@ -16,24 +13,26 @@ private enum SETTINGS {
     static let dimAnimation = Springs.slide
 }
 
-/// Settings. UI only for now: values are placeholders held in view state until the backend exists.
+/// Settings: account facts, study focus, and device preferences. Preferences are stored on this
+/// device (`Preferences`, `Appearance`, `TimeLimit`), and the screens and models that use them read
+/// the same keys.
 struct SettingsView: View {
     @Environment(AppState.self) private var app
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
 
     // Shared with the door note so both show the same default.
-    @AppStorage("timeLimitMinutes") private var timeLimit = 10
-    @AppStorage("appearance") private var appearance = 0
+    @AppStorage(TimeLimit.storageKey) private var timeLimit = TimeLimit.defaultMinutes
+    @AppStorage(Appearance.storageKey) private var appearance = Appearance.system
 
-    @State private var examByDefault = false
-    @State private var voiceMode = true
-    @State private var autoSend = true
-    @State private var voiceSpeed = 0.5
-    @State private var showReveals = true
-    @State private var showCoverage = true
-    @State private var haptics = true
-    @State private var dailyReminder = true
-    @State private var streakAlerts = true
+    @AppStorage(Preferences.examByDefaultKey) private var examByDefault = Preferences.examByDefaultDefault
+    @AppStorage(Preferences.voiceModeKey) private var voiceMode = Preferences.voiceModeDefault
+    @AppStorage(Preferences.autoSendKey) private var autoSend = Preferences.autoSendDefault
+    @AppStorage(Preferences.voiceSpeedKey) private var voiceSpeed = Preferences.voiceSpeedDefault
+    @AppStorage(Preferences.showRevealsKey) private var showReveals = Preferences.showRevealsDefault
+    @AppStorage(Preferences.showCoverageKey) private var showCoverage = Preferences.showCoverageDefault
+    @AppStorage(Preferences.hapticsKey) private var haptics = Preferences.hapticsDefault
+    @AppStorage(Preferences.streakAlertsKey) private var streakAlerts = Preferences.streakAlertsDefault
     @State private var confirmSignOut = false
     @Environment(AuthModel.self) private var auth
     @State private var confirmDelete = false
@@ -42,8 +41,6 @@ struct SettingsView: View {
     @State private var editingProfile = false
     @State private var showingCredits = false
     @State private var showingSiri = false
-
-    private let limits: [(Int, String)] = [(5, "5 min"), (10, "10"), (15, "15"), (20, "20"), (0, "Off")]
 
     var body: some View {
         VStack(spacing: 0) {
@@ -70,14 +67,14 @@ struct SettingsView: View {
                     }
 
                     section("Appearance") {
-                        Segmented(options: [(0, "System"), (1, "Light"), (2, "Dark")], selection: $appearance)
+                        Segmented(options: Appearance.allCases.map { ($0, $0.title) }, selection: $appearance)
                             .padding(12)
                     }
 
                     section("Cases") {
                         VStack(alignment: .leading, spacing: 10) {
                             rowLabel(.timer, "Default time limit")
-                            Segmented(options: limits, selection: $timeLimit)
+                            Segmented(options: TimeLimit.options, selection: $timeLimit)
                         }
                         .padding(16)
                         Hairline()
@@ -116,28 +113,17 @@ struct SettingsView: View {
                     }
 
                     section("Reminders") {
-                        toggleRow(.bell, "Daily case reminder", isOn: $dailyReminder)
-                        if dailyReminder {
-                            Hairline()
-                            navRow(.timer, "Remind me at", value: "8:00 PM")
-                                .disclosureItem(0)
-                        }
-                        Hairline()
                         toggleRow(.flame, "Streak alerts", detail: "A nudge before your streak ends", isOn: $streakAlerts)
                     }
-                    .animation(DISCLOSURE.open, value: dailyReminder)
 
                     section("Siri & Shortcuts") {
                         navRow(.mic, "Siri commands") { showingSiri = true }
                     }
 
                     section("About") {
-                        navRow(.messageSquare, "Send feedback")
-                        Hairline()
-                        navRow(.shield, "Privacy")
-                        Hairline()
-                        navRow(.fileText, "Terms")
-                        Hairline()
+                        linkRow(.messageSquare, "Send feedback", AppLinks.feedback)
+                        linkRow(.shield, "Privacy", AppLinks.privacyPolicy)
+                        linkRow(.fileText, "Terms", AppLinks.terms)
                         navRow(.info, "Acknowledgements") { showingCredits = true }
                     }
 
@@ -162,7 +148,7 @@ struct SettingsView: View {
                             .frame(maxWidth: .infinity, minHeight: 44)
                             .disabled(auth.busy != nil)
 
-                        Text("Rounds 0.1.0\nFor training only. Not for clinical use.")
+                        Text("Rounds \(AppVersion.display)\nFor training only. Not for clinical use.")
                             .font(.system(size: 12))
                             .foregroundStyle(Theme.faint)
                             .multilineTextAlignment(.center)
@@ -196,11 +182,9 @@ struct SettingsView: View {
         #if DEBUG
         .onAppear { if DebugLaunch.screen == "settings-siri" { showingSiri = true } }
         #endif
-        .alert("Something went wrong", isPresented: Binding(get: { auth.problem != nil }, set: { if !$0 { auth.problem = nil } })) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text(auth.problem ?? "")
-        }
+        .problemAlert(Binding(get: { auth.problem }, set: { auth.problem = $0 }))
+        // Turning streak alerts off clears a pending reminder now, not after the next case.
+        .onChange(of: streakAlerts) { Task { await app.updateReminder() } }
     }
 
     // MARK: Pieces
@@ -242,6 +226,15 @@ struct SettingsView: View {
         .padding(.horizontal, 16)
         .padding(.vertical, 10)
         .frame(minHeight: 56)
+    }
+
+    /// A row that opens `url`, followed by a hairline; nothing at all until the link exists.
+    @ViewBuilder
+    private func linkRow(_ glyph: IconGlyph, _ title: String, _ url: URL?) -> some View {
+        if let url {
+            navRow(glyph, title) { openURL(url) }
+            Hairline()
+        }
     }
 
     /// Short enough for a settings row: one name, or a count once there are several.

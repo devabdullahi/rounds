@@ -22,11 +22,20 @@ struct ClinicalCase: Identifiable, Hashable {
     let keyHistoryTotal: Int
 
     var id: String { bed }
+    /// What the student calls the patient in voice prompts: the first name, skipping a nickname
+    /// ("Margaret \"Maggie\" Ellison" → "Margaret").
+    var firstName: String { nameWords.first.map(String.init) ?? name }
+
     /// First letters of the first and last names, skipping nicknames and punctuation
     /// ("Margaret \"Maggie\" Ellison" → "ME").
     var initials: String {
-        let words = name.split(separator: " ").filter { !$0.hasPrefix("\"") && !$0.hasPrefix("(") }
+        let words = nameWords
         let letters = [words.first, words.count > 1 ? words.last : nil].compactMap { $0?.first(where: \.isLetter) }
         return String(letters).uppercased()
+    }
+
+    /// The name's words without nicknames in quotes or parentheses.
+    private var nameWords: [Substring] {
+        name.split(separator: " ").filter { !$0.hasPrefix("\"") && !$0.hasPrefix("(") }
     }
 }

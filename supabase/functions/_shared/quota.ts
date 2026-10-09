@@ -4,12 +4,14 @@
 import { HttpError } from "./http.ts";
 import { sql } from "./db.ts";
 
-export type QuotaKind = "case" | "question" | "cards";
+export type QuotaKind = "case" | "question" | "cards" | "grade";
 
 const LIMITS: Record<QuotaKind, { env: string; fallback: number; noun: string }> = {
   case: { env: "LIMIT_CASES_PER_DAY", fallback: 10, noun: "new patients" },
   question: { env: "LIMIT_QUESTIONS_PER_DAY", fallback: 200, noun: "patient questions" },
   cards: { env: "LIMIT_CARD_DECKS_PER_DAY", fallback: 3, noun: "generated card decks" },
+  // Above the case limit: shared published cases and resubmits are graded too.
+  grade: { env: "LIMIT_GRADES_PER_DAY", fallback: 30, noun: "graded submissions" },
 };
 
 export function dailyLimit(kind: QuotaKind): number {

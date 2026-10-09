@@ -121,7 +121,7 @@ struct PatientDeck: View {
             controls
                 .accessibilityHint("\(queue.count) waiting. Swipe right to take, left to skip.")
         }
-        .sensoryFeedback(.selection, trigger: pastCommit)
+        .haptic(.selection, trigger: pastCommit)
         .onAppear { syncQueue() }
         .onChange(of: app.ward) { withAnimation(STACK.restack) { syncQueue() } }
         .onChange(of: focusStored) { withAnimation(STACK.restack) { putFocusFirst() } }
@@ -309,5 +309,3 @@ struct PatientDeck: View {
         }
     }
 }
-
-// MARK: - Card

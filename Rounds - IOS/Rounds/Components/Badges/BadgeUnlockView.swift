@@ -144,9 +144,9 @@ struct BadgeUnlockView: View {
         }
         .contentShape(Rectangle())
         .onTapGesture { if stage < .done { skip() } }
-        .sensoryFeedback(.impact(weight: .light), trigger: taps)
-        .sensoryFeedback(.impact(weight: intensity.impact), trigger: stage) { _, new in new == .burst }
-        .sensoryFeedback(.success, trigger: stage) { _, new in new == .done }
+        .haptic(.impact(weight: .light), trigger: taps)
+        .haptic(.impact(weight: intensity.impact), trigger: stage) { _, new in new == .burst }
+        .haptic(.success, trigger: stage) { _, new in new == .done }
         .accessibilityElement(children: .contain)
         .accessibilityAddTraits(.isModal)
         .task { await play() }

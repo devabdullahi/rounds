@@ -7,8 +7,14 @@ struct LiveCaseService: CaseService {
     let client: SupabaseClient
 
     func ensureSignedIn() async throws {
-        if (try? await client.auth.session) != nil { return }
-        _ = try await client.auth.signInAnonymously()
+        do {
+            _ = try await client.auth.session
+        } catch AuthError.sessionMissing {
+            // Only a device with no session at all starts a guest one. Any other failure (a refresh
+            // that didn't go through) is thrown, so a signed-in student is never silently swapped
+            // into an empty guest account.
+            _ = try await client.auth.signInAnonymously()
+        }
     }
 
     // MARK: Ward

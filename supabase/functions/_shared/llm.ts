@@ -17,7 +17,13 @@ export function currentModel(): string {
   return `${name}/${Deno.env.get("LLM_MODEL") ?? PROVIDERS[name]?.model}`;
 }
 
-export async function completeJSON<T>(system: string, user: string, maxTokens = 4000, temperature?: number): Promise<T> {
+/** How long one model call may take. A hung provider must fail the call (so withQuota refunds and
+ *  the student can retry) well before the edge runtime kills the whole request. */
+export const LLM_TIMEOUT_MS = 90_000;
+
+export async function completeJSON<T>(
+  system: string, user: string, maxTokens = 4000, temperature?: number, timeoutMs = LLM_TIMEOUT_MS,
+): Promise<T> {
   const name = Deno.env.get("LLM_PROVIDER") ?? "deepseek";
   const provider = PROVIDERS[name];
   if (!provider) throw new Error(`unknown LLM_PROVIDER ${name}`);
@@ -29,6 +35,7 @@ export async function completeJSON<T>(system: string, user: string, maxTokens = 
     ? await fetch(provider.url, {
       method: "POST",
       headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+      signal: AbortSignal.timeout(timeoutMs),
       body: JSON.stringify({
         model,
         messages: [{ role: "system", content: system }, { role: "user", content: user }],
@@ -40,6 +47,7 @@ export async function completeJSON<T>(system: string, user: string, maxTokens = 
     : await fetch(provider.url, {
       method: "POST",
       headers: { "x-api-key": key, "anthropic-version": "2023-06-01", "Content-Type": "application/json" },
+      signal: AbortSignal.timeout(timeoutMs),
       body: JSON.stringify({ model, max_tokens: maxTokens, system, messages: [{ role: "user", content: user }], ...(temperature === undefined ? {} : { temperature }) }),
     });
   if (!res.ok) throw new Error(`LLM ${res.status}: ${await res.text()}`);

@@ -86,6 +86,10 @@ enum Theme {
         Color.adaptive(dark: 0x1D5FE6, light: 0x1D5FE6),   // blue, 5.5:1
         Color.adaptive(dark: 0x0B7C86, light: 0x0B7C86),   // teal, 5.0:1
     ]
+    /// The streak pill and spotlight colour: cold at zero, then a new colour every 7 days.
+    static func streakTint(days: Int) -> Color {
+        days == 0 ? streakCold : streakWeeks[Streak.weekColorIndex(days)]
+    }
     /// Badge cards read as physical trading cards: dark stock and rarity inks, the same in both
     /// modes. Every rarity ink clears 4.5:1 on the card stock (lowest: common, about 5.6:1).
     static let cardStock       = Color.adaptive(dark: 0x14161E, light: 0x14161E)
@@ -129,6 +133,18 @@ enum Theme {
     static let heroBlush   = Color.adaptive(dark: 0xFDE7EA, light: 0xFDE7EA)
     static let sparkleBlue = Color.adaptive(dark: 0x9CC3FF, light: 0x9CC3FF)
     static let sparkleMint = Color.adaptive(dark: 0x8DDBB6, light: 0x8DDBB6)
+    /// Welcome screen buttons: darker than the app accent so white text clears 4.5:1.
+    static let welcomeGreen = Color.adaptive(dark: 0x027A46, light: 0x027A46)
+    /// The welcome quiz's unpicked answer: a soft green wash under `welcomeGreen` text.
+    static let welcomeMint  = Color.adaptive(dark: 0xE3F5EA, light: 0xE3F5EA)
+
+    /// Flashcard colours the student picks (see `CardColor`); light values are deepened for contrast.
+    static let cardTeal   = Color.adaptive(dark: 0x2DD4BF, light: 0x0F8A7E)
+    static let cardBlue   = Color.adaptive(dark: 0x60A5FA, light: 0x1D5FC2)
+    static let cardPurple = Color.adaptive(dark: 0xA78BFA, light: 0x6D3FD6)
+    static let cardPink   = Color.adaptive(dark: 0xF472B6, light: 0xC0307A)
+    static let cardRed    = Color.adaptive(dark: 0xFF5A63, light: 0xE5011A)
+    static let cardYellow = Color.adaptive(dark: 0xFACC15, light: 0x9A7400)
 }
 
 extension Font {

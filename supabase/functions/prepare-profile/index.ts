@@ -25,12 +25,15 @@ declare const EdgeRuntime: { waitUntil(promise: Promise<unknown>): void };
 
 // deno-lint-ignore no-explicit-any
 type Json = any;
-type Job = { slug: string; stage: number; attempt: number; profile: Json; feedback: string[]; errors: string[]; repairs: string[]; outages: number };
+type Job = { slug: string; token: string; stage: number; attempt: number; profile: Json; feedback: string[]; errors: string[]; repairs: string[]; outages: number };
 
 /** Model or lookup outages tolerated before a job is given up; a later request can requeue it. */
 const MAX_OUTAGES = 3;
 const MAX_TOKENS = 8000;
 const TEMPERATURE = 0.3;
+/** A stage reply runs to 8,000 tokens, longer than the default model timeout allows; this still
+ *  ends the call before the edge runtime's 150 s wall clock, so the job is saved as an outage. */
+const TIMEOUT_MS = 140_000;
 
 serve(async (req) => {
   const auth = req.headers.get("Authorization") ?? "";
@@ -45,11 +48,15 @@ serve(async (req) => {
 });
 
 async function step(slug: string): Promise<void> {
+  // locked_at doubles as this call's ownership token (as text, to keep its microseconds). Every
+  // later write requires it unchanged, so a call that ran past the stale limit and lost the job to
+  // a restart can't overwrite the newer call's progress.
   const [job] = await sql<Job[]>`
-    update private.profile_jobs set status = 'running', locked_at = now(), updated_at = now()
+    update private.profile_jobs set status = 'running', locked_at = clock_timestamp(), updated_at = now()
     where slug = ${slug} and (status = 'queued' or (status = 'running' and locked_at < now() - interval '4 minutes'))
-    returning slug, stage, attempt, profile, feedback, errors, repairs, outages`;
+    returning slug, locked_at::text as token, stage, attempt, profile, feedback, errors, repairs, outages`;
   if (!job) return; // done, failed, or another call has it
+  const token = job.token;
 
   const [condition] = await sql<{ triage: Json; background: string }[]>`
     select triage, background from private.conditions where slug = ${slug}`;
@@ -68,14 +75,15 @@ async function step(slug: string): Promise<void> {
     const outages = job.outages + 1;
     console.error("prepare-profile outage", slug, outages, (error as Error).message.slice(0, 200));
     await sql`update private.profile_jobs set status = ${outages >= MAX_OUTAGES ? "failed" : "queued"},
-      outages = ${outages}, locked_at = null, updated_at = now() where slug = ${slug}`;
+      outages = ${outages}, locked_at = null, updated_at = now() where slug = ${slug} and locked_at = ${token}::timestamptz`;
     return;
   }
 
   if (errors.length && job.attempt === 0) {
-    await sql`update private.profile_jobs set status = 'queued', attempt = 1, feedback = ${errors},
-      repairs = ${[...job.repairs, ...repairs]}, locked_at = null, updated_at = now() where slug = ${slug}`;
-    await kick(slug);
+    const owned = await sql`update private.profile_jobs set status = 'queued', attempt = 1, feedback = ${errors},
+      repairs = ${[...job.repairs, ...repairs]}, locked_at = null, updated_at = now()
+      where slug = ${slug} and locked_at = ${token}::timestamptz returning slug`;
+    if (owned.length) await kick(slug);
     return;
   }
 
@@ -88,13 +96,13 @@ async function step(slug: string): Promise<void> {
   const allErrors = [...job.errors, ...errors];
   const allRepairs = [...job.repairs, ...repairs];
   if (next < STAGES.length) {
-    await sql`update private.profile_jobs set status = 'queued', stage = ${next}, attempt = 0, feedback = '{}',
+    const owned = await sql`update private.profile_jobs set status = 'queued', stage = ${next}, attempt = 0, feedback = '{}',
       profile = ${sql.json(profile)}, errors = ${allErrors}, repairs = ${allRepairs}, locked_at = null, updated_at = now()
-      where slug = ${slug}`;
-    await kick(slug);
+      where slug = ${slug} and locked_at = ${token}::timestamptz returning slug`;
+    if (owned.length) await kick(slug);
     return;
   }
-  await finish(slug, profile, allRepairs);
+  await finish(slug, token, profile, allRepairs);
 }
 
 /** One stage attempt. Throws only when the model or a lookup service is unreachable. */
@@ -102,7 +110,7 @@ async function attempt(job: Job, condition: { triage: Json; background: string }
   const user = stagePrompt(job.stage, condition.triage.name, condition.background, profile, job.feedback);
   let reply: Json;
   try {
-    reply = await completeJSON<Json>(SYSTEM_PROMPT, user, MAX_TOKENS, TEMPERATURE);
+    reply = await completeJSON<Json>(SYSTEM_PROMPT, user, MAX_TOKENS, TEMPERATURE, TIMEOUT_MS);
   } catch (error) {
     if (error instanceof SyntaxError) return { output: {}, errors: [`reply unusable: ${error.message}`], repairs: [] };
     throw error;
@@ -119,7 +127,7 @@ async function attempt(job: Job, condition: { triage: Json; background: string }
   return { output, errors, repairs };
 }
 
-async function finish(slug: string, profile: Json, repairs: string[]): Promise<void> {
+async function finish(slug: string, token: string, profile: Json, repairs: string[]): Promise<void> {
   dropEmptyOptional(profile);
   repairs = [...repairs, ...repair(profile)];
   const terms = termSummary(profile);
@@ -139,13 +147,23 @@ async function finish(slug: string, profile: Json, repairs: string[]): Promise<v
   // Body systems too: the catalog's re-filing (tag_systems.py) beats triage's ten-system pick.
   const systems = catalog?.organ_systems?.length ? catalog.organ_systems : t.organ_systems ?? [];
   const clerkships = [...new Set([t.primary_clerkship, ...(t.secondary_clerkships ?? []), ...(catalog?.clerkships ?? [])])];
-  await sql.begin(async (tx) => {
+  const saved = await sql.begin(async (tx) => {
+    // Release the job first: if another call took it over, this one saves nothing.
+    const owned = await tx`update private.profile_jobs set status = ${status === "passed" ? "done" : "failed"}, profile = ${tx.json(profile)},
+      locked_at = null, updated_at = now() where slug = ${slug} and locked_at = ${token}::timestamptz returning slug`;
+    if (!owned.length) return false;
+    // A rewritten profile is new content: it goes back to review and takes the catalog's current topics.
     await tx`
       insert into private.condition_profiles (slug, name, primary_clerkship, clerkships, organ_systems, validation, review, profile)
       values (${slug}, ${t.name}, ${t.primary_clerkship}, ${clerkships}, ${systems}, ${status}, 'pending', ${tx.json(profile)})
-      on conflict (slug) do update set validation = excluded.validation, profile = excluded.profile, updated_at = now()`;
-    await tx`update private.profile_jobs set status = ${status === "passed" ? "done" : "failed"}, profile = ${tx.json(profile)},
-      locked_at = null, updated_at = now() where slug = ${slug}`;
+      on conflict (slug) do update set name = excluded.name, primary_clerkship = excluded.primary_clerkship,
+        clerkships = excluded.clerkships, organ_systems = excluded.organ_systems, validation = excluded.validation,
+        review = 'pending', profile = excluded.profile, updated_at = now()`;
+    return true;
   });
+  if (!saved) {
+    console.log("prepare-profile lost the job before saving", slug);
+    return;
+  }
   console.log("prepare-profile finished", slug, status, errors.slice(0, 5));
 }

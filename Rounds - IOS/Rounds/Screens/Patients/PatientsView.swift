@@ -94,7 +94,7 @@ struct PatientsView: View {
             if let selection { selectionBar(selection).transition(.move(edge: .bottom).combined(with: .opacity)) }
         }
         .animation(Springs.slide, value: selection != nil)
-        .sensoryFeedback(.selection, trigger: selection)
+        .haptic(.selection, trigger: selection)
         .onChange(of: app.ward.map(\.id)) { _, ids in
             // Patients deleted elsewhere (or all of them) leave the selection too.
             if let s = selection { selection = s.intersection(ids) }

@@ -50,12 +50,12 @@ extension CardColor {
     var tint: Color {
         switch self {
         case .standard: Theme.accent
-        case .teal:     .adaptive(dark: 0x2DD4BF, light: 0x0F8A7E)
-        case .blue:     .adaptive(dark: 0x60A5FA, light: 0x1D5FC2)
-        case .purple:   .adaptive(dark: 0xA78BFA, light: 0x6D3FD6)
-        case .pink:     .adaptive(dark: 0xF472B6, light: 0xC0307A)
-        case .red:      .adaptive(dark: 0xFF5A63, light: 0xE5011A)
-        case .yellow:   .adaptive(dark: 0xFACC15, light: 0x9A7400)
+        case .teal:     Theme.cardTeal
+        case .blue:     Theme.cardBlue
+        case .purple:   Theme.cardPurple
+        case .pink:     Theme.cardPink
+        case .red:      Theme.cardRed
+        case .yellow:   Theme.cardYellow
         }
     }
 
@@ -65,8 +65,10 @@ extension CardColor {
 
 // MARK: - Screen
 
-/// True after the first deal-in this app session (resets when the app is closed).
-private var flashcardsHaveDealt = false
+private enum DEAL {
+    /// True after the first deal-in this app session (resets when the app is closed).
+    @MainActor static var hasDealt = false
+}
 
 struct FlashcardsView: View {
     private enum Verdict { case correct, unknown }
@@ -75,9 +77,9 @@ struct FlashcardsView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var flipped = false
     @State private var verdict: Verdict?
-    @State private var dealt = flashcardsHaveDealt
-    @State private var controlsShown = flashcardsHaveDealt
-    @State private var hintShown = flashcardsHaveDealt
+    @State private var dealt = DEAL.hasDealt
+    @State private var controlsShown = DEAL.hasDealt
+    @State private var hintShown = DEAL.hasDealt
     @State private var busy = false
     @State private var composing = false
     @State private var choosingAdd = false
@@ -187,11 +189,7 @@ struct FlashcardsView: View {
         } message: {
             Text("This deletes every card you wrote or generated. It can't be undone.")
         }
-        .alert("Something went wrong", isPresented: Binding(get: { store.problem != nil }, set: { if !$0 { store.problem = nil } })) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text(store.problem ?? "")
-        }
+        .problemAlert(Binding(get: { store.problem }, set: { store.problem = $0 }))
         .overlay(alignment: .bottom) { noticeToast }
         .onChange(of: store.selectedDeck) { resetQueue() }
         .onChange(of: store.cards.count) { if store.queue.isEmpty { resetQueue() } }
@@ -377,8 +375,8 @@ struct FlashcardsView: View {
 
     /// Deals the deck in on the first visit of this app session; later visits show it in place.
     private func dealIn(force: Bool = false) async {
-        guard force || !flashcardsHaveDealt else { return }
-        flashcardsHaveDealt = true
+        guard force || !DEAL.hasDealt else { return }
+        DEAL.hasDealt = true
         if reduceMotion { dealt = true; hintShown = true; controlsShown = true; return }
         dealt = false
         try? await Task.sleep(for: .milliseconds(30))
@@ -399,7 +397,8 @@ struct FlashcardsView: View {
         Task { @MainActor in
             try? await Task.sleep(for: .seconds(TIMING.verdictHold))
             withAnimation(FLIGHT.spring) {
-                store.queue.removeFirst()
+                // The card answered, wherever it now sits (the queue can change during the hold).
+                if let i = store.queue.firstIndex(where: { $0.id == card.id }) { store.queue.remove(at: i) }
                 if v == .correct { store.known += 1; store.recordKnown() } else {
                     store.missed += 1
                     store.queue.append(card.copy())  // comes back later
@@ -473,5 +472,3 @@ private struct VerdictButton: View {
         .buttonStyle(.plain)
     }
 }
-
-// MARK: - New card

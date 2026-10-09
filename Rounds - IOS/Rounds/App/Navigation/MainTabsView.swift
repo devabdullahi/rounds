@@ -34,11 +34,8 @@ struct MainTabsView: View {
         // Development builds: a guest (signed out) sees every badge earned and a maxed streak.
         .onChange(of: auth.account == nil, initial: true) { _, guest in app.guestShowcase = guest }
         #endif
-        .alert("Something went wrong", isPresented: Binding(get: { app.problem != nil }, set: { if !$0 { app.problem = nil } })) {
+        .problemAlert($app.problem) {
             Button("Try again") { Task { await app.refresh() } }
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text(app.problem ?? "")
         }
         // A graded case ends on the ward, where the student picks their next patient.
         .onChange(of: app.returnToPatients) { _, go in
@@ -60,7 +57,7 @@ struct MainTabsView: View {
                 StreakSpotlight(
                     days: app.streak,
                     heat: Streak.heat(app.streak),
-                    tint: app.streak == 0 ? Theme.streakCold : Theme.streakWeeks[Streak.weekColorIndex(app.streak)],
+                    tint: Theme.streakTint(days: app.streak),
                     caption: app.streakTimeLeft.map(Streak.timeLeftText) ?? "Finish a case to start a streak",
                     onClose: { withAnimation(.easeOut(duration: 0.2)) { app.showingStreak = false } }
                 )

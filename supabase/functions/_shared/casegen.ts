@@ -82,10 +82,6 @@ export type CasePlan = {
   dermatology: boolean;
 };
 
-function pick<T>(items: T[], rng: () => number): T {
-  return items[Math.floor(rng() * items.length)];
-}
-
 function weighted<T extends string>(weights: [T, number][], rng: () => number): T {
   const total = weights.reduce((s, [, w]) => s + w, 0);
   let roll = rng() * total;
@@ -282,5 +278,3 @@ export function leaks(text: string, terms: string[]): string[] {
   const lower = text.toLowerCase();
   return terms.filter((t) => lower.includes(t));
 }
-
-export { pick };

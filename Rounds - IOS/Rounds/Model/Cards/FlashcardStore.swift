@@ -54,6 +54,23 @@ final class FlashcardStore {
     static let knownTotalKey = "flashcardsKnownTotal"
     private(set) var knownTotal = UserDefaults.standard.integer(forKey: FlashcardStore.knownTotalKey)
 
+    /// Forgets everything about the last account: its cards, the round in progress, today's allowance
+    /// and its known-card count. Called on sign-out, so the next account on this device starts clean.
+    func reset() {
+        cards = []
+        queue = []
+        known = 0
+        missed = 0
+        roundStarted = false
+        hasLoaded = false
+        selectedDeck = nil
+        problem = nil
+        notice = nil
+        allowance = nil
+        knownTotal = 0
+        UserDefaults.standard.removeObject(forKey: Self.knownTotalKey)
+    }
+
     /// Counts one more card the student knew.
     func recordKnown() {
         knownTotal += 1

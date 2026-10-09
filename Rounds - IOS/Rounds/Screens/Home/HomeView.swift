@@ -29,12 +29,15 @@ private enum CARD {
     static let spring = Springs.card
 }
 
-private var homeHasPlayed = false
+/// The intro plays once per launch: later visits to Home render the final state.
+private enum INTRO {
+    @MainActor static var hasPlayed = false
+}
 
 struct HomeView: View {
     @Environment(AppState.self) private var app
 
-    @State private var stage = homeHasPlayed ? 4 : -1
+    @State private var stage = INTRO.hasPlayed ? 4 : -1
     @State private var editingFocus = false
     @AppStorage(StudyFocus.storageKey) private var focusStored = ""
     private var focus: FocusSelection { FocusSelection(stored: focusStored) }
@@ -71,8 +74,8 @@ struct HomeView: View {
     }
 
     private func play() async {
-        guard !homeHasPlayed else { return }
-        homeHasPlayed = true
+        guard !INTRO.hasPlayed else { return }
+        INTRO.hasPlayed = true
         let marks = [TIMING.header, TIMING.card, TIMING.vitals, TIMING.quote, TIMING.cta]
         var elapsed = 0.0
         for (i, at) in marks.enumerated() {
@@ -84,15 +87,14 @@ struct HomeView: View {
 
     // MARK: Sections
 
-    /// Settings › Appearance: 0 = System, 1 = Light, 2 = Dark.
-    @AppStorage("appearance") private var appearance = 0
+    @AppStorage(Appearance.storageKey) private var appearance = Appearance.system
 
     /// An explicit Light/Dark choice sets the shift; System follows the clock (07:00–18:59 is day).
     private var shiftTitle: String {
         switch appearance {
-        case 1: return "Day shift"
-        case 2: return "Night shift"
-        default:
+        case .light: return "Day shift"
+        case .dark: return "Night shift"
+        case .system:
             let hour = Calendar.current.component(.hour, from: .now)
             return (7..<19).contains(hour) ? "Day shift" : "Night shift"
         }
@@ -123,7 +125,7 @@ struct HomeView: View {
                     .padding(.horizontal, 12)
                     .padding(.vertical, 6)
                     // Cold at zero, then a new colour every 7 days of streak.
-                    .glassCapsule(tint: app.streak == 0 ? Theme.streakCold : Theme.streakWeeks[Streak.weekColorIndex(app.streak)])
+                    .glassCapsule(tint: Theme.streakTint(days: app.streak))
                     .animation(.easeInOut(duration: 0.4), value: Streak.weekColorIndex(app.streak))
                 }
                 .buttonStyle(PressableStyle())

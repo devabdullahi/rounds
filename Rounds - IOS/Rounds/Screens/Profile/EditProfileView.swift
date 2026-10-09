@@ -93,11 +93,7 @@ struct EditProfileView: View {
             }
         }
         // The sheet covers the screen that opened it, whose own alert can't show until it closes.
-        .alert("Something went wrong", isPresented: Binding(get: { auth.problem != nil }, set: { if !$0 { auth.problem = nil } })) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text(auth.problem ?? "")
-        }
+        .problemAlert(Binding(get: { auth.problem }, set: { auth.problem = $0 }))
     }
 
     private var photo: some View {

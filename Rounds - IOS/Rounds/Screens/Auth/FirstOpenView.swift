@@ -65,9 +65,6 @@ private enum SHEET {
     static let dismissDrag: CGFloat = 90
 }
 
-/// Darker than the app accent so white button text clears 4.5:1 on the light welcome.
-private let welcomeGreen = Color(hex: 0x027A46)
-
 /// One teaching case: a summary, five wrong answers, one right one.
 private struct DifferentialCase {
     let summary: String
@@ -171,7 +168,7 @@ struct FirstOpenView: View {
                     .rise(shown && !showAuth, at: showAuth ? 0 : TIMING.headline)
 
                 Button("Let's go") { open() }
-                    .buttonStyle(PrimaryButtonStyle(height: 54, tint: welcomeGreen))
+                    .buttonStyle(PrimaryButtonStyle(height: 54, tint: Theme.welcomeGreen))
                     .rise(shown && !showAuth, at: showAuth ? 0 : TIMING.cta)
                     .allowsHitTesting(!showAuth)
             }
@@ -223,7 +220,7 @@ struct FirstOpenView: View {
                 .gesture(dragToClose)
 
             Button("Sign up", action: onSignUp)
-                .buttonStyle(PrimaryButtonStyle(height: 54, tint: welcomeGreen))
+                .buttonStyle(PrimaryButtonStyle(height: 54, tint: Theme.welcomeGreen))
 
             Button(action: onLogIn) {
                 Text("Log in").frame(maxWidth: .infinity, minHeight: 54)
@@ -410,12 +407,12 @@ private struct AnswerChip: View {
             Text(label)
         }
         .font(.system(size: 18, weight: .bold))
-        .foregroundStyle(picked ? .white : welcomeGreen)
+        .foregroundStyle(picked ? .white : Theme.welcomeGreen)
         .padding(.horizontal, 18)
         .padding(.vertical, 11)
         // No outline: a soft green wash marks the answer before it's picked.
-        .background(picked ? welcomeGreen : Color(hex: 0xE3F5EA), in: Capsule())
-        .shadow(color: welcomeGreen.opacity(picked ? 0.3 : 0), radius: 14, y: 8)
+        .background(picked ? Theme.welcomeGreen : Theme.welcomeMint, in: Capsule())
+        .shadow(color: Theme.welcomeGreen.opacity(picked ? 0.3 : 0), radius: 14, y: 8)
         .scaleEffect(picked ? 1.12 : 1)
         .fixedSize()
     }

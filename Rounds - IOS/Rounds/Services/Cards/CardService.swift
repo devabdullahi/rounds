@@ -16,5 +16,3 @@ protocol CardService: Sendable {
     /// Deletes every card the student wrote or generated. Built-in decks stay.
     func clearMine() async throws
 }
-
-// MARK: - Wire types

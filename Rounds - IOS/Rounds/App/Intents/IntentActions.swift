@@ -30,6 +30,8 @@ enum IntentActions {
 
     static func makeCards(_ app: AppState, focus: FocusSelection, count: Int) async -> IntentDialog {
         let store = app.flashcards
+        // One deck at a time: say so instead of "couldn't make those cards".
+        guard !store.isGenerating else { return "A deck is already being made. It'll be in Cards when it's ready." }
         let deck = FlashcardStore.deckName(for: focus)
         let done = await IntentSupport.run(waitingUpTo: IntentSupport.deckWait) {
             await store.generate(focus: focus, count: count, includeMisses: false)
@@ -46,6 +48,8 @@ enum IntentActions {
 
     static func reviewMistakes(_ app: AppState, count: Int) async -> IntentDialog {
         let store = app.flashcards
+        // One deck at a time: say so instead of "couldn't make those cards".
+        guard !store.isGenerating else { return "A deck is already being made. It'll be in Cards when it's ready." }
         let done = await IntentSupport.run(waitingUpTo: IntentSupport.deckWait) {
             await store.generateFromMistakes(count: count)
         } later: { ok in

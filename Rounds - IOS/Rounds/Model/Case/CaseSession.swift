@@ -12,6 +12,8 @@ final class CaseSession {
     var examMode = false
 
     private(set) var attemptID: String?
+    /// The attempt start in flight, shared by every action that arrives before it returns.
+    @ObservationIgnored private var starting: Task<String, Error>?
     private(set) var startedAt: Date?
     private(set) var messages: [ChatMessage] = []
     private(set) var revealed: Set<String> = []
@@ -65,12 +67,22 @@ final class CaseSession {
         return String(format: "%02d:%02d", s / 60, s % 60)
     }
 
-    /// Creates the attempt on the server the first time the student does anything.
+    /// Creates the attempt on the server the first time the student does anything. A question, an
+    /// exam and a test can all fire before the first start returns, so they share one start: two
+    /// starts would split the case across two attempts and the grade would miss half the work.
     private func attempt() async throws -> String {
         if let attemptID { return attemptID }
-        let id = try await service.start(bed: clinical.bed, examMode: examMode, timeLimitMinutes: timeLimitMinutes)
-        attemptID = id
-        return id
+        if let starting { return try await starting.value }
+        let task = Task { try await service.start(bed: clinical.bed, examMode: examMode, timeLimitMinutes: timeLimitMinutes) }
+        starting = task
+        do {
+            let id = try await task.value
+            attemptID = id
+            return id
+        } catch {
+            starting = nil   // a failed start can be retried by the next action
+            throw error
+        }
     }
 
     // MARK: Interview
@@ -208,3 +220,8 @@ extension CaseSession {
         ]
 }
 #endif
+
+/// Lets a running case drive `.fullScreenCover(item:)`: each session is its own identity.
+extension CaseSession: Identifiable {
+    nonisolated var id: ObjectIdentifier { ObjectIdentifier(self) }
+}

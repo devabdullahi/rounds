@@ -23,7 +23,7 @@ enum DebugLaunch {
     static func prepareDefaults() {
         guard let screen else { return }
         let d = UserDefaults.standard
-        d.set(!authScreens.contains(screen), forKey: "signedIn")
+        d.set(!authScreens.contains(screen), forKey: AuthModel.signedInKey)
         if ["onboarding-heart", "onboarding-promised"].contains(screen) {
             d.set(StudyGoal.step2CK.rawValue, forKey: StudyGoal.storageKey)
             d.set(StudyFocus.rotation(.internalMedicine).stored, forKey: StudyFocus.storageKey)
