@@ -15,6 +15,11 @@ import SwiftUI
  *
  * Flicker is three out-of-phase sine waves summed, which reads as
  * fire rather than a metronome.
+ *
+ * HEAT (0…1, grows a little each day of streak)
+ *   size   75% → 100% of the frame
+ *   live   flicker, glow and sway scale with heat: day 1 barely moves
+ *   embers none below 0.5, one from 0.5, two from 0.85
  * Reduce Motion: static flame, no embers.
  * ───────────────────────────────────────────────────────── */
 
@@ -40,6 +45,8 @@ private enum EMBER {
 struct StreakFlame: View {
     var size: CGFloat = 16
     var color: Color = Theme.streak
+    /// How hot it burns, 0…1 (see `Streak.heat`); 1 is the full flame.
+    var heat: Double = 1
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var lit = false
@@ -52,22 +59,26 @@ struct StreakFlame: View {
                 TimelineView(.animation) { ctx in
                     let t = ctx.date.timeIntervalSinceReferenceDate
                     let (a, b, c) = FLAME.flickerSpeeds
-                    let flicker = CGFloat(0.5 * sin(t * a) + 0.3 * sin(t * b + 1.2) + 0.2 * sin(t * c + 2.1))
-                    let lean = FLAME.sway * sin(t * FLAME.swaySpeed) + 0.8 * Double(flicker)
+                    let liveliness: Double = 0.3 + 0.7 * heat   // a new streak's flame barely flickers
+                    let waves: Double = 0.5 * sin(t * a) + 0.3 * sin(t * b + 1.2) + 0.2 * sin(t * c + 2.1)
+                    let flicker = CGFloat(liveliness * waves)
+                    let sway: Double = liveliness * FLAME.sway * sin(t * FLAME.swaySpeed)
+                    let lean: Double = sway + 0.8 * Double(flicker)
+                    let glow: Double = heat * (FLAME.glowBase + FLAME.glowRange * Double(flicker))
+                    let glowRadius: CGFloat = (3 + 2 * flicker) * CGFloat(heat)
 
                     ZStack(alignment: .bottom) {
                         embers(at: t)
                         AppIcon(.flame, size: size)
                             .foregroundStyle(color)
-                            .shadow(color: Theme.glow(color, FLAME.glowBase + FLAME.glowRange * Double(flicker)),
-                                    radius: 3 + 2 * flicker)
+                            .shadow(color: Theme.glow(color, glow), radius: glowRadius)
                             .scaleEffect(x: 1 - FLAME.stretch * 0.5 * flicker,
                                          y: 1 + FLAME.stretch * flicker,
                                          anchor: .bottom)
                             .rotationEffect(.degrees(lean), anchor: .bottom)
                     }
                 }
-                .scaleEffect(lit ? 1 : FLAME.igniteFrom, anchor: .bottom)
+                .scaleEffect((lit ? 1 : FLAME.igniteFrom) * (0.75 + 0.25 * CGFloat(heat)), anchor: .bottom)
                 .opacity(lit ? 1 : 0)
                 .onAppear { withAnimation(FLAME.ignite) { lit = true } }
             }
@@ -76,9 +87,12 @@ struct StreakFlame: View {
         .accessibilityHidden(true)
     }
 
+    /// Sparks only once the streak has some heat to it.
+    private var emberCount: Int { heat >= 0.85 ? EMBER.count : heat >= 0.5 ? 1 : 0 }
+
     private func embers(at t: Double) -> some View {
         ZStack {
-            ForEach(0..<EMBER.count, id: \.self) { i in
+            ForEach(0..<emberCount, id: \.self) { i in
                 let phase = ((t / EMBER.period) + Double(i) / Double(EMBER.count)).truncatingRemainder(dividingBy: 1)
                 Circle()
                     .fill(color)

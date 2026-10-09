@@ -69,6 +69,12 @@ enum DebugLaunch {
         case "badge-unlock":
             tab = .profile
             app.debugUnlockRandomBadge()
+        case let name where name.hasPrefix("home-streak-"):
+            tab = .today
+            // home-streak-12 shows a 12-day streak; home-streak-12-open also opens the spotlight.
+            let parts = name.dropFirst("home-streak-".count).split(separator: "-")
+            app.debugStreak = parts.first.flatMap { Int($0) }
+            app.showingStreak = parts.last == "open"
         case "home-preparing":
             tab = .today
             app.debugShowPreparing()

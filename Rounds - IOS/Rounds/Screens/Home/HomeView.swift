@@ -33,7 +33,6 @@ private var homeHasPlayed = false
 
 struct HomeView: View {
     @Environment(AppState.self) private var app
-    var openProfile: () -> Void
 
     @State private var stage = homeHasPlayed ? 4 : -1
     @State private var editingFocus = false
@@ -110,18 +109,26 @@ struct HomeView: View {
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("Rounds")
                 Spacer()
-                Button(action: openProfile) {
+                Button { withAnimation(.easeOut(duration: 0.25)) { app.showingStreak = true } } label: {
                     HStack(spacing: 6) {
-                        StreakFlame(size: 16, color: .white)
+                        // No streak: cold. Then the flame lights small and grows a little each day.
+                        if app.streak == 0 {
+                            AppIcon(.snowflake, size: 16)
+                        } else {
+                            StreakFlame(size: 16, color: .white, heat: Streak.heat(app.streak))
+                        }
                         Text("\(app.streak)").font(.mono(15))
                     }
                     .foregroundStyle(.white)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 6)
-                    .glassCapsule(tint: Theme.streak)
+                    // Cold at zero, then a new colour every 7 days of streak.
+                    .glassCapsule(tint: app.streak == 0 ? Theme.streakCold : Theme.streakWeeks[Streak.weekColorIndex(app.streak)])
+                    .animation(.easeInOut(duration: 0.4), value: Streak.weekColorIndex(app.streak))
                 }
                 .buttonStyle(PressableStyle())
                 .accessibilityLabel("\(app.streak) day streak")
+                .accessibilityHint("Shows your streak")
             }
 
             VStack(alignment: .leading, spacing: 10) {

@@ -9,7 +9,7 @@ struct MainTabsView: View {
         @Bindable var app = app
         // System tab bar: Liquid Glass with Apple's own selection morph on iOS 26+.
         TabView(selection: $tab) {
-            HomeView(openProfile: { tab = .profile })
+            HomeView()
                 .tabItem { Image(Tab.today.glyph.assetName).accessibilityLabel(Tab.today.title) }
                 .tag(Tab.today)
             PatientsView(initialExpanded: debugExpanded)
@@ -40,6 +40,19 @@ struct MainTabsView: View {
             guard go else { return }
             tab = .patients
             app.returnToPatients = false
+        }
+        // The streak, big and centred, over the tabs.
+        .overlay {
+            if app.showingStreak {
+                StreakSpotlight(
+                    days: app.streak,
+                    heat: Streak.heat(app.streak),
+                    tint: app.streak == 0 ? Theme.streakCold : Theme.streakWeeks[Streak.weekColorIndex(app.streak)],
+                    caption: app.streakTimeLeft.map(Streak.timeLeftText) ?? "Finish a case to start a streak",
+                    onClose: { withAnimation(.easeOut(duration: 0.2)) { app.showingStreak = false } }
+                )
+                .transition(.opacity)
+            }
         }
         // A newly earned badge gets its moment over everything, once, outside a case.
         .overlay {

@@ -11,10 +11,8 @@ final class AppState {
 
     // Sample stats until the profile screen reads them from the server.
     var rating = 1482
-    var streak = 12
     var patientsSeen = 216
     var rightDiagnosisRate = 0.71
-    var bestStreak = 19
     var redFlagRate = 0.72
     var rotationDone = 9
     let rotationTotal = 20
@@ -73,6 +71,30 @@ final class AppState {
     private(set) var skipped: Set<String> = Set(UserDefaults.standard.stringArray(forKey: AppState.skippedStorageKey) ?? [])
     static let skippedStorageKey = "skippedBeds"
     /// Organ systems that have patients on the ward, for filter chips.
+    /// Days in a row with a graded case, ending today or yesterday (see `Streak`).
+    var streak: Int {
+        #if DEBUG
+        if let debugStreak { return debugStreak }
+        #endif
+        return Streak.current(graded.map(\.submittedAt))
+    }
+    #if DEBUG
+    /// `-screen home-streak-N`: shows an N-day streak, to check the weekly colours.
+    var debugStreak: Int?
+    #endif
+    /// Time before the streak resets, while there is one.
+    var streakTimeLeft: TimeInterval? {
+        #if DEBUG
+        if let debugStreak { return debugStreak > 0 ? 18.5 * 3600 : nil }
+        #endif
+        return streak > 0 ? Streak.timeLeft(graded.map(\.submittedAt)) : nil
+    }
+    /// The streak spotlight is open (tapped from Home's streak pill; shown over the tabs).
+    var showingStreak = false
+
+    /// The longest such run so far.
+    var bestStreak: Int { Streak.best(graded.map(\.submittedAt)) }
+
     /// Distinct red flags missed on the latest graded attempts, which "Include what I missed" turns into cards.
     var missedRedFlagCount: Int { Set(ward.flatMap { $0.misses.map(\.flag) }).count }
 
