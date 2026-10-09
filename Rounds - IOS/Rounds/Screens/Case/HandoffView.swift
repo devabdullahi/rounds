@@ -21,7 +21,7 @@ private enum TIMING {
     static let firstEvent = 0.65   // s before the first row
     static let stagger    = 0.65   // s between rows
     static let summaryAfterLast = 0.4   // s after the last event before the summary rises
-    static let gradedAfter = 4.55  // mock grading time; real app: when the grade lands
+    static let gradedAfter = 4.55  // shortest wait, so the timeline always finishes before the button
 }
 
 private enum ROW {
@@ -84,6 +84,8 @@ struct HandoffView: View {
 
     @State private var shownCount = 0
     @State private var graded = false
+    /// The grading request started on arrival, awaited before "graded" shows.
+    @State private var grading: Task<Grade, Error>?
     @State private var headerShown = false
     @State private var summaryShown = false
 
@@ -198,6 +200,13 @@ struct HandoffView: View {
     }
 
     private func play() async {
+        // The real grading starts now, while the attending "reads"; the debrief picks up the same
+        // request. Debug screens skip it (they have no attempt to submit).
+        #if DEBUG
+        if DebugLaunch.screen == nil { grading = Task { try await session.submit() } }
+        #else
+        grading = Task { try await session.submit() }
+        #endif
         events = makeEvents()
         headerShown = true
         if reduceMotion {
@@ -213,6 +222,8 @@ struct HandoffView: View {
         summaryShown = true
         let elapsed = reduceMotion ? 0 : TIMING.firstEvent + TIMING.stagger * Double(events.count - 1) + TIMING.summaryAfterLast
         try? await Task.sleep(for: .seconds(max(0, TIMING.gradedAfter - elapsed)))
+        // "Graded" means the grade has landed (or failed: the debrief then shows the problem and a retry).
+        _ = try? await grading?.value
         graded = true
     }
 }

@@ -5,7 +5,8 @@
 //   examine  {attempt_id, maneuver_id}                 → {finding}
 //   order    {attempt_id, test_id}                     → {result, abnormal, turnaround_s}
 //   submit   {attempt_id, diagnosis, differential, plan} → grade (and queues the next condition
-//            in the case's focus, see _shared/prefetch.ts)
+//            in the case's focus, see _shared/prefetch.ts). The grade carries condition insights
+//            (about, differential, your_extras; see insights.ts) when the case's profile exists.
 //
 // Only a student's first submitted attempt on a case moves their rating; a restart after seeing the
 // answer is graded as usual but unrated. A submission past the chosen time limit is graded and
@@ -20,7 +21,8 @@ import { sql } from "../_shared/db.ts";
 import { completeJSON } from "../_shared/llm.ts";
 import { GRADER, PATIENT, REPLY_CHECKER } from "../_shared/prompts.ts";
 import { patientPrompt } from "../_shared/patientprompt.ts";
-import { type Actions, grade, isSingleDiagnosis, matchesDiagnosis, type Rubric, unrated } from "./grade.ts";
+import { type Actions, grade, type Grade, isSingleDiagnosis, matchesDiagnosis, type Rubric, unrated } from "./grade.ts";
+import { conditionInsights, type InsightProfile, type Insights } from "./insights.ts";
 import { namedDiagnoses } from "./leak.ts";
 import { parseFocus } from "../_shared/focus.ts";
 import { prepareNext } from "../_shared/prefetch.ts";
@@ -235,7 +237,7 @@ async function submit(userId: string, input: Record<string, unknown>) {
     console.error("grading failed", error);
     throw new HttpError(502, "grading failed; try again");
   }
-  const graded = grade(rubric, actions, judged);
+  const graded: Grade & Partial<Insights> = { ...grade(rubric, actions, judged), ...await insights(attempt.case_id, differential, content.answer_key) };
 
   const saved = await sql.begin(async (tx) => {
     // One submit at a time per student and case, so two attempts submitted together can't both be
@@ -266,6 +268,22 @@ async function submit(userId: string, input: Record<string, unknown>) {
     console.error("prepare next after grading", error);
   }
   return saved;
+}
+
+/** The condition insights for a graded attempt, or nothing when the case has no profile (older
+ *  hand-written cases) or it can't be read: insights are extra, never a reason to lose a grade.
+ *  They go into the stored grade too, so a revisit shows the same. */
+async function insights(caseId: string, differential: string[], key: Content["answer_key"]): Promise<Insights | Record<never, never>> {
+  try {
+    const [row] = await sql<{ profile: InsightProfile }[]>`
+      select p.profile from private.case_content c
+      join private.condition_profiles p on p.slug = c.condition_slug
+      where c.case_id = ${caseId}`;
+    return row ? conditionInsights(row.profile, differential, [key.diagnosis, ...key.accepted]) : {};
+  } catch (error) {
+    console.error("condition insights", error);
+    return {};
+  }
 }
 
 /** Keeps the student's text inside its delimiters: a typed closing tag can't end the block early. */

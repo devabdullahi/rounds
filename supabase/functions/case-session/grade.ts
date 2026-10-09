@@ -59,7 +59,7 @@ const MAX_FEEDBACK = 4;
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "").slice(0, 60); // matches casegen ids
 
 /** Lowercase words separated by single spaces, punctuation dropped ("R/O MI." → "r o mi"). */
-const words = (s: string) => slug(s).replace(/_/g, " ");
+export const words = (s: string) => slug(s).replace(/_/g, " ");
 
 // Hedges a student puts around one answer ("probably appendicitis"); they don't make it two answers.
 const FILLER = /\b(most likely|more likely|likely|probably|probable|possibly|possible|presumed|suspected|suspect|i think|consistent with|diagnosis|dx)\b/g;
@@ -176,6 +176,6 @@ export function grade(r: Rubric, act: Actions, judge: Judge): Grade {
 
 /** The grade of a repeat attempt: scored and explained as usual, but the rating stays put, so
  *  restarting a case after seeing its answer can't farm rating. Only a first attempt is rated. */
-export function unrated(g: Grade): Grade {
+export function unrated<G extends Grade>(g: G): G {
   return { ...g, rating_delta: 0, rated: false };
 }

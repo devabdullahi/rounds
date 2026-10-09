@@ -1,6 +1,7 @@
 // The case writer's prompt, the shape it must return, the checks on it, and the rubric derived
 // from the profile plus what was written. Kept apart from index.ts so it's testable without a DB.
 import { type CasePlan, leaks, type Profile } from "../_shared/casegen.ts";
+import { backgroundForWriter, type PatientBackground, SNOMED_TAG } from "./background.ts";
 
 export type Writing = {
   patient: { name: string; quote: string; demeanor: string; setting: string; complaint: string };
@@ -25,7 +26,15 @@ Maneuvers center on the skin, hair, nails and mucosa (e.g. "Inspect the rash", "
 
 `;
 
-export function writerPrompt(profile: Profile, plan: CasePlan): string {
+/** Who the patient is outside today's illness, from a synthetic record, and how to use it. */
+function backgroundSection(background: PatientBackground | null | undefined): string {
+  if (!background) return "";
+  return `
+Patient background (synthetic record): ${JSON.stringify(backgroundForWriter(background))}
+Keep the patient consistent with this record: weave it into persona.background and into the facts the student can ask about (past medical history, current medications, allergies, smoking, social history). Say each item in the patient's own plain words, as a patient would (e.g. "I take a water pill for my blood pressure", "peanuts make my throat swell"), never in coding wording such as "(disorder)", "(finding)" or "(substance)", and never with dosing codes. Where it conflicts with this condition's presentation, risk factors or the plan above, those win: leave out or adjust the conflicting item. Nothing from the record may contradict, hint at or name the hidden diagnosis.`;
+}
+
+export function writerPrompt(profile: Profile, plan: CasePlan, background?: PatientBackground | null): string {
   const studies = plan.tests.filter((t) => t.kind === "study");
   const mustNotMiss = profile.differential.filter((d) => d.must_not_miss).map((d) => ({ name: d.name, trigger: d.trigger ?? d.why_considered }));
   return `${plan.psychology ? PSYCHOLOGY_FRAME : ""}${plan.dermatology ? DERMATOLOGY_FRAME : ""}Hidden diagnosis (never reveal): ${plan.condition}
@@ -37,7 +46,7 @@ Presentation pattern: ${JSON.stringify(profile.presentation.hpi)}
 Chief complaints to choose from (patient's words): ${JSON.stringify(profile.presentation.chief_complaints.map((c) => c.text))}
 Symptoms PRESENT: ${JSON.stringify(plan.symptomsPresent)}
 Symptoms ABSENT (deny if asked): ${JSON.stringify(plan.symptomsAbsent)}
-Background to draw from (pick a plausible subset): risk factors ${JSON.stringify(profile.patient.risk_factors.map((r) => r.text))}, comorbidities ${JSON.stringify(profile.patient.comorbidities ?? [])}, social ${JSON.stringify(profile.patient.social_history ?? [])}, family ${JSON.stringify(profile.patient.family_history ?? [])}, medications ${JSON.stringify(profile.patient.risk_medications ?? [])}
+Background to draw from (pick a plausible subset): risk factors ${JSON.stringify(profile.patient.risk_factors.map((r) => r.text))}, comorbidities ${JSON.stringify(profile.patient.comorbidities ?? [])}, social ${JSON.stringify(profile.patient.social_history ?? [])}, family ${JSON.stringify(profile.patient.family_history ?? [])}, medications ${JSON.stringify(profile.patient.risk_medications ?? [])}${backgroundSection(background)}
 Questions a strong student asks (each must be answerable by some fact): ${JSON.stringify(profile.teaching.key_questions.map((q) => ({ question: q.question, importance: q.importance })))}
 Must-not-miss alternatives the student should screen for (write facts whose replies rule them in or out per this case): ${JSON.stringify(mustNotMiss)}
 Exam findings (present ones as written; absent ones as a normal result for that maneuver): ${JSON.stringify(plan.exam.map((f) => ({ id: f.id, maneuver: f.maneuver ?? f.region, finding: f.finding, present: f.present, key: f.importance !== "optional" })))}
@@ -92,6 +101,9 @@ export function checkWriting(w: Writing, plan: CasePlan, terms: string[]): strin
     ...(w.facts ?? []).flatMap((f) => [f.label, f.reply]), ...(w.suggested ?? []).map((s) => s.text),
     ...(w.maneuvers ?? []).flatMap((m) => [m.title, m.finding])].join(" \n ");
   const leaked = leaks(visible, terms);
+  // Synthetic backgrounds arrive in SNOMED CT wording, which is licensed and never reaches the app.
+  const coded = [...`${visible} \n ${w.persona?.background ?? ""}`.matchAll(SNOMED_TAG)].map((m) => m[0].trim());
+  if (coded.length) problems.push(`uses coding wording (${[...new Set(coded)].join(", ")}); say it in the patient's own words`);
   if (leaked.length) problems.push(`reveals the diagnosis (${leaked.join(", ")}); remove it from everything the student sees before tests`);
   return problems;
 }

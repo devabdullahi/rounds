@@ -12,6 +12,12 @@ struct Grade {
     let rating: Int
     let feedback: [Feedback]
     let missedRedFlags: [Miss]
+    /// Teaching summary of the actual condition. Nil on older grades, which predate it.
+    var about: ConditionAbout? = nil
+    /// What else this presentation could have been, marked against the student's list. Empty on older grades.
+    var differential: [DifferentialReview] = []
+    /// Conditions the student listed that aren't usual considerations for this case.
+    var yourExtras: [String] = []
 }
 
 #if DEBUG
@@ -24,6 +30,34 @@ extension Grade {
         feedback: [Feedback(tone: .good, title: "Focused history", detail: "You pinned down timing, recurrence and stress as a trigger."),
                    Feedback(tone: .miss, title: "Bowel symptoms not asked", detail: "Recurrent mouth ulcers can come with Crohn's or celiac disease; ask about diarrhea and weight loss.",
                             coversMiss: "Bowel symptoms")],
-        missedRedFlags: [Miss(flag: "Bowel symptoms", why: "Mouth ulcers can be the first sign of inflammatory bowel disease.")])
+        missedRedFlags: [Miss(flag: "Bowel symptoms", why: "Mouth ulcers can be the first sign of inflammatory bowel disease.")],
+        about: ConditionAbout(
+            summaryPoints: ["Common, benign ulcers of the non-keratinized mouth lining that recur in crops.",
+                            "Usually starts in childhood or the teens; most heal in 7 to 14 days without scarring.",
+                            "A diagnosis of exclusion: look for systemic disease when ulcers are severe or come with other signs."],
+            symptoms: ["Painful round ulcers", "Yellow-gray base, red rim", "Tingling before onset", "No fever"],
+            riskFactors: ["Stress", "Minor mouth trauma", "Family history", "Iron, B12 or folate deficiency", "Celiac or Crohn's disease"]),
+        differential: [
+            DifferentialReview(name: "Herpetic gingivostomatitis", mustNotMiss: false,
+                               why: "Painful oral ulcers that can recur.",
+                               tellApart: ["Clustered vesicles that burst into ulcers", "Fever and swollen, bleeding gums on first episode", "Recurrences favor the lip border"],
+                               inYours: true),
+            DifferentialReview(name: "Squamous cell carcinoma of the mouth", mustNotMiss: true,
+                               why: "A mouth sore that won't heal must be cancer until shown otherwise.",
+                               tellApart: ["Single ulcer lasting over 3 weeks", "Firm, raised edges", "Tobacco or heavy alcohol use"],
+                               inYours: false),
+            DifferentialReview(name: "Behçet disease", mustNotMiss: false,
+                               why: "Recurrent oral ulcers are its hallmark.",
+                               tellApart: ["Genital ulcers", "Eye inflammation", "Skin lesions or positive pathergy test"],
+                               inYours: false),
+            DifferentialReview(name: "Hand-foot-mouth disease", mustNotMiss: false,
+                               why: "Causes several small oral ulcers at once.",
+                               tellApart: ["Mostly young children", "Rash on palms and soles", "One self-limited episode with fever"],
+                               inYours: false),
+            DifferentialReview(name: "Oral lichen planus", mustNotMiss: false,
+                               why: "Can cause painful erosions inside the cheeks.",
+                               tellApart: ["Lacy white streaks", "Chronic rather than coming and going", "Usually middle-aged adults"],
+                               inYours: false)],
+        yourExtras: ["Scurvy"])
 }
 #endif
