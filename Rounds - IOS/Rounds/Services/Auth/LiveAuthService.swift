@@ -59,7 +59,7 @@ struct LiveAuthService: AuthService {
 
     func deleteAccount() async throws {
         do {
-            _ = try await client.functions.invoke("delete-account") as DeleteReply
+            _ = try await client.invokeSigned("delete-account") as DeleteReply
         } catch let FunctionsError.httpError(_, data) {
             let message = (try? JSONDecoder().decode(ErrorReply.self, from: data))?.error ?? "Your account couldn't be deleted."
             throw AuthServiceError(message: message.prefix(1).uppercased() + message.dropFirst())
@@ -69,7 +69,7 @@ struct LiveAuthService: AuthService {
     }
 
     func sendWelcome() async throws {
-        _ = try await client.functions.invoke("send-welcome") as WelcomeReply
+        _ = try await client.invokeSigned("send-welcome") as WelcomeReply
     }
 
     func markOnboarded() async throws {

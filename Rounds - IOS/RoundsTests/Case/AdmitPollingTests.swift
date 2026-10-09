@@ -28,6 +28,25 @@ struct AdmitPollingTests {
         #expect(await service.admitCalls == 1)
         #expect(await service.loadedBeds == ["B7"])
     }
+
+    @Test func queuingAdmitsWithoutOpeningTheCase() async {
+        let service = ScriptedCases(replies: [.admitted(bed: "C3")])
+        let app = AppState(cases: service, cards: nil)
+
+        let outcome = await app.queuePatient(focus: FocusSelection())
+
+        #expect(outcome == .ready(nil))
+        #expect(await service.loadedBeds.isEmpty)
+        #expect(app.activeCase == nil)
+    }
+
+    @Test func queuingAsksOnceWhilePreparing() async {
+        let service = ScriptedCases(replies: [.preparing, .admitted(bed: "D4")])
+        let app = AppState(cases: service, cards: nil)
+
+        #expect(await app.queuePatient(focus: FocusSelection()) == .preparing)
+        #expect(await service.admitCalls == 1)
+    }
 }
 
 /// A case service that answers `admit` from a script and records which beds were opened.

@@ -1,16 +1,21 @@
+import AppIntents
 import SwiftUI
 
 @main
 struct RoundsApp: App {
-    @State private var app = AppState(cases: SupabaseService.client.map { LiveCaseService(client: $0) },
-                                      cards: SupabaseService.client.map { LiveCardService(client: $0) },
-                                      reminders: LocalReminderService())
+    @State private var app: AppState
     @State private var auth = AuthModel(service: SupabaseService.client.map { LiveAuthService(client: $0) })
     /// 0 = follow the system, 1 = light, 2 = dark.
     @AppStorage("appearance") private var appearance = 0
     @AppStorage("signedIn") private var signedIn = false
 
     init() {
+        let app = AppState(cases: SupabaseService.client.map { LiveCaseService(client: $0) },
+                           cards: SupabaseService.client.map { LiveCardService(client: $0) },
+                           reminders: LocalReminderService())
+        _app = State(initialValue: app)
+        // Siri and Shortcuts act on the same app state the screens show.
+        AppDependencyManager.shared.add { app }
         #if DEBUG
         DebugLaunch.prepareDefaults()
         #endif
@@ -24,7 +29,7 @@ struct RoundsApp: App {
                 .task {
                     await auth.restore()
                     #if DEBUG
-                    if ["settings", "profile", "profile-edit"].contains(DebugLaunch.screen) { auth.debugUse(DebugLaunch.sampleAccount) }
+                    if ["settings", "settings-siri", "profile", "profile-edit"].contains(DebugLaunch.screen) { auth.debugUse(DebugLaunch.sampleAccount) }
                     #endif
                 }
                 // Google's sheet returning, and email confirmation links (rounds://auth-callback).

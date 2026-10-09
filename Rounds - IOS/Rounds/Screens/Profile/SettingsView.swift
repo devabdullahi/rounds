@@ -41,6 +41,7 @@ struct SettingsView: View {
     @State private var editingFocus = false
     @State private var editingProfile = false
     @State private var showingCredits = false
+    @State private var showingSiri = false
 
     private let limits: [(Int, String)] = [(5, "5 min"), (10, "10"), (15, "15"), (20, "20"), (0, "Off")]
 
@@ -126,6 +127,10 @@ struct SettingsView: View {
                     }
                     .animation(DISCLOSURE.open, value: dailyReminder)
 
+                    section("Siri & Shortcuts") {
+                        navRow(.mic, "Siri commands") { showingSiri = true }
+                    }
+
                     section("About") {
                         navRow(.messageSquare, "Send feedback")
                         Hairline()
@@ -187,6 +192,10 @@ struct SettingsView: View {
         }
         .sheet(isPresented: $editingProfile) { EditProfileView() }
         .sheet(isPresented: $showingCredits) { AcknowledgementsView() }
+        .sheet(isPresented: $showingSiri) { SiriCommandsView() }
+        #if DEBUG
+        .onAppear { if DebugLaunch.screen == "settings-siri" { showingSiri = true } }
+        #endif
         .alert("Something went wrong", isPresented: Binding(get: { auth.problem != nil }, set: { if !$0 { auth.problem = nil } })) {
             Button("OK", role: .cancel) {}
         } message: {

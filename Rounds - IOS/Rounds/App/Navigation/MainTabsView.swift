@@ -49,6 +49,11 @@ struct MainTabsView: View {
         .onChange(of: app.reviewMistakesRequested) { _, go in
             if go { tab = .cards }
         }
+        .onChange(of: app.showTodayRequested, initial: true) { _, go in
+            guard go else { return }
+            tab = .today
+            app.showTodayRequested = false
+        }
         // The streak, big and centred, over the tabs.
         .overlay {
             if app.showingStreak {

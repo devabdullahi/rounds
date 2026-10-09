@@ -32,7 +32,7 @@ struct ProfileView: View {
         #if DEBUG
         .onAppear {
             switch DebugLaunch.screen {
-            case "settings": path = [.settings]
+            case "settings", "settings-siri": path = [.settings]
             case "profile-weakspots": path = [.weakSpots]
             case "profile-badges": path = [.badges]
             case "profile-edit": editingProfile = true
