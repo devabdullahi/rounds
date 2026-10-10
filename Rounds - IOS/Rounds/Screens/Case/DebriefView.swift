@@ -3,7 +3,7 @@ import SwiftUI
 /* ─────────────────────────────────────────────────────────
  * ANIMATION STORYBOARD · Debrief
  *
- *    0ms   score card scales in, 0.94 → 1.0
+ *    0ms   score card scales in, 0.94 → 1.0 (diagnosis in large type first)
  *  300ms   verdict pill pops
  *  450ms   rating counts up old → new, delta badge pops
  *  900ms   attending feedback rows slide up (staggered 120ms)
@@ -214,6 +214,27 @@ struct DebriefView: View {
 
     private func scoreCard(_ g: Grade) -> some View {
         VStack(alignment: .leading, spacing: 10) {
+            // The answer leads: once graded, the case's real diagnosis is the first thing the student reads.
+            VStack(alignment: .leading, spacing: 6) {
+                Text("Diagnosis").font(.system(size: 13, weight: .semibold)).foregroundStyle(Theme.muted)
+                Text(g.diagnosis)
+                    .font(.system(size: 32, weight: .bold))
+                    .tracking(-0.5)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityAddTraits(.isHeader)
+                HStack(spacing: 6) {
+                    AppIcon(g.diagnosisCorrect ? .check : .x, size: 14)
+                        .foregroundStyle(g.diagnosisCorrect ? Theme.good : Theme.warnText)
+                    Text(session.diagnosis.isEmpty ? "No diagnosis submitted" : "You said \(session.diagnosis)")
+                        .font(.system(size: 15))
+                        .foregroundStyle(Theme.muted)
+                        .lineLimit(2)
+                }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(g.diagnosisCorrect ? "Correct. You said \(session.diagnosis)" : "Not correct. You said \(session.diagnosis.isEmpty ? "nothing" : session.diagnosis)")
+            }
+            .padding(.bottom, 4)
+
             // Verdict color follows the score: green strong, neutral mixed, red only for a real miss.
             Pill(text: g.verdict,
                  fg: g.score >= 85 ? Theme.good : g.score >= 60 ? Theme.dim : Theme.warnText,
@@ -222,19 +243,13 @@ struct DebriefView: View {
                 .opacity(stage >= STAGE.verdict ? 1 : 0)
                 .animation(Springs.pop, value: stage)
 
-            // Case score leads: this is what the student just earned.
-            VStack(alignment: .leading, spacing: 2) {
-                HStack(alignment: .firstTextBaseline, spacing: 2) {
-                    Text("\(stage >= STAGE.card ? g.score : 0)")
-                        .font(.score(56))
-                        .tracking(-1.5)
-                        .contentTransition(.numericText(value: Double(g.score)))
-                    Text("/100").font(.score(22)).foregroundStyle(Theme.muted)
-                }
-                Text(session.diagnosis.isEmpty ? "No diagnosis submitted" : session.diagnosis)
-                    .font(.system(size: 15))
-                    .foregroundStyle(Theme.muted)
-                    .lineLimit(1)
+            // Then the score this case earned.
+            HStack(alignment: .firstTextBaseline, spacing: 2) {
+                Text("\(stage >= STAGE.card ? g.score : 0)")
+                    .font(.score(56))
+                    .tracking(-1.5)
+                    .contentTransition(.numericText(value: Double(g.score)))
+                Text("/100").font(.score(22)).foregroundStyle(Theme.muted)
             }
 
             // Rating is the secondary, career-level number.
