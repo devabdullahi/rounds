@@ -1,5 +1,5 @@
 import { assert, assertEquals } from "jsr:@std/assert@1";
-import { grade, isSingleDiagnosis, matchesDiagnosis, type Rubric, unrated } from "./grade.ts";
+import { grade, isSingleDiagnosis, matchesDiagnosis, PASSING_SCORE, type Rubric, unrated } from "./grade.ts";
 
 const rubric: Rubric = {
   diagnosis: "Acute appendicitis", accepted: ["Appendicitis"], reasoning_points: ["Migrating pain", "RLQ tenderness"], severity: "moderate",
@@ -55,7 +55,8 @@ Deno.test("the breakdown shows where points went and adds up to the score", () =
   const partial = grade(rubric, { revealed: ["onset"], examined: [], ordered: ["cbc"] }, right);
   assertEquals(partial.breakdown.exam, { got: 0, max: 15 });
   assertEquals(partial.breakdown.diagnosis, { got: 35, max: 35 });
-  assertEquals(Object.values(partial.breakdown).reduce((s, p) => s + p.got, 0), partial.score);
+  // The score is what the parts earned, raised to the passing floor for a right diagnosis.
+  assertEquals(Math.max(PASSING_SCORE, Object.values(partial.breakdown).reduce((s, p) => s + p.got, 0)), partial.score);
 });
 
 Deno.test("test penalties never show as negative points", () => {
@@ -122,4 +123,13 @@ Deno.test("a repeat attempt keeps its score but doesn't move the rating", () => 
   assertEquals(again.score, first.score);
   assertEquals(again.rating_delta, 0);
   assertEquals(again.rated, false);
+});
+
+Deno.test("a right diagnosis always passes; a wrong one gets no floor", () => {
+  const bare = { revealed: [], examined: [], ordered: [] };
+  assertEquals(grade(rubric, bare, right).score, PASSING_SCORE);
+  assert(grade(rubric, bare, { diagnosisCorrect: false, planAppropriate: true, planNote: "" }).score < PASSING_SCORE);
+  const full = grade(rubric, { revealed: ["onset", "migration", "appetite", "lmp"], examined: ["rlq"], ordered: ["hcg", "cbc"] }, right);
+  assertEquals(full.score, 100);
+  assert(grade(rubric, bare, right).rating_delta > 0);
 });

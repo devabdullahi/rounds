@@ -52,6 +52,9 @@ export type Part = "diagnosis" | "history" | "exam" | "red_flags" | "tests" | "p
 // Points per part; they sum to 100.
 const POINTS = { diagnosis: 35, history: 25, exam: 15, redFlags: 10, tests: 10, plan: 5 };
 const PENALTY = { unnecessaryTest: 3 };
+/** The least a correct diagnosis scores. Getting the answer is what matters most, so a right call
+ *  always passes (and always gains rating); the breakdown still shows the points actually earned. */
+export const PASSING_SCORE = 70;
 const MAX_FEEDBACK = 4;
 
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "").slice(0, 60); // matches casegen ids
@@ -158,6 +161,7 @@ export function grade(r: Rubric, act: Actions, judge: Judge): Grade {
 
   score = got.diagnosis + got.history + got.exam + got.red_flags + testPoints + got.plan;
   score = Math.min(100, Math.max(0, score));
+  if (judge.diagnosisCorrect) score = Math.max(score, PASSING_SCORE);
   const max: Record<Part, number> = {
     diagnosis: POINTS.diagnosis, history: POINTS.history, exam: POINTS.exam,
     red_flags: POINTS.redFlags, tests: POINTS.tests, plan: POINTS.plan,
