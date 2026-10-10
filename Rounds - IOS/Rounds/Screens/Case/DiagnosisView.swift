@@ -188,12 +188,12 @@ struct DiagnosisView: View {
     /// The last row of the differential: type a diagnosis, Return adds it and stays ready for the next.
     private var addDifferentialRow: some View {
         HStack(spacing: 12) {
-            TextField("", text: $newDifferential, prompt: Text("Add another possibility").foregroundStyle(Theme.faint))
+            TextField("", text: $newDifferential, prompt: Text("Add a diagnosis").foregroundStyle(Theme.faint))
                 .font(.system(size: 16))
                 .focused($focus, equals: .ddx)
                 .submitLabel(.done)
                 .onSubmit(addDifferential)
-                .accessibilityLabel("Add another possibility")
+                .accessibilityLabel("Add a diagnosis")
             if !newDifferential.trimmingCharacters(in: .whitespaces).isEmpty {
                 Button("Add", action: addDifferential)
                     .font(.system(size: 15, weight: .semibold))
