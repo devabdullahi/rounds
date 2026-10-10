@@ -3,7 +3,7 @@ import SwiftUI
 /* ─────────────────────────────────────────────────────────
  * ANIMATION STORYBOARD · Workup
  *
- * ORDER (tap a price)
+ * ORDER (tap Order)
  *    0ms   tests-taken bar springs to the new count
  *    0ms   row leaves "Order more" (fades), result card enters
  *          above it, scale 0.95 → 1.0
@@ -85,7 +85,7 @@ struct WorkupView: View {
             titleVisibility: .visible,
             presenting: pendingConfirm
         ) { t in
-            Button("Order for $\(t.cost)", role: .destructive) { session.order(t) }
+            Button("Order anyway", role: .destructive) { session.order(t) }
             Button("Cancel", role: .cancel) {}
         } message: { t in
             Text(consequence(of: t))
@@ -164,15 +164,15 @@ struct WorkupView: View {
                 Text(t.detail).font(.system(size: 13)).foregroundStyle(Theme.muted)
             }
             Spacer()
-            // Soft like Examine: prices are choices to weigh, not calls to action.
-            Button("$\(t.cost)") { requestOrder(t) }
-                .font(.mono(15, weight: .semibold))
+            // Soft like Examine: each test is a choice to weigh, not a call to action.
+            Button("Order") { requestOrder(t) }
+                .font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(Theme.accentText)
                 .padding(.horizontal, 12)
                 .frame(minWidth: 44, minHeight: 36)
                 .background(Theme.accentSoft, in: Capsule())
                 .buttonStyle(PressableStyle())
-                .accessibilityLabel("Order \(t.name), \(t.cost) dollars")
+                .accessibilityLabel("Order \(t.name)")
         }
         .padding(.horizontal, 16)
         .frame(minHeight: 56)
