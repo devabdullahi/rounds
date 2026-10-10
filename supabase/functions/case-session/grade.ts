@@ -20,8 +20,6 @@ export type Actions = {
   revealed: string[];
   examined: string[];
   ordered: string[];      // in order
-  spent: number;
-  budget: number;
   /** Submitted after the chosen time limit (plus grace). Still graded; the grade says so. */
   overTime?: boolean;
 };
@@ -53,7 +51,7 @@ export type Part = "diagnosis" | "history" | "exam" | "red_flags" | "tests" | "p
 
 // Points per part; they sum to 100.
 const POINTS = { diagnosis: 35, history: 25, exam: 15, redFlags: 10, tests: 10, plan: 5 };
-const PENALTY = { unnecessaryTest: 3, overBudget: 3 };
+const PENALTY = { unnecessaryTest: 3 };
 const MAX_FEEDBACK = 4;
 
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "").slice(0, 60); // matches casegen ids
@@ -151,7 +149,6 @@ export function grade(r: Rubric, act: Actions, judge: Judge): Grade {
   const wasted = r.unnecessary_tests.filter((t) => act.ordered.includes(t.id));
   tests -= wasted.length * PENALTY.unnecessaryTest;
   if (wasted.length) feedback.push({ rank: RANK.unnecessaryTest, tone: "miss", title: `${wasted[0].name} wasn't indicated`, detail: wasted[0].why ?? "It didn't change management." });
-  if (act.spent > act.budget) tests -= PENALTY.overBudget;
   // Penalties can push tests below zero, which still lowers the total; the breakdown floors at 0.
   const testPoints = Math.round(tests);
   got.tests = Math.max(0, testPoints);

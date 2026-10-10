@@ -24,7 +24,7 @@ enum ScoreCategory: String, CaseIterable, Identifiable, Sendable {
         case .history: "Asking the questions a strong student asks, weighted by how much they matter."
         case .exam: "Doing the exam maneuvers that confirm or rule out the diagnosis."
         case .redFlags: "Screening for the dangerous look-alikes you can't afford to miss."
-        case .tests: "Ordering the right tests first, skipping ones that don't change management, staying on budget."
+        case .tests: "Ordering the right tests first, skipping ones that don't change management."
         case .plan: "An immediate plan that fits the diagnosis and its severity."
         }
     }

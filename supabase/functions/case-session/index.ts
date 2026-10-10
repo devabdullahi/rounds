@@ -221,7 +221,6 @@ async function submit(userId: string, input: Record<string, unknown>) {
     ? input.differential.slice(0, LIMITS.differential).map((d) => text(d, "differential item", LIMITS.diagnosis))
     : [];
   const { attempt, content } = await loadAttempt(userId, input.attempt_id);
-  const [{ budget }] = await sql<{ budget: number }[]>`select budget from public.cases where id = ${attempt.case_id}`;
 
   const rubric = content.rubric;
   const ordered = attempt.ordered_tests.map((t) => t.id);
@@ -229,8 +228,7 @@ async function submit(userId: string, input: Record<string, unknown>) {
     ? null
     : new Date(attempt.started_at).getTime() + (attempt.time_limit_minutes + GRACE_MINUTES) * 60_000;
   const actions: Actions = {
-    revealed: attempt.revealed_facts, examined: attempt.examined, ordered, budget,
-    spent: content.tests.filter((t) => ordered.includes(t.id)).reduce((s, t) => s + t.cost, 0),
+    revealed: attempt.revealed_facts, examined: attempt.examined, ordered,
     overTime: deadline !== null && Date.now() > deadline,
   };
   let judged;

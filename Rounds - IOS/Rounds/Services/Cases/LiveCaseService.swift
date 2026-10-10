@@ -69,7 +69,7 @@ struct LiveCaseService: CaseService {
 
     func loadCase(bed: String) async throws -> ClinicalCase {
         let row: CaseDetailRow = try await client.from("cases")
-            .select("id, patient_name, age, sex, quote, complaint, setting, demeanor, task, vitals, budget, minutes, suggested, maneuvers, test_menu, clerkship, organ_system, key_history")
+            .select("id, patient_name, age, sex, quote, complaint, setting, demeanor, task, vitals, minutes, suggested, maneuvers, test_menu, clerkship, organ_system, key_history")
             .eq("id", value: bed)
             .single()
             .execute().value
@@ -171,7 +171,6 @@ private struct CaseDetailRow: Decodable {
     let demeanor: String
     let task: String
     let vitals: [VitalRow]
-    let budget: Int
     let minutes: Int
     let suggested: [Suggested]
     let maneuvers: [Maneuver]
@@ -185,7 +184,7 @@ private struct CaseDetailRow: Decodable {
             bed: id, name: patient_name, age: age, sex: sex, setting: setting, quote: quote, demeanor: demeanor,
             complaint: complaint,
             vitals: vitals.map { Vital(id: $0.id, label: $0.label, value: $0.value, isAbnormal: $0.abnormal) },
-            task: task, minutes: minutes, budget: budget,
+            task: task, minutes: minutes,
             suggestedQuestions: suggested.map { SuggestedQuestion(text: $0.text, fact: $0.fact) },
             exam: maneuvers.map { ExamManeuver(id: $0.id, title: $0.title) },
             tests: test_menu.map { Investigation(id: $0.id, name: $0.name, detail: $0.detail, cost: $0.cost,

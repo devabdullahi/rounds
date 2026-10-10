@@ -11,7 +11,7 @@ struct AttemptStartTests {
             Investigation(id: $0, name: $0, detail: "", cost: 10, turnaround: 1)
         }
         let session = CaseSession(clinical: ClinicalCase(bed: "X1", name: "Test Patient", age: 40, sex: "F", setting: "", quote: "",
-                                                         demeanor: "", complaint: "", vitals: [], task: "", minutes: 10, budget: 1000,
+                                                         demeanor: "", complaint: "", vitals: [], task: "", minutes: 10,
                                                          suggestedQuestions: [], exam: [], tests: tests, clerkship: nil, system: nil,
                                                          keyHistoryTotal: 0),
                                   service: SlowStartCases())
@@ -24,7 +24,7 @@ struct AttemptStartTests {
     @Test func quickActionsShareOneAttempt() async throws {
         let service = SlowStartCases()
         let session = CaseSession(clinical: ClinicalCase(bed: "X1", name: "Test Patient", age: 40, sex: "F", setting: "", quote: "",
-                                                         demeanor: "", complaint: "", vitals: [], task: "", minutes: 10, budget: 1000,
+                                                         demeanor: "", complaint: "", vitals: [], task: "", minutes: 10,
                                                          suggestedQuestions: [], exam: [], tests: [], clerkship: nil, system: nil,
                                                          keyHistoryTotal: 0),
                                   service: service)

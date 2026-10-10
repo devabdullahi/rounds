@@ -4,7 +4,7 @@ import SwiftUI
  * ANIMATION STORYBOARD · Workup
  *
  * ORDER (tap a price)
- *    0ms   cost bar springs to the new total
+ *    0ms   workup cost counts up to the new total
  *    0ms   row leaves "Order more" (fades), result card enters
  *          above it, scale 0.95 → 1.0
  *
@@ -43,7 +43,7 @@ struct WorkupView: View {
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 14) {
-                    budgetCard
+                    costCard
 
                     ForEach(resulted) { t in
                         resultCard(t)
@@ -92,9 +92,9 @@ struct WorkupView: View {
         }
     }
 
-    /// Cheap, fast tests order on one tap. Budget-busting or care-delaying ones ask first.
+    /// Most tests order on one tap. Care-delaying ones ask first.
     private func requestOrder(_ t: Investigation) {
-        if session.spent + t.cost > c.budget || t.delaysCareMinutes > 0 {
+        if t.delaysCareMinutes > 0 {
             pendingConfirm = t
         } else {
             session.order(t)
@@ -102,25 +102,18 @@ struct WorkupView: View {
     }
 
     private func consequence(of t: Investigation) -> String {
-        var parts: [String] = []
-        let after = session.spent + t.cost
-        if after > c.budget { parts.append("Takes the workup to $\(after) of a $\(c.budget) budget.") }
-        if t.delaysCareMinutes > 0 { parts.append("Delays definitive treatment by \(t.delaysCareMinutes) minutes.") }
-        return parts.joined(separator: " ")
+        "Delays definitive treatment by \(t.delaysCareMinutes) minutes."
     }
 
-    private var budgetCard: some View {
-        let over = session.spent > c.budget
-        return VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text("Workup cost").font(.system(size: 15, weight: .semibold))
-                Spacer()
-                Text("$\(session.spent) of $\(c.budget) budget")
-                    .font(.system(size: 15))
-                    .foregroundStyle(over ? Theme.warn : Theme.muted)
-                    .contentTransition(.numericText())
-            }
-            ProgressBar(value: Double(session.spent) / Double(c.budget), color: over ? Theme.warn : Theme.accent)
+    /// What the workup has cost so far. Informational only: there's no budget and no penalty.
+    private var costCard: some View {
+        HStack {
+            Text("Workup cost").font(.system(size: 15, weight: .semibold))
+            Spacer()
+            Text("$\(session.spent)")
+                .font(.system(size: 15))
+                .foregroundStyle(Theme.muted)
+                .contentTransition(.numericText())
         }
         .card(padding: 14)
     }

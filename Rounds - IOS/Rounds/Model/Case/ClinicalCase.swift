@@ -12,7 +12,6 @@ struct ClinicalCase: Identifiable, Hashable {
     let vitals: [Vital]
     let task: String
     let minutes: Int
-    let budget: Int
     let suggestedQuestions: [SuggestedQuestion]
     let exam: [ExamManeuver]
     let tests: [Investigation]
