@@ -3,7 +3,7 @@ import SwiftUI
 /// Page 3: the promise — today's doubts become a doctor's steps.
 struct PromiseHero: View {
     let shown: Bool
-    private let steps = ["Right questions", "Tight differential", "Right test first", "Confident diagnosis"]
+    private let steps = ["Right questions", "Rule things out", "Right test first", "Confident diagnosis"]
 
     var body: some View {
         HeroCanvas {

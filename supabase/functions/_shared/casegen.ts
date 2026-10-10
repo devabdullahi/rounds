@@ -136,15 +136,6 @@ export function acceptedNames(profileNames: string[], synonyms: string[]): strin
   return [...out.values()];
 }
 
-/** The least a case's test budget can be: enough for a realistic US workup with imaging, so the
- * budget teaches cost awareness rather than forcing the student to skip a test that's needed. */
-export const MIN_BUDGET = 1000;
-
-/** A case's budget: 1.5x what its indicated tests cost, in $50 steps, and never under MIN_BUDGET. */
-export function caseBudget(indicatedCost: number): number {
-  return Math.max(MIN_BUDGET, Math.ceil((indicatedCost * 1.5) / 50) * 50);
-}
-
 export function isPregnant(profile: Profile, sex: Sex, age: number): boolean {
   const text = `${profile.triage.name} ${(profile.triage as { category?: string }).category ?? ""}`;
   return sex === "F" && age >= 14 && PREGNANCY_CONDITION.test(text);

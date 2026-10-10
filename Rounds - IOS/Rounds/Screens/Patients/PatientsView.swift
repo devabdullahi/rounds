@@ -397,7 +397,8 @@ struct PatientsView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         Text("\u{201C}\(p.quote)\u{201D}").font(.system(size: 16, weight: .semibold))
                         HStack(spacing: 0) {
-                            Text(misses.count == 1 ? "Missed: \(misses[0].flag.lowercased())" : "Missed \(misses.count) red flags")
+                            Text(p.missedDiagnosis != nil ? "Missed the diagnosis"
+                                 : misses.count == 1 ? "Missed: \(misses[0].flag.lowercased())" : "Missed \(misses.count) red flags")
                                 .foregroundStyle(Theme.warn)
                             if let score = p.lastScore {
                                 Text(", scored \(score)").foregroundStyle(Theme.muted)
@@ -421,15 +422,27 @@ struct PatientsView: View {
 
             if isOpen && selection == nil {
                 VStack(alignment: .leading, spacing: 12) {
-                    FieldLabel("What you missed", color: Theme.warn)
+                    // The diagnosis leads when it was missed; red flags follow as the rest of what to fix.
+                    if let diagnosis = p.missedDiagnosis {
+                        VStack(alignment: .leading, spacing: 2) {
+                            FieldLabel("Diagnosis", color: Theme.warn)
+                            Text(diagnosis).font(.system(size: 20, weight: .bold)).foregroundStyle(Theme.text)
+                        }
+                        .accessibilityElement(children: .combine)
                         .disclosureItem(0)
-                    ForEach(Array(misses.enumerated()), id: \.element.id) { i, m in
-                        MissItem(miss: m).disclosureItem(i + 1)
+                    }
+                    if !misses.isEmpty {
+                        FieldLabel(p.missedDiagnosis != nil ? "Red flags you missed" : "What you missed", color: Theme.warn)
+                            .padding(.top, p.missedDiagnosis != nil ? 4 : 0)
+                            .disclosureItem(1)
+                        ForEach(Array(misses.enumerated()), id: \.element.id) { i, m in
+                            MissItem(miss: m).disclosureItem(i + 2)
+                        }
                     }
                     Button("Revisit \(p.id)") { Task { await app.open(bed: p.id) } }
                         .buttonStyle(SoftButtonStyle(height: 44, fontSize: 16))
                         .padding(.top, 2)
-                        .disclosureItem(misses.count + 1)
+                        .disclosureItem(misses.count + 2)
                 }
                 .padding(.horizontal, 16)
                 .padding(.leading, 40)

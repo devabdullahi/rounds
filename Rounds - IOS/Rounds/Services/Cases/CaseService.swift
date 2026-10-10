@@ -29,7 +29,7 @@ protocol CaseService: Sendable {
     /// Returns how many were removed. Ratings already earned stay.
     func deletePatients(_ beds: [String]?) async throws -> Int
 
-    func start(bed: String, examMode: Bool, timeLimitMinutes: Int?) async throws -> String
+    func start(bed: String, examMode: Bool, timeLimitMinutes: Int?) async throws -> AttemptStart
     func ask(attempt: String, question: String) async throws -> PatientAnswer
     func examine(attempt: String, maneuver: String) async throws -> String
     func order(attempt: String, test: String) async throws -> TestResult

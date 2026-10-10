@@ -69,7 +69,7 @@ struct LiveCaseService: CaseService {
 
     func loadCase(bed: String) async throws -> ClinicalCase {
         let row: CaseDetailRow = try await client.from("cases")
-            .select("id, patient_name, age, sex, quote, complaint, setting, demeanor, task, vitals, budget, minutes, suggested, maneuvers, test_menu, clerkship, organ_system, key_history")
+            .select("id, patient_name, age, sex, quote, complaint, setting, demeanor, task, vitals, minutes, suggested, maneuvers, test_menu, clerkship, organ_system, key_history")
             .eq("id", value: bed)
             .single()
             .execute().value
@@ -78,9 +78,9 @@ struct LiveCaseService: CaseService {
 
     // MARK: Encounter
 
-    func start(bed: String, examMode: Bool, timeLimitMinutes: Int?) async throws -> String {
+    func start(bed: String, examMode: Bool, timeLimitMinutes: Int?) async throws -> AttemptStart {
         let reply: StartReply = try await invoke("case-session", StartBody(case_id: bed, exam_mode: examMode, time_limit_minutes: timeLimitMinutes))
-        return reply.attempt_id
+        return AttemptStart(id: reply.attempt_id, hiddenTests: Set(reply.hidden_tests ?? []))
     }
 
     func ask(attempt: String, question: String) async throws -> PatientAnswer {
@@ -140,10 +140,11 @@ private struct CaseRow: Decodable {
         let rotation = clerkship.flatMap(Clerkship.init(rawValue:))
         let status: WardPatient.Status
         let misses = latest?.grade?.missed_red_flags.map { Miss(flag: $0.flag, why: $0.why) } ?? []
+        let missedDiagnosis = latest?.grade?.diagnosis_correct == false ? latest?.grade?.diagnosis : nil
         switch latest {
         case nil: status = .new
         case let a? where a.submitted_at == nil: status = .resume
-        default: status = misses.isEmpty ? .done : .revisit
+        default: status = misses.isEmpty && missedDiagnosis == nil ? .done : .revisit
         }
         let vital = { (id: String) in vitals.first { $0.id == id }?.value }
         return WardPatient(
@@ -152,7 +153,7 @@ private struct CaseRow: Decodable {
             rotation: rotation, system: organ_system.flatMap(OrganSystem.init(rawValue:)),
             hr: vital("hr").flatMap { Int($0) }, bp: vital("sbp"),
             spo2: vital("spo2").flatMap { Int($0.trimmingCharacters(in: CharacterSet(charactersIn: "%"))) },
-            status: status, misses: misses, lastScore: latest?.score)
+            status: status, misses: misses, missedDiagnosis: missedDiagnosis, lastScore: latest?.score)
     }
 }
 
@@ -171,7 +172,6 @@ private struct CaseDetailRow: Decodable {
     let demeanor: String
     let task: String
     let vitals: [VitalRow]
-    let budget: Int
     let minutes: Int
     let suggested: [Suggested]
     let maneuvers: [Maneuver]
@@ -185,7 +185,7 @@ private struct CaseDetailRow: Decodable {
             bed: id, name: patient_name, age: age, sex: sex, setting: setting, quote: quote, demeanor: demeanor,
             complaint: complaint,
             vitals: vitals.map { Vital(id: $0.id, label: $0.label, value: $0.value, isAbnormal: $0.abnormal) },
-            task: task, minutes: minutes, budget: budget,
+            task: task, minutes: minutes,
             suggestedQuestions: suggested.map { SuggestedQuestion(text: $0.text, fact: $0.fact) },
             exam: maneuvers.map { ExamManeuver(id: $0.id, title: $0.title) },
             tests: test_menu.map { Investigation(id: $0.id, name: $0.name, detail: $0.detail, cost: $0.cost,
@@ -196,7 +196,11 @@ private struct CaseDetailRow: Decodable {
 }
 
 private struct AttemptRow: Decodable {
-    struct GradeSummary: Decodable { let missed_red_flags: [MissRow] }
+    struct GradeSummary: Decodable {
+        let missed_red_flags: [MissRow]
+        let diagnosis_correct: Bool?
+        let diagnosis: String?
+    }
     let case_id: String
     let submitted_at: String?
     let score: Int?
@@ -251,7 +255,7 @@ private struct ErrorReply: Decodable { let error: String }
 private struct DeleteBody: Encodable { let case_ids: [String]? }
 /// `{case_id}` once written, or `{status: "preparing"}` (HTTP 202) while the focus's first condition is.
 private struct AdmitReply: Decodable { let case_id: String?; let status: String? }
-private struct StartReply: Decodable { let attempt_id: String }
+private struct StartReply: Decodable { let attempt_id: String; let hidden_tests: [String]? }
 private struct ExamineReply: Decodable { let finding: String }
 private struct OrderReply: Decodable { let result: String; let abnormal: Bool }
 

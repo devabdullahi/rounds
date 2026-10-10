@@ -24,7 +24,7 @@ struct ClinicalCaseTests {
 
     private func patient(named name: String) -> ClinicalCase {
         ClinicalCase(bed: "X1", name: name, age: 40, sex: "F", setting: "", quote: "", demeanor: "", complaint: "",
-                     vitals: [], task: "", minutes: 10, budget: 100, suggestedQuestions: [], exam: [], tests: [],
+                     vitals: [], task: "", minutes: 10, suggestedQuestions: [], exam: [], tests: [],
                      clerkship: nil, system: nil, keyHistoryTotal: 0)
     }
 }

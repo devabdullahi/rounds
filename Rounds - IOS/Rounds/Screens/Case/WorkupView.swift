@@ -3,8 +3,8 @@ import SwiftUI
 /* ─────────────────────────────────────────────────────────
  * ANIMATION STORYBOARD · Workup
  *
- * ORDER (tap a price)
- *    0ms   cost bar springs to the new total
+ * ORDER (tap Order)
+ *    0ms   tests-taken bar springs to the new count
  *    0ms   row leaves "Order more" (fades), result card enters
  *          above it, scale 0.95 → 1.0
  *
@@ -31,7 +31,7 @@ struct WorkupView: View {
 
     private var c: ClinicalCase { session.clinical }
     private var resulted: [Investigation] { session.testOrder.compactMap { id in c.tests.first { $0.id == id } } }
-    private var orderable: [Investigation] { c.tests.filter { session.tests[$0.id] == nil } }
+    private var orderable: [Investigation] { session.menuReady ? session.menu.filter { session.tests[$0.id] == nil } : [] }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -43,7 +43,7 @@ struct WorkupView: View {
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 14) {
-                    budgetCard
+                    takenCard
 
                     ForEach(resulted) { t in
                         resultCard(t)
@@ -78,22 +78,23 @@ struct WorkupView: View {
                 .padding(.bottom, 8)
         }
         .background(Theme.bg)
+        .task { await session.loadMenu() }
         .confirmationDialog(
             "Order \(pendingConfirm?.name ?? "")?",
             isPresented: Binding(get: { pendingConfirm != nil }, set: { if !$0 { pendingConfirm = nil } }),
             titleVisibility: .visible,
             presenting: pendingConfirm
         ) { t in
-            Button("Order for $\(t.cost)", role: .destructive) { session.order(t) }
+            Button("Order anyway", role: .destructive) { session.order(t) }
             Button("Cancel", role: .cancel) {}
         } message: { t in
             Text(consequence(of: t))
         }
     }
 
-    /// Cheap, fast tests order on one tap. Budget-busting or care-delaying ones ask first.
+    /// Most tests order on one tap. Care-delaying ones ask first.
     private func requestOrder(_ t: Investigation) {
-        if session.spent + t.cost > c.budget || t.delaysCareMinutes > 0 {
+        if t.delaysCareMinutes > 0 {
             pendingConfirm = t
         } else {
             session.order(t)
@@ -101,27 +102,28 @@ struct WorkupView: View {
     }
 
     private func consequence(of t: Investigation) -> String {
-        var parts: [String] = []
-        let after = session.spent + t.cost
-        if after > c.budget { parts.append("Takes the workup to $\(after) of a $\(c.budget) budget.") }
-        if t.delaysCareMinutes > 0 { parts.append("Delays definitive treatment by \(t.delaysCareMinutes) minutes.") }
-        return parts.joined(separator: " ")
+        "Delays definitive treatment by \(t.delaysCareMinutes) minutes."
     }
 
-    private var budgetCard: some View {
-        let over = session.spent > c.budget
+    /// How many of the menu's tests have been taken.
+    private var takenCard: some View {
+        let taken = session.testsTaken
         return VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text("Workup cost").font(.system(size: 15, weight: .semibold))
+                Text("Take tests").font(.system(size: 15, weight: .semibold))
                 Spacer()
-                Text("$\(session.spent) of $\(c.budget) budget")
-                    .font(.system(size: 15))
-                    .foregroundStyle(over ? Theme.warn : Theme.muted)
-                    .contentTransition(.numericText())
+                if session.menuReady {
+                    Text("\(taken.done) of \(taken.total)")
+                        .font(.system(size: 15))
+                        .foregroundStyle(Theme.muted)
+                        .contentTransition(.numericText())
+                }
             }
-            ProgressBar(value: Double(session.spent) / Double(c.budget), color: over ? Theme.warn : Theme.accent)
+            ProgressBar(value: taken.total > 0 ? Double(taken.done) / Double(taken.total) : 0)
         }
         .card(padding: 14)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Tests taken: \(taken.done) of \(taken.total)")
     }
 
     private func resultCard(_ t: Investigation) -> some View {
@@ -162,15 +164,15 @@ struct WorkupView: View {
                 Text(t.detail).font(.system(size: 13)).foregroundStyle(Theme.muted)
             }
             Spacer()
-            // Soft like Examine: prices are choices to weigh, not calls to action.
-            Button("$\(t.cost)") { requestOrder(t) }
-                .font(.mono(15, weight: .semibold))
+            // Soft like Examine: each test is a choice to weigh, not a call to action.
+            Button("Order") { requestOrder(t) }
+                .font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(Theme.accentText)
                 .padding(.horizontal, 12)
                 .frame(minWidth: 44, minHeight: 36)
                 .background(Theme.accentSoft, in: Capsule())
                 .buttonStyle(PressableStyle())
-                .accessibilityLabel("Order \(t.name), \(t.cost) dollars")
+                .accessibilityLabel("Order \(t.name)")
         }
         .padding(.horizontal, 16)
         .frame(minHeight: 56)

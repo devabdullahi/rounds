@@ -13,6 +13,8 @@ struct WardPatient: Identifiable, Hashable {
     var status: Status
     /// Red flags missed on the latest graded attempt, and its score.
     var misses: [Miss] = []
+    /// The case's real diagnosis when the latest graded attempt got it wrong; nil when it was right.
+    var missedDiagnosis: String?
     var lastScore: Int?
 
     enum Status: Hashable { case new, resume, revisit, done }

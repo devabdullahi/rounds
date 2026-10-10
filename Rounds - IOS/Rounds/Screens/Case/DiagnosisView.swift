@@ -49,8 +49,8 @@ struct DiagnosisView: View {
                     .task(id: session.diagnosis) { await assist.diagnosisChanged(session.diagnosis) }
 
                     VStack(alignment: .leading, spacing: 6) {
-                        FieldLabel("Differential")
-                            .accessibilityHint("Drag to rank. Long-press a diagnosis to remove it.")
+                        FieldLabel("What else could it be?")
+                            .accessibilityHint("Other conditions you considered, most likely first. Drag to reorder. Long-press one to remove it.")
                         VStack(spacing: 0) {
                         List {
                             ForEach(Array(session.differential.enumerated()), id: \.element) { i, item in
@@ -193,7 +193,7 @@ struct DiagnosisView: View {
                 .focused($focus, equals: .ddx)
                 .submitLabel(.done)
                 .onSubmit(addDifferential)
-                .accessibilityLabel("Add to differential")
+                .accessibilityLabel("Add a diagnosis")
             if !newDifferential.trimmingCharacters(in: .whitespaces).isEmpty {
                 Button("Add", action: addDifferential)
                     .font(.system(size: 15, weight: .semibold))

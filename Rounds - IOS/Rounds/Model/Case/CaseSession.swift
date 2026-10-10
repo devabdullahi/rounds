@@ -13,7 +13,11 @@ final class CaseSession {
 
     private(set) var attemptID: String?
     /// The attempt start in flight, shared by every action that arrives before it returns.
-    @ObservationIgnored private var starting: Task<String, Error>?
+    @ObservationIgnored private var starting: Task<AttemptStart, Error>?
+    /// Tests left off this attempt's menu (practice mode hides the ones the case doesn't call for).
+    private(set) var hiddenTests: Set<String> = []
+    /// False until the attempt has started and the server has said which tests to hide.
+    private(set) var menuReady = false
     private(set) var startedAt: Date?
     private(set) var messages: [ChatMessage] = []
     private(set) var revealed: Set<String> = []
@@ -74,13 +78,15 @@ final class CaseSession {
     /// starts would split the case across two attempts and the grade would miss half the work.
     private func attempt() async throws -> String {
         if let attemptID { return attemptID }
-        if let starting { return try await starting.value }
+        if let starting { return try await starting.value.id }
         let task = Task { try await service.start(bed: clinical.bed, examMode: examMode, timeLimitMinutes: timeLimitMinutes) }
         starting = task
         do {
-            let id = try await task.value
-            attemptID = id
-            return id
+            let started = try await task.value
+            attemptID = started.id
+            hiddenTests = started.hiddenTests
+            menuReady = true
+            return started.id
         } catch {
             starting = nil   // a failed start can be retried by the next action
             throw error
@@ -144,8 +150,19 @@ final class CaseSession {
 
     // MARK: Investigations
 
-    var spent: Int {
-        clinical.tests.filter { tests[$0.id] != nil }.reduce(0) { $0 + $1.cost }
+    /// The tests the student can order: the case's menu without the hidden ones.
+    var menu: [Investigation] { clinical.tests.filter { !hiddenTests.contains($0.id) } }
+
+    /// Tests ordered out of those on the menu, for the workup's progress bar.
+    var testsTaken: (done: Int, total: Int) {
+        let menuIDs = Set(menu.map(\.id))
+        return (tests.keys.filter(menuIDs.contains).count, menuIDs.count)
+    }
+
+    /// Starts the attempt (if no action has yet) so the menu knows what to hide. A failed start
+    /// leaves the menu waiting; the next action retries it.
+    func loadMenu() async {
+        _ = try? await attempt()
     }
 
     func order(_ test: Investigation) {

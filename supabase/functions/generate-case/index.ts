@@ -14,7 +14,7 @@ import { body, callerId, HttpError, json, serve } from "../_shared/http.ts";
 import { sql } from "../_shared/db.ts";
 import { completeJSON, currentModel } from "../_shared/llm.ts";
 import { CASE_WRITER, PROMPT_VERSION } from "../_shared/prompts.ts";
-import { acceptedNames, caseBudget, type CasePlan, leakTerms, planCase, type Profile } from "../_shared/casegen.ts";
+import { acceptedNames, type CasePlan, leakTerms, planCase, type Profile } from "../_shared/casegen.ts";
 import { flag, type Patient, TESTS } from "../_shared/labs.ts";
 import { type Focus, parseFocus } from "../_shared/focus.ts";
 import { prepareNext } from "../_shared/prefetch.ts";
@@ -161,18 +161,16 @@ async function save(userId: string, profile: Profile, clerkships: string[], syst
       role: t.role, why: t.why ?? null,
     };
   });
-  const indicatedCost = tests.filter((t) => t.role === "indicated").reduce((s, t) => s + t.cost, 0);
-  const budget = caseBudget(indicatedCost);
 
   for (let attempt = 0; attempt < 5; attempt++) {
     const id = bedCode();
     try {
       await sql.begin(async (tx) => {
         await tx`
-          insert into public.cases (id, specialty, patient_name, age, sex, quote, complaint, vitals, budget, minutes,
+          insert into public.cases (id, specialty, patient_name, age, sex, quote, complaint, vitals, minutes,
             published, created_by, setting, demeanor, organ_system, clerkship, suggested, maneuvers, test_menu, key_history)
           values (${id}, ${profile.triage.primary_clerkship}, ${w.patient.name}, ${plan.age}, ${plan.sex},
-            ${w.patient.quote}, ${w.patient.complaint}, ${tx.json(doorVitals(plan))}, ${budget}, 10,
+            ${w.patient.quote}, ${w.patient.complaint}, ${tx.json(doorVitals(plan))}, 10,
             false, ${userId}, ${w.patient.setting}, ${w.patient.demeanor}, ${caseSystem(profile, systems, focus)},
             ${caseClerkship(profile, clerkships, focus)}, ${tx.json(w.suggested)},
             ${tx.json(w.maneuvers.map(({ id, title }) => ({ id, title })))},
