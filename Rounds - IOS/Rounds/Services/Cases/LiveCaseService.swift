@@ -78,9 +78,9 @@ struct LiveCaseService: CaseService {
 
     // MARK: Encounter
 
-    func start(bed: String, examMode: Bool, timeLimitMinutes: Int?) async throws -> String {
+    func start(bed: String, examMode: Bool, timeLimitMinutes: Int?) async throws -> AttemptStart {
         let reply: StartReply = try await invoke("case-session", StartBody(case_id: bed, exam_mode: examMode, time_limit_minutes: timeLimitMinutes))
-        return reply.attempt_id
+        return AttemptStart(id: reply.attempt_id, hiddenTests: Set(reply.hidden_tests ?? []))
     }
 
     func ask(attempt: String, question: String) async throws -> PatientAnswer {
@@ -251,7 +251,7 @@ private struct ErrorReply: Decodable { let error: String }
 private struct DeleteBody: Encodable { let case_ids: [String]? }
 /// `{case_id}` once written, or `{status: "preparing"}` (HTTP 202) while the focus's first condition is.
 private struct AdmitReply: Decodable { let case_id: String?; let status: String? }
-private struct StartReply: Decodable { let attempt_id: String }
+private struct StartReply: Decodable { let attempt_id: String; let hidden_tests: [String]? }
 private struct ExamineReply: Decodable { let finding: String }
 private struct OrderReply: Decodable { let result: String; let abnormal: Bool }
 

@@ -31,7 +31,7 @@ struct WorkupView: View {
 
     private var c: ClinicalCase { session.clinical }
     private var resulted: [Investigation] { session.testOrder.compactMap { id in c.tests.first { $0.id == id } } }
-    private var orderable: [Investigation] { c.tests.filter { session.tests[$0.id] == nil } }
+    private var orderable: [Investigation] { session.menuReady ? session.menu.filter { session.tests[$0.id] == nil } : [] }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -78,6 +78,7 @@ struct WorkupView: View {
                 .padding(.bottom, 8)
         }
         .background(Theme.bg)
+        .task { await session.loadMenu() }
         .confirmationDialog(
             "Order \(pendingConfirm?.name ?? "")?",
             isPresented: Binding(get: { pendingConfirm != nil }, set: { if !$0 { pendingConfirm = nil } }),

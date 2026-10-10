@@ -1,6 +1,6 @@
 // case-session: everything a student does inside a case, one action per request.
 //
-//   start    {case_id, exam_mode, time_limit_minutes}  → {attempt_id}
+//   start    {case_id, exam_mode, time_limit_minutes}  → {attempt_id, hidden_tests}
 //   ask      {attempt_id, question}                    → {reply, revealed[], coverage}
 //   examine  {attempt_id, maneuver_id}                 → {finding}
 //   order    {attempt_id, test_id}                     → {result, abnormal, turnaround_s}
@@ -24,6 +24,7 @@ import { patientPrompt } from "../_shared/patientprompt.ts";
 import { type Actions, grade, type Grade, isSingleDiagnosis, matchesDiagnosis, type Rubric, unrated } from "./grade.ts";
 import { conditionInsights, type InsightProfile, type Insights } from "./insights.ts";
 import { namedDiagnoses } from "./leak.ts";
+import { hiddenTests } from "./menu.ts";
 import { parseFocus } from "../_shared/focus.ts";
 import { prepareNext } from "../_shared/prefetch.ts";
 import { withQuota } from "../_shared/quota.ts";
@@ -95,11 +96,13 @@ async function start(userId: string, input: Record<string, unknown>) {
   }
   const visible = await sql`select 1 from public.cases where id = ${caseId} and (published or created_by = ${userId})`;
   if (visible.length === 0) throw new HttpError(404, "case not found");
+  const examMode = input.exam_mode === true;
   const [row] = await sql<{ id: string }[]>`
     insert into public.attempts (user_id, case_id, exam_mode, time_limit_minutes)
-    values (${userId}, ${caseId}, ${input.exam_mode === true}, ${(limit as number | null) ?? null})
+    values (${userId}, ${caseId}, ${examMode}, ${(limit as number | null) ?? null})
     returning id`;
-  return { attempt_id: row.id };
+  const [content] = await sql<{ rubric: Rubric }[]>`select rubric from private.case_content where case_id = ${caseId}`;
+  return { attempt_id: row.id, hidden_tests: content ? hiddenTests(content.rubric, examMode) : [] };
 }
 
 // MARK: - ask
@@ -200,7 +203,7 @@ async function order(userId: string, input: Record<string, unknown>) {
   const id = text(input.test_id, "test_id", 60);
   const { attempt, content } = await loadAttempt(userId, input.attempt_id);
   const test = content.tests.find((t) => t.id === id);
-  if (!test) throw new HttpError(404, "test not found");
+  if (!test || hiddenTests(content.rubric, attempt.exam_mode).includes(id)) throw new HttpError(404, "test not found");
   if (!attempt.ordered_tests.some((t) => t.id === id)) {
     // Appended in SQL and skipped if already there, so concurrent orders keep each other.
     await sql`update public.attempts set ordered_tests = ordered_tests || ${sql.json([{ id, at: new Date().toISOString() }])}

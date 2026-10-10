@@ -6,6 +6,21 @@ import Testing
 /// attempt, or the grade misses the work logged on the others.
 @MainActor
 struct AttemptStartTests {
+    @Test func practiceMenuHidesWhatTheServerSays() async {
+        let tests = ["chest_x_ray", "hs_tnt"].map {
+            Investigation(id: $0, name: $0, detail: "", cost: 10, turnaround: 1)
+        }
+        let session = CaseSession(clinical: ClinicalCase(bed: "X1", name: "Test Patient", age: 40, sex: "F", setting: "", quote: "",
+                                                         demeanor: "", complaint: "", vitals: [], task: "", minutes: 10, budget: 1000,
+                                                         suggestedQuestions: [], exam: [], tests: tests, clerkship: nil, system: nil,
+                                                         keyHistoryTotal: 0),
+                                  service: SlowStartCases())
+        #expect(!session.menuReady)
+        await session.loadMenu()
+        #expect(session.menuReady)
+        #expect(session.menu.map(\.id) == ["hs_tnt"])
+    }
+
     @Test func quickActionsShareOneAttempt() async throws {
         let service = SlowStartCases()
         let session = CaseSession(clinical: ClinicalCase(bed: "X1", name: "Test Patient", age: 40, sex: "F", setting: "", quote: "",
@@ -29,10 +44,10 @@ private actor SlowStartCases: CaseService {
     private(set) var examinedOn: [String] = []
     struct Unused: Error {}
 
-    func start(bed: String, examMode: Bool, timeLimitMinutes: Int?) async throws -> String {
+    func start(bed: String, examMode: Bool, timeLimitMinutes: Int?) async throws -> AttemptStart {
         starts += 1
         try await Task.sleep(for: .milliseconds(100))
-        return "A\(starts)"
+        return AttemptStart(id: "A\(starts)", hiddenTests: ["chest_x_ray"])
     }
 
     func examine(attempt: String, maneuver: String) async throws -> String {
