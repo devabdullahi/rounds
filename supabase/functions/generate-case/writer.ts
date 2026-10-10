@@ -97,14 +97,23 @@ export function checkWriting(w: Writing, plan: CasePlan, terms: string[]): strin
       problems.push(`test_meta for ${t.id} out of range`);
     }
   }
-  const visible = [w.patient?.quote, w.patient?.complaint, w.patient?.demeanor,
-    ...(w.facts ?? []).flatMap((f) => [f.label, f.reply]), ...(w.suggested ?? []).map((s) => s.text),
-    ...(w.maneuvers ?? []).flatMap((m) => [m.title, m.finding])].join(" \n ");
+  // Each student-visible field with where it sits, so a leak can be pointed at precisely: the model
+  // fixes "fact uti_history reply" far more reliably than "somewhere in the case".
+  const fields: [string, string | undefined][] = [
+    ["patient quote", w.patient?.quote], ["patient complaint", w.patient?.complaint], ["patient demeanor", w.patient?.demeanor],
+    ...(w.facts ?? []).flatMap((f): [string, string][] => [[`fact ${f.id} label`, f.label], [`fact ${f.id} reply`, f.reply]]),
+    ...(w.suggested ?? []).map((s, i): [string, string] => [`suggested question ${i + 1}`, s.text]),
+    ...(w.maneuvers ?? []).flatMap((m): [string, string][] => [[`maneuver ${m.id} title`, m.title], [`maneuver ${m.id} finding`, m.finding]]),
+  ];
+  const visible = fields.map(([, text]) => text ?? "").join(" \n ");
   const leaked = leaks(visible, terms);
+  const leakedIn = fields.filter(([, text]) => leaks(text ?? "", leaked).length).map(([where]) => where);
   // Synthetic backgrounds arrive in SNOMED CT wording, which is licensed and never reaches the app.
   const coded = [...`${visible} \n ${w.persona?.background ?? ""}`.matchAll(SNOMED_TAG)].map((m) => m[0].trim());
   if (coded.length) problems.push(`uses coding wording (${[...new Set(coded)].join(", ")}); say it in the patient's own words`);
-  if (leaked.length) problems.push(`reveals the diagnosis (${leaked.join(", ")}); remove it from everything the student sees before tests`);
+  if (leaked.length) {
+    problems.push(`reveals the diagnosis (${leaked.join(", ")}) in: ${leakedIn.join("; ")}. Reword those fields without naming the diagnosis or any of its names (the patient describes symptoms, not what they think they have); the student must work it out`);
+  }
   return problems;
 }
 
