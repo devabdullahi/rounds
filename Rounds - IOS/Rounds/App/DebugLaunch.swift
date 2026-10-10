@@ -28,7 +28,7 @@ enum DebugLaunch {
             d.set(StudyGoal.step2CK.rawValue, forKey: StudyGoal.storageKey)
             d.set(StudyFocus.rotation(.internalMedicine).stored, forKey: StudyFocus.storageKey)
         }
-        if ["focus-sheet", "home", "settings", "settings-siri"].contains(screen) {
+        if ["focus-sheet", "home", "settings", "settings-siri", "settings-voice"].contains(screen) {
             d.set(StudyFocus.rotation(.internalMedicine).stored, forKey: StudyFocus.storageKey)
         }
     }
@@ -57,7 +57,7 @@ enum DebugLaunch {
         case "cards", "cards-flip", "cards-correct", "cards-unknown", "cards-new", "cards-new-color", "cards-new-answer",
              "cards-add", "cards-generate", "cards-generate-notes", "cards-generate-notes-pick", "cards-generate-mistakes": tab = .cards
         case "patients-open": tab = .patients; expandedPatient = "R2"
-        case "profile", "settings", "settings-siri", "profile-weakspots", "profile-badges", "profile-edit": tab = .profile
+        case "profile", "settings", "settings-siri", "settings-voice", "profile-weakspots", "profile-badges", "profile-edit": tab = .profile
         case "home", "focus-sheet", "splash", "home-swipe-right", "home-swipe-left": tab = .today
         case "home-empty":
             tab = .today

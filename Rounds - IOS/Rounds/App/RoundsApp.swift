@@ -28,7 +28,7 @@ struct RoundsApp: App {
                 .task {
                     await auth.restore()
                     #if DEBUG
-                    if ["settings", "settings-siri", "profile", "profile-edit"].contains(DebugLaunch.screen) { auth.debugUse(DebugLaunch.sampleAccount) }
+                    if ["settings", "settings-siri", "settings-voice", "profile", "profile-edit"].contains(DebugLaunch.screen) { auth.debugUse(DebugLaunch.sampleAccount) }
                     #endif
                 }
                 // Google's sheet returning, and email confirmation links (rounds://auth-callback).

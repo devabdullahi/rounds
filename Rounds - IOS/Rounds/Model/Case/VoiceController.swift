@@ -22,7 +22,6 @@ final class VoiceController: NSObject, AVSpeechSynthesizerDelegate {
         static let smoothing: CGFloat = 0.35          // new-sample weight
         static let slowestRate: Float = 0.35         // Settings speed 0
         static let fastestRate: Float = 0.65         // Settings speed 1; 0.5 in between is the natural rate
-        static let speechPitch: Float = 0.9
     }
 
     private(set) var phase: Phase = .idle
@@ -41,6 +40,9 @@ final class VoiceController: NSObject, AVSpeechSynthesizerDelegate {
     private var lastVoiceAt = Date()
     private var silenceTimer: Timer?
     private var tapInstalled = false
+    /// The patient's voice and pitch, chosen once per case (see PatientVoice).
+    private var patientVoice: AVSpeechSynthesisVoice?
+    private var patientPitch: Float = 1
 
     override init() {
         super.init()
@@ -193,13 +195,25 @@ final class VoiceController: NSObject, AVSpeechSynthesizerDelegate {
 
     // MARK: Patient's turn
 
+    /// Picks this patient's voice: the best installed English voice of their sex, the same one every time.
+    func usePatient(sex: String, age: Int, seed: String) {
+        patientVoice = PatientVoice.pick(from: PatientVoice.installed(), sex: sex, seed: seed).flatMap(AVSpeechSynthesisVoice.init(identifier:))
+        patientPitch = PatientVoice.pitch(age: age)
+    }
+
     func speak(_ text: String) {
         guard isActive else { return }
         stopAudio()
+        // While listening the session is in call mode (playAndRecord), which on Bluetooth headphones
+        // plays through the low-quality hands-free channel and makes any voice sound robotic. The
+        // patient speaks through plain playback instead; startListening switches back for your turn.
+        let s = AVAudioSession.sharedInstance()
+        try? s.setCategory(.playback, mode: .spokenAudio, options: [.duckOthers])
+        try? s.setActive(true, options: .notifyOthersOnDeactivation)
         let u = AVSpeechUtterance(string: text)
-        u.voice = AVSpeechSynthesisVoice(language: "en-US")
+        u.voice = patientVoice ?? AVSpeechSynthesisVoice(language: "en-US")
         u.rate = VOICE.slowestRate + (VOICE.fastestRate - VOICE.slowestRate) * Float(Preferences.voiceSpeed)
-        u.pitchMultiplier = VOICE.speechPitch
+        u.pitchMultiplier = patientPitch
         withAnimation(Springs.slide) { phase = .patientSpeaking }
         synth.speak(u)
     }

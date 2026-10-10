@@ -11,6 +11,7 @@ import SwiftUI
 private enum SETTINGS {
     static let dependentDim = 0.4     // opacity of rows that need voice mode
     static let dimAnimation = Springs.slide
+    static let voiceSection = "voice"  // scroll target for the settings-voice debug screen
 }
 
 /// Settings: account facts, study focus, and device preferences. Preferences are stored on this
@@ -29,6 +30,8 @@ struct SettingsView: View {
     @AppStorage(Preferences.voiceModeKey) private var voiceMode = Preferences.voiceModeDefault
     @AppStorage(Preferences.autoSendKey) private var autoSend = Preferences.autoSendDefault
     @AppStorage(Preferences.voiceSpeedKey) private var voiceSpeed = Preferences.voiceSpeedDefault
+    /// Whether iOS has a non-robotic voice installed; checked once, when Settings opens.
+    @State private var hasNaturalVoice = PatientVoice.hasNaturalVoice()
     @AppStorage(Preferences.showRevealsKey) private var showReveals = Preferences.showRevealsDefault
     @AppStorage(Preferences.showCoverageKey) private var showCoverage = Preferences.showCoverageDefault
     @AppStorage(Preferences.hapticsKey) private var haptics = Preferences.hapticsDefault
@@ -48,6 +51,7 @@ struct SettingsView: View {
                 IconButton(glyph: .chevronLeft, label: "Back") { dismiss() }
             } trailing: { EmptyView() }
 
+            ScrollViewReader { scroller in
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
                     // Profile (photo, name, specialty) is the student's to change; email and provider come from how
@@ -97,12 +101,19 @@ struct SettingsView: View {
                                     .accessibilityLabel("Patient voice speed")
                                 Text("Faster").font(.system(size: 13)).foregroundStyle(Theme.muted)
                             }
+                            if !hasNaturalVoice {
+                                Text("For a natural patient voice, download an Enhanced or Premium English voice in iOS Settings › Accessibility › Spoken Content › Voices.")
+                                    .font(.system(size: 13))
+                                    .foregroundStyle(Theme.muted)
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
                         }
                         .padding(16)
                         .disabled(!voiceMode)
                         .opacity(voiceMode ? 1 : SETTINGS.dependentDim)
                     }
                     .animation(SETTINGS.dimAnimation, value: voiceMode)
+                    .id(SETTINGS.voiceSection)
 
                     section("Feedback") {
                         toggleRow(.eye, "Show revealed findings", detail: "Chips in the interview as you uncover facts", isOn: $showReveals)
@@ -160,6 +171,10 @@ struct SettingsView: View {
                 .padding(.bottom, 24)
             }
             .scrollIndicators(.hidden)
+            #if DEBUG
+            .onAppear { if DebugLaunch.screen == "settings-voice" { scroller.scrollTo(SETTINGS.voiceSection, anchor: .top) } }
+            #endif
+            }
         }
         .background(Theme.bg)
         .toolbar(.hidden, for: .navigationBar)
