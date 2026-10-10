@@ -19,6 +19,7 @@ struct AttemptStartTests {
         await session.loadMenu()
         #expect(session.menuReady)
         #expect(session.menu.map(\.id) == ["hs_tnt"])
+        #expect(session.testsTaken == (0, 1))
     }
 
     @Test func quickActionsShareOneAttempt() async throws {

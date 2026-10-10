@@ -150,12 +150,14 @@ final class CaseSession {
 
     // MARK: Investigations
 
-    var spent: Int {
-        clinical.tests.filter { tests[$0.id] != nil }.reduce(0) { $0 + $1.cost }
-    }
-
     /// The tests the student can order: the case's menu without the hidden ones.
     var menu: [Investigation] { clinical.tests.filter { !hiddenTests.contains($0.id) } }
+
+    /// Tests ordered out of those on the menu, for the workup's progress bar.
+    var testsTaken: (done: Int, total: Int) {
+        let menuIDs = Set(menu.map(\.id))
+        return (tests.keys.filter(menuIDs.contains).count, menuIDs.count)
+    }
 
     /// Starts the attempt (if no action has yet) so the menu knows what to hide. A failed start
     /// leaves the menu waiting; the next action retries it.

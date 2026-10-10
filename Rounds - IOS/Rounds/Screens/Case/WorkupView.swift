@@ -4,7 +4,7 @@ import SwiftUI
  * ANIMATION STORYBOARD · Workup
  *
  * ORDER (tap a price)
- *    0ms   workup cost counts up to the new total
+ *    0ms   tests-taken bar springs to the new count
  *    0ms   row leaves "Order more" (fades), result card enters
  *          above it, scale 0.95 → 1.0
  *
@@ -43,7 +43,7 @@ struct WorkupView: View {
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 14) {
-                    costCard
+                    takenCard
 
                     ForEach(resulted) { t in
                         resultCard(t)
@@ -105,17 +105,25 @@ struct WorkupView: View {
         "Delays definitive treatment by \(t.delaysCareMinutes) minutes."
     }
 
-    /// What the workup has cost so far. Informational only: there's no budget and no penalty.
-    private var costCard: some View {
-        HStack {
-            Text("Workup cost").font(.system(size: 15, weight: .semibold))
-            Spacer()
-            Text("$\(session.spent)")
-                .font(.system(size: 15))
-                .foregroundStyle(Theme.muted)
-                .contentTransition(.numericText())
+    /// How many of the menu's tests have been taken.
+    private var takenCard: some View {
+        let taken = session.testsTaken
+        return VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text("Take tests").font(.system(size: 15, weight: .semibold))
+                Spacer()
+                if session.menuReady {
+                    Text("\(taken.done) of \(taken.total)")
+                        .font(.system(size: 15))
+                        .foregroundStyle(Theme.muted)
+                        .contentTransition(.numericText())
+                }
+            }
+            ProgressBar(value: taken.total > 0 ? Double(taken.done) / Double(taken.total) : 0)
         }
         .card(padding: 14)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Tests taken: \(taken.done) of \(taken.total)")
     }
 
     private func resultCard(_ t: Investigation) -> some View {
