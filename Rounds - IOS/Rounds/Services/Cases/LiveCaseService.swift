@@ -140,10 +140,11 @@ private struct CaseRow: Decodable {
         let rotation = clerkship.flatMap(Clerkship.init(rawValue:))
         let status: WardPatient.Status
         let misses = latest?.grade?.missed_red_flags.map { Miss(flag: $0.flag, why: $0.why) } ?? []
+        let missedDiagnosis = latest?.grade?.diagnosis_correct == false ? latest?.grade?.diagnosis : nil
         switch latest {
         case nil: status = .new
         case let a? where a.submitted_at == nil: status = .resume
-        default: status = misses.isEmpty ? .done : .revisit
+        default: status = misses.isEmpty && missedDiagnosis == nil ? .done : .revisit
         }
         let vital = { (id: String) in vitals.first { $0.id == id }?.value }
         return WardPatient(
@@ -152,7 +153,7 @@ private struct CaseRow: Decodable {
             rotation: rotation, system: organ_system.flatMap(OrganSystem.init(rawValue:)),
             hr: vital("hr").flatMap { Int($0) }, bp: vital("sbp"),
             spo2: vital("spo2").flatMap { Int($0.trimmingCharacters(in: CharacterSet(charactersIn: "%"))) },
-            status: status, misses: misses, lastScore: latest?.score)
+            status: status, misses: misses, missedDiagnosis: missedDiagnosis, lastScore: latest?.score)
     }
 }
 
@@ -195,7 +196,11 @@ private struct CaseDetailRow: Decodable {
 }
 
 private struct AttemptRow: Decodable {
-    struct GradeSummary: Decodable { let missed_red_flags: [MissRow] }
+    struct GradeSummary: Decodable {
+        let missed_red_flags: [MissRow]
+        let diagnosis_correct: Bool?
+        let diagnosis: String?
+    }
     let case_id: String
     let submitted_at: String?
     let score: Int?
