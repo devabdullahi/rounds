@@ -7,7 +7,7 @@ import Observation
 @Observable
 final class AuthModel {
     /// The app shows its tabs when this is true (read with @AppStorage by RootView).
-    static let signedInKey = "signedIn"
+    nonisolated static let signedInKey = "signedIn"
 
     static let codeRejectedMessage = "That code isn\u{2019}t right or has expired. Check the newest email, or send a new code."
 
