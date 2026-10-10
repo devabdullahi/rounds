@@ -43,12 +43,16 @@ const SEVERITY_WEIGHT: Record<Severity, number> = { mild: 0.35, moderate: 0.4, s
 const PRESENT_CHANCE: Record<Frequency, number> = { almost_always: 0.95, common: 0.7, sometimes: 0.3, rare: 0.05 };
 const VITAL_IDS = ["temp", "hr", "rr", "sbp", "dbp", "spo2"];
 const ALWAYS_OFFERED_PANELS = ["cbc", "bmp"];
+/** Offered on every heart case, whatever the condition: students expect troponin on a cardiac
+ *  workup, and a menu that showed it only for heart attacks would give the answer away. Ungraded
+ *  (neutral) unless the profile's own workup makes it indicated. */
+const CARDIAC_OFFERED_TESTS = ["hs_tnt"];
 /** Standardized questionnaires (reference_ranges.json): the test menu of a psychology case. */
 const ASSESSMENT_PANEL = "assessments";
 
 /** How a case is framed. A clinical psychology case is an outpatient intake: the same screens, with
  *  mental status observations for the exam and questionnaires for the tests. */
-export type PlanOptions = { psychology?: boolean; dermatology?: boolean };
+export type PlanOptions = { psychology?: boolean; dermatology?: boolean; cardiac?: boolean };
 
 export type PlannedTest = {
   id: string;
@@ -179,12 +183,12 @@ export function planCase(profile: Profile, rng: () => number, options: PlanOptio
 
   return { slug: profile.slug, condition: profile.triage.name, severity, severityText: profile.course.severity[severity] ?? "", age, sex,
     pregnant: patient.pregnant, symptomsPresent: present, symptomsAbsent: absent, exam, vitals,
-    tests: planTests(profile, severity, patient, rng, !!options.psychology), psychology: !!options.psychology,
+    tests: planTests(profile, severity, patient, rng, !!options.psychology, !!options.cardiac), psychology: !!options.psychology,
     dermatology: !!options.dermatology };
 }
 
 /** The test menu: everything the profile's workup mentions plus routine panels, with lab results filled in. */
-function planTests(profile: Profile, severity: Severity, patient: Patient, rng: () => number, psychology: boolean): PlannedTest[] {
+function planTests(profile: Profile, severity: Severity, patient: Patient, rng: () => number, psychology: boolean, cardiac: boolean): PlannedTest[] {
   let roles = new Map<string, { role: PlannedTest["role"]; why?: string }>();
   const group = (g: WorkupGroup) => profile.workup?.[g] ?? [];
   const notIndicated = new Set(group("not_indicated").map((t) => t.test.toLowerCase()));
@@ -199,7 +203,10 @@ function planTests(profile: Profile, severity: Severity, patient: Patient, rng: 
   }
   const assessments = psychology ? assessmentRoles(profile, roles) : null;
   if (assessments) roles = assessments;
-  else for (const panel of ALWAYS_OFFERED_PANELS) if (!roles.has(panel)) roles.set(panel, { role: "neutral" });
+  else {
+    const offered = cardiac ? [...ALWAYS_OFFERED_PANELS, ...CARDIAC_OFFERED_TESTS] : ALWAYS_OFFERED_PANELS;
+    for (const panel of offered) if (!roles.has(panel)) roles.set(panel, { role: "neutral" });
+  }
 
   // Lab panels share one set of values so overlapping tests agree.
   const labIds = [...roles.keys()].filter((t) => panelFor(t));
