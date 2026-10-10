@@ -15,7 +15,7 @@ enum BadgeArt: String, CaseIterable, Sendable {
     case notebook = "badge-notebook", testTubes = "badge-test-tubes", doubleShot = "badge-double-shot"
     case calendar = "badge-calendar", sunset = "badge-sunset", flagObjective = "badge-flag-objective"
     case heartOrgan = "badge-heart-organ", upCard = "badge-up-card", hourglass = "badge-hourglass"
-    case thumbUp = "badge-thumb-up"
+    case thumbUp = "badge-thumb-up", sprout = "badge-sprout"
     case stethoscope = "badge-stethoscope", personInBed = "badge-person-in-bed"
     case threeFriends = "badge-three-friends", hospitalCross = "badge-hospital-cross"
     case ruleBook = "badge-rule-book", targetArrows = "badge-target-arrows"

@@ -18,6 +18,9 @@ enum BadgeCatalog {
         return badge
     }
 
+    /// The welcome badge, earned on registering. A new account's first unlock check celebrates it.
+    static let beginningID = "beginning"
+
     /// Hidden until earned (a surprise when they land).
     static let secretIDs: Set<String> = ["night-shift", "early-rounds", "comeback"]
 
@@ -58,6 +61,7 @@ enum BadgeCatalog {
         "clean-workup": "Ordered only the tests that mattered.",
         "double": "Made 2 right diagnoses in a row.",
         "back-again": "Came back for a second day.",
+        "beginning": "Joined Rounds. Every doctor starts somewhere.",
         "weekend-rounds": "Practiced on a weekend.",
         "second-rotation": "Worked in a second specialty.",
         "body-tour": "Saw cases in 3 organ systems.",
@@ -139,6 +143,9 @@ enum BadgeCatalog {
               group: .skill, rarity: .legendary, goal: 1, measure: { $0.cases.filter { $0.score >= 100 }.count }),
 
         // Habits
+        // Earned by having an account at all: the first card every student holds.
+        Badge(id: beginningID, name: "Beginning", detail: "Create your Rounds account.", art: .sprout,
+              group: .habit, rarity: .common, goal: 1, measure: { _ in 1 }),
         Badge(id: "warming-up", name: "Warming up", detail: "Keep a 3-day streak.", art: .flame,
               group: .habit, rarity: .common, goal: 3, measure: { $0.bestStreak }),
         Badge(id: "back-again", name: "Back again", detail: "Practice on 2 different days.", art: .calendar,
