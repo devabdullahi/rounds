@@ -1,5 +1,5 @@
 import { assert, assertEquals } from "jsr:@std/assert@1";
-import { acceptedNames, caseBudget, isPregnant, leaks, leakTerms, MIN_BUDGET, planCase, type Profile } from "./casegen.ts";
+import { acceptedNames, isPregnant, leaks, leakTerms, planCase, type Profile } from "./casegen.ts";
 import { seeded } from "./labs.ts";
 
 const dir = new URL("../../../knowledge-base/profiles/", import.meta.url);
@@ -74,13 +74,6 @@ Deno.test("a dermatology plan keeps the usual tests and is flagged for a skin ex
   const plan = planCase(profiles[0], seeded(3), { dermatology: true });
   assert(plan.dermatology && !plan.psychology);
   assert(plan.tests.some((t) => t.id === "cbc"));
-});
-
-Deno.test("a case's budget is never under $1,000, and covers 1.5x its indicated tests", () => {
-  assertEquals(caseBudget(0), MIN_BUDGET);
-  assertEquals(caseBudget(400), 1000);
-  assertEquals(caseBudget(1200), 1800);
-  assertEquals(caseBudget(1010), 1550); // 1515 rounds up to the next $50
 });
 
 Deno.test("UMLS synonyms join the accepted names, without terms that match ordinary sentences", () => {

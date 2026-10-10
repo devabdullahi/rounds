@@ -2,7 +2,7 @@
 -- Sample content written for the screens phase; clinician review pending.
 
 -- MOCK (disabled): the scripted B4 case below predates generated cases; kept for reference.
--- insert into public.cases (id, specialty, patient_name, age, sex, quote, complaint, vitals, budget, minutes, published)
+-- insert into public.cases (id, specialty, patient_name, age, sex, quote, complaint, vitals, minutes, published)
 -- values (
 --   'B4', 'Cardiology', 'Mark Reyes', 54, 'M',
 --   'My chest has been hurting since this morning.',
