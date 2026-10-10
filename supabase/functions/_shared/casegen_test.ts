@@ -87,3 +87,18 @@ Deno.test("UMLS synonyms join the accepted names, without terms that match ordin
   const names = acceptedNames(["Heart attack"], ["MI - myocardial infarction", "Cardiac infarction", "Heart attack", "AN - Acoustic neuroma", "OR", "Myocardial infarction NOS"]);
   assertEquals(names, ["Heart attack", "MI", "myocardial infarction", "Cardiac infarction", "Acoustic neuroma"]);
 });
+
+Deno.test("every heart case offers troponin; others don't add it", () => {
+  const workupIds = (p: Profile) => (["initial", "confirmatory", "supporting", "not_indicated"] as const)
+    .flatMap((g) => (p.workup?.[g] ?? []).map((t) => t.test));
+  const without = profiles.find((p) => !workupIds(p).includes("hs_tnt"));
+  assert(without, "need a profile whose workup has no troponin");
+  const troponin = (cardiac: boolean) => planCase(without, seeded(1), { cardiac }).tests.find((t) => t.id === "hs_tnt");
+  assertEquals(troponin(true)?.role, "neutral");
+  assert(troponin(true)?.result, "troponin needs a lab result");
+  assertEquals(troponin(false), undefined);
+
+  // A profile that indicates troponin keeps it indicated (graded), not downgraded to neutral.
+  const indicating = profiles.find((p) => (p.workup?.initial ?? []).some((t) => t.test === "hs_tnt" && !t.only_if));
+  if (indicating) assertEquals(planCase(indicating, seeded(1), { cardiac: true }).tests.find((t) => t.id === "hs_tnt")?.role, "indicated");
+});

@@ -23,6 +23,10 @@ import { MAX_AGE_GAP, type PatientBackground, pickBackground } from "./backgroun
 import { bedCode } from "./bedcode.ts";
 import { buildRubric, checkWriting, neutralIds, type Writing, writerPrompt } from "./writer.ts";
 
+/** Tries at writing one patient. A typical write takes 10–20 s, so three stay well inside the
+ *  function's time limit; a reply that fails the checks is retried with the problems listed. */
+const WRITE_ATTEMPTS = 3;
+
 type Request = { focus?: string };
 
 serve(async (req) => {
@@ -68,13 +72,16 @@ async function writeCase(userId: string, profile: Profile, clerkships: string[],
   // Clinical psychology is a focus like any rotation; its cases are written as a psychologist's intake.
   const psychology = focus.kind === "rotation" && focus.value === "clinicalPsychology";
   const dermatology = focus.kind === "rotation" && focus.value === "dermatology";
-  const plan = planCase(profile, Math.random, { psychology, dermatology });
+  // A heart case: filed under cardiology or the cardiovascular system, or made for either focus.
+  const cardiac = clerkships.includes("cardiology") || systems.includes("cardiovascular") ||
+    (focus.kind === "rotation" && focus.value === "cardiology") || (focus.kind === "system" && focus.value === "cardiovascular");
+  const plan = planCase(profile, Math.random, { psychology, dermatology, cardiac });
   const terms = leakTerms(profile);
   const background = await findBackground(plan, [profile.triage.name, ...acceptedNames(profile.teaching.accepted_names, synonyms)]);
   let user = writerPrompt(profile, plan, background);
   let writing: Writing | null = null;
   let problems: string[] = [];
-  for (let attempt = 0; attempt < 2; attempt++) {
+  for (let attempt = 0; attempt < WRITE_ATTEMPTS; attempt++) {
     try {
       writing = await completeJSON<Writing>(CASE_WRITER, user, 7000);
       problems = checkWriting(writing, plan, terms);

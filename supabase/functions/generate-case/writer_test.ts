@@ -107,3 +107,11 @@ Deno.test("a background goes to the writer cleaned, and only when there is one",
   assert(prompt.includes("lisinopril 10 MG Oral Tablet") && prompt.includes('"Peanut"'));
   assert(!prompt.includes("Peanut (substance)") &&!prompt.includes("Hypertension (disorder)"));
 });
+
+Deno.test("a leak names the field it's in, so the retry can fix it", () => {
+  const w = goodWriting();
+  w.facts[4] = { ...w.facts[4], reply: `I think it's ${terms[0]} again.` };
+  const problem = checkWriting(w, plan, terms).find((p) => p.startsWith("reveals the diagnosis")) ?? "";
+  assert(problem.includes(`fact ${w.facts[4].id} reply`), problem);
+  assert(!problem.includes("patient quote"), problem);
+});
