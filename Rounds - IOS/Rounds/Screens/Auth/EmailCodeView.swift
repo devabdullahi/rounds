@@ -107,9 +107,17 @@ struct EmailCodeView: View {
             .transition(.opacity)
             .accessibilityElement(children: .combine)
         } else {
-            HStack(spacing: 8) {
-                AppIcon(.clock, size: 16)
-                Text("The code works for \(EmailCode.validMinutes) minutes.")
+            VStack(alignment: .leading, spacing: 8) {
+                HStack(spacing: 8) {
+                    AppIcon(.clock, size: 16)
+                    Text("The code works for \(EmailCode.validMinutes) minutes.")
+                }
+                // Codes come from a Gmail address through Amazon SES until Rounds has its own domain,
+                // so some inboxes file them as spam.
+                HStack(spacing: 8) {
+                    AppIcon(.mail, size: 16)
+                    Text("Not in your inbox? Check spam or junk.")
+                }
             }
             .font(.system(size: 13))
             .foregroundStyle(Theme.muted)
