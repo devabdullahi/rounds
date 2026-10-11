@@ -1,3 +1,4 @@
+import StoreKit
 import SwiftUI
 
 /* ─────────────────────────────────────────────────────────
@@ -38,6 +39,9 @@ struct SettingsView: View {
     @AppStorage(Preferences.streakAlertsKey) private var streakAlerts = Preferences.streakAlertsDefault
     @State private var confirmSignOut = false
     @Environment(AuthModel.self) private var auth
+    @Environment(PaywallModel.self) private var paywall
+    /// Apple's own subscription sheet, for a plan bought in the app.
+    @State private var managingAppStorePlan = false
     @State private var confirmDelete = false
     @AppStorage(StudyFocus.storageKey) private var focusStored = ""
     @State private var editingFocus = false
@@ -64,6 +68,15 @@ struct SettingsView: View {
                         infoRow(.mail, "Email", value: auth.account?.email ?? "Guest session")
                         Hairline()
                         infoRow(.keyRound, "Signed in with", value: auth.account?.providerLabel ?? "Not signed in")
+                    }
+
+                    // Where the plan was bought decides where it's managed: Apple's sheet, or Stripe's portal in Safari.
+                    section("Subscription") {
+                        if let plan = paywall.activePlan {
+                            navRow(.crown, "Manage subscription", detail: "\(plan.summary()) · \(plan.manageHint)") { manage(plan) }
+                        } else {
+                            infoRow(.crown, "Subscription", value: "No active plan")
+                        }
                     }
 
                     section("Practice") {
@@ -194,6 +207,9 @@ struct SettingsView: View {
         .sheet(isPresented: $editingProfile) { EditProfileView() }
         .sheet(isPresented: $showingCredits) { AcknowledgementsView() }
         .sheet(isPresented: $showingSiri) { SiriCommandsView() }
+        .manageSubscriptionsSheet(isPresented: $managingAppStorePlan)
+        // Picks up a cancellation or plan change made in Apple's sheet or Stripe's portal.
+        .task { await paywall.refresh() }
         #if DEBUG
         .onAppear { if DebugLaunch.screen == "settings-siri" { showingSiri = true } }
         #endif
@@ -216,6 +232,13 @@ struct SettingsView: View {
             .foregroundStyle(Theme.accent)
             .frame(width: 32, height: 32)
             .background(Theme.accentSoft, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
+    }
+
+    private func manage(_ plan: ActivePlan) {
+        switch plan.source {
+        case .appStore: managingAppStorePlan = true
+        case .web: Task { if let url = await paywall.webPortalURL() { openURL(url) } }
+        }
     }
 
     private func rowLabel(_ glyph: IconGlyph, _ title: String) -> some View {

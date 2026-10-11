@@ -9,6 +9,6 @@ protocol WebBilling: Sendable {
     func checkoutURL(for plan: SubscriptionPlan.Period) async throws -> URL
     /// Stripe's billing portal, to cancel or change card.
     func portalURL() async throws -> URL
-    /// True while the server holds an active web (or any server-recorded) plan for this student.
-    func hasActivePlan() async -> Bool
+    /// The plan the server records for this student (a web plan today), while it gives access; nil without one.
+    func activePlan() async -> ActivePlan?
 }

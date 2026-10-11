@@ -29,10 +29,13 @@ struct LiveWebBilling: WebBilling {
         return url
     }
 
-    func hasActivePlan() async -> Bool {
+    func activePlan() async -> ActivePlan? {
         guard let rows: [SubscriptionRow] = try? await client.from("subscriptions")
-            .select("status, current_period_end").execute().value else { return false }
-        return rows.contains { ["trialing", "active", "past_due"].contains($0.status) && $0.current_period_end > .now }
+            .select("status, plan, current_period_end, cancel_at_period_end").execute().value,
+              let row = rows.first(where: { ["trialing", "active", "past_due"].contains($0.status) && $0.current_period_end > .now }),
+              let period = Self.period(row.plan) else { return nil }
+        return ActivePlan(source: .web, period: period, periodEnd: row.current_period_end,
+                          isTrial: row.status == "trialing", willRenew: !row.cancel_at_period_end)
     }
 
     private func invoke<Reply: Decodable>(_ body: [String: String]) async throws -> Reply {
@@ -67,5 +70,7 @@ private struct ErrorReply: Decodable { let error: String }
 
 private struct SubscriptionRow: Decodable {
     let status: String
+    let plan: String
     let current_period_end: Date
+    let cancel_at_period_end: Bool
 }

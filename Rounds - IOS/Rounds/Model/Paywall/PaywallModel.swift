@@ -13,6 +13,8 @@ final class PaywallModel {
     var selectedID: String?
     /// Nil until the store has answered once.
     private(set) var isEntitled: Bool?
+    /// The plan held now, App Store first; shown in Settings.
+    private(set) var activePlan: ActivePlan?
     private(set) var isWorking = false
     var problem: String?
 
@@ -54,8 +56,11 @@ final class PaywallModel {
 
     /// Asks both sources again: on launch, on return from the web checkout, and when the app comes back.
     func refresh() async {
+        let storePlan = await store.activePlan()
+        let webPlan = await web?.activePlan()
         storeEntitled = await store.isEntitled()
-        webEntitled = await web?.hasActivePlan() ?? false
+        webEntitled = webPlan != nil
+        activePlan = storePlan ?? webPlan
         #if DEBUG
         if debugUnlocked { return }
         #endif
@@ -116,6 +121,20 @@ final class PaywallModel {
             at: date,
             title: "Your Rounds trial ends tomorrow",
             body: "Your \(plan.period.unit) starts at \(plan.displayPrice). Cancel in Settings before then to pay nothing.")
+    }
+
+    /// Stripe's billing portal for a web plan, to open in Safari. (An App Store plan is managed in
+    /// Apple's own sheet, which the view presents.)
+    func webPortalURL() async -> URL? {
+        guard let web, !isWorking else { return nil }
+        isWorking = true
+        defer { isWorking = false }
+        do {
+            return try await web.portalURL()
+        } catch {
+            problem = error.localizedDescription
+            return nil
+        }
     }
 
     /// The Stripe Checkout page for the selected plan, to open in Safari.

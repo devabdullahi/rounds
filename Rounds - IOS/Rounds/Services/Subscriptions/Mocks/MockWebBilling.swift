@@ -26,5 +26,7 @@ actor MockWebBilling: WebBilling {
         return url
     }
 
-    func hasActivePlan() async -> Bool { active }
+    func activePlan() async -> ActivePlan? {
+        active ? ActivePlan(source: .web, period: .month, periodEnd: .now.addingTimeInterval(20 * 86_400), isTrial: false, willRenew: true) : nil
+    }
 }

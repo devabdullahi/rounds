@@ -39,7 +39,7 @@ struct RoundsApp: App {
                 .task {
                     await auth.restore()
                     #if DEBUG
-                    if ["settings", "settings-siri", "settings-voice", "profile", "profile-edit"].contains(DebugLaunch.screen) { auth.debugUse(DebugLaunch.sampleAccount) }
+                    if ["settings", "settings-siri", "settings-voice", "settings-subscription", "profile", "profile-edit"].contains(DebugLaunch.screen) { auth.debugUse(DebugLaunch.sampleAccount) }
                     #endif
                 }
                 // Google's sheet returning, email confirmation links (rounds://auth-callback), and the
@@ -59,6 +59,7 @@ struct RoundsApp: App {
     private static var subscriptionStore: any SubscriptionStore {
         #if DEBUG
         if DebugLaunch.screen == "paywall" { return MockSubscriptionStore() }
+        if DebugLaunch.screen == "settings-subscription" { return MockSubscriptionStore(entitled: true) }
         #endif
         return StoreKitSubscriptionStore()
     }

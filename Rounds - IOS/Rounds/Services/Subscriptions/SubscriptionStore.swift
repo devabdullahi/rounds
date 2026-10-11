@@ -10,6 +10,8 @@ protocol SubscriptionStore: Sendable {
     func restore() async throws
     /// True while the student holds an active subscription.
     func isEntitled() async -> Bool
+    /// The App Store plan they hold, for Settings; nil without one.
+    func activePlan() async -> ActivePlan?
     /// The entitlement again whenever a transaction changes it (renewal, refund, a purchase elsewhere).
     func entitlementChanges() -> AsyncStream<Bool>
     /// The App Store country ("USA"); paying on the web is offered only where Apple allows linking out.
