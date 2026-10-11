@@ -31,7 +31,7 @@ struct PaywallPricingTests {
         #expect(PaywallPricing.appleButtonTitle(plan(.week)) == "Pay with Apple · $7.99/wk")
         #expect(PaywallPricing.appleButtonTitle(plan(.year)) == "Start free trial with Apple")
         let web = MockWebBilling.launchPlans
-        #expect(PaywallPricing.webButtonTitle(web[0]) == "Pay on the website · $6.99/wk")
+        #expect(PaywallPricing.webButtonTitle(web[0]) == "Pay on the website · $7.49/wk")
         #expect(PaywallPricing.webButtonTitle(web[2]) == "Start free trial on the website")
     }
 
@@ -48,6 +48,6 @@ struct PaywallPricingTests {
 
     @Test func finePrintGivesBothPricesWhenTheWebIsOffered() {
         let text = PaywallPricing.finePrint(apple: plan(.year), web: MockWebBilling.launchPlans[2])
-        #expect(text == "With Apple: 3 days free, then $119.99/year. On the website: 3 days free, then $99.99/year. Renews automatically. Cancel anytime.")
+        #expect(text == "With Apple: 3 days free, then $119.99/year. On the website: 3 days free, then $109.99/year. Renews automatically. Cancel anytime.")
     }
 }

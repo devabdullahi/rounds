@@ -9,11 +9,12 @@
 import { body, HttpError, json, serve } from "../_shared/http.ts";
 import { isTestKey, lookupKey, type Plan, PLANS, stripe } from "../_shared/stripe.ts";
 
-/** Web prices in cents: below the App Store's, since the web has no store fee. */
+/** Web prices in cents: a little under the App Store's, yet each nets more after Stripe's fees than
+ *  the App Store does after Apple's 15% (Small Business Program). */
 const WEB_PRICES: Record<Plan, { cents: number; interval: "week" | "month" | "year"; name: string }> = {
-  weekly: { cents: 699, interval: "week", name: "Rounds Weekly" },
-  monthly: { cents: 1999, interval: "month", name: "Rounds Monthly" },
-  yearly: { cents: 9999, interval: "year", name: "Rounds Yearly" },
+  weekly: { cents: 749, interval: "week", name: "Rounds Weekly" },
+  monthly: { cents: 2299, interval: "month", name: "Rounds Monthly" },
+  yearly: { cents: 10999, interval: "year", name: "Rounds Yearly" },
 };
 
 const WEBHOOK_EVENTS = [
@@ -35,13 +36,17 @@ serve(async (req) => {
   for (const plan of PLANS) {
     // deno-lint-ignore no-explicit-any
     const found = existing.data.find((p: any) => p.lookup_key === lookupKey(plan));
-    if (found) { prices[plan] = `kept ${found.id}`; continue; }
     const spec = WEB_PRICES[plan];
-    const product = await stripe("POST", "/products", { name: spec.name, metadata: { app: "rounds" } });
+    if (found && found.unit_amount === spec.cents && found.recurring?.interval === spec.interval) { prices[plan] = `kept ${found.id}`; continue; }
+    // Stripe prices can't change: a new price takes over the lookup key and the old one is archived.
+    // Existing subscribers keep the price they signed up at.
+    const product = found?.product ?? (await stripe("POST", "/products", { name: spec.name, metadata: { app: "rounds" } })).id;
     const price = await stripe("POST", "/prices", {
-      product: product.id, currency: "usd", unit_amount: spec.cents, recurring: { interval: spec.interval }, lookup_key: lookupKey(plan),
+      product, currency: "usd", unit_amount: spec.cents, recurring: { interval: spec.interval },
+      lookup_key: lookupKey(plan), transfer_lookup_key: true,
     });
-    prices[plan] = `created ${price.id}`;
+    if (found) await stripe("POST", `/prices/${found.id}`, { active: false });
+    prices[plan] = `${found ? "replaced" : "created"} ${price.id}`;
   }
 
   const url = `${Deno.env.get("SUPABASE_URL")}/functions/v1/stripe-webhook`;

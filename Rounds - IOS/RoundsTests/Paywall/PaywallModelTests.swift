@@ -39,8 +39,8 @@ struct PaywallModelTests {
     @Test func theWebOfferMatchesTheSelectedPlan() async {
         let model = PaywallModel(store: MockSubscriptionStore(), web: MockWebBilling())
         await model.loadPlans()
-        #expect(model.webOffer?.displayPrice == "$99.99")
+        #expect(model.webOffer?.displayPrice == "$109.99")
         model.selectedID = "com.abdul.rounds.weekly"
-        #expect(model.webOffer?.displayPrice == "$6.99")
+        #expect(model.webOffer?.displayPrice == "$7.49")
     }
 }

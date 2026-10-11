@@ -9,9 +9,9 @@ actor MockWebBilling: WebBilling {
     }
 
     static let launchPlans = [
-        SubscriptionPlan(id: "web.weekly", period: .week, price: 6.99, displayPrice: "$6.99", currencyCode: "USD", trialDays: nil),
-        SubscriptionPlan(id: "web.monthly", period: .month, price: 19.99, displayPrice: "$19.99", currencyCode: "USD", trialDays: nil),
-        SubscriptionPlan(id: "web.yearly", period: .year, price: 99.99, displayPrice: "$99.99", currencyCode: "USD", trialDays: 3),
+        SubscriptionPlan(id: "web.weekly", period: .week, price: 7.49, displayPrice: "$7.49", currencyCode: "USD", trialDays: nil),
+        SubscriptionPlan(id: "web.monthly", period: .month, price: 22.99, displayPrice: "$22.99", currencyCode: "USD", trialDays: nil),
+        SubscriptionPlan(id: "web.yearly", period: .year, price: 109.99, displayPrice: "$109.99", currencyCode: "USD", trialDays: 3),
     ]
 
     func plans() async throws -> [SubscriptionPlan] { Self.launchPlans }
