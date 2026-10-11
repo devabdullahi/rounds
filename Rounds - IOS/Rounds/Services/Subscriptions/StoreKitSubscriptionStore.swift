@@ -47,6 +47,22 @@ struct StoreKitSubscriptionStore: SubscriptionStore {
         return false
     }
 
+    func activePlan() async -> ActivePlan? {
+        for await result in Transaction.currentEntitlements {
+            guard case .verified(let transaction) = result, Self.productIDs.contains(transaction.productID),
+                  transaction.revocationDate == nil, let end = transaction.expirationDate,
+                  let product = try? await Product.products(for: [transaction.productID]).first,
+                  let unit = product.subscription.flatMap({ Self.period($0.subscriptionPeriod) }) else { continue }
+            var willRenew = true
+            if let status = try? await product.subscription?.status.first,
+               case .verified(let renewal) = status.renewalInfo {
+                willRenew = renewal.willAutoRenew
+            }
+            return ActivePlan(source: .appStore, period: unit, periodEnd: end, isTrial: Self.isFreeTrial(transaction), willRenew: willRenew)
+        }
+        return nil
+    }
+
     func entitlementChanges() -> AsyncStream<Bool> {
         AsyncStream { continuation in
             let task = Task {
@@ -57,6 +73,17 @@ struct StoreKitSubscriptionStore: SubscriptionStore {
             }
             continuation.onTermination = { _ in task.cancel() }
         }
+    }
+
+    func storefrontCountry() async -> String? {
+        await Storefront.current?.countryCode
+    }
+
+    /// Our only introductory offer is the yearly free trial, so before iOS 17.2 (no `offer`) an
+    /// introductory transaction means a trial.
+    private static func isFreeTrial(_ transaction: Transaction) -> Bool {
+        if #available(iOS 17.2, *) { return transaction.offer?.paymentMode == .freeTrial }
+        return transaction.offerType == .introductory
     }
 
     private static func period(_ period: Product.SubscriptionPeriod) -> SubscriptionPlan.Period? {

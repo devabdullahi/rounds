@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#F5F6FB" />
+    <meta name="robots" content="noindex" />
+    <title>Rounds: you're in</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Schibsted+Grotesk:wght@700;800&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="stylesheet" href="./styles.css" />
+    <style>
+      /* Where Stripe sends a student after checkout (or after they back out), on their way back to the app. */
+      .welcome { min-height: 100svh; display: grid; place-items: center; padding: 1.5rem; }
+      .welcome__panel {
+        max-width: 28rem; width: 100%; text-align: center; padding: 2.5rem 1.75rem 2rem;
+        border-radius: 32px; background: var(--mint); box-shadow: inset 0 0 0 1px rgba(2, 153, 87, 0.14);
+      }
+      .welcome__mark { width: 52px; height: 52px; color: var(--accent); }
+      .welcome h1 { margin: 1rem 0 0.6rem; }
+      .welcome p { color: var(--muted); margin: 0 auto 1.6rem; max-width: 22rem; }
+      .welcome .button { width: 100%; justify-content: center; }
+      [hidden] { display: none !important; }
+    </style>
+  </head>
+  <body>
+    <main class="welcome">
+      <div class="welcome__panel">
+        <svg class="welcome__mark" viewBox="150 150 724 724" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M362 248 A88 88 0 0 1 450 160 H574 A88 88 0 0 1 662 248 V362 H776 A88 88 0 0 1 864 450 V574 A88 88 0 0 1 776 662 H662 V776 A88 88 0 0 1 574 864 H450 A88 88 0 0 1 362 776 V662 H248 A88 88 0 0 1 160 574 V450 A88 88 0 0 1 248 362 H362 Z M408 512 A104 104 0 1 0 616 512 A104 104 0 1 0 408 512 Z"/></svg>
+        <div data-state="paid">
+          <h1>You're in.</h1>
+          <p>Your plan is active. Head back to Rounds: your next patient is waiting.</p>
+        </div>
+        <div data-state="cancelled" hidden>
+          <h1>No charge made.</h1>
+          <p>You left checkout before paying. You can pick a plan any time in the app.</p>
+        </div>
+        <div data-state="manage" hidden>
+          <h1>All set.</h1>
+          <p>Your changes are saved. Head back to Rounds when you're ready.</p>
+        </div>
+        <a class="button" href="rounds://paid">Open Rounds</a>
+      </div>
+    </main>
+    <script>
+      // ?paid=1 after checkout, ?cancelled=1 if they backed out, nothing after the billing portal.
+      const query = new URLSearchParams(location.search);
+      const state = query.has("paid") ? "paid" : query.has("cancelled") ? "cancelled" : "manage";
+      document.querySelectorAll("[data-state]").forEach((el) => { el.hidden = el.dataset.state !== state; });
+    </script>
+  </body>
+</html>

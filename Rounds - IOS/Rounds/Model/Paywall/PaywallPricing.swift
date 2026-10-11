@@ -55,9 +55,17 @@ enum PaywallPricing {
         ]
     }
 
-    static func buttonTitle(_ plan: SubscriptionPlan) -> String {
-        if let days = plan.trialDays { return "Start \(days)-day free trial" }
-        return "Continue for \(plan.displayPrice)/\(plan.period.short)"
+    /// The App Store button. "Pay with Apple", not "Apple Pay": App Store billing charges whatever is
+    /// on the Apple Account, and Apple reserves the Apple Pay name for Apple Pay itself.
+    static func appleButtonTitle(_ plan: SubscriptionPlan) -> String {
+        if plan.trialDays != nil { return "Start free trial with Apple" }
+        return "Pay with Apple · \(plan.displayPrice)/\(plan.period.short)"
+    }
+
+    /// The web checkout button (US App Store only), with the web plan's own price.
+    static func webButtonTitle(_ plan: SubscriptionPlan) -> String {
+        if plan.trialDays != nil { return "Start free trial on the website" }
+        return "Pay on the website · \(plan.displayPrice)/\(plan.period.short)"
     }
 
     /// The terms under the button, as Apple asks: price, period, renewal and how to cancel.
@@ -66,6 +74,15 @@ enum PaywallPricing {
             return "Free for \(days) days, then \(plan.displayPrice)/\(plan.period.unit). Renews automatically. Cancel anytime."
         }
         return "\(plan.displayPrice) every \(plan.period.unit). Renews automatically. Cancel anytime."
+    }
+
+    /// The two ways to pay, each with its own terms: "With Apple: … On the website: …".
+    static func finePrint(apple: SubscriptionPlan, web: SubscriptionPlan?) -> String {
+        guard let web else { return finePrint(apple) }
+        func terms(_ plan: SubscriptionPlan) -> String {
+            plan.trialDays.map { "\($0) days free, then \(plan.displayPrice)/\(plan.period.unit)" } ?? "\(plan.displayPrice)/\(plan.period.unit)"
+        }
+        return "With Apple: \(terms(apple)). On the website: \(terms(web)). Renews automatically. Cancel anytime."
     }
 
     /// The headline, from the goal picked in onboarding.

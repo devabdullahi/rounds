@@ -118,16 +118,32 @@ struct PaywallView: View {
 
     private var footer: some View {
         VStack(spacing: 10) {
+            // Two ways to pay, side by side in weight: the App Store, and (US App Store only) Stripe on the web.
             Button {
                 Task { await model.buy() }
             } label: {
-                if model.isWorking { ProgressView().tint(.white) } else { Text(model.selected.map(PaywallPricing.buttonTitle) ?? "Continue") }
+                if model.isWorking { ProgressView().tint(.white) } else { Text(model.selected.map(PaywallPricing.appleButtonTitle) ?? "Continue") }
             }
             .buttonStyle(PrimaryButtonStyle(height: 56))
             .disabled(model.selected == nil || model.isWorking)
 
+            if let web = model.webOffer {
+                Button {
+                    Task { if let url = await model.webCheckoutURL() { openURL(url) } }
+                } label: {
+                    Text(PaywallPricing.webButtonTitle(web))
+                        .font(.system(size: 17, weight: .semibold))
+                        .foregroundStyle(Theme.accentText)
+                        .frame(maxWidth: .infinity, minHeight: 56)
+                        .background(Theme.surface, in: Capsule())
+                        .overlay(Capsule().strokeBorder(Theme.accent, lineWidth: 2))
+                }
+                .buttonStyle(PressableStyle())
+                .disabled(model.isWorking)
+                .accessibilityHint("Opens checkout in Safari. \(web.displayPrice) per \(web.period.unit).")
+            }
             if let plan = model.selected {
-                Text(PaywallPricing.finePrint(plan))
+                Text(PaywallPricing.finePrint(apple: plan, web: model.webOffer))
                     .font(.system(size: 13))
                     .foregroundStyle(Theme.muted)
                     .multilineTextAlignment(.center)
