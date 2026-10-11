@@ -353,42 +353,11 @@ function setupTopbar() {
   window.addEventListener("scroll", update, { passive: true });
 }
 
-/* Where launch-list sign-ups are sent. Set this to a form endpoint (e.g. Formspree) before
- * going live; until then the form says sign-ups aren't open instead of pretending to save. */
-const SIGNUP_ENDPOINT = "";
-
-function setupJoin() {
-  const form = document.querySelector("[data-join]");
-  if (!form) return;
-  const status = form.querySelector("[data-join-status]");
-  const say = (text, error = false) => { status.textContent = text; status.classList.toggle("is-error", error); };
-
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const email = form.email.value.trim();
-    if (!form.email.checkValidity() || !email) return say("Enter an email address like you@school.edu.", true);
-    if (!SIGNUP_ENDPOINT) return say("Sign-ups open soon. Check back in a few days.", true);
-    try {
-      const response = await fetch(SIGNUP_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ email }),
-      });
-      if (!response.ok) throw new Error(String(response.status));
-      form.reset();
-      say("You're on the list. We'll email you when Rounds is out.");
-    } catch {
-      say("That didn't go through. Check your connection and try again.", true);
-    }
-  });
-}
-
 applySprings();
 document.querySelectorAll("[data-ecg]").forEach(startECG);
 setupTopbar();
 setupReveals();
 setupDeck();
-setupJoin();
 setupTilt();
 setupVideos();
 
