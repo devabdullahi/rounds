@@ -3,7 +3,7 @@ import Foundation
 /// Where Settings › About points. Each row shows only once its link exists.
 /// Fill these in before launch: App Store review requires a privacy policy link.
 enum AppLinks {
-    static let supportEmail: String? = "ryroundsapp@gmail.com"
+    static let supportEmail: String? = "tryroundsapp@gmail.com"
     static let privacyPolicy: URL? = URL(string: "https://rounds-2hg.pages.dev/privacy")
     static let terms: URL? = nil
 
