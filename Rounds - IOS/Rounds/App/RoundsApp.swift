@@ -5,6 +5,7 @@ import SwiftUI
 struct RoundsApp: App {
     @State private var app: AppState
     @State private var auth = AuthModel(service: SupabaseService.client.map { LiveAuthService(client: $0) })
+    @State private var paywall: PaywallModel
     @AppStorage(Appearance.storageKey) private var appearance = Appearance.system
     @AppStorage(AuthModel.signedInKey) private var signedIn = false
 
@@ -13,6 +14,7 @@ struct RoundsApp: App {
                            cards: SupabaseService.client.map { LiveCardService(client: $0) },
                            reminders: LocalReminderService())
         _app = State(initialValue: app)
+        _paywall = State(initialValue: PaywallModel(store: Self.subscriptionStore, reminders: LocalReminderService()))
         // Siri and Shortcuts act on the same app state the screens show.
         AppDependencyManager.shared.add { app }
         #if DEBUG
@@ -25,6 +27,14 @@ struct RoundsApp: App {
             RootView()
                 .environment(app)
                 .environment(auth)
+                .environment(paywall)
+                .task {
+                    #if DEBUG
+                    // Debug screens other than the paywall open straight into the app.
+                    if let screen = DebugLaunch.screen, screen != "paywall" { paywall.debugUnlock() }
+                    #endif
+                    await paywall.start()
+                }
                 .task {
                     await auth.restore()
                     #if DEBUG
@@ -39,10 +49,19 @@ struct RoundsApp: App {
         }
     }
 
+    /// The App Store, or offline plans on the paywall debug screen.
+    private static var subscriptionStore: any SubscriptionStore {
+        #if DEBUG
+        if DebugLaunch.screen == "paywall" { return MockSubscriptionStore() }
+        #endif
+        return StoreKitSubscriptionStore()
+    }
+
     /// Signed-out screens (welcome, sign up, onboarding) are designed for light mode; signed in,
     /// the student's choice, or nil to follow the system.
     private var colorScheme: ColorScheme? {
-        guard signedIn else { return .light }
+        // The paywall sits between onboarding and the app, so it keeps onboarding's light look.
+        guard signedIn, paywall.isEntitled == true else { return .light }
         switch appearance {
         case .system: return nil
         case .light: return .light
