@@ -345,7 +345,12 @@ final class AppState {
         guard !showcasing, hasLoadedRecord else { return }
         let statuses = BadgeCatalog.status(for: badgeRecord)
         guard let seen = seenBadges else {
-            markSeen(statuses.filter(\.unlocked).map(\.id))
+            // First check for this account: what it already holds is recorded quietly, except a
+            // brand-new account's welcome badge, which is the one unlock it should see.
+            let isNew = graded.isEmpty
+            let quiet = statuses.filter { $0.unlocked && !(isNew && $0.id == BadgeCatalog.beginningID) }
+            markSeen(quiet.map(\.id))
+            pendingUnlocks += statuses.filter { isNew && $0.unlocked && $0.id == BadgeCatalog.beginningID }
             return
         }
         let new = BadgeCatalog.newlyUnlocked(statuses, seen: seen)
@@ -375,6 +380,12 @@ final class AppState {
         let locked = BadgeCatalog.status(for: badgeRecord).filter { !$0.unlocked }
         guard let pick = (locked.isEmpty ? BadgeCatalog.status(for: badgeRecord) : locked).randomElement() else { return }
         pendingUnlocks.append(pick.asUnlocked())
+    }
+
+    /// Plays one badge's unlock by id (the badge-unlock-beginning screen).
+    func debugUnlock(_ id: String) {
+        guard let status = BadgeCatalog.status(for: badgeRecord).first(where: { $0.id == id }) else { return }
+        pendingUnlocks.append(status.asUnlocked())
     }
     #endif
 

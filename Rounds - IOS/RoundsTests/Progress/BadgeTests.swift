@@ -8,9 +8,9 @@ struct BadgeTests {
         BadgeCatalog.status(for: record).first { $0.badge.id == id }
     }
 
-    @Test func noOneStartsWithABadge() {
+    @Test func everyAccountStartsWithOnlyBeginning() {
         let fresh = BadgeRecord(rating: AppState.residentFloor, bestStreak: 0, cases: [])
-        #expect(BadgeCatalog.status(for: fresh).filter(\.unlocked).isEmpty)
+        #expect(BadgeCatalog.status(for: fresh).filter(\.unlocked).map(\.id) == [BadgeCatalog.beginningID])
     }
 
     @Test func lockedBadgesShowProgress() {
@@ -36,7 +36,7 @@ struct BadgeTests {
     @Test func newUnlocksSkipSeenOnesAndPlayRarestFirst() {
         let record = BadgeRecord(rating: 2100, bestStreak: 0, cases: [])
         let statuses = BadgeCatalog.status(for: record)
-        let new = BadgeCatalog.newlyUnlocked(statuses, seen: ["silver"])
+        let new = BadgeCatalog.newlyUnlocked(statuses, seen: ["silver", BadgeCatalog.beginningID])
         // Platinum also completes the rating-tiers set; legendary cards play before the epic Gold.
         #expect(Set(new.prefix(2).map(\.badge.id)) == ["platinum", "set-tier"])
         #expect(new.last?.badge.id == "gold")
@@ -66,10 +66,10 @@ struct BadgeTests {
         #expect(status("rotation-tour", BadgeRecord(rating: 1000, bestStreak: 0, cases: cases))?.current == 2)
     }
 
-    @Test func thereAre54CardsWithUniqueIDs() {
-        #expect(BadgeCatalog.individual.count == 47)
-        #expect(BadgeCatalog.all.count == 54)
-        #expect(Set(BadgeCatalog.all.map(\.id)).count == 54)
+    @Test func thereAre55CardsWithUniqueIDs() {
+        #expect(BadgeCatalog.individual.count == 48)
+        #expect(BadgeCatalog.all.count == 55)
+        #expect(Set(BadgeCatalog.all.map(\.id)).count == 55)
         for group in Badge.Group.allCases {
             #expect(BadgeCatalog.all.contains { $0.group == group }, "\(group) has badges")
         }
