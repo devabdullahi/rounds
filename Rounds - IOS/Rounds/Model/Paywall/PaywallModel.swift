@@ -3,10 +3,13 @@ import Observation
 
 /// The subscription gate. Knows whether the student may use the app, loads the plans and buys one.
 /// The app opens only while `isEntitled` is true; until the first check it's nil and nothing shows.
+/// A plan counts from either source: the App Store (StoreKit) or the server (a web plan via Stripe).
 @MainActor
 @Observable
 final class PaywallModel {
     private(set) var plans: [SubscriptionPlan] = []
+    /// The same plans on the web, cheaper; empty outside the US App Store or before they load.
+    private(set) var webPlans: [SubscriptionPlan] = []
     var selectedID: String?
     /// Nil until the store has answered once.
     private(set) var isEntitled: Bool?
@@ -14,11 +17,22 @@ final class PaywallModel {
     var problem: String?
 
     private let store: any SubscriptionStore
+    private let web: (any WebBilling)?
     private let reminders: (any ReminderService)?
+    /// Apple's answer, kept apart so a StoreKit update can't hide a web plan (or the reverse).
+    private var storeEntitled = false
+    private var webEntitled = false
 
-    init(store: any SubscriptionStore, reminders: (any ReminderService)? = nil) {
+    init(store: any SubscriptionStore, web: (any WebBilling)? = nil, reminders: (any ReminderService)? = nil) {
         self.store = store
+        self.web = web
         self.reminders = reminders
+    }
+
+    /// The web version of the selected plan, offered as "Pay on the web".
+    var webOffer: SubscriptionPlan? {
+        guard let selected else { return nil }
+        return webPlans.first { $0.period == selected.period }
     }
 
     var selected: SubscriptionPlan? { plans.first { $0.id == selectedID } }
@@ -30,11 +44,22 @@ final class PaywallModel {
 
     /// Checks access, loads the plans, then follows entitlement changes for as long as the app runs.
     func start() async {
-        isEntitled = await store.isEntitled()
+        await refresh()
         await loadPlans()
         for await entitled in store.entitlementChanges() {
-            isEntitled = entitled
+            storeEntitled = entitled
+            isEntitled = storeEntitled || webEntitled
         }
+    }
+
+    /// Asks both sources again: on launch, on return from the web checkout, and when the app comes back.
+    func refresh() async {
+        storeEntitled = await store.isEntitled()
+        webEntitled = await web?.hasActivePlan() ?? false
+        #if DEBUG
+        if debugUnlocked { return }
+        #endif
+        isEntitled = storeEntitled || webEntitled
     }
 
     func loadPlans() async {
@@ -45,6 +70,10 @@ final class PaywallModel {
         } catch {
             problem = "Couldn't load the plans. Check your connection and try again."
         }
+        // Apple allows linking out to a web checkout only on the US App Store.
+        if let web, await store.storefrontCountry() == "USA" {
+            webPlans = (try? await web.plans()) ?? []
+        }
     }
 
     func buy() async {
@@ -54,6 +83,7 @@ final class PaywallModel {
         do {
             switch try await store.purchase(plan.id) {
             case .purchased:
+                storeEntitled = true
                 isEntitled = true
                 if let days = plan.trialDays { await remindBeforeBilling(plan, trialDays: days) }
             case .pending:
@@ -72,7 +102,7 @@ final class PaywallModel {
         defer { isWorking = false }
         do {
             try await store.restore()
-            isEntitled = await store.isEntitled()
+            await refresh()
             if isEntitled == false { problem = "No active subscription was found for this Apple Account." }
         } catch {
             problem = "Couldn't reach the App Store. Try again in a moment."
@@ -88,8 +118,25 @@ final class PaywallModel {
             body: "Your \(plan.period.unit) starts at \(plan.displayPrice). Cancel in Settings before then to pay nothing.")
     }
 
+    /// The Stripe Checkout page for the selected plan, to open in Safari.
+    func webCheckoutURL() async -> URL? {
+        guard let web, let plan = webOffer, !isWorking else { return nil }
+        isWorking = true
+        defer { isWorking = false }
+        do {
+            return try await web.checkoutURL(for: plan.period)
+        } catch {
+            problem = error.localizedDescription
+            return nil
+        }
+    }
+
     #if DEBUG
     /// Debug screens other than the paywall open straight into the app.
-    func debugUnlock() { isEntitled = true }
+    private var debugUnlocked = false
+    func debugUnlock() {
+        debugUnlocked = true
+        isEntitled = true
+    }
     #endif
 }

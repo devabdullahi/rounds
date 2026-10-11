@@ -30,5 +30,7 @@ actor MockSubscriptionStore: SubscriptionStore {
 
     func isEntitled() async -> Bool { entitled }
 
+    func storefrontCountry() async -> String? { "USA" }
+
     nonisolated func entitlementChanges() -> AsyncStream<Bool> { AsyncStream { $0.finish() } }
 }

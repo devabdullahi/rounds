@@ -1,0 +1,30 @@
+import Foundation
+
+/// Web plans at the launch web prices, for previews, tests and the paywall debug screen.
+actor MockWebBilling: WebBilling {
+    private let active: Bool
+
+    init(active: Bool = false) {
+        self.active = active
+    }
+
+    static let launchPlans = [
+        SubscriptionPlan(id: "web.weekly", period: .week, price: 6.99, displayPrice: "$6.99", currencyCode: "USD", trialDays: nil),
+        SubscriptionPlan(id: "web.monthly", period: .month, price: 19.99, displayPrice: "$19.99", currencyCode: "USD", trialDays: nil),
+        SubscriptionPlan(id: "web.yearly", period: .year, price: 99.99, displayPrice: "$99.99", currencyCode: "USD", trialDays: 3),
+    ]
+
+    func plans() async throws -> [SubscriptionPlan] { Self.launchPlans }
+
+    func checkoutURL(for plan: SubscriptionPlan.Period) async throws -> URL {
+        guard let url = URL(string: "https://checkout.stripe.com/test") else { throw URLError(.badURL) }
+        return url
+    }
+
+    func portalURL() async throws -> URL {
+        guard let url = URL(string: "https://billing.stripe.com/test") else { throw URLError(.badURL) }
+        return url
+    }
+
+    func hasActivePlan() async -> Bool { active }
+}

@@ -59,6 +59,10 @@ struct StoreKitSubscriptionStore: SubscriptionStore {
         }
     }
 
+    func storefrontCountry() async -> String? {
+        await Storefront.current?.countryCode
+    }
+
     private static func period(_ period: Product.SubscriptionPeriod) -> SubscriptionPlan.Period? {
         switch (period.unit, period.value) {
         case (.week, 1): .week

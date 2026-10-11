@@ -513,3 +513,18 @@ sender_name = "Rounds"
 [remotes.production.auth.rate_limit]
 # SES handles volume; Supabase's own cap is per hour across the project.
 email_sent = 200
+
+# Web payments (Stripe). Billing verifies the student's token; the webhook is called by Stripe (no
+# JWT) and trusts nothing it's sent; setup is admin-only by the service role key.
+[functions.stripe-billing]
+enabled = true
+verify_jwt = true
+
+[functions.stripe-webhook]
+enabled = true
+verify_jwt = false
+
+[functions.stripe-setup]
+enabled = true
+verify_jwt = false
+

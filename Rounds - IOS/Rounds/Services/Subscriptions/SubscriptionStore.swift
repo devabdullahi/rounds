@@ -12,4 +12,6 @@ protocol SubscriptionStore: Sendable {
     func isEntitled() async -> Bool
     /// The entitlement again whenever a transaction changes it (renewal, refund, a purchase elsewhere).
     func entitlementChanges() -> AsyncStream<Bool>
+    /// The App Store country ("USA"); paying on the web is offered only where Apple allows linking out.
+    func storefrontCountry() async -> String?
 }

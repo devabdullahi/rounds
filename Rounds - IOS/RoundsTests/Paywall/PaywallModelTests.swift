@@ -29,4 +29,18 @@ struct PaywallModelTests {
         #expect(model.isEntitled != true)
         #expect(model.problem == nil)
     }
+
+    @Test func aWebPlanOpensTheAppToo() async {
+        let model = PaywallModel(store: MockSubscriptionStore(), web: MockWebBilling(active: true))
+        await model.refresh()
+        #expect(model.isEntitled == true)
+    }
+
+    @Test func theWebOfferMatchesTheSelectedPlan() async {
+        let model = PaywallModel(store: MockSubscriptionStore(), web: MockWebBilling())
+        await model.loadPlans()
+        #expect(model.webOffer?.displayPrice == "$99.99")
+        model.selectedID = "com.abdul.rounds.weekly"
+        #expect(model.webOffer?.displayPrice == "$6.99")
+    }
 }

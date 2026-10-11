@@ -126,6 +126,19 @@ struct PaywallView: View {
             .buttonStyle(PrimaryButtonStyle(height: 56))
             .disabled(model.selected == nil || model.isWorking)
 
+            if let web = model.webOffer {
+                // US App Store only: the same plan through Stripe Checkout in Safari, without the store fee.
+                Button {
+                    Task { if let url = await model.webCheckoutURL() { openURL(url) } }
+                } label: {
+                    Text("Or pay on the web: \(web.displayPrice)/\(web.period.short)")
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundStyle(Theme.accentText)
+                        .frame(maxWidth: .infinity, minHeight: 44)
+                }
+                .disabled(model.isWorking)
+                .accessibilityHint("Opens checkout in Safari")
+            }
             if let plan = model.selected {
                 Text(PaywallPricing.finePrint(plan))
                     .font(.system(size: 13))
