@@ -32,6 +32,8 @@ actor MockSubscriptionStore: SubscriptionStore {
 
     func storefrontCountry() async -> String? { "USA" }
 
+    func isPreRelease() async -> Bool { false }
+
     func activePlan() async -> ActivePlan? {
         entitled ? ActivePlan(source: .appStore, period: .year, periodEnd: .now.addingTimeInterval(3 * 86_400), isTrial: true, willRenew: true) : nil
     }

@@ -56,6 +56,11 @@ final class PaywallModel {
 
     /// Asks both sources again: on launch, on return from the web checkout, and when the app comes back.
     func refresh() async {
+        // Testing: TestFlight and Xcode installs go straight in; only App Store installs need a plan.
+        if await store.isPreRelease() {
+            isEntitled = true
+            return
+        }
         let storePlan = await store.activePlan()
         let webPlan = await web?.activePlan()
         storeEntitled = await store.isEntitled()

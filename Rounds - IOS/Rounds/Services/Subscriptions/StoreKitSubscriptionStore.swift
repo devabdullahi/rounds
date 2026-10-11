@@ -75,6 +75,18 @@ struct StoreKitSubscriptionStore: SubscriptionStore {
         }
     }
 
+    func isPreRelease() async -> Bool {
+        #if DEBUG
+        // Run from Xcode: always testing, even without an Apple Account to fetch the install record.
+        return true
+        #else
+        // Apple signs every install; its environment says where it came from. Unverifiable or
+        // unavailable counts as the App Store, so a failure never opens the app for free.
+        guard let result = try? await AppTransaction.shared, case .verified(let transaction) = result else { return false }
+        return transaction.environment != .production
+        #endif
+    }
+
     func storefrontCountry() async -> String? {
         await Storefront.current?.countryCode
     }

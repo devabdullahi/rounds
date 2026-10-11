@@ -16,4 +16,7 @@ protocol SubscriptionStore: Sendable {
     func entitlementChanges() -> AsyncStream<Bool>
     /// The App Store country ("USA"); paying on the web is offered only where Apple allows linking out.
     func storefrontCountry() async -> String?
+    /// True for a build not installed from the App Store (TestFlight, or run from Xcode), which skips
+    /// the paywall while Rounds is in testing.
+    func isPreRelease() async -> Bool
 }
