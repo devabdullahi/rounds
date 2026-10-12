@@ -14,12 +14,28 @@ enum SuperwallService {
 
     /// Starts Superwall once, at launch. Does nothing without a key.
     @MainActor static func configure() {
-        guard !Superwall.isInitialized,
+        // Unit tests run inside the app; they must not start Superwall or touch the network.
+        guard ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil,
+              !Superwall.isInitialized,
               let key = Bundle.main.object(forInfoDictionaryKey: "SuperwallAPIKey") as? String,
               key.hasPrefix("pk_") else { return }
         let options = SuperwallOptions()
         options.storeKitVersion = .storeKit2
         Superwall.configure(apiKey: key, options: options)
+    }
+
+    /// Opens Superwall's own links (on-device paywall previews from the dashboard, which arrive on
+    /// the rounds:// scheme). False for any other link, which the app handles itself.
+    @MainActor static func handle(_ url: URL) -> Bool {
+        guard Superwall.isInitialized else { return false }
+        return Superwall.handleDeepLink(url)
+    }
+
+    /// Audience targeting: the exam the student said they're studying for ("step2CK"). Nothing
+    /// personal (no name or email) goes to Superwall.
+    @MainActor static func setStudyGoal(_ goal: String) {
+        guard Superwall.isInitialized else { return }
+        Superwall.shared.setUserAttributes(["study_goal": goal.isEmpty ? nil : goal])
     }
 
     /// Ties purchases and analytics to the Rounds account, or forgets the last one on sign-out.
