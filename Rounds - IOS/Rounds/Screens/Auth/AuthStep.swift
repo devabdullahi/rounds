@@ -1,9 +1,8 @@
 import SwiftUI
 import Observation
 
-/// Signed-out steps. Email sign-up and log in go through `code`; an account that hasn't finished
-/// onboarding then runs intro → studyGoal → focus → promise before entering the app.
+/// Signed-out steps past the welcome screen. Signing in is Apple or Google from the welcome sheet;
+/// onboarding (intro → study goal → focus → account → promise) is the one pushed step.
 enum AuthStep: Hashable {
-    case signIn, signUp, onboarding
-    case code(email: String)
+    case onboarding
 }

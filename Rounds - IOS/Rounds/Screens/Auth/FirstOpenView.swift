@@ -3,12 +3,12 @@ import SwiftUI
 /* ─────────────────────────────────────────────────────────
  * ANIMATION STORYBOARD · Welcome (differential narrowing)
  *
- * Every signed-out launch. Light mode. Two states: welcome, then the sign-up sheet.
+ * Every signed-out launch. Light mode. Two states: welcome, then the log-in sheet.
  *
  * Intro
  *    0ms   heart trace draws left → right (1400ms, ease in-out)
  *  300ms   headline rises, y 12 → 0
- *  500ms   "Let's go" rises
+ *  500ms   "Log in" rises, "First time?" with it
  *
  * Differential loop (one case at a time, forever)
  *    0ms   case summary fades up ("54 · chest pain · sweating · HR 104")
@@ -20,14 +20,15 @@ import SwiftUI
  *  +500ms  the answer turns green, grows 1.12×, check slides in
  *  +2.4s   hold, then everything fades out (350ms) and the next case starts
  *
- * "Let's go" tapped: headline + button fade; sheet springs up over a scrim.
+ * "Log in" tapped: headline + buttons fade; sheet (Apple, Google) springs up over a scrim.
+ * "First time?" tapped: onboarding pushes in; the account is made near its end.
  * Tap the scrim or drag the sheet's handle down: back to welcome.
  * Reduce Motion: first case shown solved, no loop, no trace draw.
  * ───────────────────────────────────────────────────────── */
 
 private enum TIMING {
     static let headline = 0.30   // headline rises
-    static let cta      = 0.50   // "Let's go" rises
+    static let cta      = 0.50   // "Log in" rises
 }
 
 private enum TRACE {
@@ -90,9 +91,12 @@ private let slots: [(trailing: Bool, inset: CGFloat, y: CGFloat)] = [
 ]
 private let answerY: CGFloat = 218
 
+/// The signed-out welcome: a returning student logs in with Apple or Google; a new one taps
+/// "First time?" and makes their account during onboarding.
 struct FirstOpenView: View {
-    var onSignUp: () -> Void
-    var onLogIn: () -> Void
+    /// The provider whose sheet is open; both buttons wait while it is.
+    var signingInWith: SocialProvider?
+    var onFirstTime: () -> Void
     var onSocial: (SocialProvider) -> Void
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -167,10 +171,25 @@ struct FirstOpenView: View {
                     .fixedSize(horizontal: false, vertical: true)
                     .rise(shown && !showAuth, at: showAuth ? 0 : TIMING.headline)
 
-                Button("Let's go") { open() }
-                    .buttonStyle(PrimaryButtonStyle(height: 54, tint: Theme.welcomeGreen))
-                    .rise(shown && !showAuth, at: showAuth ? 0 : TIMING.cta)
-                    .allowsHitTesting(!showAuth)
+                VStack(spacing: 6) {
+                    Button("Log in") { open() }
+                        .buttonStyle(PrimaryButtonStyle(height: 54, tint: Theme.welcomeGreen))
+
+                    Button(action: onFirstTime) {
+                        HStack(spacing: 6) {
+                            Text("First time?")
+                            AppIcon(.arrowRight, size: 16)
+                        }
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundStyle(Theme.accentText)
+                        .frame(maxWidth: .infinity, minHeight: 44)
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(PressDownStyle())
+                    .accessibilityLabel("First time? Get started")
+                }
+                .rise(shown && !showAuth, at: showAuth ? 0 : TIMING.cta)
+                .allowsHitTesting(!showAuth)
             }
             .padding(.horizontal, 24)
             .padding(.bottom, 8)
@@ -219,27 +238,7 @@ struct FirstOpenView: View {
                 .contentShape(Rectangle())
                 .gesture(dragToClose)
 
-            Button("Sign up", action: onSignUp)
-                .buttonStyle(PrimaryButtonStyle(height: 54, tint: Theme.welcomeGreen))
-
-            Button(action: onLogIn) {
-                Text("Log in").frame(maxWidth: .infinity, minHeight: 54)
-            }
-            .modifier(OutlineCapsule())
-
-            OrDivider(text: "or").padding(.vertical, 4)
-
-            Button { onSocial(.apple) } label: {
-                providerLabel("Continue with Apple") {
-                    Image(systemName: "apple.logo").font(.system(size: 19, weight: .medium)).offset(y: -1)
-                }
-            }
-            .modifier(OutlineCapsule())
-
-            Button { onSocial(.google) } label: {
-                providerLabel("Continue with Google") { GoogleLogo(size: 18) }
-            }
-            .modifier(OutlineCapsule())
+            ProviderButtons(busy: signingInWith, onSelect: onSocial)
 
             Text("For practice only. Fictional patients, not medical advice.")
                 .font(.system(size: 12))
@@ -256,15 +255,6 @@ struct FirstOpenView: View {
                 .shadow(color: .black.opacity(0.10), radius: 30, y: -10)
                 .ignoresSafeArea(edges: .bottom)
         }
-    }
-
-    /// Provider rows share one icon column on the leading edge; the label stays centered.
-    private func providerLabel<Icon: View>(_ title: String, @ViewBuilder icon: () -> Icon) -> some View {
-        ZStack {
-            HStack { icon().frame(width: 22, height: 22); Spacer() }.padding(.leading, 20)
-            Text(title)
-        }
-        .frame(maxWidth: .infinity, minHeight: 54)
     }
 
     private var dragToClose: some Gesture {
@@ -415,18 +405,5 @@ private struct AnswerChip: View {
         .shadow(color: Theme.welcomeGreen.opacity(picked ? 0.3 : 0), radius: 14, y: 8)
         .scaleEffect(picked ? 1.12 : 1)
         .fixedSize()
-    }
-}
-
-/// Outlined capsule for the secondary sign-up options.
-private struct OutlineCapsule: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .font(.system(size: 17, weight: .semibold))
-            .foregroundStyle(Theme.text)
-            .background(Theme.surface, in: Capsule())
-            .overlay(Capsule().strokeBorder(Theme.border))
-            .contentShape(Capsule())
-            .buttonStyle(PressDownStyle())
     }
 }

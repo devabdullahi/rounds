@@ -1,32 +1,26 @@
 import SwiftUI
 import Observation
 
-/// Signed-out shell: welcome, sign up, log in and onboarding, over real accounts (AuthModel).
-/// A new account goes through onboarding (intro pages, study goal, focus, promise); a returning one goes straight in.
+/// Signed-out shell: welcome and onboarding, over real accounts (AuthModel). Accounts are Apple or
+/// Google only. "First time?" runs onboarding and makes the account inside it; logging in with an
+/// account that never finished onboarding runs it too. A returning account goes straight in.
 struct AuthFlowView: View {
     @Environment(AuthModel.self) private var auth
     @State private var router = AuthRouter()
 
     var body: some View {
         NavigationStack(path: $router.path) {
-            // Everyone signed out lands on the welcome screen; its sheet branches to
-            // sign up, email log in, or Apple/Google.
+            // Everyone signed out lands on the welcome screen: log in (Apple/Google), or first time.
             FirstOpenView(
-                onSignUp: { router.go(.signUp) },
-                onLogIn: { router.go(.signIn) },
+                signingInWith: auth.signingInWith,
+                onFirstTime: { router.go(.onboarding) },
                 onSocial: { provider in Task { await continueWith(provider) } }
             )
             .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(for: AuthStep.self) { step in
-                Group {
-                    switch step {
-                    case .signIn: SignInView()
-                    case .signUp: SignUpView()
-                    case .onboarding: OnboardingView()
-                    case .code(let email): EmailCodeView(email: email)
-                    }
+                switch step {
+                case .onboarding: OnboardingView().toolbar(.hidden, for: .navigationBar)
                 }
-                .toolbar(.hidden, for: .navigationBar)
             }
         }
         .environment(router)

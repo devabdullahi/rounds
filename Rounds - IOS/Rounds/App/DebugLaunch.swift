@@ -2,9 +2,9 @@
 import SwiftUI
 
 /// Dev-only deep link for screenshots: launch with `-screen <name>`.
-/// Names: firstopen, firstopen-auth, signin, signup, onboarding (focus), onboarding-intro, onboarding-graded,
-/// onboarding-promise, onboarding-graph, onboarding-goal, onboarding-to-goal, onboarding-heart, onboarding-promised, email-code,
-/// email-code-error, focus-system, focus-sheet, home, patients, patients-open, profile, brief, interview, examine, workup, diagnosis, debrief, diagnosis-suggest.
+/// Names: firstopen, firstopen-auth, onboarding (focus), onboarding-account, onboarding-intro, onboarding-graded,
+/// onboarding-promise, onboarding-graph, onboarding-goal, onboarding-to-goal, onboarding-heart, onboarding-promised,
+/// focus-system, focus-sheet, home, patients, patients-open, profile, brief, interview, examine, workup, diagnosis, debrief, diagnosis-suggest.
 enum DebugLaunch {
     static var screen: String? { UserDefaults.standard.string(forKey: "screen") }
 
@@ -14,10 +14,10 @@ enum DebugLaunch {
         return v > 0 ? v : nil
     }
 
-    private static let authScreens = ["firstopen", "firstopen-auth", "signin", "signup", "onboarding", "focus-system", "google-signin",
+    private static let authScreens = ["firstopen", "firstopen-auth", "onboarding", "focus-system", "google-signin",
                                       "onboarding-intro", "onboarding-graded", "onboarding-promise", "onboarding-graph",
-                                      "onboarding-goal", "onboarding-to-goal", "onboarding-heart", "onboarding-promised",
-                                      "email-code", "email-code-error"]
+                                      "onboarding-goal", "onboarding-to-goal", "onboarding-account", "onboarding-heart",
+                                      "onboarding-promised"]
 
     /// Runs before the first frame so the root picks the right side (auth vs app).
     static func prepareDefaults() {
@@ -40,12 +40,9 @@ enum DebugLaunch {
 
     static var authPath: [AuthStep] {
         switch screen {
-        case "signin", "google-signin": [.signIn]
-        case "signup": [.signUp]
-        case "email-code", "email-code-error": [.signIn, .code(email: "maya@school.edu")]
         case "onboarding-intro", "onboarding-graded", "onboarding-promise", "onboarding-graph",
              "onboarding-goal", "onboarding-to-goal", "onboarding", "focus-system",
-             "onboarding-heart", "onboarding-promised": [.signUp, .onboarding]
+             "onboarding-account", "onboarding-heart", "onboarding-promised": [.onboarding]
         default: []
         }
     }
