@@ -22,7 +22,7 @@ struct RootView: View {
                 // Signed in, the app opens only with an active plan; until the store answers, nothing shows.
                 switch paywall.isEntitled {
                 case true?: MainTabsView().transition(.opacity)
-                case false?: PaywallView(model: paywall).transition(.opacity)
+                case false?: GateView(model: paywall).transition(.opacity)
                 case nil: Theme.bg.ignoresSafeArea()
                 }
             } else {
