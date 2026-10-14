@@ -83,7 +83,7 @@ async function writeCase(userId: string, profile: Profile, clerkships: string[],
   let problems: string[] = [];
   for (let attempt = 0; attempt < WRITE_ATTEMPTS; attempt++) {
     try {
-      writing = await completeJSON<Writing>(CASE_WRITER, user, 7000);
+      writing = await completeJSON<Writing>(CASE_WRITER, user, 7000, { task: "case" });
       problems = checkWriting(writing, plan, terms);
     } catch (error) {
       problems = [`reply unusable: ${(error as Error).message.slice(0, 200)}`];
@@ -97,7 +97,7 @@ async function writeCase(userId: string, profile: Profile, clerkships: string[],
   }
 
   const caseId = await save(userId, profile, clerkships, systems, synonyms, plan, neutralIds(writing), focus, background?.id ?? null);
-  return json({ case_id: caseId, model: currentModel() });
+  return json({ case_id: caseId, model: currentModel("case") });
 }
 
 /** A synthetic background for the planned patient, or null when none fits or the table can't be
@@ -181,7 +181,7 @@ async function save(userId: string, profile: Profile, clerkships: string[], syst
           insert into private.case_content (case_id, facts, exam, tests, answer_key, condition_slug, severity, persona, rubric, focus, background_id)
           values (${id}, ${tx.json(w.facts)}, ${tx.json(w.maneuvers)}, ${tx.json(tests)},
             ${tx.json({ diagnosis: profile.triage.name, accepted: acceptedNames(profile.teaching.accepted_names, synonyms) })},
-            ${profile.slug}, ${plan.severity}, ${tx.json({ ...w.persona, name: w.patient.name, age: plan.age, sex: plan.sex, pregnant: plan.pregnant, model: currentModel(), prompt_version: PROMPT_VERSION })},
+            ${profile.slug}, ${plan.severity}, ${tx.json({ ...w.persona, name: w.patient.name, age: plan.age, sex: plan.sex, pregnant: plan.pregnant, model: currentModel("case"), prompt_version: PROMPT_VERSION })},
             ${tx.json(buildRubric(profile, plan, w, tests))}, ${focus.stored}, ${backgroundId})`;
       });
       return id;
