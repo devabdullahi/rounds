@@ -55,7 +55,7 @@ Every test on the menu needs a price and wait (USD (0 for free bedside items), s
 
 Return JSON:
 {
-  "patient": {"name": "First Last", "quote": "what they say walking in", "demeanor": "how they look and act, 3–6 words", "setting": "where they're seen, e.g. 'Walk-in, emergency department'", "complaint": "door note: who they are and the chief complaint with its duration, as a triage nurse would write it. No pertinent negatives, history details or diagnosis; the student finds those out"},
+  "patient": {"name": "First Last", "quote": "what they say walking in", "demeanor": "how they look and act, 3–6 words", "setting": "where they're seen, e.g. 'Walk-in, emergency department'", "complaint": "door note, under 20 words, as a triage nurse writes it (for a psychology intake, the referral line): age, sex, the chief complaint in plain terms and its duration (e.g. '30-year-old man with abdominal pain for 18 hours'). Leave out how it changed, associated symptoms, history and anything that points to the diagnosis; the student finds those out by asking"},
   "persona": {"voice": "how they talk", "background": "job, family, context in 1–2 sentences", "fallback": "what they say, in character, when a question makes no sense to them"},
   "facts": [{"id": "snake_case", "label": "2–4 word topic shown when revealed, e.g. 'onset'", "reply": "patient's answer", "importance": "essential|important|optional", "screens_for": "a must-not-miss name from the list, or null"}],
   "suggested": [{"text": "a one-tap question", "fact": "fact id"}],

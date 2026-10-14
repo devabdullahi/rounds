@@ -51,7 +51,7 @@ TRIAGE_OUT = OUT / "triage.jsonl"
 EXAMPLE = json.loads((KB / "schema" / "examples" / "acute-appendicitis.json").read_text())
 
 # Bump when a prompt changes so regenerated profiles can be told apart.
-PROMPT_VERSION = "11"
+PROMPT_VERSION = "12"
 TRIAGE_BATCH = 20
 BACKGROUND_LIMIT = 9000
 
