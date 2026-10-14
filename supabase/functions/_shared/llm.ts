@@ -25,13 +25,14 @@ type Setting = { model: string; effort: Effort };
  *  answer is cut off after the reasoning (finish_reason "length", empty content). */
 const REASONING_BUDGET: Record<Exclude<Effort, "off">, number> = { low: 2000, high: 8000, max: 16000 };
 
-/** DeepSeek per task: the cheap fast model where speed matters and facts come from the case
- *  (patient chat, the reply check, flashcards); the large model where the output is clinical truth. */
+/** DeepSeek per task: the cheap fast model where speed matters and the facts are already decided
+ *  (patient chat, the reply check, case writing, flashcards); the large model where the output is
+ *  clinical truth or a judgment (profiles, grading). */
 const DEEPSEEK_TASKS: Record<Task, Setting> = {
   patient: { model: "deepseek-flash", effort: "off" },
   check: { model: "deepseek-flash", effort: "off" },
   cards: { model: "deepseek-flash", effort: "off" },
-  case: { model: "deepseek-v4-pro", effort: "off" },
+  case: { model: "deepseek-flash", effort: "off" }, // facts come from the profile; 16-20 s vs ~40 s on v4-pro
   grade: { model: "deepseek-v4-pro", effort: "high" },
   // Low, not high: one stage must finish inside prepare-profile's 140 s. tools/kb-generate runs high.
   profile: { model: "deepseek-v4-pro", effort: "low" },

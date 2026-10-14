@@ -1,7 +1,7 @@
 import { assert, assertEquals } from "jsr:@std/assert@1";
 import { leakTerms, planCase, type Profile } from "../_shared/casegen.ts";
 import { seeded } from "../_shared/labs.ts";
-import { buildRubric, checkWriting, neutralIds, type Writing, writerPrompt } from "./writer.ts";
+import { applyFixes, buildRubric, checkWriting, fixPrompt, leakSpots, neutralIds, type Writing, writerPrompt } from "./writer.ts";
 
 const dir = new URL("../../../knowledge-base/profiles/", import.meta.url);
 let profile: Profile | null = null;
@@ -114,4 +114,50 @@ Deno.test("a leak names the field it's in, so the retry can fix it", () => {
   const problem = checkWriting(w, plan, terms).find((p) => p.startsWith("reveals the diagnosis")) ?? "";
   assert(problem.includes(`fact ${w.facts[4].id} reply`), problem);
   assert(!problem.includes("patient quote"), problem);
+});
+
+Deno.test("leak spots name each field that reveals the diagnosis", () => {
+  const w = goodWriting();
+  w.facts[2].reply = `The doctor said it might be ${terms[0]}.`;
+  w.maneuvers[0].finding = `Classic for ${terms[0]}`;
+  const { leaked, where } = leakSpots(w, terms);
+  assert(leaked.length > 0);
+  assertEquals(where, [`fact ${w.facts[2].id} reply`, `maneuver ${w.maneuvers[0].id} finding`]);
+});
+
+Deno.test("the fix prompt carries only the leaking lines and the names to avoid", () => {
+  const w = goodWriting();
+  w.patient.quote = `I think it's ${terms[0]}.`;
+  const prompt = fixPrompt(w, ["patient quote"], [terms[0]]);
+  assert(prompt.includes(JSON.stringify(terms[0])));
+  assert(prompt.includes(`"where":"patient quote"`));
+  assert(!prompt.includes(w.facts[0].reply));
+});
+
+Deno.test("fixes land in the field they name; unknown, blank or bad fixes are ignored", () => {
+  const w = goodWriting();
+  const fixed = applyFixes(w, [
+    { where: "patient quote", text: "My side hurts." },
+    { where: `fact ${w.facts[1].id} reply`, text: "Since Tuesday." },
+    { where: "suggested question 1", text: "When did it start?" },
+    { where: `maneuver ${w.maneuvers[0].id} finding`, text: "Tender to touch." },
+    { where: "fact nope reply", text: "ignored" },
+    { where: "patient complaint", text: "   " },
+    { where: "patient demeanor", text: 7 as unknown as string },
+  ]);
+  assertEquals(fixed.patient.quote, "My side hurts.");
+  assertEquals(fixed.facts[1].reply, "Since Tuesday.");
+  assertEquals(fixed.suggested[0].text, "When did it start?");
+  assertEquals(fixed.maneuvers[0].finding, "Tender to touch.");
+  assertEquals(fixed.patient.complaint, w.patient.complaint);
+  assertEquals(fixed.patient.demeanor, w.patient.demeanor);
+  assertEquals(w.patient.quote, "I don't feel right.", "the original is untouched");
+});
+
+Deno.test("a leak fixed by rewording passes the checks again", () => {
+  const w = goodWriting();
+  w.facts[0].reply = `My sister had ${terms[0]} too.`;
+  assert(checkWriting(w, plan, terms).some((p) => p.startsWith("reveals the diagnosis")));
+  const { where } = leakSpots(w, terms);
+  assertEquals(checkWriting(applyFixes(w, where.map((at) => ({ where: at, text: "My sister had something similar." }))), plan, terms), []);
 });

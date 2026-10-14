@@ -97,24 +97,64 @@ export function checkWriting(w: Writing, plan: CasePlan, terms: string[]): strin
       problems.push(`test_meta for ${t.id} out of range`);
     }
   }
-  // Each student-visible field with where it sits, so a leak can be pointed at precisely: the model
-  // fixes "fact uti_history reply" far more reliably than "somewhere in the case".
-  const fields: [string, string | undefined][] = [
+  const visible = visibleFields(w).map(([, text]) => text ?? "").join(" \n ");
+  // Synthetic backgrounds arrive in SNOMED CT wording, which is licensed and never reaches the app.
+  const coded = [...`${visible} \n ${w.persona?.background ?? ""}`.matchAll(SNOMED_TAG)].map((m) => m[0].trim());
+  if (coded.length) problems.push(`uses coding wording (${[...new Set(coded)].join(", ")}); say it in the patient's own words`);
+  const { leaked, where } = leakSpots(w, terms);
+  if (leaked.length) {
+    problems.push(`reveals the diagnosis (${leaked.join(", ")}) in: ${where.join("; ")}. Reword those fields without naming the diagnosis or any of its names (the patient describes symptoms, not what they think they have); the student must work it out`);
+  }
+  return problems;
+}
+
+/** Each student-visible field with where it sits, so a leak can be pointed at precisely: the model
+ *  fixes "fact uti_history reply" far more reliably than "somewhere in the case". */
+function visibleFields(w: Writing): [string, string | undefined][] {
+  return [
     ["patient quote", w.patient?.quote], ["patient complaint", w.patient?.complaint], ["patient demeanor", w.patient?.demeanor],
     ...(w.facts ?? []).flatMap((f): [string, string][] => [[`fact ${f.id} label`, f.label], [`fact ${f.id} reply`, f.reply]]),
     ...(w.suggested ?? []).map((s, i): [string, string] => [`suggested question ${i + 1}`, s.text]),
     ...(w.maneuvers ?? []).flatMap((m): [string, string][] => [[`maneuver ${m.id} title`, m.title], [`maneuver ${m.id} finding`, m.finding]]),
   ];
-  const visible = fields.map(([, text]) => text ?? "").join(" \n ");
-  const leaked = leaks(visible, terms);
-  const leakedIn = fields.filter(([, text]) => leaks(text ?? "", leaked).length).map(([where]) => where);
-  // Synthetic backgrounds arrive in SNOMED CT wording, which is licensed and never reaches the app.
-  const coded = [...`${visible} \n ${w.persona?.background ?? ""}`.matchAll(SNOMED_TAG)].map((m) => m[0].trim());
-  if (coded.length) problems.push(`uses coding wording (${[...new Set(coded)].join(", ")}); say it in the patient's own words`);
-  if (leaked.length) {
-    problems.push(`reveals the diagnosis (${leaked.join(", ")}) in: ${leakedIn.join("; ")}. Reword those fields without naming the diagnosis or any of its names (the patient describes symptoms, not what they think they have); the student must work it out`);
+}
+
+/** The diagnosis names a writing reveals, and the fields that reveal them. */
+export function leakSpots(w: Writing, terms: string[]): { leaked: string[]; where: string[] } {
+  const fields = visibleFields(w);
+  const leaked = leaks(fields.map(([, text]) => text ?? "").join(" \n "), terms);
+  return { leaked, where: fields.filter(([, text]) => leaks(text ?? "", leaked).length).map(([where]) => where) };
+}
+
+/** Asks for new wording of only the leaking fields: a few lines back in 2–3 s, where rewriting the
+ *  whole case takes 15–20 s and can leak somewhere else. */
+export function fixPrompt(w: Writing, where: string[], leaked: string[]): string {
+  const current = new Map(visibleFields(w));
+  return `Names that must not appear: ${JSON.stringify(leaked)}
+Lines to rewrite: ${JSON.stringify(where.map((at) => ({ where: at, text: current.get(at) ?? "" })))}`;
+}
+
+/** The writing with each fix applied to the field it names; fixes for fields that don't exist are ignored. */
+export function applyFixes(w: Writing, fixes: { where: string; text: string }[]): Writing {
+  const out: Writing = structuredClone(w);
+  for (const { where, text } of fixes) {
+    if (typeof text !== "string" || !text.trim()) continue;
+    let m: RegExpMatchArray | null;
+    if (where === "patient quote") out.patient.quote = text;
+    else if (where === "patient complaint") out.patient.complaint = text;
+    else if (where === "patient demeanor") out.patient.demeanor = text;
+    else if ((m = where.match(/^fact (\S+) (label|reply)$/))) {
+      const fact = out.facts.find((f) => f.id === m![1]);
+      if (fact) fact[m[2] as "label" | "reply"] = text;
+    } else if ((m = where.match(/^suggested question (\d+)$/))) {
+      const s = out.suggested[Number(m[1]) - 1];
+      if (s) s.text = text;
+    } else if ((m = where.match(/^maneuver (\S+) (title|finding)$/))) {
+      const maneuver = out.maneuvers.find((x) => x.id === m![1]);
+      if (maneuver) maneuver[m[2] as "title" | "finding"] = text;
+    }
   }
-  return problems;
+  return out;
 }
 
 /** Replaces the writer's descriptive ids ("diffuse_rhonchi") with neutral ones, since the app

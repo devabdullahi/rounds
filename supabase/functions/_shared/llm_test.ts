@@ -23,7 +23,7 @@ Deno.test("each DeepSeek task gets its model and effort", () => {
     ["patient", "deepseek-flash", "off"],
     ["check", "deepseek-flash", "off"],
     ["cards", "deepseek-flash", "off"],
-    ["case", "deepseek-v4-pro", "off"],
+    ["case", "deepseek-flash", "off"],
     ["grade", "deepseek-v4-pro", "high"],
     ["profile", "deepseek-v4-pro", "low"],
   ];
