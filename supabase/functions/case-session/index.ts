@@ -310,6 +310,7 @@ ${quoted(differential.join("; ") || "(none)")}
 ${quoted(plan || "(none)")}
 </student_plan>`,
     200,
+    { effort: "high" },
   );
   return {
     // The model may only widen the match to a close synonym of one committed answer; it can never

@@ -8,7 +8,8 @@ Put your keys in `tools/kb-generate/.env` (git-ignored; template in `.env.exampl
 
 ```
 LLM_PROVIDER=deepseek          # deepseek | anthropic | openai | mock
-# LLM_MODEL=deepseek-chat      # optional override
+# LLM_MODEL=deepseek-v4-pro    # optional override (deepseek-flash is cheaper)
+# LLM_EFFORT=high              # off | low | high | max; DeepSeek reasoning effort
 DEEPSEEK_API_KEY=sk-...
 UMLS_API_KEY=...               # SNOMED CT checks (terminology.py)
 ```

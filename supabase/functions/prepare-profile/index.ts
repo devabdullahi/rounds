@@ -110,7 +110,7 @@ async function attempt(job: Job, condition: { triage: Json; background: string }
   const user = stagePrompt(job.stage, condition.triage.name, condition.background, profile, job.feedback);
   let reply: Json;
   try {
-    reply = await completeJSON<Json>(SYSTEM_PROMPT, user, MAX_TOKENS, TEMPERATURE, TIMEOUT_MS);
+    reply = await completeJSON<Json>(SYSTEM_PROMPT, user, MAX_TOKENS, { temperature: TEMPERATURE, timeoutMs: TIMEOUT_MS });
   } catch (error) {
     if (error instanceof SyntaxError) return { output: {}, errors: [`reply unusable: ${error.message}`], repairs: [] };
     throw error;
