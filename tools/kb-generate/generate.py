@@ -321,8 +321,10 @@ def validate(profile: dict) -> list[str]:
 
 
 def save(profile: dict, stage_errors: list[str], repairs: list[str] | None = None) -> None:
-    """Validates and writes a profile, judged on the saved content after repairs."""
-    repairs = (repairs or []) + repair(profile)
+    """Validates and writes a profile, judged on the saved content after repairs.
+
+    Repair notes are kept once each: a stage's retry and the final pass can report the same fix."""
+    repairs = list(dict.fromkeys((repairs or []) + repair(profile)))
     current = validate(profile)
     term_errors, term_notes = term_summary(profile)
     errors = sorted(set(current + term_errors))  # judged on what's saved; stage errors only explain the retries
