@@ -1,0 +1,1008 @@
+{
+  "schema_version": "0.2",
+  "slug": "peripheral-arterial-disease",
+  "triage": {
+    "name": "Peripheral Arterial Disease",
+    "case_suitable": true,
+    "reason": "Common atherosclerotic disease presenting with intermittent claudication; diagnosis reachable by history, vascular exam and ankle-brachial index, with clear risk-factor counseling.",
+    "kind": "disease",
+    "category": "atherosclerotic vascular disease",
+    "organ_systems": [
+      "cardiovascular"
+    ],
+    "primary_clerkship": "internalMedicine",
+    "secondary_clerkships": [
+      "surgery",
+      "familyMedicine"
+    ],
+    "commonness": "common",
+    "settings": [
+      "clinic",
+      "inpatient"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:19:24Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:14:28Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:16:20Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:38:52Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:39:30Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:40:10Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "exam: term 'Prolonged capillary refill' not found in SNOMED CT",
+        "exam: term 'Calf tenderness' not found in SNOMED CT",
+        "exam: term 'Skin warmth' not found in SNOMED CT",
+        "differential lumbar-spinal-stenosis: no profile yet",
+        "differential chronic-venous-insufficiency: no profile yet",
+        "differential peripheral-neuropathy: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 55,
+      "typical_max": 80,
+      "peak": "60–80",
+      "possible_min": 30,
+      "possible_max": 100
+    },
+    "sex": "male_predominant",
+    "demographics": [
+      "More common in older adults, with prevalence rising sharply after age 60",
+      "More common in men than women, especially before age 70",
+      "Higher prevalence in people who smoke, have diabetes, or have chronic kidney disease"
+    ],
+    "risk_factors": [
+      {
+        "text": "Cigarette smoking",
+        "strength": "strong"
+      },
+      {
+        "text": "Diabetes mellitus",
+        "strength": "strong"
+      },
+      {
+        "text": "Older age",
+        "strength": "strong"
+      },
+      {
+        "text": "Hypertension",
+        "strength": "moderate"
+      },
+      {
+        "text": "Hyperlipidemia",
+        "strength": "moderate"
+      },
+      {
+        "text": "Chronic kidney disease",
+        "strength": "moderate"
+      },
+      {
+        "text": "Known coronary or cerebrovascular atherosclerosis",
+        "strength": "moderate"
+      }
+    ],
+    "comorbidities": [
+      "Coronary artery disease",
+      "Cerebrovascular disease",
+      "Diabetes mellitus",
+      "Hypertension",
+      "Hyperlipidemia",
+      "Chronic kidney disease"
+    ],
+    "family_history": [
+      "First-degree relative with peripheral arterial disease",
+      "First-degree relative with coronary artery disease"
+    ],
+    "social_history": [
+      "Tobacco smoking (current or former)",
+      "Sedentary lifestyle"
+    ],
+    "exposures": [],
+    "risk_medications": []
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "My legs cramp up when I walk and stop when I rest",
+        "frequency": "almost_always",
+        "term": "Intermittent claudication",
+        "snomed_verified": true
+      }
+    ],
+    "hpi": {
+      "onset": "Gradual, over months to years; often first noticed when walking farther or faster",
+      "duration": "Weeks to months at presentation; symptoms are usually stable or slowly worsening",
+      "progression": "Pain comes on after a predictable walking distance, resolves within minutes of rest, and returns with the same amount of effort; over time the pain may appear at shorter distances or occur at rest if severe",
+      "location": "Calf most often; may involve the thigh, hip, or buttock if the iliac arteries are narrowed",
+      "radiation": "Usually none; may be felt as an aching that spreads upward from the calf",
+      "quality": "Cramping, aching, heaviness, fatigue, or numbness in the leg muscles",
+      "severity": "Moderate enough to force stopping; often 4–7/10 during walking, then resolves",
+      "timing": "Only with exertion; absent at rest unless critical limb ischemia has developed",
+      "aggravating": [
+        "Walking or climbing stairs",
+        "Walking uphill",
+        "Walking faster or carrying heavy objects"
+      ],
+      "relieving": [
+        "Stopping and resting",
+        "Standing still for a few minutes"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Leg feels numb or weak during walking",
+          "frequency": "sometimes",
+          "term": "Numbness of lower limb",
+          "snomed_verified": true
+        },
+        {
+          "text": "Feet feel cold",
+          "frequency": "sometimes",
+          "term": "Cold foot",
+          "snomed_verified": true
+        },
+        {
+          "text": "Trouble getting or keeping an erection",
+          "frequency": "sometimes",
+          "term": "Erectile dysfunction",
+          "snomed_verified": true
+        },
+        {
+          "text": "Foot pain at night that improves when hanging the leg down",
+          "frequency": "rare",
+          "term": "Pain in foot",
+          "snomed_verified": true
+        },
+        {
+          "text": "Nonhealing sore on the foot or toe",
+          "frequency": "rare",
+          "term": "Ulcer of foot",
+          "snomed_verified": true
+        }
+      ],
+      "pertinent_negatives": [
+        "Back pain radiating down both legs",
+        "Joint pain, redness, or swelling",
+        "Leg swelling or calf tenderness after immobility",
+        "Fever or warmth over the leg",
+        "Color changes of the fingers triggered by cold",
+        "Pain that is unchanged by activity or worse with joint movement"
+      ]
+    },
+    "ros": [
+      {
+        "system": "cardiovascular",
+        "positives": [
+          {
+            "text": "Leg pain or cramping with walking",
+            "frequency": "almost_always",
+            "term": "Intermittent claudication",
+            "snomed_verified": true
+          },
+          {
+            "text": "Feet feel cold",
+            "frequency": "sometimes",
+            "term": "Cold foot",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Chest pain",
+          "Palpitations",
+          "Syncope"
+        ],
+        "argues_against": [
+          "Unilateral leg swelling with warmth"
+        ]
+      },
+      {
+        "system": "musculoskeletal",
+        "positives": [
+          {
+            "text": "Legs feel heavy or tired after walking",
+            "frequency": "common",
+            "term": "Muscle fatigue",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Joint pain",
+          "Joint swelling",
+          "Muscle tenderness"
+        ],
+        "argues_against": [
+          "Pain reproduced by palpation or joint movement",
+          "Morning stiffness or joint swelling"
+        ]
+      },
+      {
+        "system": "skin",
+        "positives": [
+          {
+            "text": "Leg hair is thinning",
+            "frequency": "rare",
+            "term": "Hair loss",
+            "snomed_verified": true
+          },
+          {
+            "text": "Shiny or thin skin on the lower legs",
+            "frequency": "rare",
+            "term": "Atrophy of skin",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Rash",
+          "Itching",
+          "Bruising"
+        ],
+        "argues_against": [
+          "Widespread rash",
+          "Warm, red, swollen leg"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Leg numbness with walking",
+            "frequency": "sometimes",
+            "term": "Numbness of lower limb",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Bowel or bladder dysfunction",
+          "Saddle anesthesia",
+          "Back pain that shoots down the leg"
+        ],
+        "argues_against": [
+          "Bilateral radicular leg pain with prolonged standing",
+          "Saddle numbness with urinary retention"
+        ]
+      },
+      {
+        "system": "reproductive",
+        "positives": [
+          {
+            "text": "Trouble getting or keeping an erection",
+            "frequency": "sometimes",
+            "term": "Erectile dysfunction",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Testicular pain",
+          "Penile discharge"
+        ],
+        "argues_against": []
+      }
+    ],
+    "atypical": [
+      {
+        "population": "diabetes",
+        "how_it_differs": "Neuropathy may blunt the typical exertional pain, so patients may present instead with a painless foot ulcer, rest pain, or gangrene without much prior claudication.",
+        "missing_classic_features": [
+          "Typical exertional leg pain",
+          "Pain localized to the calf"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "They may attribute the pain to aging or have limited walking from other conditions, so classic claudication may be absent or unrecognized until tissue loss or rest pain develops.",
+        "missing_classic_features": [
+          "Clear exertional leg cramping",
+          "Pain that forces them to stop walking"
+        ]
+      },
+      {
+        "population": "obesity",
+        "how_it_differs": "Decreased mobility may hide exertional leg pain, and discomfort may be localized to the hips or thighs rather than the calves.",
+        "missing_classic_features": [
+          "Calf claudication with a clear walking limit"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Comfortable at rest; appears well, walks with a normal gait for short distances.",
+      "moderate": "Comfortable at rest; may limp or stop after walking a fixed distance because of claudication.",
+      "severe": "May appear uncomfortable at rest if rest pain is present; may keep the leg hanging down or rub the foot.",
+      "critical": "Ill-appearing if gangrene or infected ulcer is present; may be pale, diaphoretic, or show signs of sepsis."
+    },
+    "findings": [
+      {
+        "id": "weak-pedal-pulses",
+        "region": "extremities",
+        "maneuver": "Palpate dorsalis pedis and posterior tibial pulses bilaterally.",
+        "finding": "Diminished or absent pedal pulses",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "essential",
+        "term": "Weak pulse",
+        "snomed_verified": true
+      },
+      {
+        "id": "femoral-bruit",
+        "region": "extremities",
+        "maneuver": "Auscultate over the femoral arteries in the groin.",
+        "finding": "Bruit over the femoral artery",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Arterial bruit",
+        "snomed_verified": true
+      },
+      {
+        "id": "cool-foot",
+        "region": "extremities",
+        "maneuver": "Feel the dorsum of the foot and compare with the other side.",
+        "finding": "Cool foot or lower leg compared with the other side",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Cold foot",
+        "snomed_verified": true
+      },
+      {
+        "id": "skin-atrophy",
+        "region": "skin",
+        "maneuver": "Inspect the skin of the lower legs and feet.",
+        "finding": "Hair loss, shiny atrophic skin",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Atrophy of skin",
+        "snomed_verified": true
+      },
+      {
+        "id": "elevation-pallor",
+        "region": "extremities",
+        "maneuver": "Elevate the leg to about 60 degrees for 1 minute.",
+        "finding": "Foot becomes pale with elevation",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Pallor of skin",
+        "snomed_verified": true
+      },
+      {
+        "id": "dependent-rubor",
+        "region": "extremities",
+        "maneuver": "Lower the leg from an elevated position and observe the foot.",
+        "finding": "Foot becomes dusky red or purple when dependent",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Erythema of skin",
+        "snomed_verified": true
+      },
+      {
+        "id": "prolonged-capillary-refill",
+        "region": "extremities",
+        "maneuver": "Press the nail bed of the great toe and release.",
+        "finding": "Capillary refill >3 seconds",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Prolonged capillary refill",
+        "snomed_verified": false
+      },
+      {
+        "id": "gangrene",
+        "region": "skin",
+        "maneuver": "Inspect the feet and toes.",
+        "finding": "Ischemic ulcer, dry gangrene, or tissue loss",
+        "frequency": "rare",
+        "min_severity": "critical",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Gangrene",
+        "snomed_verified": true
+      },
+      {
+        "id": "calf-tenderness-neutral",
+        "region": "extremities",
+        "maneuver": "Palpate the calf gently.",
+        "finding": "No calf tenderness or cord suggesting deep vein thrombosis",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential",
+        "term": "Calf tenderness",
+        "snomed_verified": false
+      },
+      {
+        "id": "joint-swelling-neutral",
+        "region": "musculoskeletal",
+        "maneuver": "Inspect and palpate the knee and ankle joints.",
+        "finding": "No joint effusion, warmth, or tenderness suggesting arthritis",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential",
+        "term": "Joint swelling",
+        "snomed_verified": true
+      },
+      {
+        "id": "skin-warmth-neutral",
+        "region": "skin",
+        "maneuver": "Feel the skin over the lower legs.",
+        "finding": "No warmth or erythema suggesting cellulitis",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Skin warmth",
+        "snomed_verified": false
+      },
+      {
+        "id": "muscle-weakness-neutral",
+        "region": "neuro",
+        "maneuver": "Test lower-extremity strength, sensation, and reflexes.",
+        "finding": "No motor weakness, sensory loss, or reflex asymmetry suggesting neurogenic claudication",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Muscle weakness",
+        "snomed_verified": true
+      }
+    ]
+  },
+  "vitals": {},
+  "labs": [],
+  "imaging": [
+    {
+      "study": "Duplex ultrasound of the lower extremity arteries",
+      "modality": "ultrasound",
+      "preferred_when": "Initial imaging choice for PAD; avoids radiation and iodinated contrast",
+      "findings": [
+        {
+          "text": "Stenosis or occlusion in femoropopliteal or tibial arteries",
+          "frequency": "common"
+        },
+        {
+          "text": "Monophasic or dampened distal Doppler waveforms",
+          "frequency": "common"
+        },
+        {
+          "text": "Visible atherosclerotic plaque with narrowed lumen",
+          "frequency": "common"
+        },
+        {
+          "text": "Noncompressible, heavily calcified vessel segment limiting assessment",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "CT angiography of the lower extremities",
+      "modality": "ct",
+      "preferred_when": "Anatomic mapping before revascularization or when duplex is nondiagnostic",
+      "findings": [
+        {
+          "text": "Segmental arterial stenosis ≥ 50% or occlusion",
+          "frequency": "common"
+        },
+        {
+          "text": "Heavy arterial calcification",
+          "frequency": "common"
+        },
+        {
+          "text": "Collateral vessels bypassing occlusions",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Thrombus within arterial aneurysm",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "MR angiography of the lower extremities",
+      "modality": "mri",
+      "preferred_when": "Contrast allergy or renal impairment when noncontrast time-of-flight technique is used",
+      "findings": [
+        {
+          "text": "Segmental arterial stenosis or occlusion",
+          "frequency": "common"
+        },
+        {
+          "text": "Collateral vessel formation",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Catheter angiography of the lower extremities",
+      "modality": "xray",
+      "preferred_when": "Invasive gold standard; usually performed when endovascular intervention is planned",
+      "findings": [
+        {
+          "text": "Precise focal stenosis or occlusion with runoff assessment",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Filling defect from thrombus",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Plain radiograph of the lower extremities",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Medial artery calcification",
+          "frequency": "sometimes"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "Ankle-brachial index (ABI)",
+        "why": "First-line noninvasive test to screen for and diagnose PAD; ABI ≤ 0.90 confirms PAD."
+      },
+      {
+        "test": "lipids",
+        "why": "Fasting lipid profile to identify and manage dyslipidemia."
+      },
+      {
+        "test": "a1c",
+        "why": "Screen for diabetes as a major risk factor."
+      },
+      {
+        "test": "bmp",
+        "why": "Assess renal function before contrast imaging or revascularization."
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Duplex ultrasound of the lower extremity arteries",
+        "why": "Confirms the location and severity of arterial stenosis without radiation."
+      }
+    ],
+    "supporting": [
+      {
+        "test": "CT angiography of the lower extremities",
+        "why": "Provides detailed anatomy for revascularization planning.",
+        "only_if": "revascularization is being considered or duplex is nondiagnostic"
+      },
+      {
+        "test": "MR angiography of the lower extremities",
+        "why": "Alternative to CT angiography when contrast is contraindicated.",
+        "only_if": "contrast allergy or severe renal impairment and revascularization planning"
+      },
+      {
+        "test": "Catheter angiography of the lower extremities",
+        "why": "Invasive gold standard for precise anatomy.",
+        "only_if": "endovascular intervention is planned"
+      },
+      {
+        "test": "Toe-brachial index",
+        "why": "Useful when ABI is falsely elevated due to noncompressible vessels.",
+        "only_if": "diabetes or suspected medial calcification"
+      },
+      {
+        "test": "Segmental limb pressures",
+        "why": "Helps localize the level of stenosis.",
+        "only_if": "ABI abnormal and localization needed before revascularization"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Plain radiograph of the lower extremities",
+        "why": "Shows only calcification and does not diagnose PAD."
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in evaluating chronic peripheral arterial disease."
+      },
+      {
+        "test": "Venous duplex ultrasound of the lower extremities",
+        "why": "Not indicated unless venous obstruction is suspected."
+      }
+    ],
+    "decision_points": [
+      "Check ABI before and after exercise if resting ABI is normal but symptoms strongly suggest PAD.",
+      "Pregnancy test before CT angiography in anyone who could be pregnant.",
+      "Avoid gadolinium in severe renal impairment if MR angiography is considered.",
+      "Evaluate for critical limb ischemia if rest pain, nonhealing ulcer, or gangrene is present."
+    ],
+    "criteria": [
+      {
+        "name": "Ankle-brachial index diagnostic threshold",
+        "summary": "ABI ≤ 0.90 at rest indicates PAD; values 0.91–0.99 are borderline; ABI > 1.40 suggests noncompressible vessels.",
+        "items": [
+          "ABI measured with Doppler in both arms and ankles",
+          "ABI ≤ 0.90 at rest",
+          "Toe-brachial index ≤ 0.70 if ABI unreliable"
+        ]
+      }
+    ],
+    "scores": []
+  },
+  "differential": [
+    {
+      "name": "Acute limb ischemia",
+      "slug": "acute-limb-ischemia",
+      "why_considered": "Sudden severe leg pain with a cold, pulseless limb can mimic severe PAD",
+      "must_not_miss": true,
+      "trigger": "Sudden onset leg pain plus absent pulses, pallor, or neurologic deficits in the leg",
+      "discriminators": {
+        "history": [
+          "Sudden onset over minutes to hours, not chronic exertional pain",
+          "History of atrial fibrillation, recent myocardial infarction, or arterial embolism",
+          "Known peripheral arterial disease with abrupt worsening of symptoms"
+        ],
+        "exam": [
+          "Pallor, pulselessness, poikilothermia",
+          "Paresthesia, paralysis, or mottling",
+          "Pain out of proportion"
+        ],
+        "imaging": [
+          "CT angiography may show arterial occlusion",
+          "Conventional angiography for emergent revascularization"
+        ],
+        "ecg": [
+          "Atrial fibrillation or acute myocardial infarction as an embolic source"
+        ]
+      }
+    },
+    {
+      "name": "Deep vein thrombosis",
+      "slug": "deep-vein-thrombosis",
+      "why_considered": "Unilateral leg pain, swelling, and heaviness can suggest vascular disease",
+      "must_not_miss": true,
+      "trigger": "Unilateral leg swelling with calf tenderness and risk factors for thrombosis",
+      "discriminators": {
+        "history": [
+          "Acute or subacute unilateral leg swelling",
+          "Risk factors: recent surgery, immobility, cancer, estrogen use",
+          "Pain is constant, not relieved by rest"
+        ],
+        "exam": [
+          "Unilateral edema",
+          "Calf tenderness or palpable cord",
+          "Warmth"
+        ],
+        "labs": [
+          "Elevated D-dimer, though nonspecific"
+        ],
+        "imaging": [
+          "Venous duplex shows noncompressible vein"
+        ]
+      }
+    },
+    {
+      "name": "Neurogenic claudication",
+      "slug": "lumbar-spinal-stenosis",
+      "why_considered": "Bilateral leg pain with walking that improves with rest resembles PAD claudication",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Pain better with leaning forward or sitting, worse with standing upright",
+          "Bilateral buttock, thigh, or calf numbness or weakness",
+          "Symptoms may improve when walking uphill",
+          "Longer relief period than PAD"
+        ],
+        "exam": [
+          "Normal foot pulses",
+          "Neurologic deficits after walking",
+          "Symptoms reproduced by prolonged standing or lumbar extension"
+        ],
+        "imaging": [
+          "Lumbar spine MRI shows central canal or foraminal stenosis"
+        ]
+      }
+    },
+    {
+      "name": "Chronic venous insufficiency",
+      "slug": "chronic-venous-insufficiency",
+      "why_considered": "Leg heaviness, aching, and skin changes can suggest vascular disease",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Leg heaviness or aching worsened by prolonged standing",
+          "Improves with leg elevation",
+          "Often worse at end of day"
+        ],
+        "exam": [
+          "Edema, varicose veins, hemosiderin discoloration",
+          "Venous stasis ulcers over medial malleolus",
+          "Pulses normal"
+        ],
+        "imaging": [
+          "Venous duplex shows reflux or obstruction"
+        ]
+      }
+    },
+    {
+      "name": "Peripheral neuropathy",
+      "slug": "peripheral-neuropathy",
+      "why_considered": "Foot numbness, burning, or pain can be mistaken for PAD",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Stocking-glove numbness or burning",
+          "Symptoms not strictly exertional",
+          "Often with history of diabetes, alcohol use, or B12 deficiency"
+        ],
+        "exam": [
+          "Decreased sensation to monofilament or vibration",
+          "Absent ankle reflexes",
+          "Pulses may be normal or diminished due to coexisting PAD"
+        ],
+        "labs": [
+          "May check HbA1c, B12, or TSH if neuropathy suspected"
+        ]
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Asymptomatic or mild claudication only after walking more than 400 meters; ABI 0.70 to 0.90. May not seek care.",
+      "moderate": "Claudication after 100 to 400 meters, causing predictable stops; pulses and skin findings often mildly reduced but no rest pain or tissue loss.",
+      "severe": "Rest pain, usually in the forefoot or toes, worse at night and improved by hanging the foot; ABI often below 0.40; no tissue loss yet.",
+      "critical": "Critical limb ischemia with ischemic rest pain, nonhealing ulcer, or gangrene; imminent limb loss or sepsis from infected gangrene."
+    },
+    "red_flags": [
+      {
+        "finding": "Sudden onset leg pain with pallor, pulselessness, poikilothermia, paresthesia, or paralysis",
+        "meaning": "Acute limb ischemia; immediate vascular evaluation needed"
+      },
+      {
+        "finding": "Rest pain or night pain in the foot",
+        "meaning": "Critical limb ischemia; urgent assessment and revascularization"
+      },
+      {
+        "finding": "Nonhealing ulcer or gangrene",
+        "meaning": "Critical limb ischemia with infection and amputation risk"
+      },
+      {
+        "finding": "Fever, hypotension, or malodorous drainage from a foot ulcer",
+        "meaning": "Sepsis from infected gangrene"
+      },
+      {
+        "finding": "ABI greater than 1.40 in a patient with suspected PAD",
+        "meaning": "Noncompressible vessels; need toe pressures or alternative imaging"
+      }
+    ],
+    "complications": [
+      {
+        "name": "Acute limb ischemia",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Sudden worsening pain",
+          "Acute pallor and absent pulses",
+          "New paresthesia or paralysis",
+          "Embolic source on ECG or history"
+        ]
+      },
+      {
+        "name": "Nonhealing arterial ulcer",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Trauma to the foot",
+          "Rest pain",
+          "Dry eschar with poor granulation",
+          "No healing over weeks"
+        ]
+      },
+      {
+        "name": "Gangrene",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Black or mummified toes",
+          "Wet gangrene with crepitus",
+          "Malodorous drainage",
+          "Systemic signs of infection"
+        ]
+      },
+      {
+        "name": "Amputation",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Persistent critical limb ischemia",
+          "Failed revascularization",
+          "Extensive tissue loss"
+        ]
+      },
+      {
+        "name": "Systemic sepsis from wet gangrene",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Fever",
+          "Hypotension",
+          "Malodorous, purulent foot wound"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "diabetes",
+        "differences": "Neuropathy may mask claudication, so patients may present with painless foot ulcers, rest pain, or gangrene without typical exertional pain. Medial calcification can falsely elevate ABI, so toe-brachial index is often needed."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Symptoms may be attributed to aging or limited by reduced mobility, so classic claudication may be absent or unrecognized until rest pain or tissue loss develops. They also have more severe diffuse disease at diagnosis."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "Higher prevalence of PAD and more severe arterial calcification. Contrast for CT angiography is riskier, so duplex ultrasound or noncontrast MR angiography may be preferred, and toe pressures can help when ABI is unreliable."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "When you walk, where do you feel the pain or cramping?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Calf, thigh, or buttock muscle discomfort brought on by exertion"
+      },
+      {
+        "question": "How far can you walk before it starts, and is it the same distance each time?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Predictable walking distance; worse with hills or faster pace"
+      },
+      {
+        "question": "What happens to the pain when you stop and rest?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Relief within minutes of standing still"
+      },
+      {
+        "question": "Does the pain ever wake you at night or happen when you are sitting still?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Rest pain or night pain; suggests critical limb ischemia"
+      },
+      {
+        "question": "Have you noticed any sores or wounds on your feet or toes that are not healing?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Nonhealing ulcer or gangrene; critical limb ischemia"
+      },
+      {
+        "question": "Have you ever had sudden severe leg pain with a cold, pale, or numb leg?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Acute limb ischemia; immediate evaluation"
+      },
+      {
+        "question": "Do you smoke or have you smoked cigarettes in the past?",
+        "category": "social",
+        "importance": "essential",
+        "looking_for": "Current or former smoking; strongest modifiable risk factor"
+      },
+      {
+        "question": "Do you have diabetes, high blood pressure, high cholesterol, or kidney disease?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Major atherosclerotic risk factors"
+      },
+      {
+        "question": "Have you had a heart attack, stroke, or blockages in your heart or neck arteries?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Known systemic atherosclerosis"
+      },
+      {
+        "question": "Are your feet often cold, or is one foot cooler than the other?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Reduced arterial perfusion"
+      },
+      {
+        "question": "Have you noticed less hair on your legs or shiny skin over your shins?",
+        "category": "associated",
+        "importance": "optional",
+        "looking_for": "Chronic ischemic skin changes"
+      },
+      {
+        "question": "Does your leg pain or numbness improve when you sit down or lean forward?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Relief with flexion suggests neurogenic claudication, not PAD"
+      },
+      {
+        "question": "Do you have any back pain, swelling in one leg, or calf tenderness?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Spinal stenosis or DVT as alternative causes"
+      },
+      {
+        "question": "For men: any difficulty getting or keeping an erection?",
+        "category": "sexual",
+        "importance": "optional",
+        "looking_for": "Erectile dysfunction; indicator of aortoiliac disease"
+      }
+    ],
+    "accepted_names": [
+      "Peripheral arterial disease",
+      "Peripheral artery disease",
+      "PAD"
+    ],
+    "reasoning_points": [
+      "Exertional cramping in a large muscle group that begins after a predictable distance and resolves within minutes of rest",
+      "Risk factors for atherosclerosis, including smoking and diabetes",
+      "Diminished or absent pedal pulses with cool skin or trophic changes",
+      "Ankle-brachial index ≤ 0.90 confirms PAD",
+      "No evidence of acute limb ischemia or critical limb ischemia",
+      "Neurogenic claudication, DVT, chronic venous insufficiency, and neuropathy considered and excluded",
+      "Duplex ultrasound localizes stenosis"
+    ],
+    "difficulty": {
+      "easy": [
+        "Older adult smoker with classic calf claudication after two blocks",
+        "Diminished pedal pulses and no rest pain",
+        "ABI clearly below 0.90"
+      ],
+      "medium": [
+        "Diabetic with noncompressible vessels and painless ulcer or atypical pain; toe-brachial index needed",
+        "Coexisting lumbar spinal stenosis with bilateral leg pain that improves with leaning forward",
+        "Claudication in hip or thigh from iliac disease rather than calf"
+      ],
+      "hard": [
+        "Critical limb ischemia presenting with rest pain and gangrene, requiring urgent revascularization",
+        "Elderly patient with limited mobility and no classic claudication, found after nonhealing ulcer",
+        "Suspected acute limb ischemia superimposed on chronic PAD with sudden worsening",
+        "Painless ischemia in neuropathy with medial calcification making ABI falsely normal"
+      ]
+    }
+  }
+}

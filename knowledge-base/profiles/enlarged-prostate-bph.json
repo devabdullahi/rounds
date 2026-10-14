@@ -33,49 +33,42 @@
       },
       {
         "stage": "patient_presentation",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "8",
-        "generated_at": "2026-10-05T05:12:33Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:03:21Z"
       },
       {
         "stage": "exam_vitals",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "8",
-        "generated_at": "2026-10-05T05:12:38Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:04:29Z"
       },
       {
         "stage": "diagnostics",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "8",
-        "generated_at": "2026-10-05T05:12:55Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:05:47Z"
       },
       {
         "stage": "differential_course",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "8",
-        "generated_at": "2026-10-05T05:13:03Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:06:45Z"
       },
       {
         "stage": "teaching",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "8",
-        "generated_at": "2026-10-05T05:13:09Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:07:27Z"
       }
     ],
     "validation": {
-      "status": "failed",
-      "rule_errors": [
-        "missing section workup"
-      ],
+      "status": "passed",
+      "rule_errors": [],
       "review_issues": [
-        "differential prostate-cancer: no profile yet",
-        "differential acute-urinary-retention: no profile yet",
         "differential urinary-tract-infection: no profile yet",
-        "differential prostatitis: no profile yet",
-        "differential neurogenic-bladder: no profile yet",
         "differential urethral-stricture: no profile yet",
-        "differential overactive-bladder: no profile yet",
-        "differential bladder-stones: no profile yet"
+        "differential prostatitis: no profile yet"
       ]
     },
     "review": {
@@ -85,23 +78,23 @@
   "patient": {
     "age": {
       "typical_min": 50,
-      "typical_max": 85,
+      "typical_max": 80,
       "peak": "60–79",
       "possible_min": 40,
       "possible_max": 100
     },
     "sex": "male_only",
     "demographics": [
-      "Very common in men over 50; prevalence rises steadily with each decade of life",
-      "More common in men with obesity, type 2 diabetes, or heart disease"
+      "Prevalence increases with age; most common prostate condition in men over 50",
+      "Common in older men"
     ],
     "risk_factors": [
       {
-        "text": "Age 50 or older",
+        "text": "Age over 50",
         "strength": "strong"
       },
       {
-        "text": "Family history of BPH or prostate surgery in a father or brother",
+        "text": "Family history of BPH",
         "strength": "moderate"
       },
       {
@@ -113,654 +106,763 @@
         "strength": "moderate"
       },
       {
-        "text": "Heart disease or poor circulation",
+        "text": "Cardiovascular disease or circulatory problems",
         "strength": "weak"
       },
       {
-        "text": "Low physical activity",
+        "text": "Erectile dysfunction",
+        "strength": "weak"
+      },
+      {
+        "text": "Physical inactivity",
         "strength": "weak"
       }
     ],
     "comorbidities": [
       "Obesity",
       "Type 2 diabetes",
-      "Coronary artery disease",
       "Erectile dysfunction",
-      "Metabolic syndrome"
+      "Cardiovascular disease"
     ],
     "family_history": [
-      "Father or brother with BPH or prostate surgery"
+      "BPH in a father or brother"
     ],
     "social_history": [
       "Sedentary lifestyle",
-      "Alcohol use can worsen symptoms"
+      "High caffeine or alcohol intake"
     ],
     "exposures": [],
     "risk_medications": [
+      "pseudoephedrine",
       "diphenhydramine",
       "oxybutynin",
-      "pseudoephedrine",
-      "furosemide"
+      "amitriptyline"
     ]
   },
   "presentation": {
     "chief_complaints": [
       {
-        "text": "I have to get up several times a night to pee",
-        "frequency": "almost_always"
+        "text": "I have to get up several times at night to pee",
+        "frequency": "common",
+        "term": "Nocturia",
+        "snomed_verified": true
       },
       {
-        "text": "My stream is weak and it takes a while to get started",
-        "frequency": "common"
+        "text": "My urine stream is weak and slow",
+        "frequency": "common",
+        "term": "Weak urinary stream",
+        "snomed_verified": true
       },
       {
-        "text": "I feel like I can't empty my bladder all the way",
-        "frequency": "common"
+        "text": "I have trouble starting to urinate",
+        "frequency": "common",
+        "term": "Urinary hesitancy",
+        "snomed_verified": true
       },
       {
-        "text": "I'm going to the bathroom all the time during the day",
-        "frequency": "common"
-      },
-      {
-        "text": "Sometimes I leak a little after I finish",
-        "frequency": "sometimes"
+        "text": "I feel like I can't empty my bladder completely",
+        "frequency": "common",
+        "term": "Incomplete emptying of bladder",
+        "snomed_verified": true
       }
     ],
     "hpi": {
-      "onset": "Gradual, over months to years; the patient often can't name a specific start",
-      "duration": "Usually present for at least several months, often years, before the visit",
-      "progression": "Slowly worsens over time; symptoms may fluctuate with fluid intake, alcohol, cold weather, or starting a new medication",
-      "location": "Lower abdomen and pelvis; felt at the level of the bladder and urethra",
-      "radiation": "No true radiation; discomfort may be felt as suprapubic fullness",
-      "quality": "Obstructive symptoms (hesitancy, weak stream, straining, terminal dribbling) and irritative symptoms (frequency, urgency, nocturia) together",
-      "severity": "Mild to moderate for most; a minority have severe symptoms that interfere with sleep and daily activities",
-      "timing": "Nocturia is often the most bothersome; symptoms are worse at night and in cold weather",
+      "onset": "Insidious over months to years; symptoms often ignored until they interfere with daily life",
+      "duration": "Months to years at presentation",
+      "progression": "Slowly progressive lower urinary tract symptoms; nocturia and frequency worsen, and the stream becomes weaker over time",
+      "location": "Suprapubic and perineal; urinary symptoms referable to the bladder and urethra",
+      "radiation": "None",
+      "quality": "Hesitancy, weak intermittent stream, and a feeling of incomplete emptying",
+      "severity": "Variable; often bothersome enough to disrupt sleep or activities, but may be mild",
+      "timing": "Worse at night and after fluid intake before bed; may worsen after caffeine, alcohol, cold medicines, or prolonged sitting",
       "aggravating": [
-        "Cold weather",
         "Alcohol",
         "Caffeine",
-        "Over-the-counter cold or allergy medicines",
-        "Large fluid intake before bed",
-        "Sitting for long periods"
+        "Cold or allergy medicines with decongestants",
+        "Cold weather",
+        "Prolonged immobility",
+        "Drinking fluids before bed"
       ],
       "relieving": [
-        "Sitting to urinate",
-        "Double voiding",
-        "Limiting fluids in the evening",
-        "Avoiding alcohol and caffeine"
+        "Urinating",
+        "Limiting fluids before bedtime",
+        "Avoiding caffeine and alcohol"
       ],
       "associated_symptoms": [
         {
-          "text": "Nocturia (waking two or more times to urinate)",
-          "frequency": "almost_always"
+          "text": "Getting up multiple times at night to urinate",
+          "frequency": "common",
+          "term": "Nocturia",
+          "snomed_verified": true
         },
         {
-          "text": "Urinary frequency during the day",
-          "frequency": "common"
+          "text": "Urinating more often during the day",
+          "frequency": "common",
+          "term": "Increased frequency of urination",
+          "snomed_verified": true
         },
         {
-          "text": "Urgency",
-          "frequency": "common"
+          "text": "A sudden, hard-to-ignore need to urinate",
+          "frequency": "common",
+          "term": "Urgency of urination",
+          "snomed_verified": true
         },
         {
-          "text": "Weak or intermittent stream",
-          "frequency": "common"
+          "text": "A weak, slow or stop-and-start urine stream",
+          "frequency": "common",
+          "term": "Weak urinary stream",
+          "snomed_verified": true
         },
         {
-          "text": "Hesitancy (takes a while to start)",
-          "frequency": "common"
+          "text": "Trouble starting the urine stream",
+          "frequency": "common",
+          "term": "Urinary hesitancy",
+          "snomed_verified": true
         },
         {
-          "text": "Sensation of incomplete emptying",
-          "frequency": "common"
+          "text": "Dribbling after finishing urination",
+          "frequency": "common",
+          "term": "Terminal dribbling of urine",
+          "snomed_verified": true
         },
         {
-          "text": "Post-void dribbling",
-          "frequency": "common"
+          "text": "Feeling like the bladder is not emptied completely",
+          "frequency": "common",
+          "term": "Incomplete emptying of bladder",
+          "snomed_verified": true
         },
         {
-          "text": "Straining to urinate",
-          "frequency": "sometimes"
-        },
-        {
-          "text": "Urge incontinence",
-          "frequency": "sometimes"
-        },
-        {
-          "text": "Pain or burning with urination",
-          "frequency": "rare"
-        },
-        {
-          "text": "Pain with ejaculation",
-          "frequency": "rare"
+          "text": "Needing to push or strain to get urine out",
+          "frequency": "sometimes",
+          "term": "Straining on urination",
+          "snomed_verified": true
         }
       ],
       "pertinent_negatives": [
         "Fever or chills",
-        "Gross hematuria",
-        "Flank or back pain",
-        "Bone pain",
-        "Unexplained weight loss",
-        "Complete inability to urinate (acute retention)",
+        "Visible blood in the urine",
+        "Flank pain",
         "Urethral discharge",
-        "History of sexually transmitted infection",
-        "Recent catheterization or urologic procedure",
-        "Neurologic symptoms such as saddle numbness or leg weakness"
+        "New leg weakness or numbness",
+        "Saddle anesthesia",
+        "Bone pain or unexplained weight loss"
       ]
     },
     "ros": [
       {
-        "system": "constitutional",
-        "positives": [
-          {
-            "text": "Fatigue from interrupted sleep",
-            "frequency": "sometimes"
-          }
-        ],
-        "negatives": [
-          "Fever",
-          "Chills",
-          "Night sweats",
-          "Weight loss"
-        ]
-      },
-      {
         "system": "genitourinary",
         "positives": [
           {
-            "text": "Nocturia",
-            "frequency": "almost_always"
+            "text": "Getting up multiple times at night to urinate",
+            "frequency": "common",
+            "term": "Nocturia",
+            "snomed_verified": true
           },
           {
-            "text": "Frequency",
-            "frequency": "common"
+            "text": "Urinating more often during the day",
+            "frequency": "common",
+            "term": "Increased frequency of urination",
+            "snomed_verified": true
           },
           {
-            "text": "Urgency",
-            "frequency": "common"
+            "text": "A sudden, hard-to-ignore need to urinate",
+            "frequency": "common",
+            "term": "Urgency of urination",
+            "snomed_verified": true
           },
           {
-            "text": "Weak stream",
-            "frequency": "common"
+            "text": "A weak, slow or stop-and-start urine stream",
+            "frequency": "common",
+            "term": "Weak urinary stream",
+            "snomed_verified": true
           },
           {
-            "text": "Incomplete emptying",
-            "frequency": "common"
+            "text": "Trouble starting the urine stream",
+            "frequency": "common",
+            "term": "Urinary hesitancy",
+            "snomed_verified": true
           },
           {
-            "text": "Post-void dribbling",
-            "frequency": "common"
+            "text": "Dribbling after finishing urination",
+            "frequency": "common",
+            "term": "Terminal dribbling of urine",
+            "snomed_verified": true
+          },
+          {
+            "text": "Feeling like the bladder is not emptied completely",
+            "frequency": "common",
+            "term": "Incomplete emptying of bladder",
+            "snomed_verified": true
+          },
+          {
+            "text": "Needing to push or strain to get urine out",
+            "frequency": "sometimes",
+            "term": "Straining on urination",
+            "snomed_verified": true
           }
         ],
         "negatives": [
-          "Hematuria",
-          "Dysuria",
-          "Urethral discharge",
           "Flank pain",
-          "Urinary retention"
+          "Fever",
+          "Urethral discharge",
+          "Genital ulcers"
         ],
         "argues_against": [
-          "Acute urinary retention",
-          "Urinary tract infection",
-          "Urolithiasis"
-        ]
-      },
-      {
-        "system": "gastrointestinal",
-        "positives": [],
-        "negatives": [
-          "Constipation",
-          "Blood in stool",
-          "Abdominal pain"
-        ],
-        "argues_against": [
-          "Constipation causing urinary symptoms",
-          "Pelvic mass"
-        ]
-      },
-      {
-        "system": "musculoskeletal",
-        "positives": [],
-        "negatives": [
-          "Back pain",
-          "Bone pain",
-          "Leg weakness"
-        ],
-        "argues_against": [
-          "Metastatic prostate cancer",
-          "Cauda equina syndrome"
-        ]
-      },
-      {
-        "system": "neurologic",
-        "positives": [],
-        "negatives": [
-          "Saddle anesthesia",
-          "Lower extremity weakness",
-          "Fecal incontinence"
-        ],
-        "argues_against": [
-          "Cauda equina syndrome",
-          "Neurogenic bladder"
-        ]
-      },
-      {
-        "system": "reproductive",
-        "positives": [
-          {
-            "text": "Erectile dysfunction",
-            "frequency": "sometimes"
-          }
-        ],
-        "negatives": [
-          "Testicular pain",
-          "Penile discharge",
-          "Pain with ejaculation"
-        ],
-        "argues_against": [
-          "Prostatitis",
-          "Sexually transmitted infection"
+          "Acute one-sided flank pain with blood in urine",
+          "Fever, chills, and dysuria",
+          "Urethral discharge"
         ]
       }
     ],
     "atypical": [
       {
-        "population": "older_adults",
-        "how_it_differs": "Symptoms may be attributed to normal aging or to other chronic conditions; nocturia and falls at night may be the main complaint rather than voiding symptoms.",
-        "missing_classic_features": [
-          "Clear description of weak stream or hesitancy"
-        ]
-      },
-      {
         "population": "diabetes",
-        "how_it_differs": "Coexisting diabetic neuropathy can cause a neurogenic bladder, so symptoms may reflect poor bladder contractility rather than obstruction alone.",
+        "how_it_differs": "Diabetic bladder dysfunction and osmotic diuresis can make frequency, urgency, and nocturia more prominent, so the voiding symptoms of obstruction may be overlooked.",
         "missing_classic_features": [
-          "Obstructive pattern on flow testing"
+          "Weak urinary stream"
         ]
-      },
-      {
-        "population": "obesity",
-        "how_it_differs": "Central adiposity and metabolic syndrome are associated with larger prostate volume and more rapid symptom progression.",
-        "missing_classic_features": []
       },
       {
         "population": "renal_impairment",
-        "how_it_differs": "Chronic obstruction can present with rising creatinine, anemia, or electrolyte abnormalities rather than bothersome voiding symptoms.",
+        "how_it_differs": "Long-standing bladder outlet obstruction may present with fatigue, anorexia, and worsening kidney function rather than prominent urinary complaints.",
         "missing_classic_features": [
-          "Prominent lower urinary tract symptoms"
+          "Urinary hesitancy",
+          "Nocturia"
         ]
       }
     ]
   },
   "exam": {
     "general": {
-      "mild": "Well-appearing older man, no distress, ambulates comfortably",
-      "moderate": "Well-appearing but tired from nocturia; may shift in the chair or mention needing the bathroom",
-      "severe": "Uncomfortable, restless, frequent trips to the bathroom; may appear sleep-deprived",
-      "critical": "Ill-appearing and distressed with suprapubic pain and a visibly distended lower abdomen (acute retention)"
+      "mild": "Well-appearing; no acute distress",
+      "moderate": "Comfortable but bothered by urinary frequency; no systemic signs",
+      "severe": "Uncomfortable, may be restless or in visible pain if acute retention; suprapubic fullness may be apparent",
+      "critical": "Distressed with severe pain or uremic signs; may be pale, diaphoretic, or confused if complications develop"
     },
     "findings": [
       {
-        "id": "suprapubic-fullness",
+        "id": "enlarged-prostate",
+        "region": "rectal",
+        "maneuver": "Perform a digital rectal examination with a gloved, lubricated finger, palpating the posterior prostate",
+        "finding": "Prostate is symmetrically enlarged, smooth, and rubbery or firm, without discrete nodules",
+        "frequency": "common",
+        "min_severity": "mild",
+        "significance": "supports",
+        "importance": "essential",
+        "term": "Enlarged prostate",
+        "snomed_verified": true
+      },
+      {
+        "id": "prostate-nodule",
+        "region": "rectal",
+        "maneuver": "Palpate the prostate during digital rectal examination for nodules or induration",
+        "finding": "No discrete nodule or hard, indurated area",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Prostate nodule",
+        "snomed_verified": true
+      },
+      {
+        "id": "prostatic-tenderness",
+        "region": "rectal",
+        "maneuver": "Palpate the prostate during digital rectal examination",
+        "finding": "No prostate tenderness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Prostate tenderness",
+        "snomed_verified": true
+      },
+      {
+        "id": "palpable-bladder",
         "region": "abdomen",
-        "maneuver": "Inspect and palpate the suprapubic area",
-        "finding": "Suprapubic fullness or a palpable bladder",
-        "frequency": "sometimes",
+        "maneuver": "Inspect and palpate or percuss the suprapubic area",
+        "finding": "Suprapubic fullness or dullness from a distended bladder, sometimes visibly prominent",
+        "frequency": "rare",
         "min_severity": "severe",
         "significance": "supports",
-        "importance": "important"
+        "importance": "important",
+        "term": "Palpable bladder",
+        "snomed_verified": true
       },
       {
-        "id": "suprapubic-tenderness",
-        "region": "abdomen",
-        "maneuver": "Palpate the suprapubic area",
-        "finding": "Suprapubic tenderness",
-        "frequency": "rare",
-        "min_severity": "critical",
-        "significance": "supports",
-        "importance": "important"
-      },
-      {
-        "id": "no-flank-tenderness",
+        "id": "cva-tenderness",
         "region": "abdomen",
         "maneuver": "Percuss the costovertebral angles",
         "finding": "No costovertebral angle tenderness",
         "frequency": "almost_always",
         "significance": "neutral",
-        "importance": "optional"
+        "importance": "optional",
+        "term": "Costovertebral angle tenderness",
+        "snomed_verified": true
       },
       {
-        "id": "no-abdominal-mass",
-        "region": "abdomen",
-        "maneuver": "Palpate all four quadrants",
-        "finding": "No abdominal mass or organomegaly",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "optional"
-      },
-      {
-        "id": "enlarged-smooth-prostate",
-        "region": "rectal",
-        "maneuver": "Perform a digital rectal exam with the patient in the lateral decubitus or standing bent-over position, palpating the posterior surface of the prostate through the anterior rectal wall",
-        "finding": "Enlarged prostate with a smooth, rubbery, non-tender surface and preserved median sulcus",
-        "frequency": "common",
-        "significance": "strongly_supports",
-        "importance": "essential"
-      },
-      {
-        "id": "normal-prostate-dre",
-        "region": "rectal",
-        "maneuver": "Perform a digital rectal exam",
-        "finding": "Normal-sized, smooth, non-tender prostate",
-        "frequency": "sometimes",
-        "significance": "neutral",
-        "importance": "important"
-      },
-      {
-        "id": "hard-nodular-prostate",
-        "region": "rectal",
-        "maneuver": "Perform a digital rectal exam, feeling for asymmetry, induration, or nodules",
-        "finding": "Hard, nodular, or asymmetric prostate with obliterated median sulcus",
-        "frequency": "rare",
-        "significance": "argues_against",
-        "importance": "essential"
-      },
-      {
-        "id": "tender-prostate",
-        "region": "rectal",
-        "maneuver": "Perform a digital rectal exam",
-        "finding": "Firm, exquisitely tender prostate",
-        "frequency": "rare",
-        "significance": "argues_against",
-        "importance": "important"
-      },
-      {
-        "id": "normal-sphincter-tone",
-        "region": "rectal",
-        "maneuver": "Assess anal sphincter tone during the digital rectal exam",
-        "finding": "Normal resting sphincter tone",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "optional"
-      },
-      {
-        "id": "no-saddle-anesthesia",
+        "id": "saddle-anesthesia",
         "region": "neuro",
-        "maneuver": "Test sensation in the saddle distribution and check lower extremity strength and reflexes",
-        "finding": "Intact saddle sensation, normal strength and reflexes",
+        "maneuver": "Test perineal sensation and ask about numbness in the saddle area",
+        "finding": "No saddle anesthesia",
         "frequency": "almost_always",
         "significance": "neutral",
-        "importance": "important"
+        "importance": "important",
+        "term": "Saddle anesthesia",
+        "snomed_verified": true
       },
       {
-        "id": "no-edema",
-        "region": "extremities",
-        "maneuver": "Inspect the lower extremities for swelling",
-        "finding": "No peripheral edema",
+        "id": "urethral-discharge",
+        "region": "genitourinary",
+        "maneuver": "Inspect the urethral meatus",
+        "finding": "No urethral discharge",
         "frequency": "almost_always",
         "significance": "neutral",
-        "importance": "optional"
-      },
-      {
-        "id": "no-costovertebral-bruit",
-        "region": "abdomen",
-        "maneuver": "Auscultate the epigastrium and flanks for bruits",
-        "finding": "No renal artery bruit",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "optional"
+        "importance": "optional",
+        "term": "Urethral discharge",
+        "snomed_verified": true
       }
     ]
   },
-  "vitals": {
-    "temp": {
-      "severe": {
-        "min": 99.0,
-        "max": 100.4
+  "vitals": {},
+  "labs": [
+    {
+      "test_id": "cr",
+      "ranges": {
+        "severe": {
+          "min": 1.4,
+          "max": 2.5
+        },
+        "critical": {
+          "min": 2.0,
+          "max": 6.0
+        }
       },
-      "critical": {
-        "min": 100.4,
-        "max": 102.5
-      }
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevated when chronic urinary retention causes obstructive nephropathy."
     },
-    "hr": {
-      "severe": {
-        "min": 90,
-        "max": 110
+    {
+      "test_id": "bun",
+      "ranges": {
+        "severe": {
+          "min": 22,
+          "max": 40
+        },
+        "critical": {
+          "min": 35,
+          "max": 80
+        }
       },
-      "critical": {
-        "min": 100,
-        "max": 125
-      }
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "May rise with dehydration or renal impairment from obstruction."
     },
-    "sbp": {
-      "severe": {
-        "min": 130,
-        "max": 160
+    {
+      "test_id": "ua_wbc",
+      "ranges": {
+        "moderate": {
+          "min": 6,
+          "max": 20
+        },
+        "severe": {
+          "min": 10,
+          "max": 50
+        },
+        "critical": {
+          "min": 20,
+          "max": 100
+        }
       },
-      "critical": {
-        "min": 140,
-        "max": 180
-      }
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Indicates urinary tract infection due to stasis; not part of uncomplicated BPH."
     },
-    "dbp": {
-      "severe": {
-        "min": 80,
-        "max": 95
+    {
+      "test_id": "ua_le",
+      "qualitative": {
+        "moderate": "1+",
+        "severe": "2+",
+        "critical": "3+"
       },
-      "critical": {
-        "min": 85,
-        "max": 105
-      }
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Positive when UTI is present."
+    },
+    {
+      "test_id": "ua_nitrite",
+      "qualitative": {
+        "moderate": "Positive",
+        "severe": "Positive"
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Positive with nitrate-reducing bacteria (e.g., E. coli)."
+    },
+    {
+      "test_id": "ua_bacteria",
+      "qualitative": {
+        "moderate": "Few",
+        "severe": "Many"
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Bacteria seen when UTI present."
     }
+  ],
+  "imaging": [
+    {
+      "study": "Ultrasound of bladder and prostate with post-void residual",
+      "modality": "ultrasound",
+      "preferred_when": "Initial assessment of bladder emptying and prostate size",
+      "findings": [
+        {
+          "text": "Enlarged prostate",
+          "frequency": "common"
+        },
+        {
+          "text": "Elevated post-void residual volume (>100 mL)",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Thickened bladder wall",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Bladder trabeculation",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Renal ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "Elevated creatinine or suspicion of hydronephrosis",
+      "findings": [
+        {
+          "text": "Normal kidneys",
+          "frequency": "common"
+        },
+        {
+          "text": "Hydronephrosis",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Transrectal ultrasound of prostate",
+      "modality": "ultrasound",
+      "preferred_when": "Before surgery or if prostate size affects treatment choice",
+      "findings": [
+        {
+          "text": "Enlarged prostate volume",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Transitional zone enlargement",
+          "frequency": "common"
+        },
+        {
+          "text": "Median lobe enlargement",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Cystoscopy",
+      "modality": "endoscopy",
+      "preferred_when": "Hematuria, suspected bladder stones, or prior pelvic surgery",
+      "findings": [
+        {
+          "text": "Enlarged prostate lobes obstructing urethra",
+          "frequency": "common"
+        },
+        {
+          "text": "Bladder trabeculation",
+          "frequency": "common"
+        },
+        {
+          "text": "Bladder diverticula",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Bladder stones",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "ua",
+        "why": "Rule out urinary tract infection and hematuria"
+      },
+      {
+        "test": "bmp",
+        "why": "Assess renal function, especially creatinine"
+      },
+      {
+        "test": "Prostate-specific antigen (PSA)",
+        "why": "Screen for prostate cancer in men with >10 year life expectancy; elevated PSA can be from BPH or cancer",
+        "only_if": "life expectancy >10 years and diagnosis would change management"
+      },
+      {
+        "test": "Post-void residual measurement",
+        "why": "Assess incomplete emptying and risk of retention",
+        "only_if": "moderate to severe symptoms or suspected retention"
+      }
+    ],
+    "confirmatory": [],
+    "supporting": [
+      {
+        "test": "Uroflowmetry",
+        "why": "Objective measure of urinary flow rate; low peak flow suggests obstruction",
+        "only_if": "diagnosis uncertain or before surgery"
+      },
+      {
+        "test": "Cystoscopy",
+        "why": "Evaluate bladder and urethra for stones, tumors, or stricture",
+        "only_if": "hematuria, bladder stones suspected, or prior pelvic surgery"
+      },
+      {
+        "test": "Renal ultrasound",
+        "why": "Evaluate for hydronephrosis",
+        "only_if": "elevated creatinine or concern for chronic retention"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "CT abdomen and pelvis",
+        "why": "No role in routine BPH evaluation"
+      },
+      {
+        "test": "MRI prostate",
+        "why": "Not indicated for routine BPH; may be used if prostate cancer staging is needed"
+      },
+      {
+        "test": "Urine cytology",
+        "why": "Not routinely indicated unless hematuria and risk factors for bladder cancer"
+      }
+    ],
+    "decision_points": [
+      "PSA should be interpreted in context of prostate size; BPH can elevate PSA",
+      "If post-void residual >300 mL, consider urology referral and intermittent catheterization",
+      "If hematuria present, evaluate for bladder cancer with cystoscopy and upper tract imaging",
+      "If creatinine is elevated, perform renal ultrasound to assess for hydronephrosis"
+    ],
+    "criteria": [
+      {
+        "name": "AUA Symptom Index (IPSS)",
+        "summary": "Standardized 7-item questionnaire grading storage and voiding symptoms. Total score 0-35: 0-7 mild, 8-19 moderate, 20-35 severe.",
+        "items": [
+          "Incomplete emptying",
+          "Frequency",
+          "Intermittency",
+          "Urgency",
+          "Weak stream",
+          "Straining",
+          "Nocturia"
+        ]
+      }
+    ],
+    "scores": [
+      "ipss"
+    ]
   },
   "differential": [
     {
       "name": "Prostate cancer",
       "slug": "prostate-cancer",
-      "why_considered": "Same age group, same lower urinary tract symptoms, and both can enlarge the prostate",
+      "why_considered": "Shared lower urinary tract symptoms and an enlarged or nodular prostate on exam.",
       "must_not_miss": true,
-      "trigger": "Hard, nodular, or asymmetric prostate on digital rectal exam, or bone pain or weight loss",
+      "trigger": "Hard nodule or induration on digital rectal exam, elevated PSA, or new bone pain",
       "discriminators": {
         "history": [
-          "Bone pain, especially back or hip",
-          "Unexplained weight loss",
-          "Family history of prostate cancer"
+          "Often asymptomatic early; can have similar voiding symptoms",
+          "Bone pain, especially in the pelvis, spine, or ribs (metastatic)",
+          "Constitutional symptoms such as unintentional weight loss in advanced disease",
+          "Family history of prostate cancer",
+          "African American ancestry"
         ],
         "exam": [
-          "Hard, nodular, or asymmetric prostate with obliterated median sulcus",
-          "Palpable lymph nodes or focal bone tenderness"
+          "Prostate may be nodular, hard, or asymmetrically enlarged, but can be smooth and indistinguishable from BPH",
+          "Signs of metastatic disease, such as bony tenderness if advanced"
         ],
         "labs": [
-          "Markedly elevated or rapidly rising PSA",
-          "Elevated alkaline phosphatase with bone involvement"
+          "PSA usually elevated, often disproportionately high relative to prostate size; may be normal",
+          "Alkaline phosphatase elevated if bone metastases",
+          "Urinalysis may show hematuria if locally advanced"
         ],
         "imaging": [
-          "Hypoechoic lesion on transrectal ultrasound",
-          "Suspicious lesion on multiparametric MRI",
-          "Sclerotic bone lesions on bone scan or CT"
-        ]
-      }
-    },
-    {
-      "name": "Acute urinary retention",
-      "slug": "acute-urinary-retention",
-      "why_considered": "The most feared acute consequence of an enlarged prostate; the patient cannot urinate at all",
-      "must_not_miss": true,
-      "trigger": "Complete inability to urinate with a painful, distended bladder",
-      "discriminators": {
-        "history": [
-          "Sudden inability to pass any urine",
-          "Severe suprapubic pain and urgency",
-          "Recent cold or allergy medicine, alcohol, or a long period of immobility"
-        ],
-        "exam": [
-          "Distended, tender bladder on palpation",
-          "Patient restless and in obvious distress"
-        ],
-        "labs": [
-          "Elevated creatinine from obstruction",
-          "Post-void residual near the full bladder capacity"
-        ],
-        "imaging": [
-          "Bladder ultrasound showing a large retained volume"
+          "Transrectal ultrasound may show hypoechoic peripheral zone lesion",
+          "MRI prostate may show suspicious lesion",
+          "Bone scan or PSMA PET if high-risk for metastases"
         ]
       }
     },
     {
       "name": "Urinary tract infection",
       "slug": "urinary-tract-infection",
-      "why_considered": "Frequency, urgency, and nocturia overlap with BPH, and BPH predisposes to infection",
+      "why_considered": "Irritative voiding symptoms such as frequency, urgency, and dysuria are common with BPH but may be due to infection.",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Dysuria and foul-smelling or cloudy urine",
-          "Fever and chills",
-          "Symptoms came on over days rather than months"
+          "Dysuria, frequency, urgency",
+          "Cloudy or foul-smelling urine",
+          "Suprapubic pain",
+          "Fever or chills (if pyelonephritis, flank pain)",
+          "May have recent catheterization or instrumentation"
         ],
         "exam": [
-          "Fever",
-          "Suprapubic tenderness"
+          "Suprapubic tenderness",
+          "Costovertebral angle tenderness if pyelonephritis",
+          "Prostate may be tender on DRE if acute bacterial prostatitis"
         ],
         "labs": [
           "Positive leukocyte esterase and nitrites",
-          "Positive urine culture",
-          "Pyuria on urinalysis"
-        ]
-      }
-    },
-    {
-      "name": "Prostatitis",
-      "slug": "prostatitis",
-      "why_considered": "Causes urinary symptoms and pelvic pain in the same age group",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Perineal or rectal pain",
-          "Pain with ejaculation",
-          "Acute onset, sometimes after a procedure or catheterization"
-        ],
-        "exam": [
-          "Firm, exquisitely tender prostate on digital rectal exam"
-        ],
-        "labs": [
-          "Pyuria and positive urine culture",
-          "Elevated PSA that falls after treatment"
-        ]
-      }
-    },
-    {
-      "name": "Neurogenic bladder",
-      "slug": "neurogenic-bladder",
-      "why_considered": "Poor bladder emptying with frequency and incomplete emptying can mimic obstruction",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Known diabetes, stroke, Parkinson disease, or spinal cord disease",
-          "Fecal incontinence or saddle numbness",
-          "Symptoms of urgency and retention without a weak stream pattern"
-        ],
-        "exam": [
-          "Abnormal saddle sensation, anal sphincter tone, or lower extremity strength and reflexes"
-        ],
-        "labs": [
-          "Elevated post-void residual"
+          "Many WBCs and bacteria on microscopy",
+          "Urine culture positive with >10^5 CFU/mL"
         ],
         "imaging": [
-          "Urodynamic testing showing detrusor underactivity or overactivity rather than obstruction"
-        ]
-      }
-    },
-    {
-      "name": "Urethral stricture",
-      "slug": "urethral-stricture",
-      "why_considered": "Obstructive voiding symptoms with a weak stream and straining",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Prior urethral trauma, catheterization, or sexually transmitted infection",
-          "Younger age than typical BPH"
-        ],
-        "exam": [
-          "Normal or small prostate on digital rectal exam",
-          "Palpable urethral induration or a tight urethra on catheter passage"
-        ],
-        "imaging": [
-          "Narrowed urethral segment on retrograde urethrogram or cystoscopy"
+          "No structural changes typical; may be unilateral hydronephrosis if obstructing stone with infection"
         ]
       }
     },
     {
       "name": "Overactive bladder",
       "slug": "overactive-bladder",
-      "why_considered": "Frequency, urgency, and nocturia are the dominant symptoms",
+      "why_considered": "Predominant storage symptoms with urgency, frequency, and nocturia, without significant voiding symptoms.",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Urgency with urge incontinence and little or no hesitancy or weak stream",
-          "Symptoms not worsened by cold medicines"
+          "Urgency with or without urge incontinence",
+          "Frequency and nocturia",
+          "No significant hesitancy, weak stream, or incomplete emptying",
+          "Symptoms may be triggered by small volumes"
         ],
         "exam": [
-          "Normal prostate on digital rectal exam"
+          "Normal prostate size and consistency",
+          "No palpable bladder distension",
+          "Neurologic exam normal"
         ],
         "labs": [
-          "Normal post-void residual"
+          "Urinalysis normal",
+          "Post-void residual typically <50 mL"
         ],
         "imaging": [
-          "Urodynamic testing showing detrusor overactivity without obstruction"
+          "Urodynamic testing shows detrusor overactivity, not obstruction"
         ]
       }
     },
     {
-      "name": "Bladder stone",
-      "slug": "bladder-stones",
-      "why_considered": "Long-standing obstruction can cause stones that worsen voiding symptoms",
+      "name": "Urethral stricture",
+      "slug": "urethral-stricture",
+      "why_considered": "Weak stream, hesitancy, and incomplete emptying can result from a narrowed urethra, not prostate.",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Sudden interruption of the stream with severe pain",
-          "Pain radiating to the tip of the penis"
+          "History of urethral trauma, instrumentation, or sexually transmitted infection",
+          "Symptoms often of shorter duration or following event",
+          "May have recurrent UTIs"
+        ],
+        "exam": [
+          "Normal or minimally enlarged prostate",
+          "No significant prostate enlargement on DRE"
         ],
         "labs": [
-          "Hematuria on urinalysis"
+          "Urinalysis usually normal",
+          "Post-void residual may be elevated"
         ],
         "imaging": [
-          "Calcified opacity in the bladder on plain film, ultrasound, or CT"
+          "Urethrogram shows narrowing at stricture site",
+          "Cystoscopy confirms stricture, not prostatic obstruction"
+        ]
+      }
+    },
+    {
+      "name": "Neurogenic bladder",
+      "slug": "neurogenic-bladder",
+      "why_considered": "Similar symptoms, especially in patients with diabetes, neurologic disease, or spinal pathology.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Diabetes, spinal cord injury, multiple sclerosis, Parkinson disease, or stroke",
+          "May have fecal incontinence or erectile dysfunction",
+          "Symptoms may include overflow incontinence",
+          "Nocturia may be due to nocturnal polyuria"
+        ],
+        "exam": [
+          "Neurologic deficits such as lower extremity weakness, sensory changes, abnormal rectal tone or saddle sensation",
+          "Prostate may be normal or small"
+        ],
+        "labs": [
+          "Elevated post-void residual often >300 mL",
+          "Urodynamic testing shows detrusor underactivity or sphincter dyssynergia"
+        ],
+        "imaging": [
+          "MRI of spine if suspected spinal cord lesion"
+        ]
+      }
+    },
+    {
+      "name": "Prostatitis",
+      "slug": "prostatitis",
+      "why_considered": "Urinary frequency, urgency, and perineal discomfort can overlap with BPH.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Perineal, suprapubic, or penile pain",
+          "Dysuria",
+          "Chronic pelvic pain syndrome may have pain with ejaculation",
+          "Acute bacterial prostatitis may have fever, chills, and systemic symptoms"
+        ],
+        "exam": [
+          "Prostate is tender, boggy, and warm on DRE in acute prostatitis",
+          "Prostate may be tender in chronic prostatitis"
+        ],
+        "labs": [
+          "Urine and expressed prostatic secretions show leukocytes and bacteria in bacterial prostatitis",
+          "PSA may be elevated but transient",
+          "Urine culture positive in acute bacterial prostatitis"
+        ],
+        "imaging": [
+          "Usually normal; may have prostatic abscess on transrectal ultrasound if not responding"
         ]
       }
     }
   ],
   "course": {
     "severity": {
-      "mild": "Mild symptoms that bother the patient little; nocturia once or twice, no significant interference with daily life; normal post-void residual and creatinine",
-      "moderate": "Bothersome frequency, urgency, weak stream, and nocturia that interfere with sleep and activities; post-void residual mildly elevated; creatinine normal",
-      "severe": "Marked obstructive symptoms with straining, incomplete emptying, and a palpable bladder; elevated post-void residual; may have rising creatinine or recurrent urinary tract infection",
-      "critical": "Acute urinary retention with a painful distended bladder, or obstructive uropathy with acute kidney injury and electrolyte disturbance"
+      "mild": "AUA symptom score 0–7; symptoms are intermittent and not bothersome; no significant post-void residual; normal renal function; prostate may be enlarged but no complications.",
+      "moderate": "AUA symptom score 8–19; bothersome symptoms, especially nocturia and frequency; post-void residual 100–300 mL; no urinary retention or renal impairment; no recurrent UTIs.",
+      "severe": "AUA symptom score 20–35; marked bother, severe nocturia, weak stream; post-void residual >300 mL; may have recurrent UTIs, bladder stones, or early renal impairment; risk of acute urinary retention."
     },
     "red_flags": [
       {
-        "finding": "Complete inability to urinate with suprapubic pain and a distended bladder",
-        "meaning": "Acute urinary retention; needs immediate bladder decompression"
+        "finding": "Complete inability to urinate with painful bladder distension",
+        "meaning": "Acute urinary retention; requires immediate catheterization."
       },
       {
-        "finding": "Fever and chills with dysuria, frequency, and urgency",
-        "meaning": "Urinary tract infection or pyelonephritis; needs urgent treatment"
+        "finding": "Fever, chills, and flank pain",
+        "meaning": "Pyelonephritis or urosepsis; needs urgent evaluation and antibiotics."
       },
       {
         "finding": "Gross hematuria",
-        "meaning": "Could be infection, stone, or urologic cancer; needs evaluation"
+        "meaning": "Could indicate bladder cancer, stones, or severe BPH; cystoscopy indicated."
       },
       {
-        "finding": "Flank pain, rising creatinine, or decreased urine output",
-        "meaning": "Obstructive uropathy with kidney injury"
+        "finding": "New saddle anesthesia or leg weakness",
+        "meaning": "Cauda equina syndrome; neurosurgical emergency."
       },
       {
-        "finding": "Hard, nodular, or asymmetric prostate on digital rectal exam",
-        "meaning": "Prostate cancer until proven otherwise"
+        "finding": "Bone pain, especially in the back or hips",
+        "meaning": "Metastatic prostate cancer; needs PSA and imaging."
       },
       {
-        "finding": "Saddle numbness, leg weakness, or fecal incontinence",
-        "meaning": "Cauda equina syndrome; a neurologic emergency"
+        "finding": "Elevated creatinine with hydronephrosis on imaging",
+        "meaning": "Obstructive nephropathy; urgent bladder drainage."
+      },
+      {
+        "finding": "Hard nodule on DRE",
+        "meaning": "Prostate cancer until proven otherwise."
       }
     ],
     "complications": [
@@ -771,8 +873,8 @@
         "frequency": "sometimes",
         "clues": [
           "Sudden inability to urinate",
-          "Painful suprapubic distension",
-          "Triggered by cold or allergy medicine, alcohol, cold weather, or immobility"
+          "Suprapubic pain",
+          "Precipitated by decongestants, alcohol, or surgery"
         ]
       },
       {
@@ -781,8 +883,9 @@
         "seriousness": "serious",
         "frequency": "sometimes",
         "clues": [
-          "Dysuria, fever, cloudy or foul-smelling urine",
-          "Positive urine culture"
+          "Dysuria, frequency, urgency",
+          "Cloudy or foul-smelling urine",
+          "Positive urinalysis"
         ]
       },
       {
@@ -791,206 +894,195 @@
         "seriousness": "serious",
         "frequency": "rare",
         "clues": [
-          "Sudden interruption of the stream",
-          "Pain radiating to the tip of the penis",
-          "Hematuria"
+          "Recurrent UTIs",
+          "Hematuria",
+          "Lower abdominal pain",
+          "May see stones on cystoscopy"
         ]
       },
       {
-        "name": "Bladder decompensation with chronic retention",
-        "timing": "late",
-        "seriousness": "serious",
-        "frequency": "sometimes",
-        "clues": [
-          "Sensation of incomplete emptying",
-          "Elevated post-void residual",
-          "Overflow incontinence"
-        ]
-      },
-      {
-        "name": "Obstructive uropathy with kidney injury",
+        "name": "Obstructive nephropathy (hydronephrosis and renal failure)",
         "timing": "late",
         "seriousness": "life_threatening",
         "frequency": "rare",
         "clues": [
-          "Rising creatinine",
-          "Decreased urine output",
+          "Fatigue, anorexia",
+          "Elevated creatinine",
           "Bilateral hydronephrosis on ultrasound"
-        ]
-      },
-      {
-        "name": "Recurrent urinary tract infections with urosepsis",
-        "timing": "late",
-        "seriousness": "life_threatening",
-        "frequency": "rare",
-        "clues": [
-          "Fever and chills",
-          "Hypotension",
-          "Positive blood cultures"
         ]
       }
     ],
     "special_populations": [
       {
         "population": "older_adults",
-        "differences": "Symptoms may be dismissed as normal aging; nocturia can lead to falls at night, and anticholinergic medicines for bladder symptoms can worsen retention and confusion."
+        "differences": "Symptoms are more prevalent and may be complicated by comorbidities; anticholinergic medications worsen retention; cognitive impairment may mask symptoms until acute retention occurs."
       },
       {
         "population": "diabetes",
-        "differences": "Diabetic neuropathy can cause a neurogenic bladder, so poor emptying may reflect weak detrusor contractility rather than obstruction alone."
-      },
-      {
-        "population": "obesity",
-        "differences": "Central adiposity and metabolic syndrome are linked to larger prostate volume and faster symptom progression."
+        "differences": "Diabetic cystopathy can cause detrusor underactivity, making symptoms and post-void residual worse; elevated glucose increases osmotic diuresis and nocturia."
       },
       {
         "population": "renal_impairment",
-        "differences": "Chronic obstruction may present with rising creatinine, anemia, or electrolyte abnormalities rather than bothersome voiding symptoms."
+        "differences": "May present with uremic symptoms rather than urinary complaints; need prompt bladder drainage if obstructive nephropathy suspected."
       }
     ]
   },
   "teaching": {
     "key_questions": [
       {
-        "question": "What urinary symptoms have you noticed — trouble starting, a weak or interrupted stream, straining, dribbling at the end?",
+        "question": "When did these urinary symptoms start, and how have they changed over time?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Obstructive pattern: hesitancy, weak stream, straining, terminal dribbling"
+        "looking_for": "Gradual onset and slow progression over months to years"
       },
       {
-        "question": "How many times do you get up at night to urinate?",
+        "question": "Do you have trouble starting to urinate?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Nocturia two or more times; often the most bothersome symptom"
+        "looking_for": "Urinary hesitancy"
       },
       {
-        "question": "How often are you urinating during the day, and do you get sudden urges?",
+        "question": "Is your urine stream weak, slow, or stop-and-start?",
         "category": "hpi",
-        "importance": "important",
-        "looking_for": "Daytime frequency and urgency (irritative symptoms)"
-      },
-      {
-        "question": "Do you feel like your bladder is not completely empty after you finish?",
-        "category": "hpi",
-        "importance": "important",
-        "looking_for": "Sensation of incomplete emptying; suggests significant residual volume"
-      },
-      {
-        "question": "How long has this been going on, and is it getting worse?",
-        "category": "hpi",
-        "importance": "important",
-        "looking_for": "Gradual onset over months to years, slowly progressive"
-      },
-      {
-        "question": "What makes it worse — cold weather, alcohol, caffeine, cold or allergy medicines, fluids before bed?",
-        "category": "hpi",
-        "importance": "important",
-        "looking_for": "Worsening with decongestants or antihistamines, alcohol, caffeine, evening fluids"
-      },
-      {
-        "question": "Have you ever been completely unable to urinate?",
-        "category": "red_flag",
         "importance": "essential",
-        "looking_for": "Any episode of acute urinary retention; a urologic emergency"
+        "looking_for": "Weak or intermittent urinary stream"
       },
       {
-        "question": "Have you seen blood in your urine?",
-        "category": "red_flag",
+        "question": "Do you feel like your bladder does not empty completely after you urinate?",
+        "category": "hpi",
         "importance": "essential",
-        "looking_for": "Gross hematuria — needs evaluation for infection, stone, or urologic cancer"
+        "looking_for": "Sensation of incomplete bladder emptying"
       },
       {
-        "question": "Any fever, chills, burning with urination, or cloudy or foul-smelling urine?",
+        "question": "How many times do you wake up at night to urinate?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Nocturia, typically two or more times per night"
+      },
+      {
+        "question": "How often do you urinate during the day?",
         "category": "associated",
         "importance": "important",
-        "looking_for": "Urinary tract infection; BPH predisposes to it"
+        "looking_for": "Increased daytime urinary frequency"
       },
       {
-        "question": "Any pain in your back or flanks, or pain with ejaculation?",
+        "question": "Do you have a sudden, strong urge to urinate that is hard to postpone?",
         "category": "associated",
         "importance": "important",
-        "looking_for": "Flank pain suggests obstruction or pyelonephritis; ejaculatory pain suggests prostatitis"
+        "looking_for": "Urgency without burning"
       },
       {
-        "question": "Have you had any unexplained weight loss or bone pain, especially in your back or hips?",
-        "category": "red_flag",
+        "question": "Do you have any pain or burning when you urinate?",
+        "category": "associated",
         "importance": "important",
-        "looking_for": "Features suggesting prostate cancer with bone involvement"
+        "looking_for": "Dysuria absent in uncomplicated BPH; its presence suggests UTI or prostatitis"
       },
       {
-        "question": "What medicines do you take, including over-the-counter cold, allergy, or sleep aids?",
+        "question": "Have you ever seen blood in your urine?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Gross hematuria, which warrants evaluation for bladder cancer and other causes"
+      },
+      {
+        "question": "Have you ever been completely unable to urinate, even though your bladder felt full?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Acute urinary retention"
+      },
+      {
+        "question": "Do you have fever, chills, or flank pain?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Signs of urinary tract infection or pyelonephritis"
+      },
+      {
+        "question": "What medications do you take, including any over-the-counter cold or allergy medicines?",
         "category": "medications",
         "importance": "essential",
-        "looking_for": "Anticholinergics, antihistamines, decongestants, and diuretics that worsen voiding"
+        "looking_for": "Decongestants, antihistamines, anticholinergics, or diuretics that can worsen symptoms"
       },
       {
-        "question": "Has a father or brother had an enlarged prostate, prostate surgery, or prostate cancer?",
-        "category": "family",
-        "importance": "important",
-        "looking_for": "Family history of BPH or prostate surgery"
-      },
-      {
-        "question": "Do you have diabetes, heart disease, or problems with your weight or activity level?",
+        "question": "Do you have diabetes, a stroke, Parkinson disease, multiple sclerosis, or a spinal cord problem?",
         "category": "pmh",
         "importance": "important",
-        "looking_for": "Obesity, type 2 diabetes, heart disease — associated with larger prostate and faster progression"
+        "looking_for": "Neurologic or metabolic causes of bladder dysfunction"
       },
       {
-        "question": "Any numbness in the saddle area, leg weakness, or trouble controlling your bowels?",
+        "question": "Have you had prior urinary tract infections, urinary catheters, or prostate surgery?",
+        "category": "pmh",
+        "importance": "optional",
+        "looking_for": "Prior instrumentation or strictures"
+      },
+      {
+        "question": "Has anyone in your family had BPH or prostate cancer?",
+        "category": "family",
+        "importance": "important",
+        "looking_for": "Family history of BPH or prostate cancer"
+      },
+      {
+        "question": "How much caffeine and alcohol do you drink, especially in the evening?",
+        "category": "social",
+        "importance": "important",
+        "looking_for": "Evening caffeine or alcohol intake that worsens nocturia and urgency"
+      },
+      {
+        "question": "Do you have any new weakness in your legs, numbness in your groin or buttocks, or trouble with bowel control?",
         "category": "red_flag",
         "importance": "essential",
-        "looking_for": "Cauda equina syndrome — a neurologic emergency"
+        "looking_for": "Cauda equina syndrome signs"
       },
       {
-        "question": "How much alcohol and caffeine do you drink, and how much fluid do you take in the evening?",
-        "category": "social",
-        "importance": "optional",
-        "looking_for": "Modifiable triggers of nocturia and urgency"
+        "question": "Do you have any new bone pain, especially in your back, hips, or pelvis, or unexplained weight loss?",
+        "category": "red_flag",
+        "importance": "important",
+        "looking_for": "Metastatic prostate cancer"
       },
       {
-        "question": "Any changes in erections or sexual function?",
+        "question": "Do you have difficulty getting or keeping an erection, or pain with ejaculation?",
         "category": "sexual",
         "importance": "optional",
-        "looking_for": "Erectile dysfunction, which is associated with BPH and affects treatment choice"
+        "looking_for": "Erectile dysfunction may coexist; pain with ejaculation can occur with BPH or prostatitis"
       }
     ],
     "accepted_names": [
       "Enlarged prostate",
       "Benign prostatic hyperplasia",
       "BPH",
-      "Benign prostatic enlargement",
-      "BPE",
-      "Prostate enlargement"
+      "Benign prostatic hypertrophy",
+      "Benign prostatic enlargement"
     ],
     "reasoning_points": [
-      "Older man with a gradual, months-to-years history of lower urinary tract symptoms",
-      "Both obstructive symptoms (hesitancy, weak stream, straining, terminal dribbling) and irritative symptoms (frequency, urgency, nocturia)",
-      "Nocturia is often the most bothersome complaint",
-      "Symptoms fluctuate with cold weather, alcohol, caffeine, and cold or allergy medicines",
-      "Digital rectal exam shows an enlarged, smooth, rubbery, non-tender prostate with a preserved median sulcus",
-      "No fever, dysuria, gross hematuria, flank pain, or bone pain to suggest infection, stone, or cancer",
-      "Urinalysis is negative for infection and blood; creatinine is normal",
-      "Post-void residual and prostate size support obstruction rather than a primary bladder problem"
+      "Older man with gradual onset of both voiding and storage lower urinary tract symptoms",
+      "Voiding symptoms: hesitancy, weak intermittent stream, and incomplete emptying",
+      "Storage symptoms: urgency, frequency, and nocturia",
+      "Smooth, symmetrically enlarged, non-tender prostate on digital rectal examination",
+      "No discrete nodule or induration to suggest prostate cancer",
+      "Normal urinalysis without evidence of urinary tract infection",
+      "Elevated post-void residual volume supports bladder outlet obstruction",
+      "Normal or mildly elevated PSA consistent with BPH after considering age and prostate size",
+      "Renal function normal, or if abnormal, associated with obstructive nephropathy and hydronephrosis",
+      "Alternative causes such as UTI, prostate cancer, urethral stricture, and neurogenic bladder considered",
+      "AUA symptom score quantifies symptom severity"
     ],
     "difficulty": {
       "easy": [
-        "Man in his 60s or 70s",
-        "Classic gradual nocturia, frequency, weak stream, and hesitancy",
-        "Enlarged smooth prostate on digital rectal exam",
-        "No red flags"
+        "Classic older man in his 60s with months of nocturia, frequency, and weak stream",
+        "Smooth symmetrically enlarged prostate without nodules",
+        "Normal urinalysis and creatinine",
+        "Elevated post-void residual"
       ],
       "medium": [
-        "Symptoms attributed to normal aging or to another chronic condition",
-        "Coexisting overactive bladder with urgency and urge incontinence",
-        "Mild pyuria or a borderline PSA that needs interpretation",
-        "Patient on an anticholinergic or decongestant that is worsening symptoms"
+        "Patient with bothersome urgency and mild dysuria, so UTI must be ruled out first",
+        "PSA moderately elevated, requiring prostate cancer risk assessment",
+        "Diabetes mellitus or use of anticholinergic medication complicates symptom interpretation",
+        "Recurrent UTIs from chronic incomplete emptying"
       ],
       "hard": [
-        "Older adult whose main complaint is falls at night from nocturia rather than voiding symptoms",
-        "Man with diabetes and a neurogenic bladder that mimics obstruction",
-        "Presentation with rising creatinine and obstructive uropathy but few urinary complaints",
-        "Acute urinary retention triggered by a cold medicine or alcohol",
-        "Hard, nodular prostate on exam raising concern for prostate cancer"
+        "Presents with acute urinary retention after taking a decongestant",
+        "Older man with fatigue and elevated creatinine from long-standing obstructive nephropathy",
+        "Predominant nocturia in a diabetic patient with poor glycemic control, where neurogenic bladder and osmotic diuresis confound BPH symptoms",
+        "Gross hematuria requiring cystoscopy and upper tract imaging to exclude bladder cancer",
+        "Hard prostate nodule on exam raising suspicion for prostate cancer"
       ]
     }
   }

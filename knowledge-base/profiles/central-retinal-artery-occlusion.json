@@ -33,56 +33,51 @@
       },
       {
         "stage": "patient_presentation",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:58:12Z"
+        "generated_at": "2026-10-14T16:05:26Z"
       },
       {
         "stage": "exam_vitals",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:58:40Z"
+        "generated_at": "2026-10-14T16:10:07Z"
       },
       {
         "stage": "diagnostics",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:58:51Z"
+        "generated_at": "2026-10-14T16:12:20Z"
       },
       {
         "stage": "differential_course",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:59:03Z"
+        "generated_at": "2026-10-14T16:13:17Z"
       },
       {
         "stage": "teaching",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:59:09Z"
+        "generated_at": "2026-10-14T16:14:26Z"
       }
     ],
     "validation": {
-      "status": "failed",
-      "rule_errors": [
-        "exam: 5 of 19 terms aren't SNOMED CT findings"
-      ],
+      "status": "passed",
+      "rule_errors": [],
       "review_issues": [
-        "auto-repaired: workup: renamed 'ecg' to 'ECG'",
-        "auto-repaired: workup: 'transthoracic echocardiogram' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
-        "auto-repaired: workup: 'transthoracic echocardiogram' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
-        "exam: term 'Cherry-red spot of retina' not found in SNOMED CT",
-        "exam: term 'Retinal pallor' not found in SNOMED CT",
-        "exam: term 'Retinal arteriolar attenuation' not found in SNOMED CT",
-        "exam: term 'Temporal artery tenderness' not found in SNOMED CT",
-        "exam: term 'Focal neurologic deficit' not found in SNOMED CT",
+        "auto-repaired: workup: 'MRI brain with DWI' was in initial, not_indicated; kept initial as a conditional order (only if focal neurologic symptoms or concern for embolic stroke)",
+        "auto-repaired: workup: 'Optical coherence tomography of the macula' was in supporting, not_indicated; kept supporting as a conditional order (only if diagnosis uncertain on fundoscopy)",
+        "auto-repaired: workup: 'CT angiogram of head and neck' was in supporting, not_indicated; kept supporting as a conditional order (only if carotid duplex nondiagnostic or dissection suspected)",
+        "auto-repaired: workup: 'Transesophageal echocardiogram' was in supporting, not_indicated; kept supporting as a conditional order (only if TTE nondiagnostic and high suspicion for cardiac source)",
+        "auto-repaired: workup: 'Temporal artery ultrasound' was in supporting, not_indicated; kept supporting as a conditional order (only if giant cell arteritis suspected)",
+        "auto-repaired: workup: 'Hypercoagulable panel' was in supporting, not_indicated; kept supporting as a conditional order (only if young patient, no atherosclerosis, or recurrent events)",
+        "exam: term 'Cherry red spot at macula' not found in SNOMED CT",
+        "exam: term 'Retinal arteriolar narrowing' not found in SNOMED CT",
         "differential giant-cell-arteritis: no profile yet",
         "differential retinal-detachment: no profile yet",
-        "differential vitreous-hemorrhage: no profile yet",
-        "differential ischemic-optic-neuropathy: no profile yet",
-        "differential ocular-ischemic-syndrome: no profile yet",
-        "differential diabetic-retinopathy: no profile yet",
-        "differential migraine-with-aura: no profile yet"
+        "differential non-arteritic-anterior-ischemic-optic-neuropathy: no profile yet",
+        "differential vitreous-hemorrhage: no profile yet"
       ]
     },
     "review": {
@@ -93,23 +88,22 @@
     "age": {
       "typical_min": 55,
       "typical_max": 85,
-      "peak": "60–80",
-      "possible_min": 20,
-      "possible_max": 100
+      "peak": "60s",
+      "possible_min": 18,
+      "possible_max": 95
     },
     "sex": "male_predominant",
     "demographics": [
-      "More common in older adults with atherosclerotic vascular disease",
-      "Slightly more common in men than women",
-      "Rare in people under 40 unless there is an embolic source such as cardiac valve disease or a hypercoagulable state"
+      "Most common in older adults, with a mean onset in the 60s",
+      "Men are slightly more affected than women"
     ],
     "risk_factors": [
       {
-        "text": "Hypertension",
+        "text": "Age over 60 years",
         "strength": "strong"
       },
       {
-        "text": "Diabetes mellitus",
+        "text": "Hypertension",
         "strength": "strong"
       },
       {
@@ -117,122 +111,108 @@
         "strength": "strong"
       },
       {
-        "text": "Atrial fibrillation or other cardiac embolic source",
-        "strength": "strong"
+        "text": "Atrial fibrillation",
+        "strength": "moderate"
+      },
+      {
+        "text": "Diabetes mellitus",
+        "strength": "moderate"
       },
       {
         "text": "Hyperlipidemia",
         "strength": "moderate"
       },
       {
-        "text": "Cigarette smoking",
+        "text": "Smoking",
         "strength": "moderate"
       },
       {
-        "text": "Giant cell arteritis",
-        "strength": "moderate"
-      },
-      {
-        "text": "Hypercoagulable state such as antiphospholipid syndrome",
+        "text": "Recent myocardial infarction or valvular heart disease",
         "strength": "weak"
       },
       {
-        "text": "Recent intraocular or periocular procedure",
+        "text": "Hypercoagulable state",
         "strength": "weak"
       }
     ],
     "comorbidities": [
-      "Coronary artery disease",
-      "Prior stroke or transient ischemic attack",
-      "Peripheral arterial disease",
-      "Chronic kidney disease"
+      "Hypertension",
+      "Diabetes mellitus",
+      "Ischemic heart disease",
+      "Atrial fibrillation",
+      "Carotid artery stenosis",
+      "Giant cell arteritis"
     ],
     "family_history": [
-      "Premature cardiovascular disease in a first-degree relative"
+      "Premature cardiovascular disease"
     ],
     "social_history": [
-      "Current or former cigarette smoking",
-      "Sedentary lifestyle"
+      "Tobacco smoking"
     ],
     "exposures": [],
-    "risk_medications": [
-      "sildenafil",
-      "tadalafil",
-      "oral contraceptive pill"
-    ]
+    "risk_medications": []
   },
   "presentation": {
     "chief_complaints": [
       {
-        "text": "I suddenly lost the vision in one eye",
+        "text": "I suddenly can't see out of my right eye",
         "frequency": "almost_always",
         "term": "Sudden visual loss",
         "snomed_verified": true
       },
       {
-        "text": "It's like a curtain came down over my eye",
+        "text": "Everything went black in one eye",
         "frequency": "common",
-        "term": "Visual field defect",
-        "snomed_verified": true
-      },
-      {
-        "text": "Everything is dark and blurry on that side",
-        "frequency": "common",
-        "term": "Blurred vision",
+        "term": "Sudden visual loss",
         "snomed_verified": true
       }
     ],
     "hpi": {
-      "onset": "Sudden, over seconds to a few minutes, often noticed on waking or while going about the day",
-      "duration": "Present for minutes to hours at presentation; vision loss is typically persistent",
-      "progression": "Reaches its worst within minutes and then stays stable; some patients describe brief episodes of visual loss before the permanent event",
-      "location": "One eye, usually the entire visual field of that eye",
-      "radiation": "Does not radiate",
-      "quality": "Painless darkening or loss of vision, often described as a shade or curtain coming down",
-      "severity": "Severe; complete or near-complete loss of vision in the affected eye",
-      "timing": "Sudden onset, no fluctuation after the initial event",
+      "onset": "Sudden, over seconds; many notice on awakening",
+      "duration": "Vision loss is maximal at onset; patients usually present within hours",
+      "progression": "Abrupt and maximal at onset; there is little or no progression. Some patients report brief episodes of transient monocular blindness before the event.",
+      "location": "One eye",
+      "radiation": "None",
+      "quality": "Painless severe dimming, gray-out, or complete blackness of vision",
+      "severity": "Severe; often only finger counting or light perception remains",
+      "timing": "Sudden, often while at rest or on waking",
       "aggravating": [],
-      "relieving": [
-        "Nothing reliably restores vision"
-      ],
+      "relieving": [],
       "associated_symptoms": [
         {
-          "text": "Visual field defect in the affected eye",
-          "frequency": "common",
-          "term": "Visual field defect",
-          "snomed_verified": true
-        },
-        {
-          "text": "Blurred vision in the affected eye",
-          "frequency": "common",
-          "term": "Blurred vision",
-          "snomed_verified": true
-        },
-        {
-          "text": "Brief episodes of visual loss before the permanent event",
+          "text": "Brief episodes of vision loss in one eye before the event",
           "frequency": "sometimes",
           "term": "Amaurosis fugax",
           "snomed_verified": true
         },
         {
-          "text": "Flashing lights or floaters",
+          "text": "Headache",
           "frequency": "rare",
-          "term": "Photopsia",
+          "term": "Headache",
+          "snomed_verified": true
+        },
+        {
+          "text": "Jaw pain brought on by chewing",
+          "frequency": "rare",
+          "term": "Jaw claudication",
+          "snomed_verified": true
+        },
+        {
+          "text": "Tenderness over the scalp or temples",
+          "frequency": "rare",
+          "term": "Scalp tenderness",
           "snomed_verified": true
         }
       ],
       "pertinent_negatives": [
         "Eye pain",
         "Redness of the eye",
-        "Headache",
-        "Jaw claudication",
-        "Scalp tenderness",
-        "Fever",
-        "Diplopia",
-        "Weakness or numbness on one side of the body",
-        "Difficulty speaking",
-        "Recent eye trauma",
-        "Contact lens use"
+        "Photophobia",
+        "Flashes or floaters",
+        "Double vision",
+        "Focal weakness, numbness, or speech difficulty",
+        "Nausea or vomiting",
+        "Fever"
       ]
     },
     "ros": [
@@ -240,144 +220,123 @@
         "system": "eyes",
         "positives": [
           {
-            "text": "Sudden painless loss of vision in one eye",
+            "text": "Sudden loss of vision in one eye",
             "frequency": "almost_always",
             "term": "Sudden visual loss",
             "snomed_verified": true
           },
           {
-            "text": "Visual field defect in the affected eye",
-            "frequency": "common",
-            "term": "Visual field defect",
-            "snomed_verified": true
-          },
-          {
-            "text": "Blurred vision in the affected eye",
-            "frequency": "common",
-            "term": "Blurred vision",
-            "snomed_verified": true
-          }
-        ],
-        "negatives": [
-          "Eye pain",
-          "Eye redness",
-          "Photophobia",
-          "Discharge from the eye",
-          "Floaters",
-          "Flashing lights"
-        ],
-        "argues_against": [
-          "Painful red eye with photophobia",
-          "Flashes and floaters with a curtain-like defect"
-        ]
-      },
-      {
-        "system": "neurologic",
-        "positives": [
-          {
-            "text": "Brief episodes of visual loss before the permanent event",
+            "text": "Prior brief loss of vision in one eye that fully recovered",
             "frequency": "sometimes",
             "term": "Amaurosis fugax",
             "snomed_verified": true
           }
         ],
         "negatives": [
-          "Weakness on one side of the body",
-          "Numbness on one side of the body",
-          "Difficulty speaking",
-          "Facial droop",
-          "Loss of coordination"
+          "Eye pain",
+          "Redness",
+          "Photophobia",
+          "Flashes",
+          "Floaters",
+          "Diplopia"
         ],
         "argues_against": [
-          "Hemiparesis or aphasia suggesting a hemispheric stroke",
-          "Diplopia or vertigo suggesting a brainstem event"
-        ]
-      },
-      {
-        "system": "cardiovascular",
-        "positives": [
-          {
-            "text": "Irregular heartbeat",
-            "frequency": "sometimes",
-            "term": "Palpitations",
-            "snomed_verified": true
-          }
-        ],
-        "negatives": [
-          "Chest pain",
-          "Shortness of breath",
-          "Leg swelling",
-          "Claudication"
-        ],
-        "argues_against": [
-          "Acute chest pain with diaphoresis suggesting myocardial infarction"
+          "Sudden painful red eye with a fixed mid-dilated pupil suggests acute angle-closure glaucoma"
         ]
       },
       {
         "system": "constitutional",
-        "positives": [],
+        "positives": [
+          {
+            "text": "Jaw claudication",
+            "frequency": "rare",
+            "term": "Jaw claudication",
+            "snomed_verified": true
+          },
+          {
+            "text": "Scalp tenderness",
+            "frequency": "rare",
+            "term": "Scalp tenderness",
+            "snomed_verified": true
+          }
+        ],
         "negatives": [
           "Fever",
           "Weight loss",
-          "Night sweats",
-          "Malaise"
+          "Night sweats"
+        ],
+        "argues_against": []
+      },
+      {
+        "system": "cardiovascular",
+        "positives": [],
+        "negatives": [
+          "Chest pain",
+          "Palpitations",
+          "Orthopnea",
+          "Leg swelling"
         ],
         "argues_against": [
-          "Fever and weight loss suggesting giant cell arteritis or infection"
+          "Chest pain or severe dyspnea may point to an alternative acute cardiovascular event"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [],
+        "negatives": [
+          "Focal weakness",
+          "Numbness",
+          "Dysarthria",
+          "Facial droop",
+          "Confusion"
+        ],
+        "argues_against": [
+          "Weakness or speech difficulty suggests hemispheric stroke"
         ]
       }
     ],
     "atypical": [
       {
         "population": "older_adults",
-        "how_it_differs": "May not report the event as sudden because of cognitive impairment or pre-existing poor vision; vision loss may be attributed to cataract or macular degeneration.",
+        "how_it_differs": "In patients over 50, especially women, giant cell arteritis may be the cause; headache, jaw claudication, scalp tenderness, or proximal muscle aches may accompany the vision loss.",
         "missing_classic_features": [
-          "Clear sudden onset",
-          "Ability to describe a curtain-like defect"
-        ]
-      },
-      {
-        "population": "diabetes",
-        "how_it_differs": "Proliferative diabetic retinopathy can cause vitreous hemorrhage with sudden vision loss, and the fundus may be obscured so the cherry-red spot is not seen.",
-        "missing_classic_features": [
-          "Cherry-red spot on fundoscopy",
-          "Clear view of the retina"
+          "Painless isolated monocular vision loss"
         ]
       },
       {
         "population": "children",
-        "how_it_differs": "Rare; may present with leukocoria, strabismus or failure to track rather than a verbal report of vision loss.",
+        "how_it_differs": "Rare; may occur with congenital heart disease or hypercoagulable states. Young children may not report monocular vision loss and instead appear visually inattentive or bump into things.",
         "missing_classic_features": [
-          "Reported sudden painless monocular vision loss"
+          "Clear report of sudden painless vision loss in one eye"
         ]
       }
     ]
   },
   "exam": {
     "general": {
-      "mild": "Alert, comfortable, no distress; vision loss may be partial",
-      "moderate": "Alert, mildly anxious about sudden vision loss, otherwise well-appearing",
-      "severe": "Anxious, distressed by complete monocular vision loss, otherwise non-toxic",
-      "critical": "Ill-appearing with concurrent neurologic deficits or hemodynamic instability from an embolic or systemic cause"
+      "mild": "Alert, comfortable, and may not appear systemically ill; the only complaint is monocular vision loss.",
+      "moderate": "Alert, anxious about the vision loss, but appears otherwise well.",
+      "severe": "Alert and anxious; may need help navigating due to severe monocular visual loss, but no systemic distress.",
+      "critical": "Alert; may be distressed or unable to see well enough to ambulate safely, but no shock or respiratory compromise."
     },
     "findings": [
       {
-        "id": "visual-acuity-reduced",
+        "id": "decreased-visual-acuity",
         "region": "heent",
-        "maneuver": "Check visual acuity in each eye separately with a Snellen chart or pinhole",
-        "finding": "Markedly reduced visual acuity in the affected eye, often counting fingers or worse",
+        "maneuver": "Check visual acuity in each eye with a Snellen chart or near card; if too poor, test finger counting or hand motion.",
+        "finding": "Markedly reduced visual acuity in the affected eye, often only finger counting, hand motion, or light perception.",
         "frequency": "almost_always",
         "significance": "strongly_supports",
         "importance": "essential",
-        "term": "Reduced visual acuity",
+        "term": "Decreased visual acuity",
         "snomed_verified": true
       },
       {
         "id": "relative-afferent-pupillary-defect",
         "region": "heent",
-        "maneuver": "Swing a light back and forth between the two eyes (swinging flashlight test)",
-        "finding": "Affected pupil dilates rather than constricts when light swings to it",
-        "frequency": "common",
+        "maneuver": "Perform the swinging flashlight test.",
+        "finding": "Pupil of the affected eye dilates paradoxically when light is swung from the unaffected to the affected eye.",
+        "frequency": "almost_always",
         "significance": "strongly_supports",
         "importance": "essential",
         "term": "Relative afferent pupillary defect",
@@ -386,107 +345,30 @@
       {
         "id": "cherry-red-spot",
         "region": "heent",
-        "maneuver": "Perform dilated fundoscopy and inspect the macula",
-        "finding": "Pale, opaque retina with a cherry-red spot at the fovea",
+        "maneuver": "Dilate the pupil and examine the fundus with a direct or indirect ophthalmoscope.",
+        "finding": "Cherry-red spot at the macula surrounded by pale, edematous retina.",
         "frequency": "common",
         "significance": "strongly_supports",
         "importance": "essential",
-        "term": "Cherry-red spot of retina",
+        "term": "Cherry red spot at macula",
         "snomed_verified": false
       },
       {
-        "id": "retinal-pallor",
+        "id": "retinal-arteriolar-narrowing",
         "region": "heent",
-        "maneuver": "Perform dilated fundoscopy and inspect the retinal background",
-        "finding": "Diffuse or sectoral pallor and opacification of the retina",
+        "maneuver": "Examine the retinal arterioles on fundoscopy.",
+        "finding": "Retinal arterioles are narrowed, sometimes with boxcar segmentation of the blood column.",
         "frequency": "common",
         "significance": "supports",
         "importance": "important",
-        "term": "Retinal pallor",
+        "term": "Retinal arteriolar narrowing",
         "snomed_verified": false
       },
       {
-        "id": "retinal-arteriolar-attenuation",
+        "id": "normal-retinal-detachment",
         "region": "heent",
-        "maneuver": "Perform dilated fundoscopy and inspect the retinal arterioles",
-        "finding": "Narrowed, irregular retinal arterioles with sludged or segmented blood columns",
-        "frequency": "common",
-        "significance": "supports",
-        "importance": "important",
-        "term": "Retinal arteriolar attenuation",
-        "snomed_verified": false
-      },
-      {
-        "id": "visible-embolus",
-        "region": "heent",
-        "maneuver": "Perform dilated fundoscopy and inspect the retinal vessels",
-        "finding": "Bright yellow or white embolic material lodged at an arteriolar bifurcation",
-        "frequency": "sometimes",
-        "significance": "supports",
-        "importance": "important",
-        "term": "Retinal embolus",
-        "snomed_verified": true
-      },
-      {
-        "id": "visual-field-defect",
-        "region": "heent",
-        "maneuver": "Confrontation visual field testing in each eye",
-        "finding": "Defect respecting the horizontal meridian in the affected eye, often central or altitudinal",
-        "frequency": "common",
-        "significance": "supports",
-        "importance": "important",
-        "term": "Visual field defect",
-        "snomed_verified": true
-      },
-      {
-        "id": "no-eye-pain",
-        "region": "heent",
-        "maneuver": "Ask about and assess for ocular pain or tenderness",
-        "finding": "No eye pain or tenderness",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "important",
-        "term": "Eye pain",
-        "snomed_verified": true
-      },
-      {
-        "id": "no-conjunctival-injection",
-        "region": "heent",
-        "maneuver": "Inspect the conjunctiva and sclera in room light",
-        "finding": "No conjunctival injection or redness",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "important",
-        "term": "Conjunctival injection",
-        "snomed_verified": true
-      },
-      {
-        "id": "no-corneal-edema",
-        "region": "heent",
-        "maneuver": "Inspect the cornea with a penlight or slit lamp",
-        "finding": "Clear cornea without edema or haze",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "optional",
-        "term": "Corneal edema",
-        "snomed_verified": true
-      },
-      {
-        "id": "no-vitreous-hemorrhage",
-        "region": "heent",
-        "maneuver": "Perform dilated fundoscopy and inspect the vitreous",
-        "finding": "No vitreous hemorrhage obscuring the retina",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "important",
-        "term": "Vitreous hemorrhage",
-        "snomed_verified": true
-      },
-      {
-        "id": "no-retinal-detachment",
-        "region": "heent",
-        "maneuver": "Perform dilated fundoscopy and inspect the peripheral retina",
-        "finding": "Retina attached without tears or folds",
+        "maneuver": "Perform a complete fundus examination.",
+        "finding": "No retinal tear or detachment; retina is attached.",
         "frequency": "almost_always",
         "significance": "neutral",
         "importance": "important",
@@ -494,417 +376,89 @@
         "snomed_verified": true
       },
       {
-        "id": "no-scalp-tenderness",
+        "id": "normal-optic-disc-edema",
         "region": "heent",
-        "maneuver": "Palpate the temporal arteries and scalp",
-        "finding": "No temporal artery tenderness, nodularity or reduced pulsation",
+        "maneuver": "Examine the optic disc.",
+        "finding": "No optic disc swelling or hyperemia; disc margins are sharp.",
         "frequency": "almost_always",
         "significance": "neutral",
         "importance": "important",
-        "term": "Temporal artery tenderness",
-        "snomed_verified": false
+        "term": "Optic disc edema",
+        "snomed_verified": true
       },
       {
-        "id": "no-jaw-claudication",
+        "id": "normal-scalp-tenderness",
         "region": "heent",
-        "maneuver": "Ask the patient to chew vigorously and report jaw pain",
-        "finding": "No jaw claudication",
+        "maneuver": "Palpate the temporal arteries and scalp.",
+        "finding": "Temporal arteries are nontender, non-nodular, with normal pulsation; no scalp tenderness.",
         "frequency": "almost_always",
         "significance": "neutral",
-        "importance": "optional",
-        "term": "Jaw claudication",
-        "snomed_verified": true
-      },
-      {
-        "id": "carotid-bruit",
-        "region": "neck",
-        "maneuver": "Auscultate the neck over both carotid arteries",
-        "finding": "Bruit over the carotid artery",
-        "frequency": "sometimes",
-        "significance": "supports",
         "importance": "important",
-        "term": "Carotid bruit",
+        "term": "Scalp tenderness",
         "snomed_verified": true
       },
       {
-        "id": "irregular-pulse",
-        "region": "cardiac",
-        "maneuver": "Palpate the radial pulse and auscultate the heart",
-        "finding": "Irregularly irregular rhythm suggesting atrial fibrillation",
-        "frequency": "sometimes",
-        "significance": "supports",
-        "importance": "important",
-        "term": "Irregular pulse",
-        "snomed_verified": true
-      },
-      {
-        "id": "no-murmur",
-        "region": "cardiac",
-        "maneuver": "Auscultate the cardiac apex and base",
-        "finding": "No new murmur or valvular click",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "optional",
-        "term": "Cardiac murmur",
-        "snomed_verified": true
-      },
-      {
-        "id": "no-focal-neurologic-deficit",
+        "id": "normal-hemiparesis",
         "region": "neuro",
-        "maneuver": "Test strength, sensation, speech and coordination",
-        "finding": "No hemiparesis, sensory loss, aphasia or ataxia",
+        "maneuver": "Ask the patient to hold both arms up and check for drift; test grip strength.",
+        "finding": "No arm drift or leg weakness.",
         "frequency": "almost_always",
         "significance": "neutral",
         "importance": "essential",
-        "term": "Focal neurologic deficit",
-        "snomed_verified": false
+        "term": "Hemiparesis",
+        "snomed_verified": true
       },
       {
-        "id": "no-facial-droop",
+        "id": "normal-dysarthria",
         "region": "neuro",
-        "maneuver": "Ask the patient to smile and show teeth",
-        "finding": "Symmetric facial movement without droop",
+        "maneuver": "Listen to spontaneous speech and ask the patient to repeat a phrase.",
+        "finding": "No dysarthria.",
         "frequency": "almost_always",
         "significance": "neutral",
-        "importance": "important",
-        "term": "Facial droop",
+        "importance": "essential",
+        "term": "Dysarthria",
+        "snomed_verified": true
+      },
+      {
+        "id": "normal-aphasia",
+        "region": "neuro",
+        "maneuver": "Ask the patient to name objects and repeat a sentence.",
+        "finding": "No aphasia.",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "essential",
+        "term": "Aphasia",
         "snomed_verified": true
       }
     ]
   },
-  "vitals": {
-    "temp": {
-      "mild": {
-        "min": 97.8,
-        "max": 99.1
-      },
-      "moderate": {
-        "min": 97.8,
-        "max": 99.1
-      },
-      "severe": {
-        "min": 97.8,
-        "max": 99.1
-      },
-      "critical": {
-        "min": 97.8,
-        "max": 99.1
-      }
-    },
-    "hr": {
-      "mild": {
-        "min": 60,
-        "max": 100
-      },
-      "moderate": {
-        "min": 60,
-        "max": 100
-      },
-      "severe": {
-        "min": 60,
-        "max": 100
-      },
-      "critical": {
-        "min": 50,
-        "max": 130
-      }
-    },
-    "rr": {
-      "mild": {
-        "min": 12,
-        "max": 20
-      },
-      "moderate": {
-        "min": 12,
-        "max": 20
-      },
-      "severe": {
-        "min": 12,
-        "max": 20
-      },
-      "critical": {
-        "min": 10,
-        "max": 28
-      }
-    },
-    "sbp": {
-      "mild": {
-        "min": 110,
-        "max": 160
-      },
-      "moderate": {
-        "min": 110,
-        "max": 170
-      },
-      "severe": {
-        "min": 110,
-        "max": 180
-      },
-      "critical": {
-        "min": 80,
-        "max": 200
-      }
-    },
-    "dbp": {
-      "mild": {
-        "min": 60,
-        "max": 95
-      },
-      "moderate": {
-        "min": 60,
-        "max": 100
-      },
-      "severe": {
-        "min": 60,
-        "max": 105
-      },
-      "critical": {
-        "min": 50,
-        "max": 120
-      }
-    },
-    "spo2": {
-      "mild": {
-        "min": 95,
-        "max": 100
-      },
-      "moderate": {
-        "min": 95,
-        "max": 100
-      },
-      "severe": {
-        "min": 95,
-        "max": 100
-      },
-      "critical": {
-        "min": 88,
-        "max": 100
-      }
-    }
-  },
+  "vitals": {},
   "labs": [
     {
       "test_id": "esr",
-      "ranges": {
-        "moderate": {
-          "min": 25,
-          "max": 60
-        },
-        "severe": {
-          "min": 40,
-          "max": 100
-        },
-        "critical": {
-          "min": 60,
-          "max": 120
-        }
-      },
       "frequency": "sometimes",
-      "importance": "important",
-      "caveat": "Markedly elevated ESR with a compatible history raises giant cell arteritis, which can cause the same sudden visual loss and needs immediate steroids."
+      "importance": "essential",
+      "caveat": "Elevated in giant cell arteritis; normal in atherosclerotic or embolic CRAO. Do not delay steroids if GCA is suspected."
     },
     {
       "test_id": "crp",
-      "ranges": {
-        "moderate": {
-          "min": 1.5,
-          "max": 6.0
-        },
-        "severe": {
-          "min": 4.0,
-          "max": 15.0
-        },
-        "critical": {
-          "min": 8.0,
-          "max": 25.0
-        }
-      },
       "frequency": "sometimes",
-      "importance": "important",
-      "caveat": "Supports giant cell arteritis when elevated alongside the ESR; normal values do not fully exclude it."
-    },
-    {
-      "test_id": "glucose",
-      "ranges": {
-        "moderate": {
-          "min": 100,
-          "max": 160
-        },
-        "severe": {
-          "min": 140,
-          "max": 250
-        },
-        "critical": {
-          "min": 180,
-          "max": 400
-        }
-      },
-      "frequency": "common",
-      "importance": "important",
-      "caveat": "Hyperglycemia is common because diabetes is a major risk factor; it also guides secondary prevention."
-    },
-    {
-      "test_id": "a1c",
-      "ranges": {
-        "moderate": {
-          "min": 5.7,
-          "max": 6.4
-        },
-        "severe": {
-          "min": 6.5,
-          "max": 9.0
-        },
-        "critical": {
-          "min": 8.0,
-          "max": 12.0
-        }
-      },
-      "frequency": "common",
-      "importance": "important",
-      "caveat": "Identifies undiagnosed or poorly controlled diabetes as the underlying vascular risk factor."
-    },
-    {
-      "test_id": "chol",
-      "ranges": {
-        "moderate": {
-          "min": 200,
-          "max": 260
-        },
-        "severe": {
-          "min": 240,
-          "max": 320
-        }
-      },
-      "frequency": "common",
-      "importance": "important"
-    },
-    {
-      "test_id": "ldl",
-      "ranges": {
-        "moderate": {
-          "min": 100,
-          "max": 160
-        },
-        "severe": {
-          "min": 140,
-          "max": 220
-        }
-      },
-      "frequency": "common",
-      "importance": "important",
-      "caveat": "Drives statin therapy for secondary prevention of further vascular events."
-    },
-    {
-      "test_id": "hs_tnt",
-      "ranges": {
-        "moderate": {
-          "min": 15,
-          "max": 40
-        },
-        "severe": {
-          "min": 30,
-          "max": 100
-        }
-      },
-      "frequency": "sometimes",
-      "importance": "optional",
-      "caveat": "Elevated when the retinal event is part of a broader atheroembolic or acute coronary process."
-    },
-    {
-      "test_id": "d_dimer",
-      "ranges": {
-        "moderate": {
-          "min": 0.6,
-          "max": 2.0
-        },
-        "severe": {
-          "min": 1.5,
-          "max": 5.0
-        }
-      },
-      "frequency": "rare",
-      "importance": "optional",
-      "caveat": "Not a routine test; consider only when a hypercoagulable or embolic source is suspected in a younger patient."
+      "importance": "essential",
+      "caveat": "Elevated in giant cell arteritis; may be more sensitive than ESR."
     },
     {
       "test_id": "plt",
-      "ranges": {
-        "moderate": {
-          "min": 400,
-          "max": 600
-        },
-        "severe": {
-          "min": 600,
-          "max": 900
-        }
-      },
       "frequency": "rare",
       "importance": "optional",
-      "caveat": "Thrombocytosis or other myeloproliferative findings can point to a hypercoagulable cause."
-    },
-    {
-      "test_id": "aptt",
-      "ranges": {
-        "moderate": {
-          "min": 36,
-          "max": 50
-        },
-        "severe": {
-          "min": 45,
-          "max": 70
-        }
-      },
-      "frequency": "rare",
-      "importance": "optional",
-      "caveat": "Prolonged aPTT can suggest a lupus anticoagulant in a young patient with no atherosclerotic risk factors."
-    },
-    {
-      "test_id": "hcg",
-      "frequency": "rare",
-      "importance": "optional",
-      "caveat": "Consider in a woman of childbearing age before any intervention or when a hypercoagulable state is suspected."
+      "caveat": "Mild thrombocytosis can accompany giant cell arteritis."
     }
   ],
   "ecg": {
     "findings": [
       {
         "feature": "rhythm",
-        "finding": "Atrial fibrillation or atrial flutter",
-        "frequency": "sometimes",
-        "leads": [
-          "II",
-          "V1"
-        ]
-      },
-      {
-        "feature": "rhythm",
-        "finding": "Normal sinus rhythm",
-        "frequency": "common",
-        "leads": [
-          "II"
-        ]
-      },
-      {
-        "feature": "st",
-        "finding": "ST depression or T-wave inversion suggesting concurrent coronary disease",
-        "frequency": "rare",
-        "leads": [
-          "I",
-          "II",
-          "V4",
-          "V5",
-          "V6"
-        ]
-      },
-      {
-        "feature": "qrs",
-        "finding": "Left ventricular hypertrophy from chronic hypertension",
-        "frequency": "sometimes",
-        "leads": [
-          "V5",
-          "V6",
-          "aVL"
-        ]
+        "finding": "Atrial fibrillation with irregularly irregular rhythm",
+        "frequency": "sometimes"
       }
     ]
   },
@@ -912,60 +466,18 @@
     {
       "study": "Carotid duplex ultrasound",
       "modality": "ultrasound",
+      "preferred_when": "First-line for evaluating carotid artery stenosis without radiation",
       "findings": [
         {
-          "text": "Hemodynamically significant stenosis of the ipsilateral internal carotid artery",
-          "frequency": "common"
-        },
-        {
-          "text": "Ulcerated or heterogeneous atherosclerotic plaque",
-          "frequency": "common"
-        },
-        {
-          "text": "No significant stenosis (no clear embolic source)",
-          "frequency": "sometimes"
-        }
-      ]
-    },
-    {
-      "study": "CT angiography of the head and neck",
-      "modality": "ct",
-      "findings": [
-        {
-          "text": "Carotid or ophthalmic artery stenosis or occlusion",
-          "frequency": "common"
-        },
-        {
-          "text": "Calcified or mixed atherosclerotic plaque at the carotid bifurcation",
-          "frequency": "common"
-        },
-        {
-          "text": "No large-vessel occlusion",
-          "frequency": "sometimes"
-        }
-      ]
-    },
-    {
-      "study": "MRI brain with diffusion-weighted imaging",
-      "modality": "mri",
-      "findings": [
-        {
-          "text": "Acute infarcts in the ipsilateral cerebral hemisphere (silent or symptomatic embolic stroke)",
+          "text": "Hemodynamically significant internal carotid artery stenosis (≥70%)",
           "frequency": "sometimes"
         },
         {
-          "text": "No acute intracranial infarct",
-          "frequency": "common"
-        }
-      ]
-    },
-    {
-      "study": "Magnetic resonance angiography of the head and neck",
-      "modality": "mri",
-      "preferred_when": "When iodinated contrast or radiation should be avoided",
-      "findings": [
+          "text": "Atherosclerotic plaque with irregular or ulcerated surface",
+          "frequency": "sometimes"
+        },
         {
-          "text": "Carotid or ophthalmic artery stenosis or occlusion",
+          "text": "Normal carotid arteries",
           "frequency": "common"
         }
       ]
@@ -973,14 +485,19 @@
     {
       "study": "Transthoracic echocardiogram",
       "modality": "echo",
+      "preferred_when": "Initial cardiac evaluation for embolic source",
       "findings": [
         {
-          "text": "Left atrial enlargement or spontaneous echo contrast suggesting a cardioembolic source",
+          "text": "Left atrial enlargement",
           "frequency": "sometimes"
         },
         {
-          "text": "Valvular vegetation or prosthetic valve abnormality",
+          "text": "Left ventricular thrombus",
           "frequency": "rare"
+        },
+        {
+          "text": "Valvular heart disease (e.g., aortic stenosis, mitral stenosis)",
+          "frequency": "sometimes"
         },
         {
           "text": "Normal study",
@@ -989,44 +506,100 @@
       ]
     },
     {
+      "study": "Transesophageal echocardiogram",
+      "modality": "echo",
+      "preferred_when": "When TTE is nondiagnostic and high suspicion for cardiac source",
+      "findings": [
+        {
+          "text": "Left atrial appendage thrombus",
+          "frequency": "rare"
+        },
+        {
+          "text": "Aortic arch atheroma",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Patent foramen ovale with right-to-left shunt",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
       "study": "Optical coherence tomography of the macula",
       "modality": "other",
+      "preferred_when": "When diagnosis uncertain or to assess retinal edema",
       "findings": [
         {
-          "text": "Hyperreflective inner retinal layers with loss of the normal foveal depression",
+          "text": "Inner retinal edema with increased thickness and hyperreflectivity",
           "frequency": "common"
         },
         {
-          "text": "Thickened inner retina consistent with acute ischemia",
-          "frequency": "common"
+          "text": "Loss of distinct inner retinal layer architecture",
+          "frequency": "sometimes"
         }
       ]
     },
     {
-      "study": "Fluorescein angiography",
+      "study": "Fluorescein angiography of the retina",
       "modality": "other",
+      "preferred_when": "Rarely needed; shows retinal perfusion",
       "findings": [
         {
-          "text": "Delayed or absent retinal arterial filling with a prolonged arteriovenous transit time",
+          "text": "Delayed arteriovenous transit time",
           "frequency": "common"
         },
         {
-          "text": "Patchy choroidal filling",
+          "text": "Absent or severely delayed arterial filling",
+          "frequency": "common"
+        },
+        {
+          "text": "Boxcarring of dye in retinal arterioles",
           "frequency": "sometimes"
         }
       ]
     },
     {
-      "study": "CT head without contrast",
-      "modality": "ct",
+      "study": "MRI brain with DWI",
+      "modality": "mri",
+      "preferred_when": "When focal neurologic symptoms or concern for concurrent cerebral ischemia",
       "findings": [
         {
-          "text": "No acute intracranial hemorrhage or mass",
+          "text": "No acute cerebral infarction",
           "frequency": "common"
         },
         {
-          "text": "Chronic small-vessel ischemic changes",
+          "text": "Acute infarction in the ipsilateral cerebral hemisphere or borderzone",
           "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "CT angiogram of head and neck",
+      "modality": "ct",
+      "preferred_when": "When carotid ultrasound nondiagnostic or dissection suspected",
+      "findings": [
+        {
+          "text": "Significant internal carotid artery stenosis or occlusion",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Carotid artery dissection",
+          "frequency": "rare"
+        },
+        {
+          "text": "No significant carotid stenosis",
+          "frequency": "common"
+        }
+      ]
+    },
+    {
+      "study": "Temporal artery ultrasound",
+      "modality": "ultrasound",
+      "preferred_when": "When giant cell arteritis is suspected",
+      "findings": [
+        {
+          "text": "Hypoechoic halo sign around temporal artery",
+          "frequency": "rare"
         }
       ]
     }
@@ -1034,519 +607,453 @@
   "workup": {
     "initial": [
       {
+        "test": "ECG (12-lead)",
+        "why": "Detect atrial fibrillation as a cardioembolic source"
+      },
+      {
         "test": "cbc",
-        "why": "Baseline blood counts; thrombocytosis or anemia can point to an underlying cause"
-      },
-      {
-        "test": "bmp",
-        "why": "Renal function and glucose before contrast imaging and for vascular risk assessment"
-      },
-      {
-        "test": "a1c",
-        "why": "Identifies diabetes as the underlying vascular risk factor"
-      },
-      {
-        "test": "lipids",
-        "why": "Guides statin therapy for secondary prevention"
+        "why": "Baseline platelets and hemoglobin; thrombocytosis may accompany giant cell arteritis"
       },
       {
         "test": "esr",
-        "why": "Screens for giant cell arteritis, a treatable cause of the same presentation",
-        "only_if": "patient is over 50 with headache, jaw claudication, scalp tenderness or systemic symptoms"
+        "why": "Screen for giant cell arteritis in patients over 50"
       },
       {
         "test": "crp",
-        "why": "Adds to the ESR in the workup for giant cell arteritis",
-        "only_if": "giant cell arteritis is suspected"
-      },
-      {
-        "test": "ECG",
-        "why": "Looks for atrial fibrillation or other cardiac embolic source"
+        "why": "Screen for giant cell arteritis; more rapidly responsive than ESR"
       },
       {
         "test": "Carotid duplex ultrasound",
-        "why": "First-line test for ipsilateral carotid stenosis as the embolic source"
+        "why": "Evaluate for ipsilateral carotid stenosis as embolic source"
       },
       {
         "test": "Transthoracic echocardiogram",
-        "why": "Looks for a cardiac embolic source such as atrial thrombus or valvular disease",
-        "only_if": "no carotid stenosis is found or atrial fibrillation is present"
-      }
-    ],
-    "confirmatory": [
-      {
-        "test": "CT angiography of the head and neck",
-        "why": "Confirms the vascular occlusion and defines carotid or ophthalmic artery disease"
+        "why": "Evaluate for cardiac embolic source (thrombus, valve disease, atrial enlargement)"
       },
       {
-        "test": "MRI brain with diffusion-weighted imaging",
-        "why": "Detects concurrent acute cerebral infarction, since this is a stroke-equivalent event"
+        "test": "MRI brain with DWI",
+        "why": "Detect concurrent cerebral ischemia",
+        "only_if": "focal neurologic symptoms or concern for embolic stroke"
       }
     ],
+    "confirmatory": [],
     "supporting": [
       {
+        "test": "lipids",
+        "why": "Assess and treat vascular risk factors"
+      },
+      {
+        "test": "a1c",
+        "why": "Screen for diabetes as a vascular risk factor"
+      },
+      {
         "test": "Optical coherence tomography of the macula",
-        "why": "Shows inner retinal thickening and loss of the foveal depression, supporting acute retinal ischemia"
+        "why": "Confirm retinal edema when diagnosis uncertain",
+        "only_if": "diagnosis uncertain on fundoscopy"
       },
       {
-        "test": "Fluorescein angiography",
-        "why": "Demonstrates delayed retinal arterial filling when the diagnosis is uncertain"
+        "test": "CT angiogram of head and neck",
+        "why": "Further evaluate carotid or vertebral arteries",
+        "only_if": "carotid duplex nondiagnostic or dissection suspected"
       },
       {
-        "test": "Magnetic resonance angiography of the head and neck",
-        "why": "Alternative to CT angiography when contrast or radiation should be avoided",
-        "only_if": "renal impairment or contrast allergy"
+        "test": "Transesophageal echocardiogram",
+        "why": "Better visualize left atrial appendage and aortic arch",
+        "only_if": "TTE nondiagnostic and high suspicion for cardiac source"
       },
       {
-        "test": "hs_tnt",
-        "why": "Assesses for concurrent acute coronary syndrome in a patient with vascular disease",
-        "only_if": "chest pain or other ischemic symptoms are present"
+        "test": "Temporal artery ultrasound",
+        "why": "Noninvasive evaluation for giant cell arteritis",
+        "only_if": "giant cell arteritis suspected"
+      },
+      {
+        "test": "Hypercoagulable panel",
+        "why": "Evaluate for thrombophilia",
+        "only_if": "young patient, no atherosclerosis, or recurrent events"
       }
     ],
     "not_indicated": [
       {
-        "test": "CT head without contrast",
-        "why": "Does not show retinal ischemia and is not needed unless an intracranial cause is suspected"
+        "test": "Fluorescein angiography of the retina",
+        "why": "Usually unnecessary; diagnosis is clinical"
       },
       {
-        "test": "d_dimer",
-        "why": "Not part of the routine workup; only useful when a hypercoagulable state is suspected"
+        "test": "D-dimer",
+        "why": "No role in retinal artery occlusion"
       },
       {
-        "test": "csf",
-        "why": "No role in sudden painless monocular vision loss"
+        "test": "Chest x-ray",
+        "why": "No role in isolated monocular vision loss"
       },
       {
-        "test": "abg",
-        "why": "Not needed in a hemodynamically stable patient"
-      },
-      {
-        "test": "ua",
-        "why": "Does not contribute to the diagnosis"
-      },
-      {
-        "test": "Transthoracic echocardiogram",
-        "why": "Not routine when a clear carotid source is already identified",
-        "only_if": "no carotid stenosis is found or atrial fibrillation is present"
+        "test": "Abdominal x-ray",
+        "why": "No role"
       }
     ],
     "decision_points": [
-      "Treat as a stroke-equivalent emergency: involve stroke neurology and start secondary prevention immediately",
-      "Check ESR and CRP and start high-dose corticosteroids before biopsy if giant cell arteritis is suspected in a patient over 50",
-      "Do not delay carotid imaging; identify the embolic source to prevent a subsequent cerebral stroke",
-      "Consider thrombolysis or ocular massage only within the narrow therapeutic window and in consultation with ophthalmology"
+      "Do not delay steroids if giant cell arteritis is strongly suspected; start immediately after ESR and CRP.",
+      "Admit as a stroke equivalent and obtain urgent vascular and cardiac evaluation.",
+      "Avoid ocular massage or other unproven acute interventions unless in a clinical trial."
     ],
     "criteria": [],
-    "scores": [
-      "chads2",
-      "cha2ds2_vasc"
-    ]
+    "scores": []
   },
   "differential": [
     {
-      "name": "Giant cell arteritis with anterior ischemic optic neuropathy",
+      "name": "Giant cell arteritis",
       "slug": "giant-cell-arteritis",
-      "why_considered": "Both cause sudden painless monocular vision loss in older adults, and giant cell arteritis can also occlude the ophthalmic or retinal arteries.",
+      "why_considered": "Sudden painless vision loss in an older adult can be caused by GCA, either as CRAO or arteritic anterior ischemic optic neuropathy.",
       "must_not_miss": true,
-      "trigger": "Age over 50 with headache, jaw claudication, scalp tenderness, or a markedly elevated ESR",
+      "trigger": "Age over 50 with new headache, jaw claudication, scalp tenderness, or proximal muscle pain",
       "discriminators": {
         "history": [
-          "New headache or scalp tenderness",
-          "Jaw claudication when chewing",
-          "Polymyalgia symptoms with shoulder and hip girdle stiffness",
-          "Constitutional symptoms such as fever, weight loss and malaise"
+          "Jaw claudication",
+          "New headache",
+          "Scalp tenderness",
+          "Proximal muscle aching"
         ],
         "exam": [
-          "Tender, nodular or pulseless temporal artery",
-          "Pale, swollen optic disc rather than a cherry-red spot",
-          "Normal retinal arterial filling on fluorescein angiography"
+          "Tender, nodular, or pulseless temporal artery",
+          "Pale swollen optic disc if anterior ischemic optic neuropathy rather than CRAO",
+          "Cherry-red spot may be absent"
         ],
         "labs": [
-          "Markedly elevated ESR, often above 50 mm/h",
-          "Elevated CRP",
-          "Normocytic anemia and thrombocytosis"
+          "Elevated ESR",
+          "Elevated CRP"
         ],
         "imaging": [
-          "Temporal artery biopsy showing granulomatous arteritis",
-          "Vascular ultrasound showing a halo sign in the temporal artery"
+          "Temporal artery ultrasound may show halo sign"
         ]
       }
     },
     {
       "name": "Retinal detachment",
       "slug": "retinal-detachment",
-      "why_considered": "Sudden painless monocular visual loss with a curtain-like defect is the classic description of both conditions.",
+      "why_considered": "Sudden monocular vision loss with loss of visual field can mimic CRAO.",
       "must_not_miss": true,
-      "trigger": "Flashes and floaters followed by a curtain-like visual field defect",
+      "trigger": "Flashes and floaters or a curtain-like visual field loss",
       "discriminators": {
         "history": [
-          "Flashes of light and new floaters before the vision loss",
-          "Curtain or shade descending over part of the visual field",
-          "Recent eye trauma or prior intraocular surgery",
-          "High myopia"
+          "Flashes and floaters",
+          "Progressive curtain or shadow across vision",
+          "No preceding amaurosis fugax"
         ],
         "exam": [
-          "Elevated or folded retina on dilated fundoscopy",
-          "Retinal tear or break",
-          "No cherry-red spot",
-          "Relative afferent pupillary defect may be absent early"
+          "Elevated retina with folds",
+          "Visible retinal tear or detachment",
+          "No cherry-red spot"
         ],
         "imaging": [
-          "Ocular ultrasound showing a mobile retinal membrane when the view is obscured",
-          "Optical coherence tomography showing retinal separation from the retinal pigment epithelium"
+          "Ocular ultrasound if view obscured",
+          "Dilated fundus exam confirms detachment"
+        ]
+      }
+    },
+    {
+      "name": "Non-arteritic anterior ischemic optic neuropathy",
+      "slug": "non-arteritic-anterior-ischemic-optic-neuropathy",
+      "why_considered": "Sudden painless unilateral vision loss in an older adult with vascular risk factors.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Often noticed on awakening",
+          "Altitudinal visual field defect",
+          "No jaw claudication or headache"
+        ],
+        "exam": [
+          "Segmental optic disc edema with pallor",
+          "No retinal whitening or cherry-red spot",
+          "Relative afferent pupillary defect"
+        ],
+        "labs": [
+          "Normal ESR and CRP"
+        ],
+        "imaging": [
+          "No specific imaging needed"
+        ]
+      }
+    },
+    {
+      "name": "Central retinal vein occlusion",
+      "slug": "central-retinal-vein-occlusion",
+      "why_considered": "Painless monocular vision loss with retinal findings.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Subacute onset",
+          "Blurred vision rather than complete blackness",
+          "No preceding amaurosis fugax"
+        ],
+        "exam": [
+          "Diffuse retinal hemorrhages",
+          "Dilated tortuous retinal veins",
+          "Disc edema",
+          "No cherry-red spot"
+        ],
+        "labs": [
+          "Normal ESR"
+        ],
+        "imaging": [
+          "Fluorescein angiography if needed"
         ]
       }
     },
     {
       "name": "Vitreous hemorrhage",
       "slug": "vitreous-hemorrhage",
-      "why_considered": "Sudden painless monocular vision loss with floaters, especially in patients with diabetic retinopathy.",
+      "why_considered": "Sudden painless monocular vision loss.",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Sudden shower of red or black floaters",
-          "Known proliferative diabetic retinopathy",
-          "Recent eye trauma"
+          "Floaters",
+          "Red hue to vision",
+          "Worse with eye movement",
+          "History of diabetes or trauma"
         ],
         "exam": [
-          "Blood obscuring the red reflex and retinal view",
-          "No cherry-red spot visible",
-          "Red cells in the vitreous on slit lamp examination"
+          "Hazy red reflex",
+          "Blood in vitreous",
+          "No cherry-red spot or retinal whitening"
         ],
         "imaging": [
-          "Ocular ultrasound showing vitreous opacities and a normal attached retina",
-          "Fluorescein angiography showing no retinal arterial occlusion"
+          "Ocular ultrasound if no view to retina"
+        ]
+      }
+    },
+    {
+      "name": "Optic neuritis",
+      "slug": "optic-neuritis",
+      "why_considered": "Acute monocular vision loss, especially in younger patients.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Pain with eye movement",
+          "Younger age",
+          "Subacute progression over hours to days",
+          "Color desaturation"
+        ],
+        "exam": [
+          "Relative afferent pupillary defect",
+          "Normal or swollen optic disc",
+          "No cherry-red spot or retinal whitening"
+        ],
+        "imaging": [
+          "MRI brain and orbits may show optic nerve enhancement"
         ]
       }
     },
     {
       "name": "Acute angle-closure glaucoma",
       "slug": "acute-angle-closure-glaucoma",
-      "why_considered": "Sudden severe monocular visual loss, though typically painful and with a red eye.",
-      "must_not_miss": true,
-      "trigger": "Severe eye pain with headache, nausea and vomiting and a red eye",
+      "why_considered": "Sudden unilateral vision loss.",
+      "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Severe eye or brow pain",
+          "Severe eye pain",
+          "Headache",
           "Nausea and vomiting",
-          "Colored halos around lights",
-          "Prior episodes of blurred vision in dim light"
+          "Halos around lights"
         ],
         "exam": [
-          "Red eye with a hazy cornea",
-          "Fixed mid-dilated pupil",
-          "Shallow anterior chamber",
-          "Markedly elevated intraocular pressure"
-        ],
-        "imaging": [
-          "Gonioscopy showing a closed angle",
-          "Anterior segment optical coherence tomography showing a shallow anterior chamber"
-        ]
-      }
-    },
-    {
-      "name": "Ischemic optic neuropathy",
-      "slug": "ischemic-optic-neuropathy",
-      "why_considered": "Sudden painless monocular vision loss in older adults with vascular risk factors.",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Vision loss often noticed on waking",
-          "No preceding amaurosis fugax",
-          "Vascular risk factors such as hypertension and diabetes"
-        ],
-        "exam": [
-          "Swollen, pale optic disc",
-          "Altitudinal visual field defect",
-          "Normal retinal arterial filling on fluorescein angiography"
-        ],
-        "labs": [
-          "Normal ESR and CRP in non-arteritic cases"
-        ],
-        "imaging": [
-          "Optical coherence tomography showing optic disc edema",
-          "No retinal arterial occlusion on fluorescein angiography"
-        ]
-      }
-    },
-    {
-      "name": "Ocular ischemic syndrome",
-      "slug": "ocular-ischemic-syndrome",
-      "why_considered": "Chronic or subacute monocular vision loss from severe carotid occlusive disease, sharing the same vascular risk factors.",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Gradual or fluctuating vision loss over weeks",
-          "Aching eye pain",
-          "Amaurosis fugax with changes in posture or light"
-        ],
-        "exam": [
-          "Dilated retinal veins with midperipheral dot-and-blot hemorrhages",
-          "Neovascularization of the iris or angle",
-          "Low intraocular pressure",
-          "Carotid bruit"
-        ],
-        "imaging": [
-          "Carotid duplex ultrasound showing severe ipsilateral stenosis or occlusion",
-          "Fluorescein angiography showing prolonged choroidal and retinal filling"
-        ]
-      }
-    },
-    {
-      "name": "Vitreous or retinal hemorrhage from diabetic retinopathy",
-      "slug": "diabetic-retinopathy",
-      "why_considered": "Sudden painless monocular vision loss in a patient with diabetes, a major risk factor for central retinal artery occlusion.",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Long-standing poorly controlled diabetes",
-          "Gradual visual decline before the acute event",
-          "Sudden floaters rather than a curtain"
-        ],
-        "exam": [
-          "Microaneurysms, dot-and-blot hemorrhages and neovascularization",
-          "Vitreous hemorrhage obscuring the retina",
+          "Red eye",
+          "Mid-dilated fixed pupil",
+          "Hazy cornea",
+          "Very high intraocular pressure",
           "No cherry-red spot"
         ],
-        "labs": [
-          "Elevated hemoglobin A1c"
-        ],
         "imaging": [
-          "Fluorescein angiography showing leakage and neovascularization rather than arterial occlusion",
-          "Ocular ultrasound showing vitreous hemorrhage"
-        ]
-      }
-    },
-    {
-      "name": "Migraine with aura",
-      "slug": "migraine-with-aura",
-      "why_considered": "Transient visual loss or visual field disturbance that can be mistaken for a vascular event.",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Recurrent stereotyped episodes",
-          "Positive visual phenomena such as scintillating scotoma or fortification spectra",
-          "Gradual spread over minutes followed by headache",
-          "Younger age without vascular risk factors"
-        ],
-        "exam": [
-          "Normal visual acuity between episodes",
-          "Normal fundoscopy",
-          "No relative afferent pupillary defect"
-        ],
-        "imaging": [
-          "Normal retinal and cerebral vascular imaging"
+          "Gonioscopy shows closed angle"
         ]
       }
     }
   ],
   "course": {
     "severity": {
-      "mild": "Branch retinal artery occlusion with a small sectoral visual field defect and preserved central acuity",
-      "moderate": "Incomplete central retinal artery occlusion with partial visual loss and a cherry-red spot on fundoscopy",
-      "severe": "Complete central retinal artery occlusion with counting-fingers or worse vision, a dense relative afferent pupillary defect and a classic cherry-red spot",
-      "critical": "Central retinal artery occlusion with concurrent acute cerebral infarction or another stroke-equivalent emergency requiring immediate stroke-team activation"
+      "mild": "Unilateral vision loss with partial preservation of central acuity due to a cilioretinal artery; no systemic symptoms or signs of giant cell arteritis.",
+      "moderate": "Typical complete central retinal artery occlusion with severe monocular vision loss and classic cherry-red spot, but no signs of giant cell arteritis or urgent systemic emergency.",
+      "severe": "Complete central retinal artery occlusion with no light perception or with signs of giant cell arteritis such as jaw claudication, scalp tenderness, or markedly elevated ESR or CRP."
     },
     "red_flags": [
       {
-        "finding": "Sudden painless monocular vision loss with a relative afferent pupillary defect",
-        "meaning": "Retinal arterial occlusion until proven otherwise; a stroke-equivalent emergency requiring immediate evaluation"
+        "finding": "Jaw claudication, scalp tenderness, or temporal artery tenderness",
+        "meaning": "Giant cell arteritis; start steroids immediately to protect the fellow eye"
       },
       {
-        "finding": "Focal neurologic deficit, aphasia or hemiparesis",
-        "meaning": "Concurrent cerebral infarction; activate the stroke pathway"
+        "finding": "Focal weakness, slurred speech, or facial droop",
+        "meaning": "Concurrent cerebral ischemia; treat as a stroke emergency"
       },
       {
-        "finding": "Headache, jaw claudication or scalp tenderness in a patient over 50",
-        "meaning": "Giant cell arteritis; start high-dose corticosteroids immediately to protect the fellow eye"
+        "finding": "Neck pain or Horner syndrome",
+        "meaning": "Carotid artery dissection; obtain urgent vascular imaging"
       },
       {
-        "finding": "Irregularly irregular pulse or known atrial fibrillation",
-        "meaning": "Cardioembolic source requiring anticoagulation assessment"
+        "finding": "Recurrent episodes of amaurosis fugax before the event",
+        "meaning": "Embolic source; urgent cardiac and vascular evaluation"
       },
       {
-        "finding": "Carotid bruit or known carotid stenosis",
-        "meaning": "Atheroembolic source with high risk of subsequent stroke"
-      },
-      {
-        "finding": "Severe eye pain with a red eye and a fixed mid-dilated pupil",
-        "meaning": "Acute angle-closure glaucoma, an ophthalmologic emergency"
+        "finding": "Age over 50 with elevated ESR or CRP",
+        "meaning": "Giant cell arteritis until proven otherwise"
       }
     ],
     "complications": [
       {
-        "name": "Permanent monocular visual loss",
+        "name": "Permanent severe visual loss",
         "timing": "early",
         "seriousness": "serious",
-        "frequency": "almost_always",
-        "clues": [
-          "Vision does not improve within hours",
-          "Persistent relative afferent pupillary defect",
-          "Retinal pallor evolving to atrophy"
-        ]
-      },
-      {
-        "name": "Subsequent cerebral ischemic stroke",
-        "timing": "early",
-        "seriousness": "life_threatening",
         "frequency": "common",
         "clues": [
-          "New focal neurologic deficit",
-          "Carotid stenosis on vascular imaging",
-          "Atrial fibrillation on ECG"
+          "Vision remains finger counting or worse",
+          "Retinal edema on fundoscopy"
         ]
       },
       {
-        "name": "Neovascularization of the iris or angle with secondary glaucoma",
+        "name": "Iris neovascularization and neovascular glaucoma",
         "timing": "late",
         "seriousness": "serious",
         "frequency": "rare",
         "clues": [
-          "New eye pain or redness weeks to months later",
-          "Elevated intraocular pressure",
-          "Rubeosis iridis on slit lamp examination"
+          "New eye pain",
+          "Redness",
+          "Elevated intraocular pressure"
         ]
       },
       {
-        "name": "Optic atrophy",
-        "timing": "late",
-        "seriousness": "minor",
-        "frequency": "common",
+        "name": "Fellow eye involvement",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "rare",
         "clues": [
-          "Pale optic disc months after the event",
-          "Persistent visual loss"
+          "Uncontrolled vascular risk factors",
+          "Untreated giant cell arteritis"
         ]
       }
     ],
     "special_populations": [
       {
         "population": "older_adults",
-        "differences": "Higher burden of atherosclerosis and atrial fibrillation; giant cell arteritis must be excluded with ESR and CRP, and corticosteroids started before biopsy when suspected."
-      },
-      {
-        "population": "diabetes",
-        "differences": "Proliferative retinopathy can cause vitreous hemorrhage with sudden vision loss and obscure the fundus, so the cherry-red spot may not be seen; tight glucose control is part of secondary prevention."
+        "differences": "Always evaluate for giant cell arteritis; check ESR and CRP and ask about jaw claudication or scalp tenderness."
       },
       {
         "population": "children",
-        "differences": "Rare; when it occurs it is usually embolic from cardiac disease or a hypercoagulable state, and the child may present with leukocoria, strabismus or failure to track rather than a verbal report of vision loss."
-      },
-      {
-        "population": "pregnancy",
-        "differences": "Rare; consider preeclampsia, hypercoagulable states and cardiac embolic sources, and coordinate imaging and treatment with obstetrics."
+        "differences": "Rare; suspect congenital heart disease, hypercoagulable state, or trauma. Young children may present with visual inattention rather than a clear complaint."
       }
     ]
   },
   "teaching": {
     "key_questions": [
       {
-        "question": "When exactly did the vision loss start, and was it sudden or gradual?",
+        "question": "When did your vision change, and how quickly did it happen?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Sudden onset over seconds to minutes; gradual loss over hours to days points away from arterial occlusion"
+        "looking_for": "Sudden, painless monocular vision loss that is maximal at onset, often noticed on waking"
       },
       {
-        "question": "Is the vision loss in one eye or both?",
+        "question": "Are both eyes affected, or just one?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Monocular, involving the whole field of the affected eye"
+        "looking_for": "Unilateral involvement; bilateral simultaneous loss suggests another process"
       },
       {
-        "question": "Does it hurt?",
+        "question": "How bad is the vision in the affected eye right now?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Painless; pain with a red eye suggests acute angle-closure glaucoma"
+        "looking_for": "Severe loss, often only finger counting, hand motion, or light perception"
       },
       {
-        "question": "Did you have any brief episodes of vision loss before this, like a shade coming down and then lifting?",
+        "question": "Before this happened, did you have brief spells of vision loss in the same eye that recovered?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Amaurosis fugax, suggesting an embolic source"
+      },
+      {
+        "question": "Do you have any pain in the eye or a new headache?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Absence of eye pain; new headache or jaw claudication raises concern for giant cell arteritis"
+      },
+      {
+        "question": "Are you seeing flashes, floaters, or a curtain or shadow over your vision?",
         "category": "associated",
         "importance": "important",
-        "looking_for": "Amaurosis fugax, suggesting an embolic source such as carotid stenosis"
-      },
-      {
-        "question": "Did you see flashing lights or new floaters before or with the vision loss?",
-        "category": "associated",
-        "importance": "important",
-        "looking_for": "Flashes and floaters suggest retinal detachment or vitreous hemorrhage rather than arterial occlusion"
+        "looking_for": "Absent; flashes, floaters, or curtain suggest retinal detachment or vitreous hemorrhage"
       },
       {
         "question": "Any weakness, numbness, trouble speaking, or facial droop?",
-        "category": "red_flag",
-        "importance": "essential",
-        "looking_for": "Concurrent cerebral infarction; this is a stroke-equivalent emergency"
-      },
-      {
-        "question": "Do you have high blood pressure, diabetes, high cholesterol, or heart problems such as atrial fibrillation?",
-        "category": "pmh",
-        "importance": "essential",
-        "looking_for": "Vascular risk factors that point to an atheroembolic or cardioembolic source"
-      },
-      {
-        "question": "Have you had a stroke, TIA, or carotid artery problem before?",
-        "category": "pmh",
-        "importance": "important",
-        "looking_for": "Prior cerebrovascular disease, which raises the risk of a subsequent stroke"
-      },
-      {
-        "question": "Do you have a new headache, scalp tenderness, or pain in your jaw when chewing?",
         "category": "associated",
         "importance": "essential",
-        "looking_for": "Giant cell arteritis, a treatable cause that needs immediate corticosteroids"
+        "looking_for": "Absent; focal neurologic symptoms suggest concurrent cerebral ischemia"
       },
       {
-        "question": "Do you smoke, and how much?",
+        "question": "Do you have a history of high blood pressure, diabetes, high cholesterol, or an irregular heartbeat?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Atherosclerotic risk factors or atrial fibrillation as embolic sources"
+      },
+      {
+        "question": "Have you had any heart attacks, strokes, or procedures on your carotid arteries?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Cardioembolic or carotid source"
+      },
+      {
+        "question": "Have you had any recent scalp tenderness, jaw pain with chewing, or muscle aches?",
+        "category": "ros",
+        "importance": "essential",
+        "looking_for": "Giant cell arteritis symptoms; requires immediate steroids"
+      },
+      {
+        "question": "Do you smoke or have you ever smoked?",
         "category": "social",
         "importance": "important",
-        "looking_for": "Current or former smoking, a modifiable vascular risk factor"
+        "looking_for": "Tobacco use as a vascular risk factor"
       },
       {
-        "question": "Do you take sildenafil, tadalafil, or oral contraceptive pills?",
+        "question": "Do you take any blood thinners such as aspirin, warfarin, apixaban, or clopidogrel?",
         "category": "medications",
         "importance": "optional",
-        "looking_for": "Medications associated with retinal vascular occlusion"
+        "looking_for": "Use of antithrombotics; may influence management but does not exclude CRAO"
       },
       {
-        "question": "Any recent eye trauma, eye surgery, or eye injections?",
-        "category": "hpi",
-        "importance": "important",
-        "looking_for": "Recent intraocular or periocular procedures, a risk factor for retinal vascular occlusion"
+        "question": "Has anyone in your family had a stroke or heart attack before age 60?",
+        "category": "family",
+        "importance": "optional",
+        "looking_for": "Premature cardiovascular disease"
       }
     ],
     "accepted_names": [
       "Central retinal artery occlusion",
       "CRAO",
-      "Retinal artery occlusion",
-      "Retinal central artery occlusion",
-      "Central retinal artery occlusion of the eye"
+      "Retinal central artery occlusion"
     ],
     "reasoning_points": [
-      "Sudden painless monocular vision loss that reached its worst within minutes",
-      "A relative afferent pupillary defect in the affected eye",
-      "Fundoscopy showing a pale, opaque retina with a cherry-red spot at the fovea",
-      "Retinal arteriolar attenuation or a visible embolus at an arteriolar bifurcation",
-      "Vascular risk factors such as hypertension, diabetes, carotid stenosis, or atrial fibrillation",
-      "Giant cell arteritis excluded in an older patient with headache, jaw claudication, or scalp tenderness",
-      "Recognized as a stroke-equivalent emergency with a risk of subsequent cerebral infarction",
-      "Carotid and cardiac sources of embolism evaluated as part of the workup"
+      "Sudden, painless, unilateral severe vision loss",
+      "Visual deficit is maximal at onset rather than progressive",
+      "Relative afferent pupillary defect in the affected eye",
+      "Fundoscopic cherry-red spot with pale edematous retina and narrowed retinal arterioles",
+      "No retinal hemorrhages or disc edema and no pain, flashes, or floaters",
+      "Vascular risk factors and possible embolic source such as atrial fibrillation or carotid stenosis",
+      "Giant cell arteritis must be excluded in patients over 50 with ESR/CRP and relevant symptoms",
+      "Managed as a stroke equivalent with urgent vascular and cardiac evaluation"
     ],
     "difficulty": {
       "easy": [
-        "Older adult with hypertension and diabetes",
-        "Abrupt painless loss of vision in one eye described as a curtain coming down",
-        "Relative afferent pupillary defect on the swinging flashlight test",
-        "Classic cherry-red spot on dilated fundoscopy"
+        "Classic older adult with vascular risk factors",
+        "Sudden painless monocular blindness",
+        "Relative afferent pupillary defect",
+        "Obvious cherry-red spot on fundoscopy",
+        "No giant cell arteritis features"
       ],
       "medium": [
-        "Branch retinal artery occlusion with a sectoral visual field defect and preserved central acuity",
-        "Patient with atrial fibrillation and an irregularly irregular pulse",
-        "Carotid bruit found on neck auscultation",
-        "Visible embolus at an arteriolar bifurcation on fundoscopy"
+        "Early presentation before the cherry-red spot is clearly visible",
+        "Cilioretinal artery sparing with preserved central acuity",
+        "Mildly elevated ESR or CRP in an older adult requiring giant cell arteritis workup",
+        "Needs differentiation from non-arteritic anterior ischemic optic neuropathy or vitreous hemorrhage"
       ],
       "hard": [
-        "Older patient with headache and jaw claudication where giant cell arteritis must be excluded",
-        "Patient with diabetic retinopathy and vitreous hemorrhage obscuring the fundus",
-        "Young patient with no atherosclerotic risk factors suggesting a hypercoagulable or cardiac embolic source",
-        "Concurrent cerebral infarction with focal neurologic deficits at presentation"
+        "Young patient with no vascular risk factors and a suspected hypercoagulable state",
+        "Concurrent acute cerebral ischemia found on brain MRI",
+        "Giant cell arteritis with subtle symptoms and elevated ESR/CRP where steroids must be started immediately",
+        "Atypical fundoscopic findings or media opacity limiting the view"
       ]
     }
   }

@@ -33,46 +33,47 @@
       },
       {
         "stage": "patient_presentation",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "8",
-        "generated_at": "2026-10-05T05:11:34Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:02:33Z"
       },
       {
         "stage": "exam_vitals",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "8",
-        "generated_at": "2026-10-05T05:11:40Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:05:37Z"
       },
       {
         "stage": "diagnostics",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "8",
-        "generated_at": "2026-10-05T05:12:09Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:07:21Z"
       },
       {
         "stage": "differential_course",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "8",
-        "generated_at": "2026-10-05T05:12:20Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:08:14Z"
       },
       {
         "stage": "teaching",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "8",
-        "generated_at": "2026-10-05T05:12:26Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:08:52Z"
       }
     ],
     "validation": {
-      "status": "failed",
-      "rule_errors": [
-        "missing section workup"
-      ],
+      "status": "passed",
+      "rule_errors": [],
       "review_issues": [
-        "differential heart-failure: no profile yet",
+        "auto-repaired: workup: 'abg' was in supporting, not_indicated; kept supporting as a conditional order (only if SpO2 < 92%, severe airflow obstruction, or suspected cor pulmonale)",
+        "auto-repaired: workup: 'CT chest without contrast (high-resolution)' was in supporting, not_indicated; kept supporting as a conditional order (only if Severe disease, atypical presentation, or evaluation for lung-volume-reduction surgery)",
+        "auto-repaired: workup: 'Alpha-1 antitrypsin level' was in supporting, not_indicated; kept supporting as a conditional order (only if Emphysema before age 45, lower-lobe predominance on CT, or family history of AAT deficiency)",
+        "auto-repaired: workup: 'ECG' was in supporting, not_indicated; kept supporting as a conditional order (only if Signs of right heart strain or palpitations)",
+        "exam: term 'Accessory muscle usage' not found in SNOMED CT",
+        "differential congestive-heart-failure: no profile yet",
         "differential pulmonary-embolism: no profile yet",
         "differential pneumothorax: no profile yet",
-        "differential bronchiectasis: no profile yet",
-        "differential lung-cancer: no profile yet",
         "differential alpha-1-antitrypsin-deficiency: no profile yet"
       ]
     },
@@ -82,68 +83,63 @@
   },
   "patient": {
     "age": {
-      "typical_min": 45,
-      "typical_max": 80,
-      "peak": "55–75",
+      "typical_min": 40,
+      "typical_max": 75,
+      "peak": "50s–70s",
       "possible_min": 30,
-      "possible_max": 95
+      "possible_max": 90
     },
     "sex": "either",
     "demographics": [
-      "Symptoms usually begin after age 40",
-      "More common in people with a long smoking history",
-      "Slightly more common in males in the US, largely reflecting historical smoking patterns"
+      "Most common in current or former smokers",
+      "Prevalence increases with age",
+      "Alpha-1 antitrypsin deficiency causes emphysema at an earlier age"
     ],
     "risk_factors": [
       {
-        "text": "Current or former cigarette smoking",
+        "text": "Cigarette smoking",
         "strength": "strong"
-      },
-      {
-        "text": "Long-term secondhand smoke exposure",
-        "strength": "moderate"
-      },
-      {
-        "text": "Occupational exposure to dusts, fumes, or vapors",
-        "strength": "moderate"
       },
       {
         "text": "Alpha-1 antitrypsin deficiency",
         "strength": "strong"
       },
       {
-        "text": "Family history of COPD in a smoker",
+        "text": "Occupational exposure to dusts, fumes, or chemicals",
         "strength": "moderate"
       },
       {
-        "text": "Chronic exposure to indoor or outdoor air pollution",
+        "text": "Secondhand smoke exposure",
+        "strength": "moderate"
+      },
+      {
+        "text": "Family history of COPD",
+        "strength": "moderate"
+      },
+      {
+        "text": "Indoor and outdoor air pollution",
         "strength": "weak"
       }
     ],
     "comorbidities": [
       "Chronic bronchitis",
-      "Asthma",
-      "Coronary artery disease",
-      "Heart failure",
+      "Cardiovascular disease",
       "Osteoporosis",
-      "Anxiety or depression",
-      "Gastroesophageal reflux disease"
+      "Depression",
+      "Anxiety"
     ],
     "family_history": [
       "COPD or emphysema in a first-degree relative",
       "Alpha-1 antitrypsin deficiency"
     ],
     "social_history": [
-      "Long-standing tobacco use, often 20 or more pack-years",
-      "Exposure to secondhand smoke at home or work",
-      "Work in mining, construction, welding, textiles, or farming"
+      "Smoking history",
+      "Workplace exposures to dusts or fumes"
     ],
     "exposures": [
-      "Cigarette smoke",
-      "Pipe or cigar smoke",
+      "Tobacco smoke",
       "Secondhand smoke",
-      "Wood smoke or biomass fuel",
-      "Occupational dusts and chemical fumes",
+      "Occupational dusts and fumes",
       "Air pollution"
     ],
     "risk_medications": []
@@ -151,95 +147,95 @@
   "presentation": {
     "chief_complaints": [
       {
-        "text": "I get winded just walking to the mailbox",
-        "frequency": "almost_always"
+        "text": "I get short of breath when I walk",
+        "frequency": "common",
+        "term": "Dyspnea",
+        "snomed_verified": true
       },
       {
-        "text": "I've been short of breath for months and it's getting worse",
-        "frequency": "common"
-      },
-      {
-        "text": "I can't do the things I used to do",
-        "frequency": "common"
-      },
-      {
-        "text": "I have this cough that won't go away",
-        "frequency": "common"
+        "text": "I cough up mucus every day",
+        "frequency": "common",
+        "term": "Productive cough",
+        "snomed_verified": true
       },
       {
         "text": "My chest feels tight",
-        "frequency": "sometimes"
+        "frequency": "common",
+        "term": "Chest tightness",
+        "snomed_verified": true
       }
     ],
     "hpi": {
-      "onset": "Gradual, over months to years; often attributed at first to getting older or being out of shape",
-      "duration": "Usually present for a year or more by the time it is brought to medical attention",
-      "progression": "Slowly progressive; breathlessness that once appeared only with heavy exertion now comes with walking on flat ground or climbing a short flight of stairs",
-      "location": "Chest, felt as breathlessness rather than localized pain",
-      "radiation": "Not applicable",
-      "quality": "Air hunger and inability to get a full breath; chest tightness described as a band around the chest",
-      "severity": "Mild at first and only with exertion; later moderate to severe, limiting daily activities and sometimes present at rest",
-      "timing": "Worse with activity; may be worse in the morning or with cold air and respiratory infections",
+      "onset": "Insidious, over years",
+      "duration": "Months to years before presentation; daily symptoms by the time of diagnosis",
+      "progression": "Dyspnea on exertion slowly worsens over years; cough and sputum become more frequent; later dyspnea occurs at rest",
+      "location": "Diffuse chest",
+      "radiation": "None",
+      "quality": "Breathlessness with chest tightness and wheezing",
+      "severity": "Progresses from mild exertional limitation to severe dyspnea with minimal activity",
+      "timing": "Worse with exertion; may be constant in advanced disease",
       "aggravating": [
-        "Walking or climbing stairs",
+        "Exertion",
         "Cold air",
         "Respiratory infections",
-        "Smoke, dust, or strong fumes",
-        "Exercise"
+        "Smoke or inhaled irritants"
       ],
       "relieving": [
-        "Resting",
-        "Sitting upright and leaning forward",
-        "Using a rescue inhaler",
-        "Pursed-lip breathing"
+        "Rest",
+        "Sitting upright",
+        "Inhaled bronchodilators"
       ],
       "associated_symptoms": [
         {
-          "text": "Long-standing cough, often bringing up clear or white sputum",
-          "frequency": "common"
+          "text": "Chronic cough with mucus",
+          "frequency": "common",
+          "term": "Productive cough",
+          "snomed_verified": true
         },
         {
-          "text": "Wheezing or a whistling sound when breathing",
-          "frequency": "common"
+          "text": "Wheezing",
+          "frequency": "common",
+          "term": "Wheezing",
+          "snomed_verified": true
         },
         {
           "text": "Chest tightness",
-          "frequency": "common"
+          "frequency": "common",
+          "term": "Chest tightness",
+          "snomed_verified": true
         },
         {
-          "text": "Frequent colds or chest infections",
-          "frequency": "sometimes"
+          "text": "Fatigue",
+          "frequency": "common",
+          "term": "Fatigue",
+          "snomed_verified": true
         },
         {
-          "text": "Decreased ability to exercise or keep up with others",
-          "frequency": "common"
+          "text": "Frequent chest infections",
+          "frequency": "sometimes",
+          "term": "Recurrent lower respiratory tract infection",
+          "snomed_verified": true
         },
         {
-          "text": "Unintentional weight loss and loss of appetite",
-          "frequency": "sometimes"
+          "text": "Weight loss",
+          "frequency": "sometimes",
+          "term": "Weight loss",
+          "snomed_verified": true
         },
         {
-          "text": "Swelling in the ankles or feet",
-          "frequency": "sometimes"
-        },
-        {
-          "text": "Trouble sleeping because of breathlessness",
-          "frequency": "sometimes"
-        },
-        {
-          "text": "Fatigue and low energy",
-          "frequency": "common"
+          "text": "Swelling in the ankles or legs",
+          "frequency": "rare",
+          "term": "Peripheral edema",
+          "snomed_verified": true
         }
       ],
       "pertinent_negatives": [
-        "Coughing up blood",
-        "Fever with shaking chills",
-        "Sudden severe chest pain",
-        "Sudden worsening of breathlessness over hours",
-        "Breathlessness that comes in sudden attacks with wheezing that fully resolves",
-        "Swelling and pain in one leg",
-        "Night sweats",
-        "Weight loss with a normal appetite"
+        "Fever",
+        "Hemoptysis",
+        "Acute onset of breathlessness",
+        "Pleuritic chest pain",
+        "Wheezing since childhood",
+        "Unilateral leg pain or swelling"
       ]
     },
     "ros": [
@@ -247,705 +243,743 @@
         "system": "constitutional",
         "positives": [
           {
-            "text": "Low energy",
-            "frequency": "common"
+            "text": "Fatigue",
+            "frequency": "common",
+            "term": "Fatigue",
+            "snomed_verified": true
           },
           {
-            "text": "Unintentional weight loss",
-            "frequency": "sometimes"
-          },
-          {
-            "text": "Poor appetite",
-            "frequency": "sometimes"
+            "text": "Weight loss",
+            "frequency": "sometimes",
+            "term": "Weight loss",
+            "snomed_verified": true
           }
         ],
         "negatives": [
           "Fever",
-          "Night sweats"
+          "Night sweats",
+          "Chills"
         ]
       },
       {
         "system": "respiratory",
         "positives": [
           {
-            "text": "Shortness of breath with activity",
-            "frequency": "almost_always"
+            "text": "Shortness of breath",
+            "frequency": "common",
+            "term": "Dyspnea",
+            "snomed_verified": true
           },
           {
-            "text": "Chronic cough",
-            "frequency": "common"
-          },
-          {
-            "text": "Sputum production",
-            "frequency": "common"
+            "text": "Cough with mucus",
+            "frequency": "common",
+            "term": "Productive cough",
+            "snomed_verified": true
           },
           {
             "text": "Wheezing",
-            "frequency": "common"
+            "frequency": "common",
+            "term": "Wheezing",
+            "snomed_verified": true
           },
           {
             "text": "Chest tightness",
-            "frequency": "common"
+            "frequency": "common",
+            "term": "Chest tightness",
+            "snomed_verified": true
           }
         ],
         "negatives": [
           "Hemoptysis",
           "Pleuritic chest pain",
-          "Sudden severe dyspnea at rest"
+          "Stridor"
         ],
         "argues_against": [
-          "Pulmonary embolism",
-          "Pneumothorax",
-          "Acute coronary syndrome"
+          "Sudden severe dyspnea",
+          "Cough with copious foul-smelling sputum"
         ]
       },
       {
         "system": "cardiovascular",
-        "positives": [
-          {
-            "text": "Ankle or leg swelling",
-            "frequency": "sometimes"
-          }
-        ],
+        "positives": [],
         "negatives": [
-          "Chest pain with exertion",
+          "Chest pain",
           "Palpitations",
-          "Orthopnea",
-          "Paroxysmal nocturnal dyspnea",
-          "Unilateral leg swelling or pain"
-        ],
-        "argues_against": [
-          "Heart failure as the primary cause",
-          "Deep vein thrombosis"
-        ]
-      },
-      {
-        "system": "musculoskeletal",
-        "positives": [
-          {
-            "text": "Weakness in the legs",
-            "frequency": "sometimes"
-          }
-        ],
-        "negatives": [
-          "Focal joint pain",
-          "Back pain",
-          "Muscle tenderness"
-        ],
-        "argues_against": [
-          "Primary neuromuscular disease"
-        ]
-      },
-      {
-        "system": "psychiatric",
-        "positives": [
-          {
-            "text": "Anxiety about not being able to breathe",
-            "frequency": "common"
-          },
-          {
-            "text": "Low mood",
-            "frequency": "sometimes"
-          }
-        ],
-        "negatives": [
-          "Suicidal thoughts",
-          "Hallucinations"
-        ]
-      },
-      {
-        "system": "gastrointestinal",
-        "positives": [
-          {
-            "text": "Early fullness with meals",
-            "frequency": "sometimes"
-          }
-        ],
-        "negatives": [
-          "Vomiting blood",
-          "Black stools",
-          "Severe abdominal pain"
+          "Syncope"
         ]
       }
     ],
     "atypical": [
       {
         "population": "older_adults",
-        "how_it_differs": "Breathlessness may be blamed on aging or deconditioning, and activity level may already be low, so the disease is often more advanced at diagnosis.",
+        "how_it_differs": "Many older adults attribute gradual dyspnea to aging or deconditioning and present later, often with fatigue, reduced activity, or an acute exacerbation rather than a chief complaint of breathlessness.",
         "missing_classic_features": [
-          "Clear report of exertional worsening"
-        ]
-      },
-      {
-        "population": "children",
-        "how_it_differs": "Emphysema is essentially not seen in children; when severe early emphysema occurs it suggests alpha-1 antitrypsin deficiency or another inherited cause and presents with breathlessness and poor exercise tolerance.",
-        "missing_classic_features": [
-          "Long smoking history",
-          "Age over 40"
+          "Clear report of dyspnea on exertion",
+          "Wheezing"
         ]
       },
       {
         "population": "obesity",
-        "how_it_differs": "Breathlessness is often attributed to weight, and reduced chest wall compliance can make dyspnea seem out of proportion to the lung findings.",
+        "how_it_differs": "Obesity can make dyspnea on exertion easier to attribute to weight and may delay recognition; lung exam may be less impressive, and sleep-disordered breathing often coexists.",
         "missing_classic_features": [
-          "Normal body habitus"
-        ]
-      },
-      {
-        "population": "diabetes",
-        "how_it_differs": "Coexisting heart and kidney disease can mimic or mask the breathlessness and leg swelling of advanced emphysema.",
-        "missing_classic_features": [
-          "Isolated respiratory cause of edema"
+          "Obvious cachexia",
+          "Barrel chest"
         ]
       }
     ]
   },
   "exam": {
     "general": {
-      "mild": "Comfortable at rest, speaks in full sentences, no distress",
-      "moderate": "Speaks in short sentences, mild tachypnea, prefers sitting upright",
-      "severe": "Pursed-lip breathing, tripod positioning, uses accessory muscles, prolonged expiration",
-      "critical": "Exhausted, diaphoretic, unable to speak in sentences, altered mental status, paradoxical abdominal movement"
+      "mild": "Appears comfortable at rest; no visible respiratory distress during the interview",
+      "moderate": "Comfortable at rest but becomes short of breath when walking across the room; may purse lips during expiration",
+      "severe": "Dyspneic at rest, leaning forward with shoulders braced; accessory muscle use and difficulty finishing sentences",
+      "critical": "Severe respiratory distress, cyanotic or pale, tripod position, unable to speak in full sentences"
     },
     "findings": [
       {
         "id": "barrel-chest",
         "region": "lung",
-        "maneuver": "Inspect the chest from the side and front",
-        "finding": "Increased anteroposterior diameter with a barrel-shaped chest",
+        "maneuver": "Inspect the chest and compare the anteroposterior diameter with the lateral diameter",
+        "finding": "Increased anteroposterior chest diameter",
         "frequency": "common",
         "min_severity": "moderate",
         "significance": "supports",
-        "importance": "important"
+        "importance": "important",
+        "term": "Barrel chest",
+        "snomed_verified": true
       },
       {
-        "id": "hyperresonance",
+        "id": "pursed-lip-breathing",
         "region": "lung",
-        "maneuver": "Percuss the chest bilaterally",
-        "finding": "Hyperresonant percussion note",
+        "maneuver": "Observe breathing at rest and during conversation",
+        "finding": "Pursed-lip breathing during expiration",
         "frequency": "common",
         "min_severity": "moderate",
         "significance": "supports",
-        "importance": "important"
+        "importance": "important",
+        "term": "Pursed-lip breathing",
+        "snomed_verified": true
+      },
+      {
+        "id": "accessory-muscle-use",
+        "region": "neck",
+        "maneuver": "Observe the neck and shoulders during quiet breathing",
+        "finding": "Visible use of accessory muscles of respiration",
+        "frequency": "common",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Accessory muscle usage",
+        "snomed_verified": false
+      },
+      {
+        "id": "intercostal-recession",
+        "region": "lung",
+        "maneuver": "Observe the chest during quiet inspiration",
+        "finding": "Inward movement of intercostal spaces during inspiration",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Intercostal recession",
+        "snomed_verified": true
       },
       {
         "id": "decreased-breath-sounds",
         "region": "lung",
         "maneuver": "Auscultate all lung fields",
-        "finding": "Diffusely decreased breath sounds",
+        "finding": "Decreased breath sounds",
         "frequency": "common",
         "min_severity": "moderate",
         "significance": "supports",
-        "importance": "essential"
+        "importance": "essential",
+        "term": "Decreased breath sounds",
+        "snomed_verified": true
       },
       {
         "id": "prolonged-expiration",
         "region": "lung",
         "maneuver": "Auscultate and time the expiratory phase",
-        "finding": "Prolonged expiration with a decreased I:E ratio",
-        "frequency": "common",
-        "min_severity": "moderate",
+        "finding": "Prolonged expiratory phase",
+        "frequency": "almost_always",
+        "min_severity": "mild",
         "significance": "supports",
-        "importance": "important"
+        "importance": "important",
+        "term": "Prolonged expiration",
+        "snomed_verified": true
       },
       {
         "id": "wheezing",
         "region": "lung",
-        "maneuver": "Auscultate during quiet and forced breathing",
-        "finding": "End-expiratory wheezing",
-        "frequency": "sometimes",
-        "significance": "supports",
-        "importance": "important"
-      },
-      {
-        "id": "distant-heart-sounds",
-        "region": "cardiac",
-        "maneuver": "Auscultate the heart",
-        "finding": "Muffled or distant heart sounds",
-        "frequency": "sometimes",
+        "maneuver": "Auscultate during forced expiration",
+        "finding": "Expiratory wheezing",
+        "frequency": "common",
         "min_severity": "moderate",
         "significance": "supports",
-        "importance": "optional"
+        "importance": "important",
+        "term": "Wheezing",
+        "snomed_verified": true
       },
       {
-        "id": "accessory-muscle-use",
-        "region": "neck",
-        "maneuver": "Observe the neck and chest wall during breathing",
-        "finding": "Use of sternocleidomastoid and scalene muscles",
+        "id": "hyperresonance",
+        "region": "lung",
+        "maneuver": "Percuss the chest in all zones",
+        "finding": "Hyperresonant percussion note",
         "frequency": "common",
-        "min_severity": "severe",
+        "min_severity": "moderate",
         "significance": "supports",
-        "importance": "important"
-      },
-      {
-        "id": "pursed-lip-breathing",
-        "region": "general",
-        "maneuver": "Observe the patient's breathing pattern",
-        "finding": "Pursed-lip breathing",
-        "frequency": "common",
-        "min_severity": "severe",
-        "significance": "supports",
-        "importance": "important"
-      },
-      {
-        "id": "tripod-position",
-        "region": "general",
-        "maneuver": "Observe the patient's posture",
-        "finding": "Leaning forward with arms braced on knees or the exam table",
-        "frequency": "sometimes",
-        "min_severity": "severe",
-        "significance": "supports",
-        "importance": "important"
-      },
-      {
-        "id": "digital-clubbing",
-        "region": "extremities",
-        "maneuver": "Inspect the fingers",
-        "finding": "Clubbing is absent",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "optional"
-      },
-      {
-        "id": "peripheral-edema",
-        "region": "extremities",
-        "maneuver": "Press over the dorsum of the feet and ankles",
-        "finding": "Pitting edema",
-        "frequency": "sometimes",
-        "min_severity": "severe",
-        "significance": "supports",
-        "importance": "important"
+        "importance": "important",
+        "term": "Hyperresonance",
+        "snomed_verified": true
       },
       {
         "id": "cyanosis",
         "region": "skin",
-        "maneuver": "Inspect the lips, oral mucosa, and nail beds",
-        "finding": "Central or peripheral cyanosis",
+        "maneuver": "Inspect the lips and nail beds",
+        "finding": "Central cyanosis",
         "frequency": "rare",
         "min_severity": "severe",
         "significance": "supports",
-        "importance": "important"
+        "importance": "important",
+        "term": "Cyanosis",
+        "snomed_verified": true
       },
       {
-        "id": "muscle-wasting",
-        "region": "extremities",
-        "maneuver": "Inspect and palpate the limb musculature",
-        "finding": "Diffuse muscle wasting, especially of the lower extremities",
-        "frequency": "sometimes",
+        "id": "jugular-venous-distension",
+        "region": "neck",
+        "maneuver": "Examine the jugular venous pressure",
+        "finding": "Jugular venous distension",
+        "frequency": "rare",
         "min_severity": "severe",
         "significance": "supports",
-        "importance": "optional"
+        "importance": "important",
+        "term": "Jugular venous distension",
+        "snomed_verified": true
       },
       {
-        "id": "normal-jvp",
-        "region": "neck",
-        "maneuver": "Inspect the internal jugular venous pulsation at 45 degrees",
-        "finding": "Jugular venous pressure is not elevated",
-        "frequency": "common",
-        "significance": "neutral",
-        "importance": "important"
+        "id": "peripheral-edema",
+        "region": "extremities",
+        "maneuver": "Palpate the lower extremities",
+        "finding": "Pitting edema of the lower extremities",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Peripheral edema",
+        "snomed_verified": true
       },
       {
-        "id": "no-hepatojugular-reflux",
-        "region": "neck",
-        "maneuver": "Apply right upper quadrant pressure while watching the jugular vein",
-        "finding": "No hepatojugular reflux",
-        "frequency": "common",
-        "significance": "neutral",
-        "importance": "optional"
-      },
-      {
-        "id": "no-s3-gallop",
-        "region": "cardiac",
-        "maneuver": "Auscultate the apex in the left lateral decubitus position",
-        "finding": "No S3 gallop",
-        "frequency": "common",
-        "significance": "neutral",
-        "importance": "important"
-      },
-      {
-        "id": "no-focal-crackles",
+        "id": "no-rales",
         "region": "lung",
         "maneuver": "Auscultate the lung bases",
-        "finding": "No focal crackles or consolidation",
-        "frequency": "common",
+        "finding": "No crackles",
+        "frequency": "almost_always",
         "significance": "neutral",
-        "importance": "important"
+        "importance": "important",
+        "term": "Rales",
+        "snomed_verified": true
       },
       {
-        "id": "no-unilateral-leg-swelling",
+        "id": "no-tracheal-deviation",
+        "region": "neck",
+        "maneuver": "Palpate the trachea",
+        "finding": "No tracheal deviation",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Tracheal deviation",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-clubbing",
         "region": "extremities",
-        "maneuver": "Compare both calves for size and tenderness",
-        "finding": "No unilateral calf swelling or tenderness",
+        "maneuver": "Inspect the fingers and nail beds",
+        "finding": "No digital clubbing",
         "frequency": "almost_always",
         "significance": "neutral",
-        "importance": "important"
-      },
-      {
-        "id": "no-fever-toxic-appearance",
-        "region": "general",
-        "maneuver": "Assess overall appearance and temperature",
-        "finding": "No fever or toxic appearance",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "important"
+        "importance": "optional",
+        "term": "Clubbing",
+        "snomed_verified": true
       }
     ]
   },
   "vitals": {
-    "temp": {},
     "hr": {
-      "mild": {
-        "min": 68,
-        "max": 92
-      },
-      "moderate": {
-        "min": 78,
-        "max": 100
-      },
       "severe": {
-        "min": 88,
-        "max": 112
+        "min": 80,
+        "max": 110
       },
       "critical": {
         "min": 100,
-        "max": 130
+        "max": 135
       }
     },
     "rr": {
-      "mild": {
-        "min": 14,
-        "max": 20
-      },
-      "moderate": {
-        "min": 18,
-        "max": 24
-      },
       "severe": {
-        "min": 22,
-        "max": 30
+        "min": 20,
+        "max": 28
       },
       "critical": {
-        "min": 28,
-        "max": 40
-      }
-    },
-    "sbp": {
-      "mild": {
-        "min": 110,
-        "max": 138
-      },
-      "moderate": {
-        "min": 105,
-        "max": 135
-      },
-      "severe": {
-        "min": 100,
-        "max": 140
-      },
-      "critical": {
-        "min": 80,
-        "max": 130
-      }
-    },
-    "dbp": {
-      "mild": {
-        "min": 65,
-        "max": 85
-      },
-      "moderate": {
-        "min": 62,
-        "max": 85
-      },
-      "severe": {
-        "min": 60,
-        "max": 88
-      },
-      "critical": {
-        "min": 45,
-        "max": 80
+        "min": 26,
+        "max": 36
       }
     },
     "spo2": {
-      "mild": {
-        "min": 94,
-        "max": 99
-      },
       "moderate": {
-        "min": 90,
-        "max": 95
+        "min": 92,
+        "max": 96
       },
       "severe": {
-        "min": 85,
+        "min": 88,
         "max": 92
       },
       "critical": {
-        "min": 75,
-        "max": 88
+        "min": 80,
+        "max": 90
       }
     }
   },
+  "labs": [
+    {
+      "test_id": "paco2",
+      "ranges": {
+        "moderate": {
+          "min": 45,
+          "max": 55
+        },
+        "severe": {
+          "min": 55,
+          "max": 70
+        },
+        "critical": {
+          "min": 65,
+          "max": 85
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Chronic hypercapnia occurs with advanced airflow obstruction and hypoventilation; a normal PaCO₂ does not exclude emphysema."
+    },
+    {
+      "test_id": "pao2",
+      "ranges": {
+        "moderate": {
+          "min": 60,
+          "max": 80
+        },
+        "severe": {
+          "min": 50,
+          "max": 65
+        },
+        "critical": {
+          "min": 40,
+          "max": 60
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hypoxemia worsens as ventilation-perfusion mismatch progresses; often normal in mild disease."
+    },
+    {
+      "test_id": "hgb",
+      "ranges": {
+        "severe": {
+          "min": 18.0,
+          "max": 20.0
+        },
+        "critical": {
+          "min": 18.5,
+          "max": 21.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Secondary polycythemia can develop from chronic hypoxemia; many patients instead have anemia of chronic disease."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "p_wave",
+        "finding": "Tall, peaked P waves in inferior leads (P pulmonale)",
+        "leads": [
+          "II",
+          "III",
+          "aVF"
+        ],
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "axis",
+        "finding": "Right axis deviation",
+        "frequency": "sometimes",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "qrs",
+        "finding": "Low QRS voltage in limb leads",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "qrs",
+        "finding": "Poor R wave progression in precordial leads",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "qrs",
+        "finding": "Right ventricular hypertrophy pattern (tall R in V1, deep S in V6)",
+        "frequency": "rare",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "rhythm",
+        "finding": "Multifocal atrial tachycardia",
+        "frequency": "rare",
+        "min_severity": "severe"
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "Chest X-ray (posteroanterior and lateral)",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Hyperinflation with flattened diaphragms",
+          "frequency": "common"
+        },
+        {
+          "text": "Increased retrosternal airspace on lateral view",
+          "frequency": "common"
+        },
+        {
+          "text": "Hyperlucent lung fields",
+          "frequency": "common"
+        },
+        {
+          "text": "Attenuated peripheral vascular markings",
+          "frequency": "common"
+        },
+        {
+          "text": "Narrow cardiac silhouette",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Bullae",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "CT chest without contrast (high-resolution)",
+      "modality": "ct",
+      "preferred_when": "Assessing severity, bullae, atypical distribution, or surgical evaluation",
+      "findings": [
+        {
+          "text": "Centrilobular emphysema, predominantly in upper lobes",
+          "frequency": "common"
+        },
+        {
+          "text": "Panlobular emphysema, predominantly in lower lobes (more common in alpha-1 antitrypsin deficiency)",
+          "frequency": "rare"
+        },
+        {
+          "text": "Bullae",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Bronchial wall thickening",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Enlarged pulmonary arteries (pulmonary hypertension)",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "Chest X-ray (posteroanterior and lateral)",
+        "why": "Evaluates hyperinflation, bullae, and alternative causes of dyspnea"
+      },
+      {
+        "test": "cbc",
+        "why": "Screens for anemia or secondary polycythemia"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Spirometry with bronchodilator",
+        "why": "Demonstrates persistent airflow obstruction: post-bronchodilator FEV1/FVC < 0.70; confirms COPD/emphysema pattern"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "abg",
+        "why": "Assesses gas exchange and chronic hypercapnia",
+        "only_if": "SpO2 < 92%, severe airflow obstruction, or suspected cor pulmonale"
+      },
+      {
+        "test": "CT chest without contrast (high-resolution)",
+        "why": "Characterizes emphysema distribution and bullae; used for surgical or transplant evaluation",
+        "only_if": "Severe disease, atypical presentation, or evaluation for lung-volume-reduction surgery"
+      },
+      {
+        "test": "Alpha-1 antitrypsin level",
+        "why": "Detects alpha-1 antitrypsin deficiency in patients with early-onset or lower-lobe-predominant emphysema",
+        "only_if": "Emphysema before age 45, lower-lobe predominance on CT, or family history of AAT deficiency"
+      },
+      {
+        "test": "ECG",
+        "why": "Evaluates for cor pulmonale and arrhythmias",
+        "only_if": "Signs of right heart strain or palpitations"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "d_dimer",
+        "why": "No role unless pulmonary embolism is suspected"
+      },
+      {
+        "test": "bnp",
+        "why": "Not helpful for diagnosing emphysema; elevated only with left heart failure or severe cor pulmonale"
+      }
+    ],
+    "decision_points": [
+      "Spirometry with bronchodilator is essential to confirm airflow obstruction; do not rely on symptoms or imaging alone.",
+      "Alpha-1 antitrypsin testing should be considered in patients with early-onset emphysema, lower-lobe predominance, or a family history.",
+      "Arterial blood gas should be obtained when chronic hypoxemia or hypercapnia is suspected (SpO2 < 92%, severe disease, or cor pulmonale).",
+      "CT chest is reserved for surgical planning or atypical presentations; it is not needed for routine diagnosis of emphysema."
+    ],
+    "criteria": [
+      {
+        "name": "COPD diagnosis (GOLD criteria)",
+        "summary": "Persistent airflow limitation on post-bronchodilator spirometry (FEV1/FVC < 0.70) in a patient with compatible symptoms and exposure history. Emphysema is confirmed by imaging or pathology showing alveolar destruction."
+      }
+    ],
+    "scores": [
+      "bode_index"
+    ]
+  },
   "differential": [
     {
-      "name": "Chronic bronchitis (COPD with chronic bronchitis phenotype)",
+      "name": "Chronic bronchitis",
       "slug": "chronic-bronchitis",
-      "why_considered": "Same exposure history and airflow obstruction; most patients with COPD have features of both",
+      "why_considered": "Chronic productive cough and exertional dyspnea in a current or former smoker",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Productive cough on most days for at least 3 months a year for 2 or more years",
-          "Sputum is prominent and often purulent during exacerbations",
-          "Breathlessness may be less prominent early than the cough"
+          "Prominent daily productive cough for at least three months per year for two years",
+          "Repeated winter bronchitis episodes",
+          "Less complaint of chest tightness or hyperinflation"
         ],
         "exam": [
-          "Crackles and rhonchi in addition to wheezing",
-          "Cyanosis and peripheral edema earlier in the course",
-          "Less hyperinflation on inspection"
+          "Wheezing and coarse breath sounds without marked barrel chest",
+          "No significant hyperresonance",
+          "Often overweight rather than cachectic"
         ],
         "labs": [
-          "Spirometry shows obstruction in both; chronic bronchitis often has more sputum and lower resting oxygen"
+          "Spirometry shows obstruction, but the clinical picture is cough-predominant"
         ],
         "imaging": [
-          "Chest x-ray shows increased bronchovascular markings rather than marked hyperinflation"
+          "Chest X-ray may show increased bronchovascular markings rather than hyperlucent, hyperinflated lungs"
         ]
       }
     },
     {
       "name": "Asthma",
       "slug": "asthma",
-      "why_considered": "Wheezing, chest tightness and intermittent breathlessness in a patient with cough",
+      "why_considered": "Episodic dyspnea, wheezing, and cough that may improve with bronchodilators",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Symptoms began in childhood or young adulthood",
-          "Episodes come in attacks separated by normal periods",
-          "Atopy, eczema, allergic rhinitis, or a family history of asthma",
-          "Symptoms vary day to day and often wake the patient at night"
+          "Onset often in childhood or early adulthood",
+          "Symptoms vary with triggers such as allergens, cold air, or exercise",
+          "No significant smoking history in many patients",
+          "Symptoms may be absent between attacks"
         ],
         "exam": [
-          "Wheezing is prominent and reversible; no barrel chest",
-          "Normal exam between attacks"
+          "Wheezing predominantly expiratory, but lung exam may be normal between exacerbations",
+          "No barrel chest or marked hyperinflation when stable"
         ],
         "labs": [
-          "Spirometry shows obstruction that improves substantially after a bronchodilator",
-          "Blood eosinophilia or elevated IgE may be present"
+          "Spirometry typically shows reversible airflow obstruction, with significant FEV1 improvement after bronchodilator",
+          "Normal spirometry between episodes"
         ],
         "imaging": [
-          "Chest x-ray is usually normal"
+          "Chest X-ray usually normal, or hyperinflation only during severe exacerbations"
         ]
       }
     },
     {
-      "name": "Heart failure with reduced ejection fraction",
-      "slug": "heart-failure",
-      "why_considered": "Exertional dyspnea, orthopnea, leg swelling and fatigue in an older patient",
+      "name": "Congestive heart failure",
+      "slug": "congestive-heart-failure",
+      "why_considered": "Exertional dyspnea with edema or orthopnea, especially in an older patient",
       "must_not_miss": true,
-      "trigger": "Orthopnea, paroxysmal nocturnal dyspnea, elevated jugular venous pressure, or an S3 gallop",
+      "trigger": "Orthopnea, paroxysmal nocturnal dyspnea, bilateral crackles, or elevated jugular venous pressure",
       "discriminators": {
         "history": [
-          "Orthopnea and waking at night short of breath",
-          "Rapid weight gain from fluid",
-          "Known coronary disease or hypertension"
+          "Orthopnea or paroxysmal nocturnal dyspnea",
+          "Known coronary artery disease, hypertension, or prior myocardial infarction",
+          "Weight gain and lower-extremity swelling"
         ],
         "exam": [
-          "Elevated jugular venous pressure, positive hepatojugular reflux, S3 gallop, bibasilar crackles",
-          "Cardiomegaly rather than hyperinflation"
+          "Bilateral crackles at lung bases",
+          "S3 gallop",
+          "Jugular venous distension",
+          "Pitting peripheral edema"
         ],
         "labs": [
           "Elevated BNP or NT-proBNP",
-          "Echocardiogram shows reduced ejection fraction"
+          "Spirometry may show restriction rather than obstruction"
         ],
         "imaging": [
-          "Chest x-ray shows cardiomegaly, pulmonary venous congestion, and pleural effusions"
+          "Chest X-ray shows cardiomegaly, prominent pulmonary vasculature, or interstitial edema",
+          "Echocardiogram shows systolic or diastolic dysfunction"
         ]
       }
     },
     {
       "name": "Pulmonary embolism",
       "slug": "pulmonary-embolism",
-      "why_considered": "Acute worsening of breathlessness in a patient with limited respiratory reserve",
+      "why_considered": "Acute or worsening dyspnea, especially with pleuritic chest pain or risk factors",
       "must_not_miss": true,
-      "trigger": "Sudden worsening of dyspnea over hours, pleuritic chest pain, tachycardia, or unilateral leg swelling",
+      "trigger": "Sudden-onset dyspnea, pleuritic pain, tachycardia, or risk factors such as recent surgery, immobility, or cancer",
       "discriminators": {
         "history": [
-          "Abrupt onset rather than gradual worsening",
-          "Recent immobility, surgery, or prior clot",
-          "Pleuritic chest pain or hemoptysis"
+          "Acute onset of dyspnea or chest pain",
+          "Risk factors: recent surgery, immobilization, active cancer, previous venous thromboembolism",
+          "Often no chronic progressive exertional limitation"
         ],
         "exam": [
-          "Tachycardia out of proportion to the lung findings",
-          "Unilateral calf swelling or tenderness",
-          "Clear lungs despite marked breathlessness"
+          "Tachypnea and tachycardia",
+          "Clear lungs or only focal crackles",
+          "Unilateral leg swelling or tenderness"
         ],
         "labs": [
-          "Elevated D-dimer; hypoxemia with a widened alveolar-arterial gradient"
+          "Elevated D-dimer",
+          "ABG may show hypoxemia with respiratory alkalosis",
+          "Elevated BNP or troponin in right heart strain"
         ],
         "imaging": [
-          "CT pulmonary angiography shows a filling defect in the pulmonary arteries",
-          "Lower extremity ultrasound may show a deep vein thrombosis"
+          "CT pulmonary angiography shows filling defect in pulmonary artery",
+          "Ventilation-perfusion scan shows mismatch"
         ]
       }
     },
     {
       "name": "Pneumothorax",
       "slug": "pneumothorax",
-      "why_considered": "Sudden breathlessness and chest pain in a patient with emphysematous bullae",
+      "why_considered": "Sudden dyspnea and unilateral chest pain in a patient with emphysema or bullae",
       "must_not_miss": true,
-      "trigger": "Sudden severe one-sided chest pain with acute dyspnea and absent breath sounds on one side",
+      "trigger": "Acute unilateral pleuritic pain with sharply worse dyspnea and asymmetric breath sounds",
       "discriminators": {
         "history": [
-          "Abrupt onset, often at rest",
-          "Sharp one-sided chest pain"
+          "Sudden sharp chest pain, often pleuritic",
+          "History of large bullae or prior pneumothorax",
+          "May occur after coughing or without trauma"
         ],
         "exam": [
-          "Absent breath sounds and hyperresonance on one side",
-          "Tracheal deviation and hypotension if tension develops"
-        ],
-        "imaging": [
-          "Chest x-ray shows a pleural line with no lung markings beyond it",
-          "Ultrasound shows absent lung sliding"
-        ]
-      }
-    },
-    {
-      "name": "Bronchiectasis",
-      "slug": "bronchiectasis",
-      "why_considered": "Chronic productive cough and breathlessness with recurrent chest infections",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Large volumes of purulent sputum daily",
-          "Recurrent pneumonias",
-          "History of severe childhood respiratory infection"
-        ],
-        "exam": [
-          "Coarse crackles, often at the bases",
-          "Clubbing may be present"
-        ],
-        "imaging": [
-          "High-resolution CT shows dilated, thick-walled airways with a signet-ring appearance"
-        ]
-      }
-    },
-    {
-      "name": "Lung cancer",
-      "slug": "lung-cancer",
-      "why_considered": "Long smoking history with cough, breathlessness and weight loss",
-      "must_not_miss": true,
-      "trigger": "Hemoptysis, unexplained weight loss, hoarseness, or a new focal finding on chest imaging",
-      "discriminators": {
-        "history": [
-          "Hemoptysis",
-          "Weight loss with preserved appetite",
-          "Hoarseness or bone pain"
-        ],
-        "exam": [
-          "Focal findings such as unilateral wheeze, decreased breath sounds, or clubbing",
-          "Supraclavicular or cervical lymphadenopathy"
+          "Decreased or absent breath sounds on one side",
+          "Hyperresonant percussion on affected side",
+          "Tracheal deviation if tension pneumothorax",
+          "Tachypnea and distress"
         ],
         "labs": [
-          "Anemia, hypercalcemia, or elevated alkaline phosphatase"
+          "Usually not helpful; ABG may show acute hypoxemia"
         ],
         "imaging": [
-          "Chest x-ray or CT shows a mass, nodule, or hilar adenopathy",
-          "PET-CT and tissue biopsy confirm the diagnosis"
+          "Chest X-ray shows visceral pleural line with absent lung markings peripherally",
+          "Tension pneumothorax shows mediastinal shift away from the pneumothorax"
         ]
       }
     },
     {
       "name": "Alpha-1 antitrypsin deficiency",
       "slug": "alpha-1-antitrypsin-deficiency",
-      "why_considered": "Emphysema in a younger patient or with a strong family history",
-      "must_not_miss": false,
+      "why_considered": "Emphysema at an early age, lower lobe predominance, or family history of COPD",
+      "must_not_miss": true,
+      "trigger": "Emphysema before age 45, no or minimal smoking history, or lower lobe emphysema on CT",
       "discriminators": {
         "history": [
-          "Symptoms before age 45",
-          "Minimal or no smoking history",
-          "Family history of early emphysema or liver disease"
+          "Early-onset emphysema, often before age 45",
+          "Family history of emphysema or liver disease",
+          "May have unexplained chronic hepatitis or cirrhosis"
         ],
         "exam": [
-          "Basilar-predominant emphysema on imaging",
-          "Signs of liver disease in some patients"
+          "Similar findings to usual emphysema, but may present at younger age",
+          "No specific exam feature differentiates from smoking-related emphysema"
         ],
         "labs": [
-          "Low serum alpha-1 antitrypsin level with a confirmatory genotype or phenotype"
+          "Low serum alpha-1 antitrypsin level",
+          "Genetic testing confirms ZZ, SZ, or other deficiency genotypes"
         ],
         "imaging": [
-          "CT shows lower-lobe predominant emphysema"
+          "CT shows panlobular emphysema, predominantly in lower lobes",
+          "May also show bronchiectasis"
         ]
       }
     }
   ],
   "course": {
     "severity": {
-      "mild": "Breathlessness only with heavy exertion; FEV1 at or above 80% predicted; comfortable at rest; no hypoxemia",
-      "moderate": "Breathlessness with walking on flat ground or climbing stairs; FEV1 50-79% predicted; may have chronic cough and sputum; oxygen saturation usually normal at rest",
-      "severe": "Breathlessness with minimal activity or at rest; FEV1 30-49% predicted; pursed-lip breathing, accessory muscle use, resting hypoxemia possible; frequent exacerbations",
-      "critical": "Respiratory failure with exhaustion, altered mental status, or hypercapnia; FEV1 below 30% predicted; requires ventilatory support; may be triggered by infection, pneumothorax, or pulmonary embolism"
+      "mild": "Mild exertional dyspnea with heavy activity; no symptoms at rest. Spirometry shows obstruction but FEV1 is generally ≥80% predicted. Imaging may demonstrate hyperinflation.",
+      "moderate": "Dyspnea with moderate activity such as walking on level ground at a normal pace. Exam shows prolonged expiration, decreased breath sounds, and hyperresonance. FEV1 is typically 50–79% predicted, and resting SpO2 is usually normal.",
+      "severe": "Dyspnea at rest or with minimal activity. Accessory muscle use, pursed-lip breathing, hypoxemia, and often chronic hypercapnia. FEV1 is typically 30–49% predicted. Patient may be cachectic and have signs of cor pulmonale.",
+      "critical": "Acute or chronic respiratory failure with severe hypoxemia and/or worsening hypercapnia. Altered mental status, cyanosis, inability to speak in sentences, and hemodynamic instability can occur. Requires immediate ventilatory support or intensive care."
     },
     "red_flags": [
       {
-        "finding": "Altered mental status, somnolence, or confusion",
-        "meaning": "Hypercapnic respiratory failure; needs urgent blood gas and ventilatory support"
+        "finding": "Acute onset of pleuritic chest pain with unilateral absent breath sounds",
+        "meaning": "Pneumothorax, possibly tension, until excluded"
       },
       {
-        "finding": "Unable to speak in full sentences, tripod positioning, accessory muscle use",
-        "meaning": "Impending respiratory failure; escalate immediately"
+        "finding": "Sudden worsening dyspnea with hypotension or tachycardia",
+        "meaning": "Pulmonary embolism or tension pneumothorax; emergency imaging needed"
       },
       {
-        "finding": "Sudden severe one-sided chest pain with absent breath sounds",
-        "meaning": "Pneumothorax, possibly tension; needs immediate decompression"
+        "finding": "Altered mental status or somnolence with rising PaCO2",
+        "meaning": "Hypercapnic respiratory failure; prepare for ventilatory support"
       },
       {
-        "finding": "Hemoptysis",
-        "meaning": "Evaluate for lung cancer, bronchiectasis, or infection"
+        "finding": "Fever, increased sputum purulence, and new infiltrate",
+        "meaning": "Acute exacerbation due to respiratory infection; may require antibiotics and hospitalization"
       },
       {
-        "finding": "Unilateral leg swelling with acute dyspnea",
-        "meaning": "Deep vein thrombosis with pulmonary embolism"
+        "finding": "Inability to speak full sentences, accessory muscle use, SpO2 <88%",
+        "meaning": "Impending respiratory failure; escalate care immediately"
       },
       {
-        "finding": "Fever with purulent sputum and increased breathlessness",
-        "meaning": "Acute exacerbation, often infectious; consider antibiotics and steroids"
-      },
-      {
-        "finding": "New peripheral edema with elevated jugular venous pressure",
-        "meaning": "Cor pulmonale or coexisting heart failure"
+        "finding": "Peripheral edema, elevated JVP, loud P2",
+        "meaning": "Cor pulmonale from pulmonary hypertension"
       }
     ],
     "complications": [
       {
-        "name": "Acute exacerbation of COPD",
+        "name": "Acute exacerbation",
         "timing": "any",
         "seriousness": "serious",
-        "frequency": "common",
-        "clues": [
-          "Increased breathlessness and sputum over days",
-          "Worsening cough and wheeze",
-          "Often triggered by viral or bacterial infection"
-        ]
-      },
-      {
-        "name": "Respiratory failure with hypercapnia",
-        "timing": "late",
-        "seriousness": "life_threatening",
         "frequency": "sometimes",
         "clues": [
-          "Drowsiness or confusion",
-          "Morning headaches",
-          "Asterixis",
-          "Rising PaCO2 on blood gas"
+          "Increased dyspnea",
+          "Increased sputum volume or purulence",
+          "Wheezing or chest tightness"
         ]
       },
       {
-        "name": "Spontaneous pneumothorax",
+        "name": "Pneumothorax",
         "timing": "any",
         "seriousness": "life_threatening",
         "frequency": "rare",
         "clues": [
-          "Sudden one-sided chest pain",
-          "Absent breath sounds on one side",
-          "Rupture of a subpleural bulla"
+          "Sudden unilateral pleuritic pain",
+          "Asymmetric breath sounds",
+          "Hyperresonant percussion"
         ]
       },
       {
@@ -955,211 +989,181 @@
         "frequency": "sometimes",
         "clues": [
           "Peripheral edema",
-          "Elevated jugular venous pressure",
-          "Right ventricular enlargement on echocardiogram"
+          "Jugular venous distension",
+          "Loud P2"
+        ]
+      },
+      {
+        "name": "Chronic respiratory failure",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Chronic hypoxemia",
+          "Hypercapnia",
+          "Morning headache",
+          "Drowsiness"
         ]
       },
       {
         "name": "Secondary polycythemia",
         "timing": "late",
         "seriousness": "minor",
-        "frequency": "sometimes",
+        "frequency": "rare",
         "clues": [
-          "Elevated hemoglobin and hematocrit",
-          "Chronic hypoxemia"
+          "Elevated hemoglobin",
+          "Plethora",
+          "No other cause"
         ]
       },
       {
-        "name": "Weight loss and muscle wasting",
+        "name": "Pulmonary hypertension",
         "timing": "late",
         "seriousness": "serious",
         "frequency": "sometimes",
         "clues": [
-          "Loss of appetite and early satiety",
-          "Reduced limb muscle mass",
-          "Poor functional status"
-        ]
-      },
-      {
-        "name": "Osteoporosis",
-        "timing": "late",
-        "seriousness": "minor",
-        "frequency": "common",
-        "clues": [
-          "Fragility fractures",
-          "Long-term inhaled or systemic steroid use",
-          "Low bone density on DXA"
-        ]
-      },
-      {
-        "name": "Lung cancer",
-        "timing": "late",
-        "seriousness": "life_threatening",
-        "frequency": "sometimes",
-        "clues": [
-          "Hemoptysis",
-          "Unexplained weight loss",
-          "New mass on chest imaging"
+          "Progressive dyspnea",
+          "Right ventricular heave",
+          "ECG right heart strain"
         ]
       }
     ],
     "special_populations": [
       {
         "population": "older_adults",
-        "differences": "Breathlessness is often attributed to aging or deconditioning, so the disease is more advanced at diagnosis; more comorbidity and polypharmacy; higher risk of falls and cognitive effects from hypoxemia."
-      },
-      {
-        "population": "children",
-        "differences": "Emphysema is essentially not seen in children; when severe early emphysema occurs it suggests alpha-1 antitrypsin deficiency or another inherited cause and warrants genetic testing."
-      },
-      {
-        "population": "pregnancy",
-        "differences": "Dyspnea may be attributed to normal pregnancy; smoking cessation is the highest priority; hypoxemia threatens both mother and fetus and oxygen targets should be maintained."
+        "differences": "Present later, often with fatigue or deconditioning; dyspnea may be attributed to aging. Exacerbations are more frequent and severe; polypharmacy and comorbidities complicate management."
       },
       {
         "population": "obesity",
-        "differences": "Reduced chest wall compliance and weight-related dyspnea can make symptoms seem out of proportion to the lung findings; obesity also increases the work of breathing and complicates inhaler technique."
-      },
-      {
-        "population": "diabetes",
-        "differences": "Coexisting heart and kidney disease can mimic or mask the breathlessness and leg swelling of advanced emphysema; systemic steroids during exacerbations can worsen glycemic control."
+        "differences": "Restrictive physiology may mask hyperinflation on exam and imaging; sleep-disordered breathing often coexists and worsens hypercapnia. Weight loss can improve dyspnea but may exacerbate muscle wasting."
       }
     ]
   },
   "teaching": {
     "key_questions": [
       {
-        "question": "Do you smoke or have you ever smoked? How much and for how long?",
+        "question": "How long have you been short of breath, and has it been getting worse?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Chronic progressive exertional dyspnea over months to years, not sudden onset"
+      },
+      {
+        "question": "What activities make you short of breath, and how far can you walk before stopping?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Quantified exertional limitation, e.g. dyspnea after walking one flight or a short distance"
+      },
+      {
+        "question": "Do you have a cough? Do you bring up phlegm? What is it like?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Chronic productive cough, usually worse in the morning, without hemoptysis"
+      },
+      {
+        "question": "Do you ever hear wheezing or feel tightness in your chest?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Expiratory wheezing and chest tightness"
+      },
+      {
+        "question": "Have you smoked cigarettes, or do you currently smoke? How many packs per day for how many years?",
         "category": "social",
         "importance": "essential",
-        "looking_for": "Current or former cigarette use, usually 20 or more pack-years; the main risk factor"
+        "looking_for": "Significant smoking history, often ≥20 pack-years"
       },
       {
-        "question": "When did the shortness of breath start, and how has it changed over time?",
-        "category": "hpi",
-        "importance": "essential",
-        "looking_for": "Gradual onset over months to years with slow progression; breathlessness that once came only with heavy exertion now comes with walking on flat ground"
-      },
-      {
-        "question": "What brings it on or makes it worse?",
-        "category": "hpi",
-        "importance": "essential",
-        "looking_for": "Exertion, cold air, respiratory infections, smoke or fumes; relieved by rest and sitting upright"
-      },
-      {
-        "question": "Do you have a cough, and do you bring anything up?",
-        "category": "associated",
+        "question": "What kind of work have you done? Any exposure to dust, chemicals, or fumes?",
+        "category": "social",
         "importance": "important",
-        "looking_for": "Long-standing cough with clear or white sputum; large volumes of purulent sputum would point elsewhere"
+        "looking_for": "Occupational or environmental exposures that can cause emphysema"
       },
       {
-        "question": "Do you wheeze or feel tightness in your chest?",
-        "category": "associated",
-        "importance": "important",
-        "looking_for": "Wheezing or a whistling sound and chest tightness"
-      },
-      {
-        "question": "Have you had any coughing up of blood?",
-        "category": "red_flag",
-        "importance": "essential",
-        "looking_for": "Absent; hemoptysis raises concern for lung cancer, bronchiectasis, or infection"
-      },
-      {
-        "question": "Have you had sudden worsening of your breathing or sudden one-sided chest pain?",
-        "category": "red_flag",
-        "importance": "essential",
-        "looking_for": "Absent; abrupt onset suggests pneumothorax or pulmonary embolism"
-      },
-      {
-        "question": "Have you noticed swelling in your ankles, feet, or legs?",
-        "category": "associated",
-        "importance": "important",
-        "looking_for": "New or worsening edema suggesting cor pulmonale or coexisting heart failure"
-      },
-      {
-        "question": "Have you lost weight without trying, or lost your appetite?",
-        "category": "associated",
-        "importance": "important",
-        "looking_for": "Unintentional weight loss and early satiety in advanced disease; weight loss with preserved appetite raises concern for cancer"
-      },
-      {
-        "question": "Do you wake at night short of breath, or need extra pillows to sleep?",
-        "category": "ros",
-        "importance": "important",
-        "looking_for": "Absent; orthopnea and paroxysmal nocturnal dyspnea point to heart failure"
-      },
-      {
-        "question": "Have you had any fevers, chills, or night sweats?",
-        "category": "ros",
-        "importance": "important",
-        "looking_for": "Absent at baseline; fever with purulent sputum suggests an acute exacerbation"
-      },
-      {
-        "question": "Does anyone in your family have emphysema or COPD, especially at a young age?",
+        "question": "Has anyone in your family had emphysema, COPD, or liver disease?",
         "category": "family",
         "importance": "important",
-        "looking_for": "Family history of COPD in a smoker, or early emphysema suggesting alpha-1 antitrypsin deficiency"
+        "looking_for": "Family history suggesting alpha-1 antitrypsin deficiency"
       },
       {
-        "question": "Have you ever been told you have asthma, or did your breathing problems start in childhood?",
+        "question": "Have you had frequent chest infections, like bronchitis or pneumonia?",
         "category": "pmh",
         "importance": "important",
-        "looking_for": "Symptoms beginning in childhood or young adulthood with attacks separated by normal periods would suggest asthma instead"
+        "looking_for": "Recurrent lower respiratory tract infections"
       },
       {
-        "question": "What medicines do you use for your breathing, and how often?",
+        "question": "Have you lost weight without trying?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Cachexia in advanced emphysema"
+      },
+      {
+        "question": "Any swelling in your ankles, feet, or legs?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Peripheral edema suggesting cor pulmonale"
+      },
+      {
+        "question": "Have you had any sudden sharp chest pain or sudden worsening of shortness of breath?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Pneumothorax or pulmonary embolism"
+      },
+      {
+        "question": "Have you coughed up blood?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Hemoptysis suggests another cause such as cancer or bronchiectasis"
+      },
+      {
+        "question": "Have you had a fever, chills, or a change in your phlegm color or amount recently?",
+        "category": "red_flag",
+        "importance": "important",
+        "looking_for": "Acute exacerbation due to infection"
+      },
+      {
+        "question": "Which inhalers, nebulizers, or oxygen do you use, and how often?",
         "category": "medications",
         "importance": "important",
-        "looking_for": "Bronchodilators, inhaled steroids, and how well they relieve symptoms"
+        "looking_for": "Current bronchodilator/corticosteroid use and response; chronic oxygen therapy"
       },
       {
-        "question": "What kind of work have you done, and were you exposed to dusts, fumes, or chemicals?",
-        "category": "social",
-        "importance": "important",
-        "looking_for": "Mining, construction, welding, textiles, or farming exposures that contribute to lung damage"
-      },
-      {
-        "question": "Does anyone smoke in your home or workplace?",
-        "category": "social",
+        "question": "Have you had the flu or pneumonia vaccine?",
+        "category": "pmh",
         "importance": "optional",
-        "looking_for": "Long-term secondhand smoke exposure"
+        "looking_for": "Vaccination status"
       }
     ],
     "accepted_names": [
       "Emphysema",
-      "COPD",
-      "Chronic obstructive pulmonary disease",
-      "COPD with emphysema",
-      "Emphysematous COPD"
+      "Pulmonary emphysema"
     ],
     "reasoning_points": [
-      "Gradual, progressive exertional dyspnea over months to years in a patient over 40",
-      "Substantial smoking history or other long-term inhaled irritant exposure",
-      "Chronic cough with scant sputum, wheezing, and chest tightness",
-      "Exam findings of hyperinflation: barrel chest, hyperresonance, diffusely decreased breath sounds, prolonged expiration",
-      "Spirometry showing persistent airflow obstruction that does not fully reverse with a bronchodilator",
-      "Chest imaging showing hyperinflation and flattened diaphragms",
-      "Heart failure and pulmonary embolism considered and argued against by the absence of orthopnea, elevated jugular venous pressure, S3 gallop, and unilateral leg swelling",
-      "Alpha-1 antitrypsin deficiency considered if symptoms began before age 45 or with minimal smoking history"
+      "Older adult with a long smoking history presenting with chronic progressive exertional dyspnea",
+      "Chronic productive cough, wheezing, and chest tightness",
+      "Exam shows hyperinflation with barrel chest, decreased breath sounds, prolonged expiration, and hyperresonance",
+      "Spirometry demonstrates persistent airflow obstruction: post-bronchodilator FEV1/FVC <0.70",
+      "Chest imaging shows hyperinflation, flattened diaphragms, and increased retrosternal airspace, with possible bullae",
+      "Alpha-1 antitrypsin deficiency considered if early onset, lower-lobe predominance, or family history",
+      "Differential diagnosis includes chronic bronchitis, asthma, congestive heart failure, pulmonary embolism, and pneumothorax",
+      "Absence of fever, pleuritic chest pain, hemoptysis, and acute onset helps exclude infection and acute vascular events"
     ],
     "difficulty": {
       "easy": [
-        "Older adult with a long smoking history",
-        "Classic gradual exertional dyspnea with chronic cough",
-        "Barrel chest, hyperresonance, and decreased breath sounds",
-        "Spirometry confirms obstruction"
+        "Older current or former smoker with classic barrel chest and exertional dyspnea",
+        "Clear smoking history >30 pack-years",
+        "Spirometry shows fixed obstruction with FEV1/FVC <0.70",
+        "Chest X-ray shows hyperinflation with flattened diaphragms"
       ],
       "medium": [
-        "Older adult whose breathlessness is attributed to aging or deconditioning",
-        "Coexisting heart failure with leg swelling and crackles",
-        "Obesity with dyspnea out of proportion to the lung findings",
-        "Prominent chronic bronchitis features with purulent sputum"
+        "Patient with chronic bronchitis overlap: cough-predominant picture",
+        "Woman with fewer pack-years or secondhand smoke exposure",
+        "Mild disease where exam findings are subtle and spirometry is borderline",
+        "Patient with coexisting obesity masking hyperinflation"
       ],
       "hard": [
-        "Younger patient with minimal smoking history suggesting alpha-1 antitrypsin deficiency",
-        "Acute exacerbation with hypercapnia and altered mental status",
-        "Sudden worsening from pneumothorax or pulmonary embolism",
-        "Weight loss and hemoptysis raising concern for lung cancer"
+        "Young patient with alpha-1 antitrypsin deficiency and lower-lobe emphysema",
+        "Minimal smoking history but significant occupational exposure",
+        "Patient presenting with pneumothorax as first manifestation of emphysema",
+        "Concurrent congestive heart failure with crackles and edema making diagnosis unclear"
       ]
     }
   }

@@ -32,54 +32,48 @@
       },
       {
         "stage": "patient_presentation",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:57:21Z"
+        "generated_at": "2026-10-14T18:16:51Z"
       },
       {
         "stage": "exam_vitals",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:57:52Z"
+        "generated_at": "2026-10-14T18:18:54Z"
       },
       {
         "stage": "diagnostics",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:57:59Z"
+        "generated_at": "2026-10-14T18:19:34Z"
       },
       {
         "stage": "differential_course",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:58:08Z"
+        "generated_at": "2026-10-14T18:20:17Z"
       },
       {
         "stage": "teaching",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:58:14Z"
+        "generated_at": "2026-10-14T18:20:55Z"
       }
     ],
     "validation": {
-      "status": "failed",
-      "rule_errors": [
-        "exam: 5 of 12 terms aren't SNOMED CT findings"
-      ],
+      "status": "passed",
+      "rule_errors": [],
       "review_issues": [
-        "auto-repaired: workup: 'dilated indirect ophthalmoscopy (retinal examination)' was in ['initial', 'confirmatory'], kept ['initial']",
-        "presentation: term 'Premature infant screening examination' not found in SNOMED CT",
-        "presentation: term 'Decreased visual tracking' not found in SNOMED CT",
-        "exam: term 'Retinal demarcation line' not found in SNOMED CT",
-        "exam: term 'Retinal ridge' not found in SNOMED CT",
-        "exam: term 'Retinal vascular tortuosity' not found in SNOMED CT",
-        "exam: term 'Normal eye' not found in SNOMED CT",
-        "exam: term 'No intraocular mass' not found in SNOMED CT",
+        "presentation: term 'Visual tracking disorder' not found in SNOMED CT",
+        "presentation: term 'Visual tracking disorder' not found in SNOMED CT",
+        "presentation: term 'Visual tracking disorder' not found in SNOMED CT",
+        "exam: term 'Tortuous retinal vessels' not found in SNOMED CT",
         "differential retinoblastoma: no profile yet",
-        "differential familial-exudative-vitreoretinopathy: no profile yet",
         "differential persistent-fetal-vasculature: no profile yet",
-        "differential congenital-cataract: no profile yet",
-        "differential retinal-detachment: no profile yet"
+        "differential familial-exudative-vitreoretinopathy: no profile yet",
+        "differential coats-disease: no profile yet",
+        "differential congenital-cataract: no profile yet"
       ]
     },
     "review": {
@@ -89,37 +83,49 @@
   "patient": {
     "age": {
       "typical_min": 0,
-      "typical_max": 1,
-      "peak": "0–3 months (postmenstrual age 30–40 weeks)",
+      "typical_max": 0,
+      "peak": "first few months of life",
       "possible_min": 0,
       "possible_max": 1
     },
     "sex": "either",
     "demographics": [
-      "Occurs almost exclusively in infants born prematurely; risk rises as gestational age and birth weight fall",
-      "More common in infants of lower gestational age and lower birth weight, and in those who received supplemental oxygen",
-      "Slightly more common in male infants in some series"
+      "Occurs almost exclusively in premature infants",
+      "Highest incidence in extremely premature and very low birth weight infants",
+      "Screening recommended for infants born ≤30 weeks gestational age or <1500 g"
     ],
     "risk_factors": [
       {
-        "text": "Prematurity, especially birth before 30–32 weeks gestation",
+        "text": "Extreme prematurity (gestational age <28 weeks)",
         "strength": "strong"
       },
       {
-        "text": "Low birth weight, especially under 1500 g",
+        "text": "Very low birth weight (<1500 g)",
         "strength": "strong"
       },
       {
-        "text": "Supplemental oxygen therapy or prolonged mechanical ventilation",
+        "text": "Prolonged supplemental oxygen therapy",
         "strength": "moderate"
       },
       {
-        "text": "Very low gestational age at birth",
-        "strength": "strong"
+        "text": "Fluctuating oxygen saturation",
+        "strength": "moderate"
       },
       {
-        "text": "Neonatal sepsis, intraventricular hemorrhage, or necrotizing enterocolitis",
+        "text": "Sepsis",
         "strength": "moderate"
+      },
+      {
+        "text": "Blood transfusion",
+        "strength": "moderate"
+      },
+      {
+        "text": "Poor postnatal weight gain",
+        "strength": "moderate"
+      },
+      {
+        "text": "Hyperglycemia",
+        "strength": "weak"
       },
       {
         "text": "Multiple gestation",
@@ -127,80 +133,88 @@
       }
     ],
     "comorbidities": [
+      "Respiratory distress syndrome",
       "Bronchopulmonary dysplasia",
       "Intraventricular hemorrhage",
       "Necrotizing enterocolitis",
-      "Neonatal sepsis",
-      "Patent ductus arteriosus"
+      "Anemia of prematurity"
     ],
     "family_history": [],
     "social_history": [],
     "exposures": [
-      "Supplemental oxygen in the neonatal period",
-      "Mechanical ventilation"
+      "Prolonged supplemental oxygen",
+      "Mechanical ventilation",
+      "Blood transfusion"
     ],
-    "risk_medications": []
+    "risk_medications": [
+      "oxygen"
+    ]
   },
   "presentation": {
     "chief_complaints": [
       {
-        "text": "The NICU team said my baby needs an eye exam because she was born early",
+        "text": "The eye doctor said the blood vessels in my baby's eyes look abnormal.",
         "frequency": "almost_always",
-        "term": "Premature infant screening examination",
+        "term": "Abnormal retinal vascular morphology",
+        "snomed_verified": true
+      },
+      {
+        "text": "My baby doesn't seem to look at my face or follow objects.",
+        "frequency": "sometimes",
+        "term": "Visual tracking disorder",
         "snomed_verified": false
       },
       {
-        "text": "My baby doesn't seem to follow my face or the light the way I expected",
-        "frequency": "sometimes",
-        "term": "Decreased visual tracking",
-        "snomed_verified": false
+        "text": "One of my baby's pupils looks white in photos.",
+        "frequency": "rare",
+        "term": "Leukocoria",
+        "snomed_verified": true
       }
     ],
     "hpi": {
-      "onset": "Detected on routine screening eye examination in the neonatal period, typically 4–6 weeks after birth or around 31–33 weeks postmenstrual age",
-      "duration": "Present since the neonatal period; may progress over weeks to months if untreated",
-      "progression": "Often asymptomatic and found only on screening; if it progresses, retinal changes advance through stages and can lead to retinal detachment and vision loss",
-      "location": "Bilateral retinas, often asymmetric",
-      "radiation": "Not applicable",
-      "quality": "Painless; no symptoms noticed by the infant",
-      "severity": "Variable; most cases are mild and regress, but severe cases can cause blindness",
-      "timing": "Screening occurs at fixed postnatal/postmenstrual ages; progression is monitored over weeks",
+      "onset": "Not noticed by parents; detected on routine retinopathy of prematurity screening eye exam",
+      "duration": "Usually detected between 31 and 36 weeks postmenstrual age, or 4–6 weeks after birth",
+      "progression": "Most mild cases regress spontaneously; some progress to more advanced stages with extraretinal proliferation, traction, and retinal detachment",
+      "location": "Bilateral eyes",
+      "radiation": "None",
+      "quality": "Not applicable; baby has no pain complaint",
+      "severity": "Variable; usually asymptomatic",
+      "timing": "Detected on scheduled screening, not by symptoms",
       "aggravating": [],
       "relieving": [],
       "associated_symptoms": [
         {
-          "text": "No visual response to faces or objects",
+          "text": "My baby doesn't seem to look at my face or follow objects.",
           "frequency": "sometimes",
-          "term": "Visual impairment",
-          "snomed_verified": true
+          "term": "Visual tracking disorder",
+          "snomed_verified": false
         },
         {
-          "text": "Crossing of the eyes (strabismus)",
+          "text": "My baby's eyes sometimes look crossed.",
           "frequency": "sometimes",
           "term": "Strabismus",
           "snomed_verified": true
         },
         {
-          "text": "Rapid involuntary eye movements (nystagmus)",
-          "frequency": "sometimes",
-          "term": "Nystagmus",
+          "text": "One of my baby's pupils looks white in photos.",
+          "frequency": "rare",
+          "term": "Leukocoria",
           "snomed_verified": true
         },
         {
-          "text": "White pupil (leukocoria)",
+          "text": "My baby's eyes make jerky movements.",
           "frequency": "rare",
-          "term": "Leukocoria",
+          "term": "Nystagmus",
           "snomed_verified": true
         }
       ],
       "pertinent_negatives": [
-        "Eye pain or redness",
-        "Discharge from the eye",
+        "Eye pain",
+        "Eye redness or discharge",
         "Fever",
-        "Poor feeding",
-        "Lethargy",
-        "Seizures",
-        "Failure to thrive"
+        "Born at full term",
+        "Appropriate birth weight for gestational age",
+        "Family history of hereditary retinal disease"
       ]
     },
     "ros": [
@@ -208,169 +222,162 @@
         "system": "eyes",
         "positives": [
           {
-            "text": "Poor visual tracking",
-            "frequency": "sometimes",
-            "term": "Visual impairment",
+            "text": "The eye doctor said the blood vessels in my baby's eyes look abnormal.",
+            "frequency": "almost_always",
+            "term": "Abnormal retinal vascular morphology",
             "snomed_verified": true
           },
           {
-            "text": "Strabismus",
+            "text": "My baby doesn't seem to look at my face or follow objects.",
+            "frequency": "sometimes",
+            "term": "Visual tracking disorder",
+            "snomed_verified": false
+          },
+          {
+            "text": "My baby's eyes sometimes look crossed.",
             "frequency": "sometimes",
             "term": "Strabismus",
             "snomed_verified": true
           },
           {
-            "text": "Nystagmus",
-            "frequency": "sometimes",
-            "term": "Nystagmus",
+            "text": "One of my baby's pupils looks white in photos.",
+            "frequency": "rare",
+            "term": "Leukocoria",
             "snomed_verified": true
           },
           {
-            "text": "Leukocoria",
+            "text": "My baby's eyes make jerky movements.",
             "frequency": "rare",
-            "term": "Leukocoria",
+            "term": "Nystagmus",
             "snomed_verified": true
           }
         ],
         "negatives": [
           "Eye pain",
-          "Redness",
-          "Discharge",
-          "Tearing"
+          "Eye redness",
+          "Purulent eye discharge",
+          "Swelling around the eyes"
         ],
         "argues_against": [
-          "Congenital cataract",
-          "Retinoblastoma",
-          "Ocular infection"
-        ]
-      },
-      {
-        "system": "neurologic",
-        "positives": [
-          {
-            "text": "Developmental delay",
-            "frequency": "sometimes",
-            "term": "Developmental delay",
-            "snomed_verified": true
-          }
-        ],
-        "negatives": [
-          "Seizures",
-          "Abnormal tone",
-          "Lethargy"
-        ],
-        "argues_against": [
-          "Hypoxic-ischemic encephalopathy",
-          "Intraventricular hemorrhage with mass effect"
+          "Eye pain with photophobia",
+          "Copious purulent discharge"
         ]
       },
       {
         "system": "constitutional",
-        "positives": [],
+        "positives": [
+          {
+            "text": "My baby was born very early.",
+            "frequency": "almost_always",
+            "term": "Premature birth",
+            "snomed_verified": true
+          }
+        ],
         "negatives": [
           "Fever",
-          "Poor feeding",
-          "Failure to thrive",
           "Lethargy"
         ],
         "argues_against": [
-          "Neonatal sepsis",
-          "Metabolic disorder"
+          "Signs of systemic infection"
         ]
       }
     ],
     "atypical": [
       {
-        "population": "infants",
-        "how_it_differs": "Most infants are completely asymptomatic; the condition is found only on screening examinations. Even advanced disease may cause no obvious signs until vision loss is severe.",
-        "missing_classic_features": [
-          "Visual symptoms",
-          "Parental concern about vision"
-        ]
-      },
-      {
         "population": "children",
-        "how_it_differs": "Older children with a history of prematurity may present with strabismus, nystagmus, poor vision, or leukocoria if the disease was not detected or treated in infancy.",
+        "how_it_differs": "Older children with regressed or treated ROP present with decreased vision, strabismus, nystagmus, or retinal detachment rather than active vascular proliferation.",
         "missing_classic_features": [
-          "Neonatal screening detection",
-          "Acute neonatal findings"
+          "Active extraretinal proliferation",
+          "Plus disease"
         ]
       }
     ]
   },
   "exam": {
     "general": {
-      "mild": "Premature infant, alert and feeding, no external eye abnormality; ROP found only on screening examination",
-      "moderate": "Premature infant, otherwise stable; abnormal retinal vascular findings on dilated fundoscopy",
-      "severe": "Premature infant with plus disease or stage 3 ROP; may have poor visual tracking or nystagmus",
-      "critical": "Infant with retinal detachment or leukocoria; may be lethargic or feeding poorly if systemically unwell"
+      "mild": "Well-appearing premature infant; no systemic signs of eye disease; alert and active.",
+      "moderate": "Well-appearing premature infant; may not fix and follow objects but otherwise no systemic signs.",
+      "severe": "Well-appearing premature infant; may have strabismus or nystagmus; no systemic signs.",
+      "critical": "Well-appearing premature infant; may have leukocoria and visual inattention; no systemic signs."
     },
     "findings": [
       {
-        "id": "retinal-demarcation-line",
+        "id": "abnormal-retinal-vascular-morphology",
         "region": "heent",
-        "maneuver": "Perform dilated indirect ophthalmoscopy and examine the peripheral retina",
-        "finding": "A thin, flat, white line separating vascularized from avascular retina (stage 1 ROP)",
-        "frequency": "common",
+        "maneuver": "Perform dilated indirect ophthalmoscopy",
+        "finding": "Abnormal retinal vascular morphology at the junction of vascular and avascular retina.",
+        "frequency": "almost_always",
         "min_severity": "mild",
         "significance": "strongly_supports",
         "importance": "essential",
-        "term": "Retinal demarcation line",
-        "snomed_verified": false
+        "term": "Abnormal retinal vascular morphology",
+        "snomed_verified": true
       },
       {
-        "id": "retinal-ridge",
+        "id": "retinal-neovascularization",
         "region": "heent",
-        "maneuver": "Perform dilated indirect ophthalmoscopy and examine the peripheral retina",
-        "finding": "An elevated ridge of tissue at the junction of vascularized and avascular retina (stage 2 ROP)",
-        "frequency": "common",
-        "min_severity": "moderate",
-        "significance": "strongly_supports",
-        "importance": "essential",
-        "term": "Retinal ridge",
-        "snomed_verified": false
-      },
-      {
-        "id": "extraretinal-fibrovascular-proliferation",
-        "region": "heent",
-        "maneuver": "Perform dilated indirect ophthalmoscopy and examine the peripheral retina",
-        "finding": "Fibrovascular proliferation extending from the ridge into the vitreous (stage 3 ROP)",
+        "maneuver": "Perform indirect ophthalmoscopy",
+        "finding": "Extraretinal fibrovascular proliferation extending from the ridge into the vitreous.",
         "frequency": "sometimes",
-        "min_severity": "severe",
-        "significance": "strongly_supports",
-        "importance": "essential",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
         "term": "Retinal neovascularization",
         "snomed_verified": true
       },
       {
-        "id": "plus-disease",
+        "id": "dilated-retinal-veins",
         "region": "heent",
-        "maneuver": "Perform dilated indirect ophthalmoscopy and assess the posterior retinal vessels",
-        "finding": "Marked dilation and tortuosity of the posterior retinal vessels (plus disease)",
+        "maneuver": "Perform indirect ophthalmoscopy of the posterior pole",
+        "finding": "Dilated retinal veins in at least two quadrants.",
         "frequency": "sometimes",
         "min_severity": "severe",
         "significance": "strongly_supports",
         "importance": "essential",
-        "term": "Retinal vascular tortuosity",
+        "term": "Dilated retinal veins",
+        "snomed_verified": true
+      },
+      {
+        "id": "tortuous-retinal-vessels",
+        "region": "heent",
+        "maneuver": "Perform indirect ophthalmoscopy of the posterior pole",
+        "finding": "Tortuous retinal arteries in at least two quadrants.",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Tortuous retinal vessels",
         "snomed_verified": false
       },
       {
-        "id": "retinal-detachment",
+        "id": "partial-retinal-detachment",
         "region": "heent",
-        "maneuver": "Perform dilated indirect ophthalmoscopy and examine the peripheral retina",
-        "finding": "Partial or total retinal detachment (stage 4 or 5 ROP)",
+        "maneuver": "Perform indirect ophthalmoscopy with scleral depression",
+        "finding": "Partial retinal detachment (stage 4).",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Partial retinal detachment",
+        "snomed_verified": true
+      },
+      {
+        "id": "total-retinal-detachment",
+        "region": "heent",
+        "maneuver": "Perform indirect ophthalmoscopy",
+        "finding": "Total retinal detachment with retrolental membrane (stage 5).",
         "frequency": "rare",
         "min_severity": "critical",
-        "significance": "strongly_supports",
-        "importance": "essential",
-        "term": "Retinal detachment",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Total retinal detachment",
         "snomed_verified": true
       },
       {
         "id": "leukocoria",
         "region": "heent",
-        "maneuver": "Inspect the red reflex with a direct ophthalmoscope or observe the pupillary light reflex",
-        "finding": "White pupillary reflex (leukocoria)",
+        "maneuver": "Assess red reflex with direct ophthalmoscope",
+        "finding": "Absent red reflex; pupil appears white.",
         "frequency": "rare",
         "min_severity": "critical",
         "significance": "supports",
@@ -381,240 +388,122 @@
       {
         "id": "strabismus",
         "region": "heent",
-        "maneuver": "Assess ocular alignment with the corneal light reflex or cover test",
-        "finding": "Misalignment of the eyes (strabismus)",
+        "maneuver": "Perform corneal light reflex test (Hirschberg) and cover test",
+        "finding": "Ocular misalignment (esotropia or exotropia).",
         "frequency": "sometimes",
-        "min_severity": "severe",
+        "min_severity": "moderate",
         "significance": "supports",
-        "importance": "important",
+        "importance": "optional",
         "term": "Strabismus",
         "snomed_verified": true
       },
       {
         "id": "nystagmus",
         "region": "heent",
-        "maneuver": "Observe the eyes for involuntary rhythmic movements",
-        "finding": "Involuntary rhythmic eye movements (nystagmus)",
-        "frequency": "sometimes",
+        "maneuver": "Observe eye movements",
+        "finding": "Involuntary rhythmic eye movements.",
+        "frequency": "rare",
         "min_severity": "severe",
         "significance": "supports",
-        "importance": "important",
+        "importance": "optional",
         "term": "Nystagmus",
         "snomed_verified": true
       },
       {
-        "id": "poor-visual-tracking",
+        "id": "no-anterior-chamber-cells",
         "region": "heent",
-        "maneuver": "Present a face or bright object and observe whether the infant fixes and follows",
-        "finding": "Failure to fix and follow (poor visual tracking)",
-        "frequency": "sometimes",
-        "min_severity": "severe",
-        "significance": "supports",
-        "importance": "important",
-        "term": "Visual impairment",
+        "maneuver": "Perform slit lamp examination (or penlight) for anterior chamber",
+        "finding": "No cells or flare in anterior chamber.",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Cells in anterior chamber",
         "snomed_verified": true
       },
       {
-        "id": "normal-anterior-segment",
+        "id": "no-vitreous-hemorrhage",
         "region": "heent",
-        "maneuver": "Inspect the cornea, iris, lens, and conjunctiva with a penlight and direct ophthalmoscope",
-        "finding": "Clear cornea, normal iris, clear lens, no conjunctival injection or discharge",
+        "maneuver": "Perform indirect ophthalmoscopy",
+        "finding": "No vitreous hemorrhage.",
         "frequency": "almost_always",
         "significance": "neutral",
-        "importance": "important",
-        "term": "Normal eye",
-        "snomed_verified": false
-      },
-      {
-        "id": "normal-red-reflex",
-        "region": "heent",
-        "maneuver": "Check the red reflex in both eyes with a direct ophthalmoscope",
-        "finding": "Symmetric red reflex without opacities",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "important",
-        "term": "Red reflex present",
+        "importance": "optional",
+        "term": "Vitreous hemorrhage",
         "snomed_verified": true
       },
       {
-        "id": "no-intraocular-mass",
+        "id": "no-corneal-opacity",
         "region": "heent",
-        "maneuver": "Perform dilated fundoscopy to examine the posterior segment",
-        "finding": "No intraocular mass or calcification",
+        "maneuver": "Inspect cornea with penlight",
+        "finding": "No corneal opacity.",
         "frequency": "almost_always",
         "significance": "neutral",
-        "importance": "important",
-        "term": "No intraocular mass",
-        "snomed_verified": false
+        "importance": "optional",
+        "term": "Corneal opacity",
+        "snomed_verified": true
       }
     ]
   },
-  "vitals": {
-    "temp": {
-      "mild": {
-        "min": 97.7,
-        "max": 99.5
-      },
-      "moderate": {
-        "min": 97.7,
-        "max": 99.5
-      },
-      "severe": {
-        "min": 97.7,
-        "max": 99.5
-      },
-      "critical": {
-        "min": 97.7,
-        "max": 99.5
-      }
-    },
-    "hr": {
-      "mild": {
-        "min": 100,
-        "max": 160
-      },
-      "moderate": {
-        "min": 100,
-        "max": 160
-      },
-      "severe": {
-        "min": 100,
-        "max": 160
-      },
-      "critical": {
-        "min": 100,
-        "max": 160
-      }
-    },
-    "rr": {
-      "mild": {
-        "min": 30,
-        "max": 60
-      },
-      "moderate": {
-        "min": 30,
-        "max": 60
-      },
-      "severe": {
-        "min": 30,
-        "max": 60
-      },
-      "critical": {
-        "min": 30,
-        "max": 60
-      }
-    },
-    "sbp": {
-      "mild": {
-        "min": 60,
-        "max": 90
-      },
-      "moderate": {
-        "min": 60,
-        "max": 90
-      },
-      "severe": {
-        "min": 60,
-        "max": 90
-      },
-      "critical": {
-        "min": 60,
-        "max": 90
-      }
-    },
-    "dbp": {
-      "mild": {
-        "min": 30,
-        "max": 60
-      },
-      "moderate": {
-        "min": 30,
-        "max": 60
-      },
-      "severe": {
-        "min": 30,
-        "max": 60
-      },
-      "critical": {
-        "min": 30,
-        "max": 60
-      }
-    },
-    "spo2": {
-      "mild": {
-        "min": 95,
-        "max": 100
-      },
-      "moderate": {
-        "min": 95,
-        "max": 100
-      },
-      "severe": {
-        "min": 95,
-        "max": 100
-      },
-      "critical": {
-        "min": 95,
-        "max": 100
-      }
-    }
-  },
+  "vitals": {},
   "labs": [],
   "imaging": [
     {
-      "study": "Dilated indirect ophthalmoscopy (retinal examination)",
+      "study": "Wide-field digital retinal imaging",
       "modality": "other",
-      "preferred_when": "All infants meeting ROP screening criteria, and every follow-up until retinal vascularization is complete",
       "findings": [
         {
-          "text": "Thin flat white line separating vascularized from avascular retina (stage 1)",
+          "text": "Demarcation line between vascular and avascular retina (stage 1)",
           "frequency": "common"
         },
         {
-          "text": "Elevated ridge of tissue at the junction of vascularized and avascular retina (stage 2)",
+          "text": "Ridge with height and width (stage 2)",
           "frequency": "common"
         },
         {
-          "text": "Fibrovascular proliferation extending from the ridge into the vitreous (stage 3)",
+          "text": "Extraretinal fibrovascular proliferation extending from the ridge (stage 3)",
           "frequency": "sometimes"
         },
         {
-          "text": "Marked dilation and tortuosity of posterior retinal vessels (plus disease)",
+          "text": "Dilated and tortuous posterior retinal vessels in at least two quadrants (plus disease)",
           "frequency": "sometimes"
         },
         {
-          "text": "Partial or total retinal detachment (stage 4 or 5)",
+          "text": "Partial retinal detachment (stage 4)",
           "frequency": "rare"
         },
         {
-          "text": "Immature, incompletely vascularized peripheral retina without demarcation line or ridge",
-          "frequency": "common"
+          "text": "Total retinal detachment with retrolental membrane (stage 5)",
+          "frequency": "rare"
         }
       ]
     },
     {
-      "study": "B-scan ocular ultrasound",
+      "study": "Ocular ultrasound (B-scan)",
       "modality": "ultrasound",
-      "preferred_when": "When the retina cannot be visualized directly because of media opacity or poor pupillary dilation",
+      "preferred_when": "Media opacity (e.g., vitreous hemorrhage, cataract) prevents fundoscopic view",
       "findings": [
         {
-          "text": "Retinal detachment not visible on direct examination",
-          "frequency": "sometimes"
+          "text": "Retinal detachment",
+          "frequency": "rare"
         },
         {
-          "text": "Retrolental fibrous mass",
+          "text": "Retrolental fibrovascular mass",
           "frequency": "rare"
         }
       ]
     },
     {
-      "study": "Ocular MRI",
-      "modality": "mri",
-      "preferred_when": "Rarely, when an intraocular mass such as retinoblastoma must be excluded",
+      "study": "Fluorescein angiography",
+      "modality": "other",
+      "preferred_when": "Equivocal findings or suspected plus disease",
       "findings": [
         {
-          "text": "No intraocular mass; retinal changes consistent with ROP",
-          "frequency": "common"
+          "text": "Leakage from neovascularization",
+          "frequency": "rare"
+        },
+        {
+          "text": "Nonperfused retina",
+          "frequency": "rare"
         }
       ]
     }
@@ -622,220 +511,227 @@
   "workup": {
     "initial": [
       {
-        "test": "Dilated indirect ophthalmoscopy (retinal examination)",
-        "why": "The diagnostic test; identifies stage, zone, and plus disease and guides treatment"
+        "test": "Wide-field digital retinal imaging",
+        "why": "Screening for retinopathy of prematurity in at-risk infants; allows remote reading or documentation."
       }
     ],
-    "confirmatory": [],
+    "confirmatory": [
+      {
+        "test": "Dilated indirect ophthalmoscopy",
+        "why": "Definitive diagnosis and staging by direct visualization of the retina; required for treatment decisions."
+      }
+    ],
     "supporting": [
       {
-        "test": "B-scan ocular ultrasound",
-        "why": "Shows retinal detachment when the retina cannot be seen directly",
-        "only_if": "media opacity or poor dilation prevents adequate fundoscopy"
+        "test": "Fluorescein angiography",
+        "why": "Clarifies equivocal findings or suspected plus disease.",
+        "only_if": "equivocal findings or suspected plus disease"
+      },
+      {
+        "test": "Ocular ultrasound (B-scan)",
+        "why": "Evaluates retinal detachment when media opacity limits fundoscopy.",
+        "only_if": "media opacity (vitreous hemorrhage, cataract) prevents fundoscopic view"
       }
     ],
     "not_indicated": [
       {
         "test": "cbc",
-        "why": "No role in diagnosing ROP"
+        "why": "No role in diagnosis or management of retinopathy of prematurity."
+      },
+      {
+        "test": "bmp",
+        "why": "No role unless systemic illness is suspected."
       },
       {
         "test": "crp",
-        "why": "No role in diagnosing ROP"
+        "why": "No role in diagnosing retinopathy of prematurity."
       },
       {
-        "test": "Ocular MRI",
-        "why": "Not needed unless an intraocular mass is suspected",
-        "only_if": "leukocoria or another finding raises concern for retinoblastoma"
+        "test": "Blood culture",
+        "why": "Only if sepsis is suspected, not for retinopathy of prematurity itself."
       }
     ],
     "decision_points": [
-      "Screen all infants born before 30–32 weeks gestation or with birth weight under 1500 g, and selected larger or more mature infants with an unstable course",
-      "First examination at 4–6 weeks postnatal age or 31–33 weeks postmenstrual age, whichever is later",
-      "Repeat examinations at intervals set by the findings until retinal vascularization is complete or treatment is given",
-      "Type 1 ROP (zone I any stage with plus disease, zone I stage 3 without plus, or zone II stage 2 or 3 with plus) is treated; milder disease is observed",
-      "Treatment is usually laser photocoagulation of the avascular retina; intravitreal anti-VEGF is an alternative, especially for zone I disease"
+      "Initial screening exam at 31 weeks postmenstrual age or 4 weeks chronological age, whichever is later, for infants born ≤30 weeks GA or <1500 g.",
+      "Follow-up intervals based on initial findings: 1 week or more frequently for immature vessels in zone I; 1-2 weeks for stage 1 or 2 without plus disease in zone II; 2-3 weeks if regressing.",
+      "Treatment (laser photocoagulation or anti-VEGF injection) is indicated for type 1 ROP: zone I any stage with plus disease, zone I stage 3 without plus disease, or zone II stage 2 or 3 with plus disease.",
+      "Refer to pediatric ophthalmologist for all at-risk infants."
     ],
     "criteria": [
       {
-        "name": "International classification of ROP",
-        "summary": "ROP is described by the zone of the retina involved (I, II, III), the stage of the vascular abnormality (1 demarcation line, 2 ridge, 3 fibrovascular proliferation, 4 partial retinal detachment, 5 total retinal detachment), and the presence of plus disease (marked posterior vessel dilation and tortuosity).",
-        "items": [
-          "Zone I: posterior retina within 60 degrees of the optic disc",
-          "Zone II: from zone I to the nasal ora serrata",
-          "Zone III: remaining temporal crescent",
-          "Stage 1: demarcation line",
-          "Stage 2: ridge",
-          "Stage 3: fibrovascular proliferation",
-          "Stage 4: partial retinal detachment",
-          "Stage 5: total retinal detachment",
-          "Plus disease: dilation and tortuosity of posterior retinal vessels"
-        ]
+        "name": "International Classification of Retinopathy of Prematurity (ICROP)",
+        "summary": "Categorizes ROP by location (zones I-III), severity (stages 1-5), extent (clock hours), and presence of plus disease (dilated, tortuous posterior vessels)."
       }
-    ],
-    "scores": []
+    ]
   },
   "differential": [
     {
       "name": "Retinoblastoma",
       "slug": "retinoblastoma",
-      "why_considered": "Leukocoria or poor visual tracking in an infant; the most important intraocular malignancy of infancy",
+      "why_considered": "Leukocoria or abnormal red reflex in an infant",
       "must_not_miss": true,
-      "trigger": "Leukocoria, strabismus, or an intraocular mass in an infant",
+      "trigger": "Leukocoria or a white pupil in any infant, especially if not extremely premature",
       "discriminators": {
         "history": [
-          "May occur in a full-term infant without prematurity or oxygen exposure",
-          "Family history of retinoblastoma",
-          "Usually no history of prematurity or NICU course"
+          "Usually full-term infant",
+          "Family history of retinoblastoma in about 10%",
+          "No history of extreme prematurity or prolonged oxygen therapy"
         ],
         "exam": [
-          "Leukocoria is often the presenting sign",
-          "White mass arising from the retina on fundoscopy",
-          "May have no plus disease or demarcation line"
+          "Unilateral or bilateral leukocoria",
+          "Retinal mass with calcification on dilated exam",
+          "Often no systemic findings",
+          "May have strabismus"
         ],
         "labs": [
-          "Genetic testing for RB1 mutation when hereditary disease is suspected"
+          "Genetic testing for RB1 mutation if family history"
         ],
         "imaging": [
-          "Ocular ultrasound shows an intraocular mass with calcification",
-          "MRI shows a retinal mass and can assess optic nerve or CNS involvement"
-        ]
-      }
-    },
-    {
-      "name": "Familial exudative vitreoretinopathy",
-      "slug": "familial-exudative-vitreoretinopathy",
-      "why_considered": "Peripheral retinal avascularity and neovascular changes that mimic ROP",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Family history of similar retinal disease",
-          "May occur in full-term infants without oxygen exposure",
-          "No or minimal prematurity"
-        ],
-        "exam": [
-          "Peripheral retinal avascularity with exudation or traction",
-          "Findings may be asymmetric and progressive beyond the neonatal period"
-        ],
-        "imaging": [
-          "Fluorescein angiography shows peripheral avascular retina and leakage",
-          "Ocular ultrasound may show retinal detachment or exudate"
+          "Ocular ultrasound shows calcified intraocular mass",
+          "MRI of brain and orbits if optic nerve extension suspected"
         ]
       }
     },
     {
       "name": "Persistent fetal vasculature",
       "slug": "persistent-fetal-vasculature",
-      "why_considered": "Leukocoria, poor vision, or retinal detachment in an infant",
+      "why_considered": "Leukocoria and retrolental membrane in an infant",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Usually unilateral",
-          "Often noted at birth or in early infancy",
-          "No strong association with prematurity"
+          "Usually full-term infant",
+          "No prematurity or oxygen exposure",
+          "Unilateral, present since birth"
         ],
         "exam": [
-          "Microphthalmia may be present",
-          "Retrolental fibrovascular membrane or persistent hyaloid stalk",
-          "Cataract or anterior segment abnormalities may be present"
+          "Microphthalmia",
+          "Cataract",
+          "Retrolental fibrovascular membrane",
+          "Elongated ciliary processes"
         ],
         "imaging": [
-          "Ultrasound shows a retrolental mass or persistent hyaloid artery",
-          "MRI can help distinguish from retinoblastoma"
+          "Ocular ultrasound shows persistent hyaloid artery remnant",
+          "No peripheral avascular retina as in ROP"
+        ]
+      }
+    },
+    {
+      "name": "Familial exudative vitreoretinopathy",
+      "slug": "familial-exudative-vitreoretinopathy",
+      "why_considered": "Peripheral retinal avascularity and neovascularization in an infant",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Often full-term infant",
+          "Family history of retinal detachment or childhood blindness",
+          "No history of prematurity"
+        ],
+        "exam": [
+          "Bilateral peripheral avascular retina",
+          "Retinal folds or dragged vessels",
+          "Subretinal or intraretinal exudates"
+        ],
+        "labs": [
+          "Genetic testing for FZD4, LRP5, TSPAN12, NDP mutations"
+        ],
+        "imaging": [
+          "Fluorescein angiography shows leakage and nonperfusion, often in a similar pattern to ROP but without prematurity"
+        ]
+      }
+    },
+    {
+      "name": "Coats disease",
+      "slug": "coats-disease",
+      "why_considered": "Leukocoria and retinal detachment in a child",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Typically presents in school-age boys",
+          "No prematurity",
+          "Unilateral"
+        ],
+        "exam": [
+          "Retinal telangiectasia",
+          "Yellow subretinal exudates",
+          "Often no systemic findings"
+        ],
+        "imaging": [
+          "Fluorescein angiography shows telangiectatic vessels with leakage"
         ]
       }
     },
     {
       "name": "Congenital cataract",
       "slug": "congenital-cataract",
-      "why_considered": "Leukocoria or poor visual response in an infant",
+      "why_considered": "Leukocoria in an infant",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "May be present at birth in a full-term infant",
-          "Family history of congenital cataract",
-          "May be associated with metabolic or genetic syndromes"
+          "Full-term or any infant",
+          "May have family history or intrauterine infection"
         ],
         "exam": [
-          "Opacification of the lens on slit-lamp or direct ophthalmoscopy",
-          "Red reflex is diminished or absent",
-          "No retinal vascular abnormalities"
+          "Opacified lens",
+          "No retinal vascular abnormalities",
+          "No retinal detachment"
+        ],
+        "labs": [
+          "TORCH titers if suspected"
         ],
         "imaging": [
-          "Ocular ultrasound is normal posteriorly unless other anomalies coexist"
-        ]
-      }
-    },
-    {
-      "name": "Retinal detachment from other causes",
-      "slug": "retinal-detachment",
-      "why_considered": "Retinal detachment is the severe end of ROP and can also occur from other pediatric causes",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Trauma, prior ocular surgery, or known genetic syndrome",
-          "No history of prematurity or oxygen therapy"
-        ],
-        "exam": [
-          "Retinal detachment without the characteristic demarcation line, ridge, or plus disease of ROP",
-          "May have associated ocular trauma signs"
-        ],
-        "imaging": [
-          "B-scan ultrasound confirms detachment and helps identify underlying cause"
+          "Ocular ultrasound shows normal posterior segment if view obscured"
         ]
       }
     }
   ],
   "course": {
     "severity": {
-      "mild": "Stage 1 or 2 disease in zone II or III without plus disease; often regresses spontaneously with no visual sequelae",
-      "moderate": "Stage 2 or 3 disease in zone II with or without plus disease, or stage 3 in zone I without plus; requires close monitoring and may need treatment",
-      "severe": "Type 1 ROP: zone I any stage with plus disease, zone I stage 3 without plus, or zone II stage 2 or 3 with plus disease; treatment with laser or anti-VEGF is indicated to prevent detachment",
-      "critical": "Stage 4 or 5 ROP with partial or total retinal detachment; risk of permanent blindness and need for surgical intervention"
+      "mild": "Stage 1 or 2 retinopathy of prematurity in zone II or III without plus disease; usually regresses spontaneously without treatment",
+      "moderate": "Stage 3 retinopathy of prematurity in zone II without plus disease, or pre-plus disease; requires more frequent monitoring and may progress to treatment-requiring disease",
+      "severe": "Type 1 retinopathy of prematurity (zone I any stage with plus disease, zone I stage 3 without plus, or zone II stage 2 or 3 with plus disease) requiring treatment; or partial retinal detachment (stage 4)"
     },
     "red_flags": [
       {
-        "finding": "Plus disease (marked dilation and tortuosity of posterior retinal vessels)",
-        "meaning": "Severe, treatment-requiring ROP; urgent ophthalmology referral and treatment"
+        "finding": "Plus disease (dilated, tortuous posterior vessels in at least two quadrants)",
+        "meaning": "Indicates active disease requiring urgent ophthalmology evaluation and likely treatment"
       },
       {
         "finding": "Zone I disease",
-        "meaning": "Posterior involvement carries a high risk of rapid progression to detachment"
+        "meaning": "Higher risk of progression and poor outcome; treatment threshold lower"
       },
       {
-        "finding": "Stage 3 with plus disease",
-        "meaning": "Type 1 ROP; laser or anti-VEGF treatment is indicated"
+        "finding": "Rapid progression between exams",
+        "meaning": "May require more frequent monitoring or early treatment"
       },
       {
-        "finding": "Leukocoria or absent red reflex",
-        "meaning": "Possible retinal detachment or an alternative diagnosis such as retinoblastoma; urgent evaluation"
+        "finding": "Vitreous hemorrhage or retinal detachment",
+        "meaning": "Advanced disease; needs immediate pediatric ophthalmology referral"
       },
       {
-        "finding": "Poor visual tracking or nystagmus in an infant with a history of prematurity",
-        "meaning": "May indicate advanced or untreated ROP with visual impairment"
+        "finding": "Leukocoria or abnormal red reflex",
+        "meaning": "Possible advanced ROP or another serious eye condition; requires urgent exam"
       }
     ],
     "complications": [
       {
         "name": "Retinal detachment",
-        "timing": "late",
+        "timing": "any",
         "seriousness": "serious",
-        "frequency": "sometimes",
+        "frequency": "rare",
         "clues": [
-          "Progression from stage 3 to stage 4 or 5",
-          "Leukocoria",
-          "Poor visual response"
+          "Total retinal detachment with retrolental membrane",
+          "Decreased vision",
+          "Leukocoria"
         ]
       },
       {
-        "name": "Blindness",
+        "name": "Myopia",
         "timing": "late",
-        "seriousness": "life_threatening",
-        "frequency": "rare",
+        "seriousness": "minor",
+        "frequency": "common",
         "clues": [
-          "Untreated type 1 ROP",
-          "Total retinal detachment",
-          "No visual tracking"
+          "Blurred vision in childhood",
+          "Requires glasses"
         ]
       },
       {
@@ -844,28 +740,18 @@
         "seriousness": "minor",
         "frequency": "sometimes",
         "clues": [
-          "Misalignment of the eyes",
-          "History of ROP"
+          "Ocular misalignment",
+          "May require patching or surgery"
         ]
       },
       {
-        "name": "Nystagmus",
+        "name": "Amblyopia",
         "timing": "late",
         "seriousness": "minor",
         "frequency": "sometimes",
         "clues": [
-          "Involuntary rhythmic eye movements",
-          "Poor vision"
-        ]
-      },
-      {
-        "name": "High myopia",
-        "timing": "late",
-        "seriousness": "minor",
-        "frequency": "sometimes",
-        "clues": [
-          "Reduced vision",
-          "Need for glasses at a young age"
+          "Reduced vision in one eye",
+          "Often associated with strabismus or refractive error"
         ]
       },
       {
@@ -874,95 +760,93 @@
         "seriousness": "serious",
         "frequency": "rare",
         "clues": [
-          "Enlarged eye or cloudy cornea",
-          "Increased intraocular pressure"
+          "Elevated intraocular pressure",
+          "Corneal enlargement or haze"
+        ]
+      },
+      {
+        "name": "Cataract",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "rare",
+        "clues": [
+          "Lens opacity",
+          "Reduced vision"
         ]
       }
     ],
     "special_populations": [
       {
         "population": "infants",
-        "differences": "The only population affected; all infants born before 30–32 weeks gestation or under 1500 g birth weight require screening. Even advanced disease is usually asymptomatic, so detection depends on scheduled examinations."
+        "differences": "All cases occur in premature infants; risk and severity increase with lower gestational age and birth weight. Screening is based on these factors."
       },
       {
         "population": "children",
-        "differences": "Older children with a history of prematurity may present with strabismus, nystagmus, poor vision, or leukocoria if ROP was not detected or treated in infancy. They require long-term ophthalmologic follow-up for refractive errors, amblyopia, and late complications."
+        "differences": "Older children with regressed or treated ROP present with decreased vision, strabismus, nystagmus, or retinal detachment rather than active vascular proliferation."
       }
     ]
   },
   "teaching": {
     "key_questions": [
       {
-        "question": "How early was your baby born, and what was the birth weight?",
+        "question": "What did the eye doctor tell you about your baby's eyes?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Birth before 30–32 weeks gestation and/or weight under 1500 g, which are the main screening criteria"
+        "looking_for": "Report of abnormal retinal blood vessels, stage, zone, and plus disease on screening exam"
       },
       {
-        "question": "How many weeks pregnant were you when you delivered?",
-        "category": "obstetric",
-        "importance": "essential",
-        "looking_for": "Gestational age at birth; lower gestational age means higher risk and earlier screening"
-      },
-      {
-        "question": "Did your baby need extra oxygen or a breathing machine after birth?",
-        "category": "hpi",
-        "importance": "important",
-        "looking_for": "Supplemental oxygen or mechanical ventilation, a recognized risk factor"
-      },
-      {
-        "question": "Has your baby had the scheduled eye examinations in the NICU or eye clinic?",
+        "question": "At what gestational age was your baby born?",
         "category": "pmh",
         "importance": "essential",
-        "looking_for": "Whether ROP screening has been done and whether follow-up exams were kept"
+        "looking_for": "Gestational age ≤30 weeks; extreme prematurity greatly increases risk"
       },
       {
-        "question": "Has anyone noticed that your baby does not seem to follow faces or light?",
-        "category": "associated",
-        "importance": "important",
-        "looking_for": "Poor visual tracking, which suggests more advanced disease"
-      },
-      {
-        "question": "Have you noticed the eyes crossing or moving back and forth on their own?",
-        "category": "associated",
-        "importance": "important",
-        "looking_for": "Strabismus or nystagmus, which can accompany severe ROP"
-      },
-      {
-        "question": "Have you ever seen a white glow in the pupil, especially in photos?",
-        "category": "red_flag",
+        "question": "What was your baby's birth weight?",
+        "category": "pmh",
         "importance": "essential",
-        "looking_for": "Leukocoria, which suggests retinal detachment or an alternative diagnosis such as retinoblastoma"
+        "looking_for": "Birth weight <1500 g, especially <1000 g"
       },
       {
-        "question": "Was your baby born as part of a multiple pregnancy (twins, triplets)?",
-        "category": "obstetric",
-        "importance": "optional",
-        "looking_for": "Multiple gestation, a minor risk factor"
+        "question": "Did your baby need oxygen or a breathing machine after birth? For how long?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Prolonged or fluctuating supplemental oxygen exposure"
       },
       {
-        "question": "Did your baby have any other problems in the NICU, such as infection, bleeding in the brain, or bowel problems?",
+        "question": "Has your baby received any blood transfusions?",
         "category": "pmh",
         "importance": "important",
-        "looking_for": "Neonatal sepsis, intraventricular hemorrhage, or necrotizing enterocolitis, which are associated with ROP"
+        "looking_for": "Blood transfusion as a risk factor"
       },
       {
-        "question": "Does anyone in the family have a history of eye problems in infancy or childhood, such as cataracts or retinal disease?",
+        "question": "Has your baby had any previous eye exams? When were they and what did they show?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Prior ROP stage, progression, regression, or treatment"
+      },
+      {
+        "question": "Does your baby seem to look at your face or follow objects?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Visual inattention or poor fixation suggesting advanced disease"
+      },
+      {
+        "question": "Have you noticed any white pupil, unusual eye movements, or crossed eyes?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Leukocoria, nystagmus, or strabismus"
+      },
+      {
+        "question": "Is there a family history of childhood eye problems, blindness, or retinal detachment?",
         "category": "family",
         "importance": "important",
-        "looking_for": "Family history suggesting an inherited retinal disorder or congenital cataract rather than ROP"
+        "looking_for": "Absence of hereditary retinal disease"
       },
       {
-        "question": "Has your baby been feeding well, gaining weight, and acting normally?",
-        "category": "ros",
-        "importance": "important",
-        "looking_for": "Reassuring general health; poor feeding or lethargy would suggest another systemic problem"
-      },
-      {
-        "question": "Any eye redness, discharge, tearing, or pain?",
-        "category": "ros",
-        "importance": "important",
-        "looking_for": "Absent; these suggest infection or another ocular cause rather than ROP"
+        "question": "Were there any problems during the pregnancy or delivery?",
+        "category": "obstetric",
+        "importance": "optional",
+        "looking_for": "Congenital infection or other causes of retinopathy"
       }
     ],
     "accepted_names": [
@@ -973,32 +857,33 @@
       "Terry syndrome"
     ],
     "reasoning_points": [
-      "Infant born prematurely, especially before 30–32 weeks gestation or under 1500 g birth weight",
-      "History of supplemental oxygen or mechanical ventilation in the neonatal period",
-      "Condition detected on routine ROP screening eye examination rather than from symptoms",
-      "Dilated indirect ophthalmoscopy shows a demarcation line, ridge, or fibrovascular proliferation at the junction of vascularized and avascular retina",
-      "Plus disease (posterior retinal vessel dilation and tortuosity) indicates severe, treatment-requiring disease",
-      "Findings are described by zone, stage, and presence of plus disease using the international classification",
-      "Alternative diagnoses such as retinoblastoma, familial exudative vitreoretinopathy, persistent fetal vasculature, and congenital cataract are considered and excluded"
+      "Born at ≤30 weeks gestation or birth weight <1500 g, meeting screening criteria",
+      "Prolonged or fluctuating supplemental oxygen exposure",
+      "Dilated fundus exam shows peripheral avascular retina with a demarcation line/ridge and possible extraretinal fibrovascular proliferation",
+      "Plus disease: dilated and tortuous posterior retinal vessels in at least two quadrants indicates active disease",
+      "No signs of retinoblastoma (e.g., no calcified mass, no family history, extreme prematurity)",
+      "Staging according to ICROP (zones, stages, plus disease) guides management",
+      "Type 1 ROP meets treatment threshold (zone I any stage with plus, zone I stage 3 without plus, zone II stage 2/3 with plus)",
+      "Other risk factors include sepsis, blood transfusion, poor postnatal weight gain"
     ],
     "difficulty": {
       "easy": [
-        "Very premature infant (under 30 weeks) with a birth weight under 1500 g",
-        "ROP found on the scheduled screening eye examination",
-        "Dilated fundoscopy shows a classic demarcation line or ridge",
-        "No visual symptoms; the diagnosis is made on screening"
+        "Extremely premature infant born at 24 weeks with birth weight 650 g",
+        "Clear history of prolonged supplemental oxygen",
+        "Screening exam shows zone II stage 3 with plus disease",
+        "No competing diagnosis; classic textbook ROP"
       ],
       "medium": [
-        "Infant with plus disease and stage 3 findings requiring urgent treatment",
-        "Asymmetric disease between the two eyes",
-        "Larger or more mature premature infant who still meets screening criteria",
-        "Infant with other NICU complications such as bronchopulmonary dysplasia or intraventricular hemorrhage"
+        "Moderately premature infant born at 30 weeks and 1400 g",
+        "Stage 2 ROP without plus disease, requiring serial exams",
+        "Pre-plus disease or borderline zone II/III disease",
+        "Some risk factors present but less severe"
       ],
       "hard": [
-        "Older infant with a history of prematurity presenting with strabismus, nystagmus, or poor vision after missed screening",
-        "Leukocoria in an infant, requiring distinction from retinoblastoma",
-        "Full-term infant with retinal findings mimicking ROP, suggesting familial exudative vitreoretinopathy or persistent fetal vasculature",
-        "Retinal detachment where the underlying cause is unclear"
+        "Borderline screening criteria: born at 31-32 weeks or birth weight just above 1500 g",
+        "Leukocoria or retinal detachment raising concern for retinoblastoma or other causes",
+        "Unclear oxygen history or missing prior exam records",
+        "Advanced stage 4/5 ROP with total retinal detachment requiring differentiation from persistent fetal vasculature"
       ]
     }
   }

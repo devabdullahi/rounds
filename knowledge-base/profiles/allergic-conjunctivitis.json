@@ -32,54 +32,47 @@
       },
       {
         "stage": "patient_presentation",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:59:25Z"
+        "generated_at": "2026-10-14T16:06:35Z"
       },
       {
         "stage": "exam_vitals",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:59:46Z"
+        "generated_at": "2026-10-14T16:09:01Z"
       },
       {
         "stage": "diagnostics",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:59:49Z"
+        "generated_at": "2026-10-14T16:10:05Z"
       },
       {
         "stage": "differential_course",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:59:59Z"
+        "generated_at": "2026-10-14T16:10:50Z"
       },
       {
         "stage": "teaching",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T07:00:05Z"
+        "generated_at": "2026-10-14T16:12:06Z"
       }
     ],
     "validation": {
-      "status": "failed",
-      "rule_errors": [
-        "exam: 5 of 15 terms aren't SNOMED CT findings"
-      ],
+      "status": "passed",
+      "rule_errors": [],
       "review_issues": [
-        "auto-repaired: workup: 'cbc' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
-        "auto-repaired: workup: 'cbc' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
-        "presentation: term 'Itching of nose' not found in SNOMED CT",
-        "presentation: term 'Itching of nose' not found in SNOMED CT",
-        "exam: term 'Conjunctival papilla' not found in SNOMED CT",
-        "exam: term 'Allergic shiner' not found in SNOMED CT",
-        "exam: term 'Dennie-Morgan fold' not found in SNOMED CT",
-        "exam: term 'Anterior chamber of eye clear' not found in SNOMED CT",
-        "exam: term 'Ciliary injection' not found in SNOMED CT",
+        "auto-repaired: workup: 'Allergy testing (skin prick or serum specific IgE)' was in supporting, not_indicated; kept supporting as a conditional order (only if Persistent or severe symptoms despite treatment, or need to confirm atopy)",
+        "auto-repaired: workup: 'Conjunctival scraping for eosinophils' was in supporting, not_indicated; kept supporting as a conditional order (only if Atypical presentation where diagnosis is unclear)",
+        "exam: term 'Circumcorneal injection' not found in SNOMED CT",
+        "exam: term 'Purulent discharge from eye' not found in SNOMED CT",
+        "differential infectious-keratitis: no profile yet",
         "differential viral-conjunctivitis: no profile yet",
         "differential dry-eye-syndrome: no profile yet",
-        "differential blepharitis: no profile yet",
-        "differential contact-lens-keratitis: no profile yet"
+        "differential blepharitis: no profile yet"
       ]
     },
     "review": {
@@ -89,20 +82,24 @@
   "patient": {
     "age": {
       "typical_min": 5,
-      "typical_max": 50,
-      "peak": "children and young adults",
+      "typical_max": 45,
+      "peak": "5–25",
       "possible_min": 1,
       "possible_max": 90
     },
     "sex": "either",
     "demographics": [
-      "One of the most common eye conditions seen in primary care and pediatrics",
-      "Often begins in childhood or adolescence and tends to recur seasonally",
-      "More common in people with a personal or family history of atopy"
+      "Common in children and young adults",
+      "Peaks in spring and fall for seasonal allergic conjunctivitis",
+      "More common in individuals with atopy"
     ],
     "risk_factors": [
       {
-        "text": "Personal history of atopic disease such as allergic rhinitis, asthma or atopic dermatitis",
+        "text": "Personal history of allergic rhinitis, asthma, or atopic dermatitis",
+        "strength": "strong"
+      },
+      {
+        "text": "Seasonal pollen exposure",
         "strength": "strong"
       },
       {
@@ -110,11 +107,7 @@
         "strength": "moderate"
       },
       {
-        "text": "Seasonal exposure to pollens",
-        "strength": "moderate"
-      },
-      {
-        "text": "Exposure to indoor allergens such as dust mites, mold or pet dander",
+        "text": "Exposure to animal dander or dust mites",
         "strength": "moderate"
       },
       {
@@ -128,127 +121,110 @@
       "Atopic dermatitis"
     ],
     "family_history": [
-      "Allergic rhinitis or hay fever",
-      "Asthma",
-      "Atopic dermatitis"
+      "Atopy (allergic rhinitis, asthma, atopic dermatitis)"
     ],
     "social_history": [],
     "exposures": [
-      "Tree, grass or weed pollen",
+      "Pollen",
+      "Animal dander",
       "Dust mites",
-      "Pet dander",
-      "Mold",
-      "Animal or occupational allergens"
+      "Mold spores"
     ],
     "risk_medications": []
   },
   "presentation": {
     "chief_complaints": [
       {
-        "text": "My eyes itch so much",
-        "frequency": "almost_always",
+        "text": "My eyes are so itchy",
         "term": "Itching of eye",
+        "frequency": "almost_always",
         "snomed_verified": true
       },
       {
-        "text": "My eyes are red and watery",
+        "text": "My eyes are red",
+        "term": "Redness of eye",
         "frequency": "common",
-        "term": "Red eye",
         "snomed_verified": true
       },
       {
-        "text": "My eyes are watery and runny",
-        "frequency": "common",
+        "text": "My eyes keep watering",
         "term": "Watery eye",
-        "snomed_verified": true
-      },
-      {
-        "text": "My eyes are puffy in the morning",
-        "frequency": "sometimes",
-        "term": "Periorbital edema",
+        "frequency": "common",
         "snomed_verified": true
       }
     ],
     "hpi": {
-      "onset": "Gradual over hours to a day, often with a clear seasonal or exposure trigger",
-      "duration": "Recurrent episodes lasting days to weeks while the allergen is present",
-      "progression": "Symptoms come on with exposure and resolve when the trigger is removed or treated; they recur each season or with repeat exposure",
-      "location": "Both eyes, usually symmetric",
-      "radiation": "Usually none",
-      "quality": "Intense itching with burning and a gritty or sandy sensation",
-      "severity": "Mild to moderate; annoying but vision is not affected",
-      "timing": "Worse during the allergen season or after contact with the trigger; often worse outdoors and in the morning",
+      "onset": "Acute, often within minutes to hours after exposure to an allergen; may be recurrent with seasonal pattern",
+      "duration": "Days to weeks during allergen exposure, resolves with avoidance or treatment",
+      "progression": "Bilateral watery, itchy, red eyes that may worsen with continued allergen exposure; often accompanied by sneezing and clear nasal discharge",
+      "location": "Both eyes",
+      "radiation": "None",
+      "quality": "Itchy, burning, watery",
+      "severity": "Mild to moderate; rarely severe",
+      "timing": "Worse during pollen season or after animal exposure; improves indoors with air conditioning",
       "aggravating": [
-        "Being outdoors during pollen season",
-        "Being around pets or dust",
         "Rubbing the eyes",
-        "Wind and dry air"
+        "Going outside during high pollen counts",
+        "Exposure to cats or dogs",
+        "Dusty rooms"
       ],
       "relieving": [
-        "Cool compresses",
-        "Artificial tears",
+        "Cold compresses",
         "Antihistamine eye drops",
-        "Getting away from the trigger"
+        "Staying indoors with windows closed"
       ],
       "associated_symptoms": [
         {
-          "text": "Sneezing",
+          "text": "Watery eyes",
+          "term": "Watery eye",
           "frequency": "common",
-          "term": "Sneezing",
           "snomed_verified": true
         },
         {
-          "text": "Runny nose",
+          "text": "Red eyes",
+          "term": "Redness of eye",
           "frequency": "common",
-          "term": "Rhinorrhea",
-          "snomed_verified": true
-        },
-        {
-          "text": "Nasal congestion",
-          "frequency": "common",
-          "term": "Nasal obstruction",
-          "snomed_verified": true
-        },
-        {
-          "text": "Itchy nose or throat",
-          "frequency": "sometimes",
-          "term": "Itching of nose",
-          "snomed_verified": false
-        },
-        {
-          "text": "Burning or gritty feeling in the eyes",
-          "frequency": "common",
-          "term": "Burning sensation of eye",
           "snomed_verified": true
         },
         {
           "text": "Puffy eyelids",
+          "term": "Swelling of eyelid",
           "frequency": "sometimes",
-          "term": "Edema of eyelid",
           "snomed_verified": true
         },
         {
-          "text": "Sensitivity to light",
-          "frequency": "sometimes",
-          "term": "Photophobia",
+          "text": "Sneezing",
+          "term": "Sneezing",
+          "frequency": "common",
           "snomed_verified": true
         },
         {
-          "text": "Stringy or ropy eye discharge",
+          "text": "Runny nose with clear discharge",
+          "term": "Rhinorrhea",
+          "frequency": "common",
+          "snomed_verified": true
+        },
+        {
+          "text": "Stuffy nose",
+          "term": "Nasal congestion",
+          "frequency": "common",
+          "snomed_verified": true
+        },
+        {
+          "text": "Cough from postnasal drip",
+          "term": "Cough",
           "frequency": "sometimes",
-          "term": "Eye discharge",
           "snomed_verified": true
         }
       ],
       "pertinent_negatives": [
+        "Purulent discharge",
+        "Preauricular lymphadenopathy",
+        "Photophobia",
+        "Decreased vision",
         "Eye pain",
-        "Blurred or decreased vision",
-        "Purulent or thick yellow-green discharge",
-        "Sticking shut of the eyelids in the morning",
-        "Recent upper respiratory infection or sick contacts",
-        "Contact lens wear with pain",
-        "Foreign body sensation or trauma",
-        "Unilateral symptoms"
+        "Fever",
+        "Unilateral involvement"
       ]
     },
     "ros": [
@@ -256,45 +232,40 @@
         "system": "eyes",
         "positives": [
           {
-            "text": "Itching of both eyes",
-            "frequency": "almost_always",
+            "text": "Itchy eyes",
             "term": "Itching of eye",
+            "frequency": "almost_always",
             "snomed_verified": true
           },
           {
-            "text": "Redness of the eyes",
+            "text": "Red eyes",
+            "term": "Redness of eye",
             "frequency": "common",
-            "term": "Red eye",
             "snomed_verified": true
           },
           {
-            "text": "Watery discharge from the eyes",
-            "frequency": "common",
+            "text": "Watery eyes",
             "term": "Watery eye",
-            "snomed_verified": true
-          },
-          {
-            "text": "Burning or gritty sensation",
             "frequency": "common",
-            "term": "Burning sensation of eye",
             "snomed_verified": true
           },
           {
             "text": "Puffy eyelids",
+            "term": "Swelling of eyelid",
             "frequency": "sometimes",
-            "term": "Edema of eyelid",
             "snomed_verified": true
           }
         ],
         "negatives": [
           "Eye pain",
-          "Vision loss",
           "Purulent discharge",
-          "Photophobia"
+          "Photophobia",
+          "Decreased vision",
+          "Foreign body sensation"
         ],
         "argues_against": [
-          "Unilateral red eye with purulent discharge",
-          "Severe eye pain with vision change"
+          "Unilateral eye pain with decreased vision",
+          "Purulent discharge with matting of lashes"
         ]
       },
       {
@@ -302,27 +273,21 @@
         "positives": [
           {
             "text": "Sneezing",
-            "frequency": "common",
             "term": "Sneezing",
+            "frequency": "common",
             "snomed_verified": true
           },
           {
             "text": "Runny nose",
-            "frequency": "common",
             "term": "Rhinorrhea",
-            "snomed_verified": true
-          },
-          {
-            "text": "Nasal congestion",
             "frequency": "common",
-            "term": "Nasal obstruction",
             "snomed_verified": true
           },
           {
-            "text": "Itchy nose or throat",
-            "frequency": "sometimes",
-            "term": "Itching of nose",
-            "snomed_verified": false
+            "text": "Stuffy nose",
+            "term": "Nasal congestion",
+            "frequency": "common",
+            "snomed_verified": true
           }
         ],
         "negatives": [
@@ -331,719 +296,591 @@
           "Facial pain"
         ],
         "argues_against": [
-          "Fever with sore throat and exudate"
+          "Purulent nasal discharge with fever"
         ]
       },
       {
         "system": "respiratory",
         "positives": [
           {
-            "text": "Wheezing or cough in patients with asthma",
+            "text": "Cough",
+            "term": "Cough",
             "frequency": "sometimes",
-            "term": "Wheezing",
             "snomed_verified": true
           }
         ],
         "negatives": [
-          "Shortness of breath at rest",
-          "Chest tightness"
+          "Shortness of breath",
+          "Wheezing"
         ],
         "argues_against": [
-          "Respiratory distress suggesting anaphylaxis"
+          "Wheezing with hypoxemia"
         ]
       },
       {
-        "system": "skin",
-        "positives": [
-          {
-            "text": "Eczema or dry itchy skin in patients with atopic dermatitis",
-            "frequency": "sometimes",
-            "term": "Atopic dermatitis",
-            "snomed_verified": true
-          }
-        ],
+        "system": "constitutional",
+        "positives": [],
         "negatives": [
-          "Hives",
-          "Lip or tongue swelling"
+          "Fever",
+          "Fatigue",
+          "Weight loss"
         ],
         "argues_against": [
-          "Urticaria with angioedema suggesting systemic allergic reaction"
-        ]
-      },
-      {
-        "system": "allergic_immunologic",
-        "positives": [
-          {
-            "text": "Known seasonal or perennial allergies",
-            "frequency": "common",
-            "term": "Allergic rhinitis",
-            "snomed_verified": true
-          }
-        ],
-        "negatives": [
-          "Anaphylaxis",
-          "Food-triggered reactions"
-        ],
-        "argues_against": [
-          "Anaphylaxis with hypotension or airway swelling"
+          "Fever >101°F"
         ]
       }
     ],
     "atypical": [
       {
         "population": "children",
-        "how_it_differs": "Young children may not describe itching and instead rub their eyes constantly, blink a lot or appear irritable; parents often notice the eye rubbing.",
+        "how_it_differs": "Young children may rub their eyes constantly and be irritable; they often have concurrent allergic rhinitis and eczema.",
         "missing_classic_features": [
-          "Clear description of itching"
+          "Clear description of itch"
         ]
       },
       {
         "population": "older_adults",
-        "how_it_differs": "Symptoms may be milder and overlap with dry eye, so itching is less prominent and burning or grittiness predominates.",
+        "how_it_differs": "Older adults may have more burning and dryness due to coexistent dry eye, making itching less prominent.",
         "missing_classic_features": [
           "Prominent itching"
         ]
       },
       {
         "population": "pregnancy",
-        "how_it_differs": "Allergic symptoms may worsen or improve with hormonal changes; treatment choices are limited, so symptoms can be more bothersome.",
+        "how_it_differs": "Hormonal changes can worsen dry eye or cause nonspecific redness, so allergic conjunctivitis may be harder to distinguish.",
         "missing_classic_features": [
-          "Seasonal pattern may be less clear"
+          "Itch as the dominant symptom"
         ]
       }
     ]
   },
   "exam": {
     "general": {
-      "mild": "Comfortable, alert, no distress; may rub eyes occasionally",
-      "moderate": "Mild discomfort, frequent eye rubbing, otherwise well-appearing",
-      "severe": "Uncomfortable, constantly rubbing eyes, but not toxic or systemically ill",
-      "critical": "Not applicable; allergic conjunctivitis is not a critical illness"
+      "mild": "Well-appearing; may rub eyes occasionally",
+      "moderate": "Awake and comfortable; frequent eye rubbing and puffy eyelids",
+      "severe": "Uncomfortable; constant tearing and swollen eyelids, but no systemic distress"
     },
     "findings": [
       {
-        "id": "conjunctival-injection",
+        "id": "conjunctival-hyperemia",
         "region": "heent",
-        "maneuver": "Inspect the bulbar and palpebral conjunctiva in natural light",
-        "finding": "Diffuse conjunctival redness, usually bilateral and symmetric",
-        "frequency": "almost_always",
-        "significance": "supports",
-        "importance": "essential",
-        "term": "Conjunctival injection",
-        "snomed_id": "70363008",
-        "snomed_verified": true
-      },
-      {
-        "id": "conjunctival-papilla",
-        "region": "heent",
-        "maneuver": "Evert the upper eyelid and inspect the tarsal conjunctiva",
-        "finding": "Small raised bumps on the tarsal conjunctiva",
+        "maneuver": "Inspect the conjunctiva with a bright light, retract the lower lid",
+        "finding": "Diffuse bilateral conjunctival hyperemia (redness)",
         "frequency": "common",
         "significance": "supports",
-        "importance": "important",
-        "term": "Conjunctival papilla",
-        "snomed_id": "247020002",
-        "snomed_verified": false
-      },
-      {
-        "id": "chemosis",
-        "region": "heent",
-        "maneuver": "Inspect the conjunctiva for swelling",
-        "finding": "Conjunctival edema",
-        "frequency": "sometimes",
-        "significance": "supports",
-        "importance": "important",
-        "term": "Chemosis",
-        "snomed_id": "19390001",
+        "importance": "essential",
+        "term": "Conjunctival hyperemia",
         "snomed_verified": true
       },
       {
-        "id": "eyelid-edema",
+        "id": "watery-eye",
         "region": "heent",
-        "maneuver": "Inspect and palpate the eyelids",
-        "finding": "Puffy, swollen eyelids",
-        "frequency": "sometimes",
-        "significance": "supports",
-        "importance": "important",
-        "term": "Edema of eyelid",
-        "snomed_id": "24850009",
-        "snomed_verified": true
-      },
-      {
-        "id": "watery-discharge",
-        "region": "heent",
-        "maneuver": "Inspect the tear film and lower fornix",
-        "finding": "Clear, watery discharge",
+        "maneuver": "Inspect the tear film and lid margin",
+        "finding": "Clear watery discharge",
         "frequency": "common",
         "significance": "supports",
         "importance": "important",
         "term": "Watery eye",
-        "snomed_id": "193980005",
         "snomed_verified": true
       },
       {
-        "id": "stringy-discharge",
+        "id": "eyelid-swelling",
         "region": "heent",
-        "maneuver": "Inspect the conjunctival fornices",
-        "finding": "Stringy or ropy mucous discharge",
+        "maneuver": "Inspect the eyelids",
+        "finding": "Eyelid edema",
         "frequency": "sometimes",
         "significance": "supports",
         "importance": "optional",
-        "term": "Eye discharge",
-        "snomed_id": "246679005",
+        "term": "Swelling of eyelid",
         "snomed_verified": true
       },
       {
-        "id": "allergic-shiner",
+        "id": "chemosis",
         "region": "heent",
-        "maneuver": "Inspect the skin under the eyes",
-        "finding": "Dark bluish discoloration under the eyes",
+        "maneuver": "Inspect the bulbar conjunctiva",
+        "finding": "Chemosis (conjunctival edema)",
         "frequency": "sometimes",
+        "min_severity": "moderate",
         "significance": "supports",
         "importance": "optional",
-        "term": "Allergic shiner",
-        "snomed_id": "44516005",
-        "snomed_verified": false
+        "term": "Conjunctival edema",
+        "snomed_verified": true
       },
       {
-        "id": "dennie-morgan-line",
+        "id": "papillary-conjunctivitis",
         "region": "heent",
-        "maneuver": "Inspect the lower eyelid skin for creases",
-        "finding": "Extra horizontal crease below the lower eyelid",
+        "maneuver": "Evert the upper eyelid and inspect the tarsal conjunctiva",
+        "finding": "Cobblestone papillae on the upper tarsal conjunctiva",
         "frequency": "sometimes",
+        "min_severity": "moderate",
         "significance": "supports",
-        "importance": "optional",
-        "term": "Dennie-Morgan fold",
-        "snomed_id": "238743007",
-        "snomed_verified": false
+        "importance": "important",
+        "term": "Papillary conjunctivitis",
+        "snomed_verified": true
       },
       {
-        "id": "normal-pupillary-reflex",
+        "id": "circumcorneal-injection",
         "region": "heent",
-        "maneuver": "Shine a light into each eye and observe the pupillary response",
-        "finding": "Pupils equal, round, and reactive to light",
+        "maneuver": "Inspect the limbal area with a penlight or slit lamp",
+        "finding": "No circumcorneal injection (ciliary flush)",
         "frequency": "almost_always",
         "significance": "neutral",
         "importance": "important",
-        "term": "Indirect light pupillary reflex",
-        "snomed_id": "271700006",
+        "term": "Circumcorneal injection",
+        "snomed_verified": false
+      },
+      {
+        "id": "preauricular-lymphadenopathy",
+        "region": "lymph",
+        "maneuver": "Palpate the preauricular lymph nodes",
+        "finding": "No preauricular lymphadenopathy",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Preauricular lymphadenopathy",
         "snomed_verified": true
       },
       {
-        "id": "normal-cornea",
+        "id": "purulent-discharge",
         "region": "heent",
-        "maneuver": "Inspect the cornea with a penlight or slit lamp",
-        "finding": "Cornea is clear without opacity or ulcer",
+        "maneuver": "Inspect the discharge and lid margins",
+        "finding": "No purulent discharge",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Purulent discharge from eye",
+        "snomed_verified": false
+      },
+      {
+        "id": "corneal-opacity",
+        "region": "heent",
+        "maneuver": "Stain the cornea with fluorescein and examine under cobalt blue light",
+        "finding": "No corneal ulceration or opacity",
         "frequency": "almost_always",
         "significance": "neutral",
         "importance": "important",
         "term": "Corneal opacity",
-        "snomed_id": "40217009",
-        "snomed_verified": true
-      },
-      {
-        "id": "normal-anterior-chamber",
-        "region": "heent",
-        "maneuver": "Inspect the anterior chamber for depth and clarity",
-        "finding": "Anterior chamber is deep and clear without cells or flare",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "important",
-        "term": "Anterior chamber of eye clear",
-        "snomed_id": "247053003",
-        "snomed_verified": false
-      },
-      {
-        "id": "no-ciliary-flush",
-        "region": "heent",
-        "maneuver": "Inspect the perilimbal conjunctiva",
-        "finding": "No perilimbal injection",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "important",
-        "term": "Ciliary injection",
-        "snomed_id": "193898001",
-        "snomed_verified": false
-      },
-      {
-        "id": "normal-visual-acuity",
-        "region": "heent",
-        "maneuver": "Check visual acuity with a Snellen chart",
-        "finding": "Visual acuity is normal or at baseline",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "essential",
-        "term": "Visual acuity normal",
-        "snomed_id": "247052008",
-        "snomed_verified": true
-      },
-      {
-        "id": "no-purulent-discharge",
-        "region": "heent",
-        "maneuver": "Inspect the discharge for color and consistency",
-        "finding": "No thick yellow-green purulent discharge",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "important",
-        "term": "Purulent discharge",
-        "snomed_id": "247441003",
-        "snomed_verified": true
-      },
-      {
-        "id": "no-foreign-body",
-        "region": "heent",
-        "maneuver": "Evert the eyelids and inspect the conjunctival fornices",
-        "finding": "No foreign body or corneal abrasion",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "important",
-        "term": "Foreign body in eye",
-        "snomed_id": "82576008",
         "snomed_verified": true
       }
     ]
   },
   "vitals": {},
-  "labs": [
+  "labs": [],
+  "imaging": [
     {
-      "test_id": "eos_pct",
-      "ranges": {
-        "mild": {
-          "min": 5,
-          "max": 8
-        },
-        "moderate": {
-          "min": 6,
-          "max": 12
-        },
-        "severe": {
-          "min": 8,
-          "max": 15
+      "study": "CT orbits without contrast",
+      "modality": "ct",
+      "preferred_when": "Only if there is concern for orbital cellulitis, proptosis, or painful ophthalmoplegia",
+      "findings": [
+        {
+          "text": "No orbital inflammation, abscess, or sinus disease",
+          "frequency": "almost_always"
         }
-      },
-      "frequency": "sometimes",
-      "importance": "optional",
-      "caveat": "Peripheral eosinophilia is inconsistent and neither confirms nor excludes allergic conjunctivitis; it is more often seen with atopic keratoconjunctivitis or vernal disease."
+      ]
     }
   ],
-  "imaging": [],
   "workup": {
-    "initial": [
-      {
-        "test": "cbc",
-        "why": "Not routinely needed; obtained only when a systemic process or another cause of red eye is being considered",
-        "only_if": "systemic illness, fever, or an alternative diagnosis such as infection is suspected"
-      }
-    ],
+    "initial": [],
     "confirmatory": [],
     "supporting": [
       {
-        "test": "patch_test",
-        "why": "Identifies the responsible contact allergen in contact blepharoconjunctivitis when a topical product is suspected",
-        "only_if": "symptoms persist despite avoidance and a contact allergy is suspected"
+        "test": "Allergy testing (skin prick or serum specific IgE)",
+        "why": "Identifies specific allergen triggers",
+        "only_if": "Persistent or severe symptoms despite treatment, or need to confirm atopy"
+      },
+      {
+        "test": "Conjunctival scraping for eosinophils",
+        "why": "Eosinophils on Giemsa stain support allergy",
+        "only_if": "Atypical presentation where diagnosis is unclear"
       }
     ],
     "not_indicated": [
       {
         "test": "cbc",
-        "why": "Blood counts are normal in uncomplicated allergic conjunctivitis and do not change management"
+        "why": "Blood counts are normal and do not help diagnose allergic conjunctivitis"
       },
       {
         "test": "crp",
-        "why": "No role; allergic conjunctivitis is not an infectious or systemic inflammatory process"
+        "why": "No systemic inflammation"
       },
       {
         "test": "esr",
-        "why": "No role in a clinical diagnosis of ocular allergy"
+        "why": "No systemic inflammation"
       },
       {
-        "test": "Conjunctival culture",
-        "why": "Reserved for suspected bacterial infection, not allergy"
+        "test": "CT orbits without contrast",
+        "why": "Only if orbital cellulitis is suspected; not for routine allergic conjunctivitis"
       },
       {
-        "test": "Corneal scraping",
-        "why": "Only for suspected infectious keratitis, not allergic conjunctivitis"
-      },
-      {
-        "test": "CT orbits",
-        "why": "Not indicated; imaging does not help diagnose allergic conjunctivitis"
-      },
-      {
-        "test": "MRI orbits",
-        "why": "Not indicated for allergic conjunctivitis"
+        "test": "Conjunctival swab culture",
+        "why": "Not needed unless purulent discharge suggests bacterial infection"
       }
     ],
     "decision_points": [
-      "Diagnosis is clinical from itching, bilateral redness and watery discharge with a seasonal or exposure trigger; no routine laboratory testing is needed",
-      "Red flags such as eye pain, vision loss, photophobia, purulent discharge or contact lens wear should prompt evaluation for keratitis, uveitis or acute angle-closure glaucoma rather than allergy",
-      "Refer to ophthalmology if the diagnosis is uncertain, symptoms are severe or persistent, or vision is affected"
+      "Reserve cultures and imaging for signs of severe infection (purulent discharge, preauricular adenopathy, proptosis, vision loss)",
+      "Allergy testing is outpatient and not part of acute diagnosis"
     ],
-    "criteria": [],
+    "criteria": [
+      {
+        "name": "Clinical diagnosis of allergic conjunctivitis",
+        "summary": "Diagnosis is based on bilateral itching, watery discharge, conjunctival hyperemia, and often a history of atopy or allergen exposure; absence of purulent discharge, significant pain, vision changes, or preauricular lymphadenopathy.",
+        "items": [
+          "Bilateral eye itching",
+          "Watery discharge",
+          "Conjunctival hyperemia",
+          "History of atopy or allergen exposure",
+          "No purulent discharge, preauricular adenopathy, or vision loss"
+        ]
+      }
+    ],
     "scores": []
   },
   "differential": [
     {
+      "name": "Acute angle-closure glaucoma",
+      "slug": "acute-angle-closure-glaucoma",
+      "why_considered": "Acute red eye with pain and decreased vision; must not miss among causes of red eye",
+      "must_not_miss": true,
+      "trigger": "Unilateral severe eye pain with headache, nausea, vomiting, or halos around lights",
+      "discriminators": {
+        "history": [
+          "Sudden severe unilateral eye pain",
+          "Blurred vision or halos around lights",
+          "Headache, nausea, or vomiting",
+          "Often older adult, hyperopic, or dim light trigger"
+        ],
+        "exam": [
+          "Mid-dilated fixed pupil",
+          "Hazy cornea",
+          "Conjunctival injection most marked at the limbus (ciliary flush)",
+          "Elevated intraocular pressure on tonometry",
+          "Shallow anterior chamber on slit lamp"
+        ],
+        "labs": [],
+        "imaging": [],
+        "ecg": []
+      }
+    },
+    {
+      "name": "Infectious keratitis",
+      "slug": "infectious-keratitis",
+      "why_considered": "Painful red eye with photophobia and decreased vision, especially in contact lens wearers",
+      "must_not_miss": true,
+      "trigger": "Contact lens wearer with eye pain, photophobia, or corneal opacity",
+      "discriminators": {
+        "history": [
+          "Unilateral eye pain or foreign body sensation",
+          "Photophobia",
+          "Blurred vision",
+          "Contact lens use"
+        ],
+        "exam": [
+          "Corneal infiltrate or ulcer on fluorescein staining",
+          "Possible hypopyon",
+          "Conjunctival injection"
+        ],
+        "labs": [
+          "Corneal scrapings for culture if bacterial or fungal keratitis suspected"
+        ],
+        "imaging": [],
+        "ecg": []
+      }
+    },
+    {
       "name": "Viral conjunctivitis",
       "slug": "viral-conjunctivitis",
-      "why_considered": "Red, watery, bilateral eyes are the hallmark of both conditions, and viral conjunctivitis is the most common cause of acute red eye.",
+      "why_considered": "Red watery eyes with mild itching or burning; common cause of red eye",
       "must_not_miss": false,
       "discriminators": {
         "history": [
+          "Often starts in one eye then spreads to the other",
           "Recent upper respiratory infection or sick contacts",
-          "Burning or gritty sensation rather than intense itching",
-          "Starts in one eye and spreads to the other over days",
-          "Watery discharge without seasonal or allergen trigger"
+          "Watery discharge",
+          "Mild to moderate itching, less prominent than in allergic conjunctivitis"
         ],
         "exam": [
-          "Diffuse conjunctival injection with follicles on the palpebral conjunctiva",
-          "Preauricular lymph node may be enlarged and tender",
-          "Eyelids may be stuck together in the morning with watery or mucoid discharge"
+          "Preauricular lymphadenopathy common",
+          "Follicular conjunctival reaction on tarsal conjunctiva",
+          "Watery discharge"
         ],
-        "labs": [
-          "No routine laboratory testing; diagnosis is clinical"
-        ],
-        "imaging": []
+        "labs": [],
+        "imaging": [],
+        "ecg": []
       }
     },
     {
       "name": "Bacterial conjunctivitis",
       "slug": "bacterial-conjunctivitis",
-      "why_considered": "Red eye with discharge is common to both, and bacterial infection is a frequent cause of acute conjunctivitis.",
+      "why_considered": "Red eyes with discharge; need to distinguish purulent from watery discharge",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Thick yellow-green purulent discharge",
-          "Eyelids stuck shut in the morning",
-          "Often unilateral or asymmetric",
-          "No itching or seasonal pattern"
+          "Purulent discharge, eyelids matted in morning",
+          "Usually starts in one eye then may spread",
+          "Less itching than allergic conjunctivitis"
         ],
         "exam": [
-          "Purulent discharge in the fornices",
-          "Conjunctival injection without papillary reaction",
-          "No preauricular lymphadenopathy"
+          "Purulent discharge",
+          "Conjunctival injection",
+          "No preauricular lymphadenopathy except in hyperacute gonococcal cases"
         ],
         "labs": [
-          "Conjunctival culture only if severe, recurrent, or treatment failure"
+          "Conjunctival swab culture only if severe or hyperacute"
         ],
-        "imaging": []
+        "imaging": [],
+        "ecg": []
       }
     },
     {
       "name": "Dry eye syndrome",
       "slug": "dry-eye-syndrome",
-      "why_considered": "Burning, grittiness, and intermittent redness overlap with allergic conjunctivitis, especially in older adults.",
+      "why_considered": "Chronic red, irritated eyes; can cause bilateral redness, tearing, and mild itching",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Symptoms worse with wind, air conditioning, or prolonged screen use",
-          "No seasonal or allergen trigger",
-          "Itching is mild or absent",
-          "Symptoms improve with artificial tears"
+          "Burning or gritty sensation rather than itch",
+          "Worse with prolonged screen use or low humidity",
+          "Symptoms often worse at end of day"
         ],
         "exam": [
-          "Reduced tear film and tear break-up time",
-          "Punctate corneal staining with fluorescein",
-          "No conjunctival papillae"
+          "Decreased tear film",
+          "Punctate epithelial erosions on fluorescein staining",
+          "Reduced tear break-up time"
         ],
         "labs": [
-          "No routine laboratory testing"
+          "Schirmer test may show decreased tear production"
         ],
-        "imaging": []
+        "imaging": [],
+        "ecg": []
       }
     },
     {
       "name": "Blepharitis",
       "slug": "blepharitis",
-      "why_considered": "Eyelid redness, crusting, and irritation can cause a red, uncomfortable eye that may be mistaken for allergy.",
+      "why_considered": "Bilateral red, irritated eyes with eyelid involvement; can have itching and tearing",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Eyelid margin crusting and flaking",
-          "Burning and foreign body sensation rather than itching",
-          "Symptoms worse in the morning",
-          "History of rosacea or seborrheic dermatitis"
+          "Chronic crusting on lashes",
+          "Burning sensation, worse in morning",
+          "Recurrent symptoms"
         ],
         "exam": [
-          "Eyelid margin erythema, scaling, and collarettes",
-          "Meibomian gland dysfunction",
-          "Conjunctival injection is typically mild"
+          "Lid margin erythema",
+          "Collarettes or scaling at base of lashes",
+          "Meibomian gland dysfunction"
         ],
-        "labs": [
-          "No routine laboratory testing"
-        ],
-        "imaging": []
-      }
-    },
-    {
-      "name": "Contact lens-related keratitis",
-      "slug": "contact-lens-keratitis",
-      "why_considered": "Contact lens wearers can present with red, irritated eyes, and allergic conjunctivitis is common in this group; missing infectious keratitis risks vision loss.",
-      "must_not_miss": true,
-      "trigger": "Contact lens wear with eye pain, photophobia, or decreased vision",
-      "discriminators": {
-        "history": [
-          "Contact lens wear, especially overnight or extended wear",
-          "Eye pain and photophobia",
-          "Decreased or blurred vision",
-          "Unilateral symptoms"
-        ],
-        "exam": [
-          "Corneal opacity, infiltrate, or ulcer on slit lamp",
-          "Fluorescein uptake on the cornea",
-          "Anterior chamber cells or flare",
-          "Ciliary flush"
-        ],
-        "labs": [
-          "Corneal scraping for culture if infectious keratitis suspected"
-        ],
-        "imaging": []
-      }
-    },
-    {
-      "name": "Acute angle-closure glaucoma",
-      "slug": "acute-angle-closure-glaucoma",
-      "why_considered": "Red eye with pain and blurred vision can be confused with allergic conjunctivitis, but it is an emergency.",
-      "must_not_miss": true,
-      "trigger": "Severe eye pain with headache, nausea, and halos around lights",
-      "discriminators": {
-        "history": [
-          "Severe unilateral eye pain",
-          "Headache, nausea, and vomiting",
-          "Halos around lights",
-          "Sudden onset over minutes to hours"
-        ],
-        "exam": [
-          "Fixed mid-dilated pupil",
-          "Corneal haze",
-          "Shallow anterior chamber",
-          "Markedly elevated intraocular pressure"
-        ],
-        "labs": [
-          "No routine laboratory testing"
-        ],
-        "imaging": []
-      }
-    },
-    {
-      "name": "Anterior uveitis",
-      "slug": "anterior-uveitis",
-      "why_considered": "Red eye with photophobia and pain can be mistaken for allergic conjunctivitis, but uveitis requires prompt treatment.",
-      "must_not_miss": true,
-      "trigger": "Eye pain, photophobia, and decreased vision with ciliary flush",
-      "discriminators": {
-        "history": [
-          "Deep aching eye pain",
-          "Photophobia",
-          "Blurred vision",
-          "Associated autoimmune disease or prior episodes"
-        ],
-        "exam": [
-          "Ciliary flush",
-          "Anterior chamber cells and flare",
-          "Keratic precipitates",
-          "Constricted pupil"
-        ],
-        "labs": [
-          "HLA-B27, ANA, or infectious workup if systemic disease suspected"
-        ],
-        "imaging": []
+        "labs": [],
+        "imaging": [],
+        "ecg": []
       }
     }
   ],
   "course": {
     "severity": {
-      "mild": "Mild itching and redness, no impact on daily activities, responds to over-the-counter antihistamine drops or artificial tears",
-      "moderate": "Persistent itching, redness, and watery discharge that interfere with sleep or school/work; requires prescription topical antihistamine-mast cell stabilizer",
-      "severe": "Intense itching, marked conjunctival injection, chemosis, and eyelid swelling that limit activity; may require short course of topical corticosteroid under ophthalmology guidance",
-      "critical": "Not applicable; allergic conjunctivitis is not a life-threatening condition"
+      "mild": "Mild intermittent itching and redness, no eyelid edema or chemosis, resolves with allergen avoidance or over-the-counter antihistamine eye drops",
+      "moderate": "Persistent symptoms with eyelid edema, chemosis, or papillary reaction; interferes with daily activities but no vision change; requires prescription topical antihistamine/mast cell stabilizer or short-term topical corticosteroid",
+      "severe": "Intense symptoms with marked eyelid edema, chemosis, or severe papillary conjunctivitis; may be refractory to usual topical treatment; requires ophthalmology referral and possibly topical corticosteroids under supervision"
     },
     "red_flags": [
       {
-        "finding": "Eye pain or photophobia",
-        "meaning": "Suggests corneal involvement, uveitis, or acute angle-closure glaucoma rather than allergy"
+        "finding": "Unilateral eye pain",
+        "meaning": "Consider keratitis, uveitis, or acute angle-closure glaucoma"
       },
       {
-        "finding": "Decreased or blurred vision",
-        "meaning": "Suggests corneal ulcer, uveitis, or other serious ocular disease"
+        "finding": "Decreased vision or photophobia",
+        "meaning": "Suggests corneal or intraocular involvement"
       },
       {
         "finding": "Purulent discharge",
-        "meaning": "Suggests bacterial conjunctivitis or keratitis"
+        "meaning": "Bacterial conjunctivitis or bacterial keratitis"
       },
       {
-        "finding": "Contact lens wear with red eye",
-        "meaning": "Suggests infectious keratitis until proven otherwise"
+        "finding": "Preauricular lymphadenopathy",
+        "meaning": "Viral conjunctivitis or hyperacute bacterial conjunctivitis"
       },
       {
-        "finding": "Unilateral symptoms",
-        "meaning": "Allergic conjunctivitis is typically bilateral; consider other causes"
+        "finding": "Corneal opacity or infiltrate on fluorescein staining",
+        "meaning": "Corneal ulcer or keratitis; needs urgent ophthalmology evaluation"
       },
       {
-        "finding": "Severe headache with nausea and halos",
-        "meaning": "Suggests acute angle-closure glaucoma"
+        "finding": "Ciliary flush, hazy cornea, or fixed mid-dilated pupil",
+        "meaning": "Acute angle-closure glaucoma until proven otherwise"
+      },
+      {
+        "finding": "Contact lens wear with pain",
+        "meaning": "High risk for infectious keratitis"
       }
     ],
     "complications": [
       {
-        "name": "Secondary bacterial infection",
+        "name": "Corneal abrasion from eye rubbing",
+        "timing": "any",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Foreign body sensation",
+          "Pain with blinking",
+          "Fluorescein staining shows epithelial defect"
+        ]
+      },
+      {
+        "name": "Keratoconus from chronic eye rubbing",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Progressive blurred vision",
+          "Irregular corneal astigmatism",
+          "History of chronic vigorous eye rubbing"
+        ]
+      },
+      {
+        "name": "Secondary bacterial conjunctivitis",
         "timing": "any",
         "seriousness": "minor",
         "frequency": "rare",
         "clues": [
           "Change from watery to purulent discharge",
-          "Unilateral worsening",
-          "Eyelid sticking"
+          "Eyelid matting",
+          "Worsening redness"
         ]
       },
       {
-        "name": "Corneal abrasion from eye rubbing",
-        "timing": "any",
+        "name": "Steroid-induced glaucoma or cataract",
+        "timing": "late",
         "seriousness": "serious",
         "frequency": "rare",
         "clues": [
-          "Eye pain",
-          "Photophobia",
-          "Foreign body sensation"
-        ]
-      },
-      {
-        "name": "Giant papillary conjunctivitis",
-        "timing": "late",
-        "seriousness": "minor",
-        "frequency": "rare",
-        "clues": [
-          "Contact lens wear",
-          "Intolerance to lenses",
-          "Large papillae on upper tarsal conjunctiva"
+          "History of prolonged topical corticosteroid use",
+          "Elevated intraocular pressure",
+          "Visual decline"
         ]
       }
     ],
     "special_populations": [
       {
         "population": "children",
-        "differences": "Young children may not describe itching and instead rub their eyes constantly, blink excessively, or appear irritable; parents often notice the eye rubbing. Symptoms may be attributed to viral illness or screen time."
+        "differences": "Often accompanied by allergic rhinitis and eczema; may rub eyes constantly; diagnosis is clinical, and topical antihistamines/mast cell stabilizers are first-line"
       },
       {
         "population": "older_adults",
-        "differences": "Symptoms may be milder and overlap with dry eye, so itching is less prominent and burning or grittiness predominates. Treatment response may be slower."
+        "differences": "Itching may be less prominent and coexistent dry eye may blur the picture; burning and dryness may dominate"
       },
       {
         "population": "pregnancy",
-        "differences": "Allergic symptoms may worsen or improve with hormonal changes; treatment choices are limited, so symptoms can be more bothersome. Avoid systemic decongestants and consult before using new medications."
+        "differences": "Hormonal changes can aggravate dry eye and nonspecific redness, making diagnosis harder; prefer topical therapy with minimal systemic absorption"
       }
     ]
   },
   "teaching": {
     "key_questions": [
       {
+        "question": "When did your eye symptoms start, and were both eyes affected at the same time?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Rapid onset of bilateral symptoms after allergen exposure"
+      },
+      {
         "question": "Do your eyes itch?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Itching is the hallmark of allergic conjunctivitis; its absence should make you reconsider the diagnosis"
+        "looking_for": "Prominent itching; this is the cardinal symptom of allergic conjunctivitis"
       },
       {
-        "question": "Is it in one eye or both eyes?",
-        "category": "hpi",
+        "question": "Is there any discharge? Can you describe it?",
+        "category": "associated",
         "importance": "essential",
-        "looking_for": "Bilateral and symmetric; unilateral symptoms suggest infection, foreign body, or another cause"
+        "looking_for": "Clear and watery discharge, not purulent or mucoid"
       },
       {
-        "question": "When did it start, and does it come and go with the seasons or with certain exposures?",
-        "category": "hpi",
-        "importance": "essential",
-        "looking_for": "Recurrent episodes tied to pollen season, pets, dust, or mold; a clear trigger supports allergy"
-      },
-      {
-        "question": "What does the discharge look like?",
-        "category": "hpi",
+        "question": "Do you have sneezing, a runny nose, or stuffy nose?",
+        "category": "associated",
         "importance": "important",
-        "looking_for": "Clear, watery, or stringy; thick yellow-green purulent discharge suggests bacterial infection"
+        "looking_for": "Associated allergic rhinitis symptoms"
       },
       {
-        "question": "Is your vision affected, or do you have eye pain or light sensitivity?",
+        "question": "Any eye pain or sensitivity to light?",
         "category": "red_flag",
         "importance": "essential",
-        "looking_for": "Absent in allergic conjunctivitis; pain, photophobia, or vision change suggests keratitis, uveitis, or acute angle-closure glaucoma"
+        "looking_for": "Absent; severe pain or photophobia suggests keratitis, uveitis, or angle-closure glaucoma"
       },
       {
-        "question": "Do you wear contact lenses, and if so, do you sleep in them?",
-        "category": "pmh",
+        "question": "Has your vision changed in either eye?",
+        "category": "red_flag",
         "importance": "essential",
-        "looking_for": "Contact lens wear with a red painful eye must be treated as infectious keratitis until proven otherwise"
+        "looking_for": "No decrease in vision; visual change requires urgent evaluation"
       },
       {
-        "question": "Do you also have sneezing, a runny or stuffy nose, or an itchy nose or throat?",
-        "category": "associated",
+        "question": "Have you noticed any swelling in front of your ears or in your neck?",
+        "category": "red_flag",
         "importance": "important",
-        "looking_for": "Concurrent allergic rhinitis supports an atopic cause"
+        "looking_for": "Absence of preauricular lymphadenopathy; its presence suggests viral or hyperacute bacterial conjunctivitis"
       },
       {
-        "question": "Do you have a history of allergies, asthma, or eczema, or does this run in your family?",
+        "question": "Do you have a history of eczema, asthma, or seasonal allergies?",
         "category": "pmh",
         "importance": "important",
-        "looking_for": "Personal or family atopy raises the likelihood of allergic conjunctivitis"
+        "looking_for": "Personal atopy, which supports the diagnosis"
       },
       {
-        "question": "Have you had a recent cold, or is anyone around you sick with red eyes?",
-        "category": "associated",
+        "question": "Have you been around pets, pollen, dust, or new eye products?",
+        "category": "social",
         "importance": "important",
-        "looking_for": "Recent upper respiratory infection or sick contacts points toward viral conjunctivitis"
+        "looking_for": "Allergen exposure that triggered symptoms"
       },
       {
-        "question": "What have you tried, and does anything make it better or worse?",
-        "category": "hpi",
-        "importance": "important",
-        "looking_for": "Improvement with cool compresses, artificial tears, or antihistamine drops; worsening with allergen exposure or eye rubbing"
+        "question": "Do you wear contact lenses?",
+        "category": "social",
+        "importance": "essential",
+        "looking_for": "Contact lens wear marks a red flag for infectious keratitis; if present, do not dismiss as simple allergy"
       },
       {
-        "question": "Are your eyelids stuck together when you wake up?",
-        "category": "associated",
-        "importance": "important",
-        "looking_for": "Absent or watery in allergy; thick matting suggests bacterial conjunctivitis"
-      },
-      {
-        "question": "Any new soaps, makeup, eye drops, or contact lens solutions?",
+        "question": "What eye drops or medications have you tried? Did anything help?",
         "category": "medications",
+        "importance": "important",
+        "looking_for": "Improvement with antihistamine or mast-cell-stabilizer drops; no frequent topical vasoconstrictor use"
+      },
+      {
+        "question": "Does anyone in your family have allergies, asthma, or eczema?",
+        "category": "family",
         "importance": "optional",
-        "looking_for": "A topical product that could cause contact blepharoconjunctivitis"
+        "looking_for": "Family history of atopy raises prior probability"
       }
     ],
     "accepted_names": [
       "Allergic conjunctivitis",
-      "Ocular allergy",
-      "Allergic eye disease",
       "Seasonal allergic conjunctivitis",
       "Perennial allergic conjunctivitis",
-      "Hay fever conjunctivitis"
+      "Allergic eye disease"
     ],
     "reasoning_points": [
-      "Bilateral itchy red watery eyes are the core presentation",
-      "Symptoms are recurrent and linked to a seasonal or exposure trigger",
-      "Concurrent allergic rhinitis, asthma, or eczema supports an atopic cause",
-      "Exam shows diffuse conjunctival injection with papillary reaction and clear watery discharge, with normal visual acuity and no corneal or anterior chamber findings",
-      "Red flags such as eye pain, photophobia, vision loss, purulent discharge, or contact lens wear are absent",
-      "The diagnosis is clinical, so routine laboratory testing is not needed",
-      "Look-alikes such as viral conjunctivitis, bacterial conjunctivitis, dry eye, blepharitis, keratitis, uveitis, and acute angle-closure glaucoma are considered and excluded"
+      "Bilateral itching is the hallmark of allergic conjunctivitis.",
+      "Clear watery discharge rather than purulent discharge makes bacterial conjunctivitis less likely.",
+      "History of atopy or allergen exposure and associated allergic rhinitis support the diagnosis.",
+      "Eye exam shows conjunctival hyperemia and often eyelid edema or papillary reaction, with a clear cornea and normal vision.",
+      "Absence of ciliary flush, preauricular lymphadenopathy, pain, photophobia, and decreased vision helps exclude serious causes.",
+      "Diagnosis is clinical; allergy testing or conjunctival scraping are reserved for atypical or refractory cases.",
+      "Must not miss contact-lens-related infectious keratitis, acute angle-closure glaucoma, or hyperacute bacterial conjunctivitis."
     ],
     "difficulty": {
       "easy": [
-        "Young patient with a clear seasonal pattern and intense bilateral itching",
-        "Known allergic rhinitis or asthma",
-        "Diffuse bilateral conjunctival injection with watery discharge and normal vision",
-        "Symptoms improve with antihistamine eye drops"
+        "Young patient with seasonal symptoms",
+        "Bilateral itchy, watery, red eyes after grass or pet exposure",
+        "Clear discharge, normal vision, no preauricular lymphadenopathy",
+        "Also has sneezing and clear rhinorrhea"
       ],
       "medium": [
-        "Perennial symptoms without an obvious seasonal trigger",
-        "Older adult with burning and grittiness that overlaps with dry eye",
-        "Mild unilateral or asymmetric presentation",
-        "Symptoms that persist despite over-the-counter drops"
+        "Contact lens wearer with red, irritated eyes and mild discomfort",
+        "Older adult with burning, dryness, and only mild itch",
+        "Papillary reaction or eyelid edema requiring differentiation from viral conjunctivitis",
+        "Perennial symptoms with dust mite or mold exposure"
       ],
       "hard": [
-        "Contact lens wearer with red eyes where infectious keratitis must be excluded",
-        "Patient with eye pain, photophobia, or vision change suggesting uveitis or acute angle-closure glaucoma",
-        "Young child who cannot describe itching and only rubs the eyes",
-        "Presentation with purulent discharge that turns out to be bacterial conjunctivitis",
-        "Chronic symptoms with large upper tarsal papillae suggesting vernal or giant papillary conjunctivitis"
+        "Contact lens wearer with unilateral pain, photophobia, and corneal infiltrate",
+        "Severe acute red eye with nausea, halos, and fixed mid-dilated pupil",
+        "Infant or young child who cannot describe itch and has recurrent eye rubbing",
+        "Refractory symptoms despite topical therapy, raising concern for alternative or mixed pathology"
       ]
     }
   }

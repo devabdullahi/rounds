@@ -1,0 +1,1559 @@
+{
+  "schema_version": "0.2",
+  "slug": "pancreatitis",
+  "triage": {
+    "name": "Pancreatitis",
+    "case_suitable": true,
+    "reason": "Classic acute abdomen with epigastric pain radiating to back, nausea and elevated lipase; strong differential and management decisions.",
+    "kind": "disease",
+    "category": "acute surgical abdomen",
+    "organ_systems": [
+      "gastrointestinal"
+    ],
+    "primary_clerkship": "surgery",
+    "secondary_clerkships": [
+      "internalMedicine",
+      "emergency",
+      "familyMedicine"
+    ],
+    "commonness": "common",
+    "settings": [
+      "emergency",
+      "inpatient"
+    ],
+    "is_cancer": false
+  },
+  "generation": {
+    "stages": [
+      {
+        "stage": "triage",
+        "model": "deepseek/deepseek-chat",
+        "prompt_version": "7",
+        "generated_at": "2026-10-05T04:19:15Z"
+      },
+      {
+        "stage": "patient_presentation",
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:11:00Z"
+      },
+      {
+        "stage": "exam_vitals",
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:13:45Z"
+      },
+      {
+        "stage": "diagnostics",
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:16:00Z"
+      },
+      {
+        "stage": "differential_course",
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:38:32Z"
+      },
+      {
+        "stage": "teaching",
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:38:54Z"
+      }
+    ],
+    "validation": {
+      "status": "passed",
+      "rule_errors": [],
+      "review_issues": [
+        "auto-repaired: workup: renamed 'triglycerides' to 'tg'",
+        "auto-repaired: workup: 'CT abdomen and pelvis with IV contrast' was in confirmatory, not_indicated; kept confirmatory as a conditional order (only if Severe disease, diagnostic uncertainty, or failure to improve after 48–72 hours)",
+        "auto-repaired: workup: 'tg' was in supporting, not_indicated; kept supporting as a conditional order (only if Lipemic serum, no gallstones or alcohol use, or known elevated triglycerides)",
+        "auto-repaired: workup: 'MRCP (magnetic resonance cholangiopancreatography)' was in supporting, not_indicated; kept supporting as a conditional order (only if Suspected choledocholithiasis not confirmed by ultrasound)",
+        "auto-repaired: workup: 'Chest x-ray' was in supporting, not_indicated; kept supporting as a conditional order (only if Dyspnea, hypoxia, or suspected respiratory complication)",
+        "differential acute-cholangitis: no profile yet",
+        "differential perforated-peptic-ulcer: no profile yet",
+        "differential acute-myocardial-infarction: no profile yet",
+        "differential mesenteric-ischemia: no profile yet",
+        "differential ruptured-abdominal-aortic-aneurysm: no profile yet"
+      ]
+    },
+    "review": {
+      "status": "pending"
+    }
+  },
+  "patient": {
+    "age": {
+      "typical_min": 20,
+      "typical_max": 75,
+      "peak": "bimodal: 30s and 60s",
+      "possible_min": 1,
+      "possible_max": 100
+    },
+    "sex": "either",
+    "demographics": [
+      "Gallstone pancreatitis is more common in women, especially after age 50",
+      "Alcohol-related pancreatitis is more common in men",
+      "Incidence rises with age"
+    ],
+    "risk_factors": [
+      {
+        "text": "Gallstones",
+        "strength": "strong"
+      },
+      {
+        "text": "Heavy alcohol use",
+        "strength": "strong"
+      },
+      {
+        "text": "Hypertriglyceridemia",
+        "strength": "moderate"
+      },
+      {
+        "text": "Recent endoscopic retrograde cholangiopancreatography (ERCP)",
+        "strength": "moderate"
+      },
+      {
+        "text": "Medications associated with pancreatitis",
+        "strength": "weak"
+      },
+      {
+        "text": "Family history of pancreatitis",
+        "strength": "weak"
+      },
+      {
+        "text": "Abdominal trauma",
+        "strength": "weak"
+      },
+      {
+        "text": "Hypercalcemia",
+        "strength": "weak"
+      }
+    ],
+    "comorbidities": [
+      "Gallstones",
+      "Alcohol use disorder",
+      "Hypertriglyceridemia",
+      "Hypercalcemia"
+    ],
+    "family_history": [
+      "Pancreatitis in a first-degree relative",
+      "Hereditary pancreatitis gene mutation"
+    ],
+    "social_history": [
+      "Heavy alcohol use",
+      "Smoking"
+    ],
+    "exposures": [
+      "Alcohol binge",
+      "Recent ERCP",
+      "Abdominal trauma"
+    ],
+    "risk_medications": [
+      "azathioprine",
+      "valproic acid",
+      "mercaptopurine",
+      "mesalamine",
+      "didanosine"
+    ]
+  },
+  "presentation": {
+    "chief_complaints": [
+      {
+        "text": "I have severe pain in the upper part of my stomach",
+        "frequency": "almost_always",
+        "term": "Epigastric pain",
+        "snomed_verified": true
+      },
+      {
+        "text": "The pain goes straight through to my back",
+        "frequency": "common",
+        "term": "Back pain",
+        "snomed_verified": true
+      },
+      {
+        "text": "I feel nauseated",
+        "frequency": "common",
+        "term": "Nausea",
+        "snomed_verified": true
+      },
+      {
+        "text": "I keep throwing up",
+        "frequency": "common",
+        "term": "Vomiting",
+        "snomed_verified": true
+      }
+    ],
+    "hpi": {
+      "onset": "Sudden, often over one to two hours; may begin after a large meal or alcohol binge",
+      "duration": "Usually less than 48 hours at presentation",
+      "progression": "Pain rapidly reaches maximum intensity and becomes constant; vomiting may follow the onset of pain.",
+      "location": "Epigastric or left upper quadrant",
+      "radiation": "Straight through to the back or left flank",
+      "quality": "Deep, boring, steady pain",
+      "severity": "Severe; often 8-10 out of 10",
+      "timing": "Constant, not colicky",
+      "aggravating": [
+        "Lying flat",
+        "Eating or drinking",
+        "Deep breathing"
+      ],
+      "relieving": [
+        "Leaning forward",
+        "Sitting up and curling forward"
+      ],
+      "associated_symptoms": [
+        {
+          "text": "Nausea",
+          "frequency": "common",
+          "term": "Nausea",
+          "snomed_verified": true
+        },
+        {
+          "text": "Vomiting",
+          "frequency": "common",
+          "term": "Vomiting",
+          "snomed_verified": true
+        },
+        {
+          "text": "Loss of appetite",
+          "frequency": "common",
+          "term": "Loss of appetite",
+          "snomed_verified": true
+        },
+        {
+          "text": "Abdominal distention",
+          "frequency": "sometimes",
+          "term": "Abdominal distention",
+          "snomed_verified": true
+        },
+        {
+          "text": "Fever",
+          "frequency": "sometimes",
+          "term": "Fever",
+          "snomed_verified": true
+        },
+        {
+          "text": "Jaundice",
+          "frequency": "sometimes",
+          "term": "Jaundice",
+          "snomed_verified": true
+        },
+        {
+          "text": "Shortness of breath",
+          "frequency": "rare",
+          "term": "Dyspnea",
+          "snomed_verified": true
+        }
+      ],
+      "pertinent_negatives": [
+        "Vomiting before the pain started",
+        "Profuse watery diarrhea",
+        "Blood in stool",
+        "Burning with urination",
+        "Chest pain radiating to the left arm",
+        "Vaginal bleeding or missed period"
+      ]
+    },
+    "ros": [
+      {
+        "system": "constitutional",
+        "positives": [
+          {
+            "text": "Fever",
+            "frequency": "sometimes",
+            "term": "Fever",
+            "snomed_verified": true
+          },
+          {
+            "text": "Chills",
+            "frequency": "sometimes",
+            "term": "Chills",
+            "snomed_verified": true
+          },
+          {
+            "text": "Feeling unwell",
+            "frequency": "common",
+            "term": "Malaise",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Weight loss",
+          "Night sweats"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Nausea",
+            "frequency": "common",
+            "term": "Nausea",
+            "snomed_verified": true
+          },
+          {
+            "text": "Vomiting",
+            "frequency": "common",
+            "term": "Vomiting",
+            "snomed_verified": true
+          },
+          {
+            "text": "Abdominal distention",
+            "frequency": "sometimes",
+            "term": "Abdominal distention",
+            "snomed_verified": true
+          },
+          {
+            "text": "Jaundice",
+            "frequency": "sometimes",
+            "term": "Jaundice",
+            "snomed_verified": true
+          },
+          {
+            "text": "Loss of appetite",
+            "frequency": "common",
+            "term": "Loss of appetite",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Diarrhea",
+          "Blood in stool",
+          "Black tarry stool"
+        ],
+        "argues_against": [
+          "Profuse watery diarrhea",
+          "Vomiting before the pain started",
+          "Colicky right upper quadrant pain"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [],
+        "negatives": [
+          "Dysuria",
+          "Hematuria",
+          "Flank pain"
+        ],
+        "argues_against": [
+          "Colicky flank pain radiating to the groin"
+        ]
+      },
+      {
+        "system": "respiratory",
+        "positives": [
+          {
+            "text": "Shortness of breath",
+            "frequency": "rare",
+            "term": "Dyspnea",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Cough",
+          "Chest pain",
+          "Wheezing"
+        ],
+        "argues_against": [
+          "Pleuritic chest pain with cough and fever"
+        ]
+      },
+      {
+        "system": "reproductive",
+        "positives": [],
+        "negatives": [
+          "Vaginal bleeding",
+          "Vaginal discharge",
+          "Missed period"
+        ],
+        "argues_against": [
+          "Sudden one-sided pelvic pain with vomiting",
+          "Missed period"
+        ]
+      }
+    ],
+    "atypical": [
+      {
+        "population": "children",
+        "how_it_differs": "Children may present with vague abdominal pain, irritability and vomiting; they may not describe radiation to the back.",
+        "missing_classic_features": [
+          "Radiation to the back",
+          "Epigastric localization"
+        ]
+      },
+      {
+        "population": "older_adults",
+        "how_it_differs": "Older adults may have less severe pain and less fever; they may present with hypotension, confusion or malaise rather than typical epigastric pain.",
+        "missing_classic_features": [
+          "Fever",
+          "Severe epigastric pain"
+        ]
+      },
+      {
+        "population": "pregnancy",
+        "how_it_differs": "Pregnancy increases the risk of gallstone pancreatitis; pain can be attributed to pregnancy or gallbladder disease, and the gravid uterus may modify exam findings.",
+        "missing_classic_features": [
+          "Clear radiation to the back"
+        ]
+      }
+    ]
+  },
+  "exam": {
+    "general": {
+      "mild": "Uncomfortable but appears well; may be restless, leaning forward",
+      "moderate": "Moderate distress; lying still or leaning forward, may be diaphoretic",
+      "severe": "Severe distress; pale, diaphoretic, anxious; may have tachypnea",
+      "critical": "Toxic-appearing; obtunded or somnolent; signs of shock (cool, mottled, hypotensive)"
+    },
+    "findings": [
+      {
+        "id": "abdominal-tenderness",
+        "region": "abdomen",
+        "maneuver": "Palpate the epigastrium and left upper quadrant, starting away from the point of maximal pain",
+        "finding": "Epigastric tenderness",
+        "frequency": "almost_always",
+        "significance": "supports",
+        "importance": "essential",
+        "term": "Abdominal tenderness",
+        "snomed_verified": true
+      },
+      {
+        "id": "guarding",
+        "region": "abdomen",
+        "maneuver": "Palpate the epigastrium",
+        "finding": "Voluntary guarding in the upper abdomen",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Abdominal guarding",
+        "snomed_verified": true
+      },
+      {
+        "id": "rebound",
+        "region": "abdomen",
+        "maneuver": "Ask the patient to cough or gently percuss the abdomen; avoid deep palpation if guarding",
+        "finding": "Pain with coughing or gentle percussion",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Rebound tenderness",
+        "snomed_verified": true
+      },
+      {
+        "id": "rigidity",
+        "region": "abdomen",
+        "maneuver": "Gently palpate the entire abdomen",
+        "finding": "Diffuse abdominal rigidity",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "essential",
+        "term": "Abdominal rigidity",
+        "snomed_verified": true
+      },
+      {
+        "id": "cullen-sign",
+        "region": "abdomen",
+        "maneuver": "Inspect the periumbilical area",
+        "finding": "Bluish discoloration around the umbilicus",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Cullen's sign",
+        "snomed_verified": true
+      },
+      {
+        "id": "grey-turner-sign",
+        "region": "skin",
+        "maneuver": "Inspect the flanks",
+        "finding": "Bluish discoloration of the flanks",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Grey Turner's sign",
+        "snomed_verified": true
+      },
+      {
+        "id": "jaundice",
+        "region": "skin",
+        "maneuver": "Inspect sclerae and skin",
+        "finding": "Yellowing of sclerae or skin",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Jaundice",
+        "snomed_verified": true
+      },
+      {
+        "id": "decreased-bowel-sounds",
+        "region": "abdomen",
+        "maneuver": "Auscultate all four quadrants",
+        "finding": "Decreased or absent bowel sounds",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Decreased bowel sounds",
+        "snomed_verified": true
+      },
+      {
+        "id": "abdominal-distention",
+        "region": "abdomen",
+        "maneuver": "Inspect the abdomen",
+        "finding": "Visible abdominal distention",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Abdominal distention",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-crackles",
+        "region": "lung",
+        "maneuver": "Auscultate the lungs",
+        "finding": "Clear breath sounds; no crackles",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Crackles",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-cva-tenderness",
+        "region": "abdomen",
+        "maneuver": "Percuss the costovertebral angles",
+        "finding": "No costovertebral angle tenderness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Costovertebral angle tenderness",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-cervical-excitation",
+        "region": "pelvic",
+        "maneuver": "Perform pelvic exam when a gynecologic cause is possible",
+        "finding": "No cervical motion tenderness or adnexal mass",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Cervical excitation",
+        "snomed_verified": true
+      }
+    ]
+  },
+  "vitals": {
+    "temp": {
+      "moderate": {
+        "min": 99.0,
+        "max": 100.4
+      },
+      "severe": {
+        "min": 100.0,
+        "max": 102.5
+      },
+      "critical": {
+        "min": 96.8,
+        "max": 103.5
+      }
+    },
+    "hr": {
+      "moderate": {
+        "min": 90,
+        "max": 110
+      },
+      "severe": {
+        "min": 100,
+        "max": 130
+      },
+      "critical": {
+        "min": 110,
+        "max": 150
+      }
+    },
+    "rr": {
+      "severe": {
+        "min": 18,
+        "max": 24
+      },
+      "critical": {
+        "min": 22,
+        "max": 32
+      }
+    },
+    "sbp": {
+      "severe": {
+        "min": 90,
+        "max": 110
+      },
+      "critical": {
+        "min": 70,
+        "max": 100
+      }
+    },
+    "dbp": {
+      "severe": {
+        "min": 50,
+        "max": 70
+      },
+      "critical": {
+        "min": 35,
+        "max": 60
+      }
+    },
+    "spo2": {
+      "severe": {
+        "min": 90,
+        "max": 96
+      },
+      "critical": {
+        "min": 85,
+        "max": 94
+      }
+    }
+  },
+  "labs": [
+    {
+      "test_id": "lipase",
+      "ranges": {
+        "mild": {
+          "min": 180,
+          "max": 600
+        },
+        "moderate": {
+          "min": 300,
+          "max": 2000
+        },
+        "severe": {
+          "min": 500,
+          "max": 5000
+        },
+        "critical": {
+          "min": 1000,
+          "max": 20000
+        }
+      },
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "A lipase above three times the upper limit of normal is strongly supportive; the height does not reliably predict severity."
+    },
+    {
+      "test_id": "amylase",
+      "ranges": {
+        "mild": {
+          "min": 150,
+          "max": 500
+        },
+        "moderate": {
+          "min": 250,
+          "max": 800
+        },
+        "severe": {
+          "min": 400,
+          "max": 1500
+        },
+        "critical": {
+          "min": 600,
+          "max": 3000
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Less sensitive than lipase; may be normal in alcohol-related pancreatitis and elevated in many non-pancreatic conditions."
+    },
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "mild": {
+          "min": 9.5,
+          "max": 13.0
+        },
+        "moderate": {
+          "min": 11.5,
+          "max": 16.0
+        },
+        "severe": {
+          "min": 14.0,
+          "max": 21.0
+        },
+        "critical": {
+          "min": 17.0,
+          "max": 28.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important"
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "mild": {
+          "min": 1.0,
+          "max": 5.0
+        },
+        "moderate": {
+          "min": 3.0,
+          "max": 10.0
+        },
+        "severe": {
+          "min": 5.0,
+          "max": 20.0
+        },
+        "critical": {
+          "min": 10.0,
+          "max": 35.0
+        }
+      },
+      "frequency": "common",
+      "importance": "optional",
+      "caveat": "A CRP above 15 mg/dL at 48 hours suggests severe pancreatitis, but early values are less helpful."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "severe": {
+          "min": 20,
+          "max": 40
+        },
+        "critical": {
+          "min": 30,
+          "max": 60
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevated BUN reflects volume depletion and is part of severity scoring."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "severe": {
+          "min": 1.3,
+          "max": 2.0
+        },
+        "critical": {
+          "min": 1.8,
+          "max": 4.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Acute kidney injury complicates severe pancreatitis."
+    },
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "mild": {
+          "min": 100,
+          "max": 150
+        },
+        "moderate": {
+          "min": 120,
+          "max": 200
+        },
+        "severe": {
+          "min": 150,
+          "max": 300
+        },
+        "critical": {
+          "min": 200,
+          "max": 400
+        }
+      },
+      "frequency": "common",
+      "importance": "optional",
+      "caveat": "Hyperglycemia occurs from pancreatic endocrine dysfunction and stress."
+    },
+    {
+      "test_id": "ca",
+      "ranges": {
+        "severe": {
+          "min": 7.0,
+          "max": 8.4
+        },
+        "critical": {
+          "min": 6.0,
+          "max": 8.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hypocalcemia in severe pancreatitis reflects fat saponification and is a poor prognostic sign."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "severe": {
+          "min": 2.0,
+          "max": 3.5
+        },
+        "critical": {
+          "min": 2.5,
+          "max": 6.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevated lactate suggests tissue hypoperfusion or necrosis."
+    },
+    {
+      "test_id": "tbili",
+      "ranges": {
+        "mild": {
+          "min": 1.2,
+          "max": 3.0
+        },
+        "moderate": {
+          "min": 1.5,
+          "max": 5.0
+        },
+        "severe": {
+          "min": 2.0,
+          "max": 8.0
+        },
+        "critical": {
+          "min": 3.0,
+          "max": 12.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Elevation suggests a gallstone or bile duct obstruction as the cause."
+    },
+    {
+      "test_id": "ast",
+      "ranges": {
+        "mild": {
+          "min": 40,
+          "max": 200
+        },
+        "moderate": {
+          "min": 50,
+          "max": 300
+        },
+        "severe": {
+          "min": 60,
+          "max": 400
+        },
+        "critical": {
+          "min": 80,
+          "max": 600
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "A marked early AST rise can suggest gallstone pancreatitis."
+    },
+    {
+      "test_id": "alt",
+      "ranges": {
+        "mild": {
+          "min": 60,
+          "max": 200
+        },
+        "moderate": {
+          "min": 60,
+          "max": 300
+        },
+        "severe": {
+          "min": 70,
+          "max": 400
+        },
+        "critical": {
+          "min": 90,
+          "max": 600
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Often rises with hepatocellular injury from gallstone pancreatitis."
+    },
+    {
+      "test_id": "alp",
+      "ranges": {
+        "mild": {
+          "min": 147,
+          "max": 300
+        },
+        "moderate": {
+          "min": 160,
+          "max": 500
+        },
+        "severe": {
+          "min": 200,
+          "max": 700
+        },
+        "critical": {
+          "min": 300,
+          "max": 1000
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Often rises with bile duct obstruction."
+    },
+    {
+      "test_id": "tg",
+      "ranges": {
+        "severe": {
+          "min": 500,
+          "max": 2000
+        },
+        "critical": {
+          "min": 1000,
+          "max": 5000
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "A level above 1000 mg/dL can cause pancreatitis and requires specific treatment."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Negative in pancreatitis. Always check in any woman who could be pregnant before imaging and to rule out ectopic pregnancy."
+    }
+  ],
+  "ecg": {
+    "findings": [
+      {
+        "feature": "rhythm",
+        "finding": "Sinus tachycardia",
+        "frequency": "common",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "st",
+        "finding": "No ST-segment elevation or reciprocal changes",
+        "frequency": "almost_always",
+        "leads": [
+          "II",
+          "III",
+          "aVF"
+        ]
+      }
+    ]
+  },
+  "imaging": [
+    {
+      "study": "CT abdomen and pelvis with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Severe or worsening pancreatitis, suspected necrosis, or diagnostic uncertainty",
+      "findings": [
+        {
+          "text": "Diffuse or focal pancreatic enlargement with peripancreatic fat stranding",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Peripancreatic fluid collections",
+          "frequency": "common"
+        },
+        {
+          "text": "Areas of nonenhancement indicating necrosis",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Gallstones or bile duct dilation",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Normal pancreas (early mild interstitial pancreatitis)",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Ultrasound of the right upper quadrant",
+      "modality": "ultrasound",
+      "preferred_when": "Initial evaluation for gallstone etiology, pregnancy, or when avoiding radiation",
+      "findings": [
+        {
+          "text": "Gallstones",
+          "frequency": "common"
+        },
+        {
+          "text": "Dilated common bile duct",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Pancreas appears enlarged or hypoechoic",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Normal pancreas and biliary tree",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "MRCP (magnetic resonance cholangiopancreatography)",
+      "modality": "mri",
+      "preferred_when": "Suspected common bile duct stone not seen on ultrasound, or pregnancy when ultrasound inconclusive",
+      "findings": [
+        {
+          "text": "Common bile duct stone or gallstones",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Pancreatic edema and peripancreatic fluid",
+          "frequency": "common"
+        },
+        {
+          "text": "Dilated biliary tree without visible stone",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Abdominal x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Nonspecific; sentinel loop of dilated small bowel or colon cutoff sign",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Leukocytosis and hemoconcentration help assess inflammation and fluid status."
+      },
+      {
+        "test": "bmp",
+        "why": "Evaluates electrolytes, BUN, creatinine, glucose, and calcium; derangements are common and prognostically important."
+      },
+      {
+        "test": "lipase",
+        "why": "Elevated lipase is the preferred enzyme for diagnosis."
+      },
+      {
+        "test": "cmp_extra",
+        "why": "Liver enzymes and bilirubin identify a biliary cause."
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy and ectopic pregnancy before imaging."
+      },
+      {
+        "test": "Ultrasound of the right upper quadrant",
+        "why": "Looks for gallstones and bile duct dilation as the cause."
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Confirms diagnosis when classic features are not present and identifies complications such as necrosis, abscess, or fluid collections.",
+        "only_if": "Severe disease, diagnostic uncertainty, or failure to improve after 48–72 hours"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "crp",
+        "why": "A high CRP at 48 hours suggests severe disease."
+      },
+      {
+        "test": "lactate",
+        "why": "Elevation suggests tissue hypoperfusion and severe disease."
+      },
+      {
+        "test": "tg",
+        "why": "Identifies hypertriglyceridemia as a treatable cause.",
+        "only_if": "Lipemic serum, no gallstones or alcohol use, or known elevated triglycerides"
+      },
+      {
+        "test": "MRCP (magnetic resonance cholangiopancreatography)",
+        "why": "Noninvasive way to look for a common bile duct stone when ultrasound is inconclusive.",
+        "only_if": "Suspected choledocholithiasis not confirmed by ultrasound"
+      },
+      {
+        "test": "Chest x-ray",
+        "why": "Evaluates for ARDS, pleural effusion, or other pulmonary complications.",
+        "only_if": "Dyspnea, hypoxia, or suspected respiratory complication"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Abdominal x-ray",
+        "why": "Rarely changes management and is nonspecific."
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in the evaluation of pancreatitis."
+      }
+    ],
+    "decision_points": [
+      "Pregnancy test before CT in anyone who could be pregnant.",
+      "Ultrasound first to look for gallstones; CT is reserved for severe, uncertain, or non-improving cases.",
+      "Do not delay fluid resuscitation and supportive care for imaging.",
+      "For suspected common bile duct stone, consider early ERCP if cholangitis or persistent obstruction."
+    ],
+    "criteria": [
+      {
+        "name": "Revised Atlanta criteria for acute pancreatitis (diagnosis)",
+        "summary": "Acute pancreatitis requires at least two of three features.",
+        "items": [
+          "Typical upper abdominal pain",
+          "Serum lipase or amylase at least three times the upper limit of normal",
+          "Imaging findings consistent with acute pancreatitis"
+        ]
+      }
+    ],
+    "scores": [
+      "bisap",
+      "ranson_criteria",
+      "apache_ii"
+    ]
+  },
+  "differential": [
+    {
+      "name": "Acute cholangitis",
+      "slug": "acute-cholangitis",
+      "why_considered": "Fever, jaundice, and upper abdominal pain can overlap with gallstone pancreatitis",
+      "must_not_miss": true,
+      "trigger": "Charcot triad of fever, jaundice, and right upper quadrant pain",
+      "discriminators": {
+        "history": [
+          "Older age or known gallstones",
+          "Fever and rigors",
+          "Pain may be less severe than pancreatitis but jaundice is prominent"
+        ],
+        "exam": [
+          "Fever",
+          "Jaundice",
+          "Right upper quadrant tenderness",
+          "Hypotension or altered mental status in severe cholangitis"
+        ],
+        "labs": [
+          "Markedly elevated alkaline phosphatase and bilirubin",
+          "Lipase may be normal or only mildly elevated",
+          "Blood cultures may be positive"
+        ],
+        "imaging": [
+          "Bile duct dilation on ultrasound or CT",
+          "Stone or pus in the common bile duct on MRCP or ERCP"
+        ]
+      }
+    },
+    {
+      "name": "Perforated peptic ulcer",
+      "slug": "perforated-peptic-ulcer",
+      "why_considered": "Sudden severe epigastric pain and peritonitis can mimic severe pancreatitis",
+      "must_not_miss": true,
+      "trigger": "Sudden onset of severe epigastric pain with a rigid abdomen",
+      "discriminators": {
+        "history": [
+          "History of NSAID use, Helicobacter pylori infection, or prior ulcer",
+          "Pain may begin suddenly and then spread across the abdomen",
+          "Nausea and vomiting may follow pain, similar to pancreatitis"
+        ],
+        "exam": [
+          "Board-like rigidity",
+          "Rebound tenderness",
+          "Absent bowel sounds"
+        ],
+        "labs": [
+          "Lipase usually normal or only mildly elevated",
+          "Leukocytosis"
+        ],
+        "imaging": [
+          "Free intraperitoneal air on upright chest x-ray or CT",
+          "No pancreatic inflammation on CT"
+        ]
+      }
+    },
+    {
+      "name": "Acute myocardial infarction",
+      "slug": "acute-myocardial-infarction",
+      "why_considered": "Epigastric discomfort, nausea, and diaphoresis can be the presenting symptoms of an inferior MI",
+      "must_not_miss": true,
+      "trigger": "Cardiac risk factors and epigastric discomfort with diaphoresis or dyspnea",
+      "discriminators": {
+        "history": [
+          "Chest pressure or burning that may radiate to the jaw, neck, or left arm",
+          "Shortness of breath",
+          "Nausea and vomiting",
+          "Prior cardiac disease or risk factors"
+        ],
+        "exam": [
+          "May be normal",
+          "Signs of heart failure such as crackles or elevated JVP"
+        ],
+        "labs": [
+          "Elevated troponin",
+          "Lipase normal"
+        ],
+        "imaging": [],
+        "ecg": [
+          "ST-segment elevation in leads II, III, and aVF",
+          "Reciprocal ST depression in lateral leads"
+        ]
+      }
+    },
+    {
+      "name": "Mesenteric ischemia",
+      "slug": "mesenteric-ischemia",
+      "why_considered": "Severe epigastric or periumbilical pain with relative absence of early tenderness can mimic pancreatitis",
+      "must_not_miss": true,
+      "trigger": "Pain out of proportion to exam in an older patient with atrial fibrillation or vascular disease",
+      "discriminators": {
+        "history": [
+          "Atrial fibrillation, heart failure, or atherosclerotic disease",
+          "Sudden severe pain out of proportion to abdominal exam",
+          "Nausea and vomiting"
+        ],
+        "exam": [
+          "Early: mild or no tenderness despite severe pain",
+          "Late: distention, guarding, and rebound"
+        ],
+        "labs": [
+          "Elevated lactate",
+          "Metabolic acidosis",
+          "Lipase usually normal or only mildly elevated"
+        ],
+        "imaging": [
+          "CT angiography showing superior mesenteric artery occlusion or bowel wall thickening/pneumatosis"
+        ]
+      }
+    },
+    {
+      "name": "Ruptured abdominal aortic aneurysm",
+      "slug": "ruptured-abdominal-aortic-aneurysm",
+      "why_considered": "Epigastric or back pain with hypotension can mimic severe pancreatitis",
+      "must_not_miss": true,
+      "trigger": "Older patient with abdominal or back pain and hypotension or a pulsatile mass",
+      "discriminators": {
+        "history": [
+          "Known AAA or vascular risk factors",
+          "Sudden tearing pain in abdomen, back, or flank",
+          "Syncope or near-syncope"
+        ],
+        "exam": [
+          "Hypotension",
+          "Pulsatile abdominal mass",
+          "Mottled or cool extremities if exsanguinating"
+        ],
+        "labs": [
+          "Lipase normal",
+          "Hemoglobin may drop"
+        ],
+        "imaging": [
+          "CT angiography shows a ruptured AAA with retroperitoneal hematoma",
+          "No pancreatic inflammation"
+        ]
+      }
+    },
+    {
+      "name": "Acute cholecystitis",
+      "slug": "acute-cholecystitis",
+      "why_considered": "Right upper quadrant or epigastric pain after eating with nausea can resemble gallstone pancreatitis",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Pain more localized to the right upper quadrant",
+          "Pain often radiates to right shoulder or scapula",
+          "Prior biliary colic attacks"
+        ],
+        "exam": [
+          "Positive Murphy sign",
+          "Right upper quadrant tenderness without epigastric predominance"
+        ],
+        "labs": [
+          "Lipase normal or only mildly elevated",
+          "AST, ALT, and alkaline phosphatase may be elevated"
+        ],
+        "imaging": [
+          "Gallbladder wall thickening, pericholecystic fluid, and gallstones on ultrasound",
+          "No significant peripancreatic inflammation"
+        ]
+      }
+    },
+    {
+      "name": "Viral gastroenteritis",
+      "slug": "gastroenteritis",
+      "why_considered": "Nausea, vomiting, and abdominal pain",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Vomiting and diarrhea often begin before pain",
+          "Watery diarrhea",
+          "Sick contacts"
+        ],
+        "exam": [
+          "Diffuse mild tenderness without guarding"
+        ],
+        "labs": [
+          "Lipase normal"
+        ],
+        "imaging": []
+      }
+    }
+  ],
+  "course": {
+    "severity": {
+      "mild": "Interstitial edematous pancreatitis with no organ failure or local complications; pain is manageable and vital signs are stable.",
+      "moderate": "Transient organ failure that resolves within 48 hours or local complications such as peripancreatic fluid collections; more marked SIRS.",
+      "severe": "Persistent organ failure lasting more than 48 hours, infected necrosis, or other major local complications; often requires intensive care.",
+      "critical": "Multiple organ dysfunction, shock, acute respiratory distress syndrome, or infected pancreatic necrosis with sepsis; life-threatening."
+    },
+    "red_flags": [
+      {
+        "finding": "Systolic blood pressure below 90 mm Hg or persistent tachycardia",
+        "meaning": "Third-spacing and hypovolemic shock; needs aggressive fluid resuscitation and ICU."
+      },
+      {
+        "finding": "Hypoxia or respiratory distress",
+        "meaning": "Acute respiratory distress syndrome or large pleural effusion."
+      },
+      {
+        "finding": "Altered mental status",
+        "meaning": "Sepsis, hypoperfusion, or pancreatic encephalopathy; severe disease."
+      },
+      {
+        "finding": "Rigid abdomen or rebound tenderness",
+        "meaning": "Perforation, hemorrhagic pancreatitis, or other surgical emergency."
+      },
+      {
+        "finding": "Cullen or Grey Turner sign",
+        "meaning": "Hemorrhagic pancreatitis with retroperitoneal bleeding; poor prognosis."
+      },
+      {
+        "finding": "Persistent fever after the first week",
+        "meaning": "Infected pancreatic necrosis until proven otherwise."
+      },
+      {
+        "finding": "Rising BUN or creatinine",
+        "meaning": "Acute kidney injury and severe pancreatitis."
+      },
+      {
+        "finding": "Lactate above 4 mmol/L",
+        "meaning": "Tissue hypoperfusion or necrotizing pancreatitis."
+      }
+    ],
+    "complications": [
+      {
+        "name": "Acute peripancreatic fluid collection",
+        "timing": "early",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "CT shows fluid around pancreas without a defined wall",
+          "Symptoms may be mild"
+        ]
+      },
+      {
+        "name": "Acute respiratory distress syndrome",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Hypoxemia",
+          "Bilateral infiltrates",
+          "Tachypnea"
+        ]
+      },
+      {
+        "name": "Acute kidney injury",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Rising creatinine",
+          "Oliguria",
+          "Volume depletion or SIRS"
+        ]
+      },
+      {
+        "name": "Pancreatic pseudocyst",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Persistent pain or fullness weeks after onset",
+          "Palpable epigastric mass",
+          "CT shows a well-defined cystic lesion after 4 weeks"
+        ]
+      },
+      {
+        "name": "Walled-off pancreatic necrosis",
+        "timing": "late",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Necrotic collection on CT after 4 weeks",
+          "Persistent symptoms"
+        ]
+      },
+      {
+        "name": "Infected pancreatic necrosis",
+        "timing": "late",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Fever after the first week",
+          "Leukocytosis",
+          "Gas within necrosis on CT",
+          "Sepsis"
+        ]
+      }
+    ],
+    "special_populations": [
+      {
+        "population": "children",
+        "differences": "Less common; causes include trauma, hereditary pancreatitis, and systemic disease. May present with vague abdominal pain and vomiting; ultrasound first."
+      },
+      {
+        "population": "older_adults",
+        "differences": "Gallstone pancreatitis is more common; pain and fever may be absent, and confusion or hypotension may be the presenting feature. Higher mortality from comorbidity."
+      },
+      {
+        "population": "pregnancy",
+        "differences": "Gallstones are the most common cause. Use ultrasound and MRCP; avoid CT unless severe. ERCP can be done with fetal protection if cholangitis is present."
+      },
+      {
+        "population": "obesity",
+        "differences": "Higher risk of severe pancreatitis, necrosis, and organ failure; may require earlier ICU monitoring and attention to metabolic derangements."
+      },
+      {
+        "population": "diabetes",
+        "differences": "Hyperglycemia may be more severe due to pancreatic endocrine dysfunction; glucose control is important, and DKA-like presentations can occur."
+      }
+    ]
+  },
+  "teaching": {
+    "key_questions": [
+      {
+        "question": "When did the pain start?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Sudden onset over one to two hours, often after a large meal or alcohol binge"
+      },
+      {
+        "question": "Where is the pain, and does it go anywhere?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Epigastric or left upper quadrant pain radiating straight through to the back"
+      },
+      {
+        "question": "How severe is the pain on a 0–10 scale, and what does it feel like?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Severe, constant, boring pain, often 8–10 out of 10"
+      },
+      {
+        "question": "What makes the pain better or worse?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Worsened by lying flat, eating, or deep breathing; improved by leaning forward"
+      },
+      {
+        "question": "Have you had nausea or vomiting?",
+        "category": "associated",
+        "importance": "essential",
+        "looking_for": "Nausea and vomiting, usually after the pain started"
+      },
+      {
+        "question": "Have you been able to eat or drink anything?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Loss of appetite and avoidance of food because it worsens pain"
+      },
+      {
+        "question": "Have you had fever or chills?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Low-grade fever; high fever with rigors suggests cholangitis"
+      },
+      {
+        "question": "How much alcohol do you drink, and has there been a recent binge?",
+        "category": "social",
+        "importance": "essential",
+        "looking_for": "Heavy alcohol use or binge as a cause"
+      },
+      {
+        "question": "Do you have gallstones or a history of gallbladder problems?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Gallstone pancreatitis, the most common cause"
+      },
+      {
+        "question": "What medications do you take, including any new or over-the-counter drugs?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Drugs associated with pancreatitis such as azathioprine, valproic acid, mercaptopurine, mesalamine, or didanosine"
+      },
+      {
+        "question": "Is there any chance you could be pregnant?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Pregnancy itself or ectopic pregnancy; affects imaging choice"
+      },
+      {
+        "question": "Has anyone in your family had pancreatitis or very high triglycerides?",
+        "category": "family",
+        "importance": "optional",
+        "looking_for": "Hereditary pancreatitis or familial hypertriglyceridemia"
+      },
+      {
+        "question": "Do you have a history of high triglycerides or high calcium?",
+        "category": "pmh",
+        "importance": "optional",
+        "looking_for": "Metabolic causes of pancreatitis"
+      },
+      {
+        "question": "Have you had any recent procedures, especially an ERCP, or any abdominal trauma?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Iatrogenic or traumatic cause"
+      },
+      {
+        "question": "Are you having any chest pain or shortness of breath?",
+        "category": "red_flag",
+        "importance": "important",
+        "looking_for": "Alternative diagnosis such as myocardial infarction or respiratory complication from severe pancreatitis"
+      }
+    ],
+    "accepted_names": [
+      "Acute pancreatitis",
+      "Pancreatitis"
+    ],
+    "reasoning_points": [
+      "Sudden severe epigastric pain radiating to the back, constant and boring in quality",
+      "Nausea and vomiting that begin after the pain, with anorexia",
+      "Risk factors present such as gallstones or heavy alcohol use",
+      "Serum lipase elevated to at least three times the upper limit of normal, or characteristic CT findings",
+      "Revised Atlanta criteria: two of three of typical pain, elevated lipase/amylase, and imaging consistent with pancreatitis",
+      "Exclusion of important mimics: negative pregnancy test, no free intraperitoneal air, no ST-segment elevation, no evidence of cholangitis",
+      "Assessment of severity using BISAP or Atlanta criteria, with attention to volume status and organ failure"
+    ],
+    "difficulty": {
+      "easy": [
+        "Young adult with an alcohol binge and classic epigastric pain radiating to the back",
+        "Lipase over 1000 U/L and mild epigastric tenderness only",
+        "Ultrasound shows gallstones or a normal biliary tree",
+        "No organ failure or significant comorbidity"
+      ],
+      "medium": [
+        "Older woman with gallstones but less dramatic pain and mild jaundice",
+        "Pregnancy with gallstone pancreatitis requiring ultrasound and MRCP instead of CT",
+        "Hypertriglyceridemia as the cause, with a lipemic blood sample",
+        "Moderate severity with transient hypotension or mild acute kidney injury"
+      ],
+      "hard": [
+        "Severe necrotizing pancreatitis with persistent organ failure, hypotension, and hypocalcemia",
+        "Post-ERCP pancreatitis in a patient who cannot report pain clearly",
+        "Child with vague abdominal pain and vomiting, where pancreatitis is not initially suspected",
+        "Older adult with confusion and hypotension but only mild epigastric pain and a normal white count"
+      ]
+    }
+  }
+}

@@ -34,49 +34,50 @@
       },
       {
         "stage": "patient_presentation",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "8",
-        "generated_at": "2026-10-05T05:05:47Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:01:25Z"
       },
       {
         "stage": "exam_vitals",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "8",
-        "generated_at": "2026-10-05T05:05:53Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:03:22Z"
       },
       {
         "stage": "diagnostics",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "8",
-        "generated_at": "2026-10-05T05:06:14Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:05:04Z"
       },
       {
         "stage": "differential_course",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "8",
-        "generated_at": "2026-10-05T05:06:25Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:05:57Z"
       },
       {
         "stage": "teaching",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "8",
-        "generated_at": "2026-10-05T05:06:31Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:06:26Z"
       }
     ],
     "validation": {
-      "status": "failed",
-      "rule_errors": [
-        "missing section workup"
-      ],
+      "status": "passed",
+      "rule_errors": [],
       "review_issues": [
-        "differential acute-appendicitis: no profile yet",
-        "differential diverticular-bleeding: no profile yet",
-        "differential colorectal-cancer: no profile yet",
-        "differential acute-mesenteric-ischemia: no profile yet",
-        "differential pyelonephritis: no profile yet",
-        "differential pelvic-inflammatory-disease: no profile yet",
+        "auto-repaired: workup: 'hcg' was in initial, not_indicated; kept initial as a conditional order (only if patient is of childbearing potential)",
+        "auto-repaired: workup: 'lactate' was in supporting, not_indicated; kept supporting as a conditional order (only if signs of sepsis or shock)",
+        "auto-repaired: workup: 'Ultrasound of the abdomen' was in supporting, not_indicated; kept supporting as a conditional order (only if pregnant patient or child)",
+        "auto-repaired: workup: 'MRI abdomen and pelvis without contrast' was in supporting, not_indicated; kept supporting as a conditional order (only if pregnant and ultrasound nondiagnostic)",
+        "auto-repaired: workup: 'Blood cultures' was in supporting, not_indicated; kept supporting as a conditional order (only if severe sepsis or immunocompromised)",
+        "exam: term 'Pelvic tenderness' not found in SNOMED CT",
+        "differential irritable-bowel-syndrome: no profile yet",
         "differential ectopic-pregnancy: no profile yet",
-        "differential irritable-bowel-syndrome: no profile yet"
+        "differential urinary-tract-infection: no profile yet",
+        "differential inflammatory-bowel-disease: no profile yet",
+        "differential ischemic-colitis: no profile yet"
       ]
     },
     "review": {
@@ -85,25 +86,23 @@
   },
   "patient": {
     "age": {
-      "typical_min": 40,
+      "typical_min": 50,
       "typical_max": 85,
-      "peak": "50–70",
-      "possible_min": 20,
+      "peak": "60–70",
+      "possible_min": 30,
       "possible_max": 100
     },
     "sex": "either",
     "demographics": [
-      "Diverticulosis is present in roughly one-third of US adults in their 50s and more than two-thirds of those over 80",
-      "Diverticulitis is somewhat more common in women in older age groups",
-      "More common in Western industrialized countries where low-fiber diets are typical"
+      "More common with older age; under 50 slightly more common in men, after 60 slightly more common in women."
     ],
     "risk_factors": [
       {
-        "text": "Increasing age",
+        "text": "Age over 50",
         "strength": "strong"
       },
       {
-        "text": "Low-fiber, high-red-meat diet",
+        "text": "Low-fiber diet",
         "strength": "moderate"
       },
       {
@@ -112,18 +111,10 @@
       },
       {
         "text": "Physical inactivity",
-        "strength": "moderate"
+        "strength": "weak"
       },
       {
-        "text": "Current or past smoking",
-        "strength": "moderate"
-      },
-      {
-        "text": "Regular NSAID use",
-        "strength": "moderate"
-      },
-      {
-        "text": "Corticosteroid use",
+        "text": "Cigarette smoking",
         "strength": "weak"
       },
       {
@@ -132,109 +123,128 @@
       }
     ],
     "comorbidities": [
-      "Obesity",
-      "Hypertension",
-      "Coronary artery disease",
-      "Chronic kidney disease",
-      "Diabetes mellitus"
+      "Obesity"
     ],
     "family_history": [
-      "Diverticulitis or diverticulosis in a first-degree relative"
+      "Diverticulitis in a first-degree relative"
     ],
     "social_history": [
+      "Low-fiber diet",
       "Sedentary lifestyle",
-      "Smoking",
-      "Diet low in fruits, vegetables, and whole grains"
+      "Smoking"
     ],
     "exposures": [],
     "risk_medications": [
       "ibuprofen",
       "naproxen",
-      "aspirin",
-      "prednisone",
-      "methylprednisolone"
+      "prednisone"
     ]
   },
   "presentation": {
     "chief_complaints": [
       {
-        "text": "My lower belly hurts, mostly on the left side",
-        "frequency": "almost_always"
+        "text": "I have severe pain in my lower left belly",
+        "frequency": "almost_always",
+        "term": "Abdominal pain",
+        "snomed_verified": true
       },
       {
-        "text": "I've had belly pain and a fever since yesterday",
-        "frequency": "common"
+        "text": "I have a fever",
+        "frequency": "sometimes",
+        "term": "Fever",
+        "snomed_verified": true
       },
       {
-        "text": "It hurts so much I can't get comfortable",
-        "frequency": "common"
-      },
-      {
-        "text": "I've been constipated and my belly is cramping",
-        "frequency": "sometimes"
+        "text": "I feel sick to my stomach",
+        "frequency": "common",
+        "term": "Nausea",
+        "snomed_verified": true
       }
     ],
     "hpi": {
-      "onset": "Sudden in most attacks; in a minority the pain builds over one to several days",
-      "duration": "Usually 12–72 hours at presentation",
-      "progression": "Pain starts in the left lower abdomen and becomes constant and more intense; may localize and worsen with movement or coughing",
-      "location": "Left lower quadrant, sometimes suprapubic or diffuse lower abdomen",
-      "radiation": "May radiate to the back, groin, or suprapubic area; does not typically migrate",
-      "quality": "Constant, aching or sharp; crampy in those with chronic diverticular symptoms",
-      "severity": "Moderate to severe, often 6–8/10 during an acute attack",
-      "timing": "Constant, worse with movement",
+      "onset": "Acute, often over several hours; less commonly subacute over 2–3 days.",
+      "duration": "Most patients seek care within 1–3 days of symptom onset.",
+      "progression": "Pain typically starts in the left lower quadrant and becomes constant. If inflammation worsens, fever and gastrointestinal symptoms may appear.",
+      "location": "Left lower quadrant; may be suprapubic or straddle the midline if the sigmoid colon is redundant.",
+      "radiation": "Usually none.",
+      "quality": "Constant, aching or crampy; may be sharp if peritoneal inflammation is intense.",
+      "severity": "Moderate to severe; often 5–8/10.",
+      "timing": "Constant and may worsen with movement, coughing, or pressure.",
       "aggravating": [
-        "Walking",
+        "Movement",
         "Coughing",
-        "Bearing down",
-        "Palpation of the abdomen"
+        "Deep breathing",
+        "Pressure on the abdomen",
+        "Eating a full meal"
       ],
       "relieving": [
         "Lying still",
-        "Nothing much helps"
+        "Clear liquid diet",
+        "Acetaminophen"
       ],
       "associated_symptoms": [
         {
-          "text": "Fever and chills",
-          "frequency": "common"
-        },
-        {
           "text": "Nausea",
-          "frequency": "common"
-        },
-        {
-          "text": "Constipation",
-          "frequency": "common"
+          "frequency": "common",
+          "term": "Nausea",
+          "snomed_verified": true
         },
         {
           "text": "Loss of appetite",
-          "frequency": "common"
+          "frequency": "common",
+          "term": "Decreased appetite",
+          "snomed_verified": true
+        },
+        {
+          "text": "Low-grade fever",
+          "frequency": "sometimes",
+          "term": "Fever",
+          "snomed_verified": true
         },
         {
           "text": "Vomiting",
-          "frequency": "sometimes"
+          "frequency": "sometimes",
+          "term": "Vomiting",
+          "snomed_verified": true
+        },
+        {
+          "text": "Chills",
+          "frequency": "sometimes",
+          "term": "Chills",
+          "snomed_verified": true
+        },
+        {
+          "text": "Constipation",
+          "frequency": "sometimes",
+          "term": "Constipation",
+          "snomed_verified": true
         },
         {
           "text": "Diarrhea",
-          "frequency": "sometimes"
+          "frequency": "sometimes",
+          "term": "Diarrhea",
+          "snomed_verified": true
         },
         {
-          "text": "Urinary urgency or burning if the inflamed colon irritates the bladder",
-          "frequency": "rare"
+          "text": "Bloating",
+          "frequency": "sometimes",
+          "term": "Abdominal bloating",
+          "snomed_verified": true
         },
         {
-          "text": "Bright red blood per rectum",
-          "frequency": "rare"
+          "text": "Burning with urination",
+          "frequency": "rare",
+          "term": "Dysuria",
+          "snomed_verified": true
         }
       ],
       "pertinent_negatives": [
-        "Pain that started periumbilically and migrated to the right lower quadrant",
-        "Pain that started in the right lower quadrant",
-        "Profuse watery diarrhea with sick contacts",
-        "Vaginal bleeding or discharge",
-        "Dysuria with flank pain",
-        "Weight loss or blood mixed in stool over weeks to months",
-        "Prior abdominal surgery with adhesions"
+        "Hematochezia",
+        "Significant unintended weight loss",
+        "Vomiting that started before the pain",
+        "Profuse watery diarrhea",
+        "Urinary symptoms as the main complaint",
+        "Vaginal bleeding or missed period"
       ]
     },
     "ros": [
@@ -243,19 +253,25 @@
         "positives": [
           {
             "text": "Fever",
-            "frequency": "common"
+            "frequency": "sometimes",
+            "term": "Fever",
+            "snomed_verified": true
           },
           {
             "text": "Chills",
-            "frequency": "sometimes"
+            "frequency": "sometimes",
+            "term": "Chills",
+            "snomed_verified": true
           },
           {
-            "text": "Feeling generally unwell",
-            "frequency": "common"
+            "text": "Fatigue",
+            "frequency": "sometimes",
+            "term": "Fatigue",
+            "snomed_verified": true
           }
         ],
         "negatives": [
-          "Unintentional weight loss",
+          "Weight loss",
           "Night sweats"
         ]
       },
@@ -263,251 +279,232 @@
         "system": "gastrointestinal",
         "positives": [
           {
-            "text": "Left lower quadrant abdominal pain",
-            "frequency": "almost_always"
-          },
-          {
-            "text": "Constipation",
-            "frequency": "common"
+            "text": "Abdominal pain in the left lower quadrant",
+            "frequency": "almost_always",
+            "term": "Abdominal pain",
+            "snomed_verified": true
           },
           {
             "text": "Nausea",
-            "frequency": "common"
+            "frequency": "common",
+            "term": "Nausea",
+            "snomed_verified": true
           },
           {
             "text": "Vomiting",
-            "frequency": "sometimes"
+            "frequency": "sometimes",
+            "term": "Vomiting",
+            "snomed_verified": true
+          },
+          {
+            "text": "Constipation",
+            "frequency": "sometimes",
+            "term": "Constipation",
+            "snomed_verified": true
           },
           {
             "text": "Diarrhea",
-            "frequency": "sometimes"
+            "frequency": "sometimes",
+            "term": "Diarrhea",
+            "snomed_verified": true
           },
           {
             "text": "Abdominal bloating",
-            "frequency": "sometimes"
+            "frequency": "sometimes",
+            "term": "Abdominal bloating",
+            "snomed_verified": true
           }
         ],
         "negatives": [
-          "Hematemesis",
+          "Hematochezia",
           "Melena",
-          "Jaundice",
-          "Painless large-volume rectal bleeding"
+          "Jaundice"
         ],
         "argues_against": [
-          "Painless bright red rectal bleeding as the only symptom suggests diverticular bleeding rather than diverticulitis",
-          "Chronic waxing and waning bloody diarrhea suggests inflammatory bowel disease"
+          "Profuse bloody diarrhea",
+          "Vomiting before pain"
         ]
       },
       {
         "system": "genitourinary",
         "positives": [
           {
-            "text": "Urinary frequency",
-            "frequency": "sometimes"
-          },
-          {
-            "text": "Dysuria",
-            "frequency": "rare"
+            "text": "Burning with urination",
+            "frequency": "rare",
+            "term": "Dysuria",
+            "snomed_verified": true
           }
         ],
         "negatives": [
-          "Hematuria",
           "Flank pain",
-          "Vaginal discharge"
+          "Hematuria"
         ],
         "argues_against": [
-          "Flank pain with dysuria suggests pyelonephritis",
-          "Vaginal discharge suggests pelvic inflammatory disease"
+          "Colicky flank pain radiating to the groin"
         ]
       },
       {
         "system": "reproductive",
         "positives": [],
         "negatives": [
+          "Vaginal discharge",
           "Vaginal bleeding",
-          "Missed period",
-          "Pelvic pain with intercourse"
+          "Missed period"
         ],
         "argues_against": [
-          "Missed period with one-sided pelvic pain suggests ectopic pregnancy",
-          "Purulent cervical discharge suggests pelvic inflammatory disease"
-        ]
-      },
-      {
-        "system": "musculoskeletal",
-        "positives": [],
-        "negatives": [
-          "Flank or back pain as the primary complaint"
-        ],
-        "argues_against": [
-          "Colicky flank pain radiating to the groin suggests nephrolithiasis"
+          "Sudden one-sided pelvic pain with vomiting"
         ]
       }
     ],
     "atypical": [
       {
         "population": "older_adults",
-        "how_it_differs": "May present with confusion, weakness, or falls rather than prominent abdominal pain; fever and leukocytosis can be blunted.",
+        "how_it_differs": "May have less prominent fever and pain; presentation can be vague with only confusion, malaise, or ileus.",
         "missing_classic_features": [
-          "Severe localized abdominal pain",
-          "High fever"
+          "Fever",
+          "Localized left lower quadrant pain"
         ]
       },
       {
         "population": "immunocompromised",
-        "how_it_differs": "May have minimal pain and fever despite perforation or abscess; a higher index of suspicion and lower threshold for imaging are needed.",
+        "how_it_differs": "Symptoms can be subtle or rapidly progressive with severe sepsis; localizing signs may be reduced.",
         "missing_classic_features": [
-          "Fever",
-          "Marked leukocytosis",
-          "Peritoneal signs"
-        ]
-      },
-      {
-        "population": "obesity",
-        "how_it_differs": "Thick abdominal wall can make the exam less reliable; pain may be described as diffuse or poorly localized.",
-        "missing_classic_features": [
-          "Well-localized left lower quadrant tenderness"
+          "Localized abdominal pain",
+          "Fever"
         ]
       },
       {
         "population": "pregnancy",
-        "how_it_differs": "The colon is displaced upward by the enlarging uterus, so pain may be in the right lower or upper abdomen and mimic appendicitis or cholecystitis.",
+        "how_it_differs": "Rare, but when it occurs the gravid uterus can displace the sigmoid colon so pain may be higher or on the right.",
         "missing_classic_features": [
-          "Left lower quadrant location"
+          "Left lower quadrant pain"
         ]
       }
     ]
   },
   "exam": {
     "general": {
-      "mild": "Comfortable at rest, no distress, afebrile-appearing",
-      "moderate": "Uncomfortable, prefers to lie still, mild distress with movement",
-      "severe": "Ill-appearing, diaphoretic, guarding the abdomen, reluctant to move",
-      "critical": "Toxic-appearing, pale, hypotensive, altered mental status, peritonitic"
+      "mild": "Uncomfortable but not toxic; may be mildly febrile",
+      "moderate": "Lies still, avoids moving, febrile, localized left lower quadrant pain",
+      "severe": "Ill-appearing, flushed, tachycardic, possibly distended",
+      "critical": "Toxic-appearing, pale, diaphoretic, hypotensive, may have diffuse peritonitis"
     },
     "findings": [
       {
         "id": "llq-tenderness",
         "region": "abdomen",
-        "maneuver": "Palpate all four quadrants, starting away from the area of maximal pain",
+        "maneuver": "Palpate the left lower quadrant",
         "finding": "Left lower quadrant tenderness",
         "frequency": "almost_always",
         "significance": "strongly_supports",
-        "importance": "essential"
+        "importance": "essential",
+        "term": "Tenderness of left lower quadrant of abdomen",
+        "snomed_verified": true
       },
       {
-        "id": "llq-guarding",
+        "id": "guarding",
         "region": "abdomen",
         "maneuver": "Palpate the left lower quadrant",
-        "finding": "Voluntary or involuntary guarding",
+        "finding": "Voluntary guarding",
         "frequency": "common",
         "min_severity": "moderate",
         "significance": "supports",
-        "importance": "important"
+        "importance": "important",
+        "term": "Abdominal guarding",
+        "snomed_verified": true
       },
       {
-        "id": "rebound-tenderness",
+        "id": "rebound",
         "region": "abdomen",
-        "maneuver": "Ask the patient to cough, or tap the heel (gentler than releasing deep pressure)",
+        "maneuver": "Ask the patient to cough or gently percuss the abdomen",
         "finding": "Pain with jarring, suggesting peritoneal irritation",
         "frequency": "sometimes",
         "min_severity": "moderate",
         "significance": "supports",
-        "importance": "important"
+        "importance": "important",
+        "term": "Rebound tenderness",
+        "snomed_verified": true
+      },
+      {
+        "id": "decreased-bowel-sounds",
+        "region": "abdomen",
+        "maneuver": "Auscultate all four quadrants for 2 minutes",
+        "finding": "Decreased bowel sounds",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Decreased bowel sounds",
+        "snomed_verified": true
+      },
+      {
+        "id": "abdominal-distension",
+        "region": "abdomen",
+        "maneuver": "Inspect and measure abdominal girth",
+        "finding": "Abdominal distension",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Abdominal distension",
+        "snomed_verified": true
       },
       {
         "id": "palpable-mass",
         "region": "abdomen",
-        "maneuver": "Deep palpate the left lower quadrant",
-        "finding": "Tender, ill-defined mass suggesting phlegmon or abscess",
-        "frequency": "sometimes",
+        "maneuver": "Deeply palpate the left lower quadrant",
+        "finding": "Palpable tender mass (phlegmon or abscess)",
+        "frequency": "rare",
         "min_severity": "severe",
         "significance": "supports",
-        "importance": "important"
+        "importance": "optional",
+        "term": "Abdominal mass",
+        "snomed_verified": true
       },
       {
-        "id": "rigid-abdomen",
+        "id": "rigidity",
         "region": "abdomen",
         "maneuver": "Palpate the abdomen lightly",
-        "finding": "Diffuse rigidity suggesting generalized peritonitis",
+        "finding": "Diffuse abdominal rigidity",
         "frequency": "rare",
         "min_severity": "critical",
-        "significance": "strongly_supports",
-        "importance": "essential"
-      },
-      {
-        "id": "hypoactive-bowel-sounds",
-        "region": "abdomen",
-        "maneuver": "Auscultate bowel sounds in all quadrants",
-        "finding": "Hypoactive or absent bowel sounds",
-        "frequency": "sometimes",
-        "min_severity": "moderate",
         "significance": "supports",
-        "importance": "optional"
+        "importance": "essential",
+        "term": "Abdominal rigidity",
+        "snomed_verified": true
       },
       {
-        "id": "normal-bowel-sounds",
+        "id": "normal-rlq-tenderness",
         "region": "abdomen",
-        "maneuver": "Auscultate bowel sounds in all quadrants",
-        "finding": "Normal active bowel sounds",
-        "frequency": "common",
+        "maneuver": "Palpate the right lower quadrant",
+        "finding": "No right lower quadrant tenderness",
+        "frequency": "almost_always",
         "significance": "neutral",
-        "importance": "optional"
+        "importance": "important",
+        "term": "Tenderness of right lower quadrant of abdomen",
+        "snomed_verified": true
       },
       {
-        "id": "no-cva-tenderness",
+        "id": "normal-pelvic",
+        "region": "pelvic",
+        "maneuver": "Pelvic exam when a gynecologic cause is possible",
+        "finding": "No cervical motion tenderness or adnexal tenderness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Pelvic tenderness",
+        "snomed_verified": false
+      },
+      {
+        "id": "normal-cva",
         "region": "abdomen",
         "maneuver": "Percuss the costovertebral angles",
         "finding": "No costovertebral angle tenderness",
         "frequency": "almost_always",
         "significance": "neutral",
-        "importance": "optional"
-      },
-      {
-        "id": "no-organomegaly",
-        "region": "abdomen",
-        "maneuver": "Palpate for hepatosplenomegaly",
-        "finding": "No hepatosplenomegaly",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "optional"
-      },
-      {
-        "id": "normal-rectal-exam",
-        "region": "rectal",
-        "maneuver": "Perform a digital rectal exam",
-        "finding": "No mass, no gross blood, no tenderness",
-        "frequency": "common",
-        "significance": "neutral",
-        "importance": "important"
-      },
-      {
-        "id": "rectal-tenderness",
-        "region": "rectal",
-        "maneuver": "Perform a digital rectal exam",
-        "finding": "Anterior rectal tenderness or a palpable mass",
-        "frequency": "sometimes",
-        "min_severity": "moderate",
-        "significance": "supports",
-        "importance": "optional"
-      },
-      {
-        "id": "no-cmt",
-        "region": "pelvic",
-        "maneuver": "Perform a pelvic exam when a gynecologic cause is possible",
-        "finding": "No cervical motion tenderness or adnexal mass",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "important"
-      },
-      {
-        "id": "no-hernia",
-        "region": "abdomen",
-        "maneuver": "Examine the inguinal and femoral canals and any surgical scars for hernias",
-        "finding": "No incarcerated hernia",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "optional"
+        "importance": "optional",
+        "term": "Costovertebral angle tenderness",
+        "snomed_verified": true
       }
     ]
   },
@@ -515,313 +512,657 @@
     "temp": {
       "mild": {
         "min": 98.6,
-        "max": 100.2
+        "max": 100.0
       },
       "moderate": {
-        "min": 99.5,
-        "max": 101.0
+        "min": 100.4,
+        "max": 102.0
       },
       "severe": {
-        "min": 100.4,
-        "max": 102.6
+        "min": 101.5,
+        "max": 103.5
       },
       "critical": {
-        "min": 101.0,
-        "max": 103.5
+        "min": 100.4,
+        "max": 104.0
       }
     },
     "hr": {
       "mild": {
-        "min": 72,
-        "max": 98
+        "min": 70,
+        "max": 95
       },
       "moderate": {
-        "min": 88,
-        "max": 108
+        "min": 90,
+        "max": 110
       },
       "severe": {
         "min": 100,
-        "max": 124
+        "max": 130
       },
       "critical": {
-        "min": 115,
-        "max": 145
+        "min": 110,
+        "max": 150
       }
     },
     "rr": {
+      "moderate": {
+        "min": 16,
+        "max": 20
+      },
       "severe": {
-        "min": 18,
-        "max": 24
+        "min": 20,
+        "max": 28
       },
       "critical": {
-        "min": 22,
-        "max": 30
+        "min": 24,
+        "max": 36
       }
     },
     "sbp": {
+      "severe": {
+        "min": 90,
+        "max": 110
+      },
       "critical": {
-        "min": 78,
-        "max": 98
+        "min": 70,
+        "max": 95
       }
     },
     "dbp": {
+      "severe": {
+        "min": 50,
+        "max": 70
+      },
       "critical": {
-        "min": 40,
+        "min": 35,
         "max": 60
       }
     }
   },
+  "labs": [
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "mild": {
+          "min": 6.0,
+          "max": 12.0
+        },
+        "moderate": {
+          "min": 9.5,
+          "max": 15.0
+        },
+        "severe": {
+          "min": 12.0,
+          "max": 20.0
+        },
+        "critical": {
+          "min": 15.0,
+          "max": 28.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "A normal white count does not rule out diverticulitis, especially in mild disease or older adults."
+    },
+    {
+      "test_id": "neut_pct",
+      "ranges": {
+        "mild": {
+          "min": 60,
+          "max": 78
+        },
+        "moderate": {
+          "min": 70,
+          "max": 85
+        },
+        "severe": {
+          "min": 78,
+          "max": 90
+        },
+        "critical": {
+          "min": 82,
+          "max": 94
+        }
+      },
+      "frequency": "common",
+      "importance": "important"
+    },
+    {
+      "test_id": "bands_pct",
+      "ranges": {
+        "severe": {
+          "min": 5,
+          "max": 12
+        },
+        "critical": {
+          "min": 8,
+          "max": 20
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional"
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "mild": {
+          "min": 0.5,
+          "max": 3.0
+        },
+        "moderate": {
+          "min": 2.0,
+          "max": 8.0
+        },
+        "severe": {
+          "min": 5.0,
+          "max": 20.0
+        },
+        "critical": {
+          "min": 10.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "common",
+      "importance": "optional",
+      "caveat": "Rises after 6-12 hours; higher values suggest complication."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "severe": {
+          "min": 2.0,
+          "max": 4.0
+        },
+        "critical": {
+          "min": 3.0,
+          "max": 8.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional"
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "severe": {
+          "min": 18,
+          "max": 35
+        },
+        "critical": {
+          "min": 22,
+          "max": 50
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "From vomiting and poor intake."
+    },
+    {
+      "test_id": "ua_wbc",
+      "ranges": {
+        "moderate": {
+          "min": 5,
+          "max": 15
+        },
+        "severe": {
+          "min": 10,
+          "max": 30
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Sterile pyuria from inflammation adjacent to the bladder; can mislead toward a urinary infection."
+    },
+    {
+      "test_id": "hcg",
+      "frequency": "almost_always",
+      "importance": "essential",
+      "caveat": "Negative. Required before ionizing radiation in anyone who could be pregnant; rules out ectopic pregnancy."
+    }
+  ],
+  "imaging": [
+    {
+      "study": "CT abdomen and pelvis with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Nonpregnant adults; recommended first-line imaging for suspected acute diverticulitis",
+      "findings": [
+        {
+          "text": "Diverticula in the sigmoid colon",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Focal sigmoid wall thickening greater than 5 mm",
+          "frequency": "common"
+        },
+        {
+          "text": "Pericolonic fat stranding and inflammation",
+          "frequency": "common"
+        },
+        {
+          "text": "Localized phlegmon or abscess",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Small amount of free fluid near the sigmoid colon",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Extraluminal free air",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Ultrasound of the abdomen",
+      "modality": "ultrasound",
+      "preferred_when": "Pregnant patients or children, to avoid radiation",
+      "findings": [
+        {
+          "text": "Thickened hypoechoic segment of sigmoid colon",
+          "frequency": "common"
+        },
+        {
+          "text": "Inflamed diverticulum with surrounding echogenic fat",
+          "frequency": "common"
+        },
+        {
+          "text": "Fluid collection or abscess adjacent to the colon",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Nondiagnostic due to bowel gas",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "MRI abdomen and pelvis without contrast",
+      "modality": "mri",
+      "preferred_when": "Pregnancy when ultrasound is nondiagnostic",
+      "findings": [
+        {
+          "text": "Segmental colonic wall thickening with pericolonic inflammation",
+          "frequency": "common"
+        },
+        {
+          "text": "Abscess or phlegmon",
+          "frequency": "sometimes"
+        }
+      ]
+    },
+    {
+      "study": "Abdominal x-ray",
+      "modality": "xray",
+      "findings": [
+        {
+          "text": "Nonspecific bowel gas pattern or mild ileus",
+          "frequency": "common"
+        },
+        {
+          "text": "Free intraperitoneal air",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Colonoscopy",
+      "modality": "endoscopy",
+      "preferred_when": "After the acute episode, to rule out colorectal cancer in selected patients",
+      "findings": [
+        {
+          "text": "Diverticula throughout the colon, predominantly sigmoid",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Erythema or edema around an inflamed diverticulum",
+          "frequency": "rare"
+        },
+        {
+          "text": "Stricture or mass needing biopsy",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "cbc",
+        "why": "Leukocytosis with left shift supports an inflammatory process"
+      },
+      {
+        "test": "bmp",
+        "why": "Assess dehydration, electrolytes, and renal function before IV contrast and treatment"
+      },
+      {
+        "test": "ua",
+        "why": "Check for urinary infection or stone that can mimic diverticulitis; sterile pyuria can occur"
+      },
+      {
+        "test": "hcg",
+        "why": "Rule out pregnancy before CT",
+        "only_if": "patient is of childbearing potential"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Most accurate test for acute diverticulitis and its complications"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "crp",
+        "why": "Inflammatory marker; elevated in diverticulitis and may suggest abscess or perforation"
+      },
+      {
+        "test": "lactate",
+        "why": "Screen for sepsis or hypoperfusion",
+        "only_if": "signs of sepsis or shock"
+      },
+      {
+        "test": "Ultrasound of the abdomen",
+        "why": "Avoids radiation; can show inflamed diverticulum",
+        "only_if": "pregnant patient or child"
+      },
+      {
+        "test": "MRI abdomen and pelvis without contrast",
+        "why": "Avoids radiation; alternative if CT contraindicated",
+        "only_if": "pregnant and ultrasound nondiagnostic"
+      },
+      {
+        "test": "Blood cultures",
+        "why": "Identify bacteremia",
+        "only_if": "severe sepsis or immunocompromised"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Abdominal x-ray",
+        "why": "Nonspecific; CT is preferred when imaging is needed"
+      },
+      {
+        "test": "Colonoscopy",
+        "why": "Contraindicated during acute diverticulitis due to perforation risk; may be done after recovery to exclude cancer"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in evaluating abdominal pain"
+      },
+      {
+        "test": "lipase",
+        "why": "Not indicated unless epigastric pain or pancreatitis suspected"
+      }
+    ],
+    "decision_points": [
+      "Perform pregnancy test before CT in anyone who could be pregnant",
+      "CT of the abdomen and pelvis with IV contrast is the preferred imaging study in nonpregnant adults",
+      "Avoid colonoscopy during acute diverticulitis due to risk of perforation",
+      "In pregnant patients, start with ultrasound and use MRI if needed"
+    ],
+    "criteria": [],
+    "scores": []
+  },
   "differential": [
-    {
-      "name": "Acute appendicitis",
-      "slug": "acute-appendicitis",
-      "why_considered": "Acute onset abdominal pain with fever and leukocytosis; can present with right-sided or periumbilical pain that overlaps with atypical diverticulitis",
-      "must_not_miss": true,
-      "trigger": "Pain that began periumbilically and migrated to the right lower quadrant, or right lower quadrant tenderness",
-      "discriminators": {
-        "history": [
-          "Pain started centrally and migrated to the right lower quadrant",
-          "Anorexia with nausea before pain localizes",
-          "No prior similar left-sided episodes"
-        ],
-        "exam": [
-          "Maximal tenderness at McBurney point in the right lower quadrant",
-          "Psoas or obturator signs may be positive"
-        ],
-        "labs": [
-          "Leukocytosis without a left-sided source"
-        ],
-        "imaging": [
-          "CT shows an inflamed appendix with periappendiceal fat stranding and a normal sigmoid colon"
-        ]
-      }
-    },
-    {
-      "name": "Acute colonic diverticular bleeding",
-      "slug": "diverticular-bleeding",
-      "why_considered": "Same underlying diverticula; patients may present with abdominal discomfort and rectal bleeding",
-      "must_not_miss": true,
-      "trigger": "Large-volume painless bright red or maroon rectal bleeding",
-      "discriminators": {
-        "history": [
-          "Painless, large-volume hematochezia",
-          "No fever or focal peritoneal pain",
-          "Often older adult on aspirin or NSAIDs"
-        ],
-        "exam": [
-          "Hemodynamically stable or tachycardic from blood loss; abdomen soft and nontender",
-          "No guarding or rebound"
-        ],
-        "labs": [
-          "Falling hemoglobin with a normal or mildly elevated WBC",
-          "No significant leukocytosis"
-        ],
-        "imaging": [
-          "CT angiography or tagged RBC scan localizes the bleeding site; colonoscopy after stabilization shows diverticula without inflammation"
-        ]
-      }
-    },
     {
       "name": "Colorectal cancer",
       "slug": "colorectal-cancer",
-      "why_considered": "Left-sided colon mass can cause abdominal pain, altered bowel habits, and obstruction mimicking diverticulitis",
+      "why_considered": "Left lower quadrant pain and change in bowel habits in an older adult; can mimic or complicate diverticulitis, especially if a mass or stricture is present.",
       "must_not_miss": true,
-      "trigger": "Weight loss, iron deficiency anemia, or persistent symptoms beyond the acute episode",
+      "trigger": "Unintentional weight loss, iron deficiency anemia, or change in stool caliber in a patient over 50",
       "discriminators": {
         "history": [
-          "Weeks to months of change in stool caliber",
           "Unintentional weight loss",
-          "Blood mixed in stool"
+          "Change in bowel habits over weeks to months",
+          "Narrow-caliber stools",
+          "Hematochezia or melena"
         ],
         "exam": [
-          "Palpable left-sided abdominal mass",
-          "Signs of anemia such as pallor"
+          "Palpable abdominal mass",
+          "Fecal occult blood positive",
+          "Cachexia or signs of anemia"
         ],
         "labs": [
           "Iron deficiency anemia",
-          "Normal or mildly elevated WBC"
+          "Elevated CEA (not diagnostic)"
         ],
         "imaging": [
-          "CT shows an irregular annular mass with luminal narrowing rather than diverticula with fat stranding",
-          "Colonoscopy with biopsy confirms malignancy"
-        ]
-      }
-    },
-    {
-      "name": "Acute mesenteric ischemia",
-      "slug": "acute-mesenteric-ischemia",
-      "why_considered": "Severe abdominal pain with nausea and vomiting in an older adult with vascular risk factors",
-      "must_not_miss": true,
-      "trigger": "Pain out of proportion to exam findings, or atrial fibrillation with sudden severe pain",
-      "discriminators": {
-        "history": [
-          "Sudden severe pain that is poorly localized",
-          "Atrial fibrillation or known vascular disease",
-          "Pain much worse than the examination suggests"
-        ],
-        "exam": [
-          "Abdomen may be soft early despite severe pain",
-          "Later develops peritoneal signs"
-        ],
-        "labs": [
-          "Lactate elevated",
-          "Metabolic acidosis with a high anion gap"
-        ],
-        "imaging": [
-          "CT angiography shows arterial occlusion or bowel wall ischemia without the segmental colonic inflammation of diverticulitis"
-        ]
-      }
-    },
-    {
-      "name": "Pyelonephritis",
-      "slug": "pyelonephritis",
-      "why_considered": "Fever, flank or abdominal pain, and leukocytosis can overlap with diverticulitis",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Dysuria, urgency, and frequency preceding the pain",
-          "Flank pain radiating to the groin"
-        ],
-        "exam": [
-          "Costovertebral angle tenderness",
-          "No focal left lower quadrant peritoneal signs"
-        ],
-        "labs": [
-          "Pyuria and bacteriuria on urinalysis",
-          "Positive urine culture"
-        ],
-        "imaging": [
-          "CT shows renal enlargement or perinephric stranding with a normal colon"
-        ]
-      }
-    },
-    {
-      "name": "Pelvic inflammatory disease",
-      "slug": "pelvic-inflammatory-disease",
-      "why_considered": "Lower abdominal pain with fever in a sexually active patient",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Vaginal discharge",
-          "New or multiple sexual partners",
-          "Bilateral lower abdominal pain"
-        ],
-        "exam": [
-          "Cervical motion tenderness",
-          "Adnexal tenderness"
-        ],
-        "labs": [
-          "Positive gonorrhea or chlamydia testing",
-          "Leukocytosis without a colonic source"
-        ],
-        "imaging": [
-          "Ultrasound shows thickened fallopian tubes or free pelvic fluid; CT shows no colonic diverticulitis"
-        ]
-      }
-    },
-    {
-      "name": "Ectopic pregnancy",
-      "slug": "ectopic-pregnancy",
-      "why_considered": "Acute lower abdominal pain in a patient of reproductive age",
-      "must_not_miss": true,
-      "trigger": "Any patient who could be pregnant with acute abdominal pain",
-      "discriminators": {
-        "history": [
-          "Missed period",
-          "Vaginal bleeding",
-          "Sudden one-sided pelvic pain"
-        ],
-        "exam": [
-          "Adnexal tenderness or mass",
-          "Possible peritoneal signs if ruptured"
-        ],
-        "labs": [
-          "Positive hCG",
-          "Falling hematocrit if ruptured"
-        ],
-        "imaging": [
-          "Transvaginal ultrasound shows no intrauterine pregnancy and possibly an adnexal mass or free fluid"
+          "Irregular focal mass or stricture with shouldering on CT",
+          "Colonoscopy after resolution of acute inflammation shows malignancy"
         ]
       }
     },
     {
       "name": "Irritable bowel syndrome",
       "slug": "irritable-bowel-syndrome",
-      "why_considered": "Chronic cramping, bloating, and altered bowel habits overlap with chronic diverticular symptoms",
+      "why_considered": "Recurrent lower abdominal pain with bloating, constipation, or diarrhea; chronic symptoms may be mistaken for smoldering diverticular disease.",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Chronic waxing and waning symptoms over months",
-          "Pain relieved by defecation",
-          "No fever or acute severe pain"
+          "Chronic or recurrent pain over months, often related to defecation",
+          "Bloating and variable bowel habits",
+          "No fever or acute worsening",
+          "Symptoms may improve with defecation"
         ],
         "exam": [
-          "Diffuse mild tenderness without localization",
+          "Normal abdominal exam, no localized tenderness",
           "No peritoneal signs"
         ],
         "labs": [
-          "Normal WBC and inflammatory markers"
+          "Normal WBC and CRP",
+          "No anemia or inflammatory markers"
         ],
         "imaging": [
-          "CT or colonoscopy shows diverticula without inflammation"
+          "CT or colonoscopy normal or only uncomplicated diverticula, no acute inflammation"
+        ]
+      }
+    },
+    {
+      "name": "Appendicitis",
+      "slug": "appendicitis",
+      "why_considered": "Acute lower abdominal pain, fever, and leukocytosis; can be confused with diverticulitis, especially if pain is not clearly left-sided.",
+      "must_not_miss": true,
+      "trigger": "Periumbilical pain migrating to the right lower quadrant or right lower quadrant tenderness",
+      "discriminators": {
+        "history": [
+          "Pain begins periumbilically then migrates to right lower quadrant",
+          "Anorexia and vomiting early",
+          "Pain before vomiting"
+        ],
+        "exam": [
+          "Tenderness at McBurney's point",
+          "Psoas, obturator, or Rovsing sign",
+          "No left lower quadrant tenderness"
+        ],
+        "labs": [
+          "Leukocytosis with left shift"
+        ],
+        "imaging": [
+          "CT shows enlarged appendix with surrounding inflammation, normal sigmoid"
+        ]
+      }
+    },
+    {
+      "name": "Ectopic pregnancy",
+      "slug": "ectopic-pregnancy",
+      "why_considered": "Lower abdominal pain in a person who could be pregnant; can mimic diverticulitis if pain is left-sided.",
+      "must_not_miss": true,
+      "trigger": "Positive pregnancy test or any person of childbearing age with abdominal pain",
+      "discriminators": {
+        "history": [
+          "Missed period",
+          "Vaginal bleeding",
+          "Sudden onset of pain"
+        ],
+        "exam": [
+          "Adnexal tenderness or mass",
+          "Cervical motion tenderness",
+          "Signs of hemodynamic instability if ruptured"
+        ],
+        "labs": [
+          "Positive hCG",
+          "Anemia if ruptured"
+        ],
+        "imaging": [
+          "No intrauterine pregnancy on transvaginal ultrasound",
+          "Adnexal mass or free fluid"
+        ]
+      }
+    },
+    {
+      "name": "Urinary tract infection or pyelonephritis",
+      "slug": "urinary-tract-infection",
+      "why_considered": "Lower abdominal or pelvic pain with fever and urinary symptoms; diverticulitis can cause sterile pyuria and be mistaken for UTI.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Dysuria, frequency, urgency",
+          "Flank pain and chills if pyelonephritis",
+          "No change in bowel habits"
+        ],
+        "exam": [
+          "Suprapubic tenderness",
+          "Costovertebral angle tenderness in pyelonephritis",
+          "No localized left lower quadrant peritoneal signs"
+        ],
+        "labs": [
+          "Positive urine culture",
+          "Positive nitrites and leukocyte esterase",
+          "Hematuria"
+        ],
+        "imaging": [
+          "CT may show normal colon or only bladder wall thickening; if pyelonephritis, kidney findings"
+        ]
+      }
+    },
+    {
+      "name": "Kidney stone",
+      "slug": "kidney-stones",
+      "why_considered": "Left-sided abdominal or pelvic pain with nausea; pain can radiate to groin and be severe.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Colicky left flank pain radiating to groin",
+          "Gross hematuria",
+          "Patient cannot get comfortable"
+        ],
+        "exam": [
+          "Costovertebral angle tenderness",
+          "No peritoneal signs"
+        ],
+        "labs": [
+          "Hematuria on urinalysis"
+        ],
+        "imaging": [
+          "Stone and hydronephrosis on CT; normal colon"
+        ]
+      }
+    },
+    {
+      "name": "Inflammatory bowel disease",
+      "slug": "inflammatory-bowel-disease",
+      "why_considered": "Acute or chronic abdominal pain, diarrhea, and fever; CT may show colonic inflammation.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Chronic diarrhea, sometimes bloody",
+          "Weight loss",
+          "Extraintestinal symptoms (arthritis, uveitis)"
+        ],
+        "exam": [
+          "Tenderness may be diffuse or localized; perianal disease in Crohn's"
+        ],
+        "labs": [
+          "Anemia, elevated CRP and ESR",
+          "Fecal calprotectin elevated"
+        ],
+        "imaging": [
+          "CT shows skip lesions, terminal ileal thickening, or pancolitis rather than focal sigmoid diverticulitis"
+        ]
+      }
+    },
+    {
+      "name": "Ischemic colitis",
+      "slug": "ischemic-colitis",
+      "why_considered": "Older adult with left-sided abdominal pain and bloody diarrhea; often has vascular risk factors.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Abrupt onset of pain",
+          "Bloody diarrhea",
+          "History of cardiovascular disease"
+        ],
+        "exam": [
+          "Tenderness may be out of proportion to exam",
+          "No guarding unless severe"
+        ],
+        "labs": [
+          "Elevated WBC",
+          "Elevated lactate in severe ischemia"
+        ],
+        "imaging": [
+          "CT shows segmental colonic wall thickening, often at splenic flexure",
+          "Thumbprinting on x-ray",
+          "Pneumatosis if severe"
         ]
       }
     }
   ],
   "course": {
     "severity": {
-      "mild": "Uncomplicated diverticulitis: mild left lower quadrant pain, low-grade or no fever, able to tolerate oral intake, no peritoneal signs",
-      "moderate": "Uncomplicated diverticulitis with more marked pain, fever, leukocytosis, and guarding but no abscess or perforation",
-      "severe": "Complicated diverticulitis: abscess, phlegmon, fistula, obstruction, or contained perforation with significant systemic symptoms",
-      "critical": "Free perforation with generalized peritonitis and sepsis, or massive diverticular bleeding with hemodynamic instability"
+      "mild": "Uncomplicated acute diverticulitis: localized left lower quadrant tenderness, low-grade or no fever, normal to mildly elevated white count; patient is well enough for outpatient management.",
+      "moderate": "Uncomplicated but more symptomatic: fever, guarding, moderate leukocytosis and CRP elevation; often requires IV antibiotics and bowel rest, but no abscess or free air.",
+      "severe": "Complicated by abscess, phlegmon, or localized peritonitis: significant fever, tachycardia, leukocytosis, possible ileus or palpable mass; may need percutaneous drainage.",
+      "critical": "Free perforation with generalized peritonitis and sepsis: diffuse rigidity, hypotension, lactic acidosis; emergency surgery and resuscitation."
     },
     "red_flags": [
       {
-        "finding": "Diffuse rigidity or rebound tenderness",
-        "meaning": "Generalized peritonitis from free perforation; surgical emergency"
+        "finding": "Diffuse abdominal rigidity or rebound",
+        "meaning": "Generalized peritonitis from free perforation; urgent surgical evaluation"
       },
       {
         "finding": "Hypotension or heart rate over 120",
-        "meaning": "Sepsis or significant blood loss"
+        "meaning": "Sepsis; need immediate resuscitation and source control"
       },
       {
-        "finding": "Sudden severe pain with hemodynamic collapse",
-        "meaning": "Free perforation or major diverticular bleeding"
+        "finding": "Free intraperitoneal air on CT",
+        "meaning": "Colon perforation; urgent surgery"
       },
       {
-        "finding": "Large-volume painless rectal bleeding",
-        "meaning": "Diverticular bleeding; may be life-threatening"
+        "finding": "Persistent or rising fever despite antibiotics",
+        "meaning": "Failed medical therapy; consider abscess or other complication"
       },
       {
-        "finding": "Altered mental status in an older adult",
-        "meaning": "Sepsis or severe dehydration until proven otherwise"
+        "finding": "Vomiting with obstipation",
+        "meaning": "Large bowel obstruction; may need decompression"
       },
       {
-        "finding": "Persistent fever despite antibiotics",
-        "meaning": "Abscess or perforation requiring drainage or surgery"
+        "finding": "Hematochezia with hemodynamic instability",
+        "meaning": "Diverticular bleed; different acute emergency"
       }
     ],
     "complications": [
       {
         "name": "Abscess",
-        "timing": "early",
+        "timing": "any",
         "seriousness": "serious",
         "frequency": "sometimes",
         "clues": [
-          "Persistent fever and leukocytosis",
+          "Persistent fever despite antibiotics",
           "Palpable tender mass",
-          "CT shows a fluid collection"
+          "CT shows rim-enhancing fluid collection"
         ]
       },
       {
-        "name": "Perforation with peritonitis",
+        "name": "Free perforation and peritonitis",
         "timing": "early",
         "seriousness": "life_threatening",
         "frequency": "rare",
         "clues": [
-          "Diffuse rigidity and rebound",
-          "Hypotension and tachycardia",
-          "Free air on CT"
+          "Diffuse rigidity",
+          "Free air on CT",
+          "Hypotension and sepsis"
         ]
       },
       {
@@ -830,215 +1171,164 @@
         "seriousness": "serious",
         "frequency": "rare",
         "clues": [
-          "Pneumaturia or fecaluria suggesting colovesical fistula",
-          "Vaginal passage of stool or gas suggesting colovaginal fistula",
-          "Recurrent urinary tract infections"
+          "Pneumaturia or fecaluria (colovesical)",
+          "Vaginal passage of stool (colovaginal)",
+          "Recurrent urinary infections"
         ]
       },
       {
-        "name": "Intestinal obstruction",
+        "name": "Bowel obstruction",
         "timing": "any",
         "seriousness": "serious",
-        "frequency": "rare",
-        "clues": [
-          "Vomiting and distension",
-          "Absent bowel sounds",
-          "Dilated bowel loops on imaging"
-        ]
-      },
-      {
-        "name": "Diverticular bleeding",
-        "timing": "any",
-        "seriousness": "life_threatening",
         "frequency": "sometimes",
         "clues": [
-          "Painless large-volume hematochezia",
-          "Falling hemoglobin",
-          "Hemodynamic instability"
+          "Abdominal distension",
+          "Vomiting and obstipation",
+          "CT shows dilated colon with transition point"
         ]
       },
       {
-        "name": "Stricture",
-        "timing": "late",
+        "name": "Phlegmon",
+        "timing": "early",
         "seriousness": "serious",
-        "frequency": "rare",
+        "frequency": "sometimes",
         "clues": [
-          "Progressive constipation",
-          "Narrowed segment on colonoscopy or imaging"
+          "Palpable tender mass",
+          "CT shows pericolonic soft tissue stranding without discrete abscess"
         ]
       }
     ],
     "special_populations": [
       {
         "population": "older_adults",
-        "differences": "May present with confusion, weakness, or falls rather than prominent abdominal pain; fever and leukocytosis can be blunted, so a lower threshold for imaging is needed."
+        "differences": "May have milder pain and fever, with only confusion or malaise; higher risk of complications and perforation; need lower threshold for imaging and hospital admission."
       },
       {
         "population": "immunocompromised",
-        "differences": "May have minimal pain and fever despite perforation or abscess; maintain a high index of suspicion and image early."
+        "differences": "Higher risk of severe infection, perforation, and sepsis; localizing signs may be absent; consider broad-spectrum antibiotics and early imaging."
       },
       {
         "population": "pregnancy",
-        "differences": "The enlarging uterus displaces the colon upward, so pain may be in the right lower or upper abdomen and mimic appendicitis or cholecystitis; CT is avoided when possible and ultrasound or MRI is preferred."
-      },
-      {
-        "population": "obesity",
-        "differences": "Thick abdominal wall can make the exam less reliable; pain may be diffuse or poorly localized, so imaging is essential."
-      },
-      {
-        "population": "renal_impairment",
-        "differences": "Contrast-enhanced CT may need to be avoided; consider ultrasound or MRI, and adjust antibiotic dosing for kidney function."
-      },
-      {
-        "population": "diabetes",
-        "differences": "May have atypical or blunted presentations and higher risk of severe complications; monitor glucose closely during acute illness."
+        "differences": "Rare, but gravid uterus may displace sigmoid causing right-sided pain; prefer ultrasound and MRI to avoid radiation; involve obstetrics early."
       }
     ]
   },
   "teaching": {
     "key_questions": [
       {
-        "question": "Where is the pain, and how did it start?",
+        "question": "Where is the pain, and does it move?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Constant left lower quadrant pain that came on suddenly or built over a day or two"
+        "looking_for": "Left lower quadrant pain that stays there; may be suprapubic but does not migrate to the right lower quadrant"
       },
       {
-        "question": "When did the pain begin?",
+        "question": "When did it start, and how has it changed?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "12–72 hours; longer duration raises concern for abscess or perforation"
-      },
-      {
-        "question": "Does the pain move or radiate anywhere?",
-        "category": "hpi",
-        "importance": "important",
-        "looking_for": "Stays in the left lower abdomen; may radiate to back or suprapubic area but does not migrate"
+        "looking_for": "Acute onset over hours to 1-3 days, becoming constant; a slower course can still be diverticulitis"
       },
       {
         "question": "What makes the pain worse?",
         "category": "hpi",
         "importance": "important",
-        "looking_for": "Walking, coughing, bearing down, or jarring the bed suggests peritoneal irritation"
+        "looking_for": "Movement, coughing, deep breathing, or pressure worsening the pain suggests peritoneal irritation"
       },
       {
-        "question": "Have you had fever or chills?",
+        "question": "Any fever or chills?",
         "category": "associated",
-        "importance": "essential",
-        "looking_for": "Fever and chills support inflammation or infection"
+        "importance": "important",
+        "looking_for": "Low-grade fever; prominent chills suggest abscess, perforation, or bacteremia"
       },
       {
         "question": "Any nausea or vomiting?",
         "category": "associated",
         "importance": "important",
-        "looking_for": "Nausea common; vomiting suggests more severe disease or obstruction"
+        "looking_for": "Nausea is common; vomiting, when present, usually follows the pain"
       },
       {
-        "question": "How have your bowel habits been?",
+        "question": "Have your bowel habits changed?",
         "category": "associated",
         "importance": "important",
-        "looking_for": "Constipation common; diarrhea can occur; a change in stool caliber over weeks suggests another cause"
+        "looking_for": "Constipation or diarrhea; obstipation suggests obstruction"
       },
       {
-        "question": "Have you seen blood in your stool?",
-        "category": "associated",
+        "question": "Any burning with urination or blood in the urine?",
+        "category": "ros",
         "importance": "important",
-        "looking_for": "Large-volume painless bleeding points to diverticular bleeding rather than diverticulitis"
+        "looking_for": "Absent or mild; sterile pyuria from adjacent inflammation can mimic a urinary infection"
       },
       {
-        "question": "Any burning with urination, urinary frequency, or air in your urine?",
-        "category": "associated",
-        "importance": "important",
-        "looking_for": "Pneumaturia or fecaluria suggests a colovesical fistula"
-      },
-      {
-        "question": "Have you had episodes like this before, or been told you have diverticulosis?",
-        "category": "pmh",
-        "importance": "important",
-        "looking_for": "Prior similar attacks or known diverticula support the diagnosis"
-      },
-      {
-        "question": "Have you had abdominal surgery or a colonoscopy?",
-        "category": "pmh",
-        "importance": "optional",
-        "looking_for": "Prior surgery suggests adhesions; recent colonoscopy may have shown diverticula"
-      },
-      {
-        "question": "Do you take ibuprofen, naproxen, aspirin, or steroids?",
-        "category": "medications",
-        "importance": "important",
-        "looking_for": "NSAIDs and corticosteroids raise the risk of diverticulitis and bleeding"
-      },
-      {
-        "question": "Has anyone in your family had diverticulitis or diverticulosis?",
-        "category": "family",
-        "importance": "optional",
-        "looking_for": "Family history modestly increases risk"
-      },
-      {
-        "question": "Do you smoke, and how much physical activity do you get?",
-        "category": "social",
-        "importance": "optional",
-        "looking_for": "Smoking and inactivity are modifiable risk factors"
-      },
-      {
-        "question": "Could you be pregnant? When was your last period?",
+        "question": "Could you be pregnant?",
         "category": "obstetric",
         "importance": "essential",
-        "looking_for": "Excludes ectopic pregnancy in a patient of reproductive age"
+        "looking_for": "Negative pregnancy test in anyone who could be pregnant before ionizing radiation"
       },
       {
-        "question": "Any vaginal discharge, bleeding, or pain with intercourse?",
+        "question": "Any vaginal discharge or bleeding?",
         "category": "sexual",
         "importance": "important",
-        "looking_for": "Present suggests pelvic inflammatory disease or a gynecologic cause"
+        "looking_for": "Absent; present suggests a gynecologic cause such as pelvic inflammatory disease or ectopic pregnancy"
       },
       {
-        "question": "Have you had unintentional weight loss or blood mixed in your stool over weeks to months?",
-        "category": "red_flag",
-        "importance": "essential",
-        "looking_for": "Suggests colorectal cancer rather than simple diverticulitis"
+        "question": "Have you ever had diverticulosis or diverticulitis?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Known diverticulosis or prior attacks make diverticulitis much more likely"
       },
       {
-        "question": "Any sudden severe pain with feeling faint, or large amounts of rectal bleeding?",
+        "question": "Any blood in your stool?",
         "category": "red_flag",
         "importance": "essential",
-        "looking_for": "Free perforation with peritonitis or major diverticular bleeding"
+        "looking_for": "Absent; hematochezia raises concern for diverticular bleed, ischemic colitis, or colorectal cancer"
+      },
+      {
+        "question": "Any unintentional weight loss?",
+        "category": "red_flag",
+        "importance": "important",
+        "looking_for": "Absent; weight loss raises concern for colorectal cancer"
+      },
+      {
+        "question": "Are you taking NSAIDs, steroids, or blood thinners?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "NSAIDs and steroids increase risk and severity of diverticulitis; anticoagulants increase bleeding risk"
       }
     ],
     "accepted_names": [
       "Diverticulitis",
       "Acute diverticulitis",
       "Colonic diverticulitis",
-      "Diverticular disease",
-      "Diverticulosis with diverticulitis"
+      "Sigmoid diverticulitis",
+      "Diverticulosis",
+      "Diverticular disease"
     ],
     "reasoning_points": [
-      "Constant left lower quadrant pain with fever and chills in an adult over 40",
-      "Tenderness and possibly guarding localized to the left lower quadrant",
-      "Leukocytosis with a left shift",
-      "CT showing colonic diverticula with segmental wall thickening and pericolic fat stranding",
-      "Complications considered: abscess, perforation, fistula, obstruction, and bleeding",
-      "Alternatives excluded: appendicitis, colorectal cancer, mesenteric ischemia, pyelonephritis, pelvic inflammatory disease, ectopic pregnancy",
-      "NSAID or corticosteroid use noted as a risk factor"
+      "Acute left lower quadrant abdominal pain in an older adult",
+      "Fever and leukocytosis support an inflammatory process",
+      "Localized left lower quadrant tenderness with guarding or rebound",
+      "CT shows sigmoid diverticula with wall thickening and pericolonic fat stranding",
+      "Pregnancy excluded",
+      "Look-alikes such as appendicitis, urinary tract infection, and gynecologic disease excluded by history and exam",
+      "No free air, abscess, or other complication in uncomplicated cases",
+      "Risk factors such as older age, low-fiber diet, or prior diverticulosis"
     ],
     "difficulty": {
       "easy": [
-        "Older adult with known diverticulosis",
-        "Classic left lower quadrant pain, fever, and leukocytosis",
-        "CT confirms sigmoid diverticulitis without complication"
+        "Older adult with classic left lower quadrant pain and low-grade fever",
+        "Leukocytosis with left shift",
+        "CT shows uncomplicated sigmoid diverticulitis with pericolonic fat stranding"
       ],
       "medium": [
-        "Older adult with blunted pain and fever who presents with weakness or confusion",
-        "Mild symptoms with normal white count but CT shows diverticulitis",
-        "Woman of reproductive age with lower abdominal pain and gynecologic look-alikes"
+        "Patient under 50 with subtle symptoms and a normal white count",
+        "Predominant urinary symptoms from adjacent bladder irritation",
+        "Pain in the right lower quadrant or suprapubic area from a redundant sigmoid colon",
+        "Pregnant patient requiring ultrasound or MRI instead of CT"
       ],
       "hard": [
-        "Immunocompromised patient with minimal pain and fever despite abscess or perforation",
-        "Pregnant patient with right-sided or upper abdominal pain from a displaced colon",
-        "Patient presenting with pneumaturia or fecaluria from a colovesical fistula",
-        "Elderly patient with painless large-volume rectal bleeding from diverticular bleeding rather than diverticulitis",
-        "Presentation after free perforation with diffuse peritonitis and sepsis"
+        "Older adult with confusion and vague abdominal discomfort but no localizing signs",
+        "Immunocompromised patient with severe sepsis and acute abdomen",
+        "Free perforation with generalized peritonitis and shock",
+        "Diverticulitis plus a possible colonic mass on CT requiring post-recovery colonoscopy"
       ]
     }
   }

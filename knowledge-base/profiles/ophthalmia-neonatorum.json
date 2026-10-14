@@ -33,57 +33,44 @@
       },
       {
         "stage": "patient_presentation",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:57:19Z"
+        "generated_at": "2026-10-14T17:09:17Z"
       },
       {
         "stage": "exam_vitals",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:57:52Z"
+        "generated_at": "2026-10-14T17:10:09Z"
       },
       {
         "stage": "diagnostics",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:57:58Z"
+        "generated_at": "2026-10-14T17:11:22Z"
       },
       {
         "stage": "differential_course",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:58:08Z"
+        "generated_at": "2026-10-14T17:12:14Z"
       },
       {
         "stage": "teaching",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:58:15Z"
+        "generated_at": "2026-10-14T17:12:45Z"
       }
     ],
     "validation": {
-      "status": "failed",
-      "rule_errors": [
-        "exam: 4 of 11 terms aren't SNOMED CT findings"
-      ],
+      "status": "passed",
+      "rule_errors": [],
       "review_issues": [
-        "auto-repaired: workup: 'conjunctival swab for gram stain and culture' was in ['initial', 'confirmatory'], kept ['initial']",
-        "auto-repaired: workup: 'conjunctival swab for chlamydial nucleic acid amplification testing' was in ['initial', 'confirmatory'], kept ['initial']",
-        "auto-repaired: workup: 'blood culture' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "auto-repaired: workup: 'chest x-ray' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "auto-repaired: workup: 'blood culture' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "auto-repaired: workup: 'chest x-ray' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "exam: term 'Corneal clarity' not found in SNOMED CT",
-        "exam: term 'Extraocular movement' not found in SNOMED CT",
-        "exam: term 'Lacrimal sac' not found in SNOMED CT",
-        "exam: term 'Neurological examination' not found in SNOMED CT",
-        "differential chlamydial-conjunctivitis: no profile yet",
-        "differential gonococcal-ophthalmia-neonatorum: no profile yet",
+        "auto-repaired: workup: 'Blood culture' was in initial, not_indicated; kept initial as a conditional order (only if systemic signs such as fever, lethargy, or poor feeding)",
+        "auto-repaired: workup: 'CT orbits with IV contrast' was in initial, not_indicated; kept initial as a conditional order (only if orbital cellulitis or abscess is suspected (proptosis, limited extraocular movements, or severe eyelid swelling))",
         "differential chemical-conjunctivitis: no profile yet",
-        "differential nasolacrimal-duct-obstruction: no profile yet",
         "differential herpes-simplex-keratoconjunctivitis: no profile yet",
-        "differential congenital-glaucoma: no profile yet"
+        "differential dacryostenosis: no profile yet"
       ]
     },
     "review": {
@@ -93,143 +80,119 @@
   "patient": {
     "age": {
       "typical_min": 0,
-      "typical_max": 1,
-      "peak": "first 2 weeks of life",
+      "typical_max": 0,
+      "peak": "first week of life",
       "possible_min": 0,
-      "possible_max": 1
+      "possible_max": 0
     },
     "sex": "either",
     "demographics": [
-      "Occurs in newborns; no sex predilection",
-      "More common where prenatal care is limited or maternal sexually transmitted infections are untreated"
+      "Occurs in newborns of both sexes",
+      "More common where maternal chlamydia and gonorrhea are prevalent"
     ],
     "risk_factors": [
       {
-        "text": "Maternal Neisseria gonorrhoeae infection",
+        "text": "Maternal gonococcal or chlamydial infection",
         "strength": "strong"
       },
       {
-        "text": "Maternal Chlamydia trachomatis infection",
+        "text": "Vaginal delivery",
         "strength": "strong"
       },
       {
-        "text": "Inadequate or no prenatal care",
+        "text": "No ocular prophylaxis after birth",
+        "strength": "strong"
+      },
+      {
+        "text": "Prolonged rupture of membranes",
         "strength": "moderate"
       },
       {
-        "text": "Rupture of membranes before delivery",
-        "strength": "moderate"
-      },
-      {
-        "text": "No ocular prophylaxis at birth",
-        "strength": "moderate"
-      },
-      {
-        "text": "Maternal history of sexually transmitted infection",
+        "text": "Inadequate prenatal care",
         "strength": "moderate"
       }
     ],
     "comorbidities": [],
-    "family_history": [],
+    "family_history": [
+      "Maternal sexually transmitted infection"
+    ],
     "social_history": [
-      "Born by vaginal delivery",
-      "Mother may have untreated genital infection"
+      "Limited prenatal care"
     ],
     "exposures": [
-      "Passage through an infected birth canal",
-      "Maternal genital gonorrhea or chlamydia"
+      "Maternal genital tract infection"
     ],
     "risk_medications": []
   },
   "presentation": {
     "chief_complaints": [
       {
-        "text": "My baby's eye is red and swollen",
+        "text": "My baby's eye has a lot of yellow goop",
         "frequency": "almost_always",
-        "term": "Red eye",
+        "term": "Discharge from eye",
         "snomed_verified": true
       },
       {
-        "text": "There is pus coming from my baby's eye",
+        "text": "The baby's eyes look red",
         "frequency": "almost_always",
-        "term": "Eye discharge",
+        "term": "Conjunctival injection",
         "snomed_verified": true
       },
       {
-        "text": "My baby's eyelids are stuck together in the morning",
+        "text": "The baby's eyelids are swollen shut",
         "frequency": "common",
-        "term": "Eyelid crusting",
-        "snomed_verified": true
-      },
-      {
-        "text": "My baby keeps the eye closed and seems uncomfortable",
-        "frequency": "sometimes",
-        "term": "Eye pain",
+        "term": "Edema of eyelid",
         "snomed_verified": true
       }
     ],
     "hpi": {
-      "onset": "Gradual, starting a few days after birth; gonococcal disease often appears at 2–5 days and chlamydial disease at 5–14 days",
-      "duration": "Hours to days; present since the first week of life",
-      "progression": "Discharge increases from watery to thick and purulent; eyelid swelling worsens; the eye may become difficult to open",
-      "location": "One or both eyes, typically starting in one eye",
+      "onset": "Develops within the first week when gonococcal, usually 24–48 hours; chlamydial conjunctivitis appears later, often 5–14 days",
+      "duration": "Usually brought in within 1–3 days of eye symptoms",
+      "progression": "Starts with watery discharge and mild redness, then becomes thicker, purulent discharge and eyelid swelling; without treatment can progress to corneal involvement",
+      "location": "Both eyes are typically involved, though one may be worse",
       "radiation": "None",
-      "quality": "Thick yellow-green discharge with red, swollen conjunctiva and puffy eyelids",
-      "severity": "Mild to moderate in most cases; severe with marked lid swelling and copious pus in gonococcal infection",
-      "timing": "Continuous, worse after sleep when discharge dries and sticks the lids together",
+      "quality": "Thick, yellow-green discharge; eye pain cannot be reported by infant",
+      "severity": "Moderate; can be severe with corneal ulceration if untreated",
+      "timing": "Constant discharge and redness",
       "aggravating": [
-        "Sleeping",
-        "Not wiping the eye"
+        "Wiping the eyes",
+        "Opening the eyelids"
       ],
       "relieving": [
-        "Warm compresses",
-        "Gentle cleaning of the lids"
+        "Cleaning the discharge"
       ],
       "associated_symptoms": [
         {
-          "text": "Swelling of the eyelids",
-          "frequency": "almost_always",
-          "term": "Eyelid swelling",
-          "snomed_verified": true
-        },
-        {
-          "text": "Redness of the white of the eye",
-          "frequency": "almost_always",
-          "term": "Conjunctival injection",
+          "text": "Swollen eyelids",
+          "frequency": "common",
+          "term": "Edema of eyelid",
           "snomed_verified": true
         },
         {
           "text": "Watery eyes",
           "frequency": "common",
-          "term": "Tearing",
+          "term": "Epiphora",
+          "snomed_verified": true
+        },
+        {
+          "text": "Red eyes",
+          "frequency": "almost_always",
+          "term": "Conjunctival injection",
           "snomed_verified": true
         },
         {
           "text": "Irritability",
-          "frequency": "common",
-          "term": "Irritability",
-          "snomed_verified": true
-        },
-        {
-          "text": "Poor feeding",
           "frequency": "sometimes",
-          "term": "Poor feeding",
-          "snomed_verified": true
-        },
-        {
-          "text": "Fever",
-          "frequency": "rare",
-          "term": "Fever",
+          "term": "Irritability",
           "snomed_verified": true
         }
       ],
       "pertinent_negatives": [
-        "No watery eye discharge that is clear and non-purulent",
-        "No symptoms starting after 4 weeks of life",
-        "No known maternal sexually transmitted infection",
-        "No eye trauma or foreign body",
-        "No family history of glaucoma or retinoblastoma",
-        "No vomiting or diarrhea"
+        "Fever",
+        "Cough or nasal congestion",
+        "Corneal haze or ulceration",
+        "Vesicles or blisters on eyelid",
+        "Lethargy"
       ]
     },
     "ros": [
@@ -237,39 +200,32 @@
         "system": "eyes",
         "positives": [
           {
-            "text": "Eye discharge",
+            "text": "Discharge from eye",
             "frequency": "almost_always",
-            "term": "Eye discharge",
+            "term": "Discharge from eye",
             "snomed_verified": true
           },
           {
-            "text": "Red eye",
+            "text": "Conjunctival injection",
             "frequency": "almost_always",
-            "term": "Red eye",
+            "term": "Conjunctival injection",
             "snomed_verified": true
           },
           {
-            "text": "Eyelid swelling",
-            "frequency": "almost_always",
-            "term": "Eyelid swelling",
-            "snomed_verified": true
-          },
-          {
-            "text": "Tearing",
+            "text": "Edema of eyelid",
             "frequency": "common",
-            "term": "Tearing",
+            "term": "Edema of eyelid",
             "snomed_verified": true
           }
         ],
         "negatives": [
-          "Photophobia",
-          "Eye pain",
-          "Vision loss",
-          "Corneal opacity"
+          "Corneal opacity",
+          "Dendritic ulcer",
+          "Eyelid vesicles"
         ],
         "argues_against": [
-          "Congenital glaucoma",
-          "Retinoblastoma"
+          "Eyelid vesicles suggest herpes simplex",
+          "Corneal ulcer suggests advanced gonococcal"
         ]
       },
       {
@@ -277,407 +233,173 @@
         "positives": [
           {
             "text": "Irritability",
-            "frequency": "common",
-            "term": "Irritability",
-            "snomed_verified": true
-          },
-          {
-            "text": "Poor feeding",
             "frequency": "sometimes",
-            "term": "Poor feeding",
+            "term": "Irritability",
             "snomed_verified": true
           }
         ],
         "negatives": [
           "Fever",
           "Lethargy",
-          "Weight loss"
+          "Poor feeding"
         ],
         "argues_against": [
-          "Systemic infection",
-          "Sepsis"
+          "Fever or lethargy suggests systemic infection"
         ]
       },
       {
-        "system": "ent",
+        "system": "skin",
         "positives": [],
         "negatives": [
-          "Ear discharge",
-          "Nasal congestion"
+          "Vesiculobullous skin lesions",
+          "Pustules"
         ],
         "argues_against": [
-          "Otitis media",
-          "Upper respiratory infection"
-        ]
-      },
-      {
-        "system": "gastrointestinal",
-        "positives": [],
-        "negatives": [
-          "Vomiting",
-          "Diarrhea"
-        ],
-        "argues_against": [
-          "Gastroenteritis"
+          "Vesicular rash suggests herpes simplex"
         ]
       }
     ],
     "atypical": [
       {
         "population": "infants",
-        "how_it_differs": "Preterm or low-birth-weight infants may have subtle signs such as mild redness without copious discharge, and systemic signs may be absent.",
+        "how_it_differs": "Chlamydial conjunctivitis has later onset (5–14 days) and less purulent, more watery discharge; gonococcal is earlier and more purulent.",
         "missing_classic_features": [
-          "Copious purulent discharge",
-          "Marked eyelid swelling"
-        ]
-      },
-      {
-        "population": "immunocompromised",
-        "how_it_differs": "Neonates with immunodeficiency may have a more indolent or severe course with atypical organisms.",
-        "missing_classic_features": [
-          "Typical timing of onset",
-          "Classic purulent discharge"
+          "Early onset in first 24–48 hours",
+          "Severe purulent discharge"
         ]
       }
     ]
   },
   "exam": {
     "general": {
-      "mild": "Alert, feeding well, comfortable; one eye with mild redness and watery-to-mucoid discharge",
-      "moderate": "Irritable but consolable, feeding adequately; eyelid swelling with thick discharge and lids stuck together after sleep",
-      "severe": "Ill-appearing and fussy, feeding poorly; marked eyelid edema with copious purulent discharge, eye difficult to open",
-      "critical": "Toxic-appearing, lethargic or inconsolable, poor feeding; tense swollen lids with profuse pus and possible corneal involvement"
+      "mild": "Well-appearing neonate with mild eye discharge and redness; otherwise normal activity",
+      "moderate": "Fussy neonate with swollen eyelids, often keeps eyes closed; no systemic signs",
+      "severe": "Irritable, difficult to console; eyelids swollen shut with copious purulent discharge; may have corneal clouding",
+      "critical": "Ill-appearing or lethargic if systemic spread, or with signs of corneal ulceration/perforation"
     },
     "findings": [
       {
-        "id": "conjunctival-injection",
+        "id": "purulent-eye-discharge",
         "region": "heent",
-        "maneuver": "Inspect the conjunctiva of both eyes in good light",
-        "finding": "Diffuse conjunctival redness, worse in one eye",
+        "maneuver": "Inspect the eyes and conjunctivae",
+        "finding": "Thick yellow-green discharge",
         "frequency": "almost_always",
         "significance": "strongly_supports",
         "importance": "essential",
-        "term": "Conjunctival injection",
-        "snomed_id": "40100001",
+        "term": "Discharge from eye",
         "snomed_verified": true
       },
       {
-        "id": "eye-discharge",
+        "id": "conjunctival-injection",
         "region": "heent",
-        "maneuver": "Inspect the palpebral fissure and lower fornix for discharge",
-        "finding": "Purulent yellow-green discharge pooling at the lid margin",
+        "maneuver": "Gently retract the lower eyelid",
+        "finding": "Redness of palpebral and bulbar conjunctiva",
         "frequency": "almost_always",
-        "significance": "strongly_supports",
+        "significance": "supports",
         "importance": "essential",
-        "term": "Eye discharge",
-        "snomed_id": "246679005",
+        "term": "Conjunctival injection",
         "snomed_verified": true
       },
       {
         "id": "eyelid-edema",
         "region": "heent",
-        "maneuver": "Inspect and gently palpate the eyelids",
-        "finding": "Puffy, swollen eyelids that may be stuck together",
+        "maneuver": "Inspect the eyelids",
+        "finding": "Puffy, swollen eyelids",
         "frequency": "common",
         "significance": "supports",
         "importance": "important",
-        "term": "Eyelid swelling",
-        "snomed_id": "271823003",
+        "term": "Edema of eyelid",
         "snomed_verified": true
       },
       {
-        "id": "conjunctival-chemosis",
+        "id": "chemosis",
         "region": "heent",
-        "maneuver": "Inspect the bulbar conjunctiva",
-        "finding": "Conjunctival edema (chemosis)",
+        "maneuver": "Inspect the conjunctiva",
+        "finding": "Swelling of conjunctiva",
         "frequency": "sometimes",
         "min_severity": "moderate",
         "significance": "supports",
-        "importance": "optional",
+        "importance": "important",
         "term": "Chemosis",
-        "snomed_id": "193894004",
         "snomed_verified": true
       },
       {
-        "id": "corneal-clarity",
+        "id": "corneal-opacity",
         "region": "heent",
-        "maneuver": "Inspect the cornea with a penlight after gently parting the lids",
-        "finding": "Clear cornea without opacity or ulceration",
-        "frequency": "almost_always",
-        "significance": "neutral",
+        "maneuver": "Shine a penlight across the cornea",
+        "finding": "Hazy or cloudy cornea",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "strongly_supports",
         "importance": "essential",
-        "term": "Corneal clarity",
-        "snomed_id": "40467008",
-        "snomed_verified": false
-      },
-      {
-        "id": "red-reflex",
-        "region": "heent",
-        "maneuver": "Shine a direct ophthalmoscope light into each eye",
-        "finding": "Symmetric red reflex without leukocoria",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "important",
-        "term": "Red reflex",
-        "snomed_id": "247210001",
+        "term": "Corneal opacity",
         "snomed_verified": true
       },
       {
-        "id": "pupillary-reflex",
+        "id": "corneal-ulcer",
         "region": "heent",
-        "maneuver": "Shine a light into each eye and observe the pupil response",
-        "finding": "Brisk, symmetric pupillary constriction",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "important",
-        "term": "Indirect light pupillary reflex",
-        "snomed_id": "30144000",
+        "maneuver": "Apply fluorescein and examine with blue light",
+        "finding": "Round epithelial defect",
+        "frequency": "rare",
+        "min_severity": "critical",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Corneal ulcer",
         "snomed_verified": true
-      },
-      {
-        "id": "extraocular-movement",
-        "region": "heent",
-        "maneuver": "Observe the infant tracking a light or face in all directions",
-        "finding": "Full, conjugate eye movements without restriction",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "optional",
-        "term": "Extraocular movement",
-        "snomed_id": "36459006",
-        "snomed_verified": false
-      },
-      {
-        "id": "lacrimal-sac",
-        "region": "heent",
-        "maneuver": "Press gently over the medial canthus and lacrimal sac",
-        "finding": "No tenderness or expressible mucoid reflux from the punctum",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "optional",
-        "term": "Lacrimal sac",
-        "snomed_id": "26368007",
-        "snomed_verified": false
       },
       {
         "id": "preauricular-lymphadenopathy",
         "region": "lymph",
-        "maneuver": "Palpate the preauricular and submandibular lymph nodes",
-        "finding": "Tender preauricular lymph node enlargement",
+        "maneuver": "Palpate the preauricular area",
+        "finding": "Tender enlarged preauricular node",
         "frequency": "sometimes",
         "significance": "supports",
         "importance": "optional",
         "term": "Preauricular lymphadenopathy",
-        "snomed_id": "271771009",
         "snomed_verified": true
       },
       {
-        "id": "neurologic-exam",
-        "region": "neuro",
-        "maneuver": "Assess tone, activity, and responsiveness",
-        "finding": "Normal tone and activity for age without focal deficit",
+        "id": "no-dendritic-ulcer",
+        "region": "heent",
+        "maneuver": "Examine cornea with fluorescein and blue light",
+        "finding": "No branching dendritic ulcer",
         "frequency": "almost_always",
         "significance": "neutral",
         "importance": "important",
-        "term": "Neurological examination",
-        "snomed_id": "84737005",
-        "snomed_verified": false
+        "term": "Dendritic ulcer",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-eyelid-vesicles",
+        "region": "skin",
+        "maneuver": "Inspect the skin of the eyelids",
+        "finding": "No vesicular lesions on the eyelids",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Vesicle",
+        "snomed_verified": true
       }
     ]
   },
-  "vitals": {
-    "temp": {
-      "mild": {
-        "min": 97.7,
-        "max": 99.5
-      },
-      "moderate": {
-        "min": 98.6,
-        "max": 100.4
-      },
-      "severe": {
-        "min": 99.5,
-        "max": 101.5
-      },
-      "critical": {
-        "min": 100.4,
-        "max": 103.0
-      }
-    },
-    "hr": {
-      "mild": {
-        "min": 100,
-        "max": 160
-      },
-      "moderate": {
-        "min": 110,
-        "max": 170
-      },
-      "severe": {
-        "min": 120,
-        "max": 180
-      },
-      "critical": {
-        "min": 130,
-        "max": 200
-      }
-    },
-    "rr": {
-      "mild": {
-        "min": 30,
-        "max": 60
-      },
-      "moderate": {
-        "min": 35,
-        "max": 65
-      },
-      "severe": {
-        "min": 40,
-        "max": 70
-      },
-      "critical": {
-        "min": 45,
-        "max": 80
-      }
-    },
-    "sbp": {
-      "mild": {
-        "min": 60,
-        "max": 90
-      },
-      "moderate": {
-        "min": 60,
-        "max": 90
-      },
-      "severe": {
-        "min": 55,
-        "max": 85
-      },
-      "critical": {
-        "min": 50,
-        "max": 80
-      }
-    },
-    "dbp": {
-      "mild": {
-        "min": 30,
-        "max": 60
-      },
-      "moderate": {
-        "min": 30,
-        "max": 60
-      },
-      "severe": {
-        "min": 25,
-        "max": 55
-      },
-      "critical": {
-        "min": 20,
-        "max": 50
-      }
-    },
-    "spo2": {
-      "mild": {
-        "min": 95,
-        "max": 100
-      },
-      "moderate": {
-        "min": 95,
-        "max": 100
-      },
-      "severe": {
-        "min": 92,
-        "max": 100
-      },
-      "critical": {
-        "min": 88,
-        "max": 100
-      }
-    }
-  },
-  "labs": [
-    {
-      "test_id": "wbc",
-      "ranges": {
-        "moderate": {
-          "min": 12.0,
-          "max": 20.0
-        },
-        "severe": {
-          "min": 15.0,
-          "max": 30.0
-        },
-        "critical": {
-          "min": 20.0,
-          "max": 40.0
-        }
-      },
-      "frequency": "sometimes",
-      "importance": "optional",
-      "caveat": "Neonatal white counts are normally higher than in older children; a normal count does not exclude gonococcal ophthalmia, and marked leukocytosis should raise concern for systemic infection."
-    },
-    {
-      "test_id": "crp",
-      "ranges": {
-        "moderate": {
-          "min": 1.0,
-          "max": 5.0
-        },
-        "severe": {
-          "min": 3.0,
-          "max": 12.0
-        },
-        "critical": {
-          "min": 8.0,
-          "max": 25.0
-        }
-      },
-      "frequency": "sometimes",
-      "importance": "optional",
-      "caveat": "Nonspecific; a rise supports invasive or systemic infection but does not identify the organism."
-    },
-    {
-      "test_id": "procalcitonin",
-      "ranges": {
-        "severe": {
-          "min": 0.5,
-          "max": 2.0
-        },
-        "critical": {
-          "min": 2.0,
-          "max": 10.0
-        }
-      },
-      "frequency": "rare",
-      "importance": "optional",
-      "caveat": "Can be elevated in the first days of life for noninfectious reasons; interpret with the clinical picture."
-    }
-  ],
+  "vitals": {},
+  "labs": [],
   "imaging": [
     {
-      "study": "Chest x-ray",
-      "modality": "xray",
+      "study": "CT orbits with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Suspected orbital cellulitis or abscess (not routine for conjunctivitis)",
       "findings": [
         {
-          "text": "Normal lungs without infiltrate",
-          "frequency": "almost_always"
-        },
-        {
-          "text": "Focal consolidation suggesting pneumonia",
+          "text": "Preseptal soft tissue swelling",
           "frequency": "rare"
-        }
-      ]
-    },
-    {
-      "study": "Ocular ultrasound",
-      "modality": "ultrasound",
-      "preferred_when": "When the cornea or posterior segment cannot be seen because of lid swelling or discharge",
-      "findings": [
-        {
-          "text": "Normal globe and posterior segment",
-          "frequency": "common"
         },
         {
-          "text": "Vitreous opacities or retinal detachment",
+          "text": "Orbital fat stranding",
+          "frequency": "rare"
+        },
+        {
+          "text": "Subperiosteal abscess",
           "frequency": "rare"
         }
       ]
@@ -687,433 +409,336 @@
     "initial": [
       {
         "test": "Conjunctival swab for Gram stain and culture",
-        "why": "Identifies Neisseria gonorrhoeae and guides therapy; Gram stain shows gram-negative intracellular diplococci"
+        "why": "Identifies the organism and provides a rapid Gram stain clue; should be done before antibiotics"
       },
       {
-        "test": "Conjunctival swab for chlamydial nucleic acid amplification testing",
-        "why": "Detects Chlamydia trachomatis, the other major cause of neonatal conjunctivitis"
+        "test": "Conjunctival NAAT for Neisseria gonorrhoeae and Chlamydia trachomatis",
+        "why": "Highly sensitive and specific; detects both common bacterial causes"
       },
       {
-        "test": "cbc",
-        "why": "Baseline white count and differential; helps assess for systemic illness"
-      },
-      {
-        "test": "bmp",
-        "why": "Baseline electrolytes and renal function before systemic antibiotics"
-      },
-      {
-        "test": "Maternal endocervical swab for gonorrhea and chlamydia",
-        "why": "Confirms the source of infection and guides treatment of the mother and partner"
-      }
-    ],
-    "confirmatory": [],
-    "supporting": [
-      {
-        "test": "crp",
-        "why": "Supports concern for invasive or systemic infection when elevated"
-      },
-      {
-        "test": "procalcitonin",
-        "why": "May support a systemic bacterial process when the infant appears ill",
-        "only_if": "the infant appears systemically unwell or sepsis is suspected"
+        "test": "Maternal NAAT for gonorrhea and chlamydia",
+        "why": "Identifies maternal infection and guides treatment of mother and partners"
       },
       {
         "test": "Blood culture",
-        "why": "Detects bacteremia in infants with suspected systemic gonococcal or other bacterial infection",
-        "only_if": "the infant is ill-appearing, febrile, or has signs of systemic infection"
+        "why": "Looking for systemic dissemination",
+        "only_if": "systemic signs such as fever, lethargy, or poor feeding"
       },
       {
-        "test": "Chest x-ray",
-        "why": "Evaluates for pneumonia in an infant with respiratory signs or systemic illness",
-        "only_if": "respiratory distress or systemic infection is suspected"
+        "test": "CT orbits with IV contrast",
+        "why": "Evaluates for orbital cellulitis or abscess",
+        "only_if": "orbital cellulitis or abscess is suspected (proptosis, limited extraocular movements, or severe eyelid swelling)"
       }
     ],
+    "confirmatory": [
+      {
+        "test": "Culture on chocolate agar or Thayer-Martin media",
+        "why": "Confirms the pathogen and provides antibiotic susceptibility for gonorrhea"
+      }
+    ],
+    "supporting": [],
     "not_indicated": [
       {
-        "test": "Chest x-ray",
-        "why": "Not routine for isolated conjunctivitis without respiratory or systemic signs"
+        "test": "cbc",
+        "why": "Blood counts are usually normal in isolated conjunctivitis and do not guide therapy"
       },
       {
-        "test": "Blood culture",
-        "why": "Not routine for a well-appearing infant with isolated conjunctivitis"
+        "test": "crp",
+        "why": "Inflammatory markers are not useful in isolated neonatal conjunctivitis"
       },
       {
-        "test": "Ocular ultrasound",
-        "why": "Not needed when the eye can be examined directly"
-      },
-      {
-        "test": "csf",
-        "why": "Lumbar puncture is not indicated for isolated conjunctivitis without meningeal or systemic signs"
-      },
-      {
-        "test": "hcg",
-        "why": "Not applicable in a newborn"
+        "test": "Lumbar puncture",
+        "why": "Not indicated unless there are signs of meningitis or disseminated infection",
+        "only_if": "meningitis or sepsis is suspected"
       }
     ],
     "decision_points": [
-      "Any newborn with purulent eye discharge in the first month of life needs conjunctival cultures and prompt treatment; do not wait for results in suspected gonococcal disease",
-      "Gonococcal ophthalmia is an ophthalmologic emergency because of the risk of corneal ulceration and perforation; admit and treat with systemic antibiotics",
-      "Chlamydial ophthalmia requires systemic therapy because topical treatment does not eradicate nasopharyngeal carriage and does not prevent pneumonia",
-      "Evaluate and treat the mother and her partner for gonorrhea and chlamydia",
-      "Consider other causes (chemical, nasolacrimal duct obstruction, herpes simplex) when cultures are negative and the course is atypical"
+      "Collect conjunctival specimens before applying topical antibiotics to maximize culture yield",
+      "Treat mother and sexual partner if gonorrhea or chlamydia is identified",
+      "Urgent ophthalmology consultation for corneal involvement or severe purulent discharge",
+      "Systemic antibiotics are required for gonococcal conjunctivitis; topical therapy alone is inadequate"
     ],
-    "criteria": [],
+    "criteria": [
+      {
+        "name": "Neonatal conjunctivitis (ophthalmia neonatorum) diagnosis",
+        "summary": "Clinical diagnosis based on timing, eye findings, and laboratory confirmation; no formal scoring system exists.",
+        "items": [
+          "Onset 24–48 hours with profuse purulent discharge suggests gonococcal conjunctivitis",
+          "Onset 5–14 days with watery then mucoid discharge suggests chlamydial conjunctivitis",
+          "Gram stain of conjunctival exudate shows gram-negative intracellular diplococci in gonococcal disease",
+          "NAAT or culture confirms Neisseria gonorrhoeae or Chlamydia trachomatis"
+        ]
+      }
+    ],
     "scores": []
   },
   "differential": [
     {
-      "name": "Chlamydial conjunctivitis",
-      "slug": "chlamydial-conjunctivitis",
-      "why_considered": "The most common infectious cause of neonatal conjunctivitis; presents with purulent eye discharge in the first weeks of life",
-      "must_not_miss": true,
-      "trigger": "Purulent eye discharge starting 5–14 days after birth in a vaginally delivered infant",
-      "discriminators": {
-        "history": [
-          "Onset typically 5–14 days after birth",
-          "Discharge starts watery and becomes mucopurulent",
-          "Mother may have untreated chlamydial infection or no prenatal care"
-        ],
-        "exam": [
-          "Eyelid swelling and conjunctival redness that may be milder than gonococcal disease",
-          "No corneal ulceration",
-          "May have concurrent nasopharyngeal infection"
-        ],
-        "labs": [
-          "Conjunctival nucleic acid amplification test positive for Chlamydia trachomatis",
-          "Gram stain shows no gram-negative intracellular diplococci",
-          "Giemsa stain may show intracytoplasmic inclusion bodies"
-        ],
-        "imaging": []
-      }
-    },
-    {
-      "name": "Gonococcal ophthalmia neonatorum",
-      "slug": "gonococcal-ophthalmia-neonatorum",
-      "why_considered": "The most severe cause of neonatal conjunctivitis; can rapidly progress to corneal ulceration and perforation",
-      "must_not_miss": true,
-      "trigger": "Copious purulent discharge with marked eyelid swelling starting 2–5 days after birth",
-      "discriminators": {
-        "history": [
-          "Onset typically 2–5 days after birth",
-          "Rapid progression over hours",
-          "Mother may have untreated gonorrhea or no prenatal care"
-        ],
-        "exam": [
-          "Marked eyelid edema with copious yellow-green pus",
-          "Conjunctival chemosis and intense redness",
-          "Corneal haze or ulceration if advanced"
-        ],
-        "labs": [
-          "Gram stain shows gram-negative intracellular diplococci",
-          "Conjunctival culture grows Neisseria gonorrhoeae",
-          "Nucleic acid amplification test positive for Neisseria gonorrhoeae"
-        ],
-        "imaging": []
-      }
-    },
-    {
       "name": "Chemical conjunctivitis",
       "slug": "chemical-conjunctivitis",
-      "why_considered": "Noninfectious irritation from ocular prophylaxis at birth; presents with eye redness and watery discharge in the first days of life",
+      "why_considered": "Neonatal eye redness and discharge in the first day of life, often after ocular prophylaxis",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Onset within 24–48 hours of birth",
-          "Recent application of silver nitrate or other ocular prophylaxis",
-          "Discharge is watery and non-purulent"
+          "Symptoms begin within 24 hours of birth and improve by 24-48 hours",
+          "History of silver nitrate or antibiotic ointment prophylaxis"
         ],
         "exam": [
-          "Mild conjunctival redness without marked eyelid swelling",
-          "No purulent discharge",
-          "Cornea clear"
+          "Mild conjunctival injection without purulent discharge",
+          "No corneal involvement"
         ],
         "labs": [
-          "Conjunctival cultures negative"
-        ],
-        "imaging": []
+          "Gram stain and culture negative"
+        ]
       }
     },
     {
-      "name": "Nasolacrimal duct obstruction",
-      "slug": "nasolacrimal-duct-obstruction",
-      "why_considered": "Common cause of watery eye and discharge in infants; can mimic infectious conjunctivitis",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Chronic tearing and mucoid discharge since birth or early weeks",
-          "No acute onset or progression",
-          "No maternal sexually transmitted infection"
-        ],
-        "exam": [
-          "Tearing with a normal or mildly red conjunctiva",
-          "Mucoid reflux expressible from the lacrimal sac on medial canthal pressure",
-          "No marked eyelid swelling"
-        ],
-        "labs": [
-          "Cultures typically negative or grow normal flora"
-        ],
-        "imaging": []
-      }
-    },
-    {
-      "name": "Herpes simplex virus keratoconjunctivitis",
+      "name": "Herpes simplex keratoconjunctivitis",
       "slug": "herpes-simplex-keratoconjunctivitis",
-      "why_considered": "Neonatal HSV can present with conjunctivitis and eye discharge; sight-threatening and systemically dangerous",
+      "why_considered": "Neonatal eye redness with or without vesicular skin lesions; can cause corneal scarring and systemic infection",
       "must_not_miss": true,
-      "trigger": "Vesicles on the skin or eyelids, or a mother with active genital herpes at delivery",
+      "trigger": "Vesicles on the eyelids or a dendritic corneal ulcer",
       "discriminators": {
         "history": [
           "Maternal history of genital herpes",
-          "May have skin vesicles or systemic signs",
-          "Onset often 1–2 weeks after birth"
+          "Onset usually within first 2 weeks of life",
+          "May have skin vesicles"
         ],
         "exam": [
-          "Vesicles on the eyelids, face, or skin",
-          "Dendritic corneal lesions on fluorescein staining",
-          "Conjunctival redness with watery discharge"
+          "Vesicular lesions on eyelids or elsewhere",
+          "Dendritic ulcer on fluorescein staining",
+          "Follicular conjunctival reaction"
         ],
         "labs": [
-          "HSV polymerase chain reaction positive from conjunctival swab",
-          "HSV viral culture positive"
-        ],
-        "imaging": []
+          "PCR of conjunctival swab or vesicle fluid positive for HSV",
+          "Viral culture positive"
+        ]
       }
     },
     {
-      "name": "Congenital glaucoma",
-      "slug": "congenital-glaucoma",
-      "why_considered": "Presents with red, watery eyes and photophobia in infants; can be mistaken for conjunctivitis",
-      "must_not_miss": true,
-      "trigger": "Corneal clouding, photophobia, or an enlarged eye in an infant with watery eyes",
+      "name": "Congenital nasolacrimal duct obstruction",
+      "slug": "dacryostenosis",
+      "why_considered": "Persistent tearing and mattering in a young infant without conjunctival injection",
+      "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Photophobia and excessive tearing",
-          "Progressive eye enlargement noted by parents",
-          "No purulent discharge"
+          "Chronic tearing and crusting since birth or first weeks",
+          "No acute onset of purulent discharge"
         ],
         "exam": [
-          "Corneal haze or opacity",
-          "Enlarged globe (buphthalmos)",
-          "Increased intraocular pressure on tonometry"
+          "Tear lake present",
+          "Mucoid discharge with normal conjunctiva",
+          "Pressure over lacrimal sac may express debris"
+        ]
+      }
+    },
+    {
+      "name": "Other bacterial conjunctivitis",
+      "slug": "bacterial-conjunctivitis",
+      "why_considered": "Purulent eye discharge in a neonate but less severe and later onset than gonococcal",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Onset after first few days, often after discharge from hospital",
+          "No maternal STI risk factors"
         ],
-        "labs": [],
+        "exam": [
+          "Moderate purulent discharge",
+          "Gram stain shows other organisms (e.g., gram-positive cocci)"
+        ],
+        "labs": [
+          "Culture grows Staphylococcus aureus, Streptococcus pneumoniae, or Haemophilus species"
+        ]
+      }
+    },
+    {
+      "name": "Orbital cellulitis",
+      "slug": "orbital-cellulitis",
+      "why_considered": "Eyelid swelling and erythema with eye discharge can be mistaken for severe conjunctivitis",
+      "must_not_miss": true,
+      "trigger": "Proptosis, ophthalmoplegia, or systemic toxicity",
+      "discriminators": {
+        "history": [
+          "Fever, lethargy",
+          "Often associated with sinusitis",
+          "Rapid progression"
+        ],
+        "exam": [
+          "Proptosis",
+          "Restricted extraocular movements",
+          "Decreased vision",
+          "Chemosis"
+        ],
+        "labs": [
+          "Blood culture positive",
+          "Elevated inflammatory markers"
+        ],
         "imaging": [
-          "Ocular ultrasound may show increased axial length"
+          "CT orbits shows orbital fat stranding, subperiosteal abscess"
         ]
       }
     }
   ],
   "course": {
     "severity": {
-      "mild": "Mild redness and watery-to-mucoid discharge in one eye; infant feeding well and comfortable",
-      "moderate": "Thick purulent discharge with eyelid swelling and lids stuck together after sleep; infant irritable but consolable",
-      "severe": "Marked eyelid edema with copious purulent discharge, eye difficult to open; infant fussy and feeding poorly",
-      "critical": "Corneal ulceration or perforation, or systemic infection with sepsis; infant toxic-appearing, lethargic, or inconsolable"
+      "mild": "Watery or slightly mucoid discharge, mild conjunctival redness, no eyelid edema or corneal findings; infant well-appearing",
+      "moderate": "Purulent discharge, conjunctival injection, and eyelid edema; infant may be fussy but feeding normally; no corneal involvement",
+      "severe": "Copious purulent discharge, marked eyelid edema, chemosis, and signs of corneal involvement (haze, ulcer); infant may be irritable and feeding poorly"
     },
     "red_flags": [
       {
-        "finding": "Corneal haze, ulceration, or perforation",
-        "meaning": "Ophthalmologic emergency; risk of permanent vision loss, especially with gonococcal infection"
-      },
-      {
-        "finding": "Marked eyelid edema with copious purulent discharge",
-        "meaning": "Suggests gonococcal ophthalmia; requires prompt systemic antibiotics and admission"
-      },
-      {
-        "finding": "Fever, lethargy, or poor feeding",
-        "meaning": "Possible systemic infection or sepsis; needs urgent evaluation and cultures"
+        "finding": "Corneal opacity or ulcer",
+        "meaning": "Risk of corneal perforation and permanent vision loss; urgent ophthalmology"
       },
       {
         "finding": "Vesicles on eyelids or skin",
-        "meaning": "Suggests neonatal herpes simplex virus; requires systemic antiviral therapy"
+        "meaning": "Herpes simplex infection with risk of encephalitis and disseminated disease"
       },
       {
-        "finding": "Corneal clouding or enlarged globe",
-        "meaning": "Suggests congenital glaucoma; urgent ophthalmology referral"
+        "finding": "Fever, lethargy, or poor feeding",
+        "meaning": "Systemic dissemination (sepsis, meningitis) requires full sepsis workup"
+      },
+      {
+        "finding": "Proptosis or limited eye movements",
+        "meaning": "Orbital cellulitis, a life-threatening infection"
+      },
+      {
+        "finding": "Lack of improvement after 48 hours of appropriate therapy",
+        "meaning": "Wrong diagnosis or resistant organism; reassess"
       }
     ],
     "complications": [
       {
-        "name": "Corneal ulceration and scarring",
+        "name": "Corneal ulceration",
         "timing": "early",
         "seriousness": "serious",
-        "frequency": "sometimes",
+        "frequency": "rare",
         "clues": [
           "Corneal haze or opacity",
-          "Severe eye pain or photophobia",
-          "Progression despite topical antibiotics"
+          "Fluorescein staining shows epithelial defect"
         ]
       },
       {
-        "name": "Corneal perforation and vision loss",
+        "name": "Corneal perforation",
         "timing": "early",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Deep corneal ulcer",
+          "Shallow anterior chamber",
+          "Iris prolapse"
+        ]
+      },
+      {
+        "name": "Systemic gonococcal infection (sepsis, arthritis, meningitis)",
+        "timing": "any",
         "seriousness": "life_threatening",
         "frequency": "rare",
         "clues": [
-          "Sudden eye pain and decreased vision",
-          "Corneal perforation on exam",
-          "Copious purulent discharge with marked lid swelling"
+          "Fever",
+          "Lethargy",
+          "Joint swelling",
+          "Positive blood or CSF cultures"
         ]
       },
       {
         "name": "Chlamydial pneumonia",
         "timing": "late",
         "seriousness": "serious",
-        "frequency": "sometimes",
-        "clues": [
-          "Cough and tachypnea weeks after conjunctivitis",
-          "Eosinophilia",
-          "Diffuse infiltrates on chest x-ray"
-        ]
-      },
-      {
-        "name": "Systemic gonococcal infection",
-        "timing": "early",
-        "seriousness": "life_threatening",
         "frequency": "rare",
         "clues": [
-          "Fever and lethargy",
-          "Poor feeding",
-          "Positive blood culture"
+          "Occurs in infants with chlamydial conjunctivitis",
+          "Staccato cough",
+          "Eosinophilia",
+          "Interstitial infiltrates on chest X-ray"
         ]
       }
     ],
     "special_populations": [
       {
         "population": "infants",
-        "differences": "Preterm or low-birth-weight infants may have subtle signs such as mild redness without copious discharge; systemic signs may be absent."
-      },
-      {
-        "population": "immunocompromised",
-        "differences": "Neonates with immunodeficiency may have a more indolent or severe course with atypical organisms."
+        "differences": "Neonates are at higher risk for systemic dissemination and corneal complications; require systemic rather than topical antibiotics for gonococcal or chlamydial disease, and evaluation for co-infection."
       }
     ]
   },
   "teaching": {
     "key_questions": [
       {
-        "question": "How old was your baby when the eye symptoms started?",
+        "question": "When did the eye discharge start?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Timing narrows the cause: chemical (first 24-48 hours), gonococcal (2-5 days), chlamydial (5-14 days)"
+        "looking_for": "Onset 24–48 hours suggests gonococcal; 5–14 days suggests chlamydial"
       },
       {
-        "question": "What does the discharge look like - watery, or thick and pus-like?",
+        "question": "What does the discharge look like?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Copious thick yellow-green pus suggests gonococcal disease; watery or mucoid suggests chemical or nasolacrimal duct obstruction"
+        "looking_for": "Thick yellow-green purulent discharge vs watery or mucoid discharge"
       },
       {
-        "question": "Is one eye or both eyes affected?",
-        "category": "hpi",
+        "question": "Did the baby receive eye ointment or drops after birth?",
+        "category": "medications",
         "importance": "important",
-        "looking_for": "Often starts in one eye but can become bilateral; both eyes from birth suggests chemical or obstruction"
+        "looking_for": "Ocular prophylaxis is usually given; its absence increases risk"
       },
       {
-        "question": "Is the eyelid swollen, and is the eye hard to open?",
-        "category": "hpi",
+        "question": "Was the baby delivered vaginally?",
+        "category": "obstetric",
         "importance": "important",
-        "looking_for": "Marked eyelid edema with copious pus suggests gonococcal ophthalmia"
+        "looking_for": "Vaginal delivery exposes the baby to maternal genital flora"
       },
       {
-        "question": "Is the baby feeding well and acting normally, or is he/she fussy, sleepy, or feeding poorly?",
+        "question": "Did you have gonorrhea, chlamydia, or other infections during pregnancy?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Maternal STI is the primary source; positive or untreated infection increases risk"
+      },
+      {
+        "question": "Has the baby had fever, poor feeding, or unusual sleepiness?",
         "category": "associated",
-        "importance": "essential",
-        "looking_for": "Fever, lethargy, or poor feeding suggests systemic infection or sepsis"
-      },
-      {
-        "question": "Did the baby receive eye drops or ointment at birth?",
-        "category": "pmh",
         "importance": "important",
-        "looking_for": "Ocular prophylaxis can cause chemical conjunctivitis within 24-48 hours"
+        "looking_for": "Absence of fever and lethargy suggests isolated conjunctivitis; presence suggests systemic infection"
       },
       {
-        "question": "Was the baby born vaginally or by cesarean section?",
-        "category": "obstetric",
-        "importance": "important",
-        "looking_for": "Vaginal delivery through an infected birth canal is the usual route of infection"
-      },
-      {
-        "question": "How long were your membranes ruptured before delivery?",
-        "category": "obstetric",
-        "importance": "optional",
-        "looking_for": "Prolonged rupture increases risk of infection"
-      },
-      {
-        "question": "Did you have any prenatal care? Were you tested or treated for gonorrhea or chlamydia during pregnancy?",
-        "category": "obstetric",
-        "importance": "essential",
-        "looking_for": "Untreated maternal gonorrhea or chlamydia is the key risk factor"
-      },
-      {
-        "question": "Have you had any genital discharge, sores, or burning with urination?",
-        "category": "sexual",
-        "importance": "important",
-        "looking_for": "Symptoms of maternal sexually transmitted infection"
-      },
-      {
-        "question": "Do you have a history of genital herpes?",
-        "category": "sexual",
-        "importance": "important",
-        "looking_for": "Maternal HSV raises concern for neonatal herpes keratoconjunctivitis"
-      },
-      {
-        "question": "Any skin blisters or vesicles on the baby?",
+        "question": "Are there any blisters or sores on the eyelids or skin?",
         "category": "ros",
         "importance": "important",
-        "looking_for": "Vesicles suggest neonatal herpes simplex virus"
-      },
-      {
-        "question": "Any cough, trouble breathing, or noisy breathing?",
-        "category": "ros",
-        "importance": "important",
-        "looking_for": "Chlamydial pneumonia can follow or accompany conjunctivitis"
-      },
-      {
-        "question": "Any eye trauma, foreign body, or exposure to irritants?",
-        "category": "hpi",
-        "importance": "optional",
-        "looking_for": "Alternative cause of eye redness and discharge"
+        "looking_for": "Vesicles suggest herpes simplex keratoconjunctivitis"
       }
     ],
     "accepted_names": [
       "Ophthalmia neonatorum",
-      "Neonatal conjunctivitis",
-      "Conjunctivitis of the newborn",
-      "Gonococcal ophthalmia neonatorum",
-      "Chlamydial conjunctivitis of the newborn"
+      "Neonatal conjunctivitis"
     ],
     "reasoning_points": [
-      "Age at onset is the key clue: chemical within 24-48 hours, gonococcal at 2-5 days, chlamydial at 5-14 days",
-      "Character of discharge: copious thick purulent discharge suggests gonococcal disease; watery or mucoid suggests chemical or nasolacrimal duct obstruction",
-      "Maternal history of untreated gonorrhea or chlamydia, or lack of prenatal care, supports an infectious cause",
-      "Vaginal delivery through an infected birth canal is the usual mechanism",
-      "Marked eyelid edema with copious pus and possible corneal involvement indicates gonococcal ophthalmia, an emergency",
-      "Conjunctival swabs for Gram stain, culture, and chlamydial nucleic acid amplification testing identify the organism",
-      "Gonococcal disease requires systemic antibiotics and admission because of the risk of corneal ulceration and perforation",
-      "Chlamydial disease requires systemic therapy because topical treatment does not eradicate nasopharyngeal carriage or prevent pneumonia",
-      "The mother and her partner must be evaluated and treated for gonorrhea and chlamydia",
-      "Consider herpes simplex virus when vesicles are present or the mother has genital herpes, and congenital glaucoma when the cornea is cloudy or the eye is enlarged"
+      "Newborn with acute eye discharge and redness, with onset in first weeks of life",
+      "Timing and discharge character differentiate gonococcal (early, purulent) from chlamydial (later, mucoid)",
+      "Maternal gonorrhea/chlamydia, vaginal delivery, and lack of ocular prophylaxis are crucial risk factors",
+      "Conjunctival Gram stain shows gram-negative intracellular diplococci in gonococcal disease",
+      "NAAT or culture confirms Neisseria gonorrhoeae or Chlamydia trachomatis",
+      "Must differentiate from chemical conjunctivitis, herpes simplex, nasolacrimal duct obstruction, and orbital cellulitis",
+      "Systemic antibiotics are required for gonococcal and chlamydial conjunctivitis; topical therapy alone is inadequate",
+      "Evaluate for corneal involvement and systemic dissemination, with urgent ophthalmology referral for severe cases"
     ],
     "difficulty": {
       "easy": [
-        "Vaginally delivered newborn with copious purulent eye discharge at 3 days of life",
-        "Mother with no prenatal care and known untreated gonorrhea",
-        "Marked eyelid swelling with thick yellow-green pus and eye difficult to open",
-        "Gram stain shows gram-negative intracellular diplococci"
+        "Newborn with profuse purulent discharge at 24–48 hours",
+        "Mother known to have untreated gonorrhea",
+        "No ocular prophylaxis after delivery",
+        "Classic Gram stain with gram-negative intracellular diplococci"
       ],
       "medium": [
-        "Newborn with watery-to-mucoid discharge and mild redness in the first 48 hours after ocular prophylaxis",
-        "Infant with purulent discharge at 7-10 days and a mother with untreated chlamydia",
-        "Chronic tearing and mucoid discharge since birth with a normal conjunctiva",
-        "Bilateral eye discharge in a well-appearing infant with no maternal risk factors"
+        "Chlamydial conjunctivitis with later onset and less purulent discharge",
+        "Chemical conjunctivitis after ocular prophylaxis, onset <24 hours",
+        "No known maternal STI, requiring targeted testing",
+        "Nasolacrimal duct obstruction with chronic tearing but normal conjunctiva"
       ],
       "hard": [
-        "Preterm infant with subtle redness and little discharge",
-        "Infant with vesicles on the eyelids and a mother with genital herpes",
-        "Infant with corneal clouding and an enlarged globe mistaken for conjunctivitis",
-        "Ill-appearing infant with fever, poor feeding, and eye discharge suggesting systemic infection",
-        "Negative conjunctival cultures with an atypical or persistent course"
+        "Herpes simplex keratoconjunctivitis with eyelid vesicles and dendritic ulcer",
+        "Co-infection with gonorrhea and chlamydia",
+        "Systemic signs of sepsis or meningitis from disseminated infection",
+        "Corneal ulceration with impending perforation",
+        "Mother denies STI but infant has positive gonococcal culture"
       ]
     }
   }
