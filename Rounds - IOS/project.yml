@@ -11,10 +11,6 @@ packages:
   GoogleSignIn:
     url: https://github.com/google/GoogleSignIn-iOS
     from: 8.0.0
-  # Remote paywalls (approved dependency); purchases go through StoreKit 2.
-  SuperwallKit:
-    url: https://github.com/superwall/Superwall-iOS
-    from: 4.16.0
 configFiles:
   Debug: Config/Base.xcconfig
   Release: Config/Base.xcconfig
@@ -32,7 +28,6 @@ targets:
       - package: Supabase
       - package: GoogleSignIn
         product: GoogleSignIn
-      - package: SuperwallKit
     scheme:
       testTargets: [RoundsTests]
       # Local StoreKit testing: the subscriptions in Config/Rounds.storekit, no App Store Connect needed.
@@ -47,7 +42,6 @@ targets:
         SupabaseURL: $(SUPABASE_URL)
         SupabaseAnonKey: $(SUPABASE_ANON_KEY)
         GIDClientID: $(GOOGLE_IOS_CLIENT_ID)
-        SuperwallAPIKey: $(SUPERWALL_API_KEY)
         # Google Sign-In returns to the reversed client ID; "rounds" receives email confirmation links.
         CFBundleURLTypes:
           - CFBundleURLSchemes: [$(GOOGLE_REVERSED_CLIENT_ID)]

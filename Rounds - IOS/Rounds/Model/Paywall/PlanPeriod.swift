@@ -22,4 +22,13 @@ enum PlanPeriod: Int, Sendable, Comparable {
         case .year: "year"
         }
     }
+
+    /// "wk", for "$7.99/wk".
+    var short: String {
+        switch self {
+        case .week: "wk"
+        case .month: "mo"
+        case .year: "yr"
+        }
+    }
 }
