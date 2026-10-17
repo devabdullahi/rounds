@@ -5,8 +5,7 @@ import Foundation
 enum AppLinks {
     static let supportEmail: String? = "tryroundsapp@gmail.com"
     static let privacyPolicy: URL? = URL(string: "https://rounds-2hg.pages.dev/privacy")
-    /// Apple's standard EULA, which App Review accepts for subscriptions until Rounds has its own terms.
-    static let terms: URL? = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")
+    static let terms: URL? = nil
 
     /// "Send feedback" opens a mail draft to support.
     static var feedback: URL? { supportEmail.flatMap { URL(string: "mailto:\($0)") } }
