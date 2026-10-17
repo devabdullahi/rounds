@@ -12,7 +12,4 @@ protocol SubscriptionStore: Sendable {
     func activePlan() async -> ActivePlan?
     /// The entitlement again whenever a transaction changes it (renewal, refund, a purchase elsewhere).
     func entitlementChanges() -> AsyncStream<Bool>
-    /// True for a build not installed from the App Store (TestFlight, or run from Xcode), which skips
-    /// the paywall while Rounds is in testing.
-    func isPreRelease() async -> Bool
 }

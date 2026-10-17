@@ -17,8 +17,6 @@ actor MockSubscriptionStore: SubscriptionStore {
 
     func isEntitled() async -> Bool { entitled }
 
-    func isPreRelease() async -> Bool { false }
-
     func activePlan() async -> ActivePlan? {
         entitled ? ActivePlan(period: .year, periodEnd: .now.addingTimeInterval(3 * 86_400), isTrial: true, willRenew: true) : nil
     }

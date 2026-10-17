@@ -48,21 +48,6 @@ struct StoreKitSubscriptionStore: SubscriptionStore {
         }
     }
 
-    func isPreRelease() async -> Bool {
-        #if DEBUG
-        // Run from Xcode: always testing, even without an Apple Account to fetch the install record.
-        return true
-        #else
-        // TestFlight installs carry a sandbox receipt: instant, and needs no network or App Store
-        // sign-in, which `AppTransaction` can wait on (or fail without) on some phones.
-        if Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt" { return true }
-        // Apple signs every install; its environment says where it came from. Unverifiable or
-        // unavailable counts as the App Store, so a failure never opens the app for free.
-        guard let result = try? await AppTransaction.shared, case .verified(let transaction) = result else { return false }
-        return transaction.environment != .production
-        #endif
-    }
-
     /// Our only introductory offer is the yearly free trial, so before iOS 17.2 (no `offer`) an
     /// introductory transaction means a trial.
     private static func isFreeTrial(_ transaction: Transaction) -> Bool {

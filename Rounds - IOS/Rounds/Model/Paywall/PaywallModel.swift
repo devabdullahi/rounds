@@ -26,7 +26,6 @@ final class PaywallModel {
     func start() async {
         await refresh()
         for await entitled in store.entitlementChanges() {
-            if await store.isPreRelease() { continue }
             isEntitled = entitled
             activePlan = await store.activePlan()
         }
@@ -34,11 +33,6 @@ final class PaywallModel {
 
     /// Asks the App Store again: on launch, when the app comes back, and after the paywall closes.
     func refresh() async {
-        // Testing: TestFlight and Xcode installs go straight in; only App Store installs need a plan.
-        if await store.isPreRelease() {
-            isEntitled = true
-            return
-        }
         activePlan = await store.activePlan()
         let entitled = await store.isEntitled()
         #if DEBUG
