@@ -180,7 +180,7 @@ private struct CaseRow: Decodable {
         let vital = { (id: String) in vitals.first { $0.id == id }?.value }
         return WardPatient(
             id: id, quote: quote,
-            meta: [sex, "\(age)", rotation?.label].compactMap { $0 }.joined(separator: " · "),
+            meta: [sex, PatientAge.label(age), rotation?.label].compactMap { $0 }.joined(separator: " · "),
             rotation: rotation, system: organ_system.flatMap(OrganSystem.init(rawValue:)),
             hr: vital("hr").flatMap { Int($0) }, bp: vital("sbp"),
             spo2: vital("spo2").flatMap { Int($0.trimmingCharacters(in: CharacterSet(charactersIn: "%"))) },

@@ -72,8 +72,23 @@ struct InterviewView: View {
             }
             .frame(maxHeight: .infinity)
             if tab == .workup {
-                Button("I'm ready to diagnose") { router.go(.diagnosis) }
-                    .buttonStyle(PrimaryButtonStyle())
+                // Quiet until some workup is done, then the main action.
+                Group {
+                    if session.hasWorkedUp {
+                        Button("I'm ready to diagnose") { router.go(.diagnosis) }.buttonStyle(PrimaryButtonStyle())
+                    } else {
+                        // Secondary: still there, just not the loudest thing before any workup.
+                        Button { router.go(.diagnosis) } label: {
+                            Text("I'm ready to diagnose")
+                                .font(.system(size: 17, weight: .semibold))
+                                .foregroundStyle(Theme.accentText)
+                                .frame(maxWidth: .infinity, minHeight: 54)
+                                .background(Theme.accentSoft, in: Capsule())
+                        }
+                        .buttonStyle(PressableStyle())
+                    }
+                }
+                .animation(Springs.slide, value: session.hasWorkedUp)
                     .padding(.horizontal, 20)
                     .padding(.top, 16)
                     .padding(.bottom, 8)
@@ -142,7 +157,7 @@ struct InterviewView: View {
                 Spacer()
                 VStack(spacing: 0) {
                     HStack(spacing: 6) {
-                        Text("\(c.name), \(c.age)").font(.system(size: 17, weight: .semibold))
+                        Text("\(c.name), \(PatientAge.label(c.age))").font(.system(size: 17, weight: .semibold))
                         // Says why the screen is bare: no suggestions, no findings until the debrief.
                         if session.examMode {
                             Text("Exam")
@@ -166,11 +181,15 @@ struct InterviewView: View {
             // Talking, then working the patient up: the exam and the tests live together under Workup.
             Segmented(options: [(InterviewTab.history, "History"), (.workup, "Workup")], selection: $tab)
                 .padding(.horizontal, 8)
-            Group {
-                // With the meter turned off, the plain question count keeps the header's shape.
-                if session.examMode || !showCoverage { questionCount } else { coverageMeter }
+            // History's own progress: shown while talking, not over the workup.
+            if tab == .history {
+                Group {
+                    // With the meter turned off, the plain question count keeps the header's shape.
+                    if session.examMode || !showCoverage { questionCount } else { coverageMeter }
+                }
+                .padding(.horizontal, 8)
+                .transition(.opacity)
             }
-            .padding(.horizontal, 8)
         }
         .padding(.horizontal, 12)
         .padding(.top, 4)
@@ -479,9 +498,9 @@ struct InterviewView: View {
     /// Exam and tests side by side as sub-tabs, so the whole workup is one place.
     private var workup: some View {
         VStack(spacing: 0) {
-            Segmented(options: [(WorkupTab.exam, "Exam"), (.tests, "Tests")], selection: $workupTab)
+            UnderlineTabs(options: [(WorkupTab.exam, "Exam"), (.tests, "Tests")], selection: $workupTab)
                 .padding(.horizontal, 16)
-                .padding(.top, 12)
+                .padding(.top, 4)
             switch workupTab {
             case .exam: examine
             case .tests: TestsPanel(session: session)
@@ -489,17 +508,24 @@ struct InterviewView: View {
         }
     }
 
+    /// The exam grouped the way it's done: general look, vitals, then head to toe.
     private var examine: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 10) {
-                VStack(spacing: 0) {
-                    ForEach(Array(c.exam.enumerated()), id: \.element.id) { i, m in
-                        if i > 0 { Hairline() }
-                        examRow(m)
+        let progress = session.examDone
+        return ScrollView {
+            VStack(alignment: .leading, spacing: 14) {
+                CountProgressCard(title: "Examined", done: progress.done, total: progress.total, accessibilityNoun: "examined")
+                ForEach(ExamRegion.grouped(c.exam), id: \.region) { group in
+                    VStack(alignment: .leading, spacing: 8) {
+                        Eyebrow(group.region.label)
+                        VStack(spacing: 0) {
+                            ForEach(Array(group.maneuvers.enumerated()), id: \.element.id) { i, m in
+                                if i > 0 { Hairline() }
+                                examRow(m)
+                            }
+                        }
+                        .listSurface()
                     }
                 }
-                .listSurface()
-
             }
             .padding(16)
         }

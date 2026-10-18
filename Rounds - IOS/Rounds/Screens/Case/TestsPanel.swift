@@ -91,22 +91,8 @@ struct TestsPanel: View {
     /// How many of the menu's tests have been taken.
     private var takenCard: some View {
         let taken = session.testsTaken
-        return VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text("Take tests").font(.system(size: 15, weight: .semibold))
-                Spacer()
-                if session.menuReady {
-                    Text("\(taken.done) of \(taken.total)")
-                        .font(.system(size: 15))
-                        .foregroundStyle(Theme.muted)
-                        .contentTransition(.numericText())
-                }
-            }
-            ProgressBar(value: taken.total > 0 ? Double(taken.done) / Double(taken.total) : 0)
-        }
-        .card(padding: 14)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("Tests taken: \(taken.done) of \(taken.total)")
+        return CountProgressCard(title: "Tests taken", done: taken.done, total: taken.total,
+                                 accessibilityNoun: "taken", ready: session.menuReady)
     }
 
     private func resultCard(_ t: Investigation) -> some View {

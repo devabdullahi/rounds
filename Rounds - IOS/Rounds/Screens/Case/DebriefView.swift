@@ -432,7 +432,7 @@ struct DebriefView: View {
 
     private var shareText: String {
         guard let grade else { return "Rounds" }
-        return "Rounds: \(grade.score)/100 on \(session.clinical.name), \(session.clinical.age). \(grade.verdict)."
+        return "Rounds: \(grade.score)/100 on \(session.clinical.name), \(PatientAge.label(session.clinical.age)). \(grade.verdict)."
     }
 }
 

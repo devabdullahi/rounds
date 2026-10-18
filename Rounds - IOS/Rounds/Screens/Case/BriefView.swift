@@ -26,7 +26,7 @@ struct BriefView: View {
                     HStack(spacing: 14) {
                         Avatar(initials: c.initials, size: 64, fg: Theme.accent, bg: Theme.accentSoft)
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("\(c.name), \(c.age)").font(.system(size: 22, weight: .bold))
+                            Text("\(c.name), \(PatientAge.label(c.age))").font(.system(size: 22, weight: .bold))
                             Text(c.setting).font(.system(size: 15)).foregroundStyle(Theme.muted)
                         }
                     }
