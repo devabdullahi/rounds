@@ -11,7 +11,10 @@ import SwiftUI
  *   cross  selection haptic when the drag passes the commit point
  *
  * RELEASE
- *   past 110pt or a fast flick → card flies off that side (spring)
+ *   past 110pt or a fast flick → card flies off that side, carrying the
+ *          finger's speed (spring seeded with the release velocity), and
+ *          leaves the deck only once it's off screen, so it never vanishes
+ *          mid-flight; the cards behind then spring up a place
  *   right  take the patient (opens the case)
  *   left   card leaves the deck for good (skipped); the next one rises
  *   short  springs back to centre
@@ -30,7 +33,8 @@ private enum SWIPE {
     static let flick: CGFloat = 600           // predicted end distance that also commits
     static let tiltPer: Double = 1.0 / 20     // ° of tilt per pt dragged
     static let flyDistance: CGFloat = 560
-    static let fly = Animation.spring(response: 0.38, dampingFraction: 0.85)
+    static let flyStiffness: Double = 210     // fly-off spring: quick, no bounce back into view
+    static let flyDamping: Double = 28
     static let snapBack = Animation.spring(response: 0.35, dampingFraction: 0.7)
 }
 
@@ -199,8 +203,8 @@ struct PatientDeck: View {
             .onEnded { v in
                 guard !busy, drag != .zero else { return }
                 let w = v.predictedEndTranslation.width
-                if drag.width > SWIPE.commit || w > SWIPE.flick { take() }
-                else if drag.width < -SWIPE.commit || w < -SWIPE.flick { skip() }
+                if drag.width > SWIPE.commit || w > SWIPE.flick { take(velocity: v.velocity.width) }
+                else if drag.width < -SWIPE.commit || w < -SWIPE.flick { skip(velocity: v.velocity.width) }
                 else { withAnimation(SWIPE.snapBack) { drag = .zero } }
                 pastCommit = false
             }
@@ -236,11 +240,19 @@ struct PatientDeck: View {
 
     // MARK: Actions
 
+    /// The fly-off spring, seeded with the finger's release speed so the card keeps moving as it
+    /// was thrown instead of pausing. SwiftUI's initial velocity is in units of the distance left.
+    private func flyOff(to target: CGFloat, velocity: CGFloat) -> Animation {
+        let remaining = target - drag.width
+        let carried = remaining == 0 ? 0 : max(0, Double(velocity / remaining))   // only toward the target
+        return .interpolatingSpring(stiffness: SWIPE.flyStiffness, damping: SWIPE.flyDamping, initialVelocity: carried)
+    }
+
     /// Right: the top patient is taken and their case opens.
-    private func take() {
+    private func take(velocity: CGFloat = 0) {
         guard !busy, let p = queue.first else { return }
         busy = true
-        withAnimation(SWIPE.fly) { drag = CGSize(width: SWIPE.flyDistance, height: 0) }
+        withAnimation(flyOff(to: SWIPE.flyDistance, velocity: velocity)) { drag = CGSize(width: SWIPE.flyDistance, height: 0) }
         Task { @MainActor in
             try? await Task.sleep(for: .seconds(0.3))
             await app.open(bed: p.id)
@@ -272,16 +284,16 @@ struct PatientDeck: View {
 
     /// Left: the top patient leaves the deck for good. They stay on the Patients tab.
     /// Skipping the last one leaves the admit card.
-    private func skip() {
+    private func skip(velocity: CGFloat = 0) {
         guard !busy, let p = queue.first else { withAnimation(SWIPE.snapBack) { drag = .zero }; return }
         busy = true
-        withAnimation(SWIPE.fly) { drag = CGSize(width: -SWIPE.flyDistance, height: 0) }
-        Task { @MainActor in
-            try? await Task.sleep(for: .seconds(0.28))
+        withAnimation(flyOff(to: -SWIPE.flyDistance, velocity: velocity), completionCriteria: .logicallyComplete) {
+            drag = CGSize(width: -SWIPE.flyDistance, height: 0)
+        } completion: {
+            // Off screen now. One pass: the leaver goes (its .identity removal) and the drag resets
+            // without animating, so nothing flashes back to the centre while the cards behind rise.
             var t = Transaction(); t.disablesAnimations = true
             withTransaction(t) { drag = .zero }
-            // Same render pass: the leaver (already off-screen) vanishes via its .identity removal
-            // while the cards behind spring up a place.
             withAnimation(STACK.restack) { _ = queue.removeFirst() }
             app.skip(bed: p.id)
             busy = false
