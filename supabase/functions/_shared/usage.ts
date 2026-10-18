@@ -8,11 +8,13 @@ import { sql } from "./db.ts";
 /** Tokens one call used. `output` includes `reasoning`, which DeepSeek bills as output. */
 export type Usage = { hit: number; miss: number; output: number; reasoning: number };
 
-/** USD per million tokens at DeepSeek's peak rate (off-peak is half), so spend is never undercounted.
+/** USD per million tokens: DeepSeek at its peak rate (off-peak is half), so spend is never
+ *  undercounted; OpenAI at Standard. `hit` is the cached-input price.
  *  Models missing here are logged with tokens but cost 0, and don't count toward the cap. */
 const PRICES: Record<string, { hit: number; miss: number; output: number }> = {
   "deepseek-flash": { hit: 0.006, miss: 0.30, output: 1.20 },
   "deepseek-v4-pro": { hit: 0.044, miss: 1.32, output: 3.96 },
+  "gpt-6.1-sol": { hit: 0.10, miss: 2.00, output: 10.00 },
 };
 
 /** Default daily cap in USD; LLM_DAILY_BUDGET_USD overrides it per deployment. */

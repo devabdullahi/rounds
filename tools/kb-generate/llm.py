@@ -2,9 +2,9 @@
 
 Configure in tools/kb-generate/.env (git-ignored; copy .env.example) or the shell, which wins:
 
-    LLM_PROVIDER   deepseek (default) | anthropic | openai | mock
+    LLM_PROVIDER   openai (default: GPT-6.1 Sol) | deepseek | anthropic | mock
     LLM_MODEL      overrides the provider's default model
-    LLM_EFFORT     reasoning effort for providers that think: off | low | high (default) | max
+    LLM_EFFORT     reasoning effort for providers that think: off | low | medium (default) | high | max
     DEEPSEEK_API_KEY / ANTHROPIC_API_KEY / OPENAI_API_KEY
 
 Switching models later is a change to these variables only. `mock` replays the appendicitis example
@@ -26,7 +26,7 @@ ENV_FILE = Path(__file__).resolve().parent / ".env"
 MAX_OUTPUT_TOKENS = 8000
 # Reasoning tokens count against max_tokens, so thinking calls get this much extra room or the
 # answer is cut off after the reasoning (same budgets as supabase/functions/_shared/llm.ts).
-REASONING_BUDGET = {"low": 2000, "high": 8000, "max": 16000}
+REASONING_BUDGET = {"low": 2000, "medium": 4000, "high": 8000, "max": 16000}
 
 
 def _load_env_file() -> None:
@@ -53,19 +53,22 @@ class Provider:
     key_env: str
     default_model: str
     style: str  # "openai" chat completions or "anthropic" messages
-    thinking: bool = False  # honors LLM_EFFORT
+    # How the provider takes LLM_EFFORT: DeepSeek's thinking switch, OpenAI's reasoning models, or not at all.
+    thinking: str = ""
 
 
+# Condition triage, tagging and profiles are written from what the model knows, where GPT-6.1 Sol
+# guesses far less often than DeepSeek (AA-Omniscience hallucination ~54% vs ~95%), so it's the default.
 PROVIDERS = {
-    "deepseek": Provider("deepseek", "https://api.deepseek.com/chat/completions", "DEEPSEEK_API_KEY", "deepseek-flash", "openai", thinking=True),
-    "openai": Provider("openai", "https://api.openai.com/v1/chat/completions", "OPENAI_API_KEY", "gpt-4.1", "openai"),
+    "deepseek": Provider("deepseek", "https://api.deepseek.com/chat/completions", "DEEPSEEK_API_KEY", "deepseek-flash", "openai", thinking="deepseek"),
+    "openai": Provider("openai", "https://api.openai.com/v1/chat/completions", "OPENAI_API_KEY", "gpt-6.1-sol", "openai", thinking="openai"),
     "anthropic": Provider("anthropic", "https://api.anthropic.com/v1/messages", "ANTHROPIC_API_KEY", "claude-sonnet-5-5", "anthropic"),
 }
 
 
 def current() -> tuple[str, str]:
     """(provider, model) for provenance in generated profiles."""
-    name = os.environ.get("LLM_PROVIDER", "deepseek")
+    name = os.environ.get("LLM_PROVIDER", "openai")
     if name == "mock":
         return "mock", "mock"
     if name not in PROVIDERS:
@@ -88,8 +91,9 @@ def complete_json(system: str, user: str) -> dict:
             "model": model,
             "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
             "response_format": {"type": "json_object"},
-            "temperature": 0.3,
-            **thinking_fields(provider.thinking, MAX_OUTPUT_TOKENS, os.environ.get("LLM_EFFORT", "high")),
+            # OpenAI's reasoning models take only the default temperature.
+            **({} if provider.thinking == "openai" else {"temperature": 0.3}),
+            **thinking_fields(provider.thinking, MAX_OUTPUT_TOKENS, os.environ.get("LLM_EFFORT", "medium")),
         }
         headers = [f"Authorization: Bearer {key}"]
     else:
@@ -109,14 +113,20 @@ def complete_json(system: str, user: str) -> dict:
     return _parse_json(text)
 
 
-def thinking_fields(thinking: bool, max_tokens: int, effort: str) -> dict:
-    """max_tokens plus the provider's thinking switch. DeepSeek thinks by default, so "off" must say so."""
+def thinking_fields(thinking: str, max_tokens: int, effort: str) -> dict:
+    """The token cap plus the provider's reasoning switch. DeepSeek thinks by default, so "off" must say
+    so. OpenAI's reasoning models always reason: they take max_completion_tokens, and "off" leaves
+    their default effort."""
+    if effort != "off" and effort not in REASONING_BUDGET:
+        raise SystemExit(f"LLM_EFFORT must be one of off, {', '.join(REASONING_BUDGET)}")
+    if thinking == "openai":
+        if effort == "off":
+            return {"max_completion_tokens": max_tokens + REASONING_BUDGET["medium"]}
+        return {"max_completion_tokens": max_tokens + REASONING_BUDGET[effort], "reasoning_effort": effort}
     if not thinking:
         return {"max_tokens": max_tokens}
     if effort == "off":
         return {"max_tokens": max_tokens, "thinking": {"type": "disabled"}}
-    if effort not in REASONING_BUDGET:
-        raise SystemExit(f"LLM_EFFORT must be one of off, {', '.join(REASONING_BUDGET)}")
     return {"max_tokens": max_tokens + REASONING_BUDGET[effort], "thinking": {"type": "enabled"}, "reasoning_effort": effort}
 
 
