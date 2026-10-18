@@ -3,6 +3,8 @@ import SwiftUI
 /// Shown in place of the paywall when it can't load: what happened, and two ways forward.
 struct PaywallUnavailable: View {
     let isWorking: Bool
+    /// Why it couldn't load, shown small under the message (debug builds pass Superwall's reason).
+    var detail: String? = nil
     let retry: () -> Void
     let restore: () -> Void
 
@@ -18,6 +20,13 @@ struct PaywallUnavailable: View {
                 .font(.system(size: 16))
                 .foregroundStyle(Theme.muted)
                 .multilineTextAlignment(.center)
+            if let detail {
+                Text(detail)
+                    .font(.mono(13))
+                    .foregroundStyle(Theme.warnText)
+                    .multilineTextAlignment(.center)
+                    .textSelection(.enabled)
+            }
             Spacer()
             Button("Try again", action: retry)
                 .buttonStyle(PrimaryButtonStyle())
