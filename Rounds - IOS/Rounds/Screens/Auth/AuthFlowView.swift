@@ -24,6 +24,13 @@ struct AuthFlowView: View {
             }
         }
         .environment(router)
+        // A second sign-in method about to become a second account: offer the one used before.
+        .alert("Use your earlier account?", isPresented: Binding(get: { auth.duplicate != nil }, set: { _ in }), presenting: auth.duplicate) { earlier in
+            Button("Use my \(earlier.providerLabel) account") { auth.choose(.useEarlier) }
+            Button("Keep this new account", role: .cancel) { auth.choose(.keepNew) }
+        } message: { earlier in
+            Text("You\u{2019}ve used Rounds with \(earlier.providerLabel)\(earlier.maskedEmail.map { " (\($0))" } ?? "") on this iPhone. Sign in with \(earlier.providerLabel) once more and this sign-in will open that account, with your patients, cards and plan.")
+        }
         .alert("Couldn't sign in", isPresented: Binding(get: { auth.problem != nil }, set: { if !$0 { auth.problem = nil } })) {
             Button("OK", role: .cancel) {}
         } message: {
@@ -32,6 +39,7 @@ struct AuthFlowView: View {
         #if DEBUG
         .onAppear {
             router.path = DebugLaunch.authPath
+            if DebugLaunch.screen == "duplicate-account" { auth.debugOfferDuplicate() }
             // -screen google-signin: opens Google's sheet without a tap, to check the client ID setup.
             if DebugLaunch.screen == "google-signin" {
                 Task { try? await Task.sleep(for: .seconds(1.5)); await continueWith(.google) }   // after the push settles

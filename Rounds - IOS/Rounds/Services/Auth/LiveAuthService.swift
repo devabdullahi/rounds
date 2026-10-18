@@ -48,6 +48,22 @@ struct LiveAuthService: AuthService {
         try await signInOrLink(OpenIDConnectCredentials(provider: .google, idToken: idToken, accessToken: accessToken))
     }
 
+    func linkApple(idToken: String, nonce: String) async throws -> Account {
+        try await link(OpenIDConnectCredentials(provider: .apple, idToken: idToken, nonce: nonce))
+    }
+
+    func linkGoogle(idToken: String, accessToken: String) async throws -> Account {
+        try await link(OpenIDConnectCredentials(provider: .google, idToken: idToken, accessToken: accessToken))
+    }
+
+    private func link(_ credentials: OpenIDConnectCredentials) async throws -> Account {
+        do {
+            return Self.account(try await client.auth.linkIdentityWithIdToken(credentials: credentials).user)
+        } catch let error as AuthError where error.errorCode == .identityAlreadyExists {
+            throw AuthServiceError(message: "That sign-in already belongs to another Rounds account. Sign in with it to use that account.")
+        }
+    }
+
     func handle(url: URL) async throws -> Account? {
         guard url.scheme == authRedirectURL?.scheme else { return nil }
         return Self.account(try await client.auth.session(from: url).user)

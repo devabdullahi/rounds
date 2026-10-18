@@ -167,6 +167,8 @@ private struct ScriptedAuth: AuthService {
     func verifyCode(email: String, code: String) async throws -> Account { try signIn.get() }
     func signInWithApple(idToken: String, nonce: String, name: String?) async throws -> Account { try signIn.get() }
     func signInWithGoogle(idToken: String, accessToken: String) async throws -> Account { try signIn.get() }
+    func linkApple(idToken: String, nonce: String) async throws -> Account { try signIn.get() }
+    func linkGoogle(idToken: String, accessToken: String) async throws -> Account { try signIn.get() }
     func handle(url: URL) async throws -> Account? { nil }
     func signOut() async throws {}
     func deleteAccount() async throws {}
