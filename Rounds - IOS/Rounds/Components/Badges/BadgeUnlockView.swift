@@ -72,7 +72,10 @@ private struct Intensity {
 /// over. Shown over everything, once per badge.
 struct BadgeUnlockView: View {
     let status: BadgeStatus
+    /// Unlocks still waiting after this one; with any, "Accept all" skips to all of them lined up.
+    var waiting = 0
     let onCollect: () -> Void
+    var onAcceptAll: (() -> Void)? = nil
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
@@ -140,6 +143,23 @@ struct BadgeUnlockView: View {
                 .opacity(stage == .done ? 1 : 0)
                 .offset(y: stage == .done ? 0 : 12)
                 .allowsHitTesting(stage == .done)
+            }
+        }
+        .overlay(alignment: .topTrailing) {
+            if waiting > 0, let onAcceptAll {
+                Button(action: onAcceptAll) {
+                    Text("Accept all (\(waiting + 1))")
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 16)
+                        .frame(minHeight: 44)
+                        .glassFill(.white, in: Capsule(), strength: 0.14, interactive: true)
+                }
+                .buttonStyle(.plain)
+                .padding(.trailing, 20)
+                .padding(.top, 8)
+                .opacity(stage >= .rising ? 1 : 0)
+                .accessibilityHint("Skips the reveals and shows all \(waiting + 1) new cards together")
             }
         }
         .contentShape(Rectangle())

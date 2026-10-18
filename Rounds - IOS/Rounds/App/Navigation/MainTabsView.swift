@@ -67,9 +67,16 @@ struct MainTabsView: View {
         // A newly earned badge gets its moment over everything, once, outside a case.
         .overlay {
             if let unlock = app.pendingUnlocks.first, app.activeCase == nil {
-                BadgeUnlockView(status: unlock) { withAnimation(.easeOut(duration: 0.25)) { app.celebrated(unlock) } }
-                    .id(unlock.id)
-                    .transition(.opacity)
+                if app.showingAllUnlocks {
+                    BadgeHaulView(statuses: app.pendingUnlocks) { withAnimation(.easeOut(duration: 0.25)) { app.celebratedAll() } }
+                        .transition(.opacity)
+                } else {
+                    BadgeUnlockView(status: unlock, waiting: app.pendingUnlocks.count - 1,
+                                    onCollect: { withAnimation(.easeOut(duration: 0.25)) { app.celebrated(unlock) } },
+                                    onAcceptAll: { withAnimation(.easeOut(duration: 0.25)) { app.showingAllUnlocks = true } })
+                        .id(unlock.id)
+                        .transition(.opacity)
+                }
             }
         }
         .fullScreenCover(item: $app.activeCase) { session in

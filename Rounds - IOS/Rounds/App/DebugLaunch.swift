@@ -4,7 +4,7 @@ import SwiftUI
 /// Dev-only deep link for screenshots: launch with `-screen <name>`.
 /// Names: firstopen, firstopen-auth, duplicate-account, voice-glass, onboarding (focus), onboarding-account, onboarding-intro, onboarding-graded,
 /// onboarding-promise, onboarding-graph, onboarding-goal, onboarding-to-goal, onboarding-heart, onboarding-promised,
-/// focus-system, focus-sheet, home, patients, patients-open, previous-tries, previous-try, profile, brief, interview, examine, workup, diagnosis, debrief, diagnosis-suggest.
+/// focus-system, focus-sheet, home, patients, patients-open, previous-tries, previous-try, badge-unlock-many, badge-unlock-all, profile, brief, interview, examine, workup, diagnosis, debrief, diagnosis-suggest.
 enum DebugLaunch {
     static var screen: String? { UserDefaults.standard.string(forKey: "screen") }
     /// `-screen voice-glass` shows `VoiceGlassDebugView` in place of the app.
@@ -68,6 +68,10 @@ enum DebugLaunch {
         case "badge-unlock":
             tab = .profile
             app.debugUnlockRandomBadge()
+        case "badge-unlock-many", "badge-unlock-all":
+            tab = .profile
+            app.debugUnlockSeveral(4)
+            app.showingAllUnlocks = screen == "badge-unlock-all"
         case "badge-unlock-beginning":
             tab = .profile
             app.debugUnlock(BadgeCatalog.beginningID)
