@@ -25,9 +25,16 @@ struct CaseFlowView: View {
         // A badge earned by this case unlocks on the debrief, once the grade has landed.
         .overlay {
             if app.debriefSettled, router.path.last == .debrief, let unlock = app.pendingUnlocks.first {
-                BadgeUnlockView(status: unlock) { withAnimation(.easeOut(duration: 0.25)) { app.celebrated(unlock) } }
-                    .id(unlock.id)
-                    .transition(.opacity)
+                if app.showingAllUnlocks {
+                    BadgeHaulView(statuses: app.pendingUnlocks) { withAnimation(.easeOut(duration: 0.25)) { app.celebratedAll() } }
+                        .transition(.opacity)
+                } else {
+                    BadgeUnlockView(status: unlock, waiting: app.pendingUnlocks.count - 1,
+                                    onCollect: { withAnimation(.easeOut(duration: 0.25)) { app.celebrated(unlock) } },
+                                    onAcceptAll: { withAnimation(.easeOut(duration: 0.25)) { app.showingAllUnlocks = true } })
+                        .id(unlock.id)
+                        .transition(.opacity)
+                }
             }
         }
         // Once the diagnosis is submitted (handoff onward), there's no going back to change it.

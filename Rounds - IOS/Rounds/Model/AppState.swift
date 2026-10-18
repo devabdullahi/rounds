@@ -313,6 +313,8 @@ final class AppState {
     var debriefSettled = false
     /// Unlocks waiting to be shown, biggest first.
     private(set) var pendingUnlocks: [BadgeStatus] = []
+    /// The student chose "Accept all": the waiting unlocks show together, lined up, instead of one by one.
+    var showingAllUnlocks = false
 
     /// Forgets the last account on sign-out: its patients, grades, rating, open case, badge moments
     /// and study state. Device-wide keys (badges seen, patients skipped, cards known) are cleared too,
@@ -326,6 +328,7 @@ final class AppState {
         activeCase = nil
         problem = nil
         pendingUnlocks = []
+        showingAllUnlocks = false
         debriefSettled = false
         hasLoadedRecord = false
         seenBadges = nil
@@ -368,6 +371,12 @@ final class AppState {
         if earned { markSeen([status.id]) }
     }
 
+    /// "Add all to collection": every waiting unlock counts as seen.
+    func celebratedAll() {
+        for status in pendingUnlocks { celebrated(status) }
+        showingAllUnlocks = false
+    }
+
     private func markSeen(_ ids: [String]) {
         let all = (seenBadges ?? []).union(ids)
         seenBadges = all
@@ -380,6 +389,11 @@ final class AppState {
         let locked = BadgeCatalog.status(for: badgeRecord).filter { !$0.unlocked }
         guard let pick = (locked.isEmpty ? BadgeCatalog.status(for: badgeRecord) : locked).randomElement() else { return }
         pendingUnlocks.append(pick.asUnlocked())
+    }
+
+    /// `-screen badge-unlock-many`: several unlocks queued at once, for "Accept all".
+    func debugUnlockSeveral(_ count: Int) {
+        pendingUnlocks += BadgeCatalog.status(for: badgeRecord).shuffled().prefix(count).map { $0.asUnlocked() }
     }
 
     /// Plays one badge's unlock by id (the badge-unlock-beginning screen).
