@@ -8,6 +8,8 @@ struct RoundsApp: App {
     @State private var paywall: PaywallModel
     @AppStorage(Appearance.storageKey) private var appearance = Appearance.system
     @AppStorage(AuthModel.signedInKey) private var signedIn = false
+    /// The exam picked in onboarding, passed to Superwall for audience targeting.
+    @AppStorage(StudyGoal.storageKey) private var studyGoal = ""
     @Environment(\.scenePhase) private var scenePhase
 
     init() {
@@ -15,7 +17,8 @@ struct RoundsApp: App {
                            cards: SupabaseService.client.map { LiveCardService(client: $0) },
                            reminders: LocalReminderService())
         _app = State(initialValue: app)
-        _paywall = State(initialValue: PaywallModel(store: Self.subscriptionStore, web: Self.webBilling, reminders: LocalReminderService()))
+        _paywall = State(initialValue: PaywallModel(store: Self.subscriptionStore, reminders: LocalReminderService()))
+        SuperwallService.configure()
         // Siri and Shortcuts act on the same app state the screens show.
         AppDependencyManager.shared.add { app }
         #if DEBUG
@@ -42,13 +45,20 @@ struct RoundsApp: App {
                     if ["settings", "settings-siri", "settings-voice", "settings-subscription", "profile", "profile-edit"].contains(DebugLaunch.screen) { auth.debugUse(DebugLaunch.sampleAccount) }
                     #endif
                 }
-                // Google's sheet returning, email confirmation links (rounds://auth-callback), and the
-                // web checkout's "Open Rounds" (rounds://paid), which re-checks access.
+                // Superwall's paywall previews, Google's sheet returning, and email confirmation links
+                // (rounds://auth-callback).
                 .onOpenURL { url in
-                    if url.host() == "paid" { Task { await paywall.refresh() } } else { Task { await auth.open(url) } }
+                    if SuperwallService.handle(url) { return }
+                    Task { await auth.open(url) }
                 }
-                // Back from Safari without tapping the link: check again whenever the app returns.
+                // A plan bought, cancelled or refunded elsewhere: check again whenever the app returns.
                 .onChange(of: scenePhase) { _, phase in if phase == .active { Task { await paywall.refresh() } } }
+                // Superwall ties purchases to the signed-in account, and forgets it on sign-out.
+                .onChange(of: auth.account?.id, initial: true) { _, id in
+                    SuperwallService.identify(id)
+                    SuperwallService.setStudyGoal(studyGoal)
+                }
+                .onChange(of: studyGoal) { _, goal in SuperwallService.setStudyGoal(goal) }
                 .environment(\.reference, .live)
                 .preferredColorScheme(colorScheme)
                 .tint(Theme.accent)
@@ -62,14 +72,6 @@ struct RoundsApp: App {
         if DebugLaunch.screen == "settings-subscription" { return MockSubscriptionStore(entitled: true) }
         #endif
         return StoreKitSubscriptionStore()
-    }
-
-    /// Web checkout (Stripe), or offline plans on the paywall debug screen.
-    private static var webBilling: (any WebBilling)? {
-        #if DEBUG
-        if DebugLaunch.screen == "paywall" { return MockWebBilling() }
-        #endif
-        return SupabaseService.client.map { LiveWebBilling(client: $0) }
     }
 
     /// Signed-out screens (welcome, sign up, onboarding) are designed for light mode; signed in,

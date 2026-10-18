@@ -35,51 +35,57 @@
       },
       {
         "stage": "patient_presentation",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "8",
-        "generated_at": "2026-10-05T05:04:55Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T16:41:29Z"
       },
       {
         "stage": "exam_vitals",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "8",
-        "generated_at": "2026-10-05T05:05:01Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:02:23Z"
       },
       {
         "stage": "diagnostics",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "8",
-        "generated_at": "2026-10-05T05:05:22Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:04:11Z"
       },
       {
         "stage": "differential_course",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "8",
-        "generated_at": "2026-10-05T05:05:33Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:05:42Z"
       },
       {
         "stage": "teaching",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "8",
-        "generated_at": "2026-10-05T05:05:40Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:06:22Z"
       }
     ],
     "validation": {
-      "status": "failed",
-      "rule_errors": [
-        "missing section workup"
-      ],
+      "status": "passed",
+      "rule_errors": [],
       "review_issues": [
-        "differential viral-gastroenteritis: no profile yet",
-        "differential bacterial-colitis: no profile yet",
+        "auto-repaired: workup: 'bmp' was in initial, not_indicated; kept initial as a conditional order (only if moderate or severe dehydration, age extremes, or significant underlying illness)",
+        "auto-repaired: workup: 'cbc' was in initial, not_indicated; kept initial as a conditional order (only if bloody stools, high fever, severe abdominal pain, or signs of systemic infection)",
+        "auto-repaired: workup: 'Stool culture' was in initial, not_indicated; kept initial as a conditional order (only if bloody or mucoid stools, fever >101.3°F, severe pain, or outbreak)",
+        "auto-repaired: workup: 'Clostridioides difficile toxin test' was in initial, not_indicated; kept initial as a conditional order (only if recent antibiotics, hospitalization, chemotherapy, or prior C. difficile)",
+        "auto-repaired: workup: 'Stool ova and parasites' was in initial, not_indicated; kept initial as a conditional order (only if persistent diarrhea >7 days, travel to endemic area, or immunocompromise)",
+        "auto-repaired: workup: 'Multiplex stool pathogen nucleic acid amplification panel' was in confirmatory, not_indicated; kept confirmatory as a conditional order (only if initial culture negative and pathogen identification needed)",
+        "auto-repaired: workup: 'crp' was in supporting, not_indicated; kept supporting as a conditional order (only if suspected inflammatory process)",
+        "auto-repaired: workup: 'lactate' was in supporting, not_indicated; kept supporting as a conditional order (only if systemic toxicity or suspected sepsis)",
+        "auto-repaired: workup: 'Stool lactoferrin' was in supporting, not_indicated; kept supporting as a conditional order (only if uncertain whether invasive)",
+        "exam: term 'Weak peripheral pulse' not found in SNOMED CT",
         "differential clostridioides-difficile-infection: no profile yet",
+        "differential ischemic-colitis: no profile yet",
+        "differential bowel-obstruction: no profile yet",
         "differential inflammatory-bowel-disease: no profile yet",
+        "differential bacterial-gastroenteritis: no profile yet",
         "differential irritable-bowel-syndrome: no profile yet",
-        "differential celiac-disease: no profile yet",
-        "differential lactose-intolerance: no profile yet",
-        "differential medication-induced-diarrhea: no profile yet",
-        "differential giardiasis: no profile yet",
-        "differential ischemic-colitis: no profile yet"
+        "differential hyperthyroidism: no profile yet",
+        "differential colon-cancer: no profile yet"
       ]
     },
     "review": {
@@ -88,172 +94,194 @@
   },
   "patient": {
     "age": {
-      "typical_min": 1,
-      "typical_max": 75,
-      "peak": "bimodal: young children and adults of any age",
+      "typical_min": 0,
+      "typical_max": 5,
+      "peak": "infants and young children",
       "possible_min": 0,
-      "possible_max": 100
+      "possible_max": 110
     },
     "sex": "either",
     "demographics": [
-      "Adults in the US average about one episode of acute diarrhea per year; young children average about two",
-      "More severe and more often dehydrating at the extremes of age"
+      "All ages are affected, but incidence is highest in children under 5.",
+      "Adults in the US average about one episode of acute diarrhea per year.",
+      "Outbreaks occur in daycare centers, long-term care facilities, and after common-source food or water exposures."
     ],
     "risk_factors": [
       {
-        "text": "Contact with a household member or childcare contact who has diarrhea",
+        "text": "Recent antibiotic use",
         "strength": "strong"
       },
       {
-        "text": "Recent travel to an area with unsafe drinking water",
+        "text": "Travel to a developing country",
         "strength": "strong"
       },
       {
-        "text": "Recent course of antibiotics",
+        "text": "Ingestion of contaminated food or water",
         "strength": "strong"
       },
       {
-        "text": "Eating food that may have been improperly stored or handled",
+        "text": "Close contact with a person who has diarrhea",
+        "strength": "strong"
+      },
+      {
+        "text": "Daycare attendance or exposure to young children",
         "strength": "moderate"
       },
       {
-        "text": "Young child in daycare",
+        "text": "Proton pump inhibitor use",
         "strength": "moderate"
       },
       {
-        "text": "Lactose intolerance or another food intolerance",
+        "text": "Immunocompromise",
         "strength": "moderate"
       },
       {
-        "text": "Known inflammatory bowel disease or irritable bowel syndrome",
+        "text": "Residence in a long-term care facility or recent hospitalization",
         "strength": "moderate"
-      },
-      {
-        "text": "Gastric or intestinal surgery in the past",
-        "strength": "weak"
       }
     ],
     "comorbidities": [
-      "Inflammatory bowel disease",
       "Irritable bowel syndrome",
+      "Inflammatory bowel disease",
+      "Celiac disease",
       "Diabetes mellitus",
-      "Immunocompromising conditions"
+      "Hyperthyroidism",
+      "HIV/AIDS",
+      "Malabsorption syndromes"
     ],
     "family_history": [
-      "Inflammatory bowel disease in a first-degree relative",
-      "Lactose intolerance in the family"
+      "Inflammatory bowel disease",
+      "Celiac disease"
     ],
     "social_history": [
-      "Travel outside the US in the past few weeks",
-      "Work or attendance in childcare, school, or a group living setting",
-      "Swimming in lakes, rivers, or untreated pools"
+      "Recent travel to a developing country",
+      "Daycare attendance or exposure to young children",
+      "Residence in a long-term care facility",
+      "Recent hospitalization",
+      "Consumption of untreated water or street food",
+      "Recreational water exposure"
     ],
     "exposures": [
       "Contaminated food or water",
-      "Sick contacts with similar symptoms",
-      "Household pets or farm animals with diarrhea",
-      "Raw or undercooked meat, eggs, or unpasteurized dairy"
+      "Sick contacts with gastroenteritis",
+      "Recent antibiotics",
+      "Recreational water such as pools or lakes",
+      "Unpasteurized dairy products"
     ],
     "risk_medications": [
-      "antibiotics",
-      "magnesium-containing antacids",
-      "chemotherapy agents",
-      "laxatives",
+      "clindamycin",
+      "amoxicillin",
       "metformin",
       "colchicine",
-      "proton pump inhibitors"
+      "magnesium hydroxide",
+      "orlistat"
     ]
   },
   "presentation": {
     "chief_complaints": [
       {
-        "text": "I've been having watery stools",
-        "frequency": "almost_always"
+        "text": "I have diarrhea",
+        "frequency": "almost_always",
+        "term": "Diarrhea",
+        "snomed_verified": true
       },
       {
-        "text": "I keep having to run to the bathroom",
-        "frequency": "common"
+        "text": "My stools are watery and I can't hold them",
+        "frequency": "common",
+        "term": "Diarrhea",
+        "snomed_verified": true
       },
       {
         "text": "My stomach is cramping",
-        "frequency": "common"
-      },
-      {
-        "text": "I can't hold it in",
-        "frequency": "sometimes"
+        "frequency": "common",
+        "term": "Abdominal pain",
+        "snomed_verified": true
       }
     ],
     "hpi": {
-      "onset": "Sudden or gradual over hours to a day; often the patient can point to when it started",
-      "duration": "Acute episodes usually last 1–3 days; chronic diarrhea is defined as lasting 4 weeks or more",
-      "progression": "Loose stools increase in frequency over the first day or two, then gradually firm up and space out as the episode resolves",
-      "location": "Cramping is felt in the mid-abdomen or lower abdomen, often relieved by a bowel movement",
-      "radiation": "Usually none",
-      "quality": "Watery or mushy stools; abdominal discomfort is crampy and comes in waves",
-      "severity": "Mild to moderate; patients describe urgency and frequency more than pain",
-      "timing": "Day and night; may wake the patient from sleep during an acute infectious episode",
+      "onset": "Usually abrupt, beginning within hours after ingestion of the causative agent or medication",
+      "duration": "Acute diarrhea typically lasts 1 to 3 days and resolves by 5 to 7 days; symptoms lasting longer than 14 days suggest a persistent or chronic cause",
+      "progression": "Starts with loose stools and lower abdominal cramping; stool frequency increases over the first 24 to 48 hours, then decreases. Invasive bacterial or inflammatory causes may progress to fever and bloody stools.",
+      "location": "Diffuse or periumbilical; may be lower abdominal",
+      "radiation": "None",
+      "quality": "Watery, loose, or semiformed stools; abdominal discomfort is crampy and intermittent",
+      "severity": "Usually mild to moderate; severe dehydration is uncommon in healthy adults",
+      "timing": "Intermittent, often worse after meals; nocturnal diarrhea is uncommon and suggests an organic cause",
       "aggravating": [
-        "Eating, especially dairy or fatty foods",
-        "Drinking coffee or alcohol",
-        "Stress"
+        "Eating",
+        "Dairy products",
+        "Caffeine",
+        "Fatty or spicy foods"
       ],
       "relieving": [
-        "Having a bowel movement",
-        "Drinking fluids",
-        "Staying near a bathroom"
+        "Passing stool",
+        "Fasting"
       ],
       "associated_symptoms": [
         {
           "text": "Abdominal cramps",
-          "frequency": "common"
+          "frequency": "common",
+          "term": "Abdominal pain",
+          "snomed_verified": true
         },
         {
-          "text": "Urgency to get to the bathroom",
-          "frequency": "common"
+          "text": "Urgent need to have a bowel movement",
+          "frequency": "common",
+          "term": "Urgency of defecation",
+          "snomed_verified": true
         },
         {
           "text": "Nausea",
-          "frequency": "common"
-        },
-        {
-          "text": "Feeling tired or weak",
-          "frequency": "common"
-        },
-        {
-          "text": "Low-grade fever or chills",
-          "frequency": "sometimes"
+          "frequency": "common",
+          "term": "Nausea",
+          "snomed_verified": true
         },
         {
           "text": "Vomiting",
-          "frequency": "sometimes"
+          "frequency": "sometimes",
+          "term": "Vomiting",
+          "snomed_verified": true
         },
         {
-          "text": "Muscle aches and headache",
-          "frequency": "sometimes"
+          "text": "Fever",
+          "frequency": "sometimes",
+          "term": "Fever",
+          "snomed_verified": true
         },
         {
-          "text": "Loss of bowel control",
-          "frequency": "sometimes"
+          "text": "Feeling tired",
+          "frequency": "sometimes",
+          "term": "Fatigue",
+          "snomed_verified": true
         },
         {
-          "text": "Lightheadedness when standing up",
-          "frequency": "sometimes"
+          "text": "Excess gas",
+          "frequency": "sometimes",
+          "term": "Flatulence",
+          "snomed_verified": true
         },
         {
-          "text": "Blood or mucus in the stool",
-          "frequency": "rare"
+          "text": "Tenesmus",
+          "frequency": "sometimes",
+          "term": "Tenesmus",
+          "snomed_verified": true
+        },
+        {
+          "text": "Blood in stool",
+          "frequency": "rare",
+          "term": "Hematochezia",
+          "snomed_verified": true
         }
       ],
       "pertinent_negatives": [
-        "Blood or pus in the stool",
-        "Black, tarry stools",
-        "High fever (102°F or higher)",
-        "Severe, constant abdominal pain",
-        "Persistent vomiting that prevents drinking",
-        "No urine output for many hours",
-        "Recent antibiotic use",
-        "Weight loss",
-        "Symptoms that only occur at night and wake the patient from sleep (in chronic cases)"
+        "High-grade fever",
+        "Visible blood in stool",
+        "Severe localized abdominal pain",
+        "Signs of dehydration such as orthostasis or dry mucous membranes",
+        "Nocturnal diarrhea",
+        "Unintentional weight loss",
+        "Symptoms lasting longer than 4 weeks",
+        "Persistent vomiting preventing oral intake"
       ]
     },
     "ros": [
@@ -261,317 +289,282 @@
         "system": "constitutional",
         "positives": [
           {
+            "text": "Fever",
+            "frequency": "sometimes",
+            "term": "Fever",
+            "snomed_verified": true
+          },
+          {
             "text": "Feeling tired",
-            "frequency": "common"
+            "frequency": "sometimes",
+            "term": "Fatigue",
+            "snomed_verified": true
           },
           {
-            "text": "Feeling warm or having chills",
-            "frequency": "sometimes"
-          },
-          {
-            "text": "Not hungry",
-            "frequency": "sometimes"
+            "text": "Feeling generally unwell",
+            "frequency": "sometimes",
+            "term": "Malaise",
+            "snomed_verified": true
           }
         ],
         "negatives": [
-          "Weight loss",
+          "Unintentional weight loss",
           "Night sweats"
-        ],
-        "argues_against": [
-          "Chronic wasting illness"
         ]
       },
       {
         "system": "gastrointestinal",
         "positives": [
           {
-            "text": "Watery stools",
-            "frequency": "almost_always"
-          },
-          {
-            "text": "Abdominal cramping",
-            "frequency": "common"
+            "text": "Abdominal cramps",
+            "frequency": "common",
+            "term": "Abdominal pain",
+            "snomed_verified": true
           },
           {
             "text": "Nausea",
-            "frequency": "common"
+            "frequency": "common",
+            "term": "Nausea",
+            "snomed_verified": true
           },
           {
             "text": "Vomiting",
-            "frequency": "sometimes"
+            "frequency": "sometimes",
+            "term": "Vomiting",
+            "snomed_verified": true
           },
           {
-            "text": "Mucus in the stool",
-            "frequency": "sometimes"
+            "text": "Urgent need to have a bowel movement",
+            "frequency": "common",
+            "term": "Urgency of defecation",
+            "snomed_verified": true
+          },
+          {
+            "text": "Tenesmus",
+            "frequency": "sometimes",
+            "term": "Tenesmus",
+            "snomed_verified": true
+          },
+          {
+            "text": "Excess gas",
+            "frequency": "sometimes",
+            "term": "Flatulence",
+            "snomed_verified": true
           }
         ],
         "negatives": [
-          "Blood in the stool",
-          "Black tarry stools",
+          "Visible blood in stool",
+          "Black tarry stool",
           "Jaundice",
-          "Severe constant pain"
+          "Dysphagia"
         ],
         "argues_against": [
-          "Invasive bacterial colitis",
-          "Inflammatory bowel disease flare",
-          "Biliary or pancreatic disease"
+          "Severe localized abdominal pain with rebound",
+          "Visible blood in stool with high fever",
+          "Chronic nocturnal diarrhea with weight loss"
         ]
       },
       {
         "system": "genitourinary",
         "positives": [
           {
-            "text": "Passing less urine than usual",
-            "frequency": "sometimes"
+            "text": "Decreased urine output",
+            "frequency": "sometimes",
+            "term": "Oliguria",
+            "snomed_verified": true
           }
         ],
         "negatives": [
           "Dysuria",
-          "Flank pain",
-          "Blood in urine"
-        ],
-        "argues_against": [
-          "Urinary tract infection",
-          "Kidney stone"
-        ]
-      },
-      {
-        "system": "cardiovascular",
-        "positives": [
-          {
-            "text": "Lightheadedness when standing",
-            "frequency": "sometimes"
-          }
-        ],
-        "negatives": [
-          "Chest pain",
-          "Palpitations",
-          "Swelling in the legs"
-        ],
-        "argues_against": [
-          "Cardiac cause of symptoms"
-        ]
-      },
-      {
-        "system": "skin",
-        "positives": [],
-        "negatives": [
-          "Rash",
-          "Flushing",
-          "Hives"
-        ],
-        "argues_against": [
-          "Carcinoid syndrome",
-          "Mast cell disorder"
-        ]
-      },
-      {
-        "system": "neurologic",
-        "positives": [],
-        "negatives": [
-          "Numbness or tingling",
-          "Muscle weakness",
-          "Confusion"
-        ],
-        "argues_against": [
-          "Severe electrolyte disturbance",
-          "Botulism"
+          "Hematuria",
+          "Flank pain"
         ]
       }
     ],
     "atypical": [
       {
-        "population": "infants",
-        "how_it_differs": "Infants cannot describe symptoms; parents report increased stool frequency, irritability, poor feeding, fewer wet diapers, and lethargy. Dehydration develops faster than in older children.",
-        "missing_classic_features": [
-          "Verbal report of cramps",
-          "Urgency"
-        ]
-      },
-      {
         "population": "children",
-        "how_it_differs": "Children often have vomiting and fever along with diarrhea and can become dehydrated quickly; they may refuse to drink and have fewer wet diapers.",
+        "how_it_differs": "Infants and young children may present with irritability, decreased wet diapers, and sunken eyes rather than a clear complaint of diarrhea; rotavirus is the most common cause in this group.",
         "missing_classic_features": [
-          "Localized cramping description"
+          "Clear description of cramping or urgency"
         ]
       },
       {
         "population": "older_adults",
-        "how_it_differs": "May have less abdominal pain and fever but more risk of dehydration, electrolyte problems, and confusion; symptoms can be blunted even with serious infection.",
+        "how_it_differs": "May have less fever and fewer localizing symptoms, but higher risk of dehydration, medication-induced diarrhea, and Clostridioides difficile infection.",
         "missing_classic_features": [
-          "Prominent cramping",
-          "High fever"
+          "Fever",
+          "Marked abdominal pain"
         ]
       },
       {
         "population": "immunocompromised",
-        "how_it_differs": "Diarrhea can be more severe, prolonged, and caused by unusual organisms; fever may be absent or blunted.",
+        "how_it_differs": "Can have chronic or severe diarrhea from opportunistic infections such as Cryptosporidium or cytomegalovirus; may lack fever despite invasive infection.",
         "missing_classic_features": [
-          "Typical self-limited course"
-        ]
-      },
-      {
-        "population": "pregnancy",
-        "how_it_differs": "Dehydration and electrolyte loss can affect the pregnancy; listeriosis should be considered with fever and flu-like symptoms.",
-        "missing_classic_features": [
-          "Benign self-limited course"
+          "Fever"
         ]
       }
     ]
   },
   "exam": {
     "general": {
-      "mild": "Alert, comfortable, well hydrated; able to converse and drink normally",
-      "moderate": "Mildly tired and thirsty, slightly restless, dry mouth but interactive",
-      "severe": "Lethargic or irritable, sunken eyes, markedly thirsty or refusing fluids, cool extremities",
-      "critical": "Obunded or unresponsive, limp, mottled and cold, barely responsive to stimulation"
+      "mild": "Well-appearing, alert, normal skin turgor and moist mucous membranes; may be slightly uncomfortable.",
+      "moderate": "Uncomfortable but not toxic; dry mucous membranes, slightly delayed capillary refill, may have mild tachycardia.",
+      "severe": "Ill-appearing, restless or lethargic; markedly dry mucous membranes, sunken eyes, prolonged capillary refill, orthostatic hypotension.",
+      "critical": "Toxic or obtunded; pale, cool extremities, mottled skin, weak peripheral pulses, signs of shock."
     },
     "findings": [
       {
-        "id": "dry-mucous-membranes",
-        "region": "heent",
-        "maneuver": "Inspect the lips, tongue, and buccal mucosa",
-        "finding": "Dry, tacky mucous membranes",
-        "frequency": "common",
-        "min_severity": "moderate",
-        "significance": "supports",
-        "importance": "essential"
-      },
-      {
-        "id": "sunken-eyes",
-        "region": "heent",
-        "maneuver": "Inspect the eyes for sunkenness and tear production",
-        "finding": "Sunken eyes with absent or reduced tears",
-        "frequency": "common",
-        "min_severity": "severe",
-        "significance": "supports",
-        "importance": "important"
-      },
-      {
-        "id": "capillary-refill-delay",
-        "region": "extremities",
-        "maneuver": "Press the fingertip or nail bed for 5 seconds and release",
-        "finding": "Capillary refill longer than 2 seconds",
-        "frequency": "sometimes",
-        "min_severity": "severe",
-        "significance": "supports",
-        "importance": "essential"
-      },
-      {
-        "id": "skin-tenting",
-        "region": "skin",
-        "maneuver": "Pinch the skin over the abdomen or forearm and release",
-        "finding": "Skin stays tented and returns slowly",
-        "frequency": "sometimes",
-        "min_severity": "severe",
-        "significance": "supports",
-        "importance": "important"
-      },
-      {
-        "id": "cool-extremities",
-        "region": "extremities",
-        "maneuver": "Palpate the hands and feet",
-        "finding": "Cool, clammy extremities",
-        "frequency": "sometimes",
-        "min_severity": "severe",
-        "significance": "supports",
-        "importance": "important"
-      },
-      {
         "id": "diffuse-abdominal-tenderness",
         "region": "abdomen",
-        "maneuver": "Palpate all four quadrants lightly and deeply",
-        "finding": "Mild, diffuse abdominal tenderness without localization",
+        "maneuver": "Palpate all four quadrants lightly",
+        "finding": "Diffuse abdominal tenderness without rebound or guarding",
         "frequency": "common",
         "significance": "supports",
-        "importance": "important"
+        "importance": "important",
+        "term": "Abdominal tenderness",
+        "snomed_verified": true
       },
       {
         "id": "hyperactive-bowel-sounds",
         "region": "abdomen",
-        "maneuver": "Auscultate the abdomen in all four quadrants",
-        "finding": "Hyperactive, high-pitched bowel sounds",
+        "maneuver": "Auscultate the abdomen",
+        "finding": "Hyperactive bowel sounds",
         "frequency": "common",
         "significance": "supports",
-        "importance": "important"
+        "importance": "optional",
+        "term": "Hyperactive bowel sounds",
+        "snomed_verified": true
       },
       {
-        "id": "no-guarding-rigidity",
-        "region": "abdomen",
-        "maneuver": "Palpate the abdomen and assess for involuntary guarding or rigidity",
-        "finding": "No guarding, rigidity, or rebound tenderness",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "essential"
+        "id": "dry-mucous-membranes",
+        "region": "heent",
+        "maneuver": "Inspect the oral mucosa and tongue",
+        "finding": "Dry mucous membranes",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Dry mouth",
+        "snomed_verified": true
       },
       {
-        "id": "no-organomegaly",
-        "region": "abdomen",
-        "maneuver": "Palpate for hepatosplenomegaly and masses",
-        "finding": "No liver or spleen enlargement, no abdominal mass",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "important"
-      },
-      {
-        "id": "normal-rectal-exam",
-        "region": "rectal",
-        "maneuver": "Perform a digital rectal exam when bleeding, tenesmus, or chronic symptoms are present",
-        "finding": "No mass, no gross blood, normal sphincter tone",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "optional"
-      },
-      {
-        "id": "no-rash",
+        "id": "decreased-skin-turgor",
         "region": "skin",
-        "maneuver": "Inspect the skin for rash, flushing, or urticaria",
-        "finding": "No rash or flushing",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "optional"
+        "maneuver": "Pinch the skin on the back of the hand or abdomen",
+        "finding": "Decreased skin turgor",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Decreased skin turgor",
+        "snomed_verified": true
       },
       {
-        "id": "normal-mental-status",
-        "region": "mental_status",
-        "maneuver": "Assess orientation and level of alertness",
-        "finding": "Alert and oriented",
+        "id": "delayed-capillary-refill",
+        "region": "skin",
+        "maneuver": "Press on the nail bed or fingertips for 5 seconds",
+        "finding": "Delayed capillary refill (>2 seconds)",
+        "frequency": "rare",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Prolonged capillary refill time",
+        "snomed_verified": true
+      },
+      {
+        "id": "orthostatic-hypotension",
+        "region": "general",
+        "maneuver": "Measure blood pressure supine and after standing for 1-2 minutes",
+        "finding": "Orthostatic hypotension (drop in systolic BP ≥20 mmHg or diastolic ≥10 mmHg)",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Orthostatic hypotension",
+        "snomed_verified": true
+      },
+      {
+        "id": "sunken-eyes",
+        "region": "heent",
+        "maneuver": "Inspect the eyes",
+        "finding": "Sunken eyes",
+        "frequency": "sometimes",
+        "min_severity": "severe",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Sunken eyes",
+        "snomed_verified": true
+      },
+      {
+        "id": "weak-peripheral-pulses",
+        "region": "extremities",
+        "maneuver": "Palpate radial and dorsalis pedis pulses",
+        "finding": "Weak peripheral pulses",
+        "frequency": "rare",
+        "min_severity": "critical",
+        "significance": "supports",
+        "importance": "essential",
+        "term": "Weak peripheral pulse",
+        "snomed_verified": false
+      },
+      {
+        "id": "no-rebound-tenderness",
+        "region": "abdomen",
+        "maneuver": "Ask the patient to cough or gently tap the heel",
+        "finding": "No rebound tenderness",
         "frequency": "almost_always",
         "significance": "neutral",
-        "importance": "important"
+        "importance": "essential",
+        "term": "Rebound tenderness",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-abdominal-guarding",
+        "region": "abdomen",
+        "maneuver": "Palpate the abdomen",
+        "finding": "No voluntary guarding or rigidity",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Abdominal guarding",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-costovertebral-angle-tenderness",
+        "region": "abdomen",
+        "maneuver": "Percuss the costovertebral angles",
+        "finding": "No costovertebral angle tenderness",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Costovertebral angle tenderness",
+        "snomed_verified": true
       }
     ]
   },
   "vitals": {
     "temp": {
-      "mild": {
-        "min": 98.0,
-        "max": 99.5
-      },
       "moderate": {
         "min": 99.0,
-        "max": 100.9
+        "max": 100.4
       },
       "severe": {
         "min": 100.4,
         "max": 102.0
       },
       "critical": {
-        "min": 101.0,
+        "min": 100.5,
         "max": 103.5
       }
     },
     "hr": {
-      "mild": {
-        "min": 60,
-        "max": 100
-      },
       "moderate": {
         "min": 90,
         "max": 110
       },
       "severe": {
-        "min": 105,
+        "min": 100,
         "max": 130
       },
       "critical": {
@@ -580,27 +573,19 @@
       }
     },
     "rr": {
-      "moderate": {
-        "min": 16,
-        "max": 22
-      },
       "severe": {
-        "min": 20,
-        "max": 28
+        "min": 18,
+        "max": 24
       },
       "critical": {
-        "min": 24,
-        "max": 34
+        "min": 22,
+        "max": 30
       }
     },
     "sbp": {
-      "moderate": {
-        "min": 100,
-        "max": 120
-      },
       "severe": {
-        "min": 85,
-        "max": 105
+        "min": 90,
+        "max": 110
       },
       "critical": {
         "min": 70,
@@ -609,7 +594,7 @@
     },
     "dbp": {
       "severe": {
-        "min": 50,
+        "min": 55,
         "max": 70
       },
       "critical": {
@@ -618,330 +603,623 @@
       }
     }
   },
+  "labs": [
+    {
+      "test_id": "k",
+      "ranges": {
+        "moderate": {
+          "min": 3.2,
+          "max": 3.4
+        },
+        "severe": {
+          "min": 2.8,
+          "max": 3.2
+        },
+        "critical": {
+          "min": 2.5,
+          "max": 2.9
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Hypokalemia from stool losses; more pronounced with severe watery diarrhea."
+    },
+    {
+      "test_id": "hco3",
+      "ranges": {
+        "moderate": {
+          "min": 18,
+          "max": 21
+        },
+        "severe": {
+          "min": 14,
+          "max": 19
+        },
+        "critical": {
+          "min": 10,
+          "max": 15
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Bicarbonate loss in stool can cause a normal anion gap metabolic acidosis."
+    },
+    {
+      "test_id": "bun",
+      "ranges": {
+        "moderate": {
+          "min": 21,
+          "max": 28
+        },
+        "severe": {
+          "min": 26,
+          "max": 40
+        },
+        "critical": {
+          "min": 36,
+          "max": 60
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Elevated from pre-renal azotemia due to volume depletion."
+    },
+    {
+      "test_id": "cr",
+      "ranges": {
+        "moderate": {
+          "min": 1.3,
+          "max": 1.6
+        },
+        "severe": {
+          "min": 1.5,
+          "max": 2.2
+        },
+        "critical": {
+          "min": 2.0,
+          "max": 3.5
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "May rise with more severe dehydration; sex-specific normal ranges apply."
+    },
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "moderate": {
+          "min": 11.5,
+          "max": 15.0
+        },
+        "severe": {
+          "min": 12.0,
+          "max": 20.0
+        },
+        "critical": {
+          "min": 15.0,
+          "max": 25.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Often normal in viral gastroenteritis; elevation suggests invasive bacterial infection."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "moderate": {
+          "min": 1.5,
+          "max": 5.0
+        },
+        "severe": {
+          "min": 3.0,
+          "max": 15.0
+        },
+        "critical": {
+          "min": 8.0,
+          "max": 25.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Elevated in inflammatory diarrhea; helps distinguish invasive from non-invasive causes."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
+        "critical": {
+          "min": 2.5,
+          "max": 5.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Elevated only with hypoperfusion or sepsis."
+    }
+  ],
+  "imaging": [
+    {
+      "study": "Abdominal x-ray",
+      "modality": "xray",
+      "preferred_when": "Rarely used; may be considered if bowel obstruction or perforation is suspected.",
+      "findings": [
+        {
+          "text": "Nonspecific bowel gas pattern",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Dilated loops of small bowel",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "CT abdomen and pelvis with IV contrast",
+      "modality": "ct",
+      "preferred_when": "Severe abdominal pain, suspected alternative like appendicitis, diverticulitis, or toxic megacolon.",
+      "findings": [
+        {
+          "text": "Normal or mild diffuse bowel wall thickening",
+          "frequency": "common"
+        },
+        {
+          "text": "Segmental colonic wall thickening with pericolonic fat stranding",
+          "frequency": "sometimes"
+        },
+        {
+          "text": "Toxic megacolon (transverse colon diameter >6 cm)",
+          "frequency": "rare"
+        },
+        {
+          "text": "Small bowel inflammation or mesenteric lymphadenopathy",
+          "frequency": "rare"
+        }
+      ]
+    }
+  ],
+  "workup": {
+    "initial": [
+      {
+        "test": "bmp",
+        "why": "Assess electrolytes, bicarbonate, and kidney function; detect hypokalemia, acidosis, and prerenal azotemia",
+        "only_if": "moderate or severe dehydration, age extremes, or significant underlying illness"
+      },
+      {
+        "test": "cbc",
+        "why": "Leukocytosis with left shift suggests invasive bacterial infection; hemoglobin and hematocrit can reflect hemoconcentration",
+        "only_if": "bloody stools, high fever, severe abdominal pain, or signs of systemic infection"
+      },
+      {
+        "test": "Stool culture",
+        "why": "Identifies bacterial pathogens like Salmonella, Shigella, Campylobacter",
+        "only_if": "bloody or mucoid stools, fever >101.3°F, severe pain, or outbreak"
+      },
+      {
+        "test": "Clostridioides difficile toxin test",
+        "why": "Detects C. difficile toxin; common after antibiotics or hospitalization",
+        "only_if": "recent antibiotics, hospitalization, chemotherapy, or prior C. difficile"
+      },
+      {
+        "test": "Stool ova and parasites",
+        "why": "Identifies Giardia, Cryptosporidium, Entamoeba",
+        "only_if": "persistent diarrhea >7 days, travel to endemic area, or immunocompromise"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Multiplex stool pathogen nucleic acid amplification panel",
+        "why": "Rapidly detects multiple bacterial, viral, and parasitic pathogens",
+        "only_if": "initial culture negative and pathogen identification needed"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "crp",
+        "why": "Elevated in inflammatory diarrhea; helps distinguish from non-inflammatory",
+        "only_if": "suspected inflammatory process"
+      },
+      {
+        "test": "lactate",
+        "why": "Elevated in hypoperfusion or sepsis",
+        "only_if": "systemic toxicity or suspected sepsis"
+      },
+      {
+        "test": "Stool lactoferrin",
+        "why": "Marker of intestinal inflammation; can guide need for culture",
+        "only_if": "uncertain whether invasive"
+      }
+    ],
+    "not_indicated": [
+      {
+        "test": "Abdominal x-ray",
+        "why": "Rarely changes management in uncomplicated diarrhea"
+      },
+      {
+        "test": "CT abdomen and pelvis with IV contrast",
+        "why": "Not indicated for routine diarrhea; reserve for severe pain or suspected alternative like appendicitis"
+      },
+      {
+        "test": "d_dimer",
+        "why": "No role in diarrhea"
+      },
+      {
+        "test": "lipase",
+        "why": "Not needed unless epigastric pain suggests pancreatitis"
+      },
+      {
+        "test": "hcg",
+        "why": "Not routinely needed for diarrhea; consider if pregnancy test needed before imaging"
+      }
+    ],
+    "decision_points": [
+      "Assess hydration status and consider oral rehydration before ordering tests in mild diarrhea",
+      "Order stool studies only for bloody diarrhea, severe illness, persistent symptoms, or high-risk host",
+      "Test for Clostridioides difficile in anyone with recent antibiotics or hospitalization",
+      "Consider pregnancy test before imaging in women of childbearing age"
+    ],
+    "criteria": [],
+    "scores": []
+  },
   "differential": [
-    {
-      "name": "Viral gastroenteritis",
-      "slug": "viral-gastroenteritis",
-      "why_considered": "Most common cause of acute watery diarrhea; often with vomiting, low-grade fever, and sick contacts",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Vomiting before or with diarrhea",
-          "Sick contacts or daycare exposure",
-          "Symptoms resolve in 1-3 days",
-          "No blood in stool"
-        ],
-        "exam": [
-          "Diffuse mild abdominal tenderness",
-          "No peritoneal signs",
-          "Mild dehydration at most"
-        ],
-        "labs": [
-          "Stool studies not needed if mild and non-bloody",
-          "Electrolytes normal or mildly low"
-        ],
-        "imaging": [
-          "Not indicated"
-        ]
-      }
-    },
-    {
-      "name": "Bacterial colitis",
-      "slug": "bacterial-colitis",
-      "why_considered": "Invasive bacteria such as Salmonella, Shigella, Campylobacter, or E. coli O157:H7 cause bloody diarrhea with fever and severe cramps",
-      "must_not_miss": true,
-      "trigger": "Blood or pus in the stool, high fever, or severe abdominal pain",
-      "discriminators": {
-        "history": [
-          "Bloody or mucoid stools",
-          "High fever (102°F or higher)",
-          "Recent travel or undercooked food",
-          "Severe cramping"
-        ],
-        "exam": [
-          "Focal or diffuse abdominal tenderness",
-          "Tenesmus",
-          "Signs of systemic illness"
-        ],
-        "labs": [
-          "Leukocytosis",
-          "Stool leukocytes or positive stool culture/PCR",
-          "Hemolytic uremic syndrome labs if E. coli O157:H7 suspected"
-        ],
-        "imaging": [
-          "Abdominal CT may show colonic wall thickening if severe"
-        ]
-      }
-    },
     {
       "name": "Clostridioides difficile infection",
       "slug": "clostridioides-difficile-infection",
-      "why_considered": "Antibiotic-associated diarrhea, often watery with cramps and fever; can progress to pseudomembranous colitis",
+      "why_considered": "Watery diarrhea after antibiotics or hospitalization, which can look like simple acute diarrhea but can become severe.",
       "must_not_miss": true,
-      "trigger": "Recent antibiotic use or hospitalization with watery diarrhea",
+      "trigger": "Recent antibiotic use, hospitalization, or chemotherapy with new diarrhea",
       "discriminators": {
         "history": [
-          "Antibiotic use within past 2 months",
-          "Hospitalization or long-term care",
-          "Watery diarrhea, sometimes with mucus"
+          "Recent antibiotics, especially clindamycin or fluoroquinolones",
+          "Hospitalization or long-term care within the past 3 months",
+          "Prior C. difficile infection",
+          "Watery diarrhea, often without gross blood but may be severe",
+          "Abdominal cramping and low-grade fever"
         ],
         "exam": [
-          "Abdominal tenderness",
           "Fever",
-          "Signs of sepsis if severe"
+          "Lower abdominal tenderness",
+          "Abdominal distension",
+          "Hypotension in severe disease"
         ],
         "labs": [
           "Positive stool C. difficile toxin or PCR",
-          "Leukocytosis, sometimes marked",
-          "Elevated creatinine if severe"
+          "Marked leukocytosis",
+          "Hypoalbuminemia",
+          "Elevated creatinine"
         ],
         "imaging": [
-          "CT showing colonic wall thickening and pericolonic stranding"
-        ]
-      }
-    },
-    {
-      "name": "Inflammatory bowel disease flare",
-      "slug": "inflammatory-bowel-disease",
-      "why_considered": "Crohn disease or ulcerative colitis can present with chronic or recurrent diarrhea, cramps, and bloody stools",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Chronic diarrhea lasting weeks to months",
-          "Weight loss",
-          "Blood or mucus in stool",
-          "Family history of IBD"
-        ],
-        "exam": [
-          "Abdominal tenderness",
-          "Possible mass or perianal disease",
-          "Signs of malnutrition"
-        ],
-        "labs": [
-          "Anemia",
-          "Elevated inflammatory markers (CRP, ESR)",
-          "Fecal calprotectin elevated"
-        ],
-        "imaging": [
-          "Colonoscopy with biopsy showing inflammation",
-          "CT or MRI enterography showing bowel wall thickening"
-        ]
-      }
-    },
-    {
-      "name": "Irritable bowel syndrome",
-      "slug": "irritable-bowel-syndrome",
-      "why_considered": "Chronic or recurrent diarrhea with abdominal pain, often alternating with constipation, without alarm features",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Symptoms for months, often alternating diarrhea and constipation",
-          "Pain relieved by defecation",
-          "No weight loss, no blood, no nocturnal symptoms"
-        ],
-        "exam": [
-          "Normal abdominal exam",
-          "No alarm features"
-        ],
-        "labs": [
-          "Normal CBC, CRP, celiac serology",
-          "Normal stool studies"
-        ],
-        "imaging": [
-          "Not routinely indicated; colonoscopy if alarm features"
-        ]
-      }
-    },
-    {
-      "name": "Celiac disease",
-      "slug": "celiac-disease",
-      "why_considered": "Chronic diarrhea, bloating, and weight loss triggered by gluten; can present at any age",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Chronic diarrhea with bloating and gas",
-          "Weight loss or failure to thrive",
-          "Symptoms improve with gluten-free diet"
-        ],
-        "exam": [
-          "Signs of malnutrition or anemia",
-          "Dermatitis herpetiformis"
-        ],
-        "labs": [
-          "Positive tissue transglutaminase IgA",
-          "Iron deficiency anemia",
-          "Small bowel biopsy showing villous atrophy"
-        ]
-      }
-    },
-    {
-      "name": "Lactose intolerance",
-      "slug": "lactose-intolerance",
-      "why_considered": "Osmotic diarrhea, bloating, and gas after dairy intake; common in adults",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Symptoms after milk or dairy products",
-          "Bloating and flatulence",
-          "Improves with lactose avoidance"
-        ],
-        "exam": [
-          "Normal abdominal exam"
-        ],
-        "labs": [
-          "Hydrogen breath test positive",
-          "Normal stool studies"
-        ],
-        "imaging": [
-          "Not indicated"
-        ]
-      }
-    },
-    {
-      "name": "Medication-induced diarrhea",
-      "slug": "medication-induced-diarrhea",
-      "why_considered": "Antibiotics, magnesium-containing antacids, metformin, colchicine, and chemotherapy can cause diarrhea",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Temporal relationship with new medication",
-          "No infectious exposures",
-          "Symptoms resolve with drug discontinuation"
-        ],
-        "exam": [
-          "Nonspecific findings"
-        ],
-        "labs": [
-          "Normal infectious workup"
-        ],
-        "imaging": [
-          "Not indicated"
-        ]
-      }
-    },
-    {
-      "name": "Giardiasis",
-      "slug": "giardiasis",
-      "why_considered": "Parasitic infection causing prolonged watery diarrhea, bloating, and malabsorption; often from contaminated water",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Travel to endemic areas or hiking/camping with untreated water",
-          "Prolonged watery diarrhea with bloating and foul-smelling stools",
-          "Weight loss"
-        ],
-        "exam": [
-          "Mild abdominal tenderness",
-          "Signs of malabsorption"
-        ],
-        "labs": [
-          "Stool microscopy or antigen test positive for Giardia",
-          "Malabsorption labs if chronic"
+          "CT abdomen showing colonic wall thickening and pericolonic stranding",
+          "Toxic megacolon (colon diameter >6 cm) in severe cases"
         ]
       }
     },
     {
       "name": "Ischemic colitis",
       "slug": "ischemic-colitis",
-      "why_considered": "Older adults with sudden abdominal pain and bloody diarrhea, often after hypotension or vascular disease",
+      "why_considered": "Sudden lower abdominal pain followed by bloody diarrhea in an older adult with vascular risk factors",
       "must_not_miss": true,
-      "trigger": "Older adult with acute severe abdominal pain and bloody diarrhea",
+      "trigger": "Older adult with acute left lower quadrant pain and bloody diarrhea",
       "discriminators": {
         "history": [
-          "Sudden onset of crampy abdominal pain followed by bloody diarrhea",
-          "History of vascular disease, atrial fibrillation, or hypotension",
-          "Pain often out of proportion to exam initially"
+          "Age over 60 years",
+          "Cardiovascular disease, atrial fibrillation, or peripheral vascular disease",
+          "Abrupt crampy pain followed by urge and bloody diarrhea",
+          "Usually left lower quadrant pain",
+          "Prior episodes of abdominal pain after eating"
         ],
         "exam": [
-          "Abdominal tenderness, often left-sided",
-          "Possible peritoneal signs if severe"
+          "Left lower quadrant tenderness",
+          "Abdominal distension",
+          "Peritoneal signs only if infarction or perforation"
         ],
         "labs": [
           "Leukocytosis",
-          "Lactic acidosis",
-          "Elevated lactate"
+          "Elevated lactate in severe ischemia",
+          "Negative stool culture"
         ],
         "imaging": [
-          "CT showing colonic wall thickening, thumbprinting, or pneumatosis"
+          "CT with contrast showing segmental colonic wall thickening, often in splenic flexure or descending colon",
+          "Colonoscopy showing cyanotic or ulcerated mucosa, often sparing the rectum"
+        ]
+      }
+    },
+    {
+      "name": "Bowel obstruction",
+      "slug": "bowel-obstruction",
+      "why_considered": "Abdominal distension, vomiting, and watery stool from overflow around a blockage can be mistaken for infectious diarrhea",
+      "must_not_miss": true,
+      "trigger": "Abdominal distension, vomiting, or prior abdominal surgery with diarrhea",
+      "discriminators": {
+        "history": [
+          "Prior abdominal surgery",
+          "Abdominal distension and crampy pain",
+          "Nausea and vomiting",
+          "Passage of liquid stool around impacted feces",
+          "No true increase in stool volume"
+        ],
+        "exam": [
+          "Distended, tympanic abdomen",
+          "High-pitched or absent bowel sounds",
+          "Focal tenderness",
+          "Palpable mass in some cases"
+        ],
+        "labs": [
+          "Electrolyte abnormalities from vomiting",
+          "Elevated lactate if intestinal ischemia develops"
+        ],
+        "imaging": [
+          "CT or abdominal x-ray showing dilated bowel loops with air-fluid levels",
+          "Transition point or mechanical obstruction",
+          "Fecal impaction on rectal exam or imaging"
+        ]
+      }
+    },
+    {
+      "name": "Inflammatory bowel disease",
+      "slug": "inflammatory-bowel-disease",
+      "why_considered": "Recurrent or persistent bloody diarrhea, abdominal pain, and weight loss can be mistaken for acute infectious diarrhea",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Weeks to months of bloody diarrhea",
+          "Nocturnal bowel movements",
+          "Urgency and tenesmus",
+          "Unintentional weight loss",
+          "Family history of inflammatory bowel disease",
+          "Extraintestinal symptoms such as joint pain or mouth ulcers"
+        ],
+        "exam": [
+          "Abdominal tenderness",
+          "Perianal fissures, fistulas, or skin tags in Crohn disease",
+          "Pallor",
+          "Cachexia in severe disease"
+        ],
+        "labs": [
+          "Anemia",
+          "Elevated CRP or ESR",
+          "Elevated fecal calprotectin",
+          "Negative stool culture and C. difficile testing"
+        ],
+        "imaging": [
+          "CT or MR enterography showing bowel wall thickening, skip lesions, or strictures",
+          "Colonoscopy with mucosal inflammation, ulcers, and biopsy confirming chronic inflammation"
+        ]
+      }
+    },
+    {
+      "name": "Bacterial gastroenteritis",
+      "slug": "bacterial-gastroenteritis",
+      "why_considered": "Fever, bloody stools, and severe cramping suggest invasive bacterial infection rather than simple viral diarrhea",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Fever",
+          "Visible blood or mucus in stool",
+          "Severe crampy abdominal pain",
+          "Tenesmus",
+          "Undercooked poultry, eggs, unpasteurized dairy, or daycare exposure",
+          "Shorter incubation after exposure"
+        ],
+        "exam": [
+          "Fever",
+          "Lower abdominal tenderness",
+          "Dehydration"
+        ],
+        "labs": [
+          "Positive stool culture for Salmonella, Shigella, Campylobacter, or Shiga toxin-producing E. coli",
+          "Leukocytosis with left shift",
+          "Hemolytic anemia and thrombocytopenia can suggest Shiga toxin-producing E. coli"
+        ],
+        "imaging": [
+          "Usually not indicated",
+          "CT may show nonspecific colonic thickening if obtained for severe pain"
+        ]
+      }
+    },
+    {
+      "name": "Celiac disease",
+      "slug": "celiac-disease",
+      "why_considered": "Chronic watery diarrhea, bloating, and weight loss can be labelled as irritable bowel or recurrent gastroenteritis",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Chronic diarrhea with pale, bulky, greasy stools",
+          "Bloating and gas",
+          "Fatigue",
+          "Iron deficiency anemia",
+          "Family or personal history of autoimmune disease",
+          "Symptoms worsen after gluten-containing meals"
+        ],
+        "exam": [
+          "Weight loss",
+          "Abdominal distension",
+          "Dermatitis herpetiformis in some patients"
+        ],
+        "labs": [
+          "Positive tissue transglutaminase IgA",
+          "Total IgA level normal",
+          "Iron deficiency anemia",
+          "Elevated fecal fat"
+        ],
+        "imaging": [
+          "Small bowel follow-through may show loss of mucosal folds",
+          "Duodenal biopsy showing villous atrophy and increased intraepithelial lymphocytes"
+        ]
+      }
+    },
+    {
+      "name": "Irritable bowel syndrome",
+      "slug": "irritable-bowel-syndrome",
+      "why_considered": "Recurrent diarrhea with abdominal pain is a common functional cause",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Diarrhea alternating with constipation or pain relieved by defecation",
+          "No blood in stool",
+          "No unintentional weight loss",
+          "No nocturnal diarrhea",
+          "Symptoms for at least 3 months",
+          "Symptoms often worse with stress or certain foods"
+        ],
+        "exam": [
+          "Normal abdominal exam or mild diffuse tenderness",
+          "No peritoneal signs"
+        ],
+        "labs": [
+          "Normal CBC, CRP, and celiac serologies",
+          "Stool studies negative"
+        ],
+        "imaging": [
+          "Not indicated unless red flags are present",
+          "Colonoscopy normal if performed"
+        ]
+      }
+    },
+    {
+      "name": "Hyperthyroidism",
+      "slug": "hyperthyroidism",
+      "why_considered": "Increased frequency of loose stools with weight loss can be mistaken for chronic diarrhea",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Weight loss despite increased appetite",
+          "Heat intolerance",
+          "Palpitations",
+          "Anxiety or irritability",
+          "Tremor"
+        ],
+        "exam": [
+          "Tachycardia",
+          "Tremor",
+          "Warm, moist skin",
+          "Goiter",
+          "Lid lag"
+        ],
+        "labs": [
+          "Low TSH",
+          "Elevated free T4 or free T3"
+        ],
+        "imaging": [
+          "Thyroid uptake scan only if needed to identify cause",
+          "No GI imaging indicated"
+        ]
+      }
+    },
+    {
+      "name": "Colon cancer",
+      "slug": "colon-cancer",
+      "why_considered": "Progressive change in bowel habit with blood in stool, anemia, or weight loss in older adults",
+      "must_not_miss": true,
+      "trigger": "Older adult with iron deficiency anemia, positive fecal occult blood, or weight loss and change in stool caliber",
+      "discriminators": {
+        "history": [
+          "Gradual change in stool caliber",
+          "Hematochezia or melena",
+          "Tenesmus",
+          "Unintentional weight loss",
+          "Age over 50 years",
+          "Family history of colorectal cancer"
+        ],
+        "exam": [
+          "Possible abdominal mass",
+          "Rectal mass on digital rectal exam",
+          "Cachexia"
+        ],
+        "labs": [
+          "Iron deficiency anemia",
+          "Positive fecal immunochemical test or guaiac-based test"
+        ],
+        "imaging": [
+          "Colonoscopy with mass and biopsy diagnostic",
+          "CT abdomen/pelvis may show colonic wall thickening or liver metastases"
         ]
       }
     }
   ],
   "course": {
     "severity": {
-      "mild": "Acute, self-limited: 1-3 loose stools per day, no dehydration, able to drink, no fever or low-grade fever, symptoms resolve in 1-3 days",
-      "moderate": "More frequent stools, mild dehydration (dry mucous membranes, thirst), low-grade fever, some abdominal cramping, able to take oral fluids",
-      "severe": "Frequent watery stools, signs of moderate to severe dehydration (sunken eyes, delayed capillary refill, skin tenting), fever, vomiting, unable to keep up with fluid losses",
-      "critical": "Profound dehydration or hypovolemic shock, altered mental status, hypotension, tachycardia, minimal urine output; may occur with severe infectious colitis, toxic megacolon, or cholera-like illness"
+      "mild": "Acute watery diarrhea, 3-5 bowel movements per day, no or minimal dehydration, normal vital signs, able to maintain oral intake.",
+      "moderate": "6-10 stools per day, mild to moderate dehydration (dry mucous membranes, slight tachycardia), some cramping; may need oral rehydration or brief IV fluids.",
+      "severe": "More than 10 stools per day or dysentery, significant dehydration (orthostasis, oliguria), electrolyte abnormalities, fever, or systemic toxicity; requires IV fluids and possible hospitalization.",
+      "critical": "Hypovolemic shock, severe metabolic acidosis, altered mental status, toxic megacolon, or sepsis from an invasive pathogen; life-threatening."
     },
     "red_flags": [
       {
-        "finding": "Blood or pus in the stool",
-        "meaning": "Invasive bacterial infection, inflammatory bowel disease, or ischemic colitis; needs evaluation"
+        "finding": "Visible blood in stool with high fever",
+        "meaning": "Invasive bacterial infection such as Shiga toxin-producing E. coli; avoid antimotility agents and obtain stool culture"
       },
       {
-        "finding": "Fever of 102°F or higher",
-        "meaning": "Systemic infection or colitis; consider bacterial cause or C. difficile"
+        "finding": "Recent antibiotics, hospitalization, or chemotherapy",
+        "meaning": "Clostridioides difficile infection until proven otherwise"
       },
       {
-        "finding": "Severe abdominal pain or peritoneal signs",
-        "meaning": "Surgical emergency such as perforation, toxic megacolon, or ischemia"
+        "finding": "Severe abdominal pain, distension, or vomiting",
+        "meaning": "Bowel obstruction, toxic megacolon, or surgical abdomen"
       },
       {
-        "finding": "Signs of severe dehydration (sunken eyes, delayed capillary refill, skin tenting, lethargy)",
-        "meaning": "Needs immediate IV fluids and evaluation"
+        "finding": "Orthostatic hypotension, dry mucous membranes, or decreased urine output",
+        "meaning": "Significant volume depletion requiring IV fluids"
       },
       {
-        "finding": "Inability to keep down fluids or persistent vomiting",
-        "meaning": "Risk of worsening dehydration; may need IV fluids"
+        "finding": "Age over 65 or immunocompromised",
+        "meaning": "Higher risk of severe infection, dehydration, and complications"
       },
       {
-        "finding": "No urine output for many hours",
-        "meaning": "Severe dehydration or renal injury"
+        "finding": "Nocturnal diarrhea, unintentional weight loss, or anemia",
+        "meaning": "Chronic organic disease such as inflammatory bowel disease or malignancy"
       },
       {
-        "finding": "Black, tarry stools",
-        "meaning": "Upper gastrointestinal bleeding; not typical of diarrhea but requires urgent workup"
+        "finding": "Persistent diarrhea longer than 14 days",
+        "meaning": "Evaluate for chronic infections, malabsorption, and inflammatory disease"
       },
       {
-        "finding": "Diarrhea lasting more than 2 days in adults or more than 24 hours in children",
-        "meaning": "May indicate a more serious cause or complication"
+        "finding": "Bloody diarrhea with acute left lower quadrant pain in an older adult",
+        "meaning": "Ischemic colitis or mesenteric ischemia"
+      },
+      {
+        "finding": "Sudden onset severe abdominal pain with shock or acidosis",
+        "meaning": "Bowel ischemia, perforation, or sepsis"
+      },
+      {
+        "finding": "High fever with bloody diarrhea and decreased urine output in a child",
+        "meaning": "Hemolytic uremic syndrome can follow Shiga toxin-producing E. coli"
       }
     ],
     "complications": [
       {
-        "name": "Dehydration and electrolyte imbalance",
+        "name": "Dehydration and hypovolemia",
         "timing": "early",
-        "seriousness": "serious",
+        "seriousness": "life_threatening",
         "frequency": "common",
         "clues": [
           "Dry mucous membranes",
           "Decreased urine output",
-          "Lightheadedness",
-          "Abnormal sodium or potassium"
+          "Orthostatic hypotension",
+          "Tachycardia"
         ]
       },
       {
-        "name": "Hypovolemic shock",
+        "name": "Hypokalemia and metabolic acidosis",
         "timing": "early",
+        "seriousness": "serious",
+        "frequency": "common",
+        "clues": [
+          "Muscle weakness",
+          "Flattened T waves on ECG",
+          "Low serum bicarbonate",
+          "Low serum potassium"
+        ]
+      },
+      {
+        "name": "Hemolytic uremic syndrome",
+        "timing": "late",
         "seriousness": "life_threatening",
         "frequency": "rare",
         "clues": [
-          "Hypotension",
-          "Tachycardia",
-          "Altered mental status",
-          "Cool extremities"
-        ]
-      },
-      {
-        "name": "Acute kidney injury",
-        "timing": "early",
-        "seriousness": "serious",
-        "frequency": "sometimes",
-        "clues": [
-          "Elevated creatinine",
-          "Oliguria",
-          "Dehydration"
+          "Bloody diarrhea",
+          "Decreased urine output",
+          "Bruising or petechiae",
+          "Thrombocytopenia and hemolytic anemia"
         ]
       },
       {
@@ -951,195 +1229,187 @@
         "frequency": "rare",
         "clues": [
           "Severe abdominal pain and distension",
-          "Fever",
-          "Leukocytosis",
-          "Dilated colon on imaging"
+          "High fever",
+          "Shock",
+          "Colonic dilation on imaging"
         ]
       },
       {
-        "name": "Hemolytic uremic syndrome",
+        "name": "Post-infectious irritable bowel syndrome",
         "timing": "late",
-        "seriousness": "life_threatening",
-        "frequency": "rare",
-        "clues": [
-          "Bloody diarrhea followed by anemia, thrombocytopenia, and renal failure",
-          "Most common with E. coli O157:H7 in children"
-        ]
-      },
-      {
-        "name": "Malabsorption and nutritional deficiency",
-        "timing": "late",
-        "seriousness": "serious",
+        "seriousness": "minor",
         "frequency": "sometimes",
         "clues": [
-          "Chronic diarrhea",
-          "Weight loss",
-          "Anemia",
-          "Low vitamin levels"
+          "Persistent abdominal pain and altered bowel habit after resolution of acute infection"
+        ]
+      },
+      {
+        "name": "Reactive arthritis",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "rare",
+        "clues": [
+          "Joint pain or swelling 1-4 weeks after bacterial gastroenteritis",
+          "Eye inflammation"
         ]
       }
     ],
     "special_populations": [
       {
-        "population": "infants",
-        "differences": "Dehydration develops very rapidly; parents report fewer wet diapers, irritability, poor feeding, and lethargy. Oral rehydration solution is preferred; avoid plain water."
-      },
-      {
         "population": "children",
-        "differences": "Often have vomiting and fever; can become dehydrated quickly. Use oral rehydration solutions; monitor for decreased urine output and lethargy."
+        "differences": "Dehydration develops more quickly; use oral rehydration solution and monitor wet diapers and tears. Rotavirus is the most common cause in young children."
       },
       {
         "population": "older_adults",
-        "differences": "May have blunted symptoms but higher risk of dehydration, electrolyte disturbances, and confusion. Lower threshold for IV fluids and hospitalization."
+        "differences": "Higher risk of dehydration, C. difficile, ischemic colitis, and medication-induced diarrhea; may have muted fever and pain."
       },
       {
         "population": "pregnancy",
-        "differences": "Dehydration and electrolyte loss can affect the pregnancy; consider listeriosis with fever and flu-like symptoms. Avoid unnecessary medications."
+        "differences": "Dehydration can reduce uterine blood flow and trigger contractions; avoid many antidiarrheals and certain antibiotics; consider listeriosis with fever and diarrhea."
       },
       {
         "population": "immunocompromised",
-        "differences": "Diarrhea can be more severe, prolonged, and caused by unusual organisms; fever may be absent. Lower threshold for stool studies and imaging."
+        "differences": "Opportunistic infections such as Cryptosporidium, cytomegalovirus, and C. difficile can cause prolonged or severe diarrhea; lower threshold for stool testing and hospitalization."
+      },
+      {
+        "population": "renal_impairment",
+        "differences": "Electrolyte and fluid replacement must be adjusted to avoid volume overload and hyperkalemia; acid-base disturbances can worsen rapidly."
       }
     ]
   },
   "teaching": {
     "key_questions": [
       {
-        "question": "When did the diarrhea start, and how long has it been going on?",
+        "question": "When did the diarrhea start, and how long has it lasted?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Under 4 weeks suggests an acute, usually infectious or medication-related cause; 4 weeks or more defines chronic diarrhea and shifts the differential toward malabsorption, inflammatory, or functional disease"
+        "looking_for": "Acute onset with duration <14 days; >4 weeks suggests a chronic cause"
       },
       {
-        "question": "How many stools a day, and what do they look like?",
+        "question": "How many loose or watery stools have you had in the last 24 hours?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Frequency and character: watery, mushy, greasy and floating, or small-volume with mucus; helps separate secretory, osmotic, inflammatory, and malabsorptive patterns"
+        "looking_for": "At least 3 loose stools per day; high frequency increases dehydration risk"
       },
       {
-        "question": "Is there blood, pus, or mucus in the stool?",
-        "category": "red_flag",
-        "importance": "essential",
-        "looking_for": "Visible blood or mucus points to invasive bacterial colitis, inflammatory bowel disease, or ischemic colitis rather than a simple viral or osmotic cause"
-      },
-      {
-        "question": "How much are you drinking, and how much urine are you making?",
+        "question": "What does the stool look like—is it watery, greasy, or does it contain blood or mucus?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Ability to keep up with losses; markedly reduced urine output or inability to drink signals dehydration that needs fluids"
+        "looking_for": "Blood or mucus suggests invasive or inflammatory diarrhea; greasy stools suggest malabsorption"
       },
       {
-        "question": "Have you taken antibiotics in the past two months, or been in a hospital or nursing facility?",
+        "question": "Have you had any abdominal pain? Where is it, and does it improve after a bowel movement?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Diffuse crampy pain typical of diarrhea; severe localized pain or pain not relieved by stool suggests another cause"
+      },
+      {
+        "question": "Have you felt nauseated or vomited?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Vomiting often occurs with viral gastroenteritis; persistent vomiting raises dehydration risk"
+      },
+      {
+        "question": "Have you had a fever or chills?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Fever >101.3°F suggests invasive infection; high fever with bloody stool is a red flag"
+      },
+      {
+        "question": "Have you been able to keep fluids down, and has your urine output decreased?",
+        "category": "ros",
+        "importance": "essential",
+        "looking_for": "Poor oral intake or dark, concentrated, or decreased urine indicates dehydration"
+      },
+      {
+        "question": "Have you taken any antibiotics in the last 3 months?",
         "category": "medications",
         "importance": "essential",
-        "looking_for": "Recent antibiotics or healthcare exposure raises concern for Clostridioides difficile infection"
+        "looking_for": "Antibiotic exposure, especially clindamycin or fluoroquinolones, raises risk of Clostridioides difficile"
       },
       {
-        "question": "What other medicines are you taking, including over-the-counter ones?",
-        "category": "medications",
-        "importance": "essential",
-        "looking_for": "Magnesium-containing antacids, laxatives, metformin, colchicine, chemotherapy, and proton pump inhibitors can all cause diarrhea"
-      },
-      {
-        "question": "Have you traveled recently, or been around anyone else with diarrhea?",
+        "question": "Have you traveled recently, especially to a developing country?",
         "category": "social",
         "importance": "important",
-        "looking_for": "Travel to areas with unsafe water suggests traveler's diarrhea or a parasite; sick contacts or daycare exposure suggest a viral cause"
+        "looking_for": "Traveler's diarrhea; specific pathogens vary by region and exposure"
       },
       {
-        "question": "What have you eaten or drunk in the last day or two, including water sources?",
+        "question": "Have you eaten any undercooked meat, raw seafood, unpasteurized dairy, or food from a street vendor?",
         "category": "social",
         "importance": "important",
-        "looking_for": "Improperly stored food, undercooked meat or eggs, unpasteurized dairy, or untreated water points to a foodborne or waterborne cause"
+        "looking_for": "Foodborne illness; certain foods suggest Salmonella, Campylobacter, or other pathogens"
       },
       {
-        "question": "Do you have any pain, and where is it?",
-        "category": "associated",
+        "question": "Has anyone around you had similar symptoms?",
+        "category": "social",
         "importance": "important",
-        "looking_for": "Crampy pain relieved by a bowel movement fits an infectious or functional cause; severe constant pain or peritoneal features suggests a surgical problem"
+        "looking_for": "Sick contacts point to viral gastroenteritis or a common-source foodborne outbreak"
       },
       {
-        "question": "Any fever or chills?",
-        "category": "associated",
-        "importance": "important",
-        "looking_for": "Fever of 102°F or higher suggests invasive infection or colitis rather than a mild viral illness"
-      },
-      {
-        "question": "Any vomiting, and can you keep fluids down?",
-        "category": "associated",
-        "importance": "important",
-        "looking_for": "Persistent vomiting that prevents drinking raises the risk of dehydration and may require IV fluids"
-      },
-      {
-        "question": "Do you have any long-term bowel condition, or has this happened before?",
+        "question": "Do you have any chronic medical conditions, especially inflammatory bowel disease, celiac disease, diabetes, or an immune problem?",
         "category": "pmh",
         "importance": "important",
-        "looking_for": "Known inflammatory bowel disease or irritable bowel syndrome changes the likely cause and the workup"
+        "looking_for": "Comorbidities that increase risk of severe or chronic diarrhea and guide testing"
       },
       {
-        "question": "Has your weight changed without trying?",
-        "category": "ros",
+        "question": "Are you taking any new medications, including magnesium-containing antacids, metformin, or cancer drugs?",
+        "category": "medications",
         "importance": "important",
-        "looking_for": "Weight loss with chronic diarrhea suggests malabsorption, celiac disease, or inflammatory bowel disease"
+        "looking_for": "Medication-induced diarrhea; identifying the culprit may avoid unnecessary testing"
       },
       {
-        "question": "Does the diarrhea wake you from sleep at night?",
-        "category": "ros",
-        "importance": "important",
-        "looking_for": "Nocturnal diarrhea suggests an organic cause rather than irritable bowel syndrome"
-      },
-      {
-        "question": "Does it happen after you eat dairy or certain foods?",
-        "category": "associated",
-        "importance": "optional",
-        "looking_for": "Symptoms after milk or dairy suggest lactose intolerance or another food intolerance"
-      },
-      {
-        "question": "Is there any chance you could be pregnant?",
+        "question": "Could you be pregnant?",
         "category": "obstetric",
-        "importance": "optional",
-        "looking_for": "Pregnancy changes the risk assessment and the safety of medications; fever with flu-like symptoms raises concern for listeriosis"
+        "importance": "important",
+        "looking_for": "Pregnancy affects treatment choices and may require imaging precautions"
       },
       {
-        "question": "Any rash, flushing, or hives with the diarrhea?",
-        "category": "ros",
-        "importance": "optional",
-        "looking_for": "Flushing or rash would point away from a simple infectious cause toward a systemic or hormonal cause"
+        "question": "Have you noticed any black, tarry stools or blood in the toilet?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Melena or hematochezia suggests gastrointestinal bleeding or severe infection"
+      },
+      {
+        "question": "Have you lost weight unintentionally, or do you have diarrhea at night?",
+        "category": "red_flag",
+        "importance": "important",
+        "looking_for": "Nocturnal diarrhea or weight loss suggests an organic or malabsorptive disease"
       }
     ],
     "accepted_names": [
       "Diarrhea",
       "Acute diarrhea",
-      "Chronic diarrhea",
       "Infectious diarrhea",
+      "Acute gastroenteritis",
       "Gastroenteritis"
     ],
     "reasoning_points": [
-      "Duration separates acute from chronic diarrhea and drives the differential",
-      "Stool character and frequency describe the pattern: watery, greasy, inflammatory, or small-volume",
-      "Presence of blood, mucus, high fever, or severe pain suggests invasive or inflammatory disease",
-      "Hydration status and urine output determine urgency of fluid replacement",
-      "Medication review, especially recent antibiotics, identifies C. difficile and drug-induced causes",
-      "Travel, food, water, and sick contacts point to an infectious source",
-      "Weight loss, nocturnal symptoms, and chronicity suggest malabsorption or inflammatory bowel disease",
-      "Red flags such as peritoneal signs, black stools, or inability to drink require urgent evaluation"
+      "Acute onset of three or more loose or watery stools per day confirms diarrhea.",
+      "Duration less than 14 days makes an acute infectious or medication-related cause most likely.",
+      "Stool character and the presence of blood or mucus distinguish inflammatory from non-inflammatory diarrhea.",
+      "Hydration status is stable: no orthostasis, dry mucous membranes, oliguria, or significant tachycardia.",
+      "Recent exposures include sick contacts, travel, undercooked food, or antibiotics, which suggest specific pathogens.",
+      "Medication review rules out antibiotics, metformin, magnesium-containing antacids, or other common culprits.",
+      "Red flags are absent: severe abdominal pain, high fever, visible blood, persistent vomiting, older age, or immunocompromise.",
+      "Key differential includes Clostridioides difficile, bacterial gastroenteritis, inflammatory bowel disease, ischemic colitis, bowel obstruction, hyperthyroidism, and irritable bowel syndrome.",
+      "Oral rehydration is appropriate for mild illness; stool studies are reserved for severe, bloody, or persistent diarrhea."
     ],
     "difficulty": {
       "easy": [
-        "Healthy adult with a short, self-limited watery diarrhea after a sick contact",
-        "No blood, no high fever, mild cramping, able to drink",
-        "Mild dehydration at most on exam"
+        "Young healthy adult with abrupt watery diarrhea and vomiting after a viral exposure",
+        "No blood, low-grade or no fever, mild diffuse tenderness, no dehydration",
+        "Symptoms resolve with oral rehydration within 1-3 days"
       ],
       "medium": [
-        "Recent antibiotic course with watery diarrhea and cramps suggesting C. difficile",
-        "Traveler returning from an area with unsafe water with prolonged watery stools",
-        "Older adult with several days of diarrhea and lightheadedness on standing"
+        "Traveler with watery diarrhea and mild dehydration requiring oral rehydration and possibly antibiotics",
+        "Antibiotic-associated diarrhea with suspected Clostridioides difficile but no severe colitis",
+        "Moderate dehydration with orthostasis, hypokalemia, and need for IV fluids"
       ],
       "hard": [
-        "Older adult with sudden severe pain and bloody diarrhea suggesting ischemic colitis",
-        "Chronic diarrhea with weight loss and anemia suggesting malabsorption or inflammatory bowel disease",
-        "Immunocompromised patient with prolonged diarrhea and no fever",
-        "Infant with irritability, poor feeding, and fewer wet diapers where dehydration is the main concern"
+        "Older adult with sudden left lower quadrant pain and bloody diarrhea, where ischemic colitis must be excluded",
+        "Child with bloody diarrhea and decreased urine output, raising concern for hemolytic uremic syndrome",
+        "Immunocompromised patient with persistent watery diarrhea from Cryptosporidium or cytomegalovirus",
+        "Patient with chronic nocturnal diarrhea, unintentional weight loss, and anemia from inflammatory bowel disease or malignancy"
       ]
     }
   }

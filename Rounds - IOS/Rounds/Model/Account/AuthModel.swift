@@ -18,6 +18,14 @@ final class AuthModel {
     private let defaults: UserDefaults
     private(set) var account: Account?
     private(set) var busy: Busy?
+    /// The provider whose sign-in sheet is open, for the Apple/Google buttons.
+    var signingInWith: SocialProvider? {
+        switch busy {
+        case .apple?: .apple
+        case .google?: .google
+        default: nil
+        }
+    }
     /// Shown as an alert by the screen that started the action.
     var problem: String?
     /// When the last code was emailed, and to whom: drives the resend countdown, which also holds

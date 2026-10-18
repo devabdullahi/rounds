@@ -11,6 +11,12 @@ Deno.test("reference ranges match the knowledge base's copy", async () => {
   assertEquals(bundled, source);
 });
 
+Deno.test("lab directions match the knowledge base's copy", async () => {
+  const bundled = JSON.parse(await Deno.readTextFile(new URL("./lab_directions.json", import.meta.url)));
+  const source = JSON.parse(await Deno.readTextFile(new URL("knowledge-base/lab_directions.json", root)));
+  assertEquals(bundled, source);
+});
+
 Deno.test("profile prompts were exported at the generator's current prompt version", async () => {
   const generator = await Deno.readTextFile(new URL("tools/kb-generate/generate.py", root));
   const version = generator.match(/^PROMPT_VERSION\s*=\s*["']([^"']+)["']/m);

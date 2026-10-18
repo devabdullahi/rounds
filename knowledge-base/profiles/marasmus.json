@@ -32,52 +32,48 @@
       },
       {
         "stage": "patient_presentation",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:57:21Z"
+        "generated_at": "2026-10-14T17:07:18Z"
       },
       {
         "stage": "exam_vitals",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:57:45Z"
+        "generated_at": "2026-10-14T17:08:47Z"
       },
       {
         "stage": "diagnostics",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:57:57Z"
+        "generated_at": "2026-10-14T17:10:56Z"
       },
       {
         "stage": "differential_course",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:58:10Z"
+        "generated_at": "2026-10-14T17:12:34Z"
       },
       {
         "stage": "teaching",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:58:17Z"
+        "generated_at": "2026-10-14T17:13:19Z"
       }
     ],
     "validation": {
       "status": "passed",
       "rule_errors": [],
       "review_issues": [
-        "auto-repaired: workup: renamed 'hiv' to 'HIV'",
-        "auto-repaired: workup: 'chest x-ray' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "auto-repaired: workup: 'upper gastrointestinal series with small bowel follow-through' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "auto-repaired: workup: 'bone age radiograph of the left hand and wrist' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "auto-repaired: workup: 'chest x-ray' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "auto-repaired: workup: 'upper gastrointestinal series with small bowel follow-through' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "auto-repaired: workup: 'bone age radiograph of the left hand and wrist' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "presentation: term 'Loose skin folds' not found in SNOMED CT",
-        "exam: term 'Aged appearance' not found in SNOMED CT",
-        "exam: term 'Flaky paint dermatosis' not found in SNOMED CT",
-        "differential cystic-fibrosis: no profile yet",
+        "auto-repaired: workup: 'Chest x-ray' was in supporting, not_indicated; kept supporting as a conditional order (only if respiratory symptoms or suspected tuberculosis)",
+        "auto-repaired: workup: 'Blood culture' was in supporting, not_indicated; kept supporting as a conditional order (only if fever, hypothermia, or signs of sepsis)",
+        "auto-repaired: workup: 'Stool culture' was in supporting, not_indicated; kept supporting as a conditional order (only if diarrhea with blood or persistent diarrhea)",
+        "auto-repaired: workup: 'HIV test' was in supporting, not_indicated; kept supporting as a conditional order (only if risk factors or recurrent infections)",
+        "auto-repaired: workup: 'Tuberculosis testing (IGRA or tuberculin skin test)' was in supporting, not_indicated; kept supporting as a conditional order (only if exposure, chronic cough, or failure to improve with feeding)",
+        "differential hiv-infection: no profile yet",
         "differential tuberculosis: no profile yet",
-        "differential adrenal-insufficiency: no profile yet"
+        "differential type-1-diabetes: no profile yet",
+        "differential cystic-fibrosis: no profile yet"
       ]
     },
     "review": {
@@ -88,19 +84,19 @@
     "age": {
       "typical_min": 0,
       "typical_max": 5,
-      "peak": "infants and young children under 5",
+      "peak": "6–24 months",
       "possible_min": 0,
-      "possible_max": 110
+      "possible_max": 100
     },
     "sex": "either",
     "demographics": [
-      "Most common in infants and young children in settings of poverty, famine, or food insecurity",
-      "Occurs worldwide, including in the US in cases of neglect, food insecurity, or chronic illness",
-      "In adults, seen with severe self-neglect, eating disorders, or chronic disease"
+      "Most common in low-resource and food-insecure settings",
+      "Classically affects infants and young children during or after weaning",
+      "No clear sex difference"
     ],
     "risk_factors": [
       {
-        "text": "Inadequate energy intake",
+        "text": "Inadequate total energy intake over weeks to months",
         "strength": "strong"
       },
       {
@@ -108,117 +104,107 @@
         "strength": "strong"
       },
       {
-        "text": "Neglect or caregiver inability to feed",
+        "text": "Early cessation of breastfeeding without adequate replacement",
         "strength": "strong"
       },
       {
-        "text": "Chronic illness increasing metabolic demand",
+        "text": "Recurrent infections such as diarrhea or pneumonia",
         "strength": "moderate"
       },
       {
-        "text": "Early weaning or improper formula preparation",
+        "text": "Underlying chronic illness with increased metabolic demand or malabsorption",
         "strength": "moderate"
       },
       {
-        "text": "Malabsorption",
+        "text": "Neglect or inability of caregivers to feed the child",
         "strength": "moderate"
       }
     ],
     "comorbidities": [
-      "Chronic infections (e.g., tuberculosis, HIV)",
-      "Congenital heart disease",
-      "Cystic fibrosis",
-      "Celiac disease",
-      "Chronic kidney disease"
+      "Diarrheal illness",
+      "Pneumonia",
+      "HIV infection",
+      "Tuberculosis",
+      "Micronutrient deficiencies",
+      "Malabsorption syndromes"
     ],
     "family_history": [],
     "social_history": [
-      "Food insecurity",
       "Poverty",
-      "Neglect",
-      "Famine or war"
+      "Food insecurity",
+      "Inadequate caregiver knowledge about feeding",
+      "Crowded living conditions",
+      "Recent famine or food shortage"
     ],
-    "exposures": [],
+    "exposures": [
+      "Inadequate food supply",
+      "Poor sanitation",
+      "Famine or food shortage"
+    ],
     "risk_medications": []
   },
   "presentation": {
     "chief_complaints": [
       {
-        "text": "My child is very thin and not growing",
+        "text": "My child is not gaining weight and looks very thin",
         "frequency": "almost_always",
         "term": "Failure to thrive",
         "snomed_verified": true
       },
       {
-        "text": "He/she has been losing weight",
+        "text": "My child seems weak and is less active than before",
         "frequency": "common",
-        "term": "Weight loss",
+        "term": "Weakness",
         "snomed_verified": true
       },
       {
-        "text": "The child is always hungry",
+        "text": "My child's skin is loose and hangs in folds",
         "frequency": "common",
-        "term": "Hunger",
-        "snomed_verified": true
-      },
-      {
-        "text": "He/she is irritable and cries a lot",
-        "frequency": "common",
-        "term": "Irritability",
+        "term": "Loose skin",
         "snomed_verified": true
       }
     ],
     "hpi": {
-      "onset": "Gradual over weeks to months",
-      "duration": "Usually months",
-      "progression": "Progressive weight loss and wasting; child becomes increasingly irritable and hungry, then lethargic",
-      "location": "Generalized",
-      "radiation": "",
-      "quality": "",
-      "severity": "Severe",
-      "timing": "Constant",
+      "onset": "Gradual, over weeks to months as intake remains inadequate",
+      "duration": "Weeks to months before medical attention is sought",
+      "progression": "Progressive weight loss and wasting; initially a well-nourished child becomes visibly thin, then weak and listless",
+      "location": "Generalized; no focal pain",
+      "radiation": "None",
+      "quality": "Not applicable; weight loss and wasting predominate",
+      "severity": "Severe by the time of diagnosis; marked wasting",
+      "timing": "Constant, progressive",
       "aggravating": [
-        "Inadequate food intake"
+        "Inadequate food intake",
+        "Intercurrent infections",
+        "Diarrhea"
       ],
       "relieving": [
-        "Feeding",
-        "Nutritional rehabilitation"
+        "Adequate caloric intake",
+        "Treatment of infections"
       ],
       "associated_symptoms": [
         {
-          "text": "Failure to thrive",
+          "text": "Not gaining weight",
           "frequency": "almost_always",
           "term": "Failure to thrive",
           "snomed_verified": true
         },
         {
-          "text": "Weight loss",
-          "frequency": "almost_always",
-          "term": "Weight loss",
-          "snomed_verified": true
-        },
-        {
-          "text": "Muscle wasting",
+          "text": "Loss of body fat and muscle",
           "frequency": "almost_always",
           "term": "Muscle wasting",
           "snomed_verified": true
         },
         {
-          "text": "Loss of subcutaneous fat",
-          "frequency": "almost_always",
-          "term": "Loss of subcutaneous fat",
+          "text": "Weakness or fatigue",
+          "frequency": "common",
+          "term": "Weakness",
           "snomed_verified": true
         },
         {
-          "text": "Irritability",
+          "text": "Irritability or apathy",
           "frequency": "common",
-          "term": "Irritability",
-          "snomed_verified": true
-        },
-        {
-          "text": "Constant hunger",
-          "frequency": "common",
-          "term": "Hunger",
+          "term": "Irritable mood",
           "snomed_verified": true
         },
         {
@@ -228,41 +214,31 @@
           "snomed_verified": true
         },
         {
-          "text": "Lethargy",
+          "text": "Poor appetite",
           "frequency": "sometimes",
-          "term": "Lethargy",
+          "term": "Anorexia",
           "snomed_verified": true
         },
         {
-          "text": "Poor feeding",
+          "text": "Fever when an infection is present",
           "frequency": "sometimes",
-          "term": "Poor feeding",
-          "snomed_verified": true
-        },
-        {
-          "text": "Recurrent infections",
-          "frequency": "sometimes",
-          "term": "Recurrent infections",
+          "term": "Fever",
           "snomed_verified": true
         }
       ],
       "pertinent_negatives": [
-        "Edema",
-        "Hepatomegaly",
-        "Flaky paint dermatosis",
-        "Moon facies"
+        "Swelling of the feet, legs, or face (edema)",
+        "Rapid onset over days",
+        "Fever without another source of infection",
+        "Severe vomiting as the main problem",
+        "Preserved normal growth until a brief recent illness",
+        "Flaky, peeling skin lesions"
       ]
     },
     "ros": [
       {
         "system": "constitutional",
         "positives": [
-          {
-            "text": "Failure to thrive",
-            "frequency": "almost_always",
-            "term": "Failure to thrive",
-            "snomed_verified": true
-          },
           {
             "text": "Weight loss",
             "frequency": "almost_always",
@@ -276,15 +252,15 @@
             "snomed_verified": true
           },
           {
-            "text": "Irritability",
-            "frequency": "common",
-            "term": "Irritability",
+            "text": "Fever",
+            "frequency": "rare",
+            "term": "Fever",
             "snomed_verified": true
           }
         ],
         "negatives": [
-          "Fever",
-          "Night sweats"
+          "Night sweats",
+          "Chills"
         ]
       },
       {
@@ -297,141 +273,93 @@
             "snomed_verified": true
           },
           {
-            "text": "Abdominal distension",
+            "text": "Poor appetite",
             "frequency": "sometimes",
-            "term": "Abdominal distension",
-            "snomed_verified": true
-          },
-          {
-            "text": "Vomiting",
-            "frequency": "sometimes",
-            "term": "Vomiting",
+            "term": "Anorexia",
             "snomed_verified": true
           }
         ],
         "negatives": [
-          "Hematemesis",
-          "Melena"
-        ]
-      },
-      {
-        "system": "musculoskeletal",
-        "positives": [
-          {
-            "text": "Muscle wasting",
-            "frequency": "almost_always",
-            "term": "Muscle wasting",
-            "snomed_verified": true
-          },
-          {
-            "text": "Weakness",
-            "frequency": "common",
-            "term": "Weakness",
-            "snomed_verified": true
-          }
+          "Vomiting",
+          "Blood in stool",
+          "Abdominal pain"
         ],
-        "negatives": [
-          "Joint swelling",
-          "Bone pain"
+        "argues_against": [
+          "Profuse watery diarrhea",
+          "Bilious vomiting"
         ]
       },
       {
         "system": "skin",
         "positives": [
           {
-            "text": "Dry skin",
+            "text": "Loose skin folds",
             "frequency": "common",
-            "term": "Dry skin",
+            "term": "Loose skin",
             "snomed_verified": true
           },
           {
-            "text": "Loose skin folds",
-            "frequency": "common",
-            "term": "Loose skin folds",
-            "snomed_verified": false
+            "text": "Hair thinning",
+            "frequency": "sometimes",
+            "term": "Thinning of hair",
+            "snomed_verified": true
           }
         ],
         "negatives": [
           "Edema",
+          "Flaky paint rash"
+        ],
+        "argues_against": [
+          "Generalized edema",
           "Flaky paint dermatosis"
         ]
       },
       {
-        "system": "neurologic",
+        "system": "psychiatric",
         "positives": [
           {
             "text": "Irritability",
             "frequency": "common",
-            "term": "Irritability",
+            "term": "Irritable mood",
             "snomed_verified": true
           },
           {
             "text": "Apathy",
-            "frequency": "sometimes",
+            "frequency": "common",
             "term": "Apathy",
             "snomed_verified": true
           }
         ],
         "negatives": [
-          "Seizures",
-          "Focal neurologic deficits"
+          "Hallucinations",
+          "Severe agitation"
         ]
       }
     ],
     "atypical": [
       {
         "population": "older_adults",
-        "how_it_differs": "Presents with generalized weakness, weight loss, and functional decline; often mistaken for normal aging or frailty.",
+        "how_it_differs": "Wasting often occurs in the setting of self-neglect, dementia, depression, or malignancy; there is no growth chart to demonstrate failure to thrive, and it may be mistaken for cachexia or sarcopenia.",
         "missing_classic_features": [
-          "Irritability",
-          "Hunger"
-        ]
-      },
-      {
-        "population": "children",
-        "how_it_differs": "In children, marasmus often presents with failure to thrive, developmental delay, and recurrent infections; may be mistaken for other causes of failure to thrive.",
-        "missing_classic_features": [
-          "Edema",
-          "Hepatomegaly"
+          "Failure to thrive on growth curve",
+          "Irritability"
         ]
       }
     ]
   },
   "exam": {
     "general": {
-      "mild": "Thin, alert, irritable but consolable; appears younger than stated age",
-      "moderate": "Markedly wasted with prominent ribs and limbs, irritable and demanding, sparse hair",
-      "severe": "Severe generalized wasting, old-looking facies, apathetic or irritable, weak cry, no edema",
-      "critical": "Cachectic and lethargic, hypotensive, hypothermic, too weak to feed, appears moribund"
+      "mild": "Appears thin but alert and interactive; may be quiet but not ill-looking.",
+      "moderate": "Markedly thin with loose skin; apathetic, less active, but responsive to caregiver.",
+      "severe": "Emaciated, weak, listless; may be hypothermic; prominent bones and sunken cheeks; requires careful handling.",
+      "critical": "Moribund, lethargic or unresponsive; signs of shock, severe hypothermia; immediate stabilization needed."
     },
     "findings": [
       {
-        "id": "generalized-muscle-wasting",
+        "id": "underweight",
         "region": "general",
-        "maneuver": "Inspect and palpate the limbs, buttocks, and temporal regions",
-        "finding": "Generalized loss of muscle bulk with prominent ribs and wasted buttocks",
-        "frequency": "almost_always",
-        "significance": "strongly_supports",
-        "importance": "essential",
-        "term": "Muscle wasting",
-        "snomed_verified": true
-      },
-      {
-        "id": "loss-subcutaneous-fat",
-        "region": "general",
-        "maneuver": "Pinch the skin over the abdomen, thigh, and upper arm",
-        "finding": "Loss of subcutaneous fat with loose, easily lifted skin folds",
-        "frequency": "almost_always",
-        "significance": "strongly_supports",
-        "importance": "essential",
-        "term": "Loss of subcutaneous fat",
-        "snomed_verified": true
-      },
-      {
-        "id": "weight-for-age-low",
-        "region": "general",
-        "maneuver": "Weigh the child and plot weight for age on a growth chart",
-        "finding": "Weight far below the expected range for age, with weight-for-height preserved relative to height",
+        "maneuver": "Weigh the child and plot weight-for-length or BMI on WHO growth chart",
+        "finding": "Weight-for-length or BMI below expected; severe wasting if below -3 z-score",
         "frequency": "almost_always",
         "significance": "strongly_supports",
         "importance": "essential",
@@ -439,97 +367,76 @@
         "snomed_verified": true
       },
       {
-        "id": "height-for-age-low",
+        "id": "loss-subcutaneous-fat",
         "region": "general",
-        "maneuver": "Measure length or height and plot on a growth chart",
-        "finding": "Length or height below the expected range for age",
-        "frequency": "common",
-        "significance": "supports",
-        "importance": "important",
-        "term": "Short stature",
+        "maneuver": "Inspect the face, buttocks, and extremities; pinch skin over triceps",
+        "finding": "Loss of subcutaneous fat with thin, loose skin over cheeks and buttocks",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Lipoatrophy",
         "snomed_verified": true
       },
       {
-        "id": "head-circumference-low",
-        "region": "general",
-        "maneuver": "Measure occipitofrontal circumference and plot on a growth chart",
-        "finding": "Head circumference below the expected range for age",
-        "frequency": "sometimes",
-        "significance": "supports",
-        "importance": "important",
-        "term": "Small head",
+        "id": "muscle-wasting",
+        "region": "musculoskeletal",
+        "maneuver": "Palpate the deltoid, thigh, and buttocks",
+        "finding": "Marked muscle wasting with prominent bones",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Muscle wasting",
         "snomed_verified": true
       },
       {
-        "id": "old-looking-facies",
-        "region": "heent",
-        "maneuver": "Inspect the face and compare with expected appearance for age",
-        "finding": "Wizened, aged facial appearance with prominent cheekbones and sunken cheeks",
+        "id": "loose-skin",
+        "region": "skin",
+        "maneuver": "Gently lift a fold of skin over the abdomen or thigh",
+        "finding": "Skin lifts easily and returns slowly due to loss of subcutaneous tissue",
         "frequency": "common",
         "significance": "supports",
         "importance": "important",
-        "term": "Aged appearance",
-        "snomed_verified": false
-      },
-      {
-        "id": "sunken-eyes",
-        "region": "heent",
-        "maneuver": "Inspect the orbits",
-        "finding": "Sunken eyes with loss of periorbital fat",
-        "frequency": "common",
-        "significance": "supports",
-        "importance": "important",
-        "term": "Sunken eyes",
+        "term": "Loose skin",
         "snomed_verified": true
       },
       {
-        "id": "sparse-hair",
-        "region": "heent",
-        "maneuver": "Inspect the scalp hair",
-        "finding": "Sparse, dry, brittle hair that pulls out easily",
-        "frequency": "common",
-        "significance": "supports",
-        "importance": "important",
-        "term": "Sparse hair",
-        "snomed_verified": true
-      },
-      {
-        "id": "angular-stomatitis",
-        "region": "heent",
-        "maneuver": "Inspect the lips and oral commissures",
-        "finding": "Fissuring and erythema at the corners of the mouth",
+        "id": "abdominal-distension",
+        "region": "abdomen",
+        "maneuver": "Inspect and percuss the abdomen",
+        "finding": "Abdomen may be distended but soft, with visible bowel loops",
         "frequency": "sometimes",
         "significance": "supports",
         "importance": "optional",
-        "term": "Angular cheilitis",
+        "term": "Abdominal distension",
         "snomed_verified": true
       },
       {
-        "id": "dry-skin",
+        "id": "hair-changes",
         "region": "skin",
-        "maneuver": "Inspect and palpate the skin",
-        "finding": "Dry, scaly, inelastic skin with reduced turgor",
+        "maneuver": "Inspect hair color, texture, and ease of plucking",
+        "finding": "Hair is thin, dry, dull, and easily plucked; may have color changes",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Hair thinning",
+        "snomed_verified": true
+      },
+      {
+        "id": "mental-status-changes",
+        "region": "mental_status",
+        "maneuver": "Observe interaction with caregiver and environment",
+        "finding": "Irritable, apathetic, or listless; may be lethargic in severe cases",
         "frequency": "common",
+        "min_severity": "moderate",
         "significance": "supports",
         "importance": "important",
-        "term": "Dry skin",
+        "term": "Apathy",
         "snomed_verified": true
       },
       {
-        "id": "loose-skin-folds-abdominal",
+        "id": "edema-absent",
         "region": "skin",
-        "maneuver": "Pinch and lift the abdominal skin",
-        "finding": "Loose abdominal skin folds with little underlying fat",
-        "frequency": "common",
-        "significance": "supports",
-        "importance": "important",
-        "term": "Loose skin folds, abdominal wall",
-        "snomed_verified": true
-      },
-      {
-        "id": "no-edema",
-        "region": "extremities",
-        "maneuver": "Press the dorsum of the feet and the pretibial area for several seconds",
+        "maneuver": "Press over the dorsum of the feet, hands, and periorbital area",
         "finding": "No pitting edema",
         "frequency": "almost_always",
         "significance": "neutral",
@@ -538,178 +445,183 @@
         "snomed_verified": true
       },
       {
-        "id": "no-hepatomegaly",
+        "id": "hepatomegaly-absent",
         "region": "abdomen",
-        "maneuver": "Palpate the right upper quadrant below the costal margin",
-        "finding": "Liver edge not palpable below the costal margin",
+        "maneuver": "Palpate the liver edge below the right costal margin",
+        "finding": "No hepatomegaly",
         "frequency": "almost_always",
         "significance": "neutral",
         "importance": "important",
         "term": "Hepatomegaly",
         "snomed_verified": true
-      },
-      {
-        "id": "abdominal-distension",
-        "region": "abdomen",
-        "maneuver": "Inspect and percuss the abdomen",
-        "finding": "Mild abdominal distension with tympany",
-        "frequency": "sometimes",
-        "significance": "supports",
-        "importance": "optional",
-        "term": "Abdominal distension",
-        "snomed_verified": true
-      },
-      {
-        "id": "irritability-exam",
-        "region": "mental_status",
-        "maneuver": "Observe behavior during the encounter",
-        "finding": "Irritable, crying, and difficult to console, but alert and responsive",
-        "frequency": "common",
-        "significance": "supports",
-        "importance": "important",
-        "term": "Irritability",
-        "snomed_verified": true
-      },
-      {
-        "id": "lethargy",
-        "region": "mental_status",
-        "maneuver": "Observe the level of alertness and response to stimulation",
-        "finding": "Lethargic, drowsy, and slow to respond",
-        "frequency": "sometimes",
-        "min_severity": "severe",
-        "significance": "supports",
-        "importance": "important",
-        "term": "Lethargy",
-        "snomed_verified": true
-      },
-      {
-        "id": "delayed-development",
-        "region": "neuro",
-        "maneuver": "Assess developmental milestones for age",
-        "finding": "Milestones not met for age",
-        "frequency": "sometimes",
-        "significance": "supports",
-        "importance": "important",
-        "term": "Developmental delay",
-        "snomed_verified": true
-      },
-      {
-        "id": "reduced-muscle-strength",
-        "region": "musculoskeletal",
-        "maneuver": "Test proximal strength by asking the child to sit up or lift the arms",
-        "finding": "Weakness with poor head control or inability to sit unsupported",
-        "frequency": "common",
-        "significance": "supports",
-        "importance": "important",
-        "term": "Weakness",
-        "snomed_verified": true
-      },
-      {
-        "id": "no-flaky-paint-dermatosis",
-        "region": "skin",
-        "maneuver": "Inspect the skin of the legs, buttocks, and perineum",
-        "finding": "No hyperpigmented, desquamating plaques with peeling edges",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "important",
-        "term": "Flaky paint dermatosis",
-        "snomed_verified": false
       }
     ]
   },
   "vitals": {
     "temp": {
-      "mild": {
-        "min": 97.7,
-        "max": 99.1
-      },
-      "moderate": {
-        "min": 97.0,
-        "max": 98.6
-      },
       "severe": {
-        "min": 95.9,
-        "max": 97.7
+        "min": 94.5,
+        "max": 96.8
       },
       "critical": {
-        "min": 93.2,
-        "max": 96.8
+        "min": 92.0,
+        "max": 94.5
       }
     },
     "hr": {
-      "mild": {
-        "min": 100,
-        "max": 130
-      },
-      "moderate": {
-        "min": 110,
-        "max": 150
-      },
       "severe": {
-        "min": 120,
-        "max": 170
+        "min": 70,
+        "max": 100
       },
       "critical": {
-        "min": 100,
-        "max": 180
+        "min": 50,
+        "max": 80
       }
     },
     "rr": {
-      "mild": {
-        "min": 24,
-        "max": 40
-      },
-      "moderate": {
-        "min": 28,
-        "max": 46
-      },
       "severe": {
-        "min": 30,
-        "max": 50
+        "min": 18,
+        "max": 28
       },
       "critical": {
-        "min": 20,
-        "max": 60
+        "min": 12,
+        "max": 22
       }
     },
     "sbp": {
-      "mild": {
-        "min": 80,
-        "max": 100
-      },
-      "moderate": {
-        "min": 70,
-        "max": 90
-      },
-      "severe": {
-        "min": 60,
-        "max": 80
-      },
       "critical": {
-        "min": 40,
+        "min": 50,
         "max": 70
       }
     },
     "dbp": {
-      "mild": {
-        "min": 45,
-        "max": 65
-      },
-      "moderate": {
-        "min": 40,
-        "max": 60
-      },
-      "severe": {
-        "min": 30,
-        "max": 50
-      },
       "critical": {
-        "min": 20,
+        "min": 25,
         "max": 40
       }
     }
   },
   "labs": [
+    {
+      "test_id": "hgb",
+      "ranges": {
+        "mild": {
+          "min": 10.5,
+          "max": 12.0
+        },
+        "moderate": {
+          "min": 9.0,
+          "max": 10.5
+        },
+        "severe": {
+          "min": 7.0,
+          "max": 9.5
+        },
+        "critical": {
+          "min": 5.0,
+          "max": 8.0
+        }
+      },
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "Anemia is common in marasmus; may be normocytic or microcytic if iron deficiency coexists."
+    },
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "moderate": {
+          "min": 3.0,
+          "max": 4.4
+        },
+        "severe": {
+          "min": 2.5,
+          "max": 4.0
+        },
+        "critical": {
+          "min": 1.5,
+          "max": 3.5
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Leukopenia can occur due to immune dysfunction; infection may not produce the expected leukocytosis."
+    },
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "severe": {
+          "min": 40,
+          "max": 60
+        },
+        "critical": {
+          "min": 25,
+          "max": 50
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "essential",
+      "caveat": "Hypoglycemia may be asymptomatic; check before feeds."
+    },
+    {
+      "test_id": "k",
+      "ranges": {
+        "moderate": {
+          "min": 2.8,
+          "max": 3.4
+        },
+        "severe": {
+          "min": 2.5,
+          "max": 3.2
+        },
+        "critical": {
+          "min": 2.0,
+          "max": 3.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Serum potassium may be low or normal despite total body depletion."
+    },
+    {
+      "test_id": "phos",
+      "ranges": {
+        "moderate": {
+          "min": 1.5,
+          "max": 2.5
+        },
+        "severe": {
+          "min": 1.0,
+          "max": 2.0
+        },
+        "critical": {
+          "min": 0.5,
+          "max": 1.5
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hypophosphatemia often appears or worsens during refeeding."
+    },
+    {
+      "test_id": "mg",
+      "ranges": {
+        "moderate": {
+          "min": 1.2,
+          "max": 1.6
+        },
+        "severe": {
+          "min": 0.8,
+          "max": 1.4
+        },
+        "critical": {
+          "min": 0.5,
+          "max": 1.2
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hypomagnesemia can cause cardiac arrhythmias and seizures."
+    },
     {
       "test_id": "albumin",
       "ranges": {
@@ -730,99 +642,56 @@
           "max": 2.5
         }
       },
-      "frequency": "common",
-      "importance": "important",
-      "caveat": "Albumin is usually normal or only mildly low in marasmus; marked hypoalbuminemia with edema suggests kwashiorkor instead."
-    },
-    {
-      "test_id": "protein",
-      "ranges": {
-        "mild": {
-          "min": 5.5,
-          "max": 6.0
-        },
-        "moderate": {
-          "min": 5.0,
-          "max": 5.8
-        },
-        "severe": {
-          "min": 4.5,
-          "max": 5.5
-        }
-      },
       "frequency": "sometimes",
-      "importance": "optional"
+      "importance": "important",
+      "caveat": "Albumin is often normal in pure marasmus; a low value suggests infection or overlap with kwashiorkor."
     },
     {
-      "test_id": "hgb",
+      "test_id": "bun",
       "ranges": {
-        "mild": {
-          "min": 10.5,
-          "max": 12.0
-        },
         "moderate": {
-          "min": 9.0,
-          "max": 11.0
+          "min": 3,
+          "max": 7
         },
         "severe": {
-          "min": 7.0,
-          "max": 9.5
+          "min": 2,
+          "max": 6
         },
         "critical": {
-          "min": 5.0,
-          "max": 8.0
+          "min": 1,
+          "max": 5
         }
       },
       "frequency": "common",
-      "importance": "important",
-      "caveat": "Anemia is common from iron, folate, or protein deficiency and from concurrent infection or parasites."
+      "importance": "optional",
+      "caveat": "Low BUN reflects low protein intake and reduced muscle mass."
     },
     {
-      "test_id": "mcv",
-      "ranges": {
-        "mild": {
-          "min": 75,
-          "max": 80
-        },
-        "moderate": {
-          "min": 70,
-          "max": 80
-        },
-        "severe": {
-          "min": 65,
-          "max": 78
-        }
-      },
-      "frequency": "sometimes",
-      "importance": "optional",
-      "caveat": "Microcytosis suggests iron deficiency; macrocytosis suggests folate or B12 deficiency."
-    },
-    {
-      "test_id": "lymph_pct",
+      "test_id": "cr",
       "ranges": {
         "moderate": {
-          "min": 15,
-          "max": 20
+          "min": 0.3,
+          "max": 0.5
         },
         "severe": {
-          "min": 10,
-          "max": 18
+          "min": 0.2,
+          "max": 0.4
+        },
+        "critical": {
+          "min": 0.1,
+          "max": 0.3
         }
       },
-      "frequency": "sometimes",
+      "frequency": "common",
       "importance": "optional",
-      "caveat": "Relative lymphocytosis can reflect concurrent viral or other infection."
+      "caveat": "Low creatinine from reduced muscle mass can mask renal impairment."
     },
     {
       "test_id": "na",
       "ranges": {
-        "mild": {
-          "min": 130,
-          "max": 135
-        },
         "moderate": {
           "min": 125,
-          "max": 133
+          "max": 134
         },
         "severe": {
           "min": 120,
@@ -830,231 +699,43 @@
         },
         "critical": {
           "min": 115,
-          "max": 128
-        }
-      },
-      "frequency": "common",
-      "importance": "important",
-      "caveat": "Hyponatremia from poor intake, diarrhea, or refeeding; correct slowly."
-    },
-    {
-      "test_id": "k",
-      "ranges": {
-        "mild": {
-          "min": 3.2,
-          "max": 3.5
-        },
-        "moderate": {
-          "min": 2.8,
-          "max": 3.4
-        },
-        "severe": {
-          "min": 2.5,
-          "max": 3.2
-        },
-        "critical": {
-          "min": 2.0,
-          "max": 3.0
-        }
-      },
-      "frequency": "common",
-      "importance": "important",
-      "caveat": "Hypokalemia from diarrhea and poor intake; watch during refeeding."
-    },
-    {
-      "test_id": "hco3",
-      "ranges": {
-        "mild": {
-          "min": 20,
-          "max": 22
-        },
-        "moderate": {
-          "min": 16,
-          "max": 21
-        },
-        "severe": {
-          "min": 12,
-          "max": 18
+          "max": 125
         }
       },
       "frequency": "sometimes",
       "importance": "optional",
-      "caveat": "Low bicarbonate suggests metabolic acidosis from diarrhea or starvation ketosis."
-    },
-    {
-      "test_id": "bun",
-      "ranges": {
-        "mild": {
-          "min": 18,
-          "max": 25
-        },
-        "moderate": {
-          "min": 22,
-          "max": 35
-        },
-        "severe": {
-          "min": 30,
-          "max": 50
-        }
-      },
-      "frequency": "sometimes",
-      "importance": "optional",
-      "caveat": "Elevated from dehydration and poor intake."
-    },
-    {
-      "test_id": "cr",
-      "ranges": {
-        "mild": {
-          "min": 1.0,
-          "max": 1.3
-        },
-        "moderate": {
-          "min": 1.2,
-          "max": 1.8
-        },
-        "severe": {
-          "min": 1.5,
-          "max": 2.5
-        }
-      },
-      "frequency": "sometimes",
-      "importance": "optional",
-      "caveat": "Creatinine may look near normal despite poor renal function because of very low muscle mass."
-    },
-    {
-      "test_id": "glucose",
-      "ranges": {
-        "mild": {
-          "min": 60,
-          "max": 70
-        },
-        "moderate": {
-          "min": 50,
-          "max": 65
-        },
-        "severe": {
-          "min": 35,
-          "max": 55
-        },
-        "critical": {
-          "min": 20,
-          "max": 45
-        }
-      },
-      "frequency": "common",
-      "importance": "essential",
-      "caveat": "Hypoglycemia is a common and dangerous complication, especially in young children."
-    },
-    {
-      "test_id": "phos",
-      "ranges": {
-        "mild": {
-          "min": 2.0,
-          "max": 2.5
-        },
-        "moderate": {
-          "min": 1.5,
-          "max": 2.3
-        },
-        "severe": {
-          "min": 1.0,
-          "max": 2.0
-        },
-        "critical": {
-          "min": 0.5,
-          "max": 1.5
-        }
-      },
-      "frequency": "common",
-      "importance": "important",
-      "caveat": "Hypophosphatemia is common and can worsen with refeeding; monitor closely."
-    },
-    {
-      "test_id": "mg",
-      "ranges": {
-        "mild": {
-          "min": 1.5,
-          "max": 1.7
-        },
-        "moderate": {
-          "min": 1.2,
-          "max": 1.6
-        },
-        "severe": {
-          "min": 1.0,
-          "max": 1.5
-        }
-      },
-      "frequency": "sometimes",
-      "importance": "optional"
-    },
-    {
-      "test_id": "ca",
-      "ranges": {
-        "mild": {
-          "min": 8.0,
-          "max": 8.5
-        },
-        "moderate": {
-          "min": 7.5,
-          "max": 8.3
-        },
-        "severe": {
-          "min": 7.0,
-          "max": 8.0
-        }
-      },
-      "frequency": "sometimes",
-      "importance": "optional",
-      "caveat": "Low total calcium often reflects low albumin; check ionized calcium if symptomatic."
-    },
-    {
-      "test_id": "ua_ketones",
-      "qualitative": {
-        "mild": "Trace",
-        "moderate": "Small",
-        "severe": "Moderate"
-      },
-      "frequency": "common",
-      "importance": "optional",
-      "caveat": "Starvation ketosis from prolonged inadequate energy intake."
-    },
-    {
-      "test_id": "tsh",
-      "frequency": "sometimes",
-      "importance": "optional",
-      "caveat": "Check to exclude hypothyroidism as a cause of poor growth; results may be altered by illness."
-    },
-    {
-      "test_id": "cortisol_am",
-      "frequency": "rare",
-      "importance": "optional",
-      "caveat": "Consider only if adrenal insufficiency is suspected."
+      "caveat": "Hyponatremia may be due to excess free water or impaired renal handling."
     }
   ],
   "ecg": {
     "findings": [
       {
         "feature": "rate",
-        "finding": "Sinus tachycardia",
-        "frequency": "common",
-        "min_severity": "moderate"
+        "finding": "Sinus bradycardia",
+        "frequency": "sometimes",
+        "min_severity": "severe"
       },
       {
         "feature": "qt",
-        "finding": "Prolonged QT interval from hypocalcemia or hypokalemia",
+        "finding": "Prolonged QTc interval",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "qrs",
+        "finding": "Low-voltage QRS complexes",
+        "frequency": "sometimes",
+        "min_severity": "moderate"
+      },
+      {
+        "feature": "t_wave",
+        "finding": "Flattened T waves or prominent U waves",
         "frequency": "sometimes",
         "min_severity": "moderate"
       },
       {
         "feature": "st",
-        "finding": "ST depression or flattened T waves with hypokalemia",
-        "frequency": "sometimes",
-        "min_severity": "severe"
-      },
-      {
-        "feature": "rhythm",
-        "finding": "Sinus bradycardia in severe hypothermia or terminal state",
+        "finding": "Mild ST-segment depression",
         "frequency": "rare",
         "min_severity": "critical"
       }
@@ -1062,60 +743,21 @@
   },
   "imaging": [
     {
-      "study": "Upper gastrointestinal series with small bowel follow-through",
-      "modality": "xray",
-      "preferred_when": "Suspected malabsorption or anatomic cause of poor growth",
-      "findings": [
-        {
-          "text": "Usually normal in marasmus",
-          "frequency": "common"
-        },
-        {
-          "text": "Dilated loops or flocculation of barium suggesting malabsorption",
-          "frequency": "sometimes"
-        }
-      ]
-    },
-    {
-      "study": "Abdominal ultrasound",
-      "modality": "ultrasound",
-      "findings": [
-        {
-          "text": "Usually normal",
-          "frequency": "common"
-        },
-        {
-          "text": "Small liver or ascites if another cause of malnutrition is present",
-          "frequency": "rare"
-        }
-      ]
-    },
-    {
       "study": "Chest x-ray",
       "modality": "xray",
-      "preferred_when": "Suspected pneumonia or tuberculosis",
+      "preferred_when": "Respiratory symptoms or suspected tuberculosis or pneumonia",
       "findings": [
         {
-          "text": "Usually normal",
+          "text": "Normal",
           "frequency": "common"
         },
         {
-          "text": "Focal consolidation suggesting pneumonia",
+          "text": "Focal consolidation consistent with pneumonia",
           "frequency": "sometimes"
         },
         {
-          "text": "Hilar adenopathy or apical infiltrate suggesting tuberculosis",
+          "text": "Hilar or mediastinal lymphadenopathy suggesting tuberculosis",
           "frequency": "rare"
-        }
-      ]
-    },
-    {
-      "study": "Bone age radiograph of the left hand and wrist",
-      "modality": "xray",
-      "findings": [
-        {
-          "text": "Delayed bone age consistent with chronic undernutrition",
-          "frequency": "common"
         }
       ]
     }
@@ -1124,126 +766,89 @@
     "initial": [
       {
         "test": "cbc",
-        "why": "Anemia, infection, and immune status"
+        "why": "Screen for anemia, leukopenia, and infection"
       },
       {
         "test": "bmp",
-        "why": "Electrolytes, glucose, renal function, and hydration"
+        "why": "Check glucose, electrolytes, and kidney function"
       },
       {
         "test": "cmp_extra",
-        "why": "Albumin and total protein to assess protein status and distinguish from kwashiorkor"
-      },
-      {
-        "test": "glucose",
-        "why": "Hypoglycemia is common and dangerous"
+        "why": "Check albumin and total protein; screen for liver involvement"
       },
       {
         "test": "phos",
-        "why": "Hypophosphatemia is common and worsens with refeeding"
+        "why": "Identify hypophosphatemia before refeeding"
       },
       {
         "test": "mg",
-        "why": "Hypomagnesemia can accompany and perpetuate hypokalemia and hypocalcemia"
-      },
-      {
-        "test": "ua",
-        "why": "Screens for urinary infection and ketosis"
-      },
-      {
-        "test": "tsh",
-        "why": "Excludes hypothyroidism as a cause of poor growth",
-        "only_if": "growth failure is unexplained or hypothyroidism is suspected"
+        "why": "Identify hypomagnesemia before refeeding"
       }
     ],
-    "confirmatory": [
-      {
-        "test": "Nutritional assessment by a dietitian",
-        "why": "Confirms inadequate energy intake and quantifies degree of wasting; diagnosis of marasmus is clinical from growth and dietary history"
-      }
-    ],
+    "confirmatory": [],
     "supporting": [
       {
-        "test": "iron",
-        "why": "Evaluates iron deficiency contributing to anemia"
-      },
-      {
-        "test": "ferritin",
-        "why": "Iron stores; may be elevated by inflammation"
-      },
-      {
-        "test": "b12",
-        "why": "Deficiency can cause anemia and neurologic findings"
-      },
-      {
-        "test": "folate",
-        "why": "Deficiency can cause anemia"
-      },
-      {
         "test": "crp",
-        "why": "Screens for concurrent infection"
-      },
-      {
-        "test": "esr",
-        "why": "Screens for chronic infection or inflammation"
-      },
-      {
-        "test": "HIV",
-        "why": "Chronic infection increases metabolic demand and causes wasting",
-        "only_if": "risk factors or recurrent infections are present"
+        "why": "Helps detect occult infection or systemic inflammation",
+        "only_if": "fever or suspected infection"
       },
       {
         "test": "Chest x-ray",
-        "why": "Looks for pneumonia or tuberculosis",
-        "only_if": "respiratory symptoms, fever, or suspected tuberculosis"
+        "why": "Evaluate for pneumonia or tuberculosis",
+        "only_if": "respiratory symptoms or suspected tuberculosis"
       },
       {
-        "test": "Upper gastrointestinal series with small bowel follow-through",
-        "why": "Evaluates malabsorption or anatomic cause",
-        "only_if": "chronic diarrhea or suspected malabsorption"
+        "test": "Blood culture",
+        "why": "Identifies bacteremia",
+        "only_if": "fever, hypothermia, or signs of sepsis"
       },
       {
-        "test": "Bone age radiograph of the left hand and wrist",
-        "why": "Documents delayed skeletal maturation from chronic undernutrition",
-        "only_if": "growth failure is prominent"
+        "test": "Stool culture",
+        "why": "Detects bacterial pathogens",
+        "only_if": "diarrhea with blood or persistent diarrhea"
+      },
+      {
+        "test": "HIV test",
+        "why": "HIV infection can cause severe malnutrition",
+        "only_if": "risk factors or recurrent infections"
+      },
+      {
+        "test": "Tuberculosis testing (IGRA or tuberculin skin test)",
+        "why": "Evaluate for tuberculosis",
+        "only_if": "exposure, chronic cough, or failure to improve with feeding"
       }
     ],
     "not_indicated": [
       {
-        "test": "hs_tnt",
-        "why": "No role in malnutrition"
-      },
-      {
         "test": "d_dimer",
-        "why": "No role in malnutrition"
+        "why": "No role in wasting"
       },
       {
         "test": "lipase",
-        "why": "Not needed unless pancreatic disease is suspected"
+        "why": "No role unless abdominal pain suggests pancreatitis"
       },
       {
-        "test": "Chest x-ray",
-        "why": "Not routine; order only when respiratory infection or tuberculosis is suspected"
-      },
-      {
-        "test": "Upper gastrointestinal series with small bowel follow-through",
-        "why": "Not routine; order only for suspected malabsorption or anatomic cause"
-      },
-      {
-        "test": "Bone age radiograph of the left hand and wrist",
-        "why": "Not routine; order only when growth failure is prominent"
+        "test": "tsh",
+        "why": "Not indicated when inadequate intake is obvious; reserve for failure to thrive without clear cause"
       }
     ],
     "decision_points": [
-      "Check glucose immediately in any lethargic or seizing child",
-      "Correct electrolytes and phosphate before and during refeeding to prevent refeeding syndrome",
-      "Distinguish marasmus (no edema) from kwashiorkor (edema, hypoalbuminemia, hepatomegaly)",
-      "Screen for and treat concurrent infection, which is often subtle and may be the presenting problem"
+      "Check point-of-care glucose in every severely malnourished child before feeds",
+      "Correct hypothermia, hypoglycemia, and dehydration before starting feeds",
+      "Check and replete potassium, magnesium, and phosphorus before and during refeeding to prevent refeeding syndrome",
+      "Obtain a chest x-ray and consider infection workup if fever or respiratory signs are present",
+      "Do not rely on serum albumin to rule out marasmus; it may be normal"
     ],
     "criteria": [
       {
-        "name": "WHO severe acute malnutrition (wasting) criteria",
-        "summary": "Severe wasting is defined by a weight-for-height z-score below -3, mid-upper arm circumference below 115 mm in children 6-59 months, or bilateral pitting edema; marasmus is the non-edematous form."
+        "name": "Severe acute malnutrition (marasmus)",
+        "summary": "Clinical diagnosis of severe wasting due to inadequate energy intake.",
+        "items": [
+          "Weight-for-length/height z-score below -3 SD of WHO growth standards",
+          "Mid-upper arm circumference <115 mm in children 6–59 months",
+          "Visible severe wasting of fat and muscle",
+          "No nutritional edema"
+        ]
       }
     ],
     "scores": []
@@ -1252,213 +857,215 @@
     {
       "name": "Kwashiorkor",
       "slug": "kwashiorkor",
-      "why_considered": "Both are forms of severe protein-energy malnutrition with growth failure and wasting in young children.",
+      "why_considered": "Both are severe protein-energy malnutrition and can occur in the same food-insecure setting.",
       "must_not_miss": true,
-      "trigger": "Bilateral pitting edema, especially in a child with a swollen abdomen and peeling skin",
+      "trigger": "Presence of edema, skin changes, or a dietary history that is low in protein but not necessarily low in calories.",
       "discriminators": {
         "history": [
-          "Diet often protein-poor but energy-adequate (e.g., starchy gruel)",
-          "Child may be apathetic and anorexic rather than hungry",
-          "Often after abrupt weaning or a diarrheal illness"
+          "Diet more deficient in protein than total energy",
+          "Rapid weaning to a low-protein staple",
+          "Preceding infection such as measles or diarrhea",
+          "Appetite may be poor"
         ],
         "exam": [
-          "Bilateral pitting edema of feet and legs",
-          "Moon facies and a distended abdomen",
-          "Flaky paint dermatosis with hyperpigmented peeling plaques",
-          "Hepatomegaly from fatty liver"
+          "Pitting edema of feet, legs, hands, and face",
+          "Flaky paint dermatosis",
+          "Sparse, pale, easily pluckable hair",
+          "Hepatomegaly",
+          "Moon facies"
         ],
         "labs": [
-          "Marked hypoalbuminemia (often below 2.5 g/dL)",
-          "Low total protein",
-          "Edema despite preserved or increased body weight"
+          "Low serum albumin and total protein",
+          "Low potassium, magnesium, and phosphate",
+          "Weight-for-length often higher than marasmus for the same degree of illness"
         ],
         "imaging": [
-          "Ultrasound may show an enlarged, echogenic fatty liver"
+          "Not needed for diagnosis; ultrasound may show fatty liver"
         ]
       }
     },
     {
-      "name": "Failure to thrive from non-organic causes",
-      "slug": "failure-to-thrive",
-      "why_considered": "Poor weight gain and a thin child are the shared presenting problem, and psychosocial causes are common.",
-      "must_not_miss": false,
+      "name": "HIV infection",
+      "slug": "hiv-infection",
+      "why_considered": "Chronic viral infection can cause severe wasting and failure to thrive, especially in infants.",
+      "must_not_miss": true,
+      "trigger": "Recurrent or opportunistic infections, known maternal HIV, or failure to improve with adequate feeding.",
       "discriminators": {
         "history": [
-          "Feeding difficulties or caregiver-child interaction problems rather than absolute food scarcity",
-          "Weight may cross percentiles downward but height and head circumference are often preserved",
-          "No history of famine, poverty, or prolonged inadequate intake"
+          "Recurrent respiratory or diarrheal infections",
+          "Failure to thrive despite adequate food intake",
+          "Known maternal HIV or high-risk exposure",
+          "Chronic diarrhea"
         ],
         "exam": [
-          "Mild to moderate underweight without the severe generalized muscle wasting and loss of subcutaneous fat of marasmus",
-          "No old-looking facies or sparse hair",
-          "Normal or near-normal developmental milestones"
+          "Generalized lymphadenopathy",
+          "Oral thrush",
+          "Hepatosplenomegaly",
+          "Parotitis"
         ],
         "labs": [
-          "Usually normal albumin, electrolytes, and glucose",
-          "No starvation ketosis"
+          "Positive HIV antibody/antigen test or DNA PCR",
+          "Decreased CD4 count",
+          "Anemia and thrombocytopenia"
+        ],
+        "imaging": [
+          "Not routinely diagnostic; may show pneumonia or other opportunistic infection"
+        ]
+      }
+    },
+    {
+      "name": "Tuberculosis",
+      "slug": "tuberculosis",
+      "why_considered": "Chronic infection can cause severe wasting and failure to thrive.",
+      "must_not_miss": true,
+      "trigger": "Chronic cough, known TB contact, or failure to improve with nutritional support.",
+      "discriminators": {
+        "history": [
+          "Chronic cough for more than 2-3 weeks",
+          "Fever or night sweats",
+          "Known TB contact",
+          "Failure to gain weight despite feeding"
+        ],
+        "exam": [
+          "Crackles or decreased breath sounds",
+          "Cervical or hilar lymphadenopathy",
+          "Meningeal signs if CNS disease"
+        ],
+        "labs": [
+          "Positive tuberculin skin test or IGRA",
+          "Elevated ESR or CRP",
+          "Gastric aspirate or sputum AFB positive"
+        ],
+        "imaging": [
+          "Chest x-ray with hilar/mediastinal lymphadenopathy, infiltrate, or miliary pattern"
         ]
       }
     },
     {
       "name": "Celiac disease",
       "slug": "celiac-disease",
-      "why_considered": "Malabsorption causes weight loss, diarrhea, and failure to grow in children.",
+      "why_considered": "Chronic malabsorption can cause wasting and failure to thrive, especially after gluten introduction.",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Chronic diarrhea, bloating, and foul-smelling stools",
-          "Symptoms worsen with gluten-containing foods",
-          "Family history of celiac disease or autoimmune disease"
+          "Diarrhea, often foul-smelling",
+          "Abdominal pain and bloating",
+          "Irritability after eating gluten",
+          "Symptoms begin after wheat introduction",
+          "Poor growth despite adequate intake"
         ],
         "exam": [
-          "Abdominal distension with wasted extremities",
-          "May have dermatitis herpetiformis",
-          "Growth failure with preserved or only mildly reduced subcutaneous fat early on"
+          "Abdominal distension",
+          "Muscle wasting in buttocks",
+          "Aphthous ulcers",
+          "Dermatitis herpetiformis in older children"
         ],
         "labs": [
-          "Positive tissue transglutaminase IgA and endomysial antibodies",
-          "Iron deficiency anemia and low folate",
-          "Small bowel biopsy showing villous atrophy"
+          "Elevated anti-tissue transglutaminase IgA",
+          "Low total IgA",
+          "Anemia and low ferritin",
+          "Low vitamin D or calcium"
+        ],
+        "imaging": [
+          "Not diagnostically useful; duodenal biopsy shows villous atrophy"
+        ]
+      }
+    },
+    {
+      "name": "Type 1 diabetes mellitus",
+      "slug": "type-1-diabetes",
+      "why_considered": "Weight loss and fatigue can occur in children, but with polyuria and polydipsia.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Polyuria and polydipsia",
+          "Weight loss despite increased appetite",
+          "No clear history of inadequate intake",
+          "New enuresis"
+        ],
+        "exam": [
+          "Dehydration",
+          "Kussmaul respirations if DKA",
+          "Acetone odor",
+          "No severe loss of subcutaneous fat"
+        ],
+        "labs": [
+          "Random glucose >200 mg/dL",
+          "Elevated hemoglobin A1c",
+          "Glucosuria and ketonuria",
+          "Low bicarbonate if DKA"
         ]
       }
     },
     {
       "name": "Cystic fibrosis",
       "slug": "cystic-fibrosis",
-      "why_considered": "Pancreatic insufficiency and chronic lung disease cause poor weight gain and wasting in children.",
+      "why_considered": "Pancreatic insufficiency and chronic lung disease can cause failure to thrive and wasting.",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Recurrent respiratory infections and chronic cough",
-          "Bulky, greasy, foul-smelling stools (steatorrhea)",
-          "Meconium ileus or family history of cystic fibrosis"
+          "Recurrent respiratory infections",
+          "Chronic cough",
+          "Steatorrhea",
+          "Salty-tasting skin",
+          "Family history of cystic fibrosis"
         ],
         "exam": [
-          "Digital clubbing and chronic lung findings",
+          "Crackles or wheezing",
+          "Digital clubbing",
           "Nasal polyps",
-          "Salt-tasting skin"
+          "Malnutrition with abdominal distension"
         ],
         "labs": [
-          "Elevated sweat chloride on sweat testing",
-          "Pancreatic insufficiency with low fecal elastase",
-          "Genetic testing showing CFTR mutations"
+          "Elevated sweat chloride",
+          "Low fecal elastase",
+          "Genetic testing for CFTR mutations"
         ],
         "imaging": [
-          "Chest x-ray with hyperinflation, bronchiectasis, or mucus plugging"
-        ]
-      }
-    },
-    {
-      "name": "Chronic infection (tuberculosis or HIV)",
-      "slug": "tuberculosis",
-      "why_considered": "Chronic infection increases metabolic demand and causes wasting, weight loss, and failure to thrive.",
-      "must_not_miss": true,
-      "trigger": "Fever, night sweats, chronic cough, or known exposure to tuberculosis or HIV",
-      "discriminators": {
-        "history": [
-          "Fever, night sweats, and chronic cough",
-          "Known contact with tuberculosis or risk factors for HIV",
-          "Weight loss despite adequate food intake"
-        ],
-        "exam": [
-          "Lymphadenopathy",
-          "Respiratory findings such as crackles or dullness",
-          "Oral thrush or other opportunistic findings if HIV"
-        ],
-        "labs": [
-          "Positive tuberculin skin test or interferon-gamma release assay",
-          "Positive HIV test",
-          "Elevated inflammatory markers"
-        ],
-        "imaging": [
-          "Chest x-ray with hilar adenopathy, apical infiltrate, or miliary pattern"
-        ]
-      }
-    },
-    {
-      "name": "Hypothyroidism",
-      "slug": "hypothyroidism",
-      "why_considered": "Causes poor growth, weight gain or failure to thrive, and developmental delay in children.",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Constipation, cold intolerance, and excessive sleepiness",
-          "Developmental delay and poor school performance",
-          "Family history of thyroid disease"
-        ],
-        "exam": [
-          "Coarse facial features, macroglossia, and dry skin",
-          "Bradycardia and delayed relaxation of deep tendon reflexes",
-          "Umbilical hernia"
-        ],
-        "labs": [
-          "Elevated TSH with low free T4",
-          "Anemia and hypercholesterolemia"
-        ],
-        "imaging": [
-          "Thyroid ultrasound may show a small or absent gland"
-        ]
-      }
-    },
-    {
-      "name": "Adrenal insufficiency",
-      "slug": "adrenal-insufficiency",
-      "why_considered": "Can cause weight loss, weakness, and poor growth in children.",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Fatigue, weakness, and salt craving",
-          "Nausea, vomiting, and abdominal pain",
-          "History of steroid use or autoimmune disease"
-        ],
-        "exam": [
-          "Hyperpigmentation of skin creases and mucosa",
-          "Hypotension and tachycardia",
-          "Weight loss without the severe muscle wasting of marasmus"
-        ],
-        "labs": [
-          "Hyponatremia, hyperkalemia, and hypoglycemia",
-          "Low morning cortisol with elevated ACTH",
-          "Abnormal cosyntropin stimulation test"
+          "Chest x-ray may show hyperinflation and bronchiectasis"
         ]
       }
     }
   ],
   "course": {
     "severity": {
-      "mild": "Early inadequate energy intake: weight faltering on the growth chart, mild loss of subcutaneous fat, alert and active child, no edema, normal electrolytes and glucose.",
-      "moderate": "Established marasmus: marked weight loss and muscle wasting, prominent ribs and wasted buttocks, irritability and constant hunger, sparse hair, dry skin, mild electrolyte abnormalities.",
-      "severe": "Severe wasting: weight-for-height z-score below -3 or mid-upper arm circumference below 115 mm, old-looking facies, apathy or lethargy, weak cry, hypoglycemia, hypokalemia, and hypophosphatemia.",
-      "critical": "Marasmic shock or severe dehydration: lethargic or unresponsive, hypotensive, hypothermic, too weak to feed, severe hypoglycemia and electrolyte derangements, high risk of death without immediate resuscitation."
+      "mild": "Early wasting with weight-for-length or BMI falling across percentiles; child remains alert and interactive, has no significant metabolic derangements, and can be managed with close outpatient feeding support.",
+      "moderate": "Marked wasting with loose skin and decreased subcutaneous fat; child is apathetic or less active, may have mild anemia, electrolyte deficits, or low albumin; requires structured nutritional rehabilitation and monitoring.",
+      "severe": "Severe wasting with weight-for-length/height z-score below -3, obvious muscle and fat loss, lethargy, hypoglycemia, hypothermia, and significant electrolyte abnormalities; needs inpatient stabilization with careful refeeding.",
+      "critical": "Life-threatening malnutrition with lethargy/unresponsiveness, shock, severe hypothermia, severe hypoglycemia, or cardiac arrhythmia; immediately life-threatening and requires emergency metabolic and hemodynamic support."
     },
     "red_flags": [
       {
+        "finding": "Edema of feet, hands, or face",
+        "meaning": "Points to kwashiorkor or another cause; requires albumin and careful fluid management"
+      },
+      {
+        "finding": "Temperature below 95°F (35°C)",
+        "meaning": "Severe hypothermia; increases mortality and signals impaired metabolic regulation"
+      },
+      {
         "finding": "Lethargy or unresponsiveness",
-        "meaning": "Severe hypoglycemia, dehydration, or sepsis; check glucose immediately and resuscitate"
+        "meaning": "Hypoglycemia, sepsis, or severe electrolyte disturbance; needs immediate glucose and evaluation"
       },
       {
-        "finding": "Hypoglycemia (glucose below 54 mg/dL)",
-        "meaning": "Life-threatening in young children; treat immediately with oral or intravenous glucose"
+        "finding": "Blood glucose below 45 mg/dL",
+        "meaning": "Hypoglycemia can cause seizures and brain injury; treat immediately"
       },
       {
-        "finding": "Hypothermia (temperature below 95.9°F)",
-        "meaning": "Severe malnutrition with impaired thermoregulation; sign of critical illness"
+        "finding": "Bradycardia or prolonged QTc",
+        "meaning": "Cardiac conduction risk; may precede arrhythmia, especially during refeeding"
       },
       {
-        "finding": "Hypotension or tachycardia out of proportion",
-        "meaning": "Shock from dehydration, sepsis, or heart failure; needs urgent fluids and evaluation"
+        "finding": "Low potassium, magnesium, or phosphorus before or during feeding",
+        "meaning": "Refeeding syndrome risk; correct electrolytes before advancing calories"
       },
       {
-        "finding": "Severe dehydration or sunken eyes with no tears",
-        "meaning": "Diarrheal dehydration is a leading cause of death in severe malnutrition"
+        "finding": "Fever or hypothermia with ill appearance",
+        "meaning": "Occult infection; malnourished children may not mount fever or leukocytosis"
       },
       {
-        "finding": "Bilateral pitting edema",
-        "meaning": "Suggests kwashiorkor or a mixed picture rather than pure marasmus; changes management"
-      },
-      {
-        "finding": "Fever or hypothermia with no obvious source",
-        "meaning": "Concurrent infection is common and often subtle; sepsis must be excluded"
+        "finding": "Poor weight gain despite a supervised adequate diet",
+        "meaning": "Consider malabsorption, HIV, tuberculosis, or other chronic disease"
       }
     ],
     "complications": [
@@ -1466,22 +1073,35 @@
         "name": "Hypoglycemia",
         "timing": "early",
         "seriousness": "life_threatening",
-        "frequency": "common",
+        "frequency": "sometimes",
         "clues": [
-          "Lethargy or seizures",
-          "Glucose below 54 mg/dL",
-          "Worse after long periods without feeding"
+          "Lethargy",
+          "Jitteriness",
+          "Temperature below 96°F",
+          "Seizure"
         ]
       },
       {
-        "name": "Dehydration and electrolyte imbalance",
+        "name": "Hypothermia",
         "timing": "early",
         "seriousness": "serious",
         "frequency": "common",
         "clues": [
-          "Diarrhea and vomiting",
-          "Sunken eyes and reduced skin turgor",
-          "Hypokalemia and hyponatremia on labs"
+          "Cold extremities",
+          "Temperature below 95°F",
+          "Lethargy"
+        ]
+      },
+      {
+        "name": "Infection and sepsis",
+        "timing": "early",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Fever or hypothermia",
+          "Ill appearance",
+          "Respiratory distress",
+          "Hypotension"
         ]
       },
       {
@@ -1490,194 +1110,178 @@
         "seriousness": "life_threatening",
         "frequency": "sometimes",
         "clues": [
-          "Hypophosphatemia, hypokalemia, and hypomagnesemia after starting feeds",
-          "Fluid overload and heart failure",
-          "Arrhythmias"
+          "Sudden drop in phosphate, potassium, or magnesium after feeds",
+          "Fluid overload",
+          "Arrhythmia"
         ]
       },
       {
-        "name": "Concurrent infection and sepsis",
+        "name": "Micronutrient deficiencies",
         "timing": "any",
-        "seriousness": "life_threatening",
+        "seriousness": "serious",
         "frequency": "common",
         "clues": [
-          "Fever or hypothermia",
-          "Lethargy",
-          "Poor feeding and recurrent infections"
+          "Night blindness",
+          "Anemia",
+          "Zinc-deficiency rash",
+          "Bleeding from vitamin K deficiency"
         ]
       },
       {
-        "name": "Growth failure and developmental delay",
+        "name": "Stunting and developmental delay",
         "timing": "late",
         "seriousness": "serious",
         "frequency": "common",
         "clues": [
-          "Height and head circumference below expected for age",
+          "Height below expected",
           "Delayed milestones",
-          "Delayed bone age"
+          "Cognitive or school difficulties"
         ]
       },
       {
-        "name": "Immune deficiency with recurrent infections",
+        "name": "Malnutrition-related cardiomyopathy",
         "timing": "late",
-        "seriousness": "serious",
-        "frequency": "common",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
         "clues": [
-          "Repeated respiratory or gastrointestinal infections",
-          "Lymphoid atrophy",
-          "Poor response to minor illness"
-        ]
-      },
-      {
-        "name": "Anemia",
-        "timing": "any",
-        "seriousness": "minor",
-        "frequency": "common",
-        "clues": [
-          "Pallor and fatigue",
-          "Low hemoglobin",
-          "Microcytosis from iron deficiency or macrocytosis from folate or B12 deficiency"
+          "Exercise intolerance",
+          "Dyspnea",
+          "Edema",
+          "Cardiomegaly"
         ]
       }
     ],
     "special_populations": [
       {
         "population": "infants",
-        "differences": "Marasmus most often presents in infants under 1 year; hypoglycemia and hypothermia are more frequent and more dangerous, and feeding must be advanced very cautiously to avoid refeeding syndrome."
+        "differences": "Highest risk during weaning; metabolic reserves are small, so hypoglycemia and hypothermia develop quickly. Use expressed breast milk or standard therapeutic feeds cautiously and monitor closely."
       },
       {
         "population": "children",
-        "differences": "Growth failure, developmental delay, and recurrent infections are prominent; weight-for-height and mid-upper arm circumference are used to grade severity, and catch-up growth may take months."
+        "differences": "Under 5 use WHO weight-for-length/height and MUAC; older children use BMI-for-age. Any severe wasting is classified as severe acute malnutrition regardless of edema."
       },
       {
         "population": "older_adults",
-        "differences": "Presents with generalized weakness, weight loss, and functional decline; often mistaken for normal aging or frailty, and concurrent chronic disease and polypharmacy are common."
+        "differences": "Wasting often reflects chronic disease, depression, or self-neglect; diagnose with BMI and history rather than growth charts, and refeeding syndrome risk is high."
       },
       {
         "population": "pregnancy",
-        "differences": "Maternal marasmus increases the risk of low birth weight, preterm birth, and intrauterine growth restriction; nutritional rehabilitation must meet the increased energy and protein demands of pregnancy."
+        "differences": "Maternal calorie need is higher; severe malnutrition threatens both mother and fetus; involve obstetrics and nutrition early."
       },
       {
         "population": "immunocompromised",
-        "differences": "Concurrent infection is more likely and may be the presenting problem; fever may be blunted, and a lower threshold for sepsis workup is needed."
+        "differences": "Suspect HIV/tuberculosis; infections may be atypical with less fever and leukocytosis; broad infection workup and early anti-infective treatment are needed."
       }
     ]
   },
   "teaching": {
     "key_questions": [
       {
-        "question": "What has the child been eating and how often? Has there been enough food in the home?",
+        "question": "What has the child been eating and drinking each day?",
+        "category": "social",
+        "importance": "essential",
+        "looking_for": "Inadequate total calories for age: watery porridge, dilute formula, early weaning, or periods of little food."
+      },
+      {
+        "question": "When did the weight loss or poor weight gain begin?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Prolonged inadequate energy intake; food insecurity, famine, or neglect"
+        "looking_for": "Gradual onset over weeks to months, not days; weight-for-length falling across percentiles."
       },
       {
-        "question": "How has the child's weight changed over the past weeks to months?",
-        "category": "hpi",
-        "importance": "essential",
-        "looking_for": "Progressive weight loss and failure to gain weight over months"
-      },
-      {
-        "question": "Is the child always hungry and demanding food?",
-        "category": "associated",
-        "importance": "important",
-        "looking_for": "Constant hunger and irritability, which favor marasmus over kwashiorkor"
-      },
-      {
-        "question": "Has the child had swelling of the feet, legs, or face?",
+        "question": "Has the child had any swelling of the feet, legs, or face?",
         "category": "associated",
         "importance": "essential",
-        "looking_for": "Absent edema; bilateral pitting edema suggests kwashiorkor or a mixed picture"
+        "looking_for": "No edema; edema would suggest kwashiorkor or another cause."
       },
       {
-        "question": "How has the child's behavior and activity level been?",
+        "question": "Has the child had diarrhea? If yes, how often and for how long?",
         "category": "associated",
         "importance": "important",
-        "looking_for": "Irritable and alert early; lethargy and apathy suggest severe disease"
+        "looking_for": "Intermittent or chronic diarrhea that increases losses and may accompany infection."
       },
       {
-        "question": "Any diarrhea, vomiting, or poor feeding?",
+        "question": "Has there been fever, cough, or trouble breathing?",
         "category": "associated",
         "importance": "important",
-        "looking_for": "Diarrhea and vomiting causing dehydration and electrolyte losses"
+        "looking_for": "No fever makes simple infection less likely; fever may point to tuberculosis, pneumonia, or sepsis."
       },
       {
-        "question": "Any fever, cough, or recurrent infections?",
+        "question": "How is the child’s mood and activity level?",
         "category": "associated",
         "importance": "important",
-        "looking_for": "Concurrent infection, which is common and often subtle"
+        "looking_for": "Apathy, irritability, or less active; severe lethargy suggests hypoglycemia or sepsis."
       },
       {
-        "question": "Was the child breastfed, and when and how was weaning done? How is formula prepared?",
-        "category": "pmh",
-        "importance": "important",
-        "looking_for": "Early weaning or improperly prepared formula leading to inadequate intake"
-      },
-      {
-        "question": "Does the child have any chronic illness such as heart disease, cystic fibrosis, celiac disease, or kidney disease?",
-        "category": "pmh",
-        "importance": "important",
-        "looking_for": "Chronic disease increasing metabolic demand or causing malabsorption"
-      },
-      {
-        "question": "Is the child on any medications or supplements?",
-        "category": "medications",
+        "question": "Is there any vomiting?",
+        "category": "associated",
         "importance": "optional",
-        "looking_for": "Medications that suppress appetite or cause nutrient loss"
+        "looking_for": "Usually minimal; persistent vomiting suggests gastrointestinal pathology."
       },
       {
-        "question": "Who prepares and offers the child's meals, and what is the home situation?",
+        "question": "What serious illnesses or hospitalizations has the child had?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Recurrent pneumonia, diarrhea, tuberculosis, or HIV infection that can cause or worsen wasting."
+      },
+      {
+        "question": "Does the child have any known chronic diseases?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Malabsorption, congenital heart disease, kidney disease, or HIV that can cause failure to thrive."
+      },
+      {
+        "question": "Does the family have reliable access to enough food and safe water?",
         "category": "social",
         "importance": "essential",
-        "looking_for": "Poverty, food insecurity, neglect, or caregiver inability to feed"
+        "looking_for": "Food insecurity, poverty, unclean water; informs diagnosis and safe discharge plan."
       },
       {
-        "question": "Has the child been exposed to tuberculosis or is there any known HIV risk in the household?",
+        "question": "Are there any concerns about the ability to feed the child?",
         "category": "social",
         "importance": "important",
-        "looking_for": "Chronic infection as a cause of wasting"
+        "looking_for": "Inadequate caregiver knowledge, neglect, or inability to prepare adequate food."
       },
       {
-        "question": "Is the child too weak to feed, drowsy, or difficult to wake?",
+        "question": "Has the child become too sleepy or felt cold to touch?",
         "category": "red_flag",
         "importance": "essential",
-        "looking_for": "Lethargy or unresponsiveness suggesting hypoglycemia, dehydration, or sepsis"
+        "looking_for": "Lethargy, hypothermia, or hypoglycemia requiring immediate treatment."
       }
     ],
     "accepted_names": [
       "Marasmus",
-      "Severe wasting",
-      "Non-edematous severe acute malnutrition",
-      "Protein-energy malnutrition, marasmic type"
+      "Severe acute malnutrition (marasmus)",
+      "Protein-energy malnutrition (marasmus)"
     ],
     "reasoning_points": [
-      "Gradual, progressive weight loss and failure to thrive over weeks to months from prolonged inadequate energy intake",
-      "Generalized muscle wasting and loss of subcutaneous fat with prominent ribs and wasted buttocks",
-      "Constant hunger and irritability rather than anorexia and apathy",
-      "No edema, no hepatomegaly, and no flaky paint dermatosis, distinguishing marasmus from kwashiorkor",
-      "Weight far below expected for age with relative preservation of weight-for-height early on",
-      "Risk factors such as poverty, food insecurity, neglect, early weaning, or chronic illness",
-      "Complications considered: hypoglycemia, dehydration and electrolyte losses, concurrent infection, and refeeding syndrome"
+      "Inadequate total energy intake over weeks to months with early weaning or food insecurity",
+      "Severe wasting: weight-for-length/height z-score below -3, mid-upper arm circumference <115 mm in children 6–59 months, or visible severe wasting",
+      "Loss of subcutaneous fat and muscle mass with loose skin folds and prominent bones",
+      "No nutritional edema, distinguishing marasmus from kwashiorkor",
+      "Child may be apathetic or irritable; severe lethargy is a red flag",
+      "Diarrhea and infections may be present and can worsen malnutrition",
+      "Check glucose and electrolytes before feeding; hypoglycemia, hypokalemia, hypomagnesemia, and hypophosphatemia are common",
+      "Serum albumin is often normal in marasmus"
     ],
     "difficulty": {
       "easy": [
-        "Infant or young child with months of inadequate food intake and severe visible wasting",
-        "Prominent ribs, wasted buttocks, and loose skin folds with no edema",
-        "Constant hunger and irritability",
-        "Weight far below expected for age on the growth chart"
+        "Toddler around 12–24 months old",
+        "Early weaning to watery cereal or dilute formula",
+        "Weight-for-length far below the third percentile with visible severe wasting",
+        "No edema, no fever, and alert"
       ],
       "medium": [
-        "Child with failure to thrive where the dietary history is initially vague",
-        "Mild to moderate wasting without the classic old-looking facies",
-        "Concurrent diarrhea causing dehydration and electrolyte abnormalities",
-        "Distinguishing marasmus from kwashiorkor when some edema is present"
+        "Older child with food insecurity and chronic low-grade diarrhea",
+        "Anemia, hypoglycemia, and mild hypophosphatemia",
+        "Caregiver underreports inadequate intake or shares household food with several siblings",
+        "Dyselectrolytemia requiring careful monitoring before refeeding"
       ],
       "hard": [
-        "Older adult with self-neglect or an eating disorder presenting with weakness and weight loss mistaken for frailty",
-        "Child with an underlying chronic illness such as cystic fibrosis or celiac disease causing the wasting",
-        "Lethargic child with hypoglycemia where the malnutrition is not immediately recognized",
-        "Mixed marasmus-kwashiorkor picture with edema and hypoalbuminemia",
-        "Concurrent tuberculosis or HIV presenting primarily with wasting"
+        "Severely marasmic child with hypothermia, lethargy, and glucose below 45 mg/dL",
+        "Occult infection without fever or leukocytosis",
+        "Mixed marasmus-kwashiorkor with mild edema",
+        "Older adult with cachexia, depression, and self-neglect"
       ]
     }
   }

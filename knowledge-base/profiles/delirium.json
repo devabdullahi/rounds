@@ -35,62 +35,48 @@
       },
       {
         "stage": "patient_presentation",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "9",
-        "generated_at": "2026-10-05T07:46:56Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T16:14:37Z"
       },
       {
         "stage": "exam_vitals",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "9",
-        "generated_at": "2026-10-05T07:47:05Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T16:17:24Z"
       },
       {
         "stage": "diagnostics",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "9",
-        "generated_at": "2026-10-05T07:47:20Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T16:19:45Z"
       },
       {
         "stage": "differential_course",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "9",
-        "generated_at": "2026-10-05T07:47:33Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T16:41:37Z"
       },
       {
         "stage": "teaching",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "9",
-        "generated_at": "2026-10-05T07:47:41Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:00:58Z"
       }
     ],
     "validation": {
       "status": "passed",
       "rule_errors": [],
       "review_issues": [
-        "auto-repaired: workup: renamed 'ecg' to 'ECG'",
-        "auto-repaired: workup: 'chest x-ray' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
-        "auto-repaired: workup: 'ct head without iv contrast' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
-        "auto-repaired: workup: 'lumbar puncture' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
-        "auto-repaired: workup: 'hcg' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "auto-repaired: workup: 'mri brain with and without iv contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "auto-repaired: workup: 'electroencephalogram (eeg)' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "auto-repaired: workup: 'ct abdomen and pelvis with iv contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "auto-repaired: workup: 'chest x-ray' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
-        "auto-repaired: workup: 'ct head without iv contrast' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
-        "auto-repaired: workup: 'lumbar puncture' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
-        "auto-repaired: workup: 'hcg' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "auto-repaired: workup: 'mri brain with and without iv contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "auto-repaired: workup: 'electroencephalogram (eeg)' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "auto-repaired: workup: 'ct abdomen and pelvis with iv contrast' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "differential dementia: no profile yet",
-        "differential depression: no profile yet",
-        "differential psychosis: no profile yet",
-        "differential nonconvulsive-status-epilepticus: no profile yet",
-        "differential meningitis: no profile yet",
-        "differential alcohol-withdrawal: no profile yet",
-        "differential hepatic-encephalopathy: no profile yet",
-        "differential hypoglycemia: no profile yet"
+        "auto-repaired: workup: 'Chest x-ray' was in initial, not_indicated; kept initial as a conditional order (only if pneumonia is suspected (fever, hypoxia, cough, or focal lung findings))",
+        "auto-repaired: workup: 'CT head without contrast' was in supporting, not_indicated; kept supporting as a conditional order (only if focal neurologic deficit, recent fall, anticoagulation, or acute severe headache)",
+        "auto-repaired: workup: 'MRI brain without contrast' was in supporting, not_indicated; kept supporting as a conditional order (only if CT negative but high suspicion for stroke, encephalitis, or seizure)",
+        "auto-repaired: workup: 'EEG' was in supporting, not_indicated; kept supporting as a conditional order (only if possible nonconvulsive seizure or unexplained fluctuating level of consciousness)",
+        "auto-repaired: workup: 'Lumbar puncture' was in supporting, not_indicated; kept supporting as a conditional order (only if fever, headache, nuchal rigidity, or suspected CNS infection)",
+        "auto-repaired: workup: 'ABG' was in supporting, not_indicated; kept supporting as a conditional order (only if hypoxia or acid-base disturbance suspected)",
+        "auto-repaired: workup: 'Urine drug screen' was in supporting, not_indicated; kept supporting as a conditional order (only if substance use suspected or unexplained delirium)",
+        "auto-repaired: workup: 'Blood alcohol level' was in supporting, not_indicated; kept supporting as a conditional order (only if alcohol use suspected or withdrawal)",
+        "auto-repaired: workup: 'ECG' was in supporting, not_indicated; kept supporting as a conditional order (only if cardiac ischemia, arrhythmia, or drug toxicity suspected)"
       ]
     },
     "review": {
@@ -100,184 +86,209 @@
   "patient": {
     "age": {
       "typical_min": 65,
-      "typical_max": 95,
-      "peak": "70–90",
+      "typical_max": 90,
+      "peak": "70–85",
       "possible_min": 0,
       "possible_max": 110
     },
     "sex": "either",
     "demographics": [
-      "Most common in hospitalized older adults, especially those with pre-existing cognitive impairment",
-      "Occurs at any age in the setting of severe illness, surgery, or drug or alcohol withdrawal",
-      "More common in nursing home residents and patients in intensive care"
+      "Most common in older adults, especially those who are hospitalized, institutionalized, or have pre-existing cognitive impairment",
+      "Occurs with similar frequency in men and women",
+      "Risk rises with age, severity of acute illness, and number of predisposing factors"
     ],
     "risk_factors": [
       {
-        "text": "Older age",
+        "text": "Age over 65",
         "strength": "strong"
       },
       {
-        "text": "Pre-existing dementia or mild cognitive impairment",
+        "text": "Preexisting dementia or cognitive impairment",
         "strength": "strong"
       },
       {
-        "text": "Hospitalization, especially ICU admission or recent surgery",
+        "text": "Severe acute illness or multiple comorbidities",
         "strength": "strong"
       },
       {
-        "text": "Infection such as urinary tract infection or pneumonia",
+        "text": "Hospitalization or intensive care unit stay",
         "strength": "strong"
       },
       {
-        "text": "Use of psychoactive medications (sedatives, opioids, anticholinergics)",
+        "text": "Surgery, especially hip fracture or cardiac surgery",
         "strength": "strong"
       },
       {
-        "text": "Alcohol or drug intoxication or withdrawal",
+        "text": "Use of psychoactive medications or polypharmacy",
+        "strength": "strong"
+      },
+      {
+        "text": "Infection",
         "strength": "moderate"
       },
       {
-        "text": "Metabolic derangement, dehydration, or electrolyte imbalance",
+        "text": "Dehydration or electrolyte imbalance",
         "strength": "moderate"
       },
       {
-        "text": "Severe pain, sleep deprivation, or use of physical restraints",
+        "text": "Sensory impairment such as poor vision or hearing",
         "strength": "moderate"
       },
       {
-        "text": "Sensory impairment (hearing or vision loss)",
-        "strength": "weak"
+        "text": "Sleep deprivation",
+        "strength": "moderate"
       },
       {
-        "text": "Multiple chronic illnesses or organ failure",
+        "text": "Alcohol use disorder",
+        "strength": "moderate"
+      },
+      {
+        "text": "Immobility or use of physical restraints",
         "strength": "moderate"
       }
     ],
     "comorbidities": [
-      "Dementia or other neurodegenerative disease",
-      "Chronic kidney disease or liver failure",
-      "Heart failure",
-      "Diabetes mellitus",
-      "Cancer, especially advanced disease",
-      "Prior stroke or other structural brain lesion",
+      "Dementia",
+      "Advanced cancer",
+      "Renal failure",
+      "Liver failure",
       "Alcohol use disorder",
-      "Depression"
+      "Severe infection",
+      "Dehydration",
+      "Electrolyte imbalance",
+      "Metabolic disorders"
     ],
     "family_history": [],
     "social_history": [
-      "Lives in a nursing home or assisted living facility",
-      "Recent hospitalization or surgery",
-      "Heavy alcohol use",
-      "Recent change in living situation or loss of a spouse"
+      "Alcohol misuse or withdrawal",
+      "Living in a nursing home or prolonged hospitalization",
+      "Social isolation"
     ],
     "exposures": [
-      "Recent surgery or anesthesia",
+      "Hospitalization",
+      "Intensive care unit stay",
+      "Recent surgery",
       "New or increased psychoactive medication",
-      "Recent infection in the community or hospital",
-      "Physical restraints or bladder catheterization"
+      "Alcohol withdrawal",
+      "Physical restraints",
+      "Urinary catheter"
     ],
     "risk_medications": [
-      "Diphenhydramine",
-      "Oxycodone",
-      "Morphine",
-      "Lorazepam",
-      "Diazepam",
-      "Haloperidol",
-      "Prednisone",
-      "Amitriptyline",
-      "Furosemide",
-      "Cimetidine"
+      "lorazepam",
+      "diazepam",
+      "zolpidem",
+      "diphenhydramine",
+      "oxybutynin",
+      "morphine",
+      "hydromorphone",
+      "prednisone",
+      "meperidine"
     ]
   },
   "presentation": {
     "chief_complaints": [
       {
+        "text": "I feel confused and I can't think clearly",
+        "term": "Confusion",
+        "frequency": "almost_always",
+        "snomed_verified": true
+      },
+      {
         "text": "I don't know where I am or what day it is",
-        "frequency": "almost_always"
+        "term": "Disorientation",
+        "frequency": "common",
+        "snomed_verified": true
       },
       {
-        "text": "My family says I've been confused and not making sense since yesterday",
-        "frequency": "common"
-      },
-      {
-        "text": "I keep seeing things that aren't there",
-        "frequency": "sometimes"
-      },
-      {
-        "text": "I can't stay awake or focus on what people are saying",
-        "frequency": "common"
+        "text": "I saw things that weren't there",
+        "term": "Visual hallucination",
+        "frequency": "sometimes",
+        "snomed_verified": true
       }
     ],
     "hpi": {
-      "onset": "Sudden, over hours to a few days",
-      "duration": "Hours to days at presentation; may fluctuate and persist for weeks if the cause is not treated",
-      "progression": "Symptoms come and go during the day, often worse at night; level of alertness and orientation change from hour to hour",
-      "location": "",
-      "radiation": "",
-      "quality": "Fluctuating confusion with difficulty paying attention and organizing thoughts",
-      "severity": "Moderate to severe; interferes with conversation, self-care and safety",
-      "timing": "Worse in the evening and at night; may be more alert and oriented in the morning",
+      "onset": "Acute, over hours to a few days; symptoms often fluctuate from hour to hour and tend to be worse at night.",
+      "duration": "Hours to days at presentation; may persist for days to weeks while the underlying cause is treated.",
+      "progression": "Begins as trouble paying attention and sleep-wake reversal, then progresses to disorientation, incoherent thoughts, and sometimes hallucinations or agitation. Symptoms wax and wane, with lucid intervals.",
+      "quality": "Clouded sensorium with trouble focusing; thoughts may be fragmented or rambling.",
+      "severity": "Variable; from mild inattention and restlessness to severe agitation or unresponsive sleepiness.",
+      "timing": "Fluctuating; commonly worse in the evening and overnight.",
       "aggravating": [
-        "Unfamiliar surroundings",
-        "Loud or busy environment",
-        "Being moved or restrained",
-        "Sleep deprivation"
+        "Unfamiliar environment",
+        "Dim lighting",
+        "Sensory deprivation",
+        "Pain",
+        "Sleep deprivation",
+        "New or increased sedating medications",
+        "Infection",
+        "Immobility",
+        "Physical restraints"
       ],
       "relieving": [
-        "Familiar people and surroundings",
-        "Quiet, well-lit room",
-        "Glasses and hearing aids",
-        "Treating the underlying cause"
+        "Treating the underlying illness",
+        "Quiet well-lit room",
+        "Familiar family member present",
+        "Clocks and calendars visible",
+        "Wearing glasses or hearing aids"
       ],
       "associated_symptoms": [
         {
-          "text": "Trouble concentrating or following a conversation",
-          "frequency": "almost_always"
+          "text": "Trouble keeping my mind on one thing or following what is said",
+          "term": "Impaired attention",
+          "frequency": "almost_always",
+          "snomed_verified": true
         },
         {
-          "text": "Disorientation to time, place or person",
-          "frequency": "almost_always"
+          "text": "Not knowing the date, place, or who people are",
+          "term": "Disorientation",
+          "frequency": "common",
+          "snomed_verified": true
         },
         {
-          "text": "Short-term memory problems",
-          "frequency": "common"
+          "text": "Day and night are reversed: sleepy during the day, awake at night",
+          "term": "Circadian rhythm sleep disorder",
+          "frequency": "common",
+          "snomed_verified": true
         },
         {
-          "text": "Disrupted sleep-wake cycle with daytime sleepiness and nighttime wakefulness",
-          "frequency": "common"
+          "text": "Seeing or hearing things that are not there",
+          "term": "Hallucination",
+          "frequency": "sometimes",
+          "snomed_verified": true
         },
         {
-          "text": "Agitation, restlessness or irritability",
-          "frequency": "common"
+          "text": "Believing that people are trying to harm me",
+          "term": "Delusion",
+          "frequency": "sometimes",
+          "snomed_verified": true
         },
         {
-          "text": "Withdrawal or reduced responsiveness",
-          "frequency": "common"
+          "text": "Feeling restless and picking at the sheets or tubes",
+          "term": "Agitation",
+          "frequency": "sometimes",
+          "snomed_verified": true
         },
         {
-          "text": "Visual hallucinations",
-          "frequency": "sometimes"
+          "text": "Very sleepy and hard to wake",
+          "term": "Somnolence",
+          "frequency": "sometimes",
+          "snomed_verified": true
         },
         {
-          "text": "Delusions or suspiciousness",
-          "frequency": "sometimes"
-        },
-        {
-          "text": "Emotional lability, fear or anger",
-          "frequency": "sometimes"
-        },
-        {
-          "text": "Tremor, sweating or rapid heartbeat in withdrawal states",
-          "frequency": "rare"
+          "text": "Trouble remembering what just happened",
+          "term": "Memory impairment",
+          "frequency": "common",
+          "snomed_verified": true
         }
       ],
       "pertinent_negatives": [
-        "Gradual memory decline over months to years before this episode",
-        "Focal weakness, numbness or difficulty speaking",
-        "New severe headache or head trauma",
-        "Loss of consciousness or seizure before the confusion started",
-        "Fever with stiff neck or rash",
-        "Intentional overdose or recent suicide attempt"
+        "Gradual memory loss over months to years",
+        "Normal attention on repeated bedside testing",
+        "No fluctuation in symptoms",
+        "Clear consciousness with hallucinations or delusions",
+        "Focal weakness or facial droop",
+        "Seizure-like activity",
+        "Headache with stiff neck"
       ]
     },
     "ros": [
@@ -285,16 +296,22 @@
         "system": "constitutional",
         "positives": [
           {
-            "text": "Feeling tired or sleepy during the day",
-            "frequency": "common"
+            "text": "Sleepy during the day",
+            "term": "Somnolence",
+            "frequency": "common",
+            "snomed_verified": true
           },
           {
-            "text": "Poor appetite",
-            "frequency": "sometimes"
+            "text": "Awake and restless at night",
+            "term": "Insomnia",
+            "frequency": "common",
+            "snomed_verified": true
           },
           {
-            "text": "Fever or chills if infection is the cause",
-            "frequency": "sometimes"
+            "text": "Feeling generally unwell",
+            "term": "Malaise",
+            "frequency": "sometimes",
+            "snomed_verified": true
           }
         ],
         "negatives": [
@@ -306,591 +323,428 @@
         "system": "neurologic",
         "positives": [
           {
-            "text": "Confusion and disorientation",
-            "frequency": "almost_always"
+            "text": "Confusion",
+            "term": "Confusion",
+            "frequency": "almost_always",
+            "snomed_verified": true
           },
           {
-            "text": "Difficulty paying attention",
-            "frequency": "almost_always"
+            "text": "Disorientation",
+            "term": "Disorientation",
+            "frequency": "common",
+            "snomed_verified": true
           },
           {
-            "text": "Memory problems",
-            "frequency": "common"
+            "text": "Tremor",
+            "term": "Tremor",
+            "frequency": "sometimes",
+            "snomed_verified": true
           },
           {
             "text": "Visual hallucinations",
-            "frequency": "sometimes"
-          },
-          {
-            "text": "Tremor or unsteady movements",
-            "frequency": "sometimes"
+            "term": "Visual hallucination",
+            "frequency": "sometimes",
+            "snomed_verified": true
           }
         ],
         "negatives": [
           "Focal weakness",
-          "Numbness",
-          "Slurred speech",
-          "New severe headache",
-          "Seizure"
+          "Facial droop",
+          "Seizure",
+          "Loss of sensation"
         ],
         "argues_against": [
-          "Focal neurologic deficit suggesting stroke",
-          "Head trauma with loss of consciousness"
+          "Focal weakness or aphasia",
+          "Repeated seizures"
         ]
       },
       {
         "system": "psychiatric",
         "positives": [
           {
-            "text": "Agitation or restlessness",
-            "frequency": "common"
+            "text": "Agitation that comes and goes",
+            "term": "Agitation",
+            "frequency": "sometimes",
+            "snomed_verified": true
           },
           {
-            "text": "Withdrawal or reduced interaction",
-            "frequency": "common"
+            "text": "Hallucinations",
+            "term": "Hallucination",
+            "frequency": "sometimes",
+            "snomed_verified": true
           },
           {
-            "text": "Suspiciousness or delusions",
-            "frequency": "sometimes"
+            "text": "Paranoid delusions",
+            "term": "Delusion",
+            "frequency": "sometimes",
+            "snomed_verified": true
           },
           {
-            "text": "Emotional swings",
-            "frequency": "sometimes"
+            "text": "Rambling or incoherent speech",
+            "term": "Incoherent speech",
+            "frequency": "common",
+            "snomed_verified": true
           }
         ],
         "negatives": [
-          "Long-standing depressed mood before this episode",
-          "Prior manic episodes",
-          "Chronic psychotic illness"
+          "History of schizophrenia",
+          "Suicidal ideation"
         ],
         "argues_against": [
-          "Primary psychiatric disorder with stable course",
-          "Depression as the sole explanation"
-        ]
-      },
-      {
-        "system": "gastrointestinal",
-        "positives": [
-          {
-            "text": "Nausea or vomiting",
-            "frequency": "sometimes"
-          },
-          {
-            "text": "Constipation",
-            "frequency": "sometimes"
-          }
-        ],
-        "negatives": [
-          "Blood in stool",
-          "Jaundice"
-        ]
-      },
-      {
-        "system": "genitourinary",
-        "positives": [
-          {
-            "text": "Burning with urination or frequent urination",
-            "frequency": "sometimes"
-          },
-          {
-            "text": "Decreased urine output",
-            "frequency": "sometimes"
-          }
-        ],
-        "negatives": [
-          "Flank pain",
-          "Blood in urine"
-        ]
-      },
-      {
-        "system": "cardiovascular",
-        "positives": [
-          {
-            "text": "Rapid heartbeat",
-            "frequency": "sometimes"
-          },
-          {
-            "text": "Low blood pressure or dizziness on standing",
-            "frequency": "sometimes"
-          }
-        ],
-        "negatives": [
-          "Chest pain",
-          "Leg swelling"
-        ]
-      },
-      {
-        "system": "respiratory",
-        "positives": [
-          {
-            "text": "Cough or shortness of breath if pneumonia is the cause",
-            "frequency": "sometimes"
-          }
-        ],
-        "negatives": [
-          "Coughing up blood",
-          "Sudden severe shortness of breath"
+          "Hallucinations with clear sensorium and intact attention",
+          "Well-systematized delusions with a normal level of consciousness"
         ]
       }
     ],
     "atypical": [
       {
+        "population": "children",
+        "how_it_differs": "Delirium may appear as irritability, inconsolable crying, refusal to interact, or emergence agitation after anesthesia. Young children cannot describe confusion or hallucinations, and disorientation may not be obvious.",
+        "missing_classic_features": [
+          "Clear description of confusion",
+          "Disorientation to time and place"
+        ]
+      },
+      {
         "population": "older_adults",
-        "how_it_differs": "Hypoactive delirium is most common in this group and is often mistaken for depression, fatigue or dementia; patients may be quiet, withdrawn and sleepy rather than agitated.",
+        "how_it_differs": "Hypoactive delirium is more common and is often mistaken for depression or worsening dementia. Older adults may show lethargy, withdrawal, and poor oral intake rather than agitation.",
         "missing_classic_features": [
           "Agitation",
-          "Hallucinations",
-          "Obvious confusion reported by the patient"
-        ]
-      },
-      {
-        "population": "children",
-        "how_it_differs": "Children may present with irritability, inconsolable crying, refusal to eat, or regression of behavior rather than clear disorientation; they may not report hallucinations.",
-        "missing_classic_features": [
-          "Disorientation to time and place",
-          "Clear description of confusion"
-        ]
-      },
-      {
-        "population": "infants",
-        "how_it_differs": "Infants show poor feeding, lethargy or inconsolable fussiness; the diagnosis is usually made when an underlying illness or medication effect is identified.",
-        "missing_classic_features": [
-          "Verbal reports of confusion",
-          "Fluctuating attention noted by the patient"
-        ]
-      },
-      {
-        "population": "immunocompromised",
-        "how_it_differs": "Infection may be the trigger with minimal or no fever, so delirium can be the only sign of a serious infection.",
-        "missing_classic_features": [
-          "Fever",
-          "Localizing infectious symptoms"
-        ]
-      },
-      {
-        "population": "renal_impairment",
-        "how_it_differs": "Accumulation of medications and metabolic waste can cause or worsen delirium; symptoms may persist until dialysis or dose adjustment.",
-        "missing_classic_features": [
-          "Rapid improvement after treating a single obvious cause"
-        ]
-      },
-      {
-        "population": "hepatic_impairment",
-        "how_it_differs": "Hepatic encephalopathy can present with fluctuating confusion, sleep inversion and asterixis; it may be mistaken for primary delirium from another cause.",
-        "missing_classic_features": [
-          "Clear non-hepatic trigger"
-        ]
-      },
-      {
-        "population": "pregnancy",
-        "how_it_differs": "Delirium in pregnancy is uncommon and usually signals a severe underlying condition such as eclampsia, sepsis, or a medication reaction; presentation may be dominated by obstetric symptoms.",
-        "missing_classic_features": [
-          "Typical geriatric risk profile"
+          "Hallucinations"
         ]
       }
     ]
   },
   "exam": {
     "general": {
-      "mild": "Awake but easily distracted; may appear tired or mildly restless; conversation drifts off topic",
-      "moderate": "Clearly inattentive and disoriented; either drowsy and withdrawn or restless and picking at lines or clothing",
-      "severe": "Markedly confused; may be agitated and attempting to climb out of bed, or somnolent and only briefly rousable",
-      "critical": "Fluctuating between agitation and unresponsiveness; may be combative or barely arousable; autonomic overactivity if withdrawal or severe systemic illness"
+      "mild": "Alert but distractible; may appear mildly restless or lethargic",
+      "moderate": "Fluctuating; sometimes sleepy and withdrawn, at other times agitated; may pick at bedclothes",
+      "severe": "Marked agitation with shouting and pulling at tubes, or profound somnolence requiring repeated stimulation",
+      "critical": "Stuporous or comatose, or severe hyperactive/autonomic overactivity; airway protection may be lost"
     },
     "findings": [
       {
-        "id": "inattention",
+        "id": "impaired-attention",
         "region": "mental_status",
-        "maneuver": "Ask the patient to recite the months backward or spell 'world' backward",
-        "finding": "Cannot sustain attention; makes errors or loses track of the task",
+        "maneuver": "Ask the patient to recite the months backward or subtract serial sevens",
+        "finding": "Cannot stay focused; loses track of the task and gives up or makes errors",
         "frequency": "almost_always",
         "significance": "strongly_supports",
-        "importance": "essential"
+        "importance": "essential",
+        "term": "Impaired attention",
+        "snomed_verified": true
       },
       {
         "id": "disorientation",
         "region": "mental_status",
-        "maneuver": "Ask the patient their name, where they are, and the date or day of the week",
-        "finding": "Disoriented to time, place, or person",
+        "maneuver": "Ask the patient's name, place, and date",
+        "finding": "Disoriented to time and place, sometimes person",
+        "frequency": "common",
+        "significance": "supports",
+        "importance": "essential",
+        "term": "Disorientation",
+        "snomed_verified": true
+      },
+      {
+        "id": "confusion",
+        "region": "mental_status",
+        "maneuver": "Observe level of arousal and coherence of speech",
+        "finding": "Clouded sensorium with rambling or incoherent speech",
         "frequency": "almost_always",
         "significance": "strongly_supports",
-        "importance": "essential"
-      },
-      {
-        "id": "fluctuating-course",
-        "region": "mental_status",
-        "maneuver": "Observe and re-examine the patient over minutes to hours, or compare with nursing reports from earlier in the day",
-        "finding": "Level of alertness and orientation changes during the day, often worse at night",
-        "frequency": "almost_always",
-        "significance": "strongly_supports",
-        "importance": "essential"
-      },
-      {
-        "id": "altered-consciousness",
-        "region": "mental_status",
-        "maneuver": "Observe the patient's level of arousal and response to voice or touch",
-        "finding": "Reduced or fluctuating level of consciousness (drowsy, hypervigilant, or difficult to arouse)",
-        "frequency": "common",
-        "significance": "supports",
-        "importance": "important"
-      },
-      {
-        "id": "disorganized-speech",
-        "region": "mental_status",
-        "maneuver": "Listen to the patient's spontaneous speech and ask open-ended questions",
-        "finding": "Rambling, tangential, or incoherent speech",
-        "frequency": "common",
-        "significance": "supports",
-        "importance": "important"
-      },
-      {
-        "id": "memory-impairment",
-        "region": "mental_status",
-        "maneuver": "Give three words and ask the patient to repeat them after a few minutes",
-        "finding": "Impaired short-term recall",
-        "frequency": "common",
-        "significance": "supports",
-        "importance": "important"
-      },
-      {
-        "id": "hallucinations",
-        "region": "mental_status",
-        "maneuver": "Ask whether the patient sees or hears things others do not",
-        "finding": "Visual or auditory hallucinations, often frightening",
-        "frequency": "sometimes",
-        "significance": "supports",
-        "importance": "important"
-      },
-      {
-        "id": "delusions",
-        "region": "mental_status",
-        "maneuver": "Ask about suspicious or fixed false beliefs",
-        "finding": "Paranoid or persecutory delusions",
-        "frequency": "sometimes",
-        "significance": "supports",
-        "importance": "optional"
+        "importance": "essential",
+        "term": "Confusion",
+        "snomed_verified": true
       },
       {
         "id": "agitation",
         "region": "mental_status",
-        "maneuver": "Observe behavior during the interview",
-        "finding": "Restlessness, pulling at lines or clothing, attempting to get out of bed",
-        "frequency": "common",
-        "significance": "supports",
-        "importance": "important"
-      },
-      {
-        "id": "hypoactivity",
-        "region": "mental_status",
-        "maneuver": "Observe the patient's spontaneous activity and interaction",
-        "finding": "Withdrawn, sleepy, or slow to respond; easily mistaken for depression or fatigue",
-        "frequency": "common",
-        "significance": "supports",
-        "importance": "important"
-      },
-      {
-        "id": "asterixis",
-        "region": "neuro",
-        "maneuver": "Ask the patient to extend both arms with wrists dorsiflexed and observe for a few seconds",
-        "finding": "Brief, irregular flapping of the hands (suggests hepatic encephalopathy or metabolic cause)",
+        "maneuver": "Observe motor behavior and attempts to remove devices",
+        "finding": "Restless, picking at bedclothes, trying to get out of bed",
         "frequency": "sometimes",
+        "min_severity": "moderate",
         "significance": "supports",
-        "importance": "important"
+        "importance": "important",
+        "term": "Agitation",
+        "snomed_verified": true
+      },
+      {
+        "id": "somnolence",
+        "region": "mental_status",
+        "maneuver": "Attempt to rouse the patient with voice and light touch",
+        "finding": "Somnolent; falls asleep during the exam unless repeatedly stimulated",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Somnolence",
+        "snomed_verified": true
       },
       {
         "id": "tremor",
         "region": "neuro",
-        "maneuver": "Observe the outstretched hands and ask the patient to hold a steady posture",
-        "finding": "Postural or intention tremor (suggests alcohol or sedative withdrawal, or medication effect)",
+        "maneuver": "Have the patient hold arms outstretched with fingers spread",
+        "finding": "Coarse irregular tremor",
         "frequency": "sometimes",
         "significance": "supports",
-        "importance": "important"
+        "importance": "optional",
+        "term": "Tremor",
+        "snomed_verified": true
       },
       {
-        "id": "no-focal-deficit",
+        "id": "asterixis",
         "region": "neuro",
-        "maneuver": "Test strength, sensation, and cranial nerves, and ask the patient to smile and raise both arms",
-        "finding": "No focal weakness, sensory loss, or facial droop",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "essential"
+        "maneuver": "Ask the patient to extend arms and dorsiflex wrists, as if stopping traffic",
+        "finding": "Asterixis: brief downward flapping of hands",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Asterixis",
+        "snomed_verified": true
       },
       {
-        "id": "no-meningismus",
-        "region": "neck",
-        "maneuver": "Flex the neck and check for resistance or pain",
-        "finding": "No neck stiffness or meningismus",
+        "id": "hemiparesis",
+        "region": "neuro",
+        "maneuver": "Test motor strength in all four limbs and face",
+        "finding": "No hemiparesis or facial droop",
         "frequency": "almost_always",
         "significance": "neutral",
-        "importance": "important"
+        "importance": "important",
+        "term": "Hemiparesis",
+        "snomed_verified": true
       },
       {
-        "id": "no-head-trauma",
+        "id": "nuchal-rigidity",
+        "region": "neuro",
+        "maneuver": "Flex the neck passively",
+        "finding": "No nuchal rigidity or resistance to flexion",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Nuchal rigidity",
+        "snomed_verified": true
+      },
+      {
+        "id": "papilledema",
         "region": "heent",
-        "maneuver": "Inspect the scalp and ask about recent falls or head injury",
-        "finding": "No scalp laceration, hematoma, or signs of trauma",
+        "maneuver": "Examine the optic fundi",
+        "finding": "No papilledema",
         "frequency": "almost_always",
         "significance": "neutral",
-        "importance": "important"
-      },
-      {
-        "id": "no-rash",
-        "region": "skin",
-        "maneuver": "Inspect the skin, including the back and pressure areas",
-        "finding": "No petechial or purpuric rash",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "optional"
-      },
-      {
-        "id": "no-fever-source",
-        "region": "lung",
-        "maneuver": "Auscultate the lungs and inspect for a source of infection",
-        "finding": "No focal crackles or consolidation to suggest pneumonia",
-        "frequency": "sometimes",
-        "significance": "neutral",
-        "importance": "important"
+        "importance": "optional",
+        "term": "Papilledema",
+        "snomed_verified": true
       }
     ]
   },
-  "vitals": {
-    "temp": {
-      "mild": {
-        "min": 98.0,
-        "max": 99.5
-      },
-      "moderate": {
-        "min": 99.0,
-        "max": 101.0
-      },
-      "severe": {
-        "min": 100.4,
-        "max": 103.0
-      },
-      "critical": {
-        "min": 101.0,
-        "max": 104.0
-      }
-    },
-    "hr": {
-      "mild": {
-        "min": 70,
-        "max": 100
-      },
-      "moderate": {
-        "min": 90,
-        "max": 115
-      },
-      "severe": {
-        "min": 100,
-        "max": 130
-      },
-      "critical": {
-        "min": 110,
-        "max": 150
-      }
-    },
-    "rr": {
-      "moderate": {
-        "min": 16,
-        "max": 22
-      },
-      "severe": {
-        "min": 18,
-        "max": 26
-      },
-      "critical": {
-        "min": 22,
-        "max": 32
-      }
-    },
-    "sbp": {
-      "moderate": {
-        "min": 100,
-        "max": 140
-      },
-      "severe": {
-        "min": 90,
-        "max": 130
-      },
-      "critical": {
-        "min": 80,
-        "max": 110
-      }
-    },
-    "dbp": {
-      "moderate": {
-        "min": 60,
-        "max": 85
-      },
-      "severe": {
-        "min": 55,
-        "max": 80
-      },
-      "critical": {
-        "min": 45,
-        "max": 70
-      }
-    },
-    "spo2": {
-      "severe": {
-        "min": 90,
-        "max": 96
-      },
-      "critical": {
-        "min": 85,
-        "max": 93
-      }
-    }
-  },
+  "vitals": {},
   "labs": [
+    {
+      "test_id": "wbc",
+      "ranges": {
+        "moderate": {
+          "min": 10.5,
+          "max": 14.0
+        },
+        "severe": {
+          "min": 12.0,
+          "max": 18.0
+        },
+        "critical": {
+          "min": 15.0,
+          "max": 25.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Leukocytosis suggests infection but is absent in many cases, especially viral or in older adults."
+    },
+    {
+      "test_id": "neut_pct",
+      "ranges": {
+        "moderate": {
+          "min": 70,
+          "max": 80
+        },
+        "severe": {
+          "min": 75,
+          "max": 90
+        },
+        "critical": {
+          "min": 80,
+          "max": 95
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Left shift supports bacterial infection."
+    },
+    {
+      "test_id": "glucose",
+      "ranges": {
+        "severe": {
+          "min": 40,
+          "max": 60
+        },
+        "critical": {
+          "min": 20,
+          "max": 40
+        }
+      },
+      "frequency": "rare",
+      "importance": "essential",
+      "caveat": "Hypoglycemia is a must-not-miss reversible cause; hyperglycemia also occurs with infection/diabetes but is less directly causal."
+    },
     {
       "test_id": "na",
       "ranges": {
-        "mild": {
-          "min": 130,
-          "max": 134
-        },
-        "moderate": {
-          "min": 125,
-          "max": 130
-        },
         "severe": {
-          "min": 118,
+          "min": 115,
           "max": 125
         },
         "critical": {
           "min": 110,
-          "max": 118
+          "max": 115
         }
       },
-      "frequency": "common",
+      "frequency": "sometimes",
       "importance": "essential",
-      "caveat": "Hyponatremia is a common reversible cause; correct slowly to avoid osmotic demyelination."
-    },
-    {
-      "test_id": "na",
-      "ranges": {
-        "mild": {
-          "min": 146,
-          "max": 150
-        },
-        "moderate": {
-          "min": 150,
-          "max": 155
-        },
-        "severe": {
-          "min": 155,
-          "max": 165
-        },
-        "critical": {
-          "min": 160,
-          "max": 175
-        }
-      },
-      "frequency": "sometimes",
-      "importance": "important",
-      "caveat": "Hypernatremia from dehydration or poor access to water, especially in nursing home residents."
-    },
-    {
-      "test_id": "ca",
-      "ranges": {
-        "mild": {
-          "min": 10.3,
-          "max": 11.0
-        },
-        "moderate": {
-          "min": 11.0,
-          "max": 12.5
-        },
-        "severe": {
-          "min": 12.5,
-          "max": 14.0
-        },
-        "critical": {
-          "min": 13.5,
-          "max": 16.0
-        }
-      },
-      "frequency": "sometimes",
-      "importance": "important",
-      "caveat": "Hypercalcemia causes confusion and lethargy; check ionized calcium if albumin is low."
-    },
-    {
-      "test_id": "glucose",
-      "ranges": {
-        "mild": {
-          "min": 55,
-          "max": 69
-        },
-        "moderate": {
-          "min": 40,
-          "max": 55
-        },
-        "severe": {
-          "min": 25,
-          "max": 40
-        },
-        "critical": {
-          "min": 15,
-          "max": 30
-        }
-      },
-      "frequency": "common",
-      "importance": "essential",
-      "caveat": "Hypoglycemia is a rapidly reversible cause; check a bedside glucose immediately in any confused patient."
-    },
-    {
-      "test_id": "glucose",
-      "ranges": {
-        "mild": {
-          "min": 180,
-          "max": 250
-        },
-        "moderate": {
-          "min": 250,
-          "max": 400
-        },
-        "severe": {
-          "min": 400,
-          "max": 600
-        },
-        "critical": {
-          "min": 500,
-          "max": 900
-        }
-      },
-      "frequency": "sometimes",
-      "importance": "important",
-      "caveat": "Severe hyperglycemia suggests diabetic ketoacidosis or hyperosmolar hyperglycemic state."
+      "caveat": "Sodium derangement in either direction can cause delirium; hyponatremia is more commonly the culprit."
     },
     {
       "test_id": "bun",
       "ranges": {
-        "moderate": {
-          "min": 25,
-          "max": 45
-        },
         "severe": {
-          "min": 40,
-          "max": 80
+          "min": 25,
+          "max": 60
         },
         "critical": {
-          "min": 60,
-          "max": 120
+          "min": 40,
+          "max": 100
         }
       },
-      "frequency": "common",
+      "frequency": "sometimes",
       "importance": "important",
-      "caveat": "Uremia from renal failure or dehydration contributes to encephalopathy."
+      "caveat": "Uremia from renal failure or dehydration can precipitate delirium."
     },
     {
       "test_id": "cr",
       "ranges": {
-        "moderate": {
-          "min": 1.4,
-          "max": 2.5
+        "severe": {
+          "min": 1.5,
+          "max": 3.0
         },
+        "critical": {
+          "min": 2.0,
+          "max": 5.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Acute kidney injury may present with delirium."
+    },
+    {
+      "test_id": "ca",
+      "ranges": {
+        "severe": {
+          "min": 12.0,
+          "max": 14.0
+        },
+        "critical": {
+          "min": 13.0,
+          "max": 16.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "important",
+      "caveat": "Hypercalcemia is a classic metabolic cause; hypocalcemia can also alter mental status."
+    },
+    {
+      "test_id": "ammonia",
+      "ranges": {
+        "severe": {
+          "min": 60,
+          "max": 120
+        },
+        "critical": {
+          "min": 90,
+          "max": 200
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Hepatic encephalopathy; levels correlate poorly with severity but a high level in the right setting is diagnostic."
+    },
+    {
+      "test_id": "ast",
+      "ranges": {
+        "severe": {
+          "min": 80,
+          "max": 200
+        },
+        "critical": {
+          "min": 150,
+          "max": 500
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Elevated in hepatic injury; part of hepatic panel."
+    },
+    {
+      "test_id": "alt",
+      "ranges": {
+        "severe": {
+          "min": 80,
+          "max": 200
+        },
+        "critical": {
+          "min": 150,
+          "max": 500
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional"
+    },
+    {
+      "test_id": "tbili",
+      "ranges": {
+        "severe": {
+          "min": 3.0,
+          "max": 10.0
+        },
+        "critical": {
+          "min": 5.0,
+          "max": 20.0
+        }
+      },
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Elevated in hepatic failure or cholestasis."
+    },
+    {
+      "test_id": "crp",
+      "ranges": {
+        "moderate": {
+          "min": 1.0,
+          "max": 5.0
+        },
+        "severe": {
+          "min": 3.0,
+          "max": 15.0
+        },
+        "critical": {
+          "min": 8.0,
+          "max": 30.0
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "optional",
+      "caveat": "Nonspecific marker of infection or inflammation."
+    },
+    {
+      "test_id": "lactate",
+      "ranges": {
         "severe": {
           "min": 2.5,
           "max": 5.0
@@ -900,318 +754,148 @@
           "max": 10.0
         }
       },
-      "frequency": "common",
+      "frequency": "rare",
       "importance": "important",
-      "caveat": "Also guides safe dosing of sedatives and antipsychotics."
+      "caveat": "Elevated in sepsis, hypoperfusion, or seizure."
     },
     {
-      "test_id": "ammonia",
+      "test_id": "pao2",
       "ranges": {
-        "moderate": {
+        "severe": {
+          "min": 55,
+          "max": 70
+        },
+        "critical": {
+          "min": 40,
+          "max": 55
+        }
+      },
+      "frequency": "rare",
+      "importance": "important",
+      "caveat": "Hypoxemia is a common precipitant; pulse oximetry may be normal with carbon monoxide or severe anemia."
+    },
+    {
+      "test_id": "paco2",
+      "ranges": {
+        "severe": {
+          "min": 50,
+          "max": 65
+        },
+        "critical": {
           "min": 60,
-          "max": 120
-        },
-        "severe": {
-          "min": 100,
-          "max": 200
-        },
-        "critical": {
-          "min": 150,
-          "max": 300
+          "max": 80
         }
       },
-      "frequency": "sometimes",
-      "importance": "important",
-      "caveat": "Elevated in hepatic encephalopathy; a normal level does not exclude it."
-    },
-    {
-      "test_id": "tsh",
-      "ranges": {
-        "mild": {
-          "min": 4.5,
-          "max": 10.0
-        },
-        "moderate": {
-          "min": 10.0,
-          "max": 30.0
-        },
-        "severe": {
-          "min": 20.0,
-          "max": 60.0
-        }
-      },
-      "frequency": "sometimes",
-      "importance": "important",
-      "caveat": "Severe hypothyroidism can present with confusion and hypothermia; hyperthyroidism can mimic agitated delirium."
-    },
-    {
-      "test_id": "wbc",
-      "ranges": {
-        "mild": {
-          "min": 11.5,
-          "max": 15.0
-        },
-        "moderate": {
-          "min": 15.0,
-          "max": 20.0
-        },
-        "severe": {
-          "min": 18.0,
-          "max": 28.0
-        },
-        "critical": {
-          "min": 22.0,
-          "max": 35.0
-        }
-      },
-      "frequency": "common",
-      "importance": "important",
-      "caveat": "Leukocytosis supports infection as the trigger; a normal count does not exclude it, especially in older adults."
-    },
-    {
-      "test_id": "ua_le",
-      "qualitative": {
-        "mild": "Trace",
-        "moderate": "1+",
-        "severe": "2+"
-      },
-      "frequency": "common",
-      "importance": "important",
-      "caveat": "Urinary tract infection is a frequent precipitant; asymptomatic bacteriuria is common in older adults and may not be the true cause."
-    },
-    {
-      "test_id": "ua_nitrite",
-      "qualitative": {
-        "moderate": "Positive"
-      },
-      "frequency": "sometimes",
-      "importance": "important"
+      "frequency": "rare",
+      "importance": "optional",
+      "caveat": "Hypercapnia can cause confusion, especially in lung disease or oversedation."
     },
     {
       "test_id": "ua_wbc",
       "ranges": {
-        "mild": {
-          "min": 6,
-          "max": 15
-        },
         "moderate": {
-          "min": 15,
-          "max": 40
+          "min": 5,
+          "max": 20
         },
         "severe": {
-          "min": 30,
-          "max": 100
-        }
-      },
-      "frequency": "common",
-      "importance": "important"
-    },
-    {
-      "test_id": "lactate",
-      "ranges": {
-        "moderate": {
-          "min": 2.2,
-          "max": 4.0
-        },
-        "severe": {
-          "min": 4.0,
-          "max": 8.0
+          "min": 10,
+          "max": 50
         },
         "critical": {
-          "min": 6.0,
-          "max": 12.0
+          "min": 20,
+          "max": 100
         }
       },
       "frequency": "sometimes",
       "importance": "important",
-      "caveat": "Elevation suggests sepsis, hypoperfusion, or alcohol-related thiamine deficiency."
+      "caveat": "Sterile pyuria can occur from an inflamed adjacent organ; but in older adults, UTI is a classic precipitant."
     },
     {
-      "test_id": "csf_wbc",
-      "ranges": {
-        "moderate": {
-          "min": 10,
-          "max": 100
-        },
-        "severe": {
-          "min": 100,
-          "max": 1000
-        },
-        "critical": {
-          "min": 500,
-          "max": 5000
-        }
+      "test_id": "ua_le",
+      "qualitative": {
+        "moderate": "1+",
+        "severe": "2+",
+        "critical": "3+"
       },
-      "frequency": "rare",
-      "importance": "essential",
-      "caveat": "Only when meningitis or encephalitis is suspected; a normal CSF cell count does not exclude early infection."
-    },
-    {
-      "test_id": "csf_protein",
-      "ranges": {
-        "moderate": {
-          "min": 50,
-          "max": 100
-        },
-        "severe": {
-          "min": 100,
-          "max": 200
-        },
-        "critical": {
-          "min": 150,
-          "max": 400
-        }
-      },
-      "frequency": "rare",
+      "frequency": "sometimes",
       "importance": "important"
     },
     {
-      "test_id": "csf_glucose",
-      "ranges": {
-        "moderate": {
-          "min": 30,
-          "max": 40
-        },
-        "severe": {
-          "min": 20,
-          "max": 35
-        },
-        "critical": {
-          "min": 10,
-          "max": 25
-        }
+      "test_id": "ua_nitrite",
+      "qualitative": {
+        "severe": "Positive",
+        "critical": "Positive"
       },
-      "frequency": "rare",
-      "importance": "important",
-      "caveat": "Low CSF glucose relative to serum suggests bacterial meningitis."
+      "frequency": "sometimes",
+      "importance": "optional"
     }
   ],
-  "ecg": {
-    "findings": [
-      {
-        "feature": "rate",
-        "finding": "Sinus tachycardia from infection, dehydration, pain, or alcohol or sedative withdrawal",
-        "frequency": "common",
-        "min_severity": "moderate"
-      },
-      {
-        "feature": "rhythm",
-        "finding": "Atrial fibrillation with rapid ventricular response, a common precipitant of delirium in older adults",
-        "frequency": "sometimes",
-        "min_severity": "moderate"
-      },
-      {
-        "feature": "qt",
-        "finding": "Prolonged QTc from electrolyte derangement or QT-prolonging medications such as haloperidol",
-        "frequency": "sometimes",
-        "min_severity": "moderate"
-      },
-      {
-        "feature": "st",
-        "finding": "ST depression or elevation suggesting myocardial ischemia or infarction as the trigger",
-        "frequency": "sometimes",
-        "min_severity": "severe"
-      },
-      {
-        "feature": "other",
-        "finding": "Peaked T waves with widened QRS in hyperkalemia, or flattened T waves and U waves in hypokalemia",
-        "frequency": "sometimes",
-        "min_severity": "moderate"
-      }
-    ]
-  },
   "imaging": [
     {
-      "study": "CT head without IV contrast",
+      "study": "CT head without contrast",
       "modality": "ct",
-      "preferred_when": "New focal neurologic deficit, head trauma, anticoagulation, or no clear cause identified",
+      "preferred_when": "Emergency setting to rule out acute hemorrhage, stroke, or mass; CT is quicker than MRI",
       "findings": [
         {
           "text": "No acute intracranial abnormality",
           "frequency": "common"
         },
         {
-          "text": "Acute or chronic subdural hematoma",
+          "text": "Chronic microvascular ischemic changes",
           "frequency": "sometimes"
         },
         {
-          "text": "Acute ischemic or hemorrhagic stroke",
-          "frequency": "sometimes"
+          "text": "Acute infarction",
+          "frequency": "rare"
         },
         {
-          "text": "Cerebral atrophy consistent with underlying dementia",
-          "frequency": "common"
+          "text": "Intracranial hemorrhage",
+          "frequency": "rare"
         },
         {
-          "text": "Old lacunar or cortical infarcts",
-          "frequency": "sometimes"
+          "text": "Subdural hematoma",
+          "frequency": "rare"
+        },
+        {
+          "text": "Mass lesion",
+          "frequency": "rare"
         }
       ]
     },
     {
-      "study": "MRI brain with and without IV contrast",
+      "study": "MRI brain without contrast",
       "modality": "mri",
-      "preferred_when": "Suspected encephalitis, abscess, or when CT is nondiagnostic",
+      "preferred_when": "When CT is negative but high suspicion for stroke, encephalitis, or seizure",
       "findings": [
         {
-          "text": "Temporal lobe signal abnormality suggesting herpes simplex encephalitis",
+          "text": "No acute abnormality",
+          "frequency": "common"
+        },
+        {
+          "text": "Acute ischemic stroke",
           "frequency": "rare"
         },
         {
-          "text": "Ring-enhancing lesion suggesting abscess or tumor",
+          "text": "Limbic encephalitis",
           "frequency": "rare"
-        },
-        {
-          "text": "Diffuse white matter changes consistent with small vessel disease",
-          "frequency": "sometimes"
         }
       ]
     },
     {
       "study": "Chest x-ray",
       "modality": "xray",
-      "preferred_when": "Fever, cough, hypoxia, or suspected pneumonia",
+      "preferred_when": "When pneumonia is suspected (fever, hypoxia, cough, or focal lung findings)",
       "findings": [
         {
-          "text": "Lobar consolidation or infiltrate suggesting pneumonia",
+          "text": "No acute cardiopulmonary disease",
+          "frequency": "common"
+        },
+        {
+          "text": "Pulmonary consolidation",
           "frequency": "sometimes"
         },
         {
-          "text": "Clear lungs",
-          "frequency": "common"
-        }
-      ]
-    },
-    {
-      "study": "CT abdomen and pelvis with IV contrast",
-      "modality": "ct",
-      "preferred_when": "Abdominal pain, fever without a source, or suspected intra-abdominal infection",
-      "findings": [
-        {
-          "text": "No acute intra-abdominal process",
-          "frequency": "common"
-        },
-        {
-          "text": "Bowel obstruction, perforation, or abscess",
-          "frequency": "rare"
-        }
-      ]
-    },
-    {
-      "study": "Electroencephalogram (EEG)",
-      "modality": "other",
-      "preferred_when": "Suspected nonconvulsive status epilepticus or unexplained persistent unresponsiveness",
-      "findings": [
-        {
-          "text": "Diffuse slowing consistent with metabolic encephalopathy",
-          "frequency": "common"
-        },
-        {
-          "text": "Triphasic waves suggesting hepatic or metabolic encephalopathy",
-          "frequency": "sometimes"
-        },
-        {
-          "text": "Epileptiform discharges or nonconvulsive status epilepticus",
+          "text": "Pulmonary edema",
           "frequency": "rare"
         }
       ]
@@ -1220,623 +904,480 @@
   "workup": {
     "initial": [
       {
-        "test": "bmp",
-        "why": "Detects hyponatremia, hypercalcemia, uremia, and acid-base disturbance, all common reversible causes"
-      },
-      {
         "test": "cbc",
-        "why": "Looks for infection or anemia as a trigger"
+        "why": "Leukocytosis or anemia may point to infection or another precipitant"
       },
       {
-        "test": "glucose",
-        "why": "Bedside glucose is mandatory; hypoglycemia is immediately reversible"
+        "test": "bmp",
+        "why": "Identifies electrolyte, glucose, and renal contributors"
       },
       {
         "test": "ua",
-        "why": "Urinary tract infection is a frequent precipitant in older adults"
-      },
-      {
-        "test": "tsh",
-        "why": "Thyroid dysfunction can present with confusion"
-      },
-      {
-        "test": "b12",
-        "why": "Deficiency is a reversible cause of cognitive impairment"
-      },
-      {
-        "test": "ECG",
-        "why": "Detects arrhythmia, ischemia, or QT prolongation relevant to treatment"
+        "why": "Urinary tract infection is a common precipitant, especially in older adults"
       },
       {
         "test": "Chest x-ray",
         "why": "Looks for pneumonia",
-        "only_if": "fever, cough, hypoxia, or suspected pneumonia"
-      },
-      {
-        "test": "CT head without IV contrast",
-        "why": "Rules out structural cause",
-        "only_if": "new focal deficit, head trauma, anticoagulation, or no cause found"
-      },
-      {
-        "test": "lumbar puncture",
-        "why": "Evaluates for meningitis or encephalitis",
-        "only_if": "fever with headache, neck stiffness, or rash, or unexplained delirium with no other source"
+        "only_if": "pneumonia is suspected (fever, hypoxia, cough, or focal lung findings)"
       }
     ],
-    "confirmatory": [
-      {
-        "test": "Confusion Assessment Method (CAM)",
-        "why": "Bedside structured assessment confirming acute onset, fluctuating course, inattention, and disorganized thinking or altered consciousness"
-      }
-    ],
+    "confirmatory": [],
     "supporting": [
       {
+        "test": "cmp_extra",
+        "why": "Liver tests may reveal hepatic encephalopathy",
+        "only_if": "liver disease or jaundice suspected"
+      },
+      {
         "test": "ammonia",
-        "why": "Supports hepatic encephalopathy when liver disease is suspected"
+        "why": "Diagnoses hepatic encephalopathy",
+        "only_if": "cirrhosis, liver failure, or unexplained delirium with flapping tremor"
       },
       {
-        "test": "lactate",
-        "why": "Suggests sepsis or hypoperfusion"
+        "test": "tsh",
+        "why": "Screens for thyroid dysfunction as a metabolic cause",
+        "only_if": "no obvious cause, older adult, or history of thyroid disease"
       },
       {
-        "test": "crp",
-        "why": "Adds evidence of infection or inflammation"
+        "test": "Blood cultures",
+        "why": "Identifies bacteremia",
+        "only_if": "fever, chills, or suspected sepsis"
       },
       {
-        "test": "procalcitonin",
-        "why": "Supports bacterial infection when the source is unclear"
+        "test": "Urine culture",
+        "why": "Confirms UTI and susceptibility",
+        "only_if": "urinalysis suggests infection or patient has urinary symptoms"
       },
       {
-        "test": "mg",
-        "why": "Hypomagnesemia can cause confusion and arrhythmia"
+        "test": "CT head without contrast",
+        "why": "Rules out stroke, hemorrhage, or mass",
+        "only_if": "focal neurologic deficit, recent fall, anticoagulation, or acute severe headache"
       },
       {
-        "test": "phos",
-        "why": "Low phosphate contributes to weakness and confusion"
+        "test": "MRI brain without contrast",
+        "why": "More sensitive for early ischemia and inflammatory lesions",
+        "only_if": "CT negative but high suspicion for stroke, encephalitis, or seizure"
       },
       {
-        "test": "ica",
-        "why": "Ionized calcium when albumin is low or calcium is borderline"
+        "test": "EEG",
+        "why": "Detects subclinical seizure activity",
+        "only_if": "possible nonconvulsive seizure or unexplained fluctuating level of consciousness"
       },
       {
-        "test": "cortisol_am",
-        "why": "Adrenal insufficiency can present with confusion and hypotension"
+        "test": "Lumbar puncture",
+        "why": "Evaluates meningitis/encephalitis",
+        "only_if": "fever, headache, nuchal rigidity, or suspected CNS infection"
       },
       {
-        "test": "hcg",
-        "why": "Pregnancy alters the differential and management",
-        "only_if": "patient is a woman of childbearing age"
+        "test": "ABG",
+        "why": "Measures oxygenation and ventilation",
+        "only_if": "hypoxia or acid-base disturbance suspected"
       },
       {
-        "test": "MRI brain with and without IV contrast",
-        "why": "Evaluates for encephalitis or abscess",
-        "only_if": "suspected encephalitis, abscess, or nondiagnostic CT"
+        "test": "Urine drug screen",
+        "why": "Screens for intoxicating drugs",
+        "only_if": "substance use suspected or unexplained delirium"
       },
       {
-        "test": "Electroencephalogram (EEG)",
-        "why": "Detects nonconvulsive status epilepticus",
-        "only_if": "persistent unexplained unresponsiveness or suspected seizures"
+        "test": "Blood alcohol level",
+        "why": "Detects acute intoxication",
+        "only_if": "alcohol use suspected or withdrawal"
       },
       {
-        "test": "CT abdomen and pelvis with IV contrast",
-        "why": "Looks for intra-abdominal infection",
-        "only_if": "abdominal pain or fever without a source"
+        "test": "ECG",
+        "why": "Looks for cardiac ischemia, arrhythmia, or drug toxicity",
+        "only_if": "cardiac ischemia, arrhythmia, or drug toxicity suspected"
       }
     ],
     "not_indicated": [
       {
-        "test": "CT head without IV contrast",
-        "why": "Not routine when the cause is clearly metabolic or infectious and there is no focal deficit or trauma"
+        "test": "d_dimer",
+        "why": "No role in routine delirium evaluation"
       },
       {
-        "test": "MRI brain with and without IV contrast",
-        "why": "Not first-line; reserved for suspected encephalitis or abscess"
+        "test": "bnp",
+        "why": "Not helpful unless heart failure is suspected"
       },
       {
-        "test": "CT abdomen and pelvis with IV contrast",
-        "why": "Not routine without abdominal findings or fever of unknown source"
-      },
-      {
-        "test": "lumbar puncture",
-        "why": "Not routine without signs of CNS infection"
-      },
-      {
-        "test": "Electroencephalogram (EEG)",
-        "why": "Not routine unless seizures or nonconvulsive status are suspected"
-      },
-      {
-        "test": "Chest x-ray",
-        "why": "Not routine without respiratory symptoms or fever"
-      },
-      {
-        "test": "hcg",
-        "why": "Not needed in men or women who cannot be pregnant"
+        "test": "Troponin",
+        "why": "Not helpful unless acute coronary syndrome is suspected"
       }
     ],
     "decision_points": [
-      "Check bedside glucose immediately in any patient with acute confusion",
-      "Review the full medication list and stop or reduce deliriogenic drugs",
-      "Look for and treat infection, dehydration, and electrolyte disturbance before attributing symptoms to dementia or a psychiatric disorder",
-      "Image the brain when there is focal deficit, trauma, anticoagulation, or no identified cause",
-      "Perform lumbar puncture when CNS infection is suspected, after imaging if there are focal signs or immunocompromise",
-      "Use the CAM or similar structured tool to confirm the diagnosis at the bedside"
+      "Always check point-of-care glucose early; hypoglycemia is rapidly reversible",
+      "Pregnancy test before imaging with ionizing radiation in anyone who could be pregnant",
+      "If focal deficits or recent fall, CT head before assuming metabolic cause",
+      "If fever and neck stiffness, lumbar puncture after appropriate imaging"
     ],
     "criteria": [
       {
-        "name": "Confusion Assessment Method (CAM)",
-        "summary": "Bedside tool that identifies delirium when there is an acute change with fluctuating course plus inattention, and either disorganized thinking or an altered level of consciousness.",
-        "items": [
-          "Acute onset with fluctuating course",
-          "Inattention",
-          "Disorganized thinking",
-          "Altered level of consciousness"
-        ]
+        "name": "DSM-5 delirium criteria (paraphrased)",
+        "summary": "Delirium is diagnosed clinically when there is a disturbance in attention and awareness that develops acutely and fluctuates, plus another cognitive disturbance, not better explained by a pre-existing neurocognitive disorder, and evidence that the disturbance is caused by a medical condition, substance, or medication."
       }
     ],
     "scores": [
-      "cam_icu",
-      "drs_r98",
-      "mdas"
+      "confusion_assessment_method",
+      "4at"
     ]
   },
   "differential": [
     {
       "name": "Dementia",
-      "slug": "dementia",
-      "why_considered": "Both cause confusion and disorientation in older adults, and the two frequently coexist; dementia is the strongest risk factor for delirium.",
+      "why_considered": "Chronic confusion and memory loss may be mistaken for delirium, especially in older adults.",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Gradual decline in memory and function over months to years",
-          "Stable, slowly progressive course rather than hour-to-hour fluctuation",
-          "Attention relatively preserved until late stages",
-          "No acute medical trigger"
+          "Gradual onset over months to years",
+          "Memory loss is usually the first and most prominent symptom",
+          "Stable or slowly progressive course without acute fluctuation",
+          "Attention and alertness are preserved until later stages"
         ],
         "exam": [
-          "Alert and attentive at baseline; can engage in conversation",
-          "Memory loss predominates over inattention",
-          "No fluctuating level of consciousness"
+          "Alert and attentive on mental status testing",
+          "No diurnal variation",
+          "Deficits in memory and executive function but not fluctuating attention"
         ],
         "labs": [
-          "Workup for reversible causes is unrevealing",
-          "B12, TSH and metabolic panel normal or showing chronic stable abnormalities"
+          "No acute metabolic derangements to explain cognitive decline"
         ],
         "imaging": [
-          "CT or MRI shows cerebral atrophy or chronic vascular changes without an acute lesion"
+          "Cortical atrophy, ventricular enlargement, or chronic vascular changes",
+          "No acute hemorrhage, infarct, or mass"
         ]
       }
     },
     {
-      "name": "Depression",
-      "slug": "depression",
-      "why_considered": "Hypoactive delirium is easily mistaken for depression because both cause withdrawal, reduced interaction, poor appetite and slowed responses.",
-      "must_not_miss": false,
+      "name": "Acute stroke",
+      "why_considered": "Sudden-onset confusion or altered mental status can be caused by a stroke, especially in older adults with vascular risk factors.",
+      "must_not_miss": true,
+      "trigger": "Sudden focal neurologic deficit or high vascular risk",
       "discriminators": {
         "history": [
-          "Weeks to months of low mood, anhedonia and hopelessness",
-          "No acute onset or fluctuation during the day",
-          "Intact attention and orientation",
-          "No acute medical illness or new medication"
+          "Sudden onset of focal weakness, numbness, or language difficulty",
+          "Maximal deficit at onset rather than fluctuating",
+          "Vascular risk factors: hypertension, atrial fibrillation, prior stroke"
         ],
         "exam": [
-          "Alert, oriented and attentive",
-          "Psychomotor slowing without disorientation",
-          "No fluctuating consciousness"
+          "Focal findings such as hemiparesis, facial droop, aphasia, dysarthria, or gaze deviation",
+          "Neglect syndrome or visual field cut",
+          "No fever or metabolic explanation"
         ],
         "labs": [
-          "Metabolic, infectious and toxic workup unrevealing"
-        ]
-      }
-    },
-    {
-      "name": "Psychosis (primary psychiatric disorder)",
-      "slug": "psychosis",
-      "why_considered": "Hyperactive delirium with hallucinations, delusions and agitation can resemble a primary psychotic disorder such as schizophrenia.",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Long-standing or recurrent psychotic symptoms before this episode",
-          "Clear sensorium and orientation between episodes",
-          "No acute medical trigger",
-          "Auditory hallucinations more typical than visual"
+          "Normoglycemia",
+          "Coagulation studies may be abnormal if on anticoagulants"
         ],
-        "exam": [
-          "Alert, oriented and attentive",
-          "No fluctuating level of consciousness",
-          "No autonomic instability or tremor"
+        "imaging": [
+          "CT head without contrast shows acute hemorrhage or early ischemic signs",
+          "MRI brain shows acute ischemic diffusion restriction"
         ],
-        "labs": [
-          "Toxicology and metabolic workup negative"
+        "ecg": [
+          "Atrial fibrillation may suggest cardioembolic source"
         ]
       }
     },
     {
       "name": "Nonconvulsive status epilepticus",
-      "slug": "nonconvulsive-status-epilepticus",
-      "why_considered": "Can present with fluctuating confusion, altered awareness and subtle motor signs, mimicking delirium.",
+      "why_considered": "Altered awareness with a fluctuating course can be nonconvulsive seizure activity rather than delirium.",
       "must_not_miss": true,
-      "trigger": "Persistent unexplained altered mental status that does not improve after correcting obvious causes",
+      "trigger": "Known seizure disorder, recent seizure, or unexplained fluctuating consciousness",
       "discriminators": {
         "history": [
-          "Known epilepsy or prior seizures",
-          "Prolonged unresponsiveness or staring spells",
-          "Subtle twitching of face or limbs"
+          "Known epilepsy",
+          "Recent witnessed convulsion",
+          "Subtle motor signs such as lip smacking or eye blinking",
+          "Postictal confusion after a seizure"
         ],
         "exam": [
-          "Fluctuating or persistently reduced consciousness",
-          "Subtle myoclonic jerks or eye deviation"
+          "Automatisms, eyelid fluttering, or gaze deviation",
+          "In postictal state: transient focal weakness and gradually improving mental status",
+          "No clear metabolic precipitant"
         ],
         "labs": [
-          "No metabolic cause identified"
+          "Elevated serum lactate",
+          "Prolactin may be elevated after generalized seizure but is not reliable"
         ],
         "imaging": [
-          "EEG shows continuous or repetitive epileptiform discharges"
-        ]
-      }
-    },
-    {
-      "name": "Meningitis or encephalitis",
-      "slug": "meningitis",
-      "why_considered": "CNS infection can present with acute confusion, fever and altered consciousness, and is a life-threatening cause of delirium.",
-      "must_not_miss": true,
-      "trigger": "Fever with headache, neck stiffness, rash, or delirium without another source",
-      "discriminators": {
-        "history": [
-          "Fever, headache, photophobia",
-          "Neck stiffness",
-          "Recent viral illness or rash"
-        ],
-        "exam": [
-          "Meningismus, positive Kernig or Brudzinski sign",
-          "Focal neurologic deficits or seizures",
-          "Petechial or purpuric rash"
-        ],
-        "labs": [
-          "CSF pleocytosis, elevated protein, low glucose",
-          "Positive CSF culture or PCR"
-        ],
-        "imaging": [
-          "MRI temporal lobe signal abnormality in herpes simplex encephalitis",
-          "CT may be normal or show complications"
-        ]
-      }
-    },
-    {
-      "name": "Alcohol or sedative withdrawal (delirium tremens)",
-      "slug": "alcohol-withdrawal",
-      "why_considered": "Withdrawal causes agitation, confusion, hallucinations and autonomic overactivity, closely resembling hyperactive delirium.",
-      "must_not_miss": true,
-      "trigger": "Recent cessation or reduction of heavy alcohol or sedative use with tremor, sweating and tachycardia",
-      "discriminators": {
-        "history": [
-          "Heavy chronic alcohol or benzodiazepine use",
-          "Last drink or dose 1–5 days ago",
-          "Prior withdrawal seizures"
-        ],
-        "exam": [
-          "Tremor, diaphoresis, tachycardia, hypertension",
-          "Agitation, visual hallucinations",
-          "Autonomic overactivity"
-        ],
-        "labs": [
-          "Elevated AST/ALT, macrocytosis, low platelets",
-          "Elevated lactate, electrolyte derangements"
-        ]
-      }
-    },
-    {
-      "name": "Hepatic encephalopathy",
-      "slug": "hepatic-encephalopathy",
-      "why_considered": "Fluctuating confusion, sleep inversion and asterixis can mimic delirium and often coexist with it.",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Known cirrhosis or liver disease",
-          "Precipitant such as GI bleed, infection, constipation or dehydration",
-          "Sleep-wake inversion"
-        ],
-        "exam": [
-          "Asterixis",
-          "Jaundice, ascites, spider angiomata",
-          "Fetor hepaticus"
-        ],
-        "labs": [
-          "Elevated ammonia",
-          "Thrombocytopenia, elevated bilirubin, prolonged INR"
+          "CT or MRI may show a structural lesion such as old stroke, tumor, or mesial temporal sclerosis"
         ]
       }
     },
     {
       "name": "Hypoglycemia",
-      "slug": "hypoglycemia",
-      "why_considered": "Low blood glucose causes acute confusion, agitation and altered consciousness that resolves rapidly with treatment.",
+      "why_considered": "Hypoglycemia is a common, rapidly reversible cause of altered mental status that can mimic delirium.",
       "must_not_miss": true,
-      "trigger": "Any patient with acute confusion; check bedside glucose immediately",
+      "trigger": "Diabetes treated with insulin or sulfonylureas, or any patient with altered mental status",
       "discriminators": {
         "history": [
-          "Diabetes treated with insulin or sulfonylureas",
-          "Missed meal, increased activity, or recent dose change",
-          "Diaphoresis, palpitations, hunger"
+          "Diabetes on insulin or sulfonylurea",
+          "Symptoms may include sweating, tremor, palpitations, or hunger preceding confusion",
+          "Recent missed meal, increased activity, or alcohol use"
         ],
         "exam": [
-          "Tremor, sweating, tachycardia",
-          "Confusion or unresponsiveness"
+          "Diaphoresis",
+          "Tachycardia",
+          "Tremor",
+          "Often stuporous but may be agitated"
         ],
         "labs": [
-          "Low bedside glucose that corrects with dextrose"
+          "Point-of-care glucose < 70 mg/dL, often much lower"
+        ]
+      }
+    },
+    {
+      "name": "Acute psychosis",
+      "why_considered": "Hallucinations and delusions can be features of delirium, but may be a primary psychiatric disorder.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Prior psychiatric diagnosis",
+          "Auditory hallucinations more common than visual",
+          "Clear sensorium and oriented to person, place, and time",
+          "Chronic or subacute course without acute medical illness"
+        ],
+        "exam": [
+          "Attention usually intact",
+          "No fluctuation in level of consciousness",
+          "No autonomic instability",
+          "Normal physical exam"
+        ],
+        "labs": [
+          "No acute metabolic or infectious precipitant"
+        ],
+        "imaging": [
+          "No acute intracranial abnormality"
+        ]
+      }
+    },
+    {
+      "name": "Depression",
+      "why_considered": "Hypoactive delirium with withdrawal and lethargy may look like depression, especially in older adults.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Gradual onset of low mood over weeks",
+          "No acute change in attention or alertness",
+          "Vegetative symptoms: poor sleep, poor appetite, low energy",
+          "No medical precipitant"
+        ],
+        "exam": [
+          "Alert and oriented",
+          "Attention may be reduced due to poor motivation but can be redirected",
+          "No fluctuation or disorientation",
+          "Psychomotor slowing but no acute medical signs"
+        ],
+        "labs": [
+          "Normal routine labs"
+        ],
+        "imaging": [
+          "Not indicated"
         ]
       }
     }
   ],
   "course": {
     "severity": {
-      "mild": "Early or subtle: mild inattention and disorientation that fluctuate; patient can still converse and follow simple commands; often recognized only by family or nursing staff.",
-      "moderate": "Established: clear inattention, disorientation and either agitation or withdrawal; interferes with self-care and safety; requires close supervision.",
-      "severe": "Marked confusion with agitation or somnolence; may attempt to climb out of bed or be difficult to arouse; autonomic instability if withdrawal or severe systemic illness; high risk of falls and injury.",
-      "critical": "Life-threatening: fluctuating between combativeness and unresponsiveness; autonomic overactivity with fever, tachycardia and hypertension in severe withdrawal; or delirium as the presenting sign of sepsis, hypoxia or intracranial catastrophe."
+      "mild": "Mild inattention, restlessness, and disorientation; patient is alert and cooperative, with no danger to self or others, and symptoms fluctuate.",
+      "moderate": "Fluctuating confusion with either agitation or somnolence; patient may pick at lines or need repeated redirection, but responds to verbal cues and maintains airway.",
+      "severe": "Marked agitation with pulling at tubes or severe somnolence requiring frequent stimulation; may have hallucinations, delusions, or threaten self-harm; needs frequent observation.",
+      "critical": "Stuporous or comatose, or severe hyperactive delirium with autonomic instability (hypertension, tachycardia, hyperthermia); may be life-threatening and requires emergency sedation and airway management."
     },
     "red_flags": [
       {
-        "finding": "Fever with neck stiffness, headache or rash",
-        "meaning": "Possible meningitis or encephalitis; needs urgent lumbar puncture and empiric treatment"
+        "finding": "Focal neurologic deficit",
+        "meaning": "Possible stroke or structural brain lesion; urgent brain imaging."
       },
       {
-        "finding": "New focal neurologic deficit, seizure or head trauma",
-        "meaning": "Structural brain lesion such as stroke, hemorrhage or subdural hematoma; needs urgent imaging"
+        "finding": "Fever with neck stiffness or photophobia",
+        "meaning": "Meningitis or encephalitis until proven otherwise."
       },
       {
-        "finding": "Hypotension, tachycardia, tachypnea or elevated lactate",
-        "meaning": "Sepsis or hypoperfusion; delirium may be the only early sign in older adults"
+        "finding": "Hypoxemia or respiratory distress",
+        "meaning": "Pneumonia, pulmonary embolism, or hypoventilation may be precipitating; treat immediately."
       },
       {
-        "finding": "Low oxygen saturation or respiratory distress",
-        "meaning": "Hypoxia or pneumonia as the trigger; needs immediate oxygen and workup"
+        "finding": "Autonomic instability with high fever and rigidity",
+        "meaning": "Neuroleptic malignant syndrome, serotonin syndrome, or severe withdrawal; immediate medical treatment."
       },
       {
-        "finding": "Severe agitation with autonomic overactivity after alcohol or sedative cessation",
-        "meaning": "Delirium tremens; risk of seizures, arrhythmia and death without treatment"
+        "finding": "Recent change in psychoactive medications",
+        "meaning": "Medication-induced delirium or withdrawal; review and adjust medications."
       },
       {
-        "finding": "Bedside glucose below 70 mg/dL",
-        "meaning": "Hypoglycemia; immediately reversible with dextrose"
-      },
-      {
-        "finding": "Persistent unexplained unresponsiveness despite correcting obvious causes",
-        "meaning": "Possible nonconvulsive status epilepticus; needs EEG"
+        "finding": "Seizure activity or prolonged postictal state",
+        "meaning": "Nonconvulsive status epilepticus; consider EEG and antiepileptics."
       }
     ],
     "complications": [
       {
-        "name": "Falls and fractures",
+        "name": "Falls with injury",
         "timing": "early",
         "seriousness": "serious",
-        "frequency": "common",
+        "frequency": "sometimes",
         "clues": [
-          "Agitation or attempts to climb out of bed",
-          "Unsteady gait",
-          "Use of restraints or sedatives"
+          "Agitation and attempts to get out of bed",
+          "Impaired attention and gait instability",
+          "Prior falls or mobility impairment",
+          "Physical restraints not used appropriately"
         ]
       },
       {
         "name": "Aspiration pneumonia",
         "timing": "early",
         "seriousness": "serious",
-        "frequency": "sometimes",
+        "frequency": "rare",
         "clues": [
+          "Sedation or somnolence",
           "Dysphagia",
-          "Coughing during meals",
-          "Reduced level of consciousness"
+          "Frequent vomiting",
+          "Poor cough reflex"
         ]
       },
       {
-        "name": "Pressure ulcers",
+        "name": "Persistent cognitive impairment",
         "timing": "late",
         "seriousness": "serious",
         "frequency": "sometimes",
         "clues": [
-          "Prolonged immobility",
-          "Incontinence",
-          "Malnutrition"
-        ]
-      },
-      {
-        "name": "Functional decline and loss of independence",
-        "timing": "late",
-        "seriousness": "serious",
-        "frequency": "common",
-        "clues": [
-          "Prolonged delirium",
-          "Need for nursing home placement",
-          "New dependence in activities of daily living"
-        ]
-      },
-      {
-        "name": "Increased mortality",
-        "timing": "any",
-        "seriousness": "life_threatening",
-        "frequency": "sometimes",
-        "clues": [
-          "Delirium superimposed on severe illness",
+          "Prolonged delirium lasting days to weeks",
           "Older age",
-          "Underlying dementia or organ failure"
+          "Preexisting dementia",
+          "Multiple episodes of delirium"
         ]
       },
       {
-        "name": "Persistent cognitive impairment after recovery",
+        "name": "Functional decline",
         "timing": "late",
         "seriousness": "serious",
         "frequency": "sometimes",
         "clues": [
-          "Longer duration of delirium",
-          "Pre-existing cognitive impairment",
-          "Older age"
+          "Immobility during delirium",
+          "Prolonged hospitalization",
+          "Preexisting frailty",
+          "Poor oral intake"
         ]
       }
     ],
     "special_populations": [
       {
         "population": "older_adults",
-        "differences": "Hypoactive delirium is most common and is often mistaken for depression, fatigue or dementia; symptoms may be subtle and recognized only by family or nursing staff. Higher risk of falls, functional decline and mortality."
+        "differences": "Hypoactive delirium predominates and is often mistaken for depression or worsening dementia; higher risk of falls, aspiration, and persistent cognitive decline."
       },
       {
         "population": "children",
-        "differences": "May present with irritability, inconsolable crying, refusal to eat or behavioral regression rather than clear disorientation; they may not report hallucinations. Diagnosis relies on observation and identifying an underlying cause."
-      },
-      {
-        "population": "infants",
-        "differences": "Show poor feeding, lethargy or inconsolable fussiness; the diagnosis is usually made when an underlying illness or medication effect is identified."
+        "differences": "May present with irritability, inconsolable crying, or emergence agitation after anesthesia; young children cannot describe confusion, and disorientation is less obvious; underlying infection or medication is common."
       },
       {
         "population": "pregnancy",
-        "differences": "Delirium in pregnancy is uncommon and usually signals a severe underlying condition such as eclampsia, sepsis or a medication reaction; presentation may be dominated by obstetric symptoms."
+        "differences": "Delirium is rare; consider eclampsia, infection, or medication effects; avoid unnecessary restraints and use the least harmful imaging."
       },
       {
         "population": "immunocompromised",
-        "differences": "Infection may be the trigger with minimal or no fever, so delirium can be the only sign of a serious infection; a lower threshold for imaging and lumbar puncture is warranted."
-      },
-      {
-        "population": "renal_impairment",
-        "differences": "Accumulation of medications and metabolic waste can cause or worsen delirium; symptoms may persist until dialysis or dose adjustment. Careful dosing of sedatives and antipsychotics is essential."
-      },
-      {
-        "population": "hepatic_impairment",
-        "differences": "Hepatic encephalopathy can present with fluctuating confusion, sleep inversion and asterixis; it may be mistaken for primary delirium from another cause. Ammonia levels and clinical response to lactulose help distinguish."
+        "differences": "Higher risk of CNS infection or medication toxicity; lower threshold for lumbar puncture and broader workup."
       }
     ]
   },
   "teaching": {
     "key_questions": [
       {
-        "question": "When did the confusion start, and has it changed since then?",
+        "question": "When did the confusion start?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Sudden onset over hours to a few days with fluctuation during the day; a gradual decline over months points to dementia instead"
+        "looking_for": "Acute onset over hours to days, not gradual decline over months"
       },
       {
-        "question": "Is the patient more confused at certain times of day, especially at night?",
+        "question": "Does the confusion come and go, and is it worse at night?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Worse in the evening and at night with clearer periods in the morning; fluctuation is a core feature"
+        "looking_for": "Fluctuating course with periods of lucidity; often worse in the evening"
       },
       {
-        "question": "Can the patient hold attention, follow a conversation, or does their mind wander?",
+        "question": "Have you had trouble paying attention or following what is being said?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Inattention and difficulty tracking conversation; attention is the key deficit in delirium"
+        "looking_for": "Inattention: cannot stay focused, loses track of questions"
       },
       {
-        "question": "Has the patient been sleepy and withdrawn, or restless and agitated?",
-        "category": "hpi",
-        "importance": "important",
-        "looking_for": "Hypoactive, hyperactive or mixed pattern; hypoactive is most common in older adults and easily missed"
-      },
-      {
-        "question": "Any fever, cough, burning with urination, or other signs of infection?",
+        "question": "Have you been seeing or hearing things that are not there?",
         "category": "associated",
-        "importance": "essential",
-        "looking_for": "Urinary tract infection, pneumonia or another infection as the trigger"
+        "importance": "important",
+        "looking_for": "Visual hallucinations or illusions, especially at night"
       },
       {
-        "question": "Has the patient had any falls, head injury, or new weakness, numbness or trouble speaking?",
-        "category": "red_flag",
-        "importance": "essential",
-        "looking_for": "Head trauma, subdural hematoma, or stroke; focal deficits or trauma require urgent imaging"
-      },
-      {
-        "question": "What medications has the patient started, stopped or had dose changes on recently?",
+        "question": "What medicines have you started or changed recently, including over-the-counter, sleep aids, or pain medicines?",
         "category": "medications",
         "importance": "essential",
-        "looking_for": "Sedatives, opioids, anticholinergics, steroids or other deliriogenic drugs; also withdrawal from stopped medications"
+        "looking_for": "New or increased sedating, opioid, anticholinergic, or steroid agent"
       },
       {
-        "question": "How much alcohol or sedative medication does the patient use, and when was the last drink or dose?",
+        "question": "Have you had fever, chills, cough, or burning with urination?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Signs of pneumonia or urinary tract infection"
+      },
+      {
+        "question": "Do you use alcohol or any drugs? When was your last drink or use?",
         "category": "social",
         "importance": "essential",
-        "looking_for": "Heavy chronic use with recent cessation 1–5 days ago suggests alcohol or sedative withdrawal and delirium tremens"
+        "looking_for": "Alcohol or drug intoxication or withdrawal"
       },
       {
-        "question": "Has the patient been eating and drinking normally, or is there vomiting, diarrhea or poor intake?",
-        "category": "associated",
-        "importance": "important",
-        "looking_for": "Dehydration and electrolyte imbalance as reversible causes"
-      },
-      {
-        "question": "Does the patient have kidney failure, liver disease, diabetes, or other chronic illnesses?",
+        "question": "What is the patient's usual memory and day-to-day functioning? Is there known dementia?",
         "category": "pmh",
         "importance": "important",
-        "looking_for": "Uremia, hepatic encephalopathy, hypoglycemia or hyperglycemia as triggers"
+        "looking_for": "Baseline cognitive status; delirium is an acute change from baseline"
       },
       {
-        "question": "Has the patient had memory problems or trouble thinking before this episode?",
-        "category": "pmh",
-        "importance": "important",
-        "looking_for": "Pre-existing dementia or mild cognitive impairment, which is the strongest risk factor and may coexist"
-      },
-      {
-        "question": "Has the patient had recent surgery, anesthesia, or been in the hospital or ICU?",
-        "category": "pmh",
-        "importance": "important",
-        "looking_for": "Hospitalization, surgery and ICU stay as precipitants"
-      },
-      {
-        "question": "Is the patient seeing or hearing things that are not there, or acting suspicious or fearful?",
-        "category": "associated",
-        "importance": "important",
-        "looking_for": "Visual hallucinations and paranoid delusions, which support delirium over dementia"
-      },
-      {
-        "question": "Has the patient had a seizure, loss of consciousness, or stiff neck with headache?",
+        "question": "Any recent falls or hit to the head?",
         "category": "red_flag",
         "importance": "essential",
-        "looking_for": "Meningitis, encephalitis or nonconvulsive status epilepticus; these are life-threatening and must not be missed"
+        "looking_for": "Possible subdural hematoma or traumatic brain injury"
       },
       {
-        "question": "Does the patient wear glasses or hearing aids, and are they available?",
-        "category": "ros",
-        "importance": "optional",
-        "looking_for": "Sensory impairment that worsens confusion and is easily corrected"
+        "question": "Any weakness, numbness, trouble speaking, or facial droop?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Focal neurologic deficit suggesting stroke or structural lesion"
+      },
+      {
+        "question": "Any fever with headache and stiff neck?",
+        "category": "red_flag",
+        "importance": "important",
+        "looking_for": "Meningitis or encephalitis until proven otherwise"
       }
     ],
     "accepted_names": [
       "Delirium",
-      "Acute confusional state",
-      "Acute encephalopathy",
-      "Toxic-metabolic encephalopathy",
-      "Altered mental status due to delirium"
+      "Acute confusional state"
     ],
     "reasoning_points": [
-      "Acute onset over hours to days with a fluctuating course during the day, often worse at night",
-      "Inattention is the core deficit, with disorientation and disorganized thinking",
-      "Either hypoactive (withdrawn, sleepy) or hyperactive (agitated, hallucinating) presentation, or a mix of both",
-      "Evidence of an underlying trigger such as infection, dehydration, electrolyte disturbance, new or changed medication, alcohol or sedative withdrawal, surgery, pain or sleep deprivation",
-      "Pre-existing dementia or cognitive impairment is the strongest risk factor and may coexist with delirium",
-      "Bedside glucose checked immediately and reversible causes addressed before attributing symptoms to dementia or a psychiatric disorder",
-      "Structured bedside assessment such as the Confusion Assessment Method confirms the diagnosis",
-      "Red flags excluded: fever with neck stiffness, focal neurologic deficit, head trauma, hypoxia, hypotension or persistent unresponsiveness",
-      "Dementia, depression, primary psychosis, nonconvulsive status epilepticus, CNS infection, alcohol withdrawal, hepatic encephalopathy and hypoglycemia considered and distinguished"
+      "Acute confusion with inattention and disorientation that fluctuates over hours and is worse at night",
+      "A precipitating medical problem, medication, or withdrawal is identified or suspected",
+      "Medication review reveals a new or increased sedating, opioid, or anticholinergic agent",
+      "No focal neurologic deficit or meningeal signs, making structural or infectious CNS lesion less likely, though imaging and CSF are considered if indicated",
+      "The course differs from dementia: acute onset and fluctuating attention rather than gradual memory decline",
+      "Common reversible causes such as hypoglycemia, infection, hypoxia, and electrolyte disturbance are addressed early"
     ],
     "difficulty": {
       "easy": [
-        "Older hospitalized patient with sudden confusion and disorientation after admission",
-        "Clear fluctuation with worse confusion at night and clearer periods in the morning",
-        "Obvious inattention on bedside testing",
-        "Identifiable trigger such as urinary tract infection, new sedative or recent surgery",
-        "Hyperactive presentation with agitation and visual hallucinations"
+        "Older adult who is hospitalized or post-operative",
+        "Hypoactive subtype: sleepy, withdrawn, and inattentive",
+        "Obvious precipitant, such as a urinary tract infection",
+        "Classic fluctuating course with worsening at night",
+        "No focal neurologic findings or meningeal signs"
       ],
       "medium": [
-        "Hypoactive delirium mistaken for depression, fatigue or dementia",
-        "Patient with known dementia who becomes more confused, requiring recognition of delirium superimposed on dementia",
-        "Multiple potential triggers present at once, such as infection plus electrolyte disturbance plus new medication",
-        "Older adult with a normal white count despite infection",
-        "Delirium as the only sign of sepsis or hypoxia"
+        "Hyperactive delirium with agitation and visual hallucinations, resembling primary psychosis",
+        "Medication-induced, such as benzodiazepine, opioid, or anticholinergic",
+        "Delirium superimposed on dementia, making the acute change harder to recognize",
+        "Hypoactive delirium mistaken for depression",
+        "Multiple potential contributing factors but no single obvious cause"
       ],
       "hard": [
-        "Fluctuating confusion with no obvious cause, requiring broad workup including imaging and EEG",
-        "Persistent unresponsiveness that does not improve after correcting obvious causes, suggesting nonconvulsive status epilepticus",
-        "Alcohol or sedative withdrawal with autonomic overactivity and risk of seizures",
-        "Hepatic encephalopathy presenting with fluctuating confusion, sleep inversion and asterixis",
-        "Younger patient with delirium from drug intoxication or poisoning",
-        "Patient with focal deficit or head trauma requiring urgent imaging before lumbar puncture"
+        "Nonconvulsive status epilepticus presenting as fluctuating confusion",
+        "Delirium with focal neurologic signs requiring urgent stroke workup",
+        "Intensive care unit delirium with multiple contributors, sedation, and coma",
+        "Alcohol withdrawal or delirium tremens with autonomic instability",
+        "No obvious precipitant and normal initial labs, prompting broader metabolic and neurologic evaluation"
       ]
     }
   }

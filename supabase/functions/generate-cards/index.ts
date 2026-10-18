@@ -124,7 +124,7 @@ async function writeCards(
     let problems: string[] = [];
     unreadable = false;
     try {
-      const reply = await completeJSON<{ title?: unknown; cards: Card[] }>(system, user, 8000);
+      const reply = await completeJSON<{ title?: unknown; cards: Card[] }>(system, user, 8000, { task: "cards" });
       title = reply.title;
       const usable = (reply.cards ?? []).filter((c) =>
         typeof c.front === "string" && typeof c.back === "string" && c.front.trim() && c.back.trim() &&

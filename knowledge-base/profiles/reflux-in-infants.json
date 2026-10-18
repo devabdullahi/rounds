@@ -31,57 +31,49 @@
       },
       {
         "stage": "patient_presentation",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "9",
-        "generated_at": "2026-10-05T07:07:46Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:14:44Z"
       },
       {
         "stage": "exam_vitals",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "9",
-        "generated_at": "2026-10-05T07:07:53Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:16:02Z"
       },
       {
         "stage": "diagnostics",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "9",
-        "generated_at": "2026-10-05T07:07:59Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:18:04Z"
       },
       {
         "stage": "differential_course",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "9",
-        "generated_at": "2026-10-05T07:08:09Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:40:27Z"
       },
       {
         "stage": "teaching",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "9",
-        "generated_at": "2026-10-05T07:08:15Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T17:40:54Z"
       }
     ],
     "validation": {
-      "status": "passed",
-      "rule_errors": [],
+      "status": "failed",
+      "rule_errors": [
+        "patient.age.possible_max: over 2 for a newborn or infant condition; ages are in years"
+      ],
       "review_issues": [
-        "auto-repaired: workup: 'cbc' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
-        "auto-repaired: workup: 'bmp' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
-        "auto-repaired: workup: 'upper gastrointestinal series (barium contrast)' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "auto-repaired: workup: 'upper gastrointestinal endoscopy with esophageal biopsy' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "auto-repaired: workup: 'esophageal ph and impedance monitoring' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "auto-repaired: workup: 'abdominal ultrasound' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "auto-repaired: workup: 'cbc' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
-        "auto-repaired: workup: 'bmp' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
-        "auto-repaired: workup: 'upper gastrointestinal series (barium contrast)' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "auto-repaired: workup: 'upper gastrointestinal endoscopy with esophageal biopsy' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "auto-repaired: workup: 'esophageal ph and impedance monitoring' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "auto-repaired: workup: 'abdominal ultrasound' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
+        "auto-repaired: workup: 'Upper GI series (barium swallow)' was in initial, not_indicated; kept initial as a conditional order (only if Projectile or bilious vomiting, poor weight gain, or suspected anatomic obstruction)",
+        "auto-repaired: workup: 'Ultrasound of the abdomen (pylorus)' was in initial, not_indicated; kept initial as a conditional order (only if Projectile vomiting or suspected pyloric stenosis)",
+        "auto-repaired: workup: 'Esophageal pH/impedance monitoring' was in confirmatory, not_indicated; kept confirmatory as a conditional order (only if Diagnosis uncertain after clinical evaluation and trial of feeding modifications, or suspected refractory GERD)",
+        "auto-repaired: workup: 'Upper endoscopy with biopsy' was in confirmatory, not_indicated; kept confirmatory as a conditional order (only if Suspected complications such as esophagitis, stricture, or poor response to acid suppression)",
         "differential pyloric-stenosis: no profile yet",
         "differential malrotation-with-volvulus: no profile yet",
-        "differential eosinophilic-esophagitis: no profile yet",
-        "differential cows-milk-protein-allergy: no profile yet",
-        "differential laryngomalacia: no profile yet",
-        "differential increased-intracranial-pressure: no profile yet"
+        "differential cow-milk-protein-allergy: no profile yet",
+        "differential eosinophilic-esophagitis: no profile yet"
       ]
     },
     "review": {
@@ -92,23 +84,23 @@
     "age": {
       "typical_min": 0,
       "typical_max": 12,
-      "peak": "0–4 months",
+      "peak": "2–4 months",
       "possible_min": 0,
       "possible_max": 18
     },
     "sex": "either",
     "demographics": [
-      "Affects infants of all races and ethnicities equally",
-      "Most common in the first few months of life; improves as the lower esophageal sphincter matures"
+      "Very common in healthy infants",
+      "Most infants stop spitting up by 12–14 months"
     ],
     "risk_factors": [
       {
-        "text": "Premature birth",
+        "text": "Prematurity",
         "strength": "strong"
       },
       {
         "text": "Neurologic impairment such as cerebral palsy",
-        "strength": "strong"
+        "strength": "moderate"
       },
       {
         "text": "Hiatal hernia",
@@ -119,110 +111,110 @@
         "strength": "moderate"
       },
       {
-        "text": "Chronic lung disease such as cystic fibrosis",
+        "text": "Cystic fibrosis",
         "strength": "moderate"
-      },
-      {
-        "text": "Overfeeding or large-volume feeds",
-        "strength": "weak"
       }
     ],
     "comorbidities": [
       "Cerebral palsy",
       "Cystic fibrosis",
       "Hiatal hernia",
-      "Congenital esophageal anomalies repaired in infancy"
+      "Esophageal atresia repair"
     ],
-    "family_history": [
-      "Family history of gastroesophageal reflux disease"
-    ],
+    "family_history": [],
     "social_history": [],
-    "exposures": [
-      "Secondhand tobacco smoke exposure"
-    ],
+    "exposures": [],
     "risk_medications": []
   },
   "presentation": {
     "chief_complaints": [
       {
-        "text": "My baby spits up after almost every feeding",
-        "frequency": "almost_always"
+        "text": "My baby spits up all the time",
+        "frequency": "almost_always",
+        "term": "Regurgitation",
+        "snomed_verified": true
       },
       {
-        "text": "My baby cries and arches her back during and after feeds",
-        "frequency": "common"
-      },
-      {
-        "text": "My baby seems fussy and uncomfortable after eating",
-        "frequency": "common"
+        "text": "She cries and arches her back after feeding",
+        "frequency": "common",
+        "term": "Irritability",
+        "snomed_verified": true
       }
     ],
     "hpi": {
-      "onset": "Gradual, starting in the first weeks to months of life",
-      "duration": "Weeks to months; typically resolves by 12–14 months of age",
-      "progression": "Spitting up is frequent in early infancy, peaks around 4 months, then gradually improves as the baby grows and starts sitting upright; symptoms that persist or worsen after 12–18 months are unusual",
-      "location": "Chest and upper abdomen; parents describe milk coming up into the mouth",
-      "radiation": "Not applicable",
-      "quality": "Effortless regurgitation of milk, sometimes with arching of the back and crying",
-      "severity": "Mild to moderate in most infants; severe when it interferes with feeding, sleep, or growth",
-      "timing": "Occurs during or shortly after feedings; may also happen when the baby is lying flat or straining",
+      "onset": "Begins in the first weeks to months of life, often by age 2–4 months",
+      "duration": "Spitting up may continue for months; most improve by 6–12 months and resolve by 12–18 months",
+      "progression": "Frequent effortless regurgitation after feeds; tends to peak around 2–4 months and then gradually improve as the lower esophageal sphincter matures",
+      "location": "Chest and throat; regurgitated milk comes up from the stomach",
+      "radiation": "None",
+      "quality": "Effortless, non-projectile regurgitation; infant is otherwise comfortable unless esophagitis develops",
+      "severity": "Mild; mostly a concern because of volume and frequency, not pain",
+      "timing": "During or shortly after feeding, especially with lying flat, burping, or active movement",
       "aggravating": [
-        "Feeding",
-        "Lying flat on the back",
+        "Lying flat after feeding",
         "Overfeeding",
-        "Straining or coughing"
+        "Swallowing air",
+        "Jostling or active play after feeding"
       ],
       "relieving": [
-        "Holding the baby upright after feeds",
-        "Burping frequently during feeds",
-        "Smaller, more frequent feeds",
-        "Thickened feeds"
+        "Holding upright after feeding",
+        "Burping often",
+        "Smaller, more frequent feeds"
       ],
       "associated_symptoms": [
         {
-          "text": "Frequent spitting up or regurgitation",
-          "frequency": "almost_always"
+          "text": "Frequent spitting up",
+          "frequency": "almost_always",
+          "term": "Regurgitation",
+          "snomed_verified": true
         },
         {
-          "text": "Irritability or crying after feeding",
-          "frequency": "common"
+          "text": "Fussiness or crying with feeds",
+          "frequency": "sometimes",
+          "term": "Irritability",
+          "snomed_verified": true
         },
         {
-          "text": "Arching of the back during or right after eating",
-          "frequency": "common"
+          "text": "Coughing",
+          "frequency": "sometimes",
+          "term": "Cough",
+          "snomed_verified": true
         },
         {
-          "text": "Gagging or trouble swallowing",
-          "frequency": "sometimes"
-        },
-        {
-          "text": "Coughing or wheezing",
-          "frequency": "sometimes"
+          "text": "Gagging or choking with feeds",
+          "frequency": "sometimes",
+          "term": "Gagging",
+          "snomed_verified": true
         },
         {
           "text": "Poor feeding or refusing to eat",
-          "frequency": "sometimes"
+          "frequency": "sometimes",
+          "term": "Poor feeding",
+          "snomed_verified": true
         },
         {
           "text": "Poor weight gain",
-          "frequency": "sometimes"
+          "frequency": "rare",
+          "term": "Poor weight gain",
+          "snomed_verified": true
         },
         {
-          "text": "Forceful or frequent vomiting",
-          "frequency": "rare"
+          "text": "Wheezing",
+          "frequency": "rare",
+          "term": "Wheezing",
+          "snomed_verified": true
         }
       ],
       "pertinent_negatives": [
-        "Bilious or green vomit",
-        "Blood in the vomit",
         "Projectile vomiting",
-        "Vomiting that begins after 6 months of age",
-        "Failure to thrive or weight loss",
-        "Lethargy or poor responsiveness",
+        "Bilious vomiting",
+        "Bloody stools or emesis",
         "Fever",
-        "Abdominal distension or tenderness",
-        "Seizures",
-        "Symptoms that started suddenly in a previously well infant"
+        "Diarrhea",
+        "Abdominal distension",
+        "Lethargy",
+        "Apnea or cyanosis",
+        "Eczema or blood in stool suggesting milk protein allergy"
       ]
     },
     "ros": [
@@ -230,441 +222,289 @@
         "system": "constitutional",
         "positives": [
           {
-            "text": "Irritability after feeds",
-            "frequency": "common"
-          },
-          {
             "text": "Poor weight gain",
-            "frequency": "sometimes"
+            "frequency": "rare",
+            "term": "Poor weight gain",
+            "snomed_verified": true
           }
         ],
         "negatives": [
           "Fever",
           "Lethargy",
-          "Weight loss"
+          "Dehydration"
         ],
         "argues_against": [
-          "Acute infectious illness"
+          "Fever",
+          "Lethargy",
+          "Poor weight gain"
         ]
       },
       {
         "system": "gastrointestinal",
         "positives": [
           {
-            "text": "Spitting up or regurgitation",
-            "frequency": "almost_always"
+            "text": "Regurgitation after feeds",
+            "frequency": "almost_always",
+            "term": "Regurgitation",
+            "snomed_verified": true
           },
           {
-            "text": "Gagging",
-            "frequency": "sometimes"
+            "text": "Gagging with feeds",
+            "frequency": "sometimes",
+            "term": "Gagging",
+            "snomed_verified": true
           },
           {
-            "text": "Refusing feeds",
-            "frequency": "sometimes"
+            "text": "Poor feeding",
+            "frequency": "sometimes",
+            "term": "Poor feeding",
+            "snomed_verified": true
           }
         ],
         "negatives": [
           "Bilious vomiting",
-          "Hematemesis",
-          "Projectile vomiting",
-          "Abdominal distension",
-          "Bloody stools"
+          "Bloody stools",
+          "Diarrhea",
+          "Abdominal distension"
         ],
         "argues_against": [
-          "Pyloric stenosis",
-          "Malrotation with volvulus",
-          "Gastrointestinal obstruction"
+          "Projectile vomiting",
+          "Bilious emesis",
+          "Bloody stools",
+          "Abdominal distension"
         ]
       },
       {
         "system": "respiratory",
         "positives": [
           {
-            "text": "Coughing after feeds",
-            "frequency": "sometimes"
+            "text": "Cough",
+            "frequency": "sometimes",
+            "term": "Cough",
+            "snomed_verified": true
           },
           {
             "text": "Wheezing",
-            "frequency": "sometimes"
+            "frequency": "rare",
+            "term": "Wheezing",
+            "snomed_verified": true
           }
         ],
         "negatives": [
-          "Stridor",
+          "Tachypnea",
+          "Retractions",
+          "Cyanosis",
+          "Apnea"
+        ],
+        "argues_against": [
           "Apnea",
-          "Cyanotic spells"
-        ],
-        "argues_against": [
-          "Airway anomaly",
-          "Severe aspiration"
-        ]
-      },
-      {
-        "system": "ent",
-        "positives": [],
-        "negatives": [
-          "Drooling",
-          "Hoarse cry"
-        ],
-        "argues_against": [
-          "Laryngomalacia",
-          "Esophageal atresia"
-        ]
-      },
-      {
-        "system": "neurologic",
-        "positives": [],
-        "negatives": [
-          "Seizures",
-          "Bulging fontanelle",
-          "Abnormal tone"
-        ],
-        "argues_against": [
-          "Intracranial pathology",
-          "Neuromuscular disorder"
+          "Cyanosis",
+          "Chronic cough or wheezing"
         ]
       }
     ],
     "atypical": [
       {
         "population": "infants",
-        "how_it_differs": "Premature infants and those with neurologic impairment may present with feeding intolerance, apnea, or bradycardia rather than obvious spitting up; symptoms may persist longer and be more severe.",
+        "how_it_differs": "Preterm infants and those with neurologic impairment may have more severe reflux, with apnea, bradycardia, or poor weight gain rather than simple spitting up.",
         "missing_classic_features": [
-          "Effortless regurgitation",
-          "Clear temporal relationship to feeds"
+          "Simple spitting up without distress"
         ]
       },
       {
         "population": "children",
-        "how_it_differs": "Older infants and toddlers may present with irritability, poor appetite, or respiratory symptoms rather than visible spitting up; symptoms that persist beyond 18 months suggest a different diagnosis.",
+        "how_it_differs": "Reflux persisting after 18 months is unusual and should prompt evaluation for other causes, such as anatomic obstruction or eosinophilic esophagitis.",
         "missing_classic_features": [
-          "Frequent visible spit-up",
-          "Resolution by 12 months"
+          "Improvement with age"
         ]
       }
     ]
   },
   "exam": {
     "general": {
-      "mild": "Well-appearing, thriving infant; happy and interactive between feeds; normal tone and hydration",
-      "moderate": "Mildly fussy or irritable, especially after feeds; otherwise well-appearing and adequately hydrated",
-      "severe": "Irritable or inconsolable with feeds, arching and back extension; may look uncomfortable or undernourished",
-      "critical": "Ill-appearing, lethargic or inconsolable, signs of dehydration or poor perfusion; poor responsiveness"
+      "mild": "Well-appearing, active infant with normal growth and no respiratory distress",
+      "moderate": "Well-appearing but may be fussy during or after feeds; occasional coughing or gagging without respiratory distress",
+      "severe": "Irritable, may have poor weight gain; possibly coughing or wheezing but usually no acute respiratory distress",
+      "critical": "Lethargic, pale, or apneic if severe complications such as aspiration or apnea occur (rare)"
     },
     "findings": [
       {
-        "id": "growth-parameters",
+        "id": "observed-regurgitation",
+        "region": "abdomen",
+        "maneuver": "Observe the infant during and shortly after a feeding, especially when burping or lying supine",
+        "finding": "Effortless regurgitation of milk or formula",
+        "frequency": "almost_always",
+        "significance": "strongly_supports",
+        "importance": "essential",
+        "term": "Regurgitation",
+        "snomed_verified": true
+      },
+      {
+        "id": "irritability",
         "region": "general",
-        "maneuver": "Measure weight, length and head circumference and plot on the WHO/CDC growth chart",
-        "finding": "Weight and length tracking along a normal percentile curve",
+        "maneuver": "Observe the infant during and after feeding",
+        "finding": "Crying or fussiness, especially with feeds",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Irritability",
+        "snomed_verified": true
+      },
+      {
+        "id": "normal-growth",
+        "region": "general",
+        "maneuver": "Measure weight, length, and head circumference and plot on growth charts",
+        "finding": "Growth parameters within normal limits for age",
         "frequency": "almost_always",
         "significance": "neutral",
-        "importance": "essential"
+        "importance": "essential",
+        "term": "Poor weight gain",
+        "snomed_verified": true
       },
       {
         "id": "poor-weight-gain",
         "region": "general",
-        "maneuver": "Measure weight and compare with prior weights and expected growth velocity",
-        "finding": "Weight crossing downward across percentiles or weight loss, suggesting inadequate intake",
-        "frequency": "sometimes",
-        "min_severity": "moderate",
-        "significance": "supports",
-        "importance": "essential"
-      },
-      {
-        "id": "hydration-status",
-        "region": "general",
-        "maneuver": "Assess mucous membranes, skin turgor, anterior fontanelle, tears and capillary refill",
-        "finding": "Dry mucous membranes, sunken fontanelle, decreased skin turgor or delayed capillary refill",
+        "maneuver": "Measure weight, length, and head circumference and plot on growth charts",
+        "finding": "Weight or length for age below expected or crossing downward percentiles",
         "frequency": "rare",
         "min_severity": "severe",
         "significance": "supports",
-        "importance": "essential"
+        "importance": "essential",
+        "term": "Poor weight gain",
+        "snomed_verified": true
       },
       {
-        "id": "normal-abdomen",
+        "id": "abdom-nondistended",
         "region": "abdomen",
-        "maneuver": "Palpate the abdomen with a warm hand, starting away from any tender area",
-        "finding": "Soft, non-tender, non-distended abdomen without mass or organomegaly",
+        "maneuver": "Inspect and palpate the abdomen",
+        "finding": "Abdomen soft and nondistended",
         "frequency": "almost_always",
         "significance": "neutral",
-        "importance": "essential"
+        "importance": "essential",
+        "term": "Abdominal distension",
+        "snomed_verified": true
       },
       {
-        "id": "olive-mass",
+        "id": "no-pyloric-mass",
         "region": "abdomen",
-        "maneuver": "Palpate the right upper quadrant and epigastrium for a mass",
-        "finding": "Firm, olive-shaped mass in the right upper quadrant (suggests pyloric stenosis)",
-        "frequency": "rare",
-        "significance": "argues_against",
-        "importance": "important"
+        "maneuver": "Palpate the epigastrium for an olive-shaped mass",
+        "finding": "No palpable pyloric olive mass",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Pyloric mass",
+        "snomed_verified": true
       },
       {
-        "id": "visible-peristalsis",
+        "id": "no-abdominal-tenderness",
         "region": "abdomen",
-        "maneuver": "Observe the abdomen while the infant is calm and feeding",
-        "finding": "Visible gastric waves passing left to right (suggests pyloric stenosis or obstruction)",
-        "frequency": "rare",
-        "significance": "argues_against",
-        "importance": "important"
+        "maneuver": "Palpate all four quadrants",
+        "finding": "No abdominal tenderness or guarding",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Abdominal tenderness",
+        "snomed_verified": true
       },
       {
-        "id": "normal-lung-exam",
+        "id": "clear-lungs",
         "region": "lung",
-        "maneuver": "Auscultate all lung fields and observe respiratory effort",
-        "finding": "Clear breath sounds, no wheeze, stridor or increased work of breathing",
+        "maneuver": "Auscultate all lung fields",
+        "finding": "Clear breath sounds, no wheezes or crackles",
         "frequency": "almost_always",
         "significance": "neutral",
-        "importance": "important"
+        "importance": "important",
+        "term": "Wheezing",
+        "snomed_verified": true
       },
       {
-        "id": "wheeze-or-crackles",
-        "region": "lung",
-        "maneuver": "Auscultate the chest after a feed",
-        "finding": "Wheeze, crackles or transmitted upper airway sounds suggesting aspiration or reactive airway disease",
-        "frequency": "sometimes",
-        "min_severity": "moderate",
-        "significance": "supports",
-        "importance": "important"
-      },
-      {
-        "id": "normal-heart-exam",
-        "region": "cardiac",
-        "maneuver": "Auscultate the heart and palpate peripheral pulses",
-        "finding": "Normal S1/S2, no murmur, regular rate and rhythm, strong symmetric pulses",
+        "id": "no-dehydration",
+        "region": "general",
+        "maneuver": "Assess skin turgor, mucous membranes, and anterior fontanelle",
+        "finding": "Moist mucous membranes, normal skin turgor, flat anterior fontanelle",
         "frequency": "almost_always",
         "significance": "neutral",
-        "importance": "important"
+        "importance": "important",
+        "term": "Dehydration",
+        "snomed_verified": true
       },
       {
-        "id": "normal-neuro-exam",
+        "id": "normal-neuro",
         "region": "neuro",
-        "maneuver": "Assess tone, posture, primitive reflexes and level of alertness",
-        "finding": "Age-appropriate tone, reflexes and alertness without focal deficits",
+        "maneuver": "Assess tone, responsiveness, and cry",
+        "finding": "Alert and responsive with normal tone",
         "frequency": "almost_always",
         "significance": "neutral",
-        "importance": "important"
-      },
-      {
-        "id": "abnormal-tone",
-        "region": "neuro",
-        "maneuver": "Assess tone and posture during handling",
-        "finding": "Hyper- or hypotonia, opisthotonus or delayed milestones suggesting an underlying neurologic disorder",
-        "frequency": "rare",
-        "significance": "argues_against",
-        "importance": "important"
-      },
-      {
-        "id": "normal-heent-exam",
-        "region": "heent",
-        "maneuver": "Inspect the oropharynx, ears and nose; palpate the anterior fontanelle",
-        "finding": "Normal oropharynx without lesions, flat fontanelle, no drooling or pooling of secretions",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "important"
-      },
-      {
-        "id": "normal-skin-exam",
-        "region": "skin",
-        "maneuver": "Inspect the skin for color, perfusion and rashes",
-        "finding": "Warm, well-perfused skin without jaundice, petechiae or eczematous changes",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "optional"
+        "importance": "optional",
+        "term": "Lethargy",
+        "snomed_verified": true
       }
     ]
   },
-  "vitals": {
-    "temp": {
-      "mild": {
-        "min": 97.7,
-        "max": 99.5
-      },
-      "moderate": {
-        "min": 97.7,
-        "max": 99.5
-      },
-      "severe": {
-        "min": 97.5,
-        "max": 100.0
-      },
-      "critical": {
-        "min": 97.0,
-        "max": 100.4
-      }
-    },
-    "hr": {
-      "mild": {
-        "min": 100,
-        "max": 160
-      },
-      "moderate": {
-        "min": 110,
-        "max": 170
-      },
-      "severe": {
-        "min": 120,
-        "max": 180
-      },
-      "critical": {
-        "min": 130,
-        "max": 200
-      }
-    },
-    "rr": {
-      "mild": {
-        "min": 30,
-        "max": 60
-      },
-      "moderate": {
-        "min": 35,
-        "max": 65
-      },
-      "severe": {
-        "min": 40,
-        "max": 70
-      },
-      "critical": {
-        "min": 45,
-        "max": 80
-      }
-    },
-    "sbp": {
-      "mild": {
-        "min": 70,
-        "max": 90
-      },
-      "moderate": {
-        "min": 70,
-        "max": 90
-      },
-      "severe": {
-        "min": 65,
-        "max": 85
-      },
-      "critical": {
-        "min": 55,
-        "max": 75
-      }
-    },
-    "dbp": {
-      "mild": {
-        "min": 40,
-        "max": 60
-      },
-      "moderate": {
-        "min": 40,
-        "max": 60
-      },
-      "severe": {
-        "min": 35,
-        "max": 55
-      },
-      "critical": {
-        "min": 30,
-        "max": 50
-      }
-    },
-    "spo2": {
-      "mild": {
-        "min": 95,
-        "max": 100
-      },
-      "moderate": {
-        "min": 94,
-        "max": 100
-      },
-      "severe": {
-        "min": 92,
-        "max": 98
-      },
-      "critical": {
-        "min": 88,
-        "max": 95
-      }
-    }
-  },
+  "vitals": {},
   "labs": [],
   "imaging": [
     {
-      "study": "Upper gastrointestinal series (barium contrast)",
+      "study": "Upper GI series (barium swallow)",
       "modality": "xray",
-      "preferred_when": "Suspected anatomic abnormality such as malrotation, pyloric stenosis, or hiatal hernia",
+      "preferred_when": "Suspected anatomic obstruction such as malrotation, pyloric stenosis, or hiatal hernia",
       "findings": [
         {
-          "text": "Normal position of the duodenojejunal junction in the left upper quadrant, excluding malrotation",
-          "frequency": "almost_always"
-        },
-        {
-          "text": "Free gastroesophageal reflux of contrast into the distal esophagus",
+          "text": "Gastroesophageal reflux of barium into the distal esophagus",
           "frequency": "common"
         },
         {
-          "text": "Normal-caliber pylorus with normal gastric emptying",
+          "text": "Normal esophageal and gastric anatomy without obstruction",
           "frequency": "almost_always"
-        },
-        {
-          "text": "Hiatal hernia with part of the stomach above the diaphragm",
-          "frequency": "rare"
         },
         {
           "text": "Delayed gastric emptying",
           "frequency": "sometimes"
-        }
-      ]
-    },
-    {
-      "study": "Upper gastrointestinal endoscopy with esophageal biopsy",
-      "modality": "endoscopy",
-      "preferred_when": "Persistent symptoms despite treatment, suspected esophagitis, or concern for eosinophilic esophagitis",
-      "findings": [
-        {
-          "text": "Normal-appearing esophageal mucosa",
-          "frequency": "common"
         },
         {
-          "text": "Erythema, erosions, or linear streaks in the distal esophagus (esophagitis)",
-          "frequency": "sometimes"
-        },
-        {
-          "text": "Esophageal biopsy showing eosinophilic infiltration consistent with eosinophilic esophagitis",
+          "text": "Hiatal hernia",
           "frequency": "rare"
         },
         {
-          "text": "Esophageal biopsy showing basal cell hyperplasia and elongated papillae consistent with reflux",
-          "frequency": "sometimes"
+          "text": "Malrotation or other anatomic obstruction",
+          "frequency": "rare"
         }
       ]
     },
     {
-      "study": "Esophageal pH and impedance monitoring",
-      "modality": "other",
-      "preferred_when": "Unclear relationship between symptoms and reflux, or before considering surgery",
+      "study": "Upper endoscopy with biopsy",
+      "modality": "endoscopy",
+      "preferred_when": "Suspected esophagitis, stricture, or eosinophilic esophagitis",
       "findings": [
         {
-          "text": "Increased number of acid reflux episodes over 24 hours",
-          "frequency": "common"
-        },
-        {
-          "text": "Positive symptom correlation between reflux events and crying or arching",
-          "frequency": "sometimes"
-        },
-        {
-          "text": "Normal acid exposure time",
-          "frequency": "sometimes"
-        }
-      ]
-    },
-    {
-      "study": "Abdominal ultrasound",
-      "modality": "ultrasound",
-      "preferred_when": "Suspected pyloric stenosis or other structural cause",
-      "findings": [
-        {
-          "text": "Normal pylorus with no thickening or elongation",
+          "text": "Normal esophageal mucosa",
           "frequency": "almost_always"
         },
         {
-          "text": "Thickened and elongated pylorus consistent with pyloric stenosis",
+          "text": "Erythema or erosions in the distal esophagus",
+          "frequency": "rare"
+        },
+        {
+          "text": "Esophageal stricture",
+          "frequency": "rare"
+        },
+        {
+          "text": "Eosinophilic infiltration on biopsy",
+          "frequency": "rare"
+        }
+      ]
+    },
+    {
+      "study": "Ultrasound of the abdomen (pylorus)",
+      "modality": "ultrasound",
+      "preferred_when": "Projectile vomiting or suspected pyloric stenosis",
+      "findings": [
+        {
+          "text": "Normal pylorus",
+          "frequency": "almost_always"
+        },
+        {
+          "text": "Thickened and elongated pyloric muscle",
           "frequency": "rare"
         }
       ]
@@ -673,312 +513,244 @@
   "workup": {
     "initial": [
       {
-        "test": "cbc",
-        "why": "Assesses for anemia or infection if poor feeding, vomiting, or failure to thrive is present",
-        "only_if": "poor weight gain, vomiting, or concern for infection"
+        "test": "Upper GI series (barium swallow)",
+        "why": "Evaluates for anatomic causes such as malrotation, pyloric stenosis, or hiatal hernia when alarm symptoms are present",
+        "only_if": "Projectile or bilious vomiting, poor weight gain, or suspected anatomic obstruction"
       },
       {
-        "test": "bmp",
-        "why": "Evaluates electrolytes and hydration if vomiting is frequent or severe",
-        "only_if": "frequent vomiting, dehydration, or poor intake"
+        "test": "Ultrasound of the abdomen (pylorus)",
+        "why": "Rules out pyloric stenosis",
+        "only_if": "Projectile vomiting or suspected pyloric stenosis"
       }
     ],
-    "confirmatory": [],
-    "supporting": [
+    "confirmatory": [
       {
-        "test": "Upper gastrointestinal series (barium contrast)",
-        "why": "Evaluates for anatomic abnormalities such as malrotation or pyloric stenosis when warning signs are present",
-        "only_if": "bilious vomiting, projectile vomiting, or suspected structural abnormality"
+        "test": "Esophageal pH/impedance monitoring",
+        "why": "Measures acid and non-acid reflux events; confirms GERD when diagnosis is unclear or symptoms are refractory",
+        "only_if": "Diagnosis uncertain after clinical evaluation and trial of feeding modifications, or suspected refractory GERD"
       },
       {
-        "test": "Upper gastrointestinal endoscopy with esophageal biopsy",
-        "why": "Directly visualizes and biopsies the esophagus when esophagitis or eosinophilic esophagitis is suspected",
-        "only_if": "persistent symptoms despite treatment or suspected esophagitis"
-      },
-      {
-        "test": "Esophageal pH and impedance monitoring",
-        "why": "Quantifies acid exposure and correlates symptoms with reflux episodes",
-        "only_if": "diagnosis remains unclear or surgery is being considered"
-      },
-      {
-        "test": "Abdominal ultrasound",
-        "why": "Rules out pyloric stenosis when projectile vomiting is present",
-        "only_if": "projectile vomiting or suspected pyloric stenosis"
+        "test": "Upper endoscopy with biopsy",
+        "why": "Evaluates for esophagitis, stricture, or eosinophilic esophagitis",
+        "only_if": "Suspected complications such as esophagitis, stricture, or poor response to acid suppression"
       }
     ],
+    "supporting": [],
     "not_indicated": [
       {
-        "test": "Upper gastrointestinal series (barium contrast)",
-        "why": "Not needed for typical uncomplicated reflux, which is a clinical diagnosis"
+        "test": "CBC",
+        "why": "No role in uncomplicated reflux"
       },
       {
-        "test": "Upper gastrointestinal endoscopy with esophageal biopsy",
-        "why": "Invasive and not routine for uncomplicated reflux"
+        "test": "BMP",
+        "why": "No role unless dehydration or electrolyte disturbance is suspected"
       },
       {
-        "test": "Esophageal pH and impedance monitoring",
-        "why": "Reserved for atypical or refractory cases, not routine diagnosis"
-      },
-      {
-        "test": "Abdominal ultrasound",
-        "why": "Not indicated unless pyloric stenosis or another structural cause is suspected"
-      },
-      {
-        "test": "cbc",
-        "why": "Not routinely needed for uncomplicated reflux"
-      },
-      {
-        "test": "bmp",
-        "why": "Not routinely needed for uncomplicated reflux"
+        "test": "Abdominal x-ray",
+        "why": "Not useful for reflux; only if bowel obstruction suspected"
       }
     ],
     "decision_points": [
-      "Diagnose typical reflux clinically; testing only if warning signs or poor response to feeding changes",
-      "Warning signs (bilious vomiting, projectile vomiting, hematemesis, failure to thrive, onset after 6 months) prompt imaging or endoscopy",
-      "Consider pyloric stenosis in a 3–6 week old with projectile nonbilious vomiting and order ultrasound"
+      "Start with feeding modifications and upright positioning before any testing",
+      "Evaluate for anatomic obstruction if projectile or bilious vomiting, abdominal distension, or poor weight gain",
+      "Consider pH/impedance monitoring or endoscopy if symptoms persist despite nonpharmacologic measures or are severe"
     ],
-    "criteria": [],
+    "criteria": [
+      {
+        "name": "Rome IV criteria for infant regurgitation",
+        "summary": "Paraphrased: otherwise healthy infant aged 3 weeks to 12 months with regurgitation at least twice daily for 3 or more weeks, without retching, hematemesis, aspiration, apnea, failure to thrive, feeding or swallowing difficulties, or abnormal posturing.",
+        "items": [
+          "Age 3 weeks to 12 months",
+          "Regurgitation 2 or more times per day for 3 or more weeks",
+          "No retching, hematemesis, aspiration, apnea, failure to thrive, feeding or swallowing difficulties, or abnormal posturing"
+        ]
+      }
+    ],
     "scores": []
   },
   "differential": [
     {
       "name": "Pyloric stenosis",
       "slug": "pyloric-stenosis",
-      "why_considered": "Nonbilious vomiting in a young infant can be mistaken for reflux",
+      "why_considered": "Projectile vomiting in an infant, especially age 2 to 8 weeks",
       "must_not_miss": true,
-      "trigger": "Projectile, forceful nonbilious vomiting in a 3–6 week old, hungry after vomiting, with poor weight gain",
+      "trigger": "Projectile non-bilious vomiting",
       "discriminators": {
         "history": [
-          "Vomiting becomes projectile and increasingly forceful",
-          "Infant remains hungry and feeds eagerly after vomiting",
-          "Onset typically 3–6 weeks of age",
-          "Progressive rather than improving over time"
+          "Projectile vomiting shortly after every feed",
+          "Age 2 to 8 weeks",
+          "Hungry after vomiting and willing to feed again",
+          "No diarrhea"
         ],
         "exam": [
-          "Palpable olive-shaped mass in the right upper quadrant",
-          "Visible gastric peristaltic waves",
-          "Signs of dehydration and weight loss"
+          "Palpable olive-shaped mass in the epigastrium",
+          "Visible gastric peristalsis",
+          "Signs of dehydration"
         ],
         "labs": [
-          "Hypochloremic, hypokalemic metabolic alkalosis with low chloride",
-          "Elevated bicarbonate"
+          "Hypochloremic, hypokalemic metabolic alkalosis"
         ],
         "imaging": [
-          "Abdominal ultrasound showing thickened and elongated pylorus",
-          "Upper GI series with a string sign or double-track sign"
+          "Thickened and elongated pylorus on ultrasound"
         ]
       }
     },
     {
       "name": "Malrotation with midgut volvulus",
       "slug": "malrotation-with-volvulus",
-      "why_considered": "Vomiting in an infant can be attributed to reflux when the true cause is a surgical emergency",
+      "why_considered": "Bilious vomiting and abdominal distension in an infant",
       "must_not_miss": true,
-      "trigger": "Bilious (green) vomiting, especially with acute onset, abdominal distension, or lethargy",
+      "trigger": "Bilious (green) vomiting",
       "discriminators": {
         "history": [
-          "Bilious or green vomit",
-          "Sudden onset in a previously well infant",
-          "Bloody stools or lethargy"
+          "Bilious vomiting",
+          "Sudden onset",
+          "Abdominal pain, irritability, or lethargy",
+          "May have blood in stool"
         ],
         "exam": [
-          "Abdominal distension and tenderness",
-          "Signs of shock or poor perfusion",
-          "Guarding or rigidity"
+          "Abdominal distension",
+          "Tenderness or guarding",
+          "Shock or dehydration"
         ],
         "labs": [
-          "Metabolic acidosis",
-          "Elevated lactate",
-          "Leukocytosis"
+          "Metabolic acidosis"
         ],
         "imaging": [
-          "Upper GI series showing abnormal duodenojejunal junction position or corkscrew appearance",
-          "Abdominal ultrasound showing abnormal SMA/SMV relationship or whirlpool sign"
+          "Upper GI series showing abnormal duodenal-jejunal junction or corkscrew appearance"
+        ]
+      }
+    },
+    {
+      "name": "Cow milk protein allergy",
+      "slug": "cow-milk-protein-allergy",
+      "why_considered": "Irritability, regurgitation, and poor weight gain in a formula-fed infant",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Blood or mucus in stool",
+          "Diarrhea",
+          "Eczema or atopy",
+          "Symptoms improve after switching to hydrolyzed formula"
+        ],
+        "exam": [
+          "Eczema",
+          "Poor weight gain",
+          "Mild abdominal distension"
+        ],
+        "labs": [
+          "Peripheral eosinophilia",
+          "Iron deficiency anemia"
+        ]
+      }
+    },
+    {
+      "name": "Viral gastroenteritis",
+      "slug": "gastroenteritis",
+      "why_considered": "Vomiting and irritability in an infant",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Acute vomiting",
+          "Watery diarrhea",
+          "Fever",
+          "Sick contacts or recent viral illness"
+        ],
+        "exam": [
+          "Signs of dehydration",
+          "Diffuse mild abdominal tenderness or no tenderness"
+        ],
+        "labs": [
+          "Usually none",
+          "If severe, electrolyte abnormalities"
         ]
       }
     },
     {
       "name": "Eosinophilic esophagitis",
       "slug": "eosinophilic-esophagitis",
-      "why_considered": "Feeding difficulty, irritability, and vomiting in an infant can mimic reflux",
+      "why_considered": "Persistent reflux-like symptoms despite feeding changes and acid suppression",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Feeding refusal, gagging, or dysphagia",
-          "Poor response to acid suppression",
-          "Personal or family history of atopy, asthma, or eczema"
+          "Feeding refusal",
+          "Gagging or choking with feeds",
+          "Atopy",
+          "Older infant or child"
         ],
         "exam": [
-          "Often normal examination",
-          "Signs of atopic disease such as eczema"
+          "Normal or poor weight gain"
         ],
         "labs": [
-          "Peripheral eosinophilia sometimes present"
+          "Peripheral eosinophilia"
         ],
         "imaging": [
-          "Esophageal biopsy showing dense eosinophilic infiltration (≥15 eosinophils per high-power field)",
-          "Endoscopy may show furrows, rings, or white exudates"
-        ]
-      }
-    },
-    {
-      "name": "Cow's milk protein allergy",
-      "slug": "cows-milk-protein-allergy",
-      "why_considered": "Vomiting, irritability, and poor feeding in a formula-fed or breastfed infant can resemble reflux",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Symptoms worsen with cow's milk formula or maternal dairy intake",
-          "Blood or mucus in stools",
-          "Eczema or atopic family history"
-        ],
-        "exam": [
-          "Eczematous rash",
-          "Abdominal distension or tenderness",
-          "Poor weight gain"
-        ],
-        "labs": [
-          "Eosinophilia sometimes present",
-          "Stool occult blood positive"
-        ],
-        "imaging": [
-          "Not routinely needed",
-          "Endoscopy with biopsy may show eosinophilic inflammation if performed"
-        ]
-      }
-    },
-    {
-      "name": "Laryngomalacia",
-      "slug": "laryngomalacia",
-      "why_considered": "Noisy breathing, coughing, and feeding difficulty can be attributed to reflux",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Inspiratory stridor that worsens when supine or crying",
-          "Symptoms present from birth or early weeks",
-          "Feeding difficulty with choking or cyanotic spells"
-        ],
-        "exam": [
-          "High-pitched inspiratory stridor",
-          "Worsening of stridor with neck flexion or agitation"
-        ],
-        "labs": [
-          "Not routinely needed"
-        ],
-        "imaging": [
-          "Flexible laryngoscopy showing omega-shaped epiglottis and prolapsing arytenoids"
-        ]
-      }
-    },
-    {
-      "name": "Gastroenteritis",
-      "slug": "gastroenteritis",
-      "why_considered": "Vomiting and irritability in an infant can be mistaken for reflux",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Acute onset of vomiting and diarrhea",
-          "Sick contacts",
-          "Fever"
-        ],
-        "exam": [
-          "Signs of dehydration",
-          "Diffuse abdominal tenderness without mass"
-        ],
-        "labs": [
-          "Electrolyte abnormalities if dehydrated",
-          "Stool studies if indicated"
-        ],
-        "imaging": [
-          "Not routinely needed"
-        ]
-      }
-    },
-    {
-      "name": "Increased intracranial pressure",
-      "slug": "increased-intracranial-pressure",
-      "why_considered": "Vomiting and irritability in an infant can be attributed to reflux when a neurologic cause is present",
-      "must_not_miss": true,
-      "trigger": "Vomiting with lethargy, bulging fontanelle, abnormal tone, or seizures",
-      "discriminators": {
-        "history": [
-          "Vomiting without relation to feeds",
-          "Lethargy or irritability",
-          "Seizures or developmental regression"
-        ],
-        "exam": [
-          "Bulging anterior fontanelle",
-          "Abnormal tone or posture",
-          "Sunsetting eyes or cranial nerve abnormalities"
-        ],
-        "labs": [
-          "Not routinely diagnostic"
-        ],
-        "imaging": [
-          "Head ultrasound or CT/MRI showing ventricular dilation or mass"
+          "Upper endoscopy with biopsy showing eosinophilic infiltration"
         ]
       }
     }
   ],
   "course": {
     "severity": {
-      "mild": "Frequent effortless spitting up in a thriving, well-appearing infant; no feeding or growth problems",
-      "moderate": "Spitting up with irritability, arching, or feeding refusal; weight gain may be slower but still adequate",
-      "severe": "Poor weight gain or weight loss, significant feeding difficulty, respiratory symptoms such as coughing or wheezing, or esophagitis",
-      "critical": "Signs of dehydration, lethargy, apnea, or aspiration with respiratory compromise"
+      "mild": "Uncomplicated physiologic reflux: effortless regurgitation after feeds, normal growth and development, no distress",
+      "moderate": "Symptomatic reflux with irritability, occasional cough or gagging, normal growth but requiring feeding modifications",
+      "severe": "Complicated GERD: poor weight gain or feeding refusal, suspected esophagitis, persistent symptoms despite nonpharmacologic measures"
     },
     "red_flags": [
       {
-        "finding": "Bilious or green vomit",
-        "meaning": "Suggests intestinal obstruction or malrotation with volvulus; requires urgent evaluation"
-      },
-      {
         "finding": "Projectile vomiting",
-        "meaning": "Suggests pyloric stenosis or increased intracranial pressure"
+        "meaning": "Suggests pyloric stenosis or other gastric outlet obstruction; needs abdominal ultrasound"
       },
       {
-        "finding": "Blood in vomit or bloody stools",
-        "meaning": "Suggests esophagitis, gastritis, or a bleeding disorder"
+        "finding": "Bilious (green) vomiting",
+        "meaning": "Malrotation with midgut volvulus until proven otherwise; surgical emergency"
       },
       {
-        "finding": "Failure to thrive or weight loss",
-        "meaning": "Inadequate intake or malabsorption; needs further workup"
+        "finding": "Poor weight gain or crossing down percentiles",
+        "meaning": "Complicated GERD, anatomic obstruction, or intolerance; needs further workup"
       },
       {
-        "finding": "Onset after 6 months of age",
-        "meaning": "Unusual for typical reflux; consider other diagnoses"
+        "finding": "Apnea, cyanosis, or limpness",
+        "meaning": "Reflux-associated apnea, aspiration, or other serious disorder; needs urgent evaluation"
       },
       {
-        "finding": "Lethargy, poor responsiveness, or seizures",
-        "meaning": "Suggests neurologic or systemic illness"
+        "finding": "Hematemesis or coffee-ground emesis",
+        "meaning": "Esophagitis, gastritis, or other GI bleeding"
       },
       {
-        "finding": "Apnea or cyanotic spells",
-        "meaning": "Suggests aspiration or severe respiratory involvement"
+        "finding": "Abdominal distension or tenderness",
+        "meaning": "Bowel obstruction or other abdominal pathology"
+      },
+      {
+        "finding": "Fever with vomiting",
+        "meaning": "Infection such as gastroenteritis, sepsis, or urinary tract infection"
+      },
+      {
+        "finding": "Lethargy",
+        "meaning": "Dehydration, sepsis, or metabolic abnormality; needs urgent evaluation"
       }
     ],
     "complications": [
       {
-        "name": "Esophagitis",
+        "name": "Failure to thrive / poor weight gain",
         "timing": "any",
         "seriousness": "serious",
-        "frequency": "sometimes",
+        "frequency": "rare",
         "clues": [
-          "Irritability and crying during feeds",
-          "Arching of the back",
-          "Refusal to feed",
-          "Blood in vomit"
+          "Weight crossing down percentiles",
+          "Prolonged or difficult feedings",
+          "Irritability with feeds"
         ]
       },
       {
-        "name": "Failure to thrive",
-        "timing": "late",
+        "name": "Esophagitis",
+        "timing": "any",
         "seriousness": "serious",
-        "frequency": "sometimes",
+        "frequency": "rare",
         "clues": [
-          "Weight crossing percentiles downward",
-          "Poor feeding",
-          "Decreased urine output"
+          "Hematemesis or coffee-ground emesis",
+          "Irritability or back arching after feeding",
+          "Anemia"
         ]
       },
       {
@@ -987,172 +759,143 @@
         "seriousness": "serious",
         "frequency": "rare",
         "clues": [
-          "Coughing or choking with feeds",
-          "Wheezing or crackles",
+          "Cough, wheezing, or respiratory distress after feeds",
           "Fever",
-          "Respiratory distress"
+          "Recurrent pneumonia"
         ]
       },
       {
-        "name": "Esophageal stricture",
-        "timing": "late",
-        "seriousness": "serious",
-        "frequency": "rare",
-        "clues": [
-          "Progressive dysphagia",
-          "Food impaction",
-          "Poor weight gain"
-        ]
-      },
-      {
-        "name": "Apparent life-threatening event (ALTE)",
+        "name": "Apnea/bradycardia",
         "timing": "any",
         "seriousness": "life_threatening",
         "frequency": "rare",
         "clues": [
-          "Apnea",
-          "Color change",
-          "Choking or gagging",
-          "Limpness"
+          "Apnea or cyanosis",
+          "Limp episodes",
+          "Bradycardia"
         ]
       }
     ],
     "special_populations": [
       {
-        "population": "infants",
-        "differences": "Premature infants and those with neurologic impairment may present with feeding intolerance, apnea, or bradycardia rather than obvious spitting up; symptoms may persist longer and be more severe."
+        "population": "children",
+        "differences": "Reflux persisting after 18 months is unusual and should prompt evaluation for eosinophilic esophagitis, anatomic obstruction, or neurologic disorders."
       },
       {
-        "population": "children",
-        "differences": "Older infants and toddlers may present with irritability, poor appetite, or respiratory symptoms rather than visible spitting up; symptoms that persist beyond 18 months suggest a different diagnosis."
+        "population": "infants",
+        "differences": "Preterm and neurologically impaired infants may present with apnea, bradycardia, or poor weight gain rather than simple spitting up."
       }
     ]
   },
   "teaching": {
     "key_questions": [
       {
-        "question": "What does the spit-up look like, and how forceful is it?",
+        "question": "How old is your baby, and when did the spitting up start?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Effortless, nonbilious regurgitation of milk; projectile or bilious vomiting points to pyloric stenosis or obstruction"
+        "looking_for": "Age between 3 weeks and 12 months; onset in first weeks to months, not present at birth or after 12 months"
       },
       {
-        "question": "When does the spitting up happen relative to feeds?",
+        "question": "Can you describe how the spit-up happens? Is it forceful and shoots out, or does it just dribble out with a burp?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "During or shortly after feeds, worse when lying flat or straining"
+        "looking_for": "Effortless regurgitation, not projectile"
       },
       {
-        "question": "How old was your baby when this started, and is it getting better or worse?",
+        "question": "How often does your baby spit up, and how much comes up each time?",
+        "category": "hpi",
+        "importance": "important",
+        "looking_for": "Frequent small amounts after feeds; large volume or forceful suggests other causes"
+      },
+      {
+        "question": "Does your baby seem uncomfortable, cry, or arch their back during or after feeds?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Onset in the first weeks to months of life with gradual improvement; onset after 6 months or progressive worsening is unusual"
+        "looking_for": "Irritability or back arching suggests esophagitis; simple reflux is usually painless"
       },
       {
-        "question": "Is your baby gaining weight and having normal wet diapers?",
+        "question": "Have you noticed any trouble breathing, turning blue, or unusual limpness during or after feeds?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Absence of apnea, cyanosis, or limpness; presence suggests complicated GERD or other condition"
+      },
+      {
+        "question": "Is your baby growing well and gaining weight?",
+        "category": "hpi",
+        "importance": "essential",
+        "looking_for": "Normal weight gain; poor weight gain suggests complicated GERD, anatomic obstruction, or allergy"
+      },
+      {
+        "question": "What color is the spit-up? Is it ever green (bile) or bloody?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Non-bilious, non-bloody; bilious suggests malrotation; bloody suggests esophagitis or other bleeding"
+      },
+      {
+        "question": "Have you noticed any fever, diarrhea, or decreased urine output?",
         "category": "associated",
-        "importance": "essential",
-        "looking_for": "Adequate weight gain along the growth curve and normal urine output; poor weight gain or weight loss suggests GERD or another cause"
-      },
-      {
-        "question": "Does your baby arch her back, cry, or seem uncomfortable during or after feeds?",
-        "category": "associated",
         "importance": "important",
-        "looking_for": "Arching, irritability, or crying after eating suggesting esophagitis or discomfort"
+        "looking_for": "Absent; present suggests infection, gastroenteritis, or dehydration"
       },
       {
-        "question": "Does your baby cough, choke, gag, or wheeze with feeds?",
-        "category": "associated",
-        "importance": "important",
-        "looking_for": "Respiratory symptoms suggesting aspiration or airway involvement"
-      },
-      {
-        "question": "How much and how often are you feeding, and do you burp during feeds?",
+        "question": "What does your baby eat, and how much? Have you changed formulas or added cereal?",
         "category": "hpi",
         "importance": "important",
-        "looking_for": "Overfeeding or large-volume feeds that worsen reflux; opportunities for feeding changes"
+        "looking_for": "Overfeeding, rapid feeding, or formula type can worsen reflux; thickening may help"
       },
       {
-        "question": "What have you tried so far, such as holding upright, smaller feeds, or thickened feeds?",
-        "category": "hpi",
-        "importance": "important",
-        "looking_for": "Response to conservative feeding measures before considering medication"
-      },
-      {
-        "question": "Was your baby born early, or does she have any neurologic or lung conditions?",
+        "question": "Does your baby have any medical conditions, or were they born early?",
         "category": "pmh",
         "importance": "important",
-        "looking_for": "Prematurity, cerebral palsy, cystic fibrosis, hiatal hernia, or prior esophageal surgery"
+        "looking_for": "Prematurity, neurologic impairment, previous esophageal surgery, or hiatal hernia increase risk"
       },
       {
-        "question": "Is there any blood or green color in the vomit, or blood in the stool?",
-        "category": "red_flag",
-        "importance": "essential",
-        "looking_for": "Bilious or bloody emesis or bloody stools, which suggest obstruction, esophagitis, or a bleeding source"
+        "question": "Does your baby have any skin rashes, eczema, or blood/mucus in the stool?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Absent; presence suggests cow milk protein allergy"
       },
       {
-        "question": "Has your baby had spells of stopping breathing, turning blue, or becoming limp?",
-        "category": "red_flag",
-        "importance": "essential",
-        "looking_for": "Apnea, cyanotic spells, or apparent life-threatening events suggesting aspiration or severe disease"
-      },
-      {
-        "question": "Is your baby lethargic, difficult to wake, or having seizures?",
-        "category": "red_flag",
-        "importance": "essential",
-        "looking_for": "Neurologic warning signs such as lethargy, poor responsiveness, or seizures"
-      },
-      {
-        "question": "Does anyone in the family have reflux or food allergies?",
-        "category": "family",
+        "question": "Have you tried anything like keeping upright after feeds or burping more? Did it help?",
+        "category": "hpi",
         "importance": "optional",
-        "looking_for": "Family history of gastroesophageal reflux disease or atopy"
-      },
-      {
-        "question": "Does anyone smoke around the baby?",
-        "category": "social",
-        "importance": "optional",
-        "looking_for": "Secondhand tobacco smoke exposure that can worsen reflux symptoms"
+        "looking_for": "Response to non-pharmacologic measures supports diagnosis; no or partial response may need further evaluation"
       }
     ],
     "accepted_names": [
-      "Reflux in infants",
+      "Reflux in Infants",
       "Gastroesophageal reflux in infants",
-      "GER in infants",
       "Infant reflux",
-      "Pediatric gastroesophageal reflux",
+      "GER in infants",
       "GERD in infants",
-      "Gastroesophageal reflux disease in infants",
-      "Infant GERD"
+      "Pediatric gastroesophageal reflux"
     ],
     "reasoning_points": [
-      "Effortless, nonbilious regurgitation during or shortly after feeds in a thriving infant",
-      "Onset in the first weeks to months of life with gradual improvement as the lower esophageal sphincter matures",
-      "Symptoms worse when lying flat or straining and relieved by upright positioning, burping, and smaller feeds",
-      "Irritability, back arching, or feeding refusal suggesting discomfort or esophagitis",
-      "Normal growth and hydration with a soft, non-tender abdomen and no warning signs",
-      "Warning signs such as bilious or projectile vomiting, hematemesis, failure to thrive, onset after 6 months, apnea, or lethargy prompt further evaluation",
-      "Typical reflux is a clinical diagnosis; testing is reserved for atypical or refractory cases"
+      "Infant between 3 weeks and 12 months with effortless regurgitation after feeds",
+      "Normal growth and development, no weight loss",
+      "No projectile, bilious, or bloody vomiting",
+      "No apnea, cyanosis, or limpness",
+      "Meets clinical criteria for typical infant regurgitation (age, frequency, absence of warning signs)",
+      "Feeding history reveals overfeeding or air swallowing; response to upright positioning and smaller feeds supports diagnosis",
+      "Differential considerations excluded: pyloric stenosis, malrotation, cow milk protein allergy, infection",
+      "Diagnosis is clinical; no testing indicated unless alarm features are present"
     ],
     "difficulty": {
       "easy": [
-        "Healthy 2-month-old with frequent effortless spit-up after feeds",
-        "Happy, thriving infant with normal weight gain and a soft abdomen",
-        "Symptoms improve with upright positioning and smaller, more frequent feeds",
-        "No warning signs such as bilious or projectile vomiting"
+        "Healthy 2-month-old infant with effortless regurgitation after feeds",
+        "Normal weight gain and examination",
+        "No alarm signs; mother reports spitting up several times a day but otherwise thriving"
       ],
       "medium": [
-        "Infant with irritability and back arching after feeds but still gaining weight",
-        "Formula-fed infant with vomiting and eczema raising concern for cow's milk protein allergy",
-        "Premature infant with feeding intolerance and slower weight gain",
-        "Symptoms persisting beyond 12 months requiring consideration of other diagnoses"
+        "Formula-fed infant with irritability and crying after feeds, prompting concern for cow milk protein allergy",
+        "Infant with recurrent cough or gagging during feeds but normal growth, requiring differentiation from aspiration or anatomic issues",
+        "Infant whose symptoms improve only partially with feeding modifications, leading to consideration of acid suppression trial"
       ],
       "hard": [
-        "3–6 week old with projectile nonbilious vomiting and an olive-shaped mass suggesting pyloric stenosis",
-        "Infant with bilious vomiting and lethargy suggesting malrotation with volvulus",
-        "Infant with apnea or cyanotic spells suggesting aspiration or an apparent life-threatening event",
-        "Infant with vomiting, lethargy, and a bulging fontanelle suggesting increased intracranial pressure",
-        "Infant with feeding refusal and poor response to acid suppression suggesting eosinophilic esophagitis"
+        "Infant with projectile non-bilious vomiting and dehydration, requiring urgent evaluation for pyloric stenosis",
+        "Infant with bilious vomiting and abdominal distension, needing immediate workup for malrotation with volvulus",
+        "Preterm infant with apnea, bradycardia, and desaturations during feeds, requiring investigation for reflux-related apnea and GERD",
+        "Infant with persistent irritability, poor weight gain, and suspected esophagitis or eosinophilic esophagitis despite standard management"
       ]
     }
   }

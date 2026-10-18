@@ -5,6 +5,7 @@
 
 import assets from "./profilegen_assets.json" with { type: "json" };
 import ranges from "./reference_ranges.json" with { type: "json" };
+import labDirections from "./lab_directions.json" with { type: "json" };
 
 // deno-lint-ignore no-explicit-any
 type Json = any;
@@ -24,6 +25,8 @@ const TESTS: Record<string, Test> = Object.fromEntries(
   (ranges.panels as { tests: Test[] }[]).flatMap((p) => p.tests).map((t) => [t.id, t]),
 );
 const PANELS = new Set((ranges.panels as { id: string }[]).map((p) => p.id));
+/** Hand-written condition slug → {test id: expected direction} for high-yield pairs (see its "about"). */
+const DIRECTIONS: Record<string, Record<string, string>> = labDirections.conditions;
 
 // MARK: - Prompt
 
@@ -148,7 +151,7 @@ function plainName(token: string): string {
 /**
  * Fixes mechanical slips in place and returns notes for the reviewer: model-made test ids become
  * our id or a plain name, labs with unknown ids are dropped, and a test listed in several workup
- * groups is kept once (or as not_indicated plus one conditional entry). Never invents content.
+ * groups is kept once (see keepOne). Never invents content. Notes come back without repeats.
  */
 export function repair(profile: Json): string[] {
   const notes: string[] = [];
@@ -189,27 +192,43 @@ export function repair(profile: Json): string[] {
   if (isObject(ecg) && Array.isArray(ecg.findings)) {
     const extra = Object.keys(ecg).filter((k) => k !== "findings");
     for (const k of extra) delete ecg[k];
-    if (extra.length) notes.push(`ecg: dropped extra keys ${JSON.stringify(extra)} (findings carry their own leads)`);
+    if (extra.length) notes.push(`ecg: dropped extra keys ${extra.join(", ")} (findings carry their own leads)`);
   }
 
   const seen = new Map<string, [string, Json][]>();
   for (const group of WORKUP_GROUPS) {
     for (const ref of workup[group] ?? []) {
-      const key = String(ref.test).toLowerCase();
+      const key = workupKey(String(ref.test));
       seen.set(key, [...(seen.get(key) ?? []), [group, ref]]);
     }
   }
-  for (const [name, entries] of seen) {
-    if (entries.length === 1) continue;
-    const others = entries.filter(([g]) => g !== "not_indicated");
-    const notIndicated = entries.filter(([g]) => g === "not_indicated").slice(0, 1);
-    const keep = notIndicated.length && others.length ? [...notIndicated, others[0]] : (others.length ? others : notIndicated).slice(0, 1);
-    if (notIndicated.length && others.length) keep[1][1].only_if ??= keep[1][1].why || "clinically indicated";
-    const kept = new Set(keep.map(([, r]) => r));
-    for (const [g, r] of entries) if (!kept.has(r)) workup[g] = workup[g].filter((x: Json) => x !== r);
-    notes.push(`workup: '${name}' was in ${JSON.stringify(entries.map(([g]) => g))}, kept ${JSON.stringify(keep.map(([g]) => g))}`);
-  }
-  return notes;
+  for (const entries of seen.values()) if (entries.length > 1) notes.push(keepOne(workup, entries));
+  return [...new Set(notes)];
+}
+
+/** "Chest X-ray", "chest x ray" and "CHEST X-RAY" are one test: lowercase, punctuation as spaces. */
+export function workupKey(name: string): string {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim().split(/\s+/).filter(Boolean).join(" ");
+}
+
+/**
+ * Keeps a test listed in several workup groups once and says what happened. An order beats
+ * not_indicated: "not indicated" plus an order is either a conditional order (one of them has
+ * only_if, which the kept entry carries) or the model contradicting itself, which a reviewer
+ * should look at. Among orders the earliest group wins (initial, confirmatory, supporting).
+ */
+function keepOne(workup: Json, entries: [string, Json][]): string {
+  const ordered = entries.filter(([g]) => g !== "not_indicated");
+  const skipped = entries.filter(([g]) => g === "not_indicated").map(([, r]) => r);
+  const [group, kept] = (ordered.length ? ordered : entries)[0];
+  // Identity: duplicates are often equal objects.
+  for (const [g, r] of entries) if (r !== kept) workup[g] = workup[g].filter((x: Json) => x !== r);
+  const note = `workup: '${kept.test}' was in ${entries.map(([g]) => g).join(", ")}; kept ${group}`;
+  if (!ordered.length || !skipped.length) return note;
+  const condition = skipped.find((r) => r.only_if)?.only_if;
+  if (condition && !kept.only_if) kept.only_if = condition;
+  if (kept.only_if) return `${note} as a conditional order (only if ${kept.only_if})`;
+  return `${note}; also listed as not indicated, so the model contradicted itself: check whether to order it`;
 }
 
 // MARK: - Rules
@@ -227,7 +246,7 @@ export function ruleErrors(profile: Json): string[] {
     if (test.derived) errors.push(`${where}: derived test; code computes it, don't list it`);
     for (const [severity, result] of Object.entries(lab.qualitative ?? {})) {
       const allowed = test.abnormal ?? [];
-      if (!allowed.includes(result as string)) errors.push(`${where}.${severity}: '${result}' not in ${JSON.stringify(allowed)}`);
+      if (!allowed.includes(result as string)) errors.push(`${where}.${severity}: '${result}' not in ${allowed.join(", ")}`);
     }
     for (const [severity, r] of Object.entries<Json>(lab.ranges ?? {})) {
       if (r.min > r.max) errors.push(`${where}.${severity}: min above max`);
@@ -255,26 +274,138 @@ export function ruleErrors(profile: Json): string[] {
     }
   }
 
-  // A test sits in one group, except "not routine, but order it if X": not_indicated plus one
-  // conditional entry (only_if) elsewhere.
-  const groups = new Map<string, [string, boolean][]>();
+  // A test sits in one group; a conditional order is one entry with only_if, never also not_indicated.
+  const groups = new Map<string, string[]>();
   for (const group of WORKUP_GROUPS) {
     for (const ref of profile.workup?.[group] ?? []) {
-      const key = String(ref.test).toLowerCase();
-      groups.set(key, [...(groups.get(key) ?? []), [group, Boolean(ref.only_if)]]);
+      const key = workupKey(String(ref.test));
+      groups.set(key, [...(groups.get(key) ?? []), group]);
     }
   }
   for (const [name, found] of groups) {
-    if (found.length === 1) continue;
-    const others = found.filter(([g]) => g !== "not_indicated");
-    const conditionalPair = found.length === 2 && others.length === 1 && others[0][1];
-    if (!conditionalPair) {
-      errors.push(`workup: '${name}' appears in ${JSON.stringify(found.map(([g]) => g))}; use one group, or not_indicated plus one entry with only_if`);
-    }
+    if (found.length > 1) errors.push(`workup: '${name}' appears in ${found.join(", ")}; list it once (use only_if for a conditional order)`);
   }
 
   if (profile.labs?.length && profile.teaching && !(profile.differential ?? []).some((d: Json) => d.must_not_miss)) {
     errors.push("differential: no must-not-miss alternative; every case should have one to rule out");
+  }
+  errors.push(...ageErrors(profile), ...duplicateErrors(profile), ...emptyStringErrors(profile), ...snomedIdErrors(profile));
+  errors.push(...directionErrors(profile));
+  return errors;
+}
+
+const MAX_AGE = 120;
+/** Newborn and infant conditions: an age over 2 means the model wrote days, weeks or months. */
+const INFANT = /neonat|newborn|infant/;
+const MAX_INFANT_AGE = 2;
+
+/** Ages are whole years; days or months written as years show up as impossible numbers. */
+export function ageErrors(profile: Json): string[] {
+  const age = profile.patient?.age ?? {};
+  const errors = Object.entries<Json>(age)
+    .filter(([, v]) => typeof v === "number" && v > MAX_AGE)
+    .map(([k]) => `patient.age.${k}: over ${MAX_AGE}; ages are in years`);
+  const name = `${profile.slug ?? ""} ${profile.triage?.name ?? ""}`.toLowerCase();
+  const key = "possible_max" in age ? "possible_max" : "typical_max";
+  const oldest = age[key];
+  if (INFANT.test(name) && typeof oldest === "number" && oldest > MAX_INFANT_AGE && oldest <= MAX_AGE) {
+    errors.push(`patient.age.${key}: over ${MAX_INFANT_AGE} for a newborn or infant condition; ages are in years`);
+  }
+  return errors;
+}
+
+/** A list item's identity: two labs with one test_id, or two findings with one id, are the same item. */
+const ITEM_KEYS = ["test_id", "id", "slug", "text"];
+
+/** [path, value] for the generated content: everything but the pipeline's own bookkeeping. */
+function content(profile: Json): [string, Json][] {
+  return Object.entries<Json>(profile ?? {}).filter(([k]) => k !== "generation").map(([k, v]) => [`$.${k}`, v]);
+}
+
+/** Every [path, value] inside value, depth first, in document order. */
+function* walk(path: string, value: Json): Generator<[string, Json]> {
+  yield [path, value];
+  if (Array.isArray(value)) for (let i = 0; i < value.length; i++) yield* walk(`${path}[${i}]`, value[i]);
+  else if (isObject(value)) for (const [k, v] of Object.entries(value)) yield* walk(`${path}.${k}`, v);
+}
+
+/** The same string twice in a list, or two list items with the same id, test_id, slug or text. */
+export function duplicateErrors(profile: Json): string[] {
+  const errors: string[] = [];
+  for (const [top, section] of content(profile)) {
+    for (const [path, value] of walk(top, section)) {
+      if (!Array.isArray(value)) continue;
+      const seen = new Set<string>();
+      for (const item of value) {
+        let field: string | undefined;
+        let text: string;
+        if (typeof item === "string") {
+          field = "";
+          text = item;
+        } else if (isObject(item)) {
+          field = ITEM_KEYS.find((k) => typeof item[k] === "string");
+          if (field === undefined) continue;
+          text = item[field];
+        } else continue;
+        const marker = `${field}\u0000${text.trim().toLowerCase()}`;
+        if (seen.has(marker)) errors.push(`${path}: duplicate ${field ? field + " " : ""}'${text}'`);
+        seen.add(marker);
+      }
+    }
+  }
+  return errors;
+}
+
+export function emptyStringErrors(profile: Json): string[] {
+  const errors: string[] = [];
+  for (const [top, section] of content(profile)) {
+    for (const [path, value] of walk(top, section)) if (typeof value === "string" && !value.trim()) errors.push(`${path}: empty string`);
+  }
+  return errors;
+}
+
+/** SNOMED CT content is licensed: profiles carry snomed_verified flags, never concept ids. */
+export function snomedIdErrors(profile: Json): string[] {
+  const errors: string[] = [];
+  for (const [path, value] of walk("$", profile)) {
+    if (isObject(value) && "snomed_id" in value) errors.push(`${path}.snomed_id: SNOMED CT ids are licensed content; keep only snomed_verified`);
+  }
+  return errors;
+}
+
+const SEVERITIES = ["mild", "moderate", "severe", "critical"];
+
+/** Labs that move the wrong way with severity, for the hand-written pairs in lab_directions.json. */
+export function directionErrors(profile: Json): string[] {
+  const errors: string[] = [];
+  const expected = DIRECTIONS[profile.slug] ?? {};
+  for (const lab of profile.labs ?? []) {
+    const direction = expected[lab?.test_id];
+    const test = TESTS[lab?.test_id];
+    if (!direction || !test || !lab.ranges || !Object.keys(lab.ranges).length) continue;
+    const [low, high] = normalInterval(test);
+    const where = `labs ${lab.test_id}`;
+    const present: [string, Json][] = SEVERITIES.filter((s) => s in lab.ranges).map((s) => [s, lab.ranges[s]]);
+    if (direction === "up" || direction === "down") {
+      const rising = direction === "up";
+      const mids = present.map(([s, r]): [string, number] => [s, (r.min + r.max) / 2]);
+      for (let i = 1; i < mids.length; i++) {
+        const [before, a] = mids[i - 1];
+        const [after, b] = mids[i];
+        if (rising ? b < a : b > a) {
+          errors.push(`${where}: should ${rising ? "rise" : "fall"} with severity, but ${after} is ${rising ? "lower" : "higher"} than ${before}`);
+        }
+      }
+      const [top, mid] = mids[mids.length - 1];
+      const bound = rising ? high : low;
+      if (bound != null && (rising ? mid <= bound : mid >= bound)) {
+        errors.push(`${where}.${top}: should be ${rising ? "above" : "below"} normal at the worst listed severity`);
+      }
+    }
+    for (const [s, r] of present) {
+      if (direction === "normal_or_up" && low != null && r.max < low) errors.push(`${where}.${s}: should be normal or high, not low`);
+      if (direction === "normal_or_down" && high != null && r.min > high) errors.push(`${where}.${s}: should be normal or low, not high`);
+    }
   }
   return errors;
 }

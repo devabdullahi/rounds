@@ -35,46 +35,44 @@
       },
       {
         "stage": "patient_presentation",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "9",
-        "generated_at": "2026-10-05T07:49:41Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T16:15:53Z"
       },
       {
         "stage": "exam_vitals",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "9",
-        "generated_at": "2026-10-05T07:49:47Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T16:18:13Z"
       },
       {
         "stage": "diagnostics",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "9",
-        "generated_at": "2026-10-05T07:49:59Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T16:24:35Z"
       },
       {
         "stage": "differential_course",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "9",
-        "generated_at": "2026-10-05T07:50:08Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T16:41:03Z"
       },
       {
         "stage": "teaching",
-        "model": "deepseek/deepseek-chat",
-        "prompt_version": "9",
-        "generated_at": "2026-10-05T07:50:14Z"
+        "model": "deepseek/deepseek-v4-pro",
+        "prompt_version": "11",
+        "generated_at": "2026-10-14T16:41:38Z"
       }
     ],
     "validation": {
       "status": "passed",
       "rule_errors": [],
       "review_issues": [
-        "auto-repaired: workup: renamed 'ct' to 'CT'",
-        "auto-repaired: workup: renamed 'mri' to 'MRI'",
-        "auto-repaired: workup: 'chest x-ray' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
-        "auto-repaired: workup: 'chest x-ray' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
-        "differential diabetic-ketoacidosis: no profile yet",
+        "exam: term 'Delayed capillary refill' not found in SNOMED CT",
+        "differential type-2-diabetes: no profile yet",
+        "differential monogenic-diabetes: no profile yet",
         "differential diabetes-insipidus: no profile yet",
-        "differential urinary-tract-infection: no profile yet",
+        "differential hyperthyroidism: no profile yet",
         "differential addison-disease: no profile yet"
       ]
     },
@@ -84,41 +82,40 @@
   },
   "patient": {
     "age": {
-      "typical_min": 4,
-      "typical_max": 30,
+      "typical_min": 5,
+      "typical_max": 40,
       "peak": "10–14",
       "possible_min": 1,
       "possible_max": 90
     },
     "sex": "either",
     "demographics": [
-      "Slight male predominance in childhood-onset disease",
-      "More common in people of Northern European descent",
-      "Incidence peaks around puberty"
+      "Higher incidence in non-Hispanic White and Northern European populations."
     ],
     "risk_factors": [
       {
-        "text": "First-degree relative with type 1 diabetes",
+        "text": "Family history of type 1 diabetes",
+        "strength": "strong"
+      },
+      {
+        "text": "Personal history of another autoimmune disease (e.g., autoimmune thyroid disease, celiac disease)",
         "strength": "moderate"
       },
       {
-        "text": "Personal history of another autoimmune disease (thyroid, celiac, adrenal)",
+        "text": "Certain HLA genotypes (HLA-DR3, HLA-DR4)",
         "strength": "moderate"
       },
       {
-        "text": "Age under 20 years",
+        "text": "History of certain viral infections (e.g., enterovirus)",
         "strength": "weak"
       }
     ],
     "comorbidities": [
       "Autoimmune thyroid disease",
-      "Celiac disease",
-      "Addison disease"
+      "Celiac disease"
     ],
     "family_history": [
-      "Type 1 diabetes in a parent or sibling",
-      "Autoimmune thyroid disease",
-      "Celiac disease"
+      "Type 1 diabetes in a first-degree relative"
     ],
     "social_history": [],
     "exposures": [],
@@ -127,98 +124,73 @@
   "presentation": {
     "chief_complaints": [
       {
-        "text": "I'm so thirsty all the time",
-        "frequency": "almost_always"
+        "text": "I am thirsty all the time",
+        "frequency": "almost_always",
+        "term": "Polydipsia",
+        "snomed_verified": true
       },
       {
-        "text": "I'm peeing all the time, even at night",
-        "frequency": "almost_always"
+        "text": "I have to pee constantly, including at night",
+        "frequency": "almost_always",
+        "term": "Polyuria",
+        "snomed_verified": true
       },
       {
-        "text": "I've lost weight without trying",
-        "frequency": "common"
-      },
-      {
-        "text": "I'm exhausted and can't keep up",
-        "frequency": "common"
-      },
-      {
-        "text": "My vision is blurry",
-        "frequency": "sometimes"
-      },
-      {
-        "text": "I've been throwing up and my stomach hurts",
-        "frequency": "sometimes"
+        "text": "I have lost weight without trying",
+        "frequency": "common",
+        "term": "Weight loss",
+        "snomed_verified": true
       }
     ],
     "hpi": {
-      "onset": "Abrupt, over days to a few weeks; often after a viral illness",
-      "duration": "Days to weeks at presentation; DKA can bring patients in within 24–48 hours of worsening",
-      "progression": "Rapidly worsening thirst, urination and fatigue; without insulin, progresses to vomiting, abdominal pain, deep breathing and confusion",
-      "location": "Generalized; abdominal pain when present is diffuse or periumbilical",
-      "radiation": "Abdominal pain does not radiate",
-      "quality": "Constant thirst and frequent urination; abdominal pain is dull and crampy",
-      "severity": "Moderate to severe; children may be lethargic or difficult to arouse if ketoacidosis is advanced",
-      "timing": "Constant; urination continues through the night",
-      "aggravating": [
-        "Eating",
-        "Sugary drinks",
-        "Exercise before insulin is started"
-      ],
-      "relieving": [
-        "Drinking fluids",
-        "Insulin"
-      ],
+      "onset": "Often abrupt over days to weeks, especially in children; may be more gradual in adults.",
+      "duration": "Symptoms typically present for 1–3 weeks before diagnosis; DKA can develop within days.",
+      "progression": "Polyuria and polydipsia appear first, followed by fatigue, weight loss, and sometimes vomiting, abdominal pain, or altered mentation as DKA develops.",
       "associated_symptoms": [
         {
-          "text": "Drinking large amounts of water and still feeling thirsty",
-          "frequency": "almost_always"
+          "text": "Feeling very tired",
+          "frequency": "common",
+          "term": "Fatigue",
+          "snomed_verified": true
         },
         {
-          "text": "Waking at night to urinate",
-          "frequency": "almost_always"
-        },
-        {
-          "text": "Weight loss despite a good appetite",
-          "frequency": "common"
+          "text": "Feeling hungry even after eating",
+          "frequency": "sometimes",
+          "term": "Polyphagia",
+          "snomed_verified": true
         },
         {
           "text": "Blurry vision",
-          "frequency": "common"
+          "frequency": "sometimes",
+          "term": "Blurred vision",
+          "snomed_verified": true
         },
         {
-          "text": "Nausea and vomiting",
-          "frequency": "sometimes"
+          "text": "Nausea",
+          "frequency": "sometimes",
+          "term": "Nausea",
+          "snomed_verified": true
         },
         {
-          "text": "Abdominal pain",
-          "frequency": "sometimes"
+          "text": "Vomiting",
+          "frequency": "sometimes",
+          "term": "Vomiting",
+          "snomed_verified": true
         },
         {
-          "text": "Fast, deep breathing",
-          "frequency": "sometimes"
-        },
-        {
-          "text": "Fruity or acetone breath",
-          "frequency": "sometimes"
-        },
-        {
-          "text": "Tingling or numbness in the feet or hands",
-          "frequency": "rare"
-        },
-        {
-          "text": "Sores that are slow to heal",
-          "frequency": "rare"
+          "text": "Belly pain",
+          "frequency": "sometimes",
+          "term": "Abdominal pain",
+          "snomed_verified": true
         }
       ],
       "pertinent_negatives": [
-        "No fever with dysuria or flank pain",
-        "No vaginal discharge or dyspareunia",
-        "No polyuria from a diuretic or excessive water drinking alone",
-        "No gradual weight gain with dark velvety skin folds",
-        "No chronic steroid use",
-        "No focal neurologic deficit",
-        "No recent head trauma or seizure"
+        "Recent weight gain",
+        "Burning with urination or flank pain",
+        "Sudden vision loss",
+        "Heat intolerance, tremor, or palpitations",
+        "History of pancreatitis or pancreatic surgery",
+        "Use of glucocorticoids or other hyperglycemic drugs"
       ]
     },
     "ros": [
@@ -226,59 +198,62 @@
         "system": "constitutional",
         "positives": [
           {
-            "text": "Fatigue",
-            "frequency": "common"
+            "text": "Feeling very tired",
+            "frequency": "common",
+            "term": "Fatigue",
+            "snomed_verified": true
           },
           {
-            "text": "Unintentional weight loss",
-            "frequency": "common"
+            "text": "Losing weight without trying",
+            "frequency": "common",
+            "term": "Weight loss",
+            "snomed_verified": true
           }
         ],
         "negatives": [
           "Fever",
-          "Night sweats",
-          "Weight gain"
+          "Night sweats"
         ]
       },
       {
         "system": "endocrine",
         "positives": [
           {
-            "text": "Excessive thirst",
-            "frequency": "almost_always"
+            "text": "Feeling thirsty all the time",
+            "frequency": "almost_always",
+            "term": "Polydipsia",
+            "snomed_verified": true
           },
           {
-            "text": "Excessive hunger",
-            "frequency": "common"
+            "text": "Feeling hungry even after eating",
+            "frequency": "sometimes",
+            "term": "Polyphagia",
+            "snomed_verified": true
           }
         ],
         "negatives": [
-          "Heat or cold intolerance",
-          "Neck swelling",
-          "Dark velvety skin folds"
+          "Heat intolerance",
+          "Tremor",
+          "Palpitations"
+        ],
+        "argues_against": [
+          "Weight gain despite increased appetite"
         ]
       },
       {
-        "system": "genitourinary",
+        "system": "eyes",
         "positives": [
           {
-            "text": "Frequent urination, including at night",
-            "frequency": "almost_always"
-          },
-          {
-            "text": "Bedwetting in a previously dry child",
-            "frequency": "sometimes"
+            "text": "Blurry vision",
+            "frequency": "sometimes",
+            "term": "Blurred vision",
+            "snomed_verified": true
           }
         ],
         "negatives": [
-          "Burning with urination",
-          "Blood in urine",
-          "Flank pain",
-          "Vaginal discharge"
-        ],
-        "argues_against": [
-          "Urinary tract infection",
-          "Diabetes insipidus"
+          "Eye pain",
+          "Redness",
+          "Sudden vision loss"
         ]
       },
       {
@@ -286,361 +261,274 @@
         "positives": [
           {
             "text": "Nausea",
-            "frequency": "sometimes"
+            "frequency": "sometimes",
+            "term": "Nausea",
+            "snomed_verified": true
           },
           {
             "text": "Vomiting",
-            "frequency": "sometimes"
+            "frequency": "sometimes",
+            "term": "Vomiting",
+            "snomed_verified": true
           },
           {
-            "text": "Abdominal pain",
-            "frequency": "sometimes"
+            "text": "Belly pain",
+            "frequency": "sometimes",
+            "term": "Abdominal pain",
+            "snomed_verified": true
           }
         ],
         "negatives": [
+          "Diarrhea",
           "Blood in stool",
-          "Jaundice",
-          "Chronic diarrhea"
+          "Jaundice"
         ],
         "argues_against": [
-          "Gastroenteritis",
-          "Surgical abdomen"
+          "Profuse diarrhea"
+        ]
+      },
+      {
+        "system": "genitourinary",
+        "positives": [
+          {
+            "text": "Urinating large amounts frequently",
+            "frequency": "almost_always",
+            "term": "Polyuria",
+            "snomed_verified": true
+          },
+          {
+            "text": "Waking up at night to urinate",
+            "frequency": "common",
+            "term": "Nocturia",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Dysuria",
+          "Hematuria",
+          "Flank pain"
+        ],
+        "argues_against": [
+          "Colicky flank pain radiating to the groin"
         ]
       },
       {
         "system": "neurologic",
         "positives": [
           {
-            "text": "Blurry vision",
-            "frequency": "common"
+            "text": "Feeling confused",
+            "frequency": "rare",
+            "term": "Confusion",
+            "snomed_verified": true
           },
           {
-            "text": "Tingling or numbness in the feet",
-            "frequency": "rare"
+            "text": "Feeling very sleepy",
+            "frequency": "rare",
+            "term": "Somnolence",
+            "snomed_verified": true
           }
         ],
         "negatives": [
           "Focal weakness",
-          "Seizure",
-          "Severe headache"
-        ],
-        "argues_against": [
-          "Stroke",
-          "Central nervous system infection"
-        ]
-      },
-      {
-        "system": "respiratory",
-        "positives": [
-          {
-            "text": "Deep, rapid breathing",
-            "frequency": "sometimes"
-          }
-        ],
-        "negatives": [
-          "Cough",
-          "Shortness of breath at rest",
-          "Chest pain"
-        ],
-        "argues_against": [
-          "Pneumonia"
-        ]
-      },
-      {
-        "system": "skin",
-        "positives": [
-          {
-            "text": "Dry skin",
-            "frequency": "sometimes"
-          },
-          {
-            "text": "Slow-healing sores",
-            "frequency": "rare"
-          }
-        ],
-        "negatives": [
-          "Rash",
-          "Recurrent boils",
-          "Velvety dark patches"
+          "Numbness",
+          "Headache"
         ]
       }
     ],
     "atypical": [
       {
         "population": "children",
-        "how_it_differs": "Toddlers and infants present with irritability, poor feeding, failure to thrive, heavy wet diapers and new bedwetting rather than clear thirst complaints.",
+        "how_it_differs": "Onset is often abrupt with polyuria, polydipsia, and weight loss; DKA at diagnosis is common because parents may not recognize early signs.",
+        "missing_classic_features": []
+      },
+      {
+        "population": "infants",
+        "how_it_differs": "May present with irritability, poor feeding, dehydration, and tachypnea from DKA; polyuria is often not noticed because of diapers, and failure to thrive may be the main sign.",
         "missing_classic_features": [
-          "Explicit polydipsia",
-          "Explicit polyuria",
-          "Weight loss reported by the patient"
+          "Polydipsia",
+          "Polyuria"
         ]
       },
       {
         "population": "older_adults",
-        "how_it_differs": "Onset can be slower and symptoms mistaken for normal aging; patients may present with dehydration, confusion or weight loss rather than classic thirst.",
+        "how_it_differs": "May have slower onset, less weight loss, and be mistaken for type 2 diabetes initially; ketosis may be absent at first.",
         "missing_classic_features": [
           "Abrupt onset",
-          "Marked polyuria"
-        ]
-      },
-      {
-        "population": "obesity",
-        "how_it_differs": "Type 1 can occur in people with obesity and be mistaken for type 2; they may still have ketosis-prone disease and need insulin.",
-        "missing_classic_features": [
-          "Lean body habitus",
-          "Rapid weight loss"
+          "Marked weight loss",
+          "Ketosis at diagnosis"
         ]
       },
       {
         "population": "pregnancy",
-        "how_it_differs": "May first appear or worsen during pregnancy with severe hyperglycemia, and can be confused with gestational diabetes.",
+        "how_it_differs": "Symptoms can be attributed to normal pregnancy; DKA can occur at lower glucose levels and progress rapidly.",
         "missing_classic_features": [
-          "Childhood or adolescent onset"
+          "Weight loss"
+        ]
+      },
+      {
+        "population": "obesity",
+        "how_it_differs": "Obesity does not rule out type 1; patients may be misdiagnosed as type 2 because of body habitus and slower onset.",
+        "missing_classic_features": [
+          "Marked weight loss"
         ]
       }
     ]
   },
   "exam": {
     "general": {
-      "mild": "Alert, well-appearing but tired; may look thin",
-      "moderate": "Lethargic, dry mucous membranes, appears dehydrated",
-      "severe": "Ill-appearing, markedly dehydrated, deep sighing respirations, fruity breath",
-      "critical": "Obtunded or unresponsive, severely dehydrated, Kussmaul breathing, shock"
+      "mild": "Well-appearing; alert and interactive, may have mild dehydration but no respiratory distress.",
+      "moderate": "Tired but responsive; signs of mild dehydration such as dry mouth and slightly reduced skin turgor.",
+      "severe": "Ill-appearing and lethargic; deep, rapid (Kussmaul) respirations; pronounced dehydration with poor skin turgor and dry mucous membranes.",
+      "critical": "Obtunded or comatose; hypovolemic shock with hypotension and poor perfusion; Kussmaul respirations may be present or breathing may become shallow as the patient tires."
     },
     "findings": [
       {
-        "id": "weight-loss-cachexia",
-        "region": "general",
-        "maneuver": "Observe body habitus and compare with prior weight if available",
-        "finding": "Recent unintentional weight loss; lean or wasted appearance",
-        "frequency": "common",
-        "significance": "supports",
-        "importance": "important"
-      },
-      {
         "id": "dry-mucous-membranes",
         "region": "heent",
-        "maneuver": "Inspect the oral mucosa and tongue",
-        "finding": "Dry, tacky mucous membranes; sunken eyes",
+        "maneuver": "Inspect the oral mucosa.",
+        "finding": "Dry, sticky mucous membranes.",
         "frequency": "common",
         "min_severity": "moderate",
         "significance": "supports",
-        "importance": "important"
+        "importance": "important",
+        "term": "Dry mouth",
+        "snomed_verified": true
       },
       {
-        "id": "kussmaul-breathing",
+        "id": "poor-skin-turgor",
+        "region": "skin",
+        "maneuver": "Pinch skin on the forearm or abdomen and release.",
+        "finding": "Skin tenting or slow return.",
+        "frequency": "common",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Decreased skin turgor",
+        "snomed_verified": true
+      },
+      {
+        "id": "kussmaul-respirations",
         "region": "lung",
-        "maneuver": "Observe the respiratory pattern and effort",
-        "finding": "Deep, rapid, sighing respirations without retractions",
+        "maneuver": "Observe the patient's breathing pattern.",
+        "finding": "Deep, sighing, rapid respirations.",
         "frequency": "sometimes",
         "min_severity": "severe",
         "significance": "strongly_supports",
-        "importance": "essential"
+        "importance": "essential",
+        "term": "Kussmaul respiration",
+        "snomed_verified": true
       },
       {
         "id": "acetone-breath",
         "region": "heent",
-        "maneuver": "Smell the patient's breath",
-        "finding": "Fruity or acetone odor",
+        "maneuver": "Smell the patient's breath.",
+        "finding": "Fruity or acetone odor.",
         "frequency": "sometimes",
         "min_severity": "severe",
         "significance": "strongly_supports",
-        "importance": "important"
+        "importance": "important",
+        "term": "Acetone breath",
+        "snomed_verified": true
       },
       {
-        "id": "tachycardia",
-        "region": "cardiac",
-        "maneuver": "Palpate the radial pulse and auscultate the heart",
-        "finding": "Tachycardia with regular rhythm",
-        "frequency": "common",
-        "min_severity": "moderate",
+        "id": "altered-mental-status",
+        "region": "mental_status",
+        "maneuver": "Assess level of consciousness.",
+        "finding": "Drowsiness or confusion.",
+        "frequency": "rare",
+        "min_severity": "critical",
         "significance": "supports",
-        "importance": "important"
+        "importance": "essential",
+        "term": "Altered mental status",
+        "snomed_verified": true
       },
       {
-        "id": "hypotension",
-        "region": "cardiac",
-        "maneuver": "Measure blood pressure with the patient seated or supine",
-        "finding": "Low blood pressure, worse on standing",
+        "id": "delayed-capillary-refill",
+        "region": "skin",
+        "maneuver": "Press on a nail bed until it blanches and release.",
+        "finding": "Capillary refill time >2 seconds.",
         "frequency": "sometimes",
         "min_severity": "severe",
         "significance": "supports",
-        "importance": "essential"
-      },
-      {
-        "id": "capillary-refill-delay",
-        "region": "extremities",
-        "maneuver": "Press the nail bed and release, timing refill",
-        "finding": "Prolonged capillary refill (>2 seconds)",
-        "frequency": "sometimes",
-        "min_severity": "severe",
-        "significance": "supports",
-        "importance": "important"
+        "importance": "important",
+        "term": "Delayed capillary refill",
+        "snomed_verified": false
       },
       {
         "id": "abdominal-tenderness",
         "region": "abdomen",
-        "maneuver": "Palpate all four quadrants",
-        "finding": "Diffuse or periumbilical tenderness without guarding or rebound",
+        "maneuver": "Palpate the abdomen.",
+        "finding": "Diffuse abdominal tenderness without rebound.",
         "frequency": "sometimes",
         "min_severity": "moderate",
         "significance": "supports",
-        "importance": "optional"
+        "importance": "optional",
+        "term": "Abdominal tenderness",
+        "snomed_verified": true
       },
       {
-        "id": "blurry-vision",
-        "region": "heent",
-        "maneuver": "Check visual acuity and ask about blurring",
-        "finding": "Blurred vision that improves with glucose control",
-        "frequency": "sometimes",
-        "significance": "supports",
-        "importance": "optional"
-      },
-      {
-        "id": "reduced-sensation-feet",
-        "region": "extremities",
-        "maneuver": "Test light touch and vibration sense in the feet",
-        "finding": "Decreased sensation in a stocking distribution",
-        "frequency": "rare",
-        "significance": "supports",
-        "importance": "optional"
-      },
-      {
-        "id": "normal-lung-exam",
-        "region": "lung",
-        "maneuver": "Auscultate the lungs",
-        "finding": "Clear breath sounds without crackles or wheeze",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "optional"
-      },
-      {
-        "id": "normal-skin",
+        "id": "no-acanthosis-nigricans",
         "region": "skin",
-        "maneuver": "Inspect the skin for rashes, ulcers or velvety patches",
-        "finding": "No rash, no acanthosis nigricans, no chronic ulcers",
+        "maneuver": "Inspect the neck, axillae, and flexural areas.",
+        "finding": "No velvety, hyperpigmented plaques.",
         "frequency": "almost_always",
         "significance": "neutral",
-        "importance": "optional"
+        "importance": "optional",
+        "term": "Acanthosis nigricans",
+        "snomed_verified": true
       },
       {
-        "id": "normal-neuro",
-        "region": "neuro",
-        "maneuver": "Perform a focused neurologic exam",
-        "finding": "No focal deficit, normal mental status when not in DKA",
+        "id": "no-goiter",
+        "region": "neck",
+        "maneuver": "Inspect and palpate the thyroid gland.",
+        "finding": "No thyroid enlargement or nodules.",
         "frequency": "almost_always",
         "significance": "neutral",
-        "importance": "optional"
+        "importance": "optional",
+        "term": "Goiter",
+        "snomed_verified": true
       }
     ]
   },
   "vitals": {
-    "temp": {
-      "mild": {
-        "min": 98.0,
-        "max": 99.0
-      },
-      "moderate": {
-        "min": 98.0,
-        "max": 99.5
-      },
-      "severe": {
-        "min": 97.5,
-        "max": 99.5
-      },
-      "critical": {
-        "min": 97.0,
-        "max": 100.0
-      }
-    },
     "hr": {
-      "mild": {
-        "min": 80,
-        "max": 100
-      },
-      "moderate": {
-        "min": 100,
-        "max": 120
-      },
-      "severe": {
-        "min": 110,
-        "max": 140
-      },
-      "critical": {
-        "min": 120,
-        "max": 160
-      }
-    },
-    "rr": {
-      "mild": {
-        "min": 14,
-        "max": 20
-      },
-      "moderate": {
-        "min": 18,
-        "max": 24
-      },
-      "severe": {
-        "min": 22,
-        "max": 32
-      },
-      "critical": {
-        "min": 28,
-        "max": 40
-      }
-    },
-    "sbp": {
-      "mild": {
-        "min": 100,
-        "max": 120
-      },
       "moderate": {
         "min": 90,
         "max": 110
       },
       "severe": {
-        "min": 80,
-        "max": 100
+        "min": 110,
+        "max": 130
       },
       "critical": {
-        "min": 60,
-        "max": 90
+        "min": 120,
+        "max": 150
+      }
+    },
+    "rr": {
+      "moderate": {
+        "min": 18,
+        "max": 22
+      },
+      "severe": {
+        "min": 24,
+        "max": 30
+      },
+      "critical": {
+        "min": 28,
+        "max": 36
+      }
+    },
+    "sbp": {
+      "critical": {
+        "min": 70,
+        "max": 95
       }
     },
     "dbp": {
-      "mild": {
-        "min": 60,
-        "max": 80
-      },
-      "moderate": {
-        "min": 55,
-        "max": 75
-      },
-      "severe": {
-        "min": 50,
-        "max": 70
-      },
       "critical": {
-        "min": 30,
+        "min": 40,
         "max": 60
-      }
-    },
-    "spo2": {
-      "mild": {
-        "min": 95,
-        "max": 100
-      },
-      "moderate": {
-        "min": 95,
-        "max": 100
-      },
-      "severe": {
-        "min": 92,
-        "max": 99
-      },
-      "critical": {
-        "min": 88,
-        "max": 96
       }
     }
   },
@@ -649,438 +537,347 @@
       "test_id": "glucose",
       "ranges": {
         "mild": {
-          "min": 126,
-          "max": 200
+          "min": 180,
+          "max": 350
         },
         "moderate": {
-          "min": 200,
-          "max": 350
+          "min": 250,
+          "max": 500
         },
         "severe": {
           "min": 350,
-          "max": 600
+          "max": 700
         },
         "critical": {
           "min": 500,
-          "max": 900
+          "max": 1000
         }
       },
       "frequency": "almost_always",
       "importance": "essential",
-      "caveat": "Fasting glucose of 126 mg/dL or higher, or a random glucose of 200 mg/dL or higher with classic symptoms, supports the diagnosis. Values above 250 mg/dL raise concern for ketoacidosis."
+      "caveat": "Random glucose ≥200 mg/dL with classic symptoms is diagnostic; fasting is not needed."
     },
     {
       "test_id": "a1c",
       "ranges": {
         "mild": {
           "min": 6.5,
-          "max": 8.0
+          "max": 9.0
         },
         "moderate": {
           "min": 8.0,
-          "max": 10.5
+          "max": 12.0
         },
         "severe": {
-          "min": 10.5,
+          "min": 10.0,
           "max": 14.0
         },
         "critical": {
           "min": 12.0,
-          "max": 18.0
+          "max": 16.0
         }
       },
-      "frequency": "almost_always",
-      "importance": "essential",
-      "caveat": "A1c of 6.5% or higher meets a diagnostic threshold. It reflects average glucose over about 3 months and can be falsely low in rapid-onset disease, anemia, or hemoglobin variants."
+      "frequency": "common",
+      "importance": "important",
+      "caveat": "May be near normal in very acute onset; repeat if initially nondiagnostic."
     },
     {
       "test_id": "hco3",
       "ranges": {
-        "mild": {
-          "min": 20,
-          "max": 22
-        },
         "moderate": {
-          "min": 15,
-          "max": 20
+          "min": 16,
+          "max": 22
         },
         "severe": {
           "min": 8,
-          "max": 15
+          "max": 18
         },
         "critical": {
-          "min": 4,
-          "max": 8
+          "min": 5,
+          "max": 15
         }
       },
-      "frequency": "common",
+      "frequency": "sometimes",
       "importance": "essential",
-      "caveat": "Low bicarbonate reflects metabolic acidosis from ketoacidosis. A value below 18 mmol/L with ketones and hyperglycemia supports DKA."
+      "caveat": "Low when DKA is present; normal in mild hyperglycemia without acidosis."
     },
     {
       "test_id": "k",
       "ranges": {
-        "mild": {
-          "min": 3.3,
-          "max": 3.5
-        },
-        "moderate": {
-          "min": 2.8,
-          "max": 3.3
-        },
         "severe": {
-          "min": 2.0,
-          "max": 2.8
+          "min": 5.0,
+          "max": 6.5
         },
         "critical": {
-          "min": 1.5,
-          "max": 2.0
+          "min": 5.5,
+          "max": 7.0
         }
       },
-      "frequency": "common",
+      "frequency": "sometimes",
       "importance": "essential",
-      "caveat": "Total body potassium is depleted even when serum potassium looks normal or high; insulin and fluid shifts can cause a dangerous drop. Potassium must be checked before and during insulin therapy."
+      "caveat": "Serum potassium may be normal or high from acidosis despite total-body depletion; recheck before giving insulin."
     },
     {
       "test_id": "na",
       "ranges": {
-        "mild": {
-          "min": 132,
-          "max": 135
-        },
         "moderate": {
           "min": 128,
-          "max": 132
+          "max": 138
         },
         "severe": {
-          "min": 120,
-          "max": 128
+          "min": 122,
+          "max": 136
         },
         "critical": {
-          "min": 110,
-          "max": 120
+          "min": 118,
+          "max": 134
         }
       },
-      "frequency": "common",
+      "frequency": "sometimes",
       "importance": "important",
-      "caveat": "Dilutional hyponatremia from hyperglycemia and fluid loss; corrected sodium is higher than measured. A high corrected sodium in DKA suggests severe free-water loss."
-    },
-    {
-      "test_id": "cr",
-      "ranges": {
-        "mild": {
-          "min": 1.1,
-          "max": 1.4
-        },
-        "moderate": {
-          "min": 1.4,
-          "max": 2.0
-        },
-        "severe": {
-          "min": 2.0,
-          "max": 3.5
-        },
-        "critical": {
-          "min": 3.0,
-          "max": 6.0
-        }
-      },
-      "frequency": "common",
-      "importance": "important",
-      "caveat": "Rises with dehydration and prerenal azotemia; usually improves with fluids. Persistent elevation suggests acute kidney injury."
+      "caveat": "Hyperglycemia causes dilutional hyponatremia; correct sodium for glucose if needed."
     },
     {
       "test_id": "bun",
       "ranges": {
-        "mild": {
+        "moderate": {
+          "min": 15,
+          "max": 25
+        },
+        "severe": {
           "min": 20,
-          "max": 28
-        },
-        "moderate": {
-          "min": 28,
-          "max": 45
-        },
-        "severe": {
-          "min": 45,
-          "max": 70
+          "max": 40
         },
         "critical": {
-          "min": 60,
-          "max": 100
-        }
-      },
-      "frequency": "common",
-      "importance": "important",
-      "caveat": "Elevated from dehydration and catabolism; the BUN/creatinine ratio is often high."
-    },
-    {
-      "test_id": "phos",
-      "ranges": {
-        "mild": {
-          "min": 2.0,
-          "max": 2.5
-        },
-        "moderate": {
-          "min": 1.5,
-          "max": 2.0
-        },
-        "severe": {
-          "min": 1.0,
-          "max": 1.5
-        },
-        "critical": {
-          "min": 0.5,
-          "max": 1.0
-        }
-      },
-      "frequency": "sometimes",
-      "importance": "important",
-      "caveat": "Low in DKA from osmotic diuresis and intracellular shift; severe hypophosphatemia can cause weakness and respiratory depression."
-    },
-    {
-      "test_id": "osm",
-      "ranges": {
-        "mild": {
-          "min": 295,
-          "max": 310
-        },
-        "moderate": {
-          "min": 310,
-          "max": 330
-        },
-        "severe": {
-          "min": 330,
-          "max": 360
-        },
-        "critical": {
-          "min": 350,
-          "max": 400
+          "min": 25,
+          "max": 50
         }
       },
       "frequency": "sometimes",
       "importance": "optional",
-      "caveat": "High in hyperglycemic dehydration; helps assess severity and guide fluid therapy."
+      "caveat": "Prerenal from osmotic diuresis and vomiting."
     },
     {
-      "test_id": "wbc",
+      "test_id": "ph",
       "ranges": {
-        "mild": {
-          "min": 11.0,
-          "max": 15.0
-        },
         "moderate": {
-          "min": 15.0,
-          "max": 20.0
+          "min": 7.25,
+          "max": 7.35
         },
         "severe": {
-          "min": 20.0,
-          "max": 30.0
+          "min": 7.0,
+          "max": 7.3
         },
         "critical": {
-          "min": 25.0,
-          "max": 40.0
+          "min": 6.9,
+          "max": 7.2
         }
       },
-      "frequency": "common",
-      "importance": "optional",
-      "caveat": "Leukocytosis is common in DKA from stress and dehydration and does not by itself mean infection."
+      "frequency": "sometimes",
+      "importance": "essential",
+      "caveat": "Metabolic acidosis if DKA."
+    },
+    {
+      "test_id": "paco2",
+      "ranges": {
+        "moderate": {
+          "min": 25,
+          "max": 35
+        },
+        "severe": {
+          "min": 15,
+          "max": 30
+        },
+        "critical": {
+          "min": 10,
+          "max": 25
+        }
+      },
+      "frequency": "sometimes",
+      "importance": "important",
+      "caveat": "Compensatory respiratory alkalosis from Kussmaul respirations."
     },
     {
       "test_id": "ua_glucose",
       "qualitative": {
-        "mild": "1+",
+        "mild": "Trace",
         "moderate": "2+",
         "severe": "3+",
         "critical": "4+"
       },
       "frequency": "almost_always",
-      "importance": "essential",
-      "caveat": "Glucose appears in urine once the blood level exceeds the renal threshold; a strong positive supports hyperglycemia."
+      "importance": "important",
+      "caveat": "Glucosuria occurs when serum glucose exceeds the renal threshold (~180 mg/dL)."
     },
     {
       "test_id": "ua_ketones",
       "qualitative": {
-        "mild": "Trace",
         "moderate": "Small",
-        "severe": "Moderate",
+        "severe": "Large",
         "critical": "Large"
       },
-      "frequency": "common",
+      "frequency": "sometimes",
       "importance": "essential",
-      "caveat": "Urine ketones confirm ketosis. The nitroprusside method mainly detects acetoacetate and can underestimate ketones early in DKA; serum beta-hydroxybutyrate is more accurate when available."
-    },
-    {
-      "test_id": "tsh",
-      "frequency": "sometimes",
-      "importance": "optional",
-      "caveat": "Screen for autoimmune thyroid disease, which clusters with type 1 diabetes."
-    },
-    {
-      "test_id": "ft4",
-      "frequency": "sometimes",
-      "importance": "optional",
-      "caveat": "Order with TSH if thyroid disease is suspected."
-    },
-    {
-      "test_id": "cortisol_am",
-      "frequency": "rare",
-      "importance": "optional",
-      "caveat": "Check only if Addison disease is suspected (unexplained hypotension, hyperkalemia, or hyponatremia that does not fit DKA)."
+      "caveat": "Positive in DKA; serum ketones are more accurate."
     }
   ],
   "ecg": {
     "findings": [
       {
-        "feature": "rhythm",
-        "finding": "Sinus tachycardia",
-        "frequency": "common",
-        "min_severity": "moderate"
-      },
-      {
         "feature": "t_wave",
-        "finding": "Peaked T waves from hyperkalemia",
+        "finding": "Tall, peaked T waves",
+        "leads": [
+          "V2",
+          "V3",
+          "V4",
+          "II",
+          "III",
+          "aVF"
+        ],
         "frequency": "rare",
         "min_severity": "severe"
       },
       {
         "feature": "qrs",
-        "finding": "Widened QRS from severe hyperkalemia",
+        "finding": "Widened QRS complex",
+        "frequency": "rare",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "pr",
+        "finding": "Prolonged PR interval",
+        "frequency": "rare",
+        "min_severity": "severe"
+      },
+      {
+        "feature": "other",
+        "finding": "Sine wave pattern",
         "frequency": "rare",
         "min_severity": "critical"
-      },
-      {
-        "feature": "qt",
-        "finding": "Prolonged QT from hypokalemia or hypocalcemia",
-        "frequency": "rare",
-        "min_severity": "severe"
-      },
-      {
-        "feature": "st",
-        "finding": "ST depression or nonspecific ST-T changes from electrolyte disturbance",
-        "frequency": "rare",
-        "min_severity": "severe"
       }
     ]
   },
-  "imaging": [
-    {
-      "study": "Chest x-ray",
-      "modality": "xray",
-      "findings": [
-        {
-          "text": "Usually normal; no infiltrate, effusion, or pneumothorax",
-          "frequency": "almost_always"
-        },
-        {
-          "text": "Findings of infection or aspiration if present",
-          "frequency": "rare"
-        }
-      ]
-    }
-  ],
+  "imaging": [],
   "workup": {
     "initial": [
       {
-        "test": "glucose",
-        "why": "Confirms hyperglycemia; a random level of 200 mg/dL or higher with classic symptoms is diagnostic"
-      },
-      {
         "test": "bmp",
-        "why": "Assesses bicarbonate, potassium, sodium, and kidney function; low bicarbonate suggests ketoacidosis"
+        "why": "Glucose, electrolytes, bicarbonate, and renal function; identifies hyperglycemia and screens for DKA."
       },
       {
         "test": "ua",
-        "why": "Urine glucose and ketones support the diagnosis and assess ketosis"
-      },
-      {
-        "test": "a1c",
-        "why": "Confirms chronic hyperglycemia and meets a diagnostic threshold at 6.5% or higher"
+        "why": "Urine glucose and ketones support the diagnosis and screen for DKA."
       },
       {
         "test": "cbc",
-        "why": "Baseline white count and blood counts; leukocytosis is common in DKA"
+        "why": "Assess for infection and hemoconcentration in DKA."
       },
       {
-        "test": "phos",
-        "why": "Phosphate is often low in DKA and can fall further with insulin"
-      },
-      {
-        "test": "Chest x-ray",
-        "why": "Looks for infection or other cause of acidosis",
-        "only_if": "infection is suspected (fever, cough, hypoxia, or abnormal lung exam)"
+        "test": "abg",
+        "why": "Evaluate acid-base status in DKA.",
+        "only_if": "DKA is suspected (Kussmaul breathing, vomiting, altered mentation, positive urine ketones, or low bicarbonate on BMP)"
       }
     ],
     "confirmatory": [
       {
-        "test": "Serum beta-hydroxybutyrate",
-        "why": "Directly confirms ketosis and is more accurate than urine ketones in early DKA"
-      },
-      {
-        "test": "Islet autoantibodies (GAD65, IA-2, ZnT8, insulin)",
-        "why": "Confirms autoimmune beta-cell destruction and distinguishes type 1 from type 2 or monogenic diabetes"
+        "test": "a1c",
+        "why": "Diagnostic criterion and baseline glycemic control."
       },
       {
         "test": "C-peptide",
-        "why": "Low or undetectable levels confirm insulin deficiency"
+        "why": "Low or undetectable level indicates insulin deficiency and helps distinguish type 1 from type 2."
+      },
+      {
+        "test": "Glutamic acid decarboxylase (GAD65) antibody",
+        "why": "Most common autoantibody in type 1 diabetes; positive in most patients."
+      },
+      {
+        "test": "Insulin autoantibody (IAA)",
+        "why": "More common in children with recent-onset type 1 diabetes.",
+        "only_if": "young child or very recent onset"
+      },
+      {
+        "test": "Islet antigen 2 (IA-2) antibody",
+        "why": "Additional autoantibody; adds sensitivity when GAD65 is negative."
+      },
+      {
+        "test": "Zinc transporter 8 (ZnT8) antibody",
+        "why": "Additional autoantibody; adds sensitivity when other autoantibodies are negative."
       }
     ],
     "supporting": [
       {
+        "test": "mg",
+        "why": "Magnesium can fall after insulin therapy in DKA.",
+        "only_if": "DKA and significant electrolyte depletion or symptoms"
+      },
+      {
+        "test": "phos",
+        "why": "Phosphate can fall after insulin therapy in DKA.",
+        "only_if": "DKA and significant electrolyte depletion or symptoms"
+      },
+      {
+        "test": "hcg",
+        "why": "Rules out pregnancy if pregnancy is possible.",
+        "only_if": "adolescent or adult female with pregnancy possible"
+      },
+      {
         "test": "tsh",
-        "why": "Screens for associated autoimmune thyroid disease"
+        "why": "Screen for autoimmune thyroid disease, which commonly coexists with type 1 diabetes.",
+        "only_if": "symptoms of thyroid dysfunction or goiter"
       },
       {
-        "test": "ft4",
-        "why": "Confirms thyroid status if TSH is abnormal"
-      },
-      {
-        "test": "cortisol_am",
-        "why": "Evaluates for Addison disease when hypotension, hyperkalemia, or hyponatremia is unexplained",
-        "only_if": "Addison disease is suspected"
+        "test": "Electrocardiogram (ECG)",
+        "why": "Assess for hyperkalemia changes.",
+        "only_if": "potassium >5.5 mEq/L or DKA with severe hyperglycemia"
       }
     ],
     "not_indicated": [
       {
-        "test": "Chest x-ray",
-        "why": "Not routine in an otherwise well patient without respiratory symptoms or signs of infection"
+        "test": "Lipase",
+        "why": "No role unless abdominal pain suggests pancreatitis."
       },
       {
-        "test": "CT",
-        "why": "No role in the diagnosis of type 1 diabetes"
+        "test": "Chest X-ray",
+        "why": "No role in diagnosing diabetes or DKA unless fever, hypoxia, or respiratory distress suggests pneumonia or aspiration."
       },
       {
-        "test": "MRI",
-        "why": "No role in the diagnosis of type 1 diabetes"
+        "test": "d_dimer",
+        "why": "No role in routine evaluation of new diabetes."
       },
       {
-        "test": "lipase",
-        "why": "Not needed unless abdominal pain suggests pancreatitis"
+        "test": "procalcitonin",
+        "why": "No role unless bacterial infection is suspected."
+      },
+      {
+        "test": "Abdominal ultrasound",
+        "why": "No role in diagnosing type 1 diabetes or DKA."
       }
     ],
     "decision_points": [
-      "Check potassium before giving insulin; insulin drives potassium into cells and can cause dangerous hypokalemia",
-      "If DKA is present, treat as a medical emergency with fluids, insulin, and electrolyte replacement",
-      "Distinguish type 1 from type 2 when the presentation is atypical (older age, obesity, or no ketosis) using autoantibodies and C-peptide",
-      "Screen for associated autoimmune conditions such as thyroid disease and celiac disease"
+      "Random glucose ≥200 mg/dL with classic symptoms is diagnostic; do not wait for fasting or A1C.",
+      "If DKA is suspected, start fluids and insulin promptly after labs; do not delay treatment for imaging.",
+      "In children with new-onset diabetes and moderate or severe DKA, arrange ICU admission and careful potassium replacement.",
+      "Pregnancy testing before any test or medication that could affect pregnancy, if relevant."
     ],
     "criteria": [
       {
-        "name": "Diagnostic thresholds for diabetes",
-        "summary": "Diabetes is diagnosed by a fasting glucose of 126 mg/dL or higher, a 2-hour glucose of 200 mg/dL or higher during an oral glucose tolerance test, an A1c of 6.5% or higher, or a random glucose of 200 mg/dL or higher with classic symptoms. Abnormal results are usually confirmed with a repeat test unless symptoms are clear.",
+        "name": "ADA diagnostic criteria for diabetes mellitus",
+        "summary": "One of the following, confirmed by repeat testing unless unequivocal hyperglycemia",
         "items": [
-          "Fasting glucose 126 mg/dL or higher",
-          "2-hour glucose 200 mg/dL or higher on oral glucose tolerance test",
-          "A1c 6.5% or higher",
-          "Random glucose 200 mg/dL or higher with classic symptoms"
+          "Fasting plasma glucose ≥126 mg/dL after at least 8 hours with no caloric intake",
+          "2-hour plasma glucose ≥200 mg/dL during a 75-g oral glucose tolerance test",
+          "A1C ≥6.5%",
+          "Random plasma glucose ≥200 mg/dL with classic symptoms of hyperglycemia or hyperglycemic crisis"
         ]
       },
       {
-        "name": "Diabetic ketoacidosis criteria",
-        "summary": "DKA is suggested by hyperglycemia (often above 250 mg/dL), metabolic acidosis with low bicarbonate, and ketonemia or ketonuria. It is a life-threatening emergency requiring fluids, insulin, and electrolyte replacement.",
+        "name": "Diabetic ketoacidosis (DKA) diagnostic criteria",
+        "summary": "All three of the following: hyperglycemia, ketosis, and high-anion-gap metabolic acidosis",
         "items": [
-          "Glucose usually above 250 mg/dL",
-          "Bicarbonate below 18 mmol/L and pH below 7.30",
-          "Positive serum or urine ketones"
+          "Serum glucose usually >250 mg/dL (may be lower in pregnancy or SGLT2 inhibitor use)",
+          "Ketones in blood or urine",
+          "pH <7.3 and/or serum bicarbonate <18 mmol/L with anion gap >12"
         ]
       }
     ],
@@ -1088,173 +885,161 @@
   },
   "differential": [
     {
-      "name": "Diabetic ketoacidosis",
-      "slug": "diabetic-ketoacidosis",
-      "why_considered": "Type 1 diabetes commonly presents in or progresses to ketoacidosis, with vomiting, abdominal pain, and deep breathing that can be mistaken for the primary diagnosis itself.",
-      "must_not_miss": true,
-      "trigger": "Vomiting, abdominal pain, deep rapid breathing, or fruity breath in a patient with hyperglycemia",
+      "name": "Type 2 diabetes",
+      "slug": "type-2-diabetes",
+      "why_considered": "Polyuria, polydipsia, and elevated blood glucose occur in both types.",
+      "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Rapid worsening over hours to a day or two",
-          "Vomiting and diffuse abdominal pain",
-          "Marked thirst and urination with weight loss"
+          "Insidious onset over months to years",
+          "Often overweight or obese",
+          "Family history of type 2 diabetes",
+          "History of gestational diabetes or metabolic syndrome"
         ],
         "exam": [
-          "Kussmaul respirations",
-          "Acetone or fruity breath",
-          "Signs of dehydration and tachycardia"
+          "Central obesity",
+          "Acanthosis nigricans",
+          "No Kussmaul respirations at diagnosis"
         ],
         "labs": [
-          "Glucose usually above 250 mg/dL",
-          "Bicarbonate below 18 mmol/L with pH below 7.30",
-          "Positive serum or urine ketones"
+          "C-peptide normal or high",
+          "Negative islet autoantibodies",
+          "A1C may be high but ketones usually negative"
         ]
       }
     },
     {
-      "name": "Type 2 diabetes",
-      "slug": "diabetes-type-2",
-      "why_considered": "The most common cause of hyperglycemia; can present with thirst, urination, and weight loss, especially in older or overweight patients.",
+      "name": "Monogenic diabetes",
+      "slug": "monogenic-diabetes",
+      "why_considered": "Young age at diagnosis and strong family history can mimic type 1 diabetes.",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Gradual onset over months to years",
-          "Often overweight or obese with acanthosis nigricans",
-          "Family history of type 2 diabetes",
-          "Rarely presents with ketoacidosis"
+          "Autosomal dominant family history of diabetes (multiple generations)",
+          "Mild fasting hyperglycemia without ketosis",
+          "No obesity or insulin resistance"
         ],
         "exam": [
-          "Central obesity",
-          "Dark velvety skin folds",
-          "No Kussmaul breathing or acetone breath"
+          "No specific physical findings"
         ],
         "labs": [
-          "C-peptide normal or high",
-          "Islet autoantibodies negative",
-          "Ketones usually absent or low"
+          "C-peptide detectable",
+          "Negative islet autoantibodies",
+          "Genetic testing confirms mutation"
         ]
       }
     },
     {
       "name": "Diabetes insipidus",
       "slug": "diabetes-insipidus",
-      "why_considered": "Causes severe polyuria and polydipsia, mimicking the classic presentation of type 1 diabetes.",
+      "why_considered": "Polyuria and polydipsia are the primary symptoms.",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Large volumes of dilute urine, often with a preference for ice water",
-          "No weight loss or polyphagia",
-          "May follow head trauma, neurosurgery, or lithium use"
+          "Craving ice-cold water",
+          "Urine output >3 liters per day",
+          "No weight loss or fatigue"
         ],
         "exam": [
-          "Signs of dehydration if water access is limited",
-          "No acetone breath"
+          "No signs of dehydration if access to water",
+          "No Kussmaul respirations"
         ],
         "labs": [
-          "Normal or near-normal glucose and A1c",
-          "Low urine osmolality with high serum osmolality",
-          "No ketones"
+          "Serum glucose normal",
+          "Urine osmolality low (<300 mOsm/kg)",
+          "Water deprivation test shows inability to concentrate urine"
+        ],
+        "imaging": [
+          "Brain MRI may show absent posterior pituitary bright spot in central DI"
         ]
       }
     },
     {
-      "name": "Urinary tract infection",
-      "slug": "urinary-tract-infection",
-      "why_considered": "Frequent urination, abdominal discomfort, and sometimes nausea can be attributed to a urinary infection, especially in children.",
+      "name": "Hyperthyroidism",
+      "slug": "hyperthyroidism",
+      "why_considered": "Weight loss, fatigue, polyphagia, and increased thirst can overlap with type 1 diabetes.",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Dysuria, urgency, and suprapubic pain",
-          "Fever and chills",
-          "No polydipsia or weight loss"
+          "Heat intolerance",
+          "Palpitations",
+          "Tremor",
+          "Anxiety",
+          "Diarrhea"
         ],
         "exam": [
-          "Suprapubic or costovertebral angle tenderness",
-          "Fever"
+          "Goiter",
+          "Tachycardia",
+          "Warm, moist skin",
+          "Tremor",
+          "Lid lag or proptosis"
         ],
         "labs": [
-          "Positive leukocyte esterase and nitrites on urinalysis",
-          "Pyuria and bacteriuria",
-          "Normal glucose and no ketones"
-        ]
-      }
-    },
-    {
-      "name": "Viral gastroenteritis",
-      "slug": "gastroenteritis",
-      "why_considered": "Vomiting, abdominal pain, and dehydration can resemble early DKA, particularly in children.",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Diarrhea and vomiting in a patient with sick contacts",
-          "No chronic thirst or weight loss",
-          "Symptoms resolve with supportive care"
-        ],
-        "exam": [
-          "Diffuse mild abdominal tenderness",
-          "Signs of dehydration but no Kussmaul breathing"
-        ],
-        "labs": [
-          "Normal glucose and no ketones",
-          "Normal bicarbonate"
+          "Suppressed TSH",
+          "Elevated free T4 or T3",
+          "Normal serum glucose"
         ]
       }
     },
     {
       "name": "Addison disease",
       "slug": "addison-disease",
-      "why_considered": "Autoimmune adrenal insufficiency clusters with type 1 diabetes and can cause fatigue, weight loss, nausea, and hypotension.",
+      "why_considered": "Fatigue, weight loss, abdominal pain, and vomiting can be seen; autoimmune adrenalitis may coexist with type 1 diabetes.",
       "must_not_miss": true,
-      "trigger": "Unexplained hypotension, hyperkalemia, or hyponatremia that does not fit DKA",
+      "trigger": "Hypotension, hyponatremia, hyperkalemia, hypoglycemia, or hyperpigmentation in a patient with fatigue and weight loss, especially if type 1 diabetes is present or suspected.",
       "discriminators": {
         "history": [
-          "Chronic fatigue, weakness, and weight loss",
-          "Salt craving and dizziness on standing",
-          "Hyperpigmentation of skin creases and mucosa"
+          "Salt craving",
+          "Dizziness or syncope",
+          "History of autoimmune disease",
+          "Nausea, vomiting, abdominal pain"
         ],
         "exam": [
-          "Hypotension, especially orthostatic",
-          "Hyperpigmentation"
+          "Hyperpigmentation of skin creases, gums, or scars",
+          "Hypotension",
+          "Orthostatic hypotension"
         ],
         "labs": [
-          "Hyponatremia and hyperkalemia",
-          "Low morning cortisol with elevated ACTH",
-          "Normal glucose unless concurrent diabetes"
+          "Hyponatremia",
+          "Hyperkalemia",
+          "Hypoglycemia (in contrast to hyperglycemia in type 1 diabetes)",
+          "Low cortisol",
+          "Elevated ACTH",
+          "Positive 21-hydroxylase antibody"
+        ],
+        "imaging": [
+          "Adrenal CT may show small or enlarged adrenal glands depending on cause"
         ]
       }
     }
   ],
   "course": {
     "severity": {
-      "mild": "Early, uncomplicated: mild polyuria and polydipsia, no dehydration, glucose 126–200 mg/dL, no ketosis",
-      "moderate": "Established hyperglycemia with dehydration and fatigue, glucose 200–350 mg/dL, trace to small ketones, bicarbonate 15–20 mmol/L",
-      "severe": "Ketoacidosis: vomiting, abdominal pain, Kussmaul breathing, glucose 350–600 mg/dL, moderate to large ketones, bicarbonate 8–15 mmol/L",
-      "critical": "Severe DKA or hyperglycemic crisis: obtundation, shock, glucose above 500 mg/dL, bicarbonate below 8 mmol/L, pH below 7.1, or significant electrolyte disturbance"
+      "mild": "New-onset hyperglycemia without significant dehydration or acidosis; patient is well-appearing, able to eat and drink.",
+      "moderate": "Hyperglycemia with mild dehydration and early ketosis; may have nausea, vomiting, and mild acidosis but no altered mental status.",
+      "severe": "DKA with moderate-to-severe dehydration, Kussmaul respirations, abdominal pain, and lethargy; pH <7.2 and serum bicarbonate <10 mmol/L.",
+      "critical": "Severe DKA with obtundation or coma, hypotension, or pH <6.9; immediate ICU care needed."
     },
     "red_flags": [
       {
-        "finding": "Deep, rapid breathing (Kussmaul respirations)",
-        "meaning": "Severe metabolic acidosis from ketoacidosis; needs immediate fluids and insulin"
+        "finding": "Kussmaul respirations",
+        "meaning": "DKA; requires immediate blood gas, ketone testing, and insulin/fluids"
+      },
+      {
+        "finding": "Altered mental status",
+        "meaning": "Cerebral edema or severe acidosis; immediate ICU"
+      },
+      {
+        "finding": "Hypotension or signs of shock",
+        "meaning": "Severe DKA with volume depletion; aggressive fluid resuscitation"
       },
       {
         "finding": "Fruity or acetone breath",
-        "meaning": "Significant ketone production; DKA until proven otherwise"
+        "meaning": "Ketosis; confirm with ketone testing"
       },
       {
-        "finding": "Vomiting and diffuse abdominal pain",
-        "meaning": "May signal DKA rather than a surgical abdomen; check glucose and ketones"
-      },
-      {
-        "finding": "Altered mental status or lethargy",
-        "meaning": "Severe dehydration, acidosis, or cerebral edema; emergency"
-      },
-      {
-        "finding": "Hypotension or tachycardia",
-        "meaning": "Volume depletion or shock; requires urgent fluid resuscitation"
-      },
-      {
-        "finding": "Potassium below 3.3 mmol/L or above 5.5 mmol/L",
-        "meaning": "Dangerous electrolyte disturbance; insulin can worsen hypokalemia"
+        "finding": "Severe abdominal pain or vomiting",
+        "meaning": "DKA can mimic acute abdomen; treat DKA first"
       }
     ],
     "complications": [
@@ -1262,12 +1047,13 @@
         "name": "Diabetic ketoacidosis",
         "timing": "early",
         "seriousness": "life_threatening",
-        "frequency": "common",
+        "frequency": "sometimes",
         "clues": [
-          "Vomiting and abdominal pain",
-          "Kussmaul breathing",
+          "Nausea and vomiting",
+          "Abdominal pain",
+          "Kussmaul respirations",
           "Fruity breath",
-          "Bicarbonate below 18 mmol/L with ketones"
+          "Altered mental status"
         ]
       },
       {
@@ -1276,20 +1062,12 @@
         "seriousness": "serious",
         "frequency": "common",
         "clues": [
-          "Sweating, tremor, palpitations",
-          "Confusion or seizure",
-          "Glucose below 70 mg/dL"
-        ]
-      },
-      {
-        "name": "Cerebral edema",
-        "timing": "early",
-        "seriousness": "life_threatening",
-        "frequency": "rare",
-        "clues": [
-          "Headache and vomiting during DKA treatment",
-          "Deteriorating mental status",
-          "Bradycardia and hypertension"
+          "Sweating",
+          "Tremor",
+          "Palpitations",
+          "Confusion",
+          "Seizure",
+          "Occurs after insulin or missed meals"
         ]
       },
       {
@@ -1298,9 +1076,9 @@
         "seriousness": "serious",
         "frequency": "common",
         "clues": [
-          "Blurred vision",
-          "Microaneurysms and hemorrhages on dilated eye exam",
-          "Years of poor glucose control"
+          "Visual changes",
+          "Retinal hemorrhages on exam",
+          "Occurs years after diagnosis"
         ]
       },
       {
@@ -1315,161 +1093,148 @@
         ]
       },
       {
-        "name": "Diabetic peripheral neuropathy",
+        "name": "Diabetic neuropathy",
         "timing": "late",
         "seriousness": "serious",
         "frequency": "common",
         "clues": [
-          "Numbness and tingling in a stocking distribution",
-          "Reduced vibration and light touch sensation",
+          "Distal numbness or tingling",
+          "Loss of sensation",
           "Foot ulcers"
-        ]
-      },
-      {
-        "name": "Cardiovascular disease",
-        "timing": "late",
-        "seriousness": "life_threatening",
-        "frequency": "common",
-        "clues": [
-          "Chest pain or exertional dyspnea",
-          "Hypertension and dyslipidemia",
-          "Long-standing diabetes"
         ]
       }
     ],
     "special_populations": [
       {
         "population": "children",
-        "differences": "Younger children present with irritability, poor feeding, heavy wet diapers, and new bedwetting; DKA is more common at diagnosis and cerebral edema is a feared complication during treatment."
+        "differences": "Onset is often abrupt with DKA at diagnosis; management requires pediatric-specific fluid and insulin protocols and ICU admission for moderate/severe DKA."
+      },
+      {
+        "population": "infants",
+        "differences": "May present with failure to thrive, dehydration, and tachypnea from DKA; polyuria is often not noticed because of diapers; insulin dosing is especially challenging."
       },
       {
         "population": "older_adults",
-        "differences": "Onset can be slower and symptoms mistaken for aging; they may present with dehydration, confusion, or weight loss rather than classic thirst, and have higher rates of cardiovascular and renal complications."
+        "differences": "May have slower onset and be misclassified as type 2 diabetes; ketosis may be absent initially; lower threshold for evaluating autoimmune markers."
       },
       {
         "population": "pregnancy",
-        "differences": "May first appear or worsen during pregnancy with severe hyperglycemia and can be confused with gestational diabetes; tight glucose control is critical to reduce fetal risks."
+        "differences": "DKA can occur at lower glucose levels and progress rapidly; requires immediate obstetric and endocrine involvement; insulin requirements increase later in pregnancy."
       },
       {
         "population": "obesity",
-        "differences": "Type 1 can occur in people with obesity and be mistaken for type 2; they may still have ketosis-prone disease and require insulin."
+        "differences": "Obesity does not exclude type 1; patients may be misdiagnosed as type 2 because of body habitus; consider autoantibody testing if clinical features suggest type 1."
       }
     ]
   },
   "teaching": {
     "key_questions": [
       {
-        "question": "How much have you been drinking and urinating, and has it changed recently?",
+        "question": "When did the thirst and frequent urination start, and how quickly have they gotten worse?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Marked polydipsia and polyuria, including waking at night to urinate or new bedwetting in a previously dry child"
+        "looking_for": "Days to weeks; abrupt onset in children"
       },
       {
-        "question": "When did these symptoms start, and how quickly have they gotten worse?",
+        "question": "Do you wake up at night to urinate, and how much are you drinking each day?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Abrupt onset over days to a few weeks, often after a viral illness, with rapid progression"
+        "looking_for": "Nocturia and polydipsia"
       },
       {
         "question": "Have you lost weight without trying?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Unintentional weight loss despite a good appetite, supporting insulin deficiency"
+        "looking_for": "Unintentional weight loss despite increased appetite"
+      },
+      {
+        "question": "Have you felt more tired or hungry than usual?",
+        "category": "associated",
+        "importance": "important",
+        "looking_for": "Fatigue and polyphagia"
+      },
+      {
+        "question": "Have you noticed any blurry vision?",
+        "category": "associated",
+        "importance": "optional",
+        "looking_for": "Blurred vision from osmotic lens changes"
       },
       {
         "question": "Have you had nausea, vomiting, or belly pain?",
         "category": "associated",
-        "importance": "essential",
-        "looking_for": "Vomiting and diffuse or periumbilical abdominal pain suggesting ketoacidosis rather than a surgical abdomen"
+        "importance": "important",
+        "looking_for": "DKA"
       },
       {
-        "question": "Have you noticed any changes in your breathing, or does your breath smell fruity?",
+        "question": "Have you noticed your breathing is deep or rapid, or a fruity smell on your breath?",
         "category": "red_flag",
         "importance": "essential",
-        "looking_for": "Deep, rapid breathing (Kussmaul) or acetone breath indicating severe ketoacidosis"
+        "looking_for": "Kussmaul respirations and acetone breath"
       },
       {
-        "question": "Have you felt more tired, sleepy, or confused than usual?",
+        "question": "Have you felt confused, very sleepy, or less alert than usual?",
         "category": "red_flag",
         "importance": "essential",
-        "looking_for": "Lethargy or altered mental status suggesting severe dehydration, acidosis, or cerebral edema"
+        "looking_for": "Altered mental status from DKA or cerebral edema"
       },
       {
-        "question": "Has your vision been blurry?",
-        "category": "associated",
-        "importance": "important",
-        "looking_for": "Blurred vision that improves with glucose control, from osmotic lens changes"
-      },
-      {
-        "question": "Have you had any tingling, numbness, or sores that are slow to heal?",
-        "category": "ros",
-        "importance": "optional",
-        "looking_for": "Peripheral neuropathy or poor wound healing, more typical of long-standing disease"
-      },
-      {
-        "question": "Do you have any other medical conditions, especially thyroid disease, celiac disease, or adrenal problems?",
-        "category": "pmh",
-        "importance": "important",
-        "looking_for": "Other autoimmune diseases that cluster with type 1 diabetes"
-      },
-      {
-        "question": "Are you taking any medications, including steroids or diuretics?",
-        "category": "medications",
-        "importance": "important",
-        "looking_for": "Steroids or diuretics that can raise glucose or cause polyuria and mimic the presentation"
-      },
-      {
-        "question": "Does anyone in your family have type 1 diabetes, thyroid disease, or celiac disease?",
+        "question": "Does anyone in your family have type 1 diabetes or another autoimmune disease?",
         "category": "family",
         "importance": "important",
-        "looking_for": "First-degree relative with type 1 diabetes or another autoimmune condition"
+        "looking_for": "Family history of type 1 or autoimmune disease"
       },
       {
-        "question": "Have you had any recent infections or illnesses?",
-        "category": "associated",
-        "importance": "optional",
-        "looking_for": "A recent viral illness that may have triggered the onset"
+        "question": "Do you have any personal history of autoimmune disease, like thyroid or celiac disease?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Autoimmune comorbidity"
+      },
+      {
+        "question": "Have you taken any steroids or other medications that can raise blood sugar?",
+        "category": "medications",
+        "importance": "important",
+        "looking_for": "Medication-induced hyperglycemia"
+      },
+      {
+        "question": "Could you be pregnant?",
+        "category": "obstetric",
+        "importance": "important",
+        "looking_for": "Pregnancy; DKA can occur at lower glucose and affects management"
       }
     ],
     "accepted_names": [
       "Type 1 diabetes",
       "Type 1 diabetes mellitus",
       "T1DM",
-      "T1D",
       "Insulin-dependent diabetes mellitus",
       "IDDM",
-      "Juvenile diabetes",
-      "Juvenile-onset diabetes",
-      "Type I diabetes"
+      "Juvenile diabetes"
     ],
     "reasoning_points": [
-      "Abrupt onset over days to weeks of polyuria, polydipsia, and unintentional weight loss in a child, adolescent, or young adult",
-      "Hyperglycemia confirmed by a random glucose of 200 mg/dL or higher with classic symptoms, a fasting glucose of 126 mg/dL or higher, or an A1c of 6.5% or higher",
-      "Ketosis or ketoacidosis suggested by vomiting, abdominal pain, Kussmaul breathing, fruity breath, low bicarbonate, and positive serum or urine ketones",
-      "Insulin deficiency confirmed by low or undetectable C-peptide and positive islet autoantibodies such as GAD65, IA-2, ZnT8, or insulin",
-      "Absence of features of type 2 diabetes such as gradual onset, central obesity, acanthosis nigricans, and preserved C-peptide",
-      "Other causes of polyuria and polydipsia excluded, including diabetes insipidus, urinary tract infection, and viral gastroenteritis",
-      "Associated autoimmune conditions considered, including thyroid disease, celiac disease, and Addison disease"
+      "Polyuria, polydipsia, and unintentional weight loss are classic symptoms.",
+      "Random blood glucose ≥200 mg/dL with symptoms, or fasting ≥126 mg/dL or A1C ≥6.5%, confirms diabetes.",
+      "Low or undetectable C-peptide indicates insulin deficiency.",
+      "Positive islet autoantibodies (GAD65, IA-2, ZnT8, or IAA) confirm autoimmune type 1 diabetes.",
+      "Absence of features of type 2 diabetes (obesity, acanthosis nigricans, strong family history of type 2) supports type 1.",
+      "Evidence of DKA (ketones, anion-gap metabolic acidosis, Kussmaul respirations) supports type 1 and guides urgent management.",
+      "Normal glucose with low urine osmolality would point to diabetes insipidus, not type 1 diabetes."
     ],
     "difficulty": {
       "easy": [
-        "Child or adolescent with classic polyuria, polydipsia, and weight loss",
-        "Random glucose above 200 mg/dL with classic symptoms",
-        "Positive urine ketones and low bicarbonate",
-        "Clear response to insulin"
+        "Child or adolescent with classic triad: polyuria, polydipsia, weight loss",
+        "Random glucose markedly elevated with glucosuria and ketones",
+        "No confounding features of type 2 diabetes"
       ],
       "medium": [
-        "Presents with vomiting and abdominal pain that is mistaken for gastroenteritis or a surgical abdomen",
-        "Older adult with slower onset and symptoms attributed to aging",
-        "Patient with obesity where type 2 diabetes is initially assumed",
-        "Mild hyperglycemia without obvious ketosis at presentation"
+        "Adult with slower onset and obesity, requiring autoantibody testing to distinguish from type 2",
+        "Moderate DKA with nausea, vomiting, and Kussmaul respirations",
+        "Young child with enuresis or recurrent infection as main complaint"
       ],
       "hard": [
-        "Toddler with irritability, poor feeding, heavy wet diapers, and new bedwetting rather than clear thirst complaints",
-        "Pregnant patient with severe hyperglycemia mistaken for gestational diabetes",
-        "DKA with normal or high serum potassium masking total body potassium depletion",
-        "Concurrent autoimmune disease such as Addison disease altering the presentation",
-        "Atypical diabetes with features of both type 1 and type 2 requiring autoantibodies and C-peptide to classify"
+        "DKA with altered mental status or cerebral edema",
+        "Pregnant patient with euglycemic DKA",
+        "Infant or toddler with failure to thrive and dehydration",
+        "Older adult misdiagnosed as type 2 with negative or weakly positive autoantibodies"
       ]
     }
   }

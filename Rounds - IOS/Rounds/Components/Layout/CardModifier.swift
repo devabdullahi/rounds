@@ -25,4 +25,19 @@ extension View {
             .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).strokeBorder(Theme.ring, lineWidth: 1))
             .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
     }
+
+    /// Grouped list container in Liquid Glass on iOS 26+, tinted with the surface colour so rows
+    /// keep their contrast; `listSurface()` before. Non-interactive: pressing a row inside mustn't
+    /// make the whole card swell.
+    @ViewBuilder
+    func glassListSurface() -> some View {
+        let shape = RoundedRectangle(cornerRadius: 22, style: .continuous)
+        if #available(iOS 26, *) {
+            self
+                .clipShape(shape)
+                .glassEffect(.regular.tint(Theme.surface.opacity(0.55)), in: shape)
+        } else {
+            listSurface()
+        }
+    }
 }

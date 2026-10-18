@@ -128,7 +128,7 @@ async function ask(userId: string, input: Record<string, unknown>) {
   let conduct: Conduct = isProfane(question) ? "inappropriate" : "clinical";
   try {
     if (conduct === "clinical") {
-      const answer = await completeJSON<{ conduct: string; fact_ids: string[]; seen_ids?: string[]; reply: string }>(PATIENT, prompt, 400);
+      const answer = await completeJSON<{ conduct: string; fact_ids: string[]; seen_ids?: string[]; reply: string }>(PATIENT, prompt, 400, { task: "patient" });
       conduct = parseConduct(answer.conduct);
       used = [...new Set(answer.fact_ids ?? [])].filter((id) => known.has(id)).slice(0, MAX_FACTS_PER_REPLY);
       looked = (answer.seen_ids ?? []).filter((id) => content.exam.some((m) => m.id === id));
@@ -180,6 +180,7 @@ async function addsFacts(reply: string): Promise<boolean> {
     REPLY_CHECKER,
     `Reply: ${JSON.stringify(reply)}`,
     50,
+    { task: "check" },
   );
   return verdict.medical_information === true;
 }
@@ -310,6 +311,7 @@ ${quoted(differential.join("; ") || "(none)")}
 ${quoted(plan || "(none)")}
 </student_plan>`,
     200,
+    { task: "grade" },
   );
   return {
     // The model may only widen the match to a close synonym of one committed answer; it can never

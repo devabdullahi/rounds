@@ -2,36 +2,9 @@ import Foundation
 import StoreKit
 
 /// Subscriptions through StoreKit 2. Products are set up in App Store Connect (and mirrored in
-/// `Rounds.storekit` for local testing); ids must match there.
+/// `Rounds.storekit` for local testing); ids must match there and in Superwall's paywalls, which sell them.
 struct StoreKitSubscriptionStore: SubscriptionStore {
     static let productIDs = ["com.abdul.rounds.weekly", "com.abdul.rounds.monthly", "com.abdul.rounds.yearly"]
-
-    func plans() async throws -> [SubscriptionPlan] {
-        var plans: [SubscriptionPlan] = []
-        for product in try await Product.products(for: Self.productIDs) {
-            guard let subscription = product.subscription, let period = Self.period(subscription.subscriptionPeriod) else { continue }
-            var trialDays: Int?
-            if let offer = subscription.introductoryOffer, offer.paymentMode == .freeTrial, await subscription.isEligibleForIntroOffer {
-                trialDays = Self.days(offer.period)
-            }
-            plans.append(SubscriptionPlan(id: product.id, period: period, price: product.price, displayPrice: product.displayPrice,
-                                          currencyCode: product.priceFormatStyle.currencyCode, trialDays: trialDays))
-        }
-        return plans
-    }
-
-    func purchase(_ planID: String) async throws -> PurchaseOutcome {
-        guard let product = try await Product.products(for: [planID]).first else { throw StoreKitError.notAvailableInStorefront }
-        switch try await product.purchase() {
-        case .success(let verification):
-            let transaction = try verification.payloadValue
-            await transaction.finish()
-            return .purchased
-        case .pending: return .pending
-        case .userCancelled: return .cancelled
-        @unknown default: return .cancelled
-        }
-    }
 
     func restore() async throws {
         try await AppStore.sync()
@@ -58,7 +31,7 @@ struct StoreKitSubscriptionStore: SubscriptionStore {
                case .verified(let renewal) = status.renewalInfo {
                 willRenew = renewal.willAutoRenew
             }
-            return ActivePlan(source: .appStore, period: unit, periodEnd: end, isTrial: Self.isFreeTrial(transaction), willRenew: willRenew)
+            return ActivePlan(period: unit, periodEnd: end, isTrial: Self.isFreeTrial(transaction), willRenew: willRenew)
         }
         return nil
     }
@@ -75,8 +48,19 @@ struct StoreKitSubscriptionStore: SubscriptionStore {
         }
     }
 
-    func storefrontCountry() async -> String? {
-        await Storefront.current?.countryCode
+    func isPreRelease() async -> Bool {
+        #if DEBUG
+        // Run from Xcode: always testing, even without an Apple Account to fetch the install record.
+        return true
+        #else
+        // TestFlight installs carry a sandbox receipt: instant, and needs no network or App Store
+        // sign-in, which `AppTransaction` can wait on (or fail without) on some phones.
+        if Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt" { return true }
+        // Apple signs every install; its environment says where it came from. Unverifiable or
+        // unavailable counts as the App Store, so a failure never opens the app for free.
+        guard let result = try? await AppTransaction.shared, case .verified(let transaction) = result else { return false }
+        return transaction.environment != .production
+        #endif
     }
 
     /// Our only introductory offer is the yearly free trial, so before iOS 17.2 (no `offer`) an
@@ -86,22 +70,12 @@ struct StoreKitSubscriptionStore: SubscriptionStore {
         return transaction.offerType == .introductory
     }
 
-    private static func period(_ period: Product.SubscriptionPeriod) -> SubscriptionPlan.Period? {
+    private static func period(_ period: Product.SubscriptionPeriod) -> PlanPeriod? {
         switch (period.unit, period.value) {
         case (.week, 1): .week
         case (.month, 1): .month
         case (.year, 1): .year
         default: nil
-        }
-    }
-
-    private static func days(_ period: Product.SubscriptionPeriod) -> Int {
-        switch period.unit {
-        case .day: period.value
-        case .week: period.value * 7
-        case .month: period.value * 30
-        case .year: period.value * 365
-        @unknown default: period.value
         }
     }
 }

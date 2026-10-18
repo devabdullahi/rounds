@@ -35,58 +35,46 @@
       },
       {
         "stage": "patient_presentation",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:40:55Z"
+        "generated_at": "2026-10-14T17:08:27Z"
       },
       {
         "stage": "exam_vitals",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:41:16Z"
+        "generated_at": "2026-10-14T17:10:03Z"
       },
       {
         "stage": "diagnostics",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:41:30Z"
+        "generated_at": "2026-10-14T17:11:57Z"
       },
       {
         "stage": "differential_course",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:41:43Z"
+        "generated_at": "2026-10-14T17:12:50Z"
       },
       {
         "stage": "teaching",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:41:51Z"
+        "generated_at": "2026-10-14T17:13:36Z"
       }
     ],
     "validation": {
       "status": "passed",
       "rule_errors": [],
       "review_issues": [
-        "auto-repaired: workup: 'blood culture' was in ['initial', 'confirmatory'], kept ['initial']",
-        "auto-repaired: workup: 'csf' was in ['initial', 'confirmatory'], kept ['initial']",
-        "auto-repaired: workup: 'chest x-ray' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
-        "auto-repaired: workup: 'cranial ultrasound' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "auto-repaired: workup: 'echocardiogram' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "auto-repaired: workup: 'chest x-ray' was in ['initial', 'not_indicated'], kept ['not_indicated', 'initial']",
-        "auto-repaired: workup: 'cranial ultrasound' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "auto-repaired: workup: 'echocardiogram' was in ['supporting', 'not_indicated'], kept ['not_indicated', 'supporting']",
-        "presentation: term 'Body temperature fluctuation' not found in SNOMED CT",
-        "presentation: term 'Poor perfusion' not found in SNOMED CT",
-        "presentation: term 'Pallor' not found in SNOMED CT",
-        "exam: term 'Body temperature fluctuation' not found in SNOMED CT",
-        "exam: term 'Normal anterior fontanelle' not found in SNOMED CT",
-        "differential respiratory-distress-syndrome: no profile yet",
+        "auto-repaired: workup: 'Chest X-ray' was in supporting, not_indicated; kept supporting as a conditional order (only if respiratory distress or focal lung signs)",
+        "auto-repaired: workup: 'Abdominal X-ray' was in supporting, not_indicated; kept supporting as a conditional order (only if abdominal distension, bloody stools, or bilious vomiting)",
+        "differential neonatal-meningitis: no profile yet",
         "differential congenital-heart-disease: no profile yet",
-        "differential inborn-error-of-metabolism: no profile yet",
-        "differential neonatal-viral-infection: no profile yet",
-        "differential necrotizing-enterocolitis: no profile yet",
-        "differential urinary-tract-infection: no profile yet"
+        "differential inborn-errors-of-metabolism: no profile yet",
+        "differential neonatal-pneumonia: no profile yet",
+        "differential congenital-adrenal-hyperplasia: no profile yet"
       ]
     },
     "review": {
@@ -96,20 +84,27 @@
   "patient": {
     "age": {
       "typical_min": 0,
-      "typical_max": 90,
-      "peak": "first 7 days (early-onset) and 8–90 days (late-onset)",
+      "typical_max": 0,
+      "peak": "Early-onset: first 24 hours; late-onset: 2–4 weeks",
       "possible_min": 0,
-      "possible_max": 90
+      "possible_max": 0
     },
-    "sex": "either",
+    "sex": "male_predominant",
     "demographics": [
-      "More common in preterm and low birth weight infants",
-      "Early-onset disease occurs within the first 7 days of life, most often within 24 hours of birth",
-      "Late-onset disease occurs after 7 days and before 90 days of age"
+      "Slightly more common in males",
+      "More common in preterm and low-birth-weight infants"
     ],
     "risk_factors": [
       {
-        "text": "Preterm birth or low birth weight",
+        "text": "Preterm birth, especially before 37 weeks",
+        "strength": "strong"
+      },
+      {
+        "text": "Low birth weight",
+        "strength": "strong"
+      },
+      {
+        "text": "Prolonged rupture of membranes >18 hours",
         "strength": "strong"
       },
       {
@@ -117,19 +112,11 @@
         "strength": "strong"
       },
       {
-        "text": "Prolonged rupture of membranes (≥18 hours)",
+        "text": "Chorioamnionitis or maternal intrapartum fever",
         "strength": "strong"
       },
       {
-        "text": "Maternal fever or chorioamnionitis",
-        "strength": "strong"
-      },
-      {
-        "text": "Maternal urinary tract infection or bacteremia",
-        "strength": "moderate"
-      },
-      {
-        "text": "Invasive procedures, central lines, or prolonged hospitalization",
+        "text": "Invasive devices such as central venous catheters or mechanical ventilation",
         "strength": "moderate"
       },
       {
@@ -138,138 +125,167 @@
       }
     ],
     "comorbidities": [
-      "Prematurity",
       "Congenital anomalies",
       "Immunodeficiency"
     ],
-    "family_history": [],
+    "family_history": [
+      "Maternal infection during labor"
+    ],
     "social_history": [],
     "exposures": [
-      "Maternal group B Streptococcus colonization",
-      "Maternal fever or chorioamnionitis",
-      "Prolonged rupture of membranes",
-      "Premature birth",
-      "Invasive procedures or central venous catheters"
+      "Hospital or NICU stay",
+      "Maternal genital tract flora during delivery"
     ],
     "risk_medications": []
   },
   "presentation": {
     "chief_complaints": [
       {
-        "text": "My baby isn't feeding well",
-        "term": "Poor feeding",
+        "text": "He won't eat",
         "frequency": "common",
+        "term": "Feeding difficulty",
         "snomed_verified": true
       },
       {
-        "text": "My baby feels warm",
-        "term": "Fever",
+        "text": "He is breathing fast",
         "frequency": "common",
-        "snomed_verified": true
-      },
-      {
-        "text": "My baby is very sleepy and hard to wake",
-        "term": "Lethargy",
-        "frequency": "common",
-        "snomed_verified": true
-      },
-      {
-        "text": "My baby is breathing fast",
         "term": "Tachypnea",
-        "frequency": "common",
         "snomed_verified": true
       },
       {
-        "text": "My baby's skin looks yellow",
-        "term": "Jaundice",
-        "frequency": "sometimes",
+        "text": "He feels hot",
+        "frequency": "common",
+        "term": "Fever",
+        "snomed_verified": true
+      },
+      {
+        "text": "He is too sleepy and hard to wake",
+        "frequency": "common",
+        "term": "Lethargy",
         "snomed_verified": true
       }
     ],
     "hpi": {
-      "onset": "Gradual or sudden; early-onset sepsis appears within the first 7 days of life, often within 24 hours of birth, while late-onset sepsis appears after 7 days and before 90 days of age",
-      "duration": "Hours to days",
-      "progression": "Symptoms may worsen rapidly; initially subtle signs such as poor feeding and sleepiness can progress to respiratory distress, temperature instability, and shock",
-      "location": "Systemic",
-      "radiation": "Not applicable",
-      "quality": "Nonspecific; includes poor feeding, lethargy, temperature instability, respiratory distress, and jaundice",
-      "severity": "Variable; can be mild initially but may progress to severe sepsis or septic shock",
-      "timing": "Continuous or intermittent; often worse around feeding times",
-      "aggravating": [
-        "Feeding attempts"
-      ],
-      "relieving": [
-        "Nothing specific"
-      ],
+      "onset": "Usually sudden over hours in a previously well-appearing infant, or gradual in a preterm infant already in the NICU",
+      "duration": "May present within 24 hours of birth (early-onset) or after 7 days up to 90 days (late-onset)",
+      "progression": "Nonspecific signs worsen; poor feeding and lethargy progress to respiratory distress, temperature instability, poor perfusion and sometimes shock",
       "associated_symptoms": [
         {
-          "text": "Poor feeding",
-          "term": "Poor feeding",
+          "text": "Fever",
           "frequency": "common",
+          "term": "Fever",
           "snomed_verified": true
         },
         {
-          "text": "Lethargy",
-          "term": "Lethargy",
+          "text": "Hypothermia",
           "frequency": "common",
+          "term": "Hypothermia",
           "snomed_verified": true
-        },
-        {
-          "text": "Temperature instability",
-          "term": "Body temperature fluctuation",
-          "frequency": "common",
-          "snomed_verified": false
         },
         {
           "text": "Tachypnea",
-          "term": "Tachypnea",
           "frequency": "common",
-          "snomed_verified": true
-        },
-        {
-          "text": "Jaundice",
-          "term": "Jaundice",
-          "frequency": "sometimes",
-          "snomed_verified": true
-        },
-        {
-          "text": "Vomiting",
-          "term": "Vomiting",
-          "frequency": "sometimes",
-          "snomed_verified": true
-        },
-        {
-          "text": "Abdominal distension",
-          "term": "Abdominal distension",
-          "frequency": "sometimes",
-          "snomed_verified": true
-        },
-        {
-          "text": "Irritability",
-          "term": "Irritability",
-          "frequency": "sometimes",
+          "term": "Tachypnea",
           "snomed_verified": true
         },
         {
           "text": "Apnea",
-          "term": "Apnea",
           "frequency": "sometimes",
+          "term": "Apnea",
           "snomed_verified": true
         },
         {
-          "text": "Seizures",
-          "term": "Seizure",
+          "text": "Grunting respiration",
+          "frequency": "sometimes",
+          "term": "Grunting respiration",
+          "snomed_verified": true
+        },
+        {
+          "text": "Nasal flaring",
+          "frequency": "sometimes",
+          "term": "Nasal flaring",
+          "snomed_verified": true
+        },
+        {
+          "text": "Cyanosis",
           "frequency": "rare",
+          "term": "Cyanosis",
+          "snomed_verified": true
+        },
+        {
+          "text": "Tachycardia",
+          "frequency": "common",
+          "term": "Tachycardia",
+          "snomed_verified": true
+        },
+        {
+          "text": "Jaundice",
+          "frequency": "sometimes",
+          "term": "Jaundice",
+          "snomed_verified": true
+        },
+        {
+          "text": "Feeding difficulty",
+          "frequency": "common",
+          "term": "Feeding difficulty",
+          "snomed_verified": true
+        },
+        {
+          "text": "Lethargy",
+          "frequency": "common",
+          "term": "Lethargy",
+          "snomed_verified": true
+        },
+        {
+          "text": "Irritability",
+          "frequency": "sometimes",
+          "term": "Irritability",
+          "snomed_verified": true
+        },
+        {
+          "text": "Vomiting",
+          "frequency": "sometimes",
+          "term": "Vomiting",
+          "snomed_verified": true
+        },
+        {
+          "text": "Diarrhea",
+          "frequency": "sometimes",
+          "term": "Diarrhea",
+          "snomed_verified": true
+        },
+        {
+          "text": "Abdominal distension",
+          "frequency": "sometimes",
+          "term": "Abdominal distension",
+          "snomed_verified": true
+        },
+        {
+          "text": "Seizure",
+          "frequency": "rare",
+          "term": "Seizure",
+          "snomed_verified": true
+        },
+        {
+          "text": "Hypotonia",
+          "frequency": "sometimes",
+          "term": "Hypotonia",
+          "snomed_verified": true
+        },
+        {
+          "text": "Petechiae",
+          "frequency": "rare",
+          "term": "Petechiae",
           "snomed_verified": true
         }
       ],
       "pertinent_negatives": [
-        "Clear rhinorrhea",
-        "Cough",
-        "Vesicular rash",
-        "Bulging fontanelle",
-        "Focal neurologic deficit",
-        "Recent immunization"
+        "A well-appearing infant with normal vital signs",
+        "No maternal risk factors for infection",
+        "No respiratory distress at rest",
+        "No focal skin infection or pustules",
+        "No abnormal movements",
+        "No diarrhea or vomiting"
       ]
     },
     "ros": [
@@ -278,32 +294,20 @@
         "positives": [
           {
             "text": "Fever",
-            "term": "Fever",
             "frequency": "common",
+            "term": "Fever",
             "snomed_verified": true
           },
           {
             "text": "Hypothermia",
+            "frequency": "common",
             "term": "Hypothermia",
-            "frequency": "sometimes",
-            "snomed_verified": true
-          },
-          {
-            "text": "Lethargy",
-            "term": "Lethargy",
-            "frequency": "common",
-            "snomed_verified": true
-          },
-          {
-            "text": "Poor feeding",
-            "term": "Poor feeding",
-            "frequency": "common",
             "snomed_verified": true
           }
         ],
         "negatives": [
           "Weight loss",
-          "Failure to thrive"
+          "Normal energy"
         ]
       },
       {
@@ -311,43 +315,78 @@
         "positives": [
           {
             "text": "Tachypnea",
-            "term": "Tachypnea",
             "frequency": "common",
+            "term": "Tachypnea",
             "snomed_verified": true
           },
           {
             "text": "Apnea",
-            "term": "Apnea",
             "frequency": "sometimes",
+            "term": "Apnea",
             "snomed_verified": true
           },
           {
-            "text": "Grunting",
-            "term": "Grunting respiration",
+            "text": "Grunting respiration",
             "frequency": "sometimes",
+            "term": "Grunting respiration",
             "snomed_verified": true
           },
           {
             "text": "Nasal flaring",
-            "term": "Nasal flaring",
             "frequency": "sometimes",
+            "term": "Nasal flaring",
             "snomed_verified": true
           },
           {
-            "text": "Retractions",
-            "term": "Intercostal retractions",
-            "frequency": "sometimes",
+            "text": "Cyanosis",
+            "frequency": "rare",
+            "term": "Cyanosis",
             "snomed_verified": true
           }
         ],
         "negatives": [
           "Cough",
-          "Wheezing",
-          "Hemoptysis"
+          "Wheeze",
+          "Stridor"
         ],
         "argues_against": [
-          "Bronchiolitis",
-          "Pneumonia with focal consolidation"
+          "Prominent cough and wheeze suggest a primary respiratory viral infection"
+        ]
+      },
+      {
+        "system": "gastrointestinal",
+        "positives": [
+          {
+            "text": "Feeding difficulty",
+            "frequency": "common",
+            "term": "Feeding difficulty",
+            "snomed_verified": true
+          },
+          {
+            "text": "Vomiting",
+            "frequency": "sometimes",
+            "term": "Vomiting",
+            "snomed_verified": true
+          },
+          {
+            "text": "Diarrhea",
+            "frequency": "sometimes",
+            "term": "Diarrhea",
+            "snomed_verified": true
+          },
+          {
+            "text": "Abdominal distension",
+            "frequency": "sometimes",
+            "term": "Abdominal distension",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Blood in stool",
+          "Bilious vomiting"
+        ],
+        "argues_against": [
+          "Bilious vomiting suggests bowel obstruction"
         ]
       },
       {
@@ -355,180 +394,134 @@
         "positives": [
           {
             "text": "Tachycardia",
-            "term": "Tachycardia",
             "frequency": "common",
+            "term": "Tachycardia",
             "snomed_verified": true
           },
           {
-            "text": "Poor perfusion",
-            "term": "Poor perfusion",
+            "text": "Bradycardia",
             "frequency": "sometimes",
-            "snomed_verified": false
+            "term": "Bradycardia",
+            "snomed_verified": true
           },
           {
             "text": "Hypotension",
+            "frequency": "sometimes",
             "term": "Hypotension",
-            "frequency": "sometimes",
             "snomed_verified": true
           }
         ],
         "negatives": [
-          "Cyanosis",
-          "Murmur",
-          "Edema"
-        ],
-        "argues_against": [
-          "Congenital heart disease"
-        ]
-      },
-      {
-        "system": "gastrointestinal",
-        "positives": [
-          {
-            "text": "Vomiting",
-            "term": "Vomiting",
-            "frequency": "sometimes",
-            "snomed_verified": true
-          },
-          {
-            "text": "Abdominal distension",
-            "term": "Abdominal distension",
-            "frequency": "sometimes",
-            "snomed_verified": true
-          },
-          {
-            "text": "Jaundice",
-            "term": "Jaundice",
-            "frequency": "sometimes",
-            "snomed_verified": true
-          }
-        ],
-        "negatives": [
-          "Diarrhea",
-          "Blood in stool",
-          "Hepatosplenomegaly"
-        ],
-        "argues_against": [
-          "Necrotizing enterocolitis",
-          "Biliary atresia"
-        ]
-      },
-      {
-        "system": "neurologic",
-        "positives": [
-          {
-            "text": "Irritability",
-            "term": "Irritability",
-            "frequency": "sometimes",
-            "snomed_verified": true
-          },
-          {
-            "text": "Seizures",
-            "term": "Seizure",
-            "frequency": "rare",
-            "snomed_verified": true
-          },
-          {
-            "text": "Hypotonia",
-            "term": "Hypotonia",
-            "frequency": "sometimes",
-            "snomed_verified": true
-          }
-        ],
-        "negatives": [
-          "Bulging fontanelle",
-          "Focal neurologic deficit",
-          "Nuchal rigidity"
-        ],
-        "argues_against": [
-          "Meningitis with raised intracranial pressure"
+          "Murmur"
         ]
       },
       {
         "system": "skin",
         "positives": [
           {
-            "text": "Pallor",
-            "term": "Pallor",
+            "text": "Jaundice",
             "frequency": "sometimes",
-            "snomed_verified": false
-          },
-          {
-            "text": "Mottling",
-            "term": "Mottling",
-            "frequency": "sometimes",
+            "term": "Jaundice",
             "snomed_verified": true
           },
           {
             "text": "Petechiae",
-            "term": "Petechiae",
             "frequency": "rare",
+            "term": "Petechiae",
             "snomed_verified": true
           }
         ],
         "negatives": [
-          "Vesicular rash",
-          "Erythema multiforme"
+          "Rash",
+          "Pustules"
         ],
         "argues_against": [
-          "Viral exanthem"
+          "Pustular rash suggests staphylococcal skin infection"
+        ]
+      },
+      {
+        "system": "neurologic",
+        "positives": [
+          {
+            "text": "Lethargy",
+            "frequency": "common",
+            "term": "Lethargy",
+            "snomed_verified": true
+          },
+          {
+            "text": "Irritability",
+            "frequency": "sometimes",
+            "term": "Irritability",
+            "snomed_verified": true
+          },
+          {
+            "text": "Hypotonia",
+            "frequency": "sometimes",
+            "term": "Hypotonia",
+            "snomed_verified": true
+          },
+          {
+            "text": "Seizure",
+            "frequency": "rare",
+            "term": "Seizure",
+            "snomed_verified": true
+          }
+        ],
+        "negatives": [
+          "Normal tone and activity",
+          "No abnormal movements"
+        ],
+        "argues_against": [
+          "Focal neurologic deficits are very unusual"
         ]
       }
     ],
     "atypical": [
       {
         "population": "infants",
-        "how_it_differs": "Preterm infants may present with apnea, bradycardia, and temperature instability rather than fever or focal signs.",
+        "how_it_differs": "Preterm and very low birth weight infants often present with apnea, bradycardia, abdominal distension, and worsening respiratory support needs rather than fever or obvious signs.",
         "missing_classic_features": [
-          "Fever",
-          "Tachypnea"
-        ]
-      },
-      {
-        "population": "immunocompromised",
-        "how_it_differs": "Infants with immunodeficiency may have a blunted inflammatory response and present with subtle or absent fever.",
-        "missing_classic_features": [
-          "Fever",
-          "Leukocytosis"
+          "Fever"
         ]
       }
     ]
   },
   "exam": {
     "general": {
-      "mild": "Well-appearing or mildly unwell infant; alert but feeding poorly; may be warm or slightly cool to touch",
-      "moderate": "Unwell, fussy or drowsy, poor tone, feeding poorly, temperature unstable",
-      "severe": "Ill-appearing, lethargic or inconsolable, poor perfusion, respiratory distress, temperature instability",
-      "critical": "Toxic-appearing, limp, apneic or gasping, mottled or pale, signs of shock"
+      "mild": "Awake but may be less active than usual, with normal or mild temperature instability; pink and well perfused",
+      "moderate": "Lethargic or irritable, poor feeding, mottled skin, tachypneic with mild retractions",
+      "severe": "Ill-appearing, lethargic, grunting, significant retractions, delayed capillary refill",
+      "critical": "Unresponsive or minimally responsive, cyanotic or profoundly mottled, hypotensive, apneic or irregularly breathing"
     },
     "findings": [
       {
-        "id": "temperature-instability",
+        "id": "fever",
         "region": "general",
-        "maneuver": "Measure the axillary or rectal temperature and ask the parent about fluctuations",
-        "finding": "Fever or hypothermia, or swinging between the two",
-        "frequency": "common",
-        "significance": "strongly_supports",
-        "importance": "essential",
-        "term": "Body temperature fluctuation",
-        "snomed_verified": false
-      },
-      {
-        "id": "poor-feeding",
-        "region": "general",
-        "maneuver": "Observe a feed or ask the parent how feeding has changed",
-        "finding": "Feeding poorly, taking less than usual, or refusing feeds",
+        "maneuver": "Measure rectal temperature",
+        "finding": "Rectal temperature above 100.4°F",
         "frequency": "common",
         "significance": "supports",
         "importance": "essential",
-        "term": "Poor feeding",
+        "term": "Fever",
+        "snomed_verified": true
+      },
+      {
+        "id": "hypothermia",
+        "region": "general",
+        "maneuver": "Measure rectal temperature",
+        "finding": "Rectal temperature below 97.7°F",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Hypothermia",
         "snomed_verified": true
       },
       {
         "id": "lethargy",
         "region": "mental_status",
-        "maneuver": "Observe the infant's level of alertness and response to handling",
-        "finding": "Drowsy, difficult to rouse, or reduced responsiveness",
+        "maneuver": "Observe spontaneous activity and response to stimulation",
+        "finding": "Lethargy or poor responsiveness",
         "frequency": "common",
         "significance": "supports",
         "importance": "essential",
@@ -538,8 +531,8 @@
       {
         "id": "irritability",
         "region": "mental_status",
-        "maneuver": "Observe the infant's behavior and consolability",
-        "finding": "Fussy or inconsolable crying",
+        "maneuver": "Observe response to handling and feeding",
+        "finding": "Irritability with a high-pitched cry",
         "frequency": "sometimes",
         "significance": "supports",
         "importance": "important",
@@ -547,22 +540,10 @@
         "snomed_verified": true
       },
       {
-        "id": "hypotonia",
-        "region": "neuro",
-        "maneuver": "Assess tone by passive movement of the limbs and observe posture",
-        "finding": "Reduced muscle tone, floppy limbs",
-        "frequency": "sometimes",
-        "min_severity": "moderate",
-        "significance": "supports",
-        "importance": "important",
-        "term": "Hypotonia",
-        "snomed_verified": true
-      },
-      {
         "id": "tachypnea",
         "region": "lung",
-        "maneuver": "Count the respiratory rate for a full minute while the infant is calm",
-        "finding": "Respiratory rate above the normal range for age",
+        "maneuver": "Count respirations for one minute",
+        "finding": "Respiratory rate above 60 breaths per minute",
         "frequency": "common",
         "significance": "supports",
         "importance": "essential",
@@ -572,8 +553,8 @@
       {
         "id": "grunting",
         "region": "lung",
-        "maneuver": "Auscultate and observe the infant's breathing",
-        "finding": "Grunting expiratory sound",
+        "maneuver": "Observe and listen at the mouth",
+        "finding": "Expiratory grunting",
         "frequency": "sometimes",
         "min_severity": "moderate",
         "significance": "supports",
@@ -583,9 +564,9 @@
       },
       {
         "id": "nasal-flaring",
-        "region": "lung",
-        "maneuver": "Observe the infant's breathing",
-        "finding": "Flaring of the alae nasi with respiration",
+        "region": "heent",
+        "maneuver": "Inspect the nares",
+        "finding": "Nasal flaring with inspiration",
         "frequency": "sometimes",
         "min_severity": "moderate",
         "significance": "supports",
@@ -596,54 +577,31 @@
       {
         "id": "retractions",
         "region": "lung",
-        "maneuver": "Observe the chest wall during breathing",
-        "finding": "Intercostal or subcostal retractions",
-        "frequency": "sometimes",
+        "maneuver": "Inspect the chest wall during breathing",
+        "finding": "Subcostal, intercostal, or suprasternal retractions",
+        "frequency": "common",
         "min_severity": "moderate",
         "significance": "supports",
         "importance": "important",
-        "term": "Intercostal retractions",
-        "snomed_verified": true
-      },
-      {
-        "id": "apnea",
-        "region": "lung",
-        "maneuver": "Observe breathing and monitor for pauses",
-        "finding": "Pauses in breathing lasting 20 seconds or more, or shorter pauses with bradycardia or desaturation",
-        "frequency": "sometimes",
-        "min_severity": "severe",
-        "significance": "strongly_supports",
-        "importance": "essential",
-        "term": "Apnea",
-        "snomed_verified": true
-      },
-      {
-        "id": "rales",
-        "region": "lung",
-        "maneuver": "Auscultate the lungs",
-        "finding": "Crackles",
-        "frequency": "sometimes",
-        "significance": "supports",
-        "importance": "optional",
-        "term": "Rales",
+        "term": "Chest wall retraction",
         "snomed_verified": true
       },
       {
         "id": "tachycardia",
         "region": "cardiac",
-        "maneuver": "Auscultate the heart and count the rate for a full minute",
-        "finding": "Heart rate above the normal range for age",
+        "maneuver": "Auscultate the heart or count the pulse",
+        "finding": "Heart rate above 160 beats per minute",
         "frequency": "common",
         "significance": "supports",
-        "importance": "important",
+        "importance": "essential",
         "term": "Tachycardia",
         "snomed_verified": true
       },
       {
         "id": "bradycardia",
         "region": "cardiac",
-        "maneuver": "Auscultate the heart and count the rate for a full minute",
-        "finding": "Heart rate below the normal range for age",
+        "maneuver": "Count heart rate during apnea or rest",
+        "finding": "Heart rate below 100 beats per minute",
         "frequency": "sometimes",
         "min_severity": "severe",
         "significance": "supports",
@@ -652,72 +610,49 @@
         "snomed_verified": true
       },
       {
-        "id": "heart-murmur",
-        "region": "cardiac",
-        "maneuver": "Auscultate the heart",
-        "finding": "Murmur",
-        "frequency": "rare",
-        "significance": "neutral",
-        "importance": "optional",
-        "term": "Heart murmur",
-        "snomed_verified": true
-      },
-      {
-        "id": "capillary-refill-delay",
+        "id": "prolonged-cap-refill",
         "region": "extremities",
-        "maneuver": "Press the skin over the sternum or a digit for 5 seconds and release",
+        "maneuver": "Press over the sternum or heel and time capillary refill",
         "finding": "Capillary refill longer than 3 seconds",
-        "frequency": "sometimes",
-        "min_severity": "moderate",
+        "frequency": "common",
+        "min_severity": "severe",
         "significance": "supports",
-        "importance": "essential",
+        "importance": "important",
         "term": "Prolonged capillary refill time",
         "snomed_verified": true
       },
       {
-        "id": "mottling",
+        "id": "mottled-skin",
         "region": "skin",
-        "maneuver": "Inspect the skin",
-        "finding": "Mottled skin",
+        "maneuver": "Inspect the trunk and extremities",
+        "finding": "Mottled cool skin",
         "frequency": "sometimes",
-        "min_severity": "moderate",
+        "min_severity": "severe",
         "significance": "supports",
         "importance": "important",
-        "term": "Mottling",
-        "snomed_verified": true
-      },
-      {
-        "id": "pale-complexion",
-        "region": "skin",
-        "maneuver": "Inspect the skin and mucous membranes",
-        "finding": "Pale complexion",
-        "frequency": "sometimes",
-        "min_severity": "moderate",
-        "significance": "supports",
-        "importance": "important",
-        "term": "Pale complexion",
-        "snomed_verified": true
-      },
-      {
-        "id": "petechiae",
-        "region": "skin",
-        "maneuver": "Inspect the skin for petechiae",
-        "finding": "Petechiae",
-        "frequency": "rare",
-        "significance": "supports",
-        "importance": "optional",
-        "term": "Petechiae",
+        "term": "Cutis marmorata",
         "snomed_verified": true
       },
       {
         "id": "jaundice",
         "region": "skin",
-        "maneuver": "Inspect the skin and sclerae in natural light",
-        "finding": "Yellow discoloration of the skin and sclerae",
+        "maneuver": "Inspect sclera and skin",
+        "finding": "Jaundice",
         "frequency": "sometimes",
         "significance": "supports",
-        "importance": "important",
+        "importance": "optional",
         "term": "Jaundice",
+        "snomed_verified": true
+      },
+      {
+        "id": "petechiae",
+        "region": "skin",
+        "maneuver": "Inspect the skin and palate",
+        "finding": "Petechiae",
+        "frequency": "rare",
+        "significance": "supports",
+        "importance": "optional",
+        "term": "Petechiae",
         "snomed_verified": true
       },
       {
@@ -734,19 +669,30 @@
       {
         "id": "hepatosplenomegaly",
         "region": "abdomen",
-        "maneuver": "Palpate the abdomen for liver and spleen",
+        "maneuver": "Palpate the liver and spleen",
         "finding": "Enlarged liver or spleen",
-        "frequency": "rare",
+        "frequency": "sometimes",
         "significance": "supports",
         "importance": "optional",
         "term": "Hepatosplenomegaly",
         "snomed_verified": true
       },
       {
+        "id": "hypotonia",
+        "region": "neuro",
+        "maneuver": "Assess muscle tone and posture",
+        "finding": "Hypotonia",
+        "frequency": "sometimes",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Hypotonia",
+        "snomed_verified": true
+      },
+      {
         "id": "bulging-fontanelle",
         "region": "heent",
-        "maneuver": "Palpate the anterior fontanelle with the infant upright",
-        "finding": "Bulging or tense fontanelle",
+        "maneuver": "Palpate the anterior fontanelle with the infant upright and quiet",
+        "finding": "Bulging anterior fontanelle",
         "frequency": "rare",
         "min_severity": "severe",
         "significance": "supports",
@@ -755,155 +701,147 @@
         "snomed_verified": true
       },
       {
-        "id": "nuchal-rigidity",
-        "region": "neck",
-        "maneuver": "Gently flex the neck",
-        "finding": "Resistance to neck flexion",
+        "id": "seizure",
+        "region": "neuro",
+        "maneuver": "Observe for abnormal movements",
+        "finding": "Seizure",
         "frequency": "rare",
         "min_severity": "severe",
         "significance": "supports",
-        "importance": "optional",
-        "term": "Nuchal rigidity",
-        "snomed_verified": true
-      },
-      {
-        "id": "seizure",
-        "region": "neuro",
-        "maneuver": "Observe for abnormal movements and ask the parent about episodes",
-        "finding": "Seizure activity",
-        "frequency": "rare",
-        "min_severity": "severe",
-        "significance": "strongly_supports",
         "importance": "important",
         "term": "Seizure",
         "snomed_verified": true
       },
       {
-        "id": "normal-lung-auscultation",
-        "region": "lung",
-        "maneuver": "Auscultate the lungs",
-        "finding": "Clear breath sounds without crackles or wheeze",
-        "frequency": "sometimes",
-        "significance": "neutral",
-        "importance": "optional",
-        "term": "Normal breath sounds",
-        "snomed_verified": true
-      },
-      {
-        "id": "normal-heart-auscultation",
+        "id": "no-heart-murmur",
         "region": "cardiac",
         "maneuver": "Auscultate the heart",
-        "finding": "No murmur",
+        "finding": "No heart murmur",
         "frequency": "almost_always",
         "significance": "neutral",
-        "importance": "optional",
+        "importance": "important",
         "term": "Heart murmur",
         "snomed_verified": true
       },
       {
-        "id": "normal-fontanelle",
-        "region": "heent",
-        "maneuver": "Palpate the anterior fontanelle",
-        "finding": "Soft, flat fontanelle",
+        "id": "no-crackles",
+        "region": "lung",
+        "maneuver": "Auscultate the lungs",
+        "finding": "No crackles or wheezes",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Crackles",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-pustules",
+        "region": "skin",
+        "maneuver": "Inspect the skin",
+        "finding": "No pustules or focal skin infection",
         "frequency": "almost_always",
         "significance": "neutral",
         "importance": "optional",
-        "term": "Normal anterior fontanelle",
-        "snomed_verified": false
+        "term": "Pustule",
+        "snomed_verified": true
       }
     ]
   },
   "vitals": {
     "temp": {
       "mild": {
-        "min": 97.0,
+        "min": 98.0,
         "max": 100.4
       },
       "moderate": {
-        "min": 96.0,
-        "max": 101.5
+        "min": 100.4,
+        "max": 102.2
       },
       "severe": {
-        "min": 95.0,
-        "max": 102.5
+        "min": 102.2,
+        "max": 104.0
       },
       "critical": {
-        "min": 94.0,
-        "max": 103.5
+        "min": 95.0,
+        "max": 97.5
       }
     },
     "hr": {
       "mild": {
-        "min": 100,
-        "max": 160
+        "min": 130,
+        "max": 170
       },
       "moderate": {
-        "min": 120,
-        "max": 180
+        "min": 160,
+        "max": 190
       },
       "severe": {
-        "min": 140,
-        "max": 200
+        "min": 180,
+        "max": 210
       },
       "critical": {
-        "min": 60,
-        "max": 220
+        "min": 90,
+        "max": 130
       }
     },
     "rr": {
       "mild": {
-        "min": 30,
-        "max": 60
+        "min": 45,
+        "max": 65
       },
       "moderate": {
-        "min": 40,
-        "max": 70
-      },
-      "severe": {
-        "min": 50,
+        "min": 60,
         "max": 80
       },
+      "severe": {
+        "min": 70,
+        "max": 100
+      },
       "critical": {
-        "min": 10,
-        "max": 90
+        "min": 20,
+        "max": 40
       }
     },
     "sbp": {
+      "moderate": {
+        "min": 60,
+        "max": 75
+      },
       "severe": {
         "min": 50,
-        "max": 70
+        "max": 65
       },
       "critical": {
         "min": 35,
-        "max": 55
+        "max": 50
       }
     },
     "dbp": {
-      "severe": {
-        "min": 25,
+      "moderate": {
+        "min": 30,
         "max": 45
       },
+      "severe": {
+        "min": 25,
+        "max": 40
+      },
       "critical": {
-        "min": 15,
-        "max": 35
+        "min": 20,
+        "max": 30
       }
     },
     "spo2": {
-      "mild": {
-        "min": 95,
-        "max": 100
-      },
       "moderate": {
         "min": 90,
-        "max": 95
+        "max": 96
       },
       "severe": {
         "min": 85,
         "max": 92
       },
       "critical": {
-        "min": 70,
-        "max": 88
+        "min": 75,
+        "max": 85
       }
     }
   },
@@ -912,64 +850,48 @@
       "test_id": "wbc",
       "ranges": {
         "mild": {
-          "min": 4.0,
-          "max": 11.0
+          "min": 12,
+          "max": 20
         },
         "moderate": {
-          "min": 3.0,
-          "max": 15.0
+          "min": 8,
+          "max": 16
         },
         "severe": {
-          "min": 2.0,
-          "max": 20.0
+          "min": 4,
+          "max": 9
         },
         "critical": {
-          "min": 1.5,
-          "max": 25.0
+          "min": 2,
+          "max": 6
         }
       },
       "frequency": "common",
       "importance": "important",
-      "caveat": "May be low, normal or high; neutropenia and leukopenia are common in neonatal sepsis and do not exclude it."
+      "caveat": "WBC may be high, normal, or low. Neutropenia is more concerning than leukocytosis; a normal WBC does not rule out sepsis."
     },
     {
       "test_id": "bands_pct",
       "ranges": {
-        "moderate": {
+        "mild": {
           "min": 6,
-          "max": 15
+          "max": 12
+        },
+        "moderate": {
+          "min": 10,
+          "max": 20
         },
         "severe": {
-          "min": 10,
-          "max": 25
+          "min": 15,
+          "max": 30
         },
         "critical": {
-          "min": 15,
-          "max": 35
+          "min": 20,
+          "max": 40
         }
       },
       "frequency": "common",
-      "importance": "important",
-      "caveat": "A left shift with immature-to-total neutrophil ratio above 0.2 supports the diagnosis."
-    },
-    {
-      "test_id": "neut_pct",
-      "ranges": {
-        "moderate": {
-          "min": 70,
-          "max": 85
-        },
-        "severe": {
-          "min": 75,
-          "max": 90
-        },
-        "critical": {
-          "min": 80,
-          "max": 95
-        }
-      },
-      "frequency": "sometimes",
-      "importance": "optional"
+      "importance": "important"
     },
     {
       "test_id": "plt",
@@ -987,384 +909,137 @@
           "max": 50
         }
       },
-      "frequency": "common",
+      "frequency": "sometimes",
       "importance": "important",
-      "caveat": "Thrombocytopenia is a common and early sign of neonatal sepsis and also raises concern for disseminated intravascular coagulation."
+      "caveat": "Thrombocytopenia suggests severe infection, DIC, or NEC."
     },
     {
       "test_id": "crp",
       "ranges": {
-        "moderate": {
+        "mild": {
           "min": 1.0,
           "max": 5.0
         },
-        "severe": {
+        "moderate": {
           "min": 5.0,
           "max": 15.0
         },
-        "critical": {
-          "min": 10.0,
+        "severe": {
+          "min": 15.0,
           "max": 30.0
+        },
+        "critical": {
+          "min": 30.0,
+          "max": 60.0
         }
       },
       "frequency": "common",
       "importance": "important",
-      "caveat": "May be normal at presentation and rises over 6–24 hours; serial values are more useful than a single level."
+      "caveat": "May be normal in the first 6-12 hours; serial measurements are more useful."
     },
     {
       "test_id": "procalcitonin",
       "ranges": {
-        "moderate": {
+        "mild": {
           "min": 0.5,
           "max": 2.0
         },
-        "severe": {
+        "moderate": {
           "min": 2.0,
           "max": 10.0
         },
-        "critical": {
-          "min": 5.0,
-          "max": 50.0
-        }
-      },
-      "frequency": "sometimes",
-      "importance": "optional",
-      "caveat": "Rises earlier than CRP but has a physiologic spike in the first 48 hours of life, so age-specific norms are needed."
-    },
-    {
-      "test_id": "glucose",
-      "ranges": {
-        "moderate": {
-          "min": 40,
-          "max": 60
-        },
         "severe": {
-          "min": 25,
-          "max": 45
+          "min": 10.0,
+          "max": 50.0
         },
         "critical": {
-          "min": 10,
-          "max": 35
+          "min": 50.0,
+          "max": 100.0
         }
       },
       "frequency": "common",
-      "importance": "essential",
-      "caveat": "Hypoglycemia is common and must be corrected immediately; it also worsens neurologic injury."
+      "importance": "important",
+      "caveat": "More specific than CRP for bacterial infection, but can be elevated in noninfectious inflammatory states."
     },
     {
       "test_id": "lactate",
       "ranges": {
-        "severe": {
+        "moderate": {
           "min": 2.0,
           "max": 4.0
         },
-        "critical": {
-          "min": 3.0,
+        "severe": {
+          "min": 4.0,
           "max": 8.0
+        },
+        "critical": {
+          "min": 8.0,
+          "max": 15.0
         }
       },
       "frequency": "sometimes",
       "importance": "important",
-      "caveat": "Elevated lactate with poor perfusion supports septic shock and guides resuscitation."
-    },
-    {
-      "test_id": "ph",
-      "ranges": {
-        "severe": {
-          "min": 7.2,
-          "max": 7.32
-        },
-        "critical": {
-          "min": 7.0,
-          "max": 7.2
-        }
-      },
-      "frequency": "sometimes",
-      "importance": "important",
-      "caveat": "Metabolic acidosis from poor perfusion or anaerobic metabolism."
-    },
-    {
-      "test_id": "base_excess",
-      "ranges": {
-        "severe": {
-          "min": -10,
-          "max": -4
-        },
-        "critical": {
-          "min": -20,
-          "max": -8
-        }
-      },
-      "frequency": "sometimes",
-      "importance": "optional"
-    },
-    {
-      "test_id": "csf_wbc",
-      "ranges": {
-        "moderate": {
-          "min": 10,
-          "max": 100
-        },
-        "severe": {
-          "min": 50,
-          "max": 500
-        },
-        "critical": {
-          "min": 200,
-          "max": 2000
-        }
-      },
-      "frequency": "common",
-      "importance": "essential",
-      "caveat": "Normal neonatal CSF white count can be up to about 20–30/µL; a predominance of neutrophils is abnormal."
-    },
-    {
-      "test_id": "csf_protein",
-      "ranges": {
-        "moderate": {
-          "min": 90,
-          "max": 150
-        },
-        "severe": {
-          "min": 120,
-          "max": 250
-        },
-        "critical": {
-          "min": 200,
-          "max": 500
-        }
-      },
-      "frequency": "common",
-      "importance": "essential",
-      "caveat": "Normal neonatal CSF protein is higher than in older children (up to about 90–150 mg/dL depending on age)."
-    },
-    {
-      "test_id": "csf_glucose",
-      "ranges": {
-        "moderate": {
-          "min": 30,
-          "max": 45
-        },
-        "severe": {
-          "min": 20,
-          "max": 35
-        },
-        "critical": {
-          "min": 10,
-          "max": 25
-        }
-      },
-      "frequency": "common",
-      "importance": "essential",
-      "caveat": "Compare with the simultaneous serum glucose; a CSF-to-serum ratio below about 0.6 is abnormal."
-    },
-    {
-      "test_id": "csf_appearance",
-      "qualitative": {
-        "moderate": "Cloudy",
-        "severe": "Cloudy",
-        "critical": "Cloudy"
-      },
-      "frequency": "sometimes",
-      "importance": "optional"
-    },
-    {
-      "test_id": "pt",
-      "ranges": {
-        "severe": {
-          "min": 14.0,
-          "max": 18.0
-        },
-        "critical": {
-          "min": 16.0,
-          "max": 25.0
-        }
-      },
-      "frequency": "sometimes",
-      "importance": "optional",
-      "caveat": "Prolongation suggests disseminated intravascular coagulation."
-    },
-    {
-      "test_id": "inr",
-      "ranges": {
-        "severe": {
-          "min": 1.3,
-          "max": 1.8
-        },
-        "critical": {
-          "min": 1.6,
-          "max": 2.5
-        }
-      },
-      "frequency": "sometimes",
-      "importance": "optional"
-    },
-    {
-      "test_id": "aptt",
-      "ranges": {
-        "severe": {
-          "min": 40,
-          "max": 60
-        },
-        "critical": {
-          "min": 55,
-          "max": 90
-        }
-      },
-      "frequency": "sometimes",
-      "importance": "optional"
-    },
-    {
-      "test_id": "fibrinogen",
-      "ranges": {
-        "severe": {
-          "min": 100,
-          "max": 180
-        },
-        "critical": {
-          "min": 50,
-          "max": 120
-        }
-      },
-      "frequency": "rare",
-      "importance": "optional",
-      "caveat": "Low fibrinogen with prolonged clotting times supports disseminated intravascular coagulation."
-    },
-    {
-      "test_id": "tbili",
-      "ranges": {
-        "moderate": {
-          "min": 5.0,
-          "max": 12.0
-        },
-        "severe": {
-          "min": 10.0,
-          "max": 20.0
-        },
-        "critical": {
-          "min": 15.0,
-          "max": 30.0
-        }
-      },
-      "frequency": "sometimes",
-      "importance": "optional",
-      "caveat": "Jaundice may be the presenting sign; check whether it is direct or indirect and whether it is hemolytic."
-    },
-    {
-      "test_id": "cr",
-      "ranges": {
-        "moderate": {
-          "min": 0.8,
-          "max": 1.3
-        },
-        "severe": {
-          "min": 1.1,
-          "max": 2.0
-        },
-        "critical": {
-          "min": 1.5,
-          "max": 3.0
-        }
-      },
-      "frequency": "sometimes",
-      "importance": "optional",
-      "caveat": "Neonatal creatinine reflects maternal values early on; a rising or persistently high value suggests renal injury."
-    },
-    {
-      "test_id": "ua_le",
-      "qualitative": {
-        "moderate": "Trace",
-        "severe": "1+",
-        "critical": "2+"
-      },
-      "frequency": "sometimes",
-      "importance": "optional",
-      "caveat": "A urinary tract infection can be the source of late-onset sepsis."
-    },
-    {
-      "test_id": "ua_nitrite",
-      "qualitative": {
-        "moderate": "Positive",
-        "severe": "Positive",
-        "critical": "Positive"
-      },
-      "frequency": "rare",
-      "importance": "optional"
+      "caveat": "Elevated in shock and hypoperfusion; not specific for infection."
     }
   ],
   "imaging": [
     {
-      "study": "Chest x-ray",
+      "study": "Chest X-ray",
       "modality": "xray",
-      "preferred_when": "Respiratory distress, apnea, or suspected pneumonia",
+      "preferred_when": "Respiratory distress or focal lung signs",
       "findings": [
         {
-          "text": "Diffuse bilateral reticulonodular or patchy opacities",
-          "frequency": "sometimes"
+          "text": "Bilateral interstitial infiltrates",
+          "frequency": "common"
         },
         {
           "text": "Focal consolidation",
           "frequency": "sometimes"
         },
         {
-          "text": "Normal lung fields",
-          "frequency": "common"
-        },
-        {
           "text": "Pleural effusion",
           "frequency": "rare"
+        },
+        {
+          "text": "Normal or hyperinflation",
+          "frequency": "sometimes"
         }
       ]
     },
     {
-      "study": "Abdominal x-ray",
+      "study": "Abdominal X-ray",
       "modality": "xray",
-      "preferred_when": "Abdominal distension, feeding intolerance, or suspected necrotizing enterocolitis",
+      "preferred_when": "Abdominal distension, bloody stools, or bilious vomiting",
       "findings": [
         {
           "text": "Dilated bowel loops",
-          "frequency": "sometimes"
+          "frequency": "common"
         },
         {
-          "text": "Pneumatosis intestinalis (suggests necrotizing enterocolitis)",
+          "text": "Pneumatosis intestinalis",
           "frequency": "rare"
         },
         {
-          "text": "Free intraperitoneal air (perforation)",
+          "text": "Portal venous gas",
+          "frequency": "rare"
+        },
+        {
+          "text": "Free intraperitoneal air",
           "frequency": "rare"
         }
       ]
     },
     {
-      "study": "Cranial ultrasound",
+      "study": "Head ultrasound",
       "modality": "ultrasound",
-      "preferred_when": "Preterm infants, suspected meningitis, seizures, or suspected intraventricular hemorrhage",
+      "preferred_when": "Preterm infant with neurologic signs or suspected meningitis",
       "findings": [
         {
-          "text": "Normal study",
-          "frequency": "common"
-        },
-        {
-          "text": "Periventricular or intraventricular hemorrhage",
+          "text": "Ventriculomegaly",
           "frequency": "sometimes"
         },
         {
-          "text": "Ventriculomegaly or echogenic periventricular white matter",
-          "frequency": "rare"
-        }
-      ]
-    },
-    {
-      "study": "Echocardiogram",
-      "modality": "echo",
-      "preferred_when": "Suspected congenital heart disease, persistent shock, or a murmur",
-      "findings": [
-        {
-          "text": "Normal cardiac anatomy and function",
-          "frequency": "common"
-        },
-        {
-          "text": "Reduced ventricular function or pericardial effusion",
+          "text": "Echogenic sulci or extra-axial fluid",
           "frequency": "rare"
         }
       ]
@@ -1374,355 +1049,319 @@
     "initial": [
       {
         "test": "cbc",
-        "why": "White count, differential and platelets; a left shift or thrombocytopenia supports sepsis"
-      },
-      {
-        "test": "bmp",
-        "why": "Glucose, electrolytes and renal function; hypoglycemia is common and must be corrected"
-      },
-      {
-        "test": "lactate",
-        "why": "Assesses perfusion and severity of shock"
+        "why": "Assess white blood cells, immature forms, platelets; leukopenia/neutropenia or left shift supports sepsis"
       },
       {
         "test": "crp",
-        "why": "Baseline inflammatory marker; serial values help monitor response"
+        "why": "Common inflammatory marker; supports bacterial infection when elevated"
       },
-      {
-        "test": "blood culture",
-        "why": "Definitive test; obtain before starting antibiotics from two sites if possible"
-      },
-      {
-        "test": "csf",
-        "why": "Lumbar puncture for cell count, protein, glucose and culture; meningitis is common and changes management",
-        "only_if": "the infant is stable enough to tolerate the procedure"
-      },
-      {
-        "test": "urine culture",
-        "why": "Common source in late-onset sepsis",
-        "only_if": "late-onset disease (after 7 days of life)"
-      },
-      {
-        "test": "Chest x-ray",
-        "why": "Looks for pneumonia or a respiratory source",
-        "only_if": "respiratory distress, apnea, or abnormal lung exam"
-      }
-    ],
-    "confirmatory": [],
-    "supporting": [
       {
         "test": "procalcitonin",
-        "why": "Rises earlier than CRP; may help decide duration of antibiotics"
+        "why": "More specific bacterial marker; aids decision to start antibiotics"
       },
       {
-        "test": "pt",
-        "why": "Screens for coagulopathy or disseminated intravascular coagulation",
-        "only_if": "bleeding, petechiae, or severe illness"
+        "test": "bmp",
+        "why": "Check glucose, electrolytes, renal function; neonates may have hypoglycemia or acidosis"
+      }
+    ],
+    "confirmatory": [
+      {
+        "test": "Blood culture",
+        "why": "Gold standard for bacteremia; send before antibiotics"
+      }
+    ],
+    "supporting": [
+      {
+        "test": "csf",
+        "why": "Lumbar puncture cell count, protein, glucose; helps diagnose meningitis",
+        "only_if": "meningitis suspected (neurologic signs, late-onset, or blood culture positive)"
       },
       {
-        "test": "inr",
-        "why": "Screens for coagulopathy or disseminated intravascular coagulation",
-        "only_if": "bleeding, petechiae, or severe illness"
+        "test": "Urine culture",
+        "why": "Young infants can have urinary tract infection as a source; obtain in late-onset or if urinalysis suggests",
+        "only_if": "late-onset sepsis or urinary tract infection suspected"
       },
       {
-        "test": "aptt",
-        "why": "Screens for coagulopathy or disseminated intravascular coagulation",
-        "only_if": "bleeding, petechiae, or severe illness"
+        "test": "lactate",
+        "why": "Assess perfusion and guide resuscitation",
+        "only_if": "ill-appearing or shock"
       },
       {
-        "test": "fibrinogen",
-        "why": "Low values support disseminated intravascular coagulation",
-        "only_if": "bleeding or suspected disseminated intravascular coagulation"
+        "test": "Chest X-ray",
+        "why": "Look for pneumonia or ARDS",
+        "only_if": "respiratory distress or focal lung signs"
       },
       {
-        "test": "tbili",
-        "why": "Evaluates jaundice, which may be the presenting sign"
+        "test": "Abdominal X-ray",
+        "why": "Evaluate for necrotizing enterocolitis",
+        "only_if": "abdominal distension, bloody stools, or bilious vomiting"
       },
       {
-        "test": "Cranial ultrasound",
-        "why": "Looks for intraventricular hemorrhage or ventriculomegaly",
-        "only_if": "preterm infant, seizures, or suspected meningitis"
-      },
-      {
-        "test": "Echocardiogram",
-        "why": "Rules out congenital heart disease as a mimic of septic shock",
-        "only_if": "persistent shock, murmur, or cyanosis"
+        "test": "coag",
+        "why": "Screen for DIC in severely ill patients",
+        "only_if": "bleeding, petechiae, or DIC suspected"
       }
     ],
     "not_indicated": [
       {
-        "test": "Chest x-ray",
-        "why": "Not needed without respiratory signs",
-        "only_if": "no respiratory distress or apnea"
+        "test": "CT head",
+        "why": "No role unless focal neurologic deficit or concern for intracranial abscess"
       },
       {
-        "test": "Abdominal x-ray",
-        "why": "Not needed without abdominal findings",
-        "only_if": "no abdominal distension or feeding intolerance"
+        "test": "MRI brain",
+        "why": "Reserved for complicated meningitis with persistent neurologic deficits"
       },
       {
-        "test": "Cranial ultrasound",
-        "why": "Not routine in a term infant without neurologic findings",
-        "only_if": "no seizures or suspected meningitis"
+        "test": "Abdominal ultrasound",
+        "why": "Not routine; consider only for suspected abscess or NEC"
       },
       {
-        "test": "Echocardiogram",
-        "why": "Not routine unless congenital heart disease is suspected",
-        "only_if": "no shock, murmur, or cyanosis"
-      },
-      {
-        "test": "d_dimer",
-        "why": "No role in the diagnosis of neonatal sepsis"
-      },
-      {
-        "test": "lipase",
-        "why": "No role in neonatal sepsis"
-      },
-      {
-        "test": "tsh",
-        "why": "Not part of the acute sepsis workup"
-      },
-      {
-        "test": "hcg",
-        "why": "Not applicable in a neonate"
+        "test": "TORCH panel",
+        "why": "Not indicated for bacterial sepsis unless exposures suggest congenital infection"
       }
     ],
     "decision_points": [
-      "Obtain blood culture before starting antibiotics; do not delay antibiotics for the lumbar puncture in an unstable infant",
-      "Lumbar puncture is deferred in an unstable infant and performed once stabilized",
-      "Correct hypoglycemia and treat shock with fluids and vasoactive support while cultures are pending",
-      "A normal CBC, CRP and blood culture do not exclude early-onset sepsis; antibiotics are often continued based on clinical risk factors"
+      "Draw blood culture before giving antibiotics; start antibiotics promptly after cultures",
+      "For early-onset sepsis, use maternal risk factors and clinical signs to decide evaluation; for late-onset, obtain blood, urine, and CSF cultures",
+      "Lumbar puncture in symptomatic infants or when meningitis is suspected",
+      "Repeat CRP/procalcitonin can help guide duration of therapy",
+      "If shock is present, do not delay antibiotics to complete imaging or lumbar puncture"
     ],
-    "criteria": [],
-    "scores": []
+    "criteria": [
+      {
+        "name": "Early-onset neonatal sepsis diagnosis",
+        "summary": "Diagnosed by positive blood culture or a clinical syndrome with supportive laboratory and maternal risk factors.",
+        "items": [
+          "Blood culture positive for pathogenic bacteria",
+          "Clinical signs of sepsis (fever, hypothermia, tachypnea, lethargy, poor feeding)",
+          "Supportive laboratory findings (abnormal WBC, elevated CRP or procalcitonin)",
+          "Maternal risk factors (GBS colonization, chorioamnionitis, prolonged rupture of membranes)"
+        ]
+      }
+    ],
+    "scores": [
+      "neonatal_sepsis_calculator"
+    ]
   },
   "differential": [
     {
-      "name": "Respiratory distress syndrome of prematurity",
-      "slug": "respiratory-distress-syndrome",
-      "why_considered": "Preterm infant with grunting, retractions, tachypnea and hypoxia in the first hours of life",
-      "must_not_miss": false,
+      "name": "Neonatal meningitis",
+      "slug": "neonatal-meningitis",
+      "why_considered": "Same pathogens and risk factors; meningitis can coexist with or mimic neonatal sepsis, and signs overlap.",
+      "must_not_miss": true,
+      "trigger": "Seizure, bulging fontanelle, irritability, or other neurologic signs in a septic-appearing infant",
       "discriminators": {
         "history": [
-          "Preterm birth, often before 34 weeks",
-          "Symptoms begin immediately after birth and worsen over the first 24-48 hours",
-          "No maternal fever or chorioamnionitis"
+          "Fever or hypothermia",
+          "Poor feeding",
+          "Irritability or lethargy",
+          "Seizures"
         ],
         "exam": [
-          "Diffuse grunting and retractions with poor air entry bilaterally",
-          "Temperature is usually stable",
-          "No lethargy or poor perfusion early on"
+          "Bulging fontanelle",
+          "Hypotonia",
+          "High-pitched cry"
         ],
         "labs": [
-          "Blood culture negative",
-          "CRP and procalcitonin remain low or fall on serial testing",
-          "Blood gas shows hypoxemia with respiratory acidosis rather than a septic metabolic picture"
+          "CSF pleocytosis with elevated protein and low glucose",
+          "Positive CSF culture",
+          "Blood culture may be positive"
         ],
         "imaging": [
-          "Chest x-ray shows low lung volumes with diffuse ground-glass opacities and air bronchograms",
-          "No focal consolidation or pleural effusion"
+          "Head ultrasound may show ventriculomegaly or echogenic sulci"
         ]
       }
     },
     {
-      "name": "Transient tachypnea of the newborn",
-      "slug": "transient-tachypnea-of-the-newborn",
-      "why_considered": "Term or late-preterm infant with tachypnea and mild respiratory distress shortly after delivery",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Term or late-preterm infant",
-          "Often delivered by cesarean section or with rapid delivery",
-          "Respiratory symptoms begin within hours of birth and improve over 24-72 hours"
-        ],
-        "exam": [
-          "Tachypnea with mild retractions but good air entry",
-          "Infant remains alert and feeding",
-          "No temperature instability or poor perfusion"
-        ],
-        "labs": [
-          "Blood culture negative",
-          "Inflammatory markers normal",
-          "Mild respiratory acidosis that resolves"
-        ],
-        "imaging": [
-          "Chest x-ray shows perihilar streaking, fluid in the fissures, and mild hyperinflation",
-          "Findings clear on repeat film within 1-2 days"
-        ]
-      }
-    },
-    {
-      "name": "Congenital heart disease with ductal-dependent circulation",
+      "name": "Ductal-dependent congenital heart disease",
       "slug": "congenital-heart-disease",
-      "why_considered": "Neonate with shock, poor perfusion, acidosis and respiratory distress that can mimic septic shock",
+      "why_considered": "Presents in the first week with cyanosis, tachypnea, poor feeding, and shock, mimicking sepsis.",
       "must_not_miss": true,
-      "trigger": "Shock or cyanosis that does not improve with fluids and antibiotics, or a murmur with differential cyanosis",
+      "trigger": "Cyanosis, murmur, differential cyanosis, or shock unresponsive to fluids",
       "discriminators": {
         "history": [
-          "Symptoms may appear as the ductus arteriosus closes, often on day 2-14 of life",
-          "Antenatal ultrasound may have shown a cardiac anomaly",
-          "No maternal infectious risk factors"
+          "No maternal risk factors for infection",
+          "Symptoms often appear with ductus closure at 2–5 days",
+          "Poor feeding"
         ],
         "exam": [
-          "Murmur, single second heart sound, or differential cyanosis (upper extremity pink, lower extremity blue)",
-          "Weak or absent femoral pulses in coarctation",
-          "Hepatomegaly from heart failure"
+          "Heart murmur",
+          "Cyanosis",
+          "Weak or absent femoral pulses"
         ],
         "labs": [
-          "Blood culture negative",
-          "Hyperoxia test shows no rise in PaO2 with 100% oxygen",
-          "Metabolic acidosis may be present but inflammatory markers are normal"
+          "Normal WBC and CRP",
+          "Metabolic acidosis on blood gas"
         ],
         "imaging": [
-          "Echocardiogram identifies the structural defect and ductal dependency",
-          "Chest x-ray may show cardiomegaly or abnormal pulmonary vascularity"
+          "Cardiomegaly or pulmonary edema on chest X-ray",
+          "Diagnostic echocardiogram"
+        ],
+        "ecg": [
+          "Right or left ventricular hypertrophy or axis abnormality"
         ]
       }
     },
     {
-      "name": "Metabolic disorder (inborn error of metabolism)",
-      "slug": "inborn-error-of-metabolism",
-      "why_considered": "Neonate with lethargy, poor feeding, vomiting, acidosis and shock after an initial well period",
+      "name": "Inborn error of metabolism",
+      "slug": "inborn-errors-of-metabolism",
+      "why_considered": "Acute presentation with lethargy, vomiting, hypoglycemia, and acidosis after a symptom-free interval, often triggered by fasting or infection.",
       "must_not_miss": true,
-      "trigger": "Deterioration after a symptom-free interval with severe metabolic acidosis, hypoglycemia, or hyperammonemia",
+      "trigger": "Hypoglycemia, metabolic acidosis, hyperammonemia, or family history of neonatal death",
       "discriminators": {
         "history": [
-          "Well for the first hours to days of life, then progressive lethargy and poor feeding",
-          "Consanguinity or a family history of neonatal death or metabolic disease",
-          "Symptoms worsen with feeding"
+          "Symptoms after a period of normal feeding",
+          "Vomiting",
+          "Family history of unexplained neonatal death or consanguinity"
         ],
         "exam": [
-          "Lethargy, hypotonia, seizures, or coma",
-          "No fever; temperature may be normal or low",
-          "No focal infectious source"
+          "Lethargy or coma",
+          "Seizures",
+          "Unusual urine odor"
         ],
         "labs": [
-          "Severe metabolic acidosis with a high anion gap",
-          "Hyperammonemia, hypoglycemia, or abnormal acylcarnitine profile",
-          "Blood culture negative; inflammatory markers normal"
+          "Hypoglycemia",
+          "Metabolic acidosis with increased anion gap",
+          "Hyperammonemia",
+          "Abnormal plasma amino acids or urine organic acids"
         ],
         "imaging": [
-          "Cranial ultrasound or MRI may show cerebral edema or white matter changes",
-          "Chest x-ray is normal"
+          "Normal chest X-ray unless aspiration"
         ]
       }
     },
     {
-      "name": "Viral infection (enterovirus, parechovirus, HSV)",
-      "slug": "neonatal-viral-infection",
-      "why_considered": "Young infant with fever, poor feeding, irritability and sometimes a rash or seizures",
-      "must_not_miss": true,
-      "trigger": "Fever with vesicular rash, seizures, or CSF pleocytosis with negative bacterial cultures",
+      "name": "Neonatal pneumonia",
+      "slug": "neonatal-pneumonia",
+      "why_considered": "Respiratory distress, tachypnea, and hypoxemia in a newborn can be due to pneumonia, which often accompanies or mimics sepsis.",
+      "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Seasonal pattern (enterovirus in summer/fall)",
-          "Maternal history of HSV or genital lesions",
-          "Sick contacts with viral illness"
+          "Maternal chorioamnionitis",
+          "Prolonged rupture of membranes",
+          "Respiratory distress from birth"
         ],
         "exam": [
-          "Vesicular rash (HSV), or nonspecific maculopapular rash (enterovirus)",
-          "Irritability or seizures out of proportion to fever",
-          "No focal bacterial source"
+          "Tachypnea",
+          "Grunting",
+          "Crackles or decreased breath sounds"
         ],
         "labs": [
-          "CSF PCR positive for enterovirus, parechovirus, or HSV",
-          "Bacterial cultures negative",
-          "CSF may show lymphocytic pleocytosis; HSV may show red blood cells and elevated protein"
+          "Elevated CRP",
+          "Blood culture may be positive or negative"
         ],
         "imaging": [
-          "MRI brain may show temporal lobe changes in HSV encephalitis",
-          "Chest x-ray usually normal"
+          "Chest X-ray with focal or diffuse infiltrates"
+        ]
+      }
+    },
+    {
+      "name": "Congenital adrenal hyperplasia",
+      "slug": "congenital-adrenal-hyperplasia",
+      "why_considered": "Salt-wasting crisis in the second week of life presents with shock, hyponatremia, hyperkalemia, and hypoglycemia, mimicking sepsis.",
+      "must_not_miss": true,
+      "trigger": "Hyponatremia with hyperkalemia, shock, or ambiguous genitalia in a female infant",
+      "discriminators": {
+        "history": [
+          "Vomiting and poor feeding",
+          "History of consanguinity or affected sibling"
+        ],
+        "exam": [
+          "Ambiguous genitalia",
+          "Hyperpigmentation",
+          "Dehydration"
+        ],
+        "labs": [
+          "Hyponatremia",
+          "Hyperkalemia",
+          "Hypoglycemia",
+          "Elevated 17-hydroxyprogesterone"
+        ],
+        "imaging": [
+          "Normal chest X-ray unless shock lungs"
         ]
       }
     },
     {
       "name": "Necrotizing enterocolitis",
       "slug": "necrotizing-enterocolitis",
-      "why_considered": "Preterm infant with abdominal distension, feeding intolerance, temperature instability and apnea",
-      "must_not_miss": false,
+      "why_considered": "Abdominal distension, bloody stools, and systemic signs in a preterm infant mimic sepsis and may coexist.",
+      "must_not_miss": true,
+      "trigger": "Abdominal distension, bilious vomiting, or bloody stools in a preterm infant",
       "discriminators": {
         "history": [
-          "Preterm, often with enteral feeds started",
-          "Feeding intolerance and bilious emesis",
-          "Bloody stools"
+          "Preterm birth",
+          "Formula feeding",
+          "Sudden abdominal distension"
         ],
         "exam": [
-          "Abdominal distension, tenderness, or erythema of the abdominal wall",
-          "Temperature instability and apnea",
-          "Shock in advanced disease"
+          "Abdominal distension",
+          "Tenderness",
+          "Erythema of abdominal wall"
         ],
         "labs": [
-          "Thrombocytopenia, metabolic acidosis, and elevated inflammatory markers",
-          "Blood culture may be positive but is not diagnostic"
+          "Thrombocytopenia",
+          "Metabolic acidosis",
+          "Elevated CRP"
         ],
         "imaging": [
-          "Abdominal x-ray shows pneumatosis intestinalis, portal venous gas, or free air",
-          "Dilated bowel loops with thickened walls"
-        ]
-      }
-    },
-    {
-      "name": "Urinary tract infection",
-      "slug": "urinary-tract-infection",
-      "why_considered": "Young infant with fever, poor feeding and no localizing signs; a common source of late-onset sepsis",
-      "must_not_miss": false,
-      "discriminators": {
-        "history": [
-          "Age typically after 7 days and before 90 days",
-          "No respiratory or neurologic symptoms",
-          "May have a history of antenatal hydronephrosis"
-        ],
-        "exam": [
-          "Fever without focal findings",
-          "No rash, no respiratory distress",
-          "Usually well-appearing or mildly unwell"
-        ],
-        "labs": [
-          "Urinalysis positive for leukocyte esterase and nitrites",
-          "Urine culture grows a single organism",
-          "Blood culture may be negative or positive"
-        ],
-        "imaging": [
-          "Renal ultrasound may show hydronephrosis or structural abnormality",
-          "VCUG if recurrent or abnormal ultrasound"
+          "Pneumatosis intestinalis",
+          "Portal venous gas",
+          "Dilated bowel loops on abdominal X-ray"
         ]
       }
     }
   ],
   "course": {
     "severity": {
-      "mild": "Well-appearing or mildly unwell infant with poor feeding, temperature instability, and no respiratory distress or shock; normal perfusion and alert",
-      "moderate": "Unwell infant with fever or hypothermia, lethargy, tachypnea, tachycardia, and mild perfusion abnormalities but still maintaining blood pressure",
-      "severe": "Ill-appearing infant with respiratory distress, apnea, poor perfusion, hypotension, metabolic acidosis, and need for respiratory or vasoactive support",
-      "critical": "Septic shock with refractory hypotension, multi-organ failure, disseminated intravascular coagulation, or meningitis with neurologic compromise"
+      "mild": "Early or subtle infection: mildly decreased activity, normal or mildly abnormal temperature, feeding less vigorously but stable vitals.",
+      "moderate": "Obvious clinical illness: lethargy or irritability, temperature instability, tachypnea with retractions, poor perfusion, but no shock.",
+      "severe": "Sepsis with organ dysfunction: significant respiratory distress, hypotension, delayed capillary refill, metabolic acidosis, seizures or meningitis.",
+      "critical": "Septic shock: unresponsive, profound hypotension, bradycardia or apnea, DIC, multiorgan failure, high mortality."
     },
     "red_flags": [
       {
-        "finding": "Apnea or gasping respirations",
-        "meaning": "Respiratory failure or central apnea from sepsis; requires immediate airway support"
+        "finding": "Hypothermia or fever in the first 24 hours",
+        "meaning": "Early-onset sepsis risk; evaluate and start antibiotics promptly if risk factors are present."
       },
       {
-        "finding": "Hypotension or prolonged capillary refill",
-        "meaning": "Septic shock; needs fluid resuscitation and vasoactive support"
+        "finding": "Apnea, bradycardia, or oxygen desaturation",
+        "meaning": "May indicate severe sepsis or impending respiratory failure."
       },
       {
-        "finding": "Bulging fontanelle, seizures, or nuchal rigidity",
-        "meaning": "Meningitis or raised intracranial pressure; lumbar puncture and antibiotics urgently"
+        "finding": "Capillary refill longer than 3 seconds or hypotension",
+        "meaning": "Septic shock; begin fluid resuscitation and antibiotics immediately."
       },
       {
-        "finding": "Petechiae or bleeding from puncture sites",
-        "meaning": "Disseminated intravascular coagulation; check platelets and clotting studies"
+        "finding": "Seizure or bulging fontanelle",
+        "meaning": "Meningitis until proven otherwise; perform lumbar puncture."
       },
       {
-        "finding": "Hypoglycemia",
-        "meaning": "Poor reserve or sepsis; correct immediately to prevent neurologic injury"
+        "finding": "Abdominal distension with bloody stools",
+        "meaning": "Necrotizing enterocolitis; stop feeds, start antibiotics, obtain imaging."
       },
       {
-        "finding": "Metabolic acidosis with elevated lactate",
-        "meaning": "Poor perfusion and anaerobic metabolism; indicates severe sepsis or shock"
+        "finding": "Petechiae or bleeding",
+        "meaning": "DIC or severe bacterial infection; check coagulation and platelets."
+      },
+      {
+        "finding": "No improvement after 48 hours of antibiotics",
+        "meaning": "Reconsider diagnosis, resistant organism, or hidden source."
       }
     ],
     "complications": [
+      {
+        "name": "Meningitis",
+        "timing": "early",
+        "seriousness": "serious",
+        "frequency": "sometimes",
+        "clues": [
+          "Seizure",
+          "Bulging fontanelle",
+          "Irritability",
+          "Abnormal CSF"
+        ]
+      },
       {
         "name": "Septic shock",
         "timing": "early",
@@ -1730,213 +1369,206 @@
         "frequency": "sometimes",
         "clues": [
           "Hypotension",
-          "Prolonged capillary refill",
+          "Delayed capillary refill",
           "Elevated lactate",
-          "Metabolic acidosis"
-        ]
-      },
-      {
-        "name": "Meningitis",
-        "timing": "early",
-        "seriousness": "life_threatening",
-        "frequency": "common",
-        "clues": [
-          "Seizures",
-          "Bulging fontanelle",
-          "CSF pleocytosis with neutrophil predominance",
-          "Positive CSF culture"
+          "Oliguria"
         ]
       },
       {
         "name": "Disseminated intravascular coagulation",
-        "timing": "early",
+        "timing": "any",
         "seriousness": "life_threatening",
-        "frequency": "sometimes",
+        "frequency": "rare",
         "clues": [
           "Petechiae",
-          "Bleeding from puncture sites",
+          "Bleeding from venipuncture sites",
           "Thrombocytopenia",
-          "Prolonged PT and aPTT",
-          "Low fibrinogen"
+          "Prolonged PT/PTT"
         ]
       },
       {
-        "name": "Acute kidney injury",
-        "timing": "early",
+        "name": "Brain abscess",
+        "timing": "late",
         "seriousness": "serious",
-        "frequency": "sometimes",
+        "frequency": "rare",
         "clues": [
-          "Oliguria",
-          "Rising creatinine",
-          "Fluid overload"
+          "Persistent fever",
+          "Focal neurologic signs",
+          "Head imaging"
         ]
       },
       {
-        "name": "Intraventricular hemorrhage",
-        "timing": "early",
-        "seriousness": "serious",
-        "frequency": "sometimes",
-        "clues": [
-          "Preterm infant",
-          "Seizures",
-          "Sudden drop in hematocrit",
-          "Abnormal cranial ultrasound"
-        ]
-      },
-      {
-        "name": "Neurodevelopmental impairment",
+        "name": "Neurodevelopmental impairment after meningitis",
         "timing": "late",
         "seriousness": "serious",
         "frequency": "sometimes",
         "clues": [
-          "History of meningitis or septic shock",
-          "Abnormal neurologic exam at follow-up",
-          "Developmental delay"
+          "Abnormal tone",
+          "Hearing loss",
+          "Seizures"
+        ]
+      },
+      {
+        "name": "Necrotizing enterocolitis",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "sometimes",
+        "clues": [
+          "Abdominal distension",
+          "Bloody stools",
+          "Pneumatosis intestinalis"
         ]
       }
     ],
     "special_populations": [
       {
         "population": "infants",
-        "differences": "Preterm infants may present with apnea, bradycardia, and temperature instability rather than fever or focal signs; they are at higher risk for intraventricular hemorrhage and necrotizing enterocolitis."
+        "differences": "Preterm and very low birth weight infants often lack fever and present with apnea, bradycardia, abdominal distension, or worsening respiratory support; they have higher mortality and more unusual organisms including Candida and Gram-negative rods."
       },
       {
         "population": "immunocompromised",
-        "differences": "Infants with immunodeficiency may have a blunted inflammatory response and present with subtle or absent fever and normal white count."
+        "differences": "Neonates with congenital immunodeficiency, receiving immunosuppressive therapy, or with indwelling catheters are at risk for atypical organisms, fungal sepsis, and more severe disease; evaluation may require additional cultures and imaging."
       }
     ]
   },
   "teaching": {
     "key_questions": [
       {
-        "question": "How old is the baby now, and how many days old was he or she when the symptoms started?",
+        "question": "How old is the baby, and when did the symptoms start?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Age under 90 days; onset within the first 7 days suggests early-onset sepsis, onset after 7 days suggests late-onset sepsis"
+        "looking_for": "Early-onset within the first 24–72 hours vs late-onset after 7 days; sudden change over hours"
       },
       {
-        "question": "How is the baby feeding compared with usual — is he or she taking less, refusing feeds, or too sleepy to feed?",
+        "question": "Has the baby been feeding differently?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Poor feeding or feeding intolerance, a common and early nonspecific sign"
+        "looking_for": "Poor feeding, weak suck, or decreased intake"
       },
       {
-        "question": "Has the baby's temperature been high, low, or swinging between the two?",
+        "question": "Has the baby felt warm or cold to touch? Have you checked a temperature?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Temperature instability — fever or hypothermia; neonates may not mount a fever"
+        "looking_for": "Fever above 100.4°F or hypothermia below 97.7°F"
       },
       {
-        "question": "How alert and responsive is the baby — is he or she sleepier than usual, floppy, or hard to wake?",
+        "question": "Is the baby breathing fast, grunting, or having pauses in breathing?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Lethargy or reduced responsiveness, suggesting systemic illness"
+        "looking_for": "Tachypnea, grunting, nasal flaring, or apnea"
       },
       {
-        "question": "Has the baby had any pauses in breathing, grunting, flaring, or fast breathing?",
-        "category": "associated",
+        "question": "Is the baby less active, sleepy, or hard to wake?",
+        "category": "hpi",
         "importance": "essential",
-        "looking_for": "Apnea, grunting, nasal flaring, retractions, or tachypnea — respiratory signs of sepsis"
+        "looking_for": "Lethargy or irritability"
       },
       {
-        "question": "Has the baby had any vomiting, abdominal swelling, or blood in the stool?",
+        "question": "Has the baby had vomiting, diarrhea, abdominal distension, or blood in the stool?",
         "category": "associated",
         "importance": "important",
-        "looking_for": "Vomiting, abdominal distension, or bloody stools, which raise concern for necrotizing enterocolitis"
+        "looking_for": "Vomiting, diarrhea, abdominal distension, or bloody stools suggesting necrotizing enterocolitis"
       },
       {
-        "question": "Has the baby had any abnormal movements, twitching, or staring spells?",
-        "category": "associated",
-        "importance": "important",
-        "looking_for": "Seizures, which suggest meningitis or metabolic derangement"
-      },
-      {
-        "question": "Has the baby's skin looked yellow, pale, mottled, or spotted?",
-        "category": "associated",
-        "importance": "important",
-        "looking_for": "Jaundice, pallor, mottling, or petechiae"
-      },
-      {
-        "question": "How was the pregnancy and delivery — was the baby born early, and how long after the water broke was he or she born?",
-        "category": "obstetric",
+        "question": "Has the baby turned blue or had any color change?",
+        "category": "red_flag",
         "importance": "essential",
-        "looking_for": "Preterm birth, prolonged rupture of membranes (18 hours or more), or cesarean delivery"
+        "looking_for": "Cyanosis or mottling; need immediate support"
       },
       {
-        "question": "Did the mother have a fever, chorioamnionitis, a urinary tract infection, or a positive group B Streptococcus swab during pregnancy?",
-        "category": "obstetric",
-        "importance": "essential",
-        "looking_for": "Maternal infectious risk factors for early-onset sepsis"
-      },
-      {
-        "question": "Did the mother receive antibiotics in labor, and was group B Streptococcus screening done?",
-        "category": "obstetric",
+        "question": "Has the baby had any abnormal movements or staring spells?",
+        "category": "red_flag",
         "importance": "important",
-        "looking_for": "Intrapartum antibiotic prophylaxis, which lowers but does not eliminate risk"
+        "looking_for": "Seizures suggesting meningitis"
       },
       {
-        "question": "Has the baby had any lines, tubes, procedures, or a long hospital stay since birth?",
-        "category": "pmh",
-        "importance": "important",
-        "looking_for": "Invasive devices or prolonged hospitalization, risk factors for late-onset sepsis"
-      },
-      {
-        "question": "Does the baby have any known congenital anomalies, immune problems, or prior infections?",
-        "category": "pmh",
-        "importance": "important",
-        "looking_for": "Comorbidities that increase risk or alter presentation"
-      },
-      {
-        "question": "Is anyone at home or in close contact sick with a fever, rash, or cold sores?",
-        "category": "social",
-        "importance": "optional",
-        "looking_for": "Viral exposures such as HSV or enterovirus that can mimic bacterial sepsis"
-      },
-      {
-        "question": "Has the baby been immunized or had any recent shots?",
+        "question": "Has the baby been making wet diapers? How many?",
         "category": "ros",
-        "importance": "optional",
-        "looking_for": "Recent immunization, which can cause fever and irritability and is a mimic"
+        "importance": "important",
+        "looking_for": "Decreased urine output from poor perfusion"
+      },
+      {
+        "question": "Has the baby developed jaundice, a rash, or any bleeding or bruising?",
+        "category": "ros",
+        "importance": "important",
+        "looking_for": "Jaundice, petechiae, or bleeding suggesting DIC or severe infection"
+      },
+      {
+        "question": "What was the gestational age and birth weight?",
+        "category": "pmh",
+        "importance": "essential",
+        "looking_for": "Preterm or low birth weight increases risk"
+      },
+      {
+        "question": "Did the baby require a breathing tube, central line, or other tubes in the NICU?",
+        "category": "pmh",
+        "importance": "important",
+        "looking_for": "Indwelling devices as a risk factor for late-onset sepsis"
+      },
+      {
+        "question": "Did the mother have group B strep? What was the result?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "GBS colonization and whether intrapartum prophylaxis was adequate"
+      },
+      {
+        "question": "How long were the membranes ruptured before delivery?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Rupture longer than 18 hours increases risk"
+      },
+      {
+        "question": "Did the mother have fever, chills, or a uterine infection during labor?",
+        "category": "obstetric",
+        "importance": "essential",
+        "looking_for": "Chorioamnionitis"
+      },
+      {
+        "question": "Did the mother receive antibiotics during labor?",
+        "category": "obstetric",
+        "importance": "important",
+        "looking_for": "Intrapartum antibiotic prophylaxis; if not given or inadequate, higher risk"
       }
     ],
     "accepted_names": [
       "Neonatal sepsis",
-      "Sepsis in the newborn",
+      "Sepsis neonatorum",
+      "Neonatal septicemia",
+      "Newborn sepsis",
       "Early-onset neonatal sepsis",
       "Late-onset neonatal sepsis",
-      "Neonatal septicemia",
-      "Sepsis neonatorum"
+      "EOS",
+      "LOS"
     ],
     "reasoning_points": [
-      "Age under 90 days with nonspecific signs such as poor feeding, lethargy, and temperature instability",
-      "Timing distinguishes early-onset (within the first 7 days, often within 24 hours of birth) from late-onset (after 7 days and before 90 days) disease",
-      "Maternal and perinatal risk factors: preterm birth, group B Streptococcus colonization, prolonged rupture of membranes, maternal fever or chorioamnionitis",
-      "Examination findings of temperature instability, poor feeding, lethargy, respiratory distress or apnea, and poor perfusion",
-      "Blood culture obtained before antibiotics is the definitive test; a normal CBC, CRP, or culture does not exclude early-onset sepsis",
-      "Lumbar puncture for CSF cell count, protein, glucose, and culture because meningitis is common and changes management",
-      "Urine culture is important in late-onset disease as a source",
-      "Hypoglycemia and shock must be corrected immediately while cultures are pending",
-      "Look-alikes considered and addressed: respiratory distress syndrome, transient tachypnea of the newborn, congenital heart disease, inborn errors of metabolism, viral infection, necrotizing enterocolitis, and urinary tract infection"
+      "Maternal risk factors such as GBS colonization, prolonged rupture of membranes, or chorioamnionitis",
+      "Nonspecific signs in a newborn: temperature instability, poor feeding, lethargy, and respiratory distress",
+      "Physical exam findings of tachycardia, tachypnea, retractions, delayed capillary refill, and mottling",
+      "Blood culture obtained before antibiotics; broad-spectrum antibiotics started promptly after cultures",
+      "Supportive labs: WBC may be high, low, or normal; left shift, elevated CRP or procalcitonin, thrombocytopenia, or lactate support sepsis",
+      "Lumbar puncture for CSF analysis in symptomatic or late-onset infants",
+      "Urine culture in late-onset sepsis to evaluate for urinary tract source",
+      "Chest X-ray for respiratory distress or focal lung signs",
+      "Consider and exclude mimics such as congenital heart disease, inborn error of metabolism, and congenital adrenal hyperplasia"
     ],
     "difficulty": {
       "easy": [
-        "Preterm infant with maternal group B Streptococcus colonization and prolonged rupture of membranes",
-        "Onset within the first 24 hours of life with poor feeding, lethargy, and temperature instability",
-        "Ill-appearing infant with tachypnea, grunting, and poor perfusion",
-        "Clear maternal risk factors and a positive blood culture"
+        "Term infant born after prolonged rupture of membranes to a GBS-positive mother with inadequate prophylaxis",
+        "Fever, poor feeding, lethargy, tachypnea at 12–24 hours of age",
+        "Leukocytosis with left shift and elevated CRP",
+        "Blood culture positive for group B Streptococcus"
       ],
       "medium": [
-        "Term infant with only poor feeding and mild temperature instability and no focal signs",
-        "Late-onset disease at 3 to 6 weeks of age with fever and no localizing source",
-        "Normal white count and normal CRP at presentation despite clinical sepsis",
-        "Jaundice as the presenting sign without respiratory distress"
+        "Late-onset sepsis at 3–4 weeks of age with fever and poor feeding but no maternal risk factors",
+        "Preterm infant with hypothermia, apnea, and bradycardia rather than fever",
+        "Normal WBC count but abnormal CRP or procalcitonin",
+        "Need to obtain blood, urine, and CSF cultures to localize the source"
       ],
       "hard": [
-        "Preterm infant presenting with apnea and bradycardia rather than fever",
-        "Infant with an inborn error of metabolism who was well initially and then deteriorated after feeding",
-        "Infant with ductal-dependent congenital heart disease presenting with shock that mimics septic shock",
-        "Infant with HSV or enterovirus infection with seizures and a vesicular rash",
-        "Infant with necrotizing enterocolitis and abdominal distension masking sepsis"
+        "Very low birth weight preterm infant with indolent signs, recurrent apnea/bradycardia, and abdominal distension",
+        "No fever and normal initial inflammatory markers",
+        "Blood culture grows coagulase-negative Staphylococcus from a central line; must determine if true infection or contaminant",
+        "Presentation mimics ductal-dependent congenital heart disease or inborn error of metabolism"
       ]
     }
   }

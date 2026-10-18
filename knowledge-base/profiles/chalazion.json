@@ -31,51 +31,46 @@
       },
       {
         "stage": "patient_presentation",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:58:30Z"
+        "generated_at": "2026-10-14T16:06:19Z"
       },
       {
         "stage": "exam_vitals",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:58:48Z"
+        "generated_at": "2026-10-14T16:09:05Z"
       },
       {
         "stage": "diagnostics",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:58:50Z"
+        "generated_at": "2026-10-14T16:09:56Z"
       },
       {
         "stage": "differential_course",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:59:01Z"
+        "generated_at": "2026-10-14T16:11:05Z"
       },
       {
         "stage": "teaching",
-        "model": "deepseek/deepseek-chat",
+        "model": "deepseek/deepseek-v4-pro",
         "prompt_version": "11",
-        "generated_at": "2026-10-09T06:59:06Z"
+        "generated_at": "2026-10-14T16:11:39Z"
       }
     ],
     "validation": {
-      "status": "failed",
-      "rule_errors": [
-        "exam: 4 of 15 terms aren't SNOMED CT findings"
-      ],
+      "status": "passed",
+      "rule_errors": [],
       "review_issues": [
-        "presentation: term 'Eyelid pain' not found in SNOMED CT",
-        "exam: term 'Eyelid tenderness' not found in SNOMED CT",
-        "exam: term 'Lacrimal punctum patent' not found in SNOMED CT",
-        "exam: term 'Purulent discharge from eye' not found in SNOMED CT",
-        "exam: term 'Extraocular movements full' not found in SNOMED CT",
-        "differential sebaceous-carcinoma: no profile yet",
+        "auto-repaired: workup: 'Biopsy of eyelid lesion' was in confirmatory, not_indicated; kept confirmatory as a conditional order (only if lesion is recurrent, ulcerated, has loss of eyelashes, or fails to resolve with conservative treatment)",
+        "differential preseptal-cellulitis: no profile yet",
+        "differential sebaceous-gland-carcinoma: no profile yet",
         "differential basal-cell-carcinoma: no profile yet",
         "differential squamous-cell-carcinoma: no profile yet",
-        "differential preseptal-cellulitis: no profile yet",
-        "differential epidermoid-cyst: no profile yet",
+        "differential dermoid-cyst: no profile yet",
+        "differential pyogenic-granuloma: no profile yet",
         "differential molluscum-contagiosum: no profile yet"
       ]
     },
@@ -86,19 +81,23 @@
   "patient": {
     "age": {
       "typical_min": 20,
-      "typical_max": 60,
+      "typical_max": 50,
       "peak": "30–50",
       "possible_min": 1,
       "possible_max": 90
     },
     "sex": "either",
     "demographics": [
-      "Adults are most commonly affected, but it can occur at any age",
-      "Slightly more common in adults with rosacea or seborrheic dermatitis"
+      "No strong sex predilection",
+      "Most common in adults, but occurs in children and older adults"
     ],
     "risk_factors": [
       {
-        "text": "Blepharitis or meibomian gland dysfunction",
+        "text": "Chronic blepharitis",
+        "strength": "strong"
+      },
+      {
+        "text": "Meibomian gland dysfunction",
         "strength": "strong"
       },
       {
@@ -110,16 +109,15 @@
         "strength": "moderate"
       },
       {
-        "text": "Contact lens wear",
-        "strength": "weak"
+        "text": "Prior chalazion",
+        "strength": "moderate"
       },
       {
-        "text": "Prior chalazion or hordeolum",
-        "strength": "moderate"
+        "text": "Diabetes mellitus",
+        "strength": "weak"
       }
     ],
     "comorbidities": [
-      "Blepharitis",
       "Rosacea",
       "Seborrheic dermatitis",
       "Diabetes mellitus"
@@ -127,86 +125,79 @@
     "family_history": [],
     "social_history": [],
     "exposures": [],
-    "risk_medications": []
+    "risk_medications": [
+      "isotretinoin"
+    ]
   },
   "presentation": {
     "chief_complaints": [
       {
         "text": "I have a bump on my eyelid",
         "frequency": "almost_always",
-        "term": "Eyelid mass",
+        "term": "Mass of eyelid",
         "snomed_verified": true
       },
       {
-        "text": "It doesn't hurt, but it's annoying and I can feel it when I blink",
+        "text": "My eyelid is swollen",
         "frequency": "common",
-        "term": "Foreign body sensation in eye",
-        "snomed_verified": true
-      },
-      {
-        "text": "My vision is a little blurry on that side",
-        "frequency": "sometimes",
-        "term": "Blurred vision",
+        "term": "Swelling of eyelid",
         "snomed_verified": true
       }
     ],
     "hpi": {
       "onset": "Gradual over days to weeks",
-      "duration": "Present for 2 weeks to several months at presentation",
-      "progression": "Slowly enlarges over weeks, then stabilizes; may fluctuate in size and can resolve spontaneously over months",
-      "location": "Upper eyelid more often than lower; may be single or multiple",
+      "duration": "Usually present for weeks to months before medical evaluation",
+      "progression": "Begins as a small, painless nodule within the eyelid; it may slowly enlarge and occasionally become red and tender if secondarily inflamed or infected",
+      "location": "Upper or lower eyelid, most often the upper; within the tarsal plate, sometimes visible on the inner surface of the eyelid",
       "radiation": "None",
-      "quality": "Firm, round, rubbery nodule within the eyelid tissue; not attached to the overlying skin",
-      "severity": "Mild; usually painless or only mildly tender",
-      "timing": "Constant, non-fluctuating; not related to time of day",
+      "quality": "Firm, round, non-tender or mildly tender nodule; may feel like a pea under the skin",
+      "severity": "Mild; usually painless, but can cause a sense of heaviness or pressure",
+      "timing": "Constant; does not vary with time of day",
       "aggravating": [
-        "Rubbing the eye",
-        "Contact lens wear"
+        "Rubbing the eyelid",
+        "Eye makeup",
+        "Contact lens use"
       ],
       "relieving": [
-        "Warm compresses"
+        "Warm compresses",
+        "Gentle massage of the eyelid"
       ],
       "associated_symptoms": [
         {
           "text": "Eyelid swelling",
           "frequency": "common",
-          "term": "Eyelid swelling",
+          "term": "Swelling of eyelid",
           "snomed_verified": true
         },
         {
-          "text": "Mild eyelid tenderness",
+          "text": "Redness of the eyelid",
           "frequency": "sometimes",
-          "term": "Eyelid pain",
-          "snomed_verified": false
+          "term": "Erythema of eyelid",
+          "snomed_verified": true
         },
         {
-          "text": "Blurred vision from the lid pressing on the eye",
-          "frequency": "sometimes",
+          "text": "Blurred vision from pressure on the eye",
+          "frequency": "rare",
           "term": "Blurred vision",
           "snomed_verified": true
         },
         {
-          "text": "Tearing",
+          "text": "Mild eye discomfort",
           "frequency": "sometimes",
-          "term": "Tearing",
-          "snomed_verified": true
-        },
-        {
-          "text": "Redness of the eyelid margin",
-          "frequency": "sometimes",
-          "term": "Erythema of eyelid",
+          "term": "Ocular pain",
           "snomed_verified": true
         }
       ],
       "pertinent_negatives": [
-        "Severe pain",
-        "Marked redness and warmth of the entire eyelid",
-        "Purulent discharge",
+        "Acute severe eye pain",
+        "Purulent eye discharge",
         "Fever",
-        "Rapid growth over days",
-        "Ulceration or bleeding of the lesion",
-        "Loss of eyelashes",
-        "Recent stye or infected eyelash follicle"
+        "Vision loss",
+        "Photophobia",
+        "Pain with eye movement",
+        "Headache",
+        "Nausea or vomiting",
+        "Recent trauma"
       ]
     },
     "ros": [
@@ -214,53 +205,32 @@
         "system": "eyes",
         "positives": [
           {
-            "text": "Eyelid swelling",
+            "text": "Swelling of eyelid",
             "frequency": "common",
-            "term": "Eyelid swelling",
+            "term": "Swelling of eyelid",
             "snomed_verified": true
           },
           {
-            "text": "Blurred vision",
-            "frequency": "sometimes",
-            "term": "Blurred vision",
-            "snomed_verified": true
-          },
-          {
-            "text": "Tearing",
-            "frequency": "sometimes",
-            "term": "Tearing",
-            "snomed_verified": true
-          }
-        ],
-        "negatives": [
-          "Eye pain",
-          "Photophobia",
-          "Purulent discharge",
-          "Vision loss"
-        ],
-        "argues_against": [
-          "Painful red eye with photophobia suggests keratitis or uveitis",
-          "Purulent discharge suggests infectious conjunctivitis"
-        ]
-      },
-      {
-        "system": "skin",
-        "positives": [
-          {
-            "text": "Redness of the eyelid margin",
+            "text": "Redness of eyelid",
             "frequency": "sometimes",
             "term": "Erythema of eyelid",
             "snomed_verified": true
           }
         ],
         "negatives": [
-          "Ulceration",
-          "Bleeding",
-          "Loss of eyelashes"
+          "Eye discharge",
+          "Photophobia",
+          "Ocular pain",
+          "Diplopia",
+          "Flashes",
+          "Floaters",
+          "Vision loss"
         ],
         "argues_against": [
-          "Ulcerated or bleeding lesion suggests malignancy",
-          "Loss of eyelashes suggests sebaceous carcinoma"
+          "Purulent eye discharge",
+          "Severe eye pain",
+          "Photophobia",
+          "Proptosis"
         ]
       },
       {
@@ -268,360 +238,191 @@
         "positives": [],
         "negatives": [
           "Fever",
+          "Chills",
           "Weight loss",
-          "Night sweats"
+          "Night sweats",
+          "Malaise"
         ],
         "argues_against": [
-          "Fever suggests infection such as orbital cellulitis"
+          "Fever",
+          "Systemic symptoms"
         ]
       }
     ],
     "atypical": [
       {
         "population": "children",
-        "how_it_differs": "May present with a painless eyelid lump noticed by a parent; often resolves with conservative management, but large lesions can cause ptosis or astigmatism.",
+        "how_it_differs": "Chalazia may be noticed only by parents as a painless lid lump; recurrent lesions are often associated with blepharokeratoconjunctivitis and may be mislabeled as styes.",
         "missing_classic_features": [
-          "Subjective blurry vision"
+          "Clear painless nodule history"
         ]
       },
       {
         "population": "older_adults",
-        "how_it_differs": "A persistent eyelid nodule in an older adult should raise concern for malignancy, especially if it ulcerates, bleeds, or causes lash loss.",
+        "how_it_differs": "A persistent or recurrent single nodule should raise concern for sebaceous gland carcinoma; look for loss of eyelashes, ulceration, or bleeding.",
         "missing_classic_features": [
-          "Typical benign course"
+          "Rapid resolution",
+          "Multiple lesions"
         ]
       },
       {
-        "population": "diabetes",
-        "how_it_differs": "May be more prone to recurrent or secondarily infected chalazia, and healing may be slower.",
+        "population": "immunocompromised",
+        "how_it_differs": "Secondary bacterial infection can develop more rapidly, presenting as acute tender swelling that may mimic preseptal cellulitis.",
         "missing_classic_features": [
-          "Rapid resolution"
+          "Painless gradual course"
         ]
       }
     ]
   },
   "exam": {
     "general": {
-      "mild": "Comfortable, non-toxic, no distress",
-      "moderate": "Mild discomfort, otherwise well-appearing",
-      "severe": "Ill-appearing with marked eyelid swelling and tenderness",
-      "critical": "Toxic-appearing with fever and diffuse periorbital inflammation"
+      "mild": "Well-appearing; small palpable nodule in the eyelid, often found incidentally",
+      "moderate": "Comfortable; visible eyelid nodule with mild localized swelling, no systemic signs",
+      "severe": "Large nodule deforming the eyelid contour or partially obstructing the pupil; may have mild erythema and tenderness, but no fever",
+      "critical": "Secondary preseptal cellulitis with red, warm, swollen eyelid; patient may have low-grade fever but remains alert, without proptosis or pain with eye movement"
     },
     "findings": [
       {
         "id": "eyelid-nodule",
         "region": "heent",
-        "maneuver": "Inspect and palpate the eyelid with the patient looking down",
-        "finding": "Firm, round, rubbery nodule within the eyelid tissue, not attached to the overlying skin",
+        "maneuver": "Inspect and gently palpate the eyelid, and evert the lid to view the conjunctival surface",
+        "finding": "Firm, round, non-tender nodule within the eyelid, often visible under the skin or as a yellow-white nodule on the tarsal conjunctiva",
         "frequency": "almost_always",
+        "min_severity": "mild",
         "significance": "strongly_supports",
         "importance": "essential",
-        "term": "Eyelid mass",
+        "term": "Mass of eyelid",
+        "snomed_verified": true
+      },
+      {
+        "id": "eyelid-tenderness",
+        "region": "heent",
+        "maneuver": "Gently palpate the eyelid nodule",
+        "finding": "Mild tenderness of the eyelid around the nodule, more pronounced if secondarily inflamed",
+        "frequency": "sometimes",
+        "min_severity": "moderate",
+        "significance": "supports",
+        "importance": "important",
+        "term": "Tenderness",
         "snomed_verified": true
       },
       {
         "id": "eyelid-swelling",
         "region": "heent",
-        "maneuver": "Inspect the eyelids",
-        "finding": "Localized eyelid swelling",
+        "maneuver": "Inspect the eyelid",
+        "finding": "Localized swelling around the nodule",
         "frequency": "common",
         "significance": "supports",
         "importance": "important",
-        "term": "Eyelid swelling",
+        "term": "Swelling of eyelid",
         "snomed_verified": true
       },
       {
         "id": "eyelid-erythema",
         "region": "heent",
-        "maneuver": "Inspect the eyelid margin",
-        "finding": "Erythema of the eyelid margin",
+        "maneuver": "Inspect eyelid skin",
+        "finding": "Erythema of overlying eyelid skin, especially if inflamed",
         "frequency": "sometimes",
+        "min_severity": "moderate",
         "significance": "supports",
         "importance": "optional",
         "term": "Erythema of eyelid",
         "snomed_verified": true
       },
       {
-        "id": "eyelid-tenderness",
+        "id": "no-purulent-discharge",
         "region": "heent",
-        "maneuver": "Palpate the eyelid nodule",
-        "finding": "Mild tenderness over the nodule",
-        "frequency": "sometimes",
-        "significance": "supports",
-        "importance": "optional",
-        "term": "Eyelid tenderness",
-        "snomed_verified": false
-      },
-      {
-        "id": "meibomian-gland-dysfunction",
-        "region": "heent",
-        "maneuver": "Express the meibomian glands along the eyelid margin",
-        "finding": "Inspissated or turbid meibomian gland secretions",
-        "frequency": "common",
-        "significance": "supports",
-        "importance": "optional",
-        "term": "Meibomian gland dysfunction",
-        "snomed_verified": true
-      },
-      {
-        "id": "blepharitis",
-        "region": "heent",
-        "maneuver": "Inspect the eyelid margins and lashes",
-        "finding": "Crusting and scaling of the eyelid margin",
-        "frequency": "sometimes",
-        "significance": "supports",
-        "importance": "optional",
-        "term": "Blepharitis",
-        "snomed_verified": true
-      },
-      {
-        "id": "punctum-patency",
-        "region": "heent",
-        "maneuver": "Inspect the lacrimal puncta",
-        "finding": "Puncta patent and without discharge",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "optional",
-        "term": "Lacrimal punctum patent",
-        "snomed_verified": false
-      },
-      {
-        "id": "conjunctival-injection",
-        "region": "heent",
-        "maneuver": "Inspect the conjunctiva",
-        "finding": "Conjunctival injection",
-        "frequency": "rare",
-        "significance": "argues_against",
-        "importance": "important",
-        "term": "Conjunctival injection",
-        "snomed_verified": true
-      },
-      {
-        "id": "purulent-discharge",
-        "region": "heent",
-        "maneuver": "Inspect the eyelid margin and conjunctiva for discharge",
-        "finding": "Purulent discharge",
-        "frequency": "rare",
-        "significance": "argues_against",
-        "importance": "important",
-        "term": "Purulent discharge from eye",
-        "snomed_verified": false
-      },
-      {
-        "id": "visual-acuity",
-        "region": "heent",
-        "maneuver": "Check visual acuity with a Snellen chart",
-        "finding": "Visual acuity normal or mildly reduced from the lid pressing on the eye",
+        "maneuver": "Inspect lid margin and conjunctiva, press on lacrimal sac",
+        "finding": "No purulent eye discharge",
         "frequency": "almost_always",
         "significance": "neutral",
         "importance": "important",
-        "term": "Visual acuity normal",
+        "term": "Discharge from eye",
         "snomed_verified": true
       },
       {
-        "id": "extraocular-movement",
-        "region": "heent",
-        "maneuver": "Ask the patient to follow a finger in all directions of gaze",
-        "finding": "Full, painless extraocular movements",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "important",
-        "term": "Extraocular movements full",
-        "snomed_verified": false
-      },
-      {
-        "id": "pupillary-reaction",
-        "region": "heent",
-        "maneuver": "Shine a light into each eye",
-        "finding": "Pupils equal, round, and reactive to light",
-        "frequency": "almost_always",
-        "significance": "neutral",
-        "importance": "important",
-        "term": "Pupillary reaction normal",
-        "snomed_verified": true
-      },
-      {
-        "id": "proptosis",
-        "region": "heent",
-        "maneuver": "Inspect the eyes from above and below",
-        "finding": "Proptosis",
-        "frequency": "rare",
-        "significance": "argues_against",
-        "importance": "important",
-        "term": "Proptosis",
-        "snomed_verified": true
-      },
-      {
-        "id": "preauricular-lymphadenopathy",
+        "id": "no-lymphadenopathy",
         "region": "lymph",
-        "maneuver": "Palpate the preauricular and cervical lymph nodes",
-        "finding": "Preauricular lymphadenopathy",
-        "frequency": "rare",
-        "significance": "argues_against",
-        "importance": "optional",
-        "term": "Preauricular lymphadenopathy",
+        "maneuver": "Palpate preauricular and submandibular nodes",
+        "finding": "No preauricular or submandibular lymphadenopathy",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "important",
+        "term": "Lymphadenopathy",
         "snomed_verified": true
       },
       {
-        "id": "fever",
-        "region": "general",
-        "maneuver": "Measure body temperature",
-        "finding": "Fever",
-        "frequency": "rare",
-        "significance": "argues_against",
+        "id": "no-madarosis",
+        "region": "heent",
+        "maneuver": "Inspect the eyelid margin and lashes",
+        "finding": "No loss of eyelashes, ulceration, or bleeding",
+        "frequency": "almost_always",
+        "significance": "neutral",
         "importance": "important",
-        "term": "Fever",
+        "term": "Madarosis",
+        "snomed_verified": true
+      },
+      {
+        "id": "no-proptosis",
+        "region": "heent",
+        "maneuver": "Assess eye position from above and from the side",
+        "finding": "No proptosis or globe displacement",
+        "frequency": "almost_always",
+        "significance": "neutral",
+        "importance": "optional",
+        "term": "Proptosis",
         "snomed_verified": true
       }
     ]
   },
-  "vitals": {
-    "temp": {
-      "mild": {
-        "min": 98.0,
-        "max": 99.5
-      },
-      "moderate": {
-        "min": 98.0,
-        "max": 99.5
-      },
-      "severe": {
-        "min": 99.0,
-        "max": 100.4
-      },
-      "critical": {
-        "min": 100.4,
-        "max": 103.0
-      }
-    },
-    "hr": {
-      "mild": {
-        "min": 60,
-        "max": 100
-      },
-      "moderate": {
-        "min": 60,
-        "max": 100
-      },
-      "severe": {
-        "min": 70,
-        "max": 110
-      },
-      "critical": {
-        "min": 90,
-        "max": 130
-      }
-    },
-    "rr": {
-      "mild": {
-        "min": 12,
-        "max": 20
-      },
-      "moderate": {
-        "min": 12,
-        "max": 20
-      },
-      "severe": {
-        "min": 14,
-        "max": 22
-      },
-      "critical": {
-        "min": 18,
-        "max": 28
-      }
-    },
-    "sbp": {
-      "mild": {
-        "min": 100,
-        "max": 130
-      },
-      "moderate": {
-        "min": 100,
-        "max": 130
-      },
-      "severe": {
-        "min": 95,
-        "max": 130
-      },
-      "critical": {
-        "min": 85,
-        "max": 120
-      }
-    },
-    "dbp": {
-      "mild": {
-        "min": 60,
-        "max": 85
-      },
-      "moderate": {
-        "min": 60,
-        "max": 85
-      },
-      "severe": {
-        "min": 55,
-        "max": 85
-      },
-      "critical": {
-        "min": 50,
-        "max": 80
-      }
-    },
-    "spo2": {
-      "mild": {
-        "min": 95,
-        "max": 100
-      },
-      "moderate": {
-        "min": 95,
-        "max": 100
-      },
-      "severe": {
-        "min": 94,
-        "max": 100
-      },
-      "critical": {
-        "min": 92,
-        "max": 100
-      }
-    }
-  },
+  "vitals": {},
   "labs": [],
-  "imaging": [],
+  "imaging": [
+    {
+      "study": "Ultrasound of the eyelid",
+      "modality": "ultrasound",
+      "findings": [
+        {
+          "text": "Well-defined, hypoechoic nodule within the tarsal plate",
+          "frequency": "common"
+        },
+        {
+          "text": "No internal vascularity or calcification",
+          "frequency": "common"
+        },
+        {
+          "text": "No extension beyond the eyelid",
+          "frequency": "common"
+        }
+      ]
+    }
+  ],
   "workup": {
     "initial": [],
-    "confirmatory": [],
+    "confirmatory": [
+      {
+        "test": "Biopsy of eyelid lesion",
+        "why": "Confirms the diagnosis when a recurrent or atypical lesion raises concern for sebaceous cell carcinoma or other malignancy.",
+        "only_if": "lesion is recurrent, ulcerated, has loss of eyelashes, or fails to resolve with conservative treatment"
+      }
+    ],
     "supporting": [],
     "not_indicated": [
       {
         "test": "cbc",
-        "why": "No role in a simple chalazion; a normal white count does not change management"
-      },
-      {
-        "test": "esr",
-        "why": "Inflammatory markers are not needed for a localized eyelid nodule"
+        "why": "No systemic signs; chalazion is a localized eyelid process."
       },
       {
         "test": "crp",
-        "why": "Inflammatory markers are not needed for a localized eyelid nodule"
+        "why": "Inflammatory markers do not change management in a typical chalazion."
       },
       {
-        "test": "a1c",
-        "why": "Not part of the chalazion workup; check only if there is other reason to suspect undiagnosed diabetes"
-      },
-      {
-        "test": "Orbital CT with contrast",
-        "why": "Not needed for a simple chalazion; reserve for suspected orbital or preseptal cellulitis"
-      },
-      {
-        "test": "Orbital MRI with contrast",
-        "why": "Not needed for a simple chalazion; reserve for suspected malignancy or orbital extension"
+        "test": "Ultrasound of the eyelid",
+        "why": "Not indicated for clinical diagnosis of a typical chalazion."
       }
     ],
     "decision_points": [
-      "A chalazion is a clinical diagnosis; no laboratory or imaging test is required for a typical painless eyelid nodule.",
-      "If the lesion is painful, red, warm, or spreading, evaluate for hordeolum or preseptal/orbital cellulitis instead.",
-      "If the nodule persists beyond several weeks, recurs, ulcerates, bleeds, or causes lash loss, biopsy to exclude sebaceous carcinoma.",
-      "Refer to ophthalmology if vision is affected, the lesion is large or recurrent, or conservative management fails."
+      "Consider biopsy if the lesion is recurrent, ulcerated, associated with loss of eyelashes, or fails to resolve after weeks of conservative therapy."
     ],
     "criteria": [],
     "scores": []
@@ -630,258 +431,243 @@
     {
       "name": "Hordeolum (stye)",
       "slug": "hordeolum",
-      "why_considered": "Both are acute eyelid nodules arising from the meibomian or Zeis glands, and a chalazion can follow a hordeolum.",
+      "why_considered": "Acute painful eyelid lump near the lid margin; students may confuse it with chalazion because both involve eyelid glands.",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Acute onset over 1–3 days",
+          "Acute onset over 1-2 days",
           "Painful and tender from the start",
-          "May have had a similar episode before"
+          "May point at the lid margin and drain pus"
         ],
         "exam": [
-          "Tender, erythematous, warm nodule at the eyelid margin",
-          "May point and drain purulent material",
-          "Often a visible pustule at the lash line"
-        ],
-        "labs": [
-          "Not routinely needed"
-        ],
-        "imaging": [
-          "Not routinely needed"
-        ]
-      }
-    },
-    {
-      "name": "Sebaceous carcinoma",
-      "slug": "sebaceous-carcinoma",
-      "why_considered": "A malignant eyelid tumor that can mimic a chalazion, especially when it recurs or persists after treatment.",
-      "must_not_miss": true,
-      "trigger": "A chalazion that recurs in the same location, persists beyond several weeks, or is associated with lash loss, ulceration, or bleeding",
-      "discriminators": {
-        "history": [
-          "Older adult",
-          "Recurrent 'chalazion' in the same spot after incision and curettage",
-          "Progressive rather than fluctuating"
-        ],
-        "exam": [
-          "Loss of eyelashes (madarosis)",
-          "Ulceration or bleeding of the lesion",
-          "Diffuse eyelid thickening or a yellow mass",
-          "May have a concurrent eyelid margin lesion"
-        ],
-        "labs": [
-          "Not diagnostic; biopsy is required"
-        ],
-        "imaging": [
-          "Not routinely needed; orbital imaging if spread suspected"
-        ]
-      }
-    },
-    {
-      "name": "Basal cell carcinoma",
-      "slug": "basal-cell-carcinoma",
-      "why_considered": "The most common eyelid malignancy; can present as a painless eyelid nodule.",
-      "must_not_miss": true,
-      "trigger": "A pearly, ulcerated, or telangiectatic eyelid lesion that does not resolve",
-      "discriminators": {
-        "history": [
-          "Slowly enlarging over months to years",
-          "History of sun exposure or prior skin cancer"
-        ],
-        "exam": [
-          "Pearly or translucent nodule with rolled edges",
-          "Central ulceration or crusting",
-          "Telangiectasias on the surface",
-          "Loss of eyelashes if the margin is involved"
-        ],
-        "labs": [
-          "Not diagnostic; biopsy is required"
-        ],
-        "imaging": [
-          "Not routinely needed"
-        ]
-      }
-    },
-    {
-      "name": "Squamous cell carcinoma",
-      "slug": "squamous-cell-carcinoma",
-      "why_considered": "Another malignant eyelid tumor that can appear as a non-healing eyelid nodule or ulcer.",
-      "must_not_miss": true,
-      "trigger": "A crusted, ulcerated, or bleeding eyelid lesion that fails to heal",
-      "discriminators": {
-        "history": [
-          "Chronic sun exposure",
-          "Rapid growth compared with a chalazion"
-        ],
-        "exam": [
-          "Hyperkeratotic, crusted, or ulcerated plaque or nodule",
-          "May be tender or bleed easily",
-          "Loss of eyelashes possible"
-        ],
-        "labs": [
-          "Not diagnostic; biopsy is required"
-        ],
-        "imaging": [
-          "Not routinely needed"
+          "Tender, erythematous papule or pustule at the lid margin",
+          "Localized lid margin swelling rather than a deeper tarsal nodule",
+          "May have pointing or discharge"
         ]
       }
     },
     {
       "name": "Preseptal cellulitis",
       "slug": "preseptal-cellulitis",
-      "why_considered": "Eyelid swelling and redness can be mistaken for an inflamed chalazion.",
+      "why_considered": "Eyelid erythema, warmth, and swelling can accompany an inflamed chalazion or secondary infection.",
       "must_not_miss": true,
-      "trigger": "Diffuse eyelid swelling with fever or systemic symptoms",
+      "trigger": "Rapidly spreading eyelid redness and swelling, fever, or a skin break on the eyelid",
       "discriminators": {
         "history": [
-          "Recent eyelid trauma, insect bite, or sinus infection",
-          "Fever and malaise"
+          "Rapid progression over hours to a day",
+          "Fever or malaise",
+          "Recent trauma, insect bite, or sinus infection"
         ],
         "exam": [
-          "Diffuse, not localized, eyelid swelling and erythema",
-          "No discrete nodule",
-          "No proptosis, normal extraocular movements, normal vision"
+          "Warm, tender, diffusely swollen eyelid without a discrete nodule",
+          "Erythema extending beyond the nodule",
+          "No proptosis and full painless eye movements"
         ],
         "labs": [
-          "CBC may show leukocytosis"
+          "May have leukocytosis if systemic involvement"
         ],
         "imaging": [
-          "Orbital CT with contrast if orbital extension is suspected"
+          "CT orbit may show preseptal soft tissue swelling and no postseptal involvement if diagnosis unclear"
         ]
       }
     },
     {
-      "name": "Orbital cellulitis",
-      "slug": "orbital-cellulitis",
-      "why_considered": "A sight-threatening and potentially life-threatening infection that can present with eyelid swelling.",
+      "name": "Sebaceous gland carcinoma",
+      "slug": "sebaceous-gland-carcinoma",
+      "why_considered": "Can present as a painless, firm eyelid nodule and is the classic malignancy mistaken for chalazion.",
       "must_not_miss": true,
-      "trigger": "Proptosis, painful or limited eye movements, or vision loss with eyelid swelling",
+      "trigger": "Recurrent or persistent solitary eyelid nodule in an older adult, especially with loss of eyelashes or ulceration",
       "discriminators": {
         "history": [
-          "Fever",
-          "Pain with eye movement",
-          "Recent sinusitis or dental infection"
+          "Older adult",
+          "Recurrent nodule in the same location after treatment",
+          "Slowly enlarging or changing lesion"
         ],
         "exam": [
-          "Proptosis",
-          "Restricted and painful extraocular movements",
-          "Decreased visual acuity",
-          "Afferent pupillary defect possible"
+          "Loss of eyelashes",
+          "Ulceration or bleeding",
+          "Yellowish appearance of the conjunctiva or nodule",
+          "Fixation to tarsus or lid margin"
         ],
         "labs": [
-          "CBC with leukocytosis",
-          "Blood cultures if systemically ill"
+          "Biopsy shows sebaceous carcinoma with pagetoid spread"
         ],
         "imaging": [
-          "Orbital CT with contrast showing orbital fat stranding or abscess"
+          "Full-thickness eyelid biopsy rather than imaging for diagnosis"
         ]
       }
     },
     {
-      "name": "Epidermoid cyst",
-      "slug": "epidermoid-cyst",
-      "why_considered": "A benign, painless, round nodule that can occur on the eyelid skin.",
+      "name": "Basal cell carcinoma",
+      "slug": "basal-cell-carcinoma",
+      "why_considered": "Firm, painless eyelid nodule; most common eyelid malignancy.",
+      "must_not_miss": true,
+      "trigger": "Painless nodule with rolled pearly border, telangiectasias, or ulceration, especially lower eyelid",
+      "discriminators": {
+        "history": [
+          "Long-standing lesion that does not resolve",
+          "Sun exposure history",
+          "Bleeding or crusting"
+        ],
+        "exam": [
+          "Pearly, waxy nodule with telangiectasias",
+          "Rolled, raised border",
+          "Ulceration with crusting",
+          "Usually lower eyelid"
+        ],
+        "labs": [
+          "Biopsy shows basal cell carcinoma"
+        ]
+      }
+    },
+    {
+      "name": "Squamous cell carcinoma",
+      "slug": "squamous-cell-carcinoma",
+      "why_considered": "Eyelid nodule or plaque that can resemble chalazion, but usually scaly or ulcerated.",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "Present for months to years",
-          "May have had a punctum or prior drainage"
+          "Long-standing non-healing lesion",
+          "Sun exposure history",
+          "Bleeding or crusting"
         ],
         "exam": [
-          "Superficial, mobile, dome-shaped nodule within the skin",
-          "Often a central punctum",
-          "Not fixed within the tarsus"
+          "Scaly, crusted, or ulcerated plaque or nodule",
+          "May be firm with irregular border",
+          "No discrete tarsal nodule"
         ],
         "labs": [
-          "Not needed"
+          "Biopsy shows squamous cell carcinoma"
+        ]
+      }
+    },
+    {
+      "name": "Dermoid cyst",
+      "slug": "dermoid-cyst",
+      "why_considered": "Smooth, firm, painless eyelid or periocular mass, especially in children or young adults.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Present since childhood",
+          "Stable size",
+          "Painless"
+        ],
+        "exam": [
+          "Smooth, round, mobile mass often superotemporal",
+          "No overlying skin change",
+          "No loss of eyelashes"
         ],
         "imaging": [
-          "Not needed"
+          "Ultrasound or CT shows cystic lesion with fat or calcification if needed"
+        ]
+      }
+    },
+    {
+      "name": "Pyogenic granuloma",
+      "slug": "pyogenic-granuloma",
+      "why_considered": "Red, raised eyelid lesion that may appear after trauma, surgery, or a chronic chalazion.",
+      "must_not_miss": false,
+      "discriminators": {
+        "history": [
+          "Recent lid surgery, trauma, or prior chalazion",
+          "Bleeds easily with minor contact"
+        ],
+        "exam": [
+          "Friable, red, pedunculated papule",
+          "Moist surface, often bleeding or crusted"
         ]
       }
     },
     {
       "name": "Molluscum contagiosum",
       "slug": "molluscum-contagiosum",
-      "why_considered": "A viral infection that can cause small, painless eyelid nodules.",
+      "why_considered": "Small eyelid margin or periocular papule, can cause mechanical conjunctivitis.",
       "must_not_miss": false,
       "discriminators": {
         "history": [
-          "More common in children",
-          "May have similar lesions elsewhere on the body"
+          "Known exposure or atopy",
+          "Multiple small lesions on face or body",
+          "Usually painless"
         ],
         "exam": [
-          "Small, umbilicated, pearly papules",
-          "Often multiple",
-          "May have associated follicular conjunctivitis"
-        ],
-        "labs": [
-          "Not needed"
-        ],
-        "imaging": [
-          "Not needed"
+          "Dome-shaped, waxy papule with central umbilication",
+          "May be single or multiple at lid margin"
         ]
       }
     }
   ],
   "course": {
     "severity": {
-      "mild": "Small, painless, firm eyelid nodule without significant swelling or visual disturbance; conservative management with warm compresses is appropriate.",
-      "moderate": "Larger nodule with noticeable eyelid swelling, mild tenderness, or mechanical ptosis causing blurred vision; may require incision and curettage or intralesional steroid injection.",
-      "severe": "Large, recurrent, or multiple chalazia causing significant ptosis, astigmatism, or visual impairment; may require surgical excision and evaluation for underlying meibomian gland dysfunction or malignancy.",
-      "critical": "Not applicable; a chalazion itself is not life-threatening. Secondary preseptal or orbital cellulitis can become critical, but that is a separate diagnosis."
+      "mild": "Small, painless eyelid nodule, often less than a few millimeters, with no overlying skin change and no effect on vision.",
+      "moderate": "Larger nodule causing visible lid fullness or mild pressure, with occasional mild tenderness or redness but no visual symptoms.",
+      "severe": "Large or recurrent nodule producing eyelid deformity, corneal pressure with blurred or distorted vision, secondary inflammation, or failure to resolve after weeks of conservative care."
     },
     "red_flags": [
       {
-        "finding": "Proptosis, painful or limited eye movements, or vision loss",
-        "meaning": "Suggests orbital cellulitis or an orbital mass; requires urgent imaging and ophthalmology evaluation"
+        "finding": "Recurrent or persistent nodule in the same location, especially with loss of eyelashes, ulceration, or bleeding",
+        "meaning": "Possible sebaceous gland carcinoma; biopsy is needed"
       },
       {
-        "finding": "Fever with diffuse eyelid swelling and erythema",
-        "meaning": "Suggests preseptal or orbital cellulitis rather than a simple chalazion"
+        "finding": "Fever with rapidly spreading eyelid redness and warmth",
+        "meaning": "Secondary preseptal cellulitis; may need systemic antibiotics"
       },
       {
-        "finding": "Recurrence in the same location after incision and curettage, or persistence beyond several weeks",
-        "meaning": "Raises concern for sebaceous carcinoma or other malignancy; biopsy is needed"
+        "finding": "Proptosis, painful eye movements, or decreased vision",
+        "meaning": "Possible orbital cellulitis or orbital extension; emergency"
       },
       {
-        "finding": "Loss of eyelashes, ulceration, or bleeding of the lesion",
-        "meaning": "Concerning for malignancy, especially sebaceous carcinoma"
+        "finding": "Blurred or distorted vision from a large upper lid lesion",
+        "meaning": "Corneal compression or astigmatism; needs prompt ophthalmic evaluation"
       },
       {
-        "finding": "Rapid growth over days",
-        "meaning": "Unusual for a chalazion; consider infection or malignancy"
+        "finding": "Acute painful, tender, red bump at the lid margin",
+        "meaning": "More consistent with hordeolum; not a typical chalazion"
       }
     ],
     "complications": [
       {
-        "name": "Mechanical ptosis",
+        "name": "Secondary preseptal cellulitis",
         "timing": "any",
-        "seriousness": "minor",
-        "frequency": "sometimes",
-        "clues": [
-          "Large or upper eyelid chalazion",
-          "Drooping of the eyelid"
-        ]
-      },
-      {
-        "name": "Astigmatism and blurred vision",
-        "timing": "any",
-        "seriousness": "minor",
-        "frequency": "sometimes",
-        "clues": [
-          "Large chalazion pressing on the cornea",
-          "Blurred vision that improves with lid elevation"
-        ]
-      },
-      {
-        "name": "Secondary infection (preseptal cellulitis)",
-        "timing": "early",
         "seriousness": "serious",
         "frequency": "rare",
         "clues": [
-          "Increasing pain, redness, and swelling",
+          "Increasing erythema and warmth",
+          "Fever",
+          "Spreading beyond the nodule"
+        ]
+      },
+      {
+        "name": "Orbital cellulitis",
+        "timing": "any",
+        "seriousness": "life_threatening",
+        "frequency": "rare",
+        "clues": [
+          "Proptosis",
+          "Painful eye movements",
+          "Decreased vision",
           "Fever"
+        ]
+      },
+      {
+        "name": "Astigmatism from corneal pressure",
+        "timing": "any",
+        "seriousness": "serious",
+        "frequency": "rare",
+        "clues": [
+          "Large upper lid chalazion",
+          "Blurred or distorted vision",
+          "Improvement after excision or drainage"
+        ]
+      },
+      {
+        "name": "Spontaneous drainage",
+        "timing": "any",
+        "seriousness": "minor",
+        "frequency": "sometimes",
+        "clues": [
+          "Discharge of oily or purulent material",
+          "Decrease in nodule size",
+          "Crusting on lid margin"
         ]
       },
       {
@@ -890,137 +676,124 @@
         "seriousness": "minor",
         "frequency": "sometimes",
         "clues": [
-          "History of prior chalazion",
-          "Underlying blepharitis or rosacea"
+          "New nodule after prior resolution",
+          "Underlying blepharitis or meibomian gland dysfunction"
+        ]
+      },
+      {
+        "name": "Eyelid scarring or contour irregularity",
+        "timing": "late",
+        "seriousness": "minor",
+        "frequency": "rare",
+        "clues": [
+          "Persistent lid nodule",
+          "Prior surgical treatment"
         ]
       }
     ],
     "special_populations": [
       {
         "population": "children",
-        "differences": "May present as a painless eyelid lump noticed by a parent; often resolves with conservative management, but large lesions can cause ptosis or astigmatism and amblyopia."
+        "differences": "Recurrent chalazia often occur with blepharokeratoconjunctivitis; large upper lid lesions can induce astigmatism and amblyopia, so vision must be checked."
       },
       {
         "population": "older_adults",
-        "differences": "A persistent eyelid nodule should raise concern for malignancy, especially if it ulcerates, bleeds, or causes lash loss; lower threshold for biopsy."
+        "differences": "A solitary, recurrent, or non-resolving nodule is concerning for sebaceous gland carcinoma; biopsy earlier."
+      },
+      {
+        "population": "immunocompromised",
+        "differences": "Secondary bacterial infection may develop more quickly and present as preseptal cellulitis rather than a quiet nodule."
       },
       {
         "population": "diabetes",
-        "differences": "May be more prone to recurrent or secondarily infected chalazia, and healing may be slower."
+        "differences": "May be more prone to recurrent chalazia and secondary infection; underlying blood glucose control should be reviewed."
       }
     ]
   },
   "teaching": {
     "key_questions": [
       {
-        "question": "How long have you had the bump, and how did it start?",
+        "question": "When did you first notice the bump, and how has it changed since then?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Gradual onset over days to weeks; a chalazion is subacute, whereas a hordeolum is acute over 1–3 days"
+        "looking_for": "Gradual onset over weeks to months; slow or stable growth, not rapid enlargement"
       },
       {
-        "question": "Does it hurt?",
+        "question": "Is the bump painful or tender?",
         "category": "hpi",
         "importance": "essential",
-        "looking_for": "Painless or only mildly tender; marked pain suggests a hordeolum or infection"
+        "looking_for": "Absent or minimal pain; prominent pain suggests an inflamed chalazion, hordeolum, or secondary infection"
       },
       {
-        "question": "Has it been getting bigger, staying the same, or coming and going?",
+        "question": "Have you had any blurred, distorted, or double vision?",
         "category": "hpi",
-        "importance": "important",
-        "looking_for": "Slow enlargement then stabilization, or fluctuation in size; rapid growth over days is atypical"
+        "importance": "essential",
+        "looking_for": "Normal vision; any visual change suggests corneal pressure from a large upper lid lesion or orbital involvement"
       },
       {
-        "question": "Have you had a stye or a bump like this before?",
+        "question": "Have you noticed any loss of eyelashes, ulceration, bleeding, or crusting on the bump?",
+        "category": "red_flag",
+        "importance": "essential",
+        "looking_for": "Absent; these features raise concern for sebaceous cell carcinoma"
+      },
+      {
+        "question": "Have you had fever, rapidly spreading redness, or a hot, swollen eyelid?",
+        "category": "red_flag",
+        "importance": "important",
+        "looking_for": "Absent; these suggest preseptal cellulitis rather than uncomplicated chalazion"
+      },
+      {
+        "question": "Have you had a bump like this before, or do you have blepharitis, rosacea, or seborrheic dermatitis?",
         "category": "pmh",
         "importance": "important",
-        "looking_for": "Prior chalazion or hordeolum; recurrence in the same spot raises concern for malignancy"
+        "looking_for": "Recurrent lesions or underlying eyelid disease, which predisposes to chalazion"
       },
       {
-        "question": "Do you have blepharitis, rosacea, or seborrheic dermatitis?",
+        "question": "Do you have diabetes or any condition that weakens your immune system?",
         "category": "pmh",
-        "importance": "important",
-        "looking_for": "Underlying meibomian gland dysfunction or skin disease that predisposes to chalazia"
+        "importance": "optional",
+        "looking_for": "Diabetes or immunocompromise, which may increase risk and recurrence"
       },
       {
-        "question": "Do you wear contact lenses?",
+        "question": "Do you wear contact lenses, use eye makeup, or frequently rub your eyes?",
         "category": "social",
         "importance": "optional",
-        "looking_for": "Contact lens wear as a weak risk factor and a reason to advise lens hygiene"
-      },
-      {
-        "question": "Is your vision blurry on that side, and does it change when you lift the eyelid?",
-        "category": "associated",
-        "importance": "important",
-        "looking_for": "Blurred vision from the lid pressing on the cornea; vision loss or pain with eye movement is a red flag"
-      },
-      {
-        "question": "Any discharge from the eye, redness, or crusting of the lashes?",
-        "category": "associated",
-        "importance": "important",
-        "looking_for": "Purulent discharge suggests infection; crusting suggests blepharitis"
-      },
-      {
-        "question": "Have you had fever, chills, or swelling that is spreading around the eye?",
-        "category": "red_flag",
-        "importance": "essential",
-        "looking_for": "Fever with diffuse eyelid swelling suggests preseptal or orbital cellulitis"
-      },
-      {
-        "question": "Any double vision, bulging of the eye, or pain when you move your eye?",
-        "category": "red_flag",
-        "importance": "essential",
-        "looking_for": "Proptosis, painful or limited eye movements, or diplopia suggests orbital cellulitis or an orbital mass"
-      },
-      {
-        "question": "Has the lesion ulcerated, bled, or have you noticed loss of eyelashes?",
-        "category": "red_flag",
-        "importance": "essential",
-        "looking_for": "Ulceration, bleeding, or madarosis raises concern for sebaceous carcinoma or other malignancy"
-      },
-      {
-        "question": "Do you have diabetes or another condition that affects healing?",
-        "category": "pmh",
-        "importance": "optional",
-        "looking_for": "Diabetes may predispose to recurrent or secondarily infected chalazia"
+        "looking_for": "Contributing habits to address during treatment"
       }
     ],
     "accepted_names": [
       "Chalazion",
       "Meibomian cyst",
-      "Meibomian gland cyst",
-      "Tarsal cyst",
-      "Eyelid chalazion"
+      "Chalazion cyst",
+      "Meibomian gland lipogranuloma"
     ],
     "reasoning_points": [
-      "A painless, firm, round eyelid nodule that has developed gradually over days to weeks",
-      "The nodule is within the eyelid tissue and not attached to the overlying skin",
-      "Absence of marked pain, diffuse redness, warmth, purulent discharge, and fever",
-      "Visual acuity is normal or only mildly reduced from the lid pressing on the eye",
-      "Extraocular movements are full and painless, with no proptosis",
-      "Risk factors such as blepharitis, meibomian gland dysfunction, rosacea, or seborrheic dermatitis are present",
-      "The diagnosis is clinical; no laboratory or imaging test is required for a typical lesion",
-      "Malignancy is excluded when the lesion persists, recurs, ulcerates, bleeds, or causes lash loss"
+      "Painless, gradually enlarging eyelid nodule over weeks to months",
+      "Firm, round, non-tender nodule within the tarsal plate on exam",
+      "No acute inflammatory signs such as marked erythema, warmth, or purulent discharge",
+      "No visual changes or ocular symptoms",
+      "No loss of eyelashes, ulceration, or bleeding",
+      "Underlying risk factors such as blepharitis, rosacea, or seborrheic dermatitis support the diagnosis",
+      "Diagnosis is clinical; biopsy is reserved for recurrent or atypical lesions"
     ],
     "difficulty": {
       "easy": [
-        "Adult with a painless, firm eyelid nodule present for several weeks",
-        "No redness, warmth, or discharge",
-        "Normal visual acuity and full, painless eye movements",
-        "History of blepharitis or rosacea"
+        "Adult with a painless upper eyelid bump for weeks",
+        "No erythema or tenderness",
+        "No visual changes, no lash loss",
+        "Classic firm, mobile tarsal nodule on exam"
       ],
       "medium": [
-        "Mild tenderness and eyelid swelling that make it hard to distinguish from a hordeolum",
-        "Blurred vision from mechanical ptosis or astigmatism",
-        "Multiple or recurrent chalazia suggesting underlying meibomian gland dysfunction",
-        "Child with a painless eyelid lump noticed by a parent"
+        "Inflamed chalazion with overlying erythema and tenderness mimicking hordeolum",
+        "Recurrent chalazion in a patient with blepharitis or rosacea",
+        "Child with a large upper lid chalazion and concern for astigmatism",
+        "Contact lens wearer with eyelid irritation and fluctuating nodule"
       ],
       "hard": [
-        "Older adult with a persistent eyelid nodule that recurs after incision and curettage, raising concern for sebaceous carcinoma",
-        "Lesion with ulceration, bleeding, or loss of eyelashes",
-        "Diffuse eyelid swelling with fever suggesting preseptal or orbital cellulitis",
-        "Proptosis, painful or limited eye movements, or vision loss suggesting orbital cellulitis or an orbital mass",
-        "Rapidly growing lesion over days, which is atypical for a chalazion"
+        "Older adult with a solitary, recurrent, non-resolving nodule raising concern for sebaceous gland carcinoma",
+        "Secondary preseptal cellulitis with fever and spreading eyelid redness",
+        "Large upper lid chalazion causing blurred or distorted vision and requiring ophthalmic evaluation",
+        "Atypical lesion with lash loss or ulceration requiring biopsy"
       ]
     }
   }

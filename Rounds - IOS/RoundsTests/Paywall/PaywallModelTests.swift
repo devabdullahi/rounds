@@ -5,42 +5,38 @@ import Testing
 @MainActor
 @Suite("Paywall model")
 struct PaywallModelTests {
-    @Test func yearlyLeadsAndCarriesTheBadge() async {
+    @Test func noPlanKeepsTheGateClosed() async {
         let model = PaywallModel(store: MockSubscriptionStore())
-        await model.loadPlans()
-        #expect(model.plans.map(\.period) == [.year, .month, .week])
-        #expect(model.selected?.period == .year)
-        #expect(model.bestValueID == "com.abdul.rounds.yearly")
+        await model.refresh()
+        #expect(model.isEntitled == false)
+        #expect(model.activePlan == nil)
     }
 
-    @Test func buyingOpensTheApp() async {
-        let store = MockSubscriptionStore()
-        let model = PaywallModel(store: store)
-        await model.loadPlans()
-        await model.buy()
+    @Test func aPlanOpensTheApp() async {
+        let model = PaywallModel(store: MockSubscriptionStore(entitled: true))
+        await model.refresh()
         #expect(model.isEntitled == true)
-        #expect(await store.purchased == ["com.abdul.rounds.yearly"])
+        #expect(model.activePlan?.period == .year)
     }
 
-    @Test func cancellingKeepsThePaywall() async {
-        let model = PaywallModel(store: MockSubscriptionStore(outcome: .cancelled))
-        await model.loadPlans()
-        await model.buy()
-        #expect(model.isEntitled != true)
+    @Test func aPurchaseFromThePaywallOpensTheApp() async {
+        let model = PaywallModel(store: MockSubscriptionStore())
+        await model.refresh()
+        await model.purchased(PurchasedPlan(displayPrice: "$119.99", period: .year, trialDays: 3))
+        #expect(model.isEntitled == true)
+    }
+
+    @Test func restoringFindsAPlanBoughtElsewhere() async {
+        let model = PaywallModel(store: MockSubscriptionStore(restoreFinds: true))
+        await model.restore()
+        #expect(model.isEntitled == true)
         #expect(model.problem == nil)
     }
 
-    @Test func aWebPlanOpensTheAppToo() async {
-        let model = PaywallModel(store: MockSubscriptionStore(), web: MockWebBilling(active: true))
-        await model.refresh()
-        #expect(model.isEntitled == true)
-    }
-
-    @Test func theWebOfferMatchesTheSelectedPlan() async {
-        let model = PaywallModel(store: MockSubscriptionStore(), web: MockWebBilling())
-        await model.loadPlans()
-        #expect(model.webOffer?.displayPrice == "$109.99")
-        model.selectedID = "com.abdul.rounds.weekly"
-        #expect(model.webOffer?.displayPrice == "$7.49")
+    @Test func restoringWithNothingSaysSo() async {
+        let model = PaywallModel(store: MockSubscriptionStore())
+        await model.restore()
+        #expect(model.isEntitled == false)
+        #expect(model.problem == "No active subscription was found for this Apple Account.")
     }
 }

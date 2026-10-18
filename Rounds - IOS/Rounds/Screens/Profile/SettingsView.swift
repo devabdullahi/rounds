@@ -7,6 +7,8 @@ import SwiftUI
  *   voice off      dependent rows dim to 40% (they stay in place:
  *                  greyed, not removed, so nothing jumps)
  *   appearance     whole app recolors through the system transition
+ *   scroll         sections pass under the header, which softens them
+ *                  (iOS 26 scroll edge effect; cards are Liquid Glass)
  * ───────────────────────────────────────────────────────── */
 
 private enum SETTINGS {
@@ -40,7 +42,7 @@ struct SettingsView: View {
     @State private var confirmSignOut = false
     @Environment(AuthModel.self) private var auth
     @Environment(PaywallModel.self) private var paywall
-    /// Apple's own subscription sheet, for a plan bought in the app.
+    /// Apple's own subscription sheet.
     @State private var managingAppStorePlan = false
     @State private var confirmDelete = false
     @AppStorage(StudyFocus.storageKey) private var focusStored = ""
@@ -50,12 +52,7 @@ struct SettingsView: View {
     @State private var showingSiri = false
 
     var body: some View {
-        VStack(spacing: 0) {
-            NavHeader(title: "Settings") {
-                IconButton(glyph: .chevronLeft, label: "Back") { dismiss() }
-            } trailing: { EmptyView() }
-
-            ScrollViewReader { scroller in
+        ScrollViewReader { scroller in
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
                     // Profile (photo, name, specialty) is the student's to change; email and provider come from how
@@ -70,10 +67,10 @@ struct SettingsView: View {
                         infoRow(.keyRound, "Signed in with", value: auth.account?.providerLabel ?? "Not signed in")
                     }
 
-                    // Where the plan was bought decides where it's managed: Apple's sheet, or Stripe's portal in Safari.
+                    // Every plan is bought in the app, so it's managed in Apple's own sheet.
                     section("Subscription") {
                         if let plan = paywall.activePlan {
-                            navRow(.crown, "Manage subscription", detail: "\(plan.summary()) · \(plan.manageHint)") { manage(plan) }
+                            navRow(.crown, "Manage subscription", detail: "\(plan.summary()) · \(ActivePlan.manageHint)") { managingAppStorePlan = true }
                         } else {
                             infoRow(.crown, "Subscription", value: "No active plan")
                         }
@@ -184,10 +181,16 @@ struct SettingsView: View {
                 .padding(.bottom, 24)
             }
             .scrollIndicators(.hidden)
+            // The header floats; sections scroll under it, softened by the edge effect on iOS 26.
+            .safeAreaInset(edge: .top, spacing: 0) {
+                NavHeader(title: "Settings") {
+                    IconButton(glyph: .chevronLeft, label: "Back") { dismiss() }
+                } trailing: { EmptyView() }
+            }
+            .softTopEdge()
             #if DEBUG
             .onAppear { if DebugLaunch.screen == "settings-voice" { scroller.scrollTo(SETTINGS.voiceSection, anchor: .top) } }
             #endif
-            }
         }
         .background(Theme.bg)
         .toolbar(.hidden, for: .navigationBar)
@@ -208,7 +211,7 @@ struct SettingsView: View {
         .sheet(isPresented: $showingCredits) { AcknowledgementsView() }
         .sheet(isPresented: $showingSiri) { SiriCommandsView() }
         .manageSubscriptionsSheet(isPresented: $managingAppStorePlan)
-        // Picks up a cancellation or plan change made in Apple's sheet or Stripe's portal.
+        // Picks up a cancellation or plan change made in Apple's sheet.
         .task { await paywall.refresh() }
         #if DEBUG
         .onAppear { if DebugLaunch.screen == "settings-siri" { showingSiri = true } }
@@ -223,7 +226,7 @@ struct SettingsView: View {
     private func section<Content: View>(_ title: String, @ViewBuilder _ content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Eyebrow(title)
-            VStack(spacing: 0, content: content).listSurface()
+            VStack(spacing: 0, content: content).glassListSurface()
         }
     }
 
@@ -232,13 +235,6 @@ struct SettingsView: View {
             .foregroundStyle(Theme.accent)
             .frame(width: 32, height: 32)
             .background(Theme.accentSoft, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
-    }
-
-    private func manage(_ plan: ActivePlan) {
-        switch plan.source {
-        case .appStore: managingAppStorePlan = true
-        case .web: Task { if let url = await paywall.webPortalURL() { openURL(url) } }
-        }
     }
 
     private func rowLabel(_ glyph: IconGlyph, _ title: String) -> some View {
@@ -322,5 +318,17 @@ struct SettingsView: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(PressableStyle())
+    }
+}
+
+private extension View {
+    /// iOS 26's soft scroll edge under the floating header; nothing before.
+    @ViewBuilder
+    func softTopEdge() -> some View {
+        if #available(iOS 26, *) {
+            scrollEdgeEffectStyle(.soft, for: .top)
+        } else {
+            self
+        }
     }
 }
