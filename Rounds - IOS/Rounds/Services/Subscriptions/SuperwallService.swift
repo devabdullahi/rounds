@@ -45,16 +45,3 @@ enum SuperwallService {
     }
 }
 
-extension PurchasedPlan {
-    /// What the app keeps from Superwall's product.
-    init(_ product: StoreProduct) {
-        let period: PlanPeriod? = switch (product.subscriptionPeriod?.unit, product.subscriptionPeriod?.value) {
-        case (.week?, 1?): .week
-        case (.month?, 1?): .month
-        case (.year?, 1?): .year
-        default: nil
-        }
-        self.init(displayPrice: product.localizedPrice, period: period,
-                  trialDays: product.hasFreeTrial ? product.trialPeriodDays : nil)
-    }
-}

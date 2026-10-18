@@ -9,6 +9,4 @@ protocol ReminderService: Sendable {
     func schedule(_ reminder: StreakReminder?) async
     /// Posts a notification now, for work that finished after Siri stopped waiting.
     func announce(title: String, body: String) async
-    /// The paywall's promise: one notification before a free trial turns into a charge.
-    func scheduleTrialReminder(at date: Date, title: String, body: String) async
 }

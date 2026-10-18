@@ -77,8 +77,7 @@ struct RoundsApp: App {
         }
         #endif
         return PaywallModel(store: subscriptionStore,
-                            accounts: SupabaseService.client.map { LiveAccountSubscriptionService(client: $0) },
-                            reminders: LocalReminderService())
+                            accounts: SupabaseService.client.map { LiveAccountSubscriptionService(client: $0) })
     }
 
     /// The App Store, or offline plans on the paywall debug screen.

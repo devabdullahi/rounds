@@ -67,7 +67,7 @@ struct GateView: View {
     /// The paywall closed: open the app on a purchase, re-check on a restore, show it again on a decline.
     private func closed(_ result: PaywallResult) {
         switch result {
-        case .purchased(let product): Task { await model.purchased(PurchasedPlan(product)) }
+        case .purchased: Task { await model.purchased() }
         case .restored: Task { await model.refresh() }
         case .declined: attempt += 1
         }
