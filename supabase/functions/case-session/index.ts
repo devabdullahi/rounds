@@ -25,6 +25,7 @@ import { type Actions, grade, type Grade, isSingleDiagnosis, matchesDiagnosis, t
 import { conditionInsights, type InsightProfile, type Insights } from "./insights.ts";
 import { namedDiagnoses } from "./leak.ts";
 import { hiddenTests } from "./menu.ts";
+import { workupText } from "./workup.ts";
 import { parseFocus } from "../_shared/focus.ts";
 import { prepareNext } from "../_shared/prefetch.ts";
 import { withQuota } from "../_shared/quota.ts";
@@ -234,7 +235,7 @@ async function submit(userId: string, input: Record<string, unknown>) {
   };
   let judged;
   try {
-    judged = await judge(rubric, diagnosis, differential, plan);
+    judged = await judge(rubric, diagnosis, differential, plan, workupText(content.tests, content.exam, ordered, attempt.examined));
   } catch (error) {
     console.error("grading failed", error);
     throw new HttpError(502, "grading failed; try again");
@@ -293,7 +294,7 @@ function quoted(text: string): string {
   return text.replace(/<\/?student_[a-z]*>/gi, "");
 }
 
-async function judge(r: Rubric, diagnosis: string, differential: string[], plan: string) {
+async function judge(r: Rubric, diagnosis: string, differential: string[], plan: string, workup: string) {
   const exact = matchesDiagnosis(diagnosis, [r.diagnosis, ...r.accepted]);
   const verdict = await completeJSON<{ diagnosis_correct: boolean; plan_appropriate: boolean; plan_note: string }>(
     GRADER,
@@ -309,7 +310,11 @@ ${quoted(differential.join("; ") || "(none)")}
 
 <student_plan>
 ${quoted(plan || "(none)")}
-</student_plan>`,
+</student_plan>
+
+<student_workup>
+${workup}
+</student_workup>`,
     200,
     { task: "grade" },
   );
