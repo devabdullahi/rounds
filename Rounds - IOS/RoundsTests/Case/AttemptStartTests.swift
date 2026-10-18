@@ -8,7 +8,7 @@ import Testing
 struct AttemptStartTests {
     @Test func practiceMenuHidesWhatTheServerSays() async {
         let tests = ["chest_x_ray", "hs_tnt"].map {
-            Investigation(id: $0, name: $0, detail: "", cost: 10, turnaround: 1)
+            Investigation(id: $0, name: $0, detail: "", cost: 10)
         }
         let session = CaseSession(clinical: ClinicalCase(bed: "X1", name: "Test Patient", age: 40, sex: "F", setting: "", quote: "",
                                                          demeanor: "", complaint: "", vitals: [], task: "", minutes: 10,

@@ -12,7 +12,6 @@ struct CaseFlowView: View {
                     Group {
                         switch step {
                         case .interview: InterviewView(session: session)
-                        case .workup: WorkupView(session: session)
                         case .diagnosis: DiagnosisView(session: session)
                         case .handoff: HandoffView(session: session)
                         case .debrief: DebriefView(session: session)

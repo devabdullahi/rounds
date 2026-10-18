@@ -1,4 +1,4 @@
 import SwiftUI
 
-/// The two views inside the interview; tests are a separate screen, reached by a button.
-enum InterviewTab: Hashable { case history, examine }
+/// The two views inside the interview: talking to the patient, and the workup (exam and tests).
+enum InterviewTab: Hashable { case history, workup }

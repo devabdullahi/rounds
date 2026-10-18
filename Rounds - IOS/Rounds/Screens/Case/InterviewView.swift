@@ -38,6 +38,7 @@ struct InterviewView: View {
     let session: CaseSession
 
     @State private var tab: InterviewTab = .history
+    @State private var workupTab: WorkupTab = .exam
     @State private var showingFindings = false
     @State private var draft = ""
     @FocusState private var inputFocused: Bool
@@ -66,11 +67,11 @@ struct InterviewView: View {
             Group {
                 switch tab {
                 case .history: chat
-                case .examine: examine
+                case .workup: workup
                 }
             }
             .frame(maxHeight: .infinity)
-            if tab == .examine {
+            if tab == .workup {
                 Button("I'm ready to diagnose") { router.go(.diagnosis) }
                     .buttonStyle(PrimaryButtonStyle())
                     .padding(.horizontal, 20)
@@ -111,7 +112,8 @@ struct InterviewView: View {
             session.startClockIfNeeded()
             tab = .history
             #if DEBUG
-            if DebugLaunch.screen == "examine" { tab = .examine }
+            if DebugLaunch.screen == "examine" { tab = .workup }
+            if DebugLaunch.screen == "workup" { tab = .workup; workupTab = .tests }
             if DebugLaunch.screen == "interview-exam" || DebugLaunch.screen == "interview-exam-chat" { session.examMode = true }
             if ["interview-chat", "interview-exam-chat", "interview-findings"].contains(DebugLaunch.screen) { session.debugSeedChat() }
             if DebugLaunch.screen == "demo-interview" {
@@ -161,24 +163,9 @@ struct InterviewView: View {
                 Spacer()
                 CountdownLabel(session: session).frame(width: 64, alignment: .trailing)
             }
-            HStack(spacing: 8) {
-                Segmented(options: [(InterviewTab.history, "History"), (.examine, "Examine")], selection: $tab)
-                // Tests open their own screen, so they're a way forward, not a third tab.
-                Button { router.go(.workup) } label: {
-                    HStack(spacing: 4) {
-                        Text("Tests")
-                        AppIcon(.arrowRight, size: 14)
-                    }
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundStyle(Theme.accentText)
-                    .padding(.horizontal, 12)
-                    .frame(minHeight: 44)
-                    .background(Theme.accentSoft, in: Capsule())
-                }
-                .buttonStyle(PressDownStyle())
-                .accessibilityHint("Opens tests to order")
-            }
-            .padding(.horizontal, 8)
+            // Talking, then working the patient up: the exam and the tests live together under Workup.
+            Segmented(options: [(InterviewTab.history, "History"), (.workup, "Workup")], selection: $tab)
+                .padding(.horizontal, 8)
             Group {
                 // With the meter turned off, the plain question count keeps the header's shape.
                 if session.examMode || !showCoverage { questionCount } else { coverageMeter }
@@ -487,7 +474,20 @@ struct InterviewView: View {
         session.ask(text)
     }
 
-    // MARK: Examine
+    // MARK: Workup
+
+    /// Exam and tests side by side as sub-tabs, so the whole workup is one place.
+    private var workup: some View {
+        VStack(spacing: 0) {
+            Segmented(options: [(WorkupTab.exam, "Exam"), (.tests, "Tests")], selection: $workupTab)
+                .padding(.horizontal, 16)
+                .padding(.top, 12)
+            switch workupTab {
+            case .exam: examine
+            case .tests: TestsPanel(session: session)
+            }
+        }
+    }
 
     private var examine: some View {
         ScrollView {

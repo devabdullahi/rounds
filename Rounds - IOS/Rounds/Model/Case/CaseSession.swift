@@ -26,7 +26,7 @@ final class CaseSession {
     private(set) var findings: [String: String] = [:]
     private(set) var tests: [String: TestState] = [:]
     private(set) var testOrder: [String] = []
-    /// Results returned by the server, by test id. Shown once the in-app turnaround has passed.
+    /// Results returned by the server, by test id, shown as soon as they arrive.
     private(set) var results: [String: TestResult] = [:]
     private(set) var coverage: (got: Int, total: Int) = (0, 0)
     /// Questions, exams and tests in the order they happened.
@@ -188,9 +188,7 @@ final class CaseSession {
         Task {
             do {
                 let id = try await attempt()
-                async let result = service.order(attempt: id, test: test.id)
-                try await Task.sleep(for: .seconds(test.turnaround))
-                let r = try await result
+                let r = try await service.order(attempt: id, test: test.id)
                 withAnimation(Springs.card) {
                     results[test.id] = r
                     tests[test.id] = .ready
