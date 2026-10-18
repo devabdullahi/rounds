@@ -24,8 +24,8 @@ Deno.test("each DeepSeek task gets its model and effort", () => {
     ["check", "deepseek-flash", "off"],
     ["cards", "deepseek-flash", "off"],
     ["case", "deepseek-flash", "off"],
-    ["grade", "deepseek-v4-pro", "high"],
-    ["profile", "deepseek-v4-pro", "low"],
+    ["grade", "deepseek-flash", "high"],
+    ["profile", "deepseek-flash", "low"],
   ];
   for (const [task, model, effort] of cases) {
     assertEquals(settingFor(deepseek, task, noEnv), { model, effort }, task);

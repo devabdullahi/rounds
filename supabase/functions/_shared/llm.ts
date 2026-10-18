@@ -1,7 +1,7 @@
 // One JSON-returning LLM call behind a provider switch (same variables as tools/kb-generate):
 //   LLM_PROVIDER      = deepseek (default) | anthropic | openai
 //   LLM_MODEL         = optional override for every task (a one-line rollback)
-//   LLM_MODEL_<TASK>  = optional override for one task, e.g. LLM_MODEL_PATIENT=deepseek-v4-pro
+//   LLM_MODEL_<TASK>  = optional override for one task, e.g. LLM_MODEL_GRADE=deepseek-v4-pro
 //   DEEPSEEK_API_KEY / ANTHROPIC_API_KEY / OPENAI_API_KEY
 // Keys come from supabase/functions/.env locally and `supabase secrets set` when deployed.
 //
@@ -25,23 +25,23 @@ type Setting = { model: string; effort: Effort };
  *  answer is cut off after the reasoning (finish_reason "length", empty content). */
 const REASONING_BUDGET: Record<Exclude<Effort, "off">, number> = { low: 2000, high: 8000, max: 16000 };
 
-/** DeepSeek per task: the cheap fast model where speed matters and the facts are already decided
- *  (patient chat, the reply check, case writing, flashcards); the large model where the output is
- *  clinical truth or a judgment (profiles, grading). */
+/** DeepSeek per task: one model, V4.1 Flash (the `deepseek-flash` alias). Chat mode where speed
+ *  matters and the facts are already decided (patient chat, the reply check, case writing,
+ *  flashcards); thinking where the output is clinical truth or a judgment (profiles, grading). */
 const DEEPSEEK_TASKS: Record<Task, Setting> = {
   patient: { model: "deepseek-flash", effort: "off" },
   check: { model: "deepseek-flash", effort: "off" },
   cards: { model: "deepseek-flash", effort: "off" },
   case: { model: "deepseek-flash", effort: "off" }, // facts come from the profile; 16-20 s vs ~40 s on v4-pro
-  grade: { model: "deepseek-v4-pro", effort: "high" },
+  grade: { model: "deepseek-flash", effort: "high" },
   // Low, not high: one stage must finish inside prepare-profile's 140 s. tools/kb-generate runs high.
-  profile: { model: "deepseek-v4-pro", effort: "low" },
+  profile: { model: "deepseek-flash", effort: "low" },
 };
 
 export type CallOptions = { task: Task; temperature?: number; timeoutMs?: number };
 
 export const PROVIDERS: Record<string, Provider> = {
-  deepseek: { url: "https://api.deepseek.com/chat/completions", keyEnv: "DEEPSEEK_API_KEY", model: "deepseek-v4-pro", style: "openai", tasks: DEEPSEEK_TASKS },
+  deepseek: { url: "https://api.deepseek.com/chat/completions", keyEnv: "DEEPSEEK_API_KEY", model: "deepseek-flash", style: "openai", tasks: DEEPSEEK_TASKS },
   openai: { url: "https://api.openai.com/v1/chat/completions", keyEnv: "OPENAI_API_KEY", model: "gpt-4.1", style: "openai" },
   anthropic: { url: "https://api.anthropic.com/v1/messages", keyEnv: "ANTHROPIC_API_KEY", model: "claude-sonnet-5-5", style: "anthropic" },
 };
