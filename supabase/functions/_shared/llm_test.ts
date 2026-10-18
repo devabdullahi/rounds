@@ -1,35 +1,50 @@
 import { assertEquals } from "jsr:@std/assert@1";
-import { PROVIDERS, settingFor, type Task, thinkingFields, usageOf } from "./llm.ts";
+import { type Effort, PROVIDERS, settingFor, type Task, thinkingFields, usageOf } from "./llm.ts";
 
 Deno.test("providers without thinking get the plain token cap", () => {
-  assertEquals(thinkingFields(false, 400, "high"), { max_tokens: 400 });
+  assertEquals(thinkingFields(undefined, 400, "high"), { max_tokens: 400 });
 });
 
 Deno.test("effort off disables thinking explicitly, since DeepSeek thinks by default", () => {
-  assertEquals(thinkingFields(true, 400, "off"), { max_tokens: 400, thinking: { type: "disabled" } });
+  assertEquals(thinkingFields("deepseek", 400, "off"), { max_tokens: 400, thinking: { type: "disabled" } });
 });
 
 Deno.test("thinking calls get reasoning headroom on top of the answer budget", () => {
-  assertEquals(thinkingFields(true, 7000, "high"), { max_tokens: 15000, thinking: { type: "enabled" }, reasoning_effort: "high" });
-  assertEquals(thinkingFields(true, 8000, "low").max_tokens, 10000);
-  assertEquals(thinkingFields(true, 200, "max").max_tokens, 16200);
+  assertEquals(thinkingFields("deepseek", 7000, "high"), { max_tokens: 15000, thinking: { type: "enabled" }, reasoning_effort: "high" });
+  assertEquals(thinkingFields("deepseek", 8000, "low").max_tokens, 10000);
+  assertEquals(thinkingFields("deepseek", 200, "max").max_tokens, 16200);
+});
+
+Deno.test("OpenAI reasoning models get max_completion_tokens and an effort, never max_tokens", () => {
+  assertEquals(thinkingFields("openai", 7000, "medium"), { max_completion_tokens: 11000, reasoning_effort: "medium" });
+  assertEquals(thinkingFields("openai", 400, "off"), { max_completion_tokens: 4400 });
 });
 
 const deepseek = PROVIDERS.deepseek;
 const noEnv = () => undefined;
 
 Deno.test("each DeepSeek task gets its model and effort", () => {
-  const cases: [Task, string, string][] = [
+  const cases: [Task, string, Effort][] = [
     ["patient", "deepseek-flash", "off"],
     ["check", "deepseek-flash", "off"],
     ["cards", "deepseek-flash", "off"],
     ["case", "deepseek-flash", "off"],
     ["grade", "deepseek-flash", "high"],
-    ["profile", "deepseek-flash", "low"],
   ];
   for (const [task, model, effort] of cases) {
     assertEquals(settingFor(deepseek, task, noEnv), { model, effort }, task);
   }
+});
+
+Deno.test("condition profiles go to OpenAI's GPT-6.1 Sol at medium effort", () => {
+  assertEquals(settingFor(deepseek, "profile", noEnv), { provider: "openai", model: "gpt-6.1-sol", effort: "medium" });
+});
+
+Deno.test("an overridden model is sent to the provider its name belongs to", () => {
+  const back = (k: string) => ({ LLM_MODEL_PROFILE: "deepseek-flash" } as Record<string, string>)[k];
+  assertEquals(settingFor(deepseek, "profile", back), { provider: "deepseek", model: "deepseek-flash", effort: "medium" });
+  const toSol = (k: string) => ({ LLM_MODEL_GRADE: "gpt-6.1-sol" } as Record<string, string>)[k];
+  assertEquals(settingFor(deepseek, "grade", toSol), { provider: "openai", model: "gpt-6.1-sol", effort: "high" });
 });
 
 Deno.test("a per-task override beats the global one, which beats the default", () => {
@@ -39,7 +54,7 @@ Deno.test("a per-task override beats the global one, which beats the default", (
 });
 
 Deno.test("providers without task settings use their one model and never think", () => {
-  assertEquals(settingFor(PROVIDERS.openai, "grade", noEnv), { model: "gpt-4.1", effort: "off" });
+  assertEquals(settingFor(PROVIDERS.openai, "grade", noEnv), { model: "gpt-6.1-sol", effort: "off" });
 });
 
 Deno.test("usage reads DeepSeek's cache split and reasoning tokens", () => {
