@@ -34,6 +34,10 @@ final class AuthModel {
     private var codeSentTo: String?
     /// The code screen's inline message after a wrong or expired code.
     private(set) var codeProblem: String?
+    /// Set while sign-in waits on the student: this sign-in looks like a second account, and this
+    /// is the account the device used before. The root view asks and answers with `choose(_:)`.
+    private(set) var duplicate: KnownAccount?
+    @ObservationIgnored private var duplicateAnswer: CheckedContinuation<DuplicateChoice, Never>?
 
     init(service: (any AuthService)?, defaults: UserDefaults = .standard) {
         self.service = service
@@ -82,6 +86,7 @@ final class AuthModel {
         return await run(.email) { service in
             do {
                 let account = try await service.verifyCode(email: email.trimmed, code: code)
+                self.remember(account)
                 self.account = account
                 self.welcome()
                 return account
@@ -94,21 +99,73 @@ final class AuthModel {
 
     /// Apple's or Google's sheet, then Supabase. Nil when cancelled or failed (the failure is in
     /// `problem`). An account that hasn't finished onboarding still needs it: see `Account.onboarded`.
+    ///
+    /// When this sign-in just made a new account but the device knows an earlier one from the other
+    /// provider, it pauses on `duplicate` until the student chooses. Moving onto the earlier account
+    /// removes the empty new one, signs into the earlier one (its sheet), then links this provider
+    /// to it (this sheet again), so both buttons open the same account from then on.
     func continueWith(_ provider: SocialProvider) async -> Account? {
         await run(provider == .apple ? .apple : .google) { service in
-            let account: Account
-            switch provider {
-            case .apple:
-                let apple = try await AppleSignIn().signIn()
-                account = try await service.signInWithApple(idToken: apple.idToken, nonce: apple.nonce, name: apple.name)
-            case .google:
-                let google = try await GoogleAuth.signIn()
-                account = try await service.signInWithGoogle(idToken: google.idToken, accessToken: google.accessToken)
+            var account = try await Self.signIn(provider, service)
+            if let earlier = KnownAccount.duplicate(of: self.lastAccount, signedIn: account),
+               let earlierProvider = earlier.socialProvider,
+               await self.ask(about: earlier) == .useEarlier {
+                // The new account is empty (made seconds ago, never onboarded), so nothing is lost.
+                try await service.deleteAccount()
+                self.account = nil
+                _ = try await Self.signIn(earlierProvider, service)
+                account = try await Self.link(provider, service)
             }
+            self.remember(account)
             self.account = account
             self.welcome()
             return account
         }
+    }
+
+    /// The root view's answer to `duplicate`.
+    func choose(_ choice: DuplicateChoice) {
+        duplicate = nil
+        duplicateAnswer?.resume(returning: choice)
+        duplicateAnswer = nil
+    }
+
+    private func ask(about earlier: KnownAccount) async -> DuplicateChoice {
+        await withCheckedContinuation { answer in
+            duplicateAnswer = answer
+            duplicate = earlier
+        }
+    }
+
+    private static func signIn(_ provider: SocialProvider, _ service: any AuthService) async throws -> Account {
+        switch provider {
+        case .apple:
+            let apple = try await AppleSignIn().signIn()
+            return try await service.signInWithApple(idToken: apple.idToken, nonce: apple.nonce, name: apple.name)
+        case .google:
+            let google = try await GoogleAuth.signIn()
+            return try await service.signInWithGoogle(idToken: google.idToken, accessToken: google.accessToken)
+        }
+    }
+
+    private static func link(_ provider: SocialProvider, _ service: any AuthService) async throws -> Account {
+        switch provider {
+        case .apple:
+            let apple = try await AppleSignIn().signIn()
+            return try await service.linkApple(idToken: apple.idToken, nonce: apple.nonce)
+        case .google:
+            let google = try await GoogleAuth.signIn()
+            return try await service.linkGoogle(idToken: google.idToken, accessToken: google.accessToken)
+        }
+    }
+
+    /// The account this device last signed in with, kept across sign-outs (see `KnownAccount`).
+    private var lastAccount: KnownAccount? {
+        defaults.data(forKey: KnownAccount.storageKey).flatMap { try? JSONDecoder().decode(KnownAccount.self, from: $0) }
+    }
+
+    private func remember(_ account: Account) {
+        if let data = try? JSONEncoder().encode(KnownAccount(account)) { defaults.set(data, forKey: KnownAccount.storageKey) }
     }
 
     /// A link the app was opened with: Google's sheet returning, or an email link.
@@ -185,7 +242,11 @@ final class AuthModel {
     /// True when the account and its data are gone.
     func deleteAccount() async -> Bool {
         let done = await run(.delete) { service in try await service.deleteAccount(); return true } ?? false
-        if done { leave() }
+        if done {
+            // A deleted account can't be offered again.
+            if lastAccount?.id == account?.id { defaults.removeObject(forKey: KnownAccount.storageKey) }
+            leave()
+        }
         return done
     }
 
@@ -231,5 +292,8 @@ extension AuthModel {
 
     /// `-screen settings`: a signed-in account for screenshots, without a server.
     func debugUse(_ sample: Account) { account = sample }
+
+    /// `-screen duplicate-account`: the earlier-account prompt, without signing in.
+    func debugOfferDuplicate() { duplicate = KnownAccount(id: "debug", provider: "google", maskedEmail: "m•••@school.edu") }
 }
 #endif

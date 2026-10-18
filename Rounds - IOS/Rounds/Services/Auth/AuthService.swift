@@ -13,6 +13,10 @@ protocol AuthService: Sendable {
     /// `nonce` is the raw value whose SHA-256 went into Apple's request.
     func signInWithApple(idToken: String, nonce: String, name: String?) async throws -> Account
     func signInWithGoogle(idToken: String, accessToken: String) async throws -> Account
+    /// Adds Apple as a way into the signed-in account.
+    func linkApple(idToken: String, nonce: String) async throws -> Account
+    /// Adds Google as a way into the signed-in account.
+    func linkGoogle(idToken: String, accessToken: String) async throws -> Account
     /// Finishes sign-in from an email link (older emails carried one); nil when the link isn't ours.
     func handle(url: URL) async throws -> Account?
     func signOut() async throws

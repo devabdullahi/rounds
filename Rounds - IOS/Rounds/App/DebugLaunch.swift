@@ -2,7 +2,7 @@
 import SwiftUI
 
 /// Dev-only deep link for screenshots: launch with `-screen <name>`.
-/// Names: firstopen, firstopen-auth, onboarding (focus), onboarding-account, onboarding-intro, onboarding-graded,
+/// Names: firstopen, firstopen-auth, duplicate-account, onboarding (focus), onboarding-account, onboarding-intro, onboarding-graded,
 /// onboarding-promise, onboarding-graph, onboarding-goal, onboarding-to-goal, onboarding-heart, onboarding-promised,
 /// focus-system, focus-sheet, home, patients, patients-open, previous-tries, previous-try, profile, brief, interview, examine, workup, diagnosis, debrief, diagnosis-suggest.
 enum DebugLaunch {
@@ -14,7 +14,7 @@ enum DebugLaunch {
         return v > 0 ? v : nil
     }
 
-    private static let authScreens = ["firstopen", "firstopen-auth", "onboarding", "focus-system", "google-signin",
+    private static let authScreens = ["firstopen", "firstopen-auth", "duplicate-account", "onboarding", "focus-system", "google-signin",
                                       "onboarding-intro", "onboarding-graded", "onboarding-promise", "onboarding-graph",
                                       "onboarding-goal", "onboarding-to-goal", "onboarding-account", "onboarding-heart",
                                       "onboarding-promised"]
