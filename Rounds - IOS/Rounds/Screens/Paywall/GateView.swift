@@ -6,12 +6,18 @@ import SwiftUI
 /// try again or restore, so nobody is stuck on a blank screen.
 struct GateView: View {
     let model: PaywallModel
+    @Environment(AuthModel.self) private var auth
     /// Bumped by "Try again" to rebuild Superwall's view, which loads once per instance.
     @State private var attempt = 0
 
     var body: some View {
         Group {
-            if SuperwallService.isConfigured {
+            // The phone pays, but for another account: explain rather than offer a plan Apple won't sell twice.
+            if let owner = model.takenBy {
+                SubscriptionTaken(owner: owner, isWorking: model.isWorking,
+                                  signOut: { Task { await auth.signOut() } },
+                                  retry: { Task { await model.refresh() } })
+            } else if SuperwallService.isConfigured {
                 PaywallView(
                     placement: SuperwallService.gatePlacement,
                     onRequestDismiss: { _, result in closed(result) },

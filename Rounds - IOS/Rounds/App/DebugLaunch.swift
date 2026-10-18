@@ -4,7 +4,7 @@ import SwiftUI
 /// Dev-only deep link for screenshots: launch with `-screen <name>`.
 /// Names: firstopen, firstopen-auth, duplicate-account, voice-glass, onboarding (focus), onboarding-account, onboarding-intro, onboarding-graded,
 /// onboarding-promise, onboarding-graph, onboarding-goal, onboarding-to-goal, onboarding-heart, onboarding-promised,
-/// focus-system, focus-sheet, home, patients, patients-open, previous-tries, previous-try, badge-unlock-many, badge-unlock-all, profile, brief, interview, examine, workup, diagnosis, debrief, diagnosis-suggest.
+/// focus-system, focus-sheet, home, patients, patients-open, previous-tries, previous-try, badge-unlock-many, badge-unlock-all, paywall-taken, profile, brief, interview, examine, workup, diagnosis, debrief, diagnosis-suggest.
 enum DebugLaunch {
     static var screen: String? { UserDefaults.standard.string(forKey: "screen") }
     /// `-screen voice-glass` shows `VoiceGlassDebugView` in place of the app.
@@ -26,7 +26,7 @@ enum DebugLaunch {
         guard let screen else { return }
         let d = UserDefaults.standard
         d.set(!authScreens.contains(screen), forKey: AuthModel.signedInKey)
-        if ["onboarding-heart", "onboarding-promised", "paywall"].contains(screen) {
+        if ["onboarding-heart", "onboarding-promised", "paywall", "paywall-taken"].contains(screen) {
             d.set(StudyGoal.step2CK.rawValue, forKey: StudyGoal.storageKey)
             d.set(StudyFocus.rotation(.internalMedicine).stored, forKey: StudyFocus.storageKey)
         }

@@ -33,6 +33,40 @@ struct PaywallModelTests {
         #expect(model.problem == nil)
     }
 
+    // MARK: A subscription belongs to the account that bought it
+
+    @Test func thePhonesPurchaseOpensTheAppForTheAccountThatOwnsIt() async {
+        let accounts = MockAccountSubscriptionService(claim: AccountAccess(entitled: true))
+        let model = PaywallModel(store: MockSubscriptionStore(entitled: true), accounts: accounts, verifiesAccount: true)
+        await model.refresh()
+        #expect(model.isEntitled == true)
+        #expect(model.takenBy == nil)
+        #expect(await accounts.claimed == ["2000000111"])
+    }
+
+    @Test func anotherAccountOnAPayingPhoneIsKeptOutAndToldWhy() async {
+        let accounts = MockAccountSubscriptionService(claim: AccountAccess(entitled: false, ownedBy: "j•••@gmail.com"))
+        let model = PaywallModel(store: MockSubscriptionStore(entitled: true), accounts: accounts, verifiesAccount: true)
+        await model.refresh()
+        #expect(model.isEntitled == false)
+        #expect(model.takenBy == "j•••@gmail.com")
+    }
+
+    @Test func theOwnerGetsInOnAPhoneThatNeverPaid() async {
+        let accounts = MockAccountSubscriptionService(status: AccountAccess(entitled: true))
+        let model = PaywallModel(store: MockSubscriptionStore(), accounts: accounts, verifiesAccount: true)
+        await model.refresh()
+        #expect(model.isEntitled == true)
+        #expect(await accounts.claimed.isEmpty)
+    }
+
+    @Test func anAccountWithoutAPlanSeesThePaywall() async {
+        let model = PaywallModel(store: MockSubscriptionStore(), accounts: MockAccountSubscriptionService(), verifiesAccount: true)
+        await model.refresh()
+        #expect(model.isEntitled == false)
+        #expect(model.takenBy == nil)
+    }
+
     @Test func restoringWithNothingSaysSo() async {
         let model = PaywallModel(store: MockSubscriptionStore())
         await model.restore()

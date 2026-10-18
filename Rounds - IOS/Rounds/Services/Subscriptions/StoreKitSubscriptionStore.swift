@@ -20,6 +20,17 @@ struct StoreKitSubscriptionStore: SubscriptionStore {
         return false
     }
 
+    func currentTransactionIDs() async -> [String] {
+        var ids: [String] = []
+        for await result in Transaction.currentEntitlements {
+            if case .verified(let transaction) = result, Self.productIDs.contains(transaction.productID),
+               transaction.revocationDate == nil {
+                ids.append(String(transaction.id))
+            }
+        }
+        return ids
+    }
+
     func activePlan() async -> ActivePlan? {
         for await result in Transaction.currentEntitlements {
             guard case .verified(let transaction) = result, Self.productIDs.contains(transaction.productID),
