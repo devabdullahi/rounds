@@ -1,14 +1,14 @@
 import SwiftUI
 
 /* ─────────────────────────────────────────────────────────
- * ANIMATION STORYBOARD · Workup
+ * ANIMATION STORYBOARD · Tests (the workup tab's second half)
  *
  * ORDER (tap Order)
  *    0ms   tests-taken bar springs to the new count
  *    0ms   row leaves "Order more" (fades), result card enters
  *          above it, scale 0.95 → 1.0
  *
- * RESULT LANDS (after the test's turnaround)
+ * RESULT LANDS (as soon as the server sends it)
  *    0ms   "Pending" spinner swaps for "Resulted" (pops 0.8 → 1.0)
  *    0ms   ECG strip fades in and starts sweeping
  *    0ms   placeholder line crossfades to the result text
@@ -24,8 +24,8 @@ private enum RESULT {
     static let exit = Animation.easeOut(duration: 0.15)
 }
 
-struct WorkupView: View {
-    @Environment(CaseRouter.self) private var router
+/// Ordering tests and reading their results, inside the interview's workup tab.
+struct TestsPanel: View {
     let session: CaseSession
     @State private var pendingConfirm: Investigation?
 
@@ -34,14 +34,7 @@ struct WorkupView: View {
     private var orderable: [Investigation] { session.menuReady ? session.menu.filter { session.tests[$0.id] == nil } : [] }
 
     var body: some View {
-        VStack(spacing: 0) {
-            NavHeader(title: "Investigations") {
-                IconButton(glyph: .chevronLeft, label: "Back to patient") { router.back() }
-            } trailing: {
-                CountdownLabel(session: session)
-            }
-
-            ScrollView {
+        ScrollView {
                 VStack(alignment: .leading, spacing: 14) {
                     takenCard
 
@@ -64,20 +57,10 @@ struct WorkupView: View {
                         }
                     }
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 8)
-                .padding(.bottom, 16)
+                .padding(16)
                 .animation(RESULT.spring, value: session.testOrder)
-            }
-            .scrollIndicators(.hidden)
-
-            Button("I'm ready to diagnose") { router.go(.diagnosis) }
-                .buttonStyle(PrimaryButtonStyle())
-                .padding(.horizontal, 20)
-                .padding(.top, 16)
-                .padding(.bottom, 8)
         }
-        .background(Theme.bg)
+        .scrollIndicators(.hidden)
         .task { await session.loadMenu() }
         .confirmationDialog(
             "Order \(pendingConfirm?.name ?? "")?",
@@ -147,7 +130,7 @@ struct WorkupView: View {
             // MOCK (disabled): ECG strip fixed at 104 bpm with ST elevation, from the chest-pain case.
             // if t.id == "ecg" && ready { ECGMonitor(bpm: 104, stElevation: true, height: 90) … }
             let result = session.results[t.id]
-            Text(ready ? (result?.text ?? "") : "Waiting on \(t.detail.lowercased())…")
+            Text(ready ? (result?.text ?? "") : "Waiting on the result…")
                 .font(.system(size: 15))
                 .lineSpacing(3)
                 .foregroundStyle(ready ? (result?.isAbnormal == true ? Theme.warnText : Theme.text) : Theme.muted)
@@ -161,7 +144,7 @@ struct WorkupView: View {
         HStack {
             VStack(alignment: .leading, spacing: 1) {
                 Text(t.name).font(.system(size: 16, weight: .medium))
-                Text(t.detail).font(.system(size: 13)).foregroundStyle(Theme.muted)
+                if !t.kind.isEmpty { Text(t.kind).font(.system(size: 13)).foregroundStyle(Theme.muted) }
             }
             Spacer()
             // Soft like Examine: each test is a choice to weigh, not a call to action.

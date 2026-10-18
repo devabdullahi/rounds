@@ -4,8 +4,8 @@ import Testing
 
 @Suite("Past try decoding")
 struct PastTryDecodingTests {
-    private let tests = [Investigation(id: "cbc", name: "CBC", detail: "", cost: 0, turnaround: 0),
-                         Investigation(id: "hsv_pcr", name: "HSV PCR", detail: "", cost: 0, turnaround: 0)]
+    private let tests = [Investigation(id: "cbc", name: "CBC", detail: "", cost: 0),
+                         Investigation(id: "hsv_pcr", name: "HSV PCR", detail: "", cost: 0)]
     private let exam = [ExamManeuver(id: "oral", title: "Oral cavity")]
 
     @Test func namesWhatWasOrderedAndExaminedInOrder() throws {

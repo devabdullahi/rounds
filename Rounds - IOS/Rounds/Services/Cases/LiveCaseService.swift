@@ -220,7 +220,7 @@ private struct CaseDetailRow: Decodable {
             suggestedQuestions: suggested.map { SuggestedQuestion(text: $0.text, fact: $0.fact) },
             exam: maneuvers.map { ExamManeuver(id: $0.id, title: $0.title) },
             tests: test_menu.map { Investigation(id: $0.id, name: $0.name, detail: $0.detail, cost: $0.cost,
-                                                 turnaround: $0.turnaround_s, delaysCareMinutes: $0.delays_care_min ?? 0) },
+                                                 delaysCareMinutes: $0.delays_care_min ?? 0) },
             clerkship: clerkship.flatMap(Clerkship.init(rawValue:)), system: organ_system.flatMap(OrganSystem.init(rawValue:)),
             keyHistoryTotal: key_history)
     }
