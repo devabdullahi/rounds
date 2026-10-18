@@ -13,13 +13,4 @@ enum PlanPeriod: Int, Sendable, Comparable {
         case .year: "Yearly"
         }
     }
-
-    /// "week", for "your week starts at $7.99".
-    var unit: String {
-        switch self {
-        case .week: "week"
-        case .month: "month"
-        case .year: "year"
-        }
-    }
 }

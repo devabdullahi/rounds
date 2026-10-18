@@ -22,7 +22,7 @@ struct PaywallModelTests {
     @Test func aPurchaseFromThePaywallOpensTheApp() async {
         let model = PaywallModel(store: MockSubscriptionStore())
         await model.refresh()
-        await model.purchased(PurchasedPlan(displayPrice: "$119.99", period: .year, trialDays: 3))
+        await model.purchased()
         #expect(model.isEntitled == true)
     }
 

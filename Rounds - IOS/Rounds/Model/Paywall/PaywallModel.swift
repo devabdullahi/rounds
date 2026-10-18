@@ -22,7 +22,6 @@ final class PaywallModel {
 
     private let store: any SubscriptionStore
     private let accounts: (any AccountSubscriptionService)?
-    private let reminders: (any ReminderService)?
     /// Whether access comes from the account (server) or from the phone. Xcode runs buy from the local
     /// StoreKit file, whose purchases Apple's servers have never seen, so they check the phone.
     private let verifiesAccount: Bool
@@ -36,10 +35,9 @@ final class PaywallModel {
     }
 
     init(store: any SubscriptionStore, accounts: (any AccountSubscriptionService)? = nil,
-         reminders: (any ReminderService)? = nil, verifiesAccount: Bool = PaywallModel.verifiesAccountByDefault) {
+         verifiesAccount: Bool = PaywallModel.verifiesAccountByDefault) {
         self.store = store
         self.accounts = accounts
-        self.reminders = reminders
         self.verifiesAccount = verifiesAccount
     }
 
@@ -87,8 +85,8 @@ final class PaywallModel {
         return status.entitled ? status : AccountAccess(entitled: false, ownedBy: ownedBy)
     }
 
-    /// The paywall sold a plan: open the app now, and remind them the day before a trial bills.
-    func purchased(_ plan: PurchasedPlan) async {
+    /// The paywall sold a plan: open the app now.
+    func purchased() async {
         isEntitled = true
         activePlan = await store.activePlan()
         // Binds the new purchase to this account on the server. Only binds: the phone can lag a
@@ -96,7 +94,6 @@ final class PaywallModel {
         if verifiesAccount, let accounts {
             for id in await store.currentTransactionIDs() { _ = try? await accounts.claim(transactionID: id) }
         }
-        if let days = plan.trialDays { await remindBeforeBilling(plan, trialDays: days) }
     }
 
     func restore() async {
@@ -110,16 +107,6 @@ final class PaywallModel {
         } catch {
             problem = "Couldn't reach the App Store. Try again in a moment."
         }
-    }
-
-    /// Keeps the trial's promise: a reminder 24 hours before it bills.
-    private func remindBeforeBilling(_ plan: PurchasedPlan, trialDays: Int) async {
-        guard let date = Calendar.current.date(byAdding: .day, value: max(1, trialDays - 1), to: .now) else { return }
-        let then = plan.period.map { "Your \($0.unit) starts at \(plan.displayPrice)." } ?? "Your plan starts at \(plan.displayPrice)."
-        await reminders?.scheduleTrialReminder(
-            at: date,
-            title: "Your Rounds trial ends tomorrow",
-            body: "\(then) Cancel in Settings before then to pay nothing.")
     }
 
     #if DEBUG
