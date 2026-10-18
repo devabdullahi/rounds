@@ -17,7 +17,7 @@ struct RoundsApp: App {
                            cards: SupabaseService.client.map { LiveCardService(client: $0) },
                            reminders: LocalReminderService())
         _app = State(initialValue: app)
-        _paywall = State(initialValue: PaywallModel(store: Self.subscriptionStore, reminders: LocalReminderService()))
+        _paywall = State(initialValue: Self.paywallModel)
         SuperwallService.configure()
         // Siri and Shortcuts act on the same app state the screens show.
         AppDependencyManager.shared.add { app }
@@ -35,7 +35,7 @@ struct RoundsApp: App {
                 .task {
                     #if DEBUG
                     // Debug screens other than the paywall open straight into the app.
-                    if let screen = DebugLaunch.screen, screen != "paywall" { paywall.debugUnlock() }
+                    if let screen = DebugLaunch.screen, !["paywall", "paywall-taken"].contains(screen) { paywall.debugUnlock() }
                     #endif
                     await paywall.start()
                 }
@@ -55,6 +55,8 @@ struct RoundsApp: App {
                 .onChange(of: scenePhase) { _, phase in if phase == .active { Task { await paywall.refresh() } } }
                 // Superwall ties purchases to the signed-in account, and forgets it on sign-out.
                 .onChange(of: auth.account?.id, initial: true) { _, id in
+                    // Access belongs to the account: check again whenever a different one signs in.
+                    if id != nil { Task { await paywall.refresh() } }
                     SuperwallService.identify(id)
                     SuperwallService.setStudyGoal(studyGoal)
                 }
@@ -63,6 +65,20 @@ struct RoundsApp: App {
                 .preferredColorScheme(colorScheme)
                 .tint(Theme.accent)
         }
+    }
+
+    /// The gate: the App Store plus the account check, or scripted ones on debug screens.
+    private static var paywallModel: PaywallModel {
+        #if DEBUG
+        if DebugLaunch.screen == "paywall-taken" {
+            return PaywallModel(store: MockSubscriptionStore(entitled: true),
+                                accounts: MockAccountSubscriptionService(claim: AccountAccess(entitled: false, ownedBy: "j•••@gmail.com")),
+                                verifiesAccount: true)
+        }
+        #endif
+        return PaywallModel(store: subscriptionStore,
+                            accounts: SupabaseService.client.map { LiveAccountSubscriptionService(client: $0) },
+                            reminders: LocalReminderService())
     }
 
     /// The App Store, or offline plans on the paywall debug screen.

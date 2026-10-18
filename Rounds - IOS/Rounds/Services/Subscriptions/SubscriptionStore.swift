@@ -10,6 +10,8 @@ protocol SubscriptionStore: Sendable {
     func isEntitled() async -> Bool
     /// The App Store plan they hold, for Settings; nil without one.
     func activePlan() async -> ActivePlan?
+    /// Ids of this phone's active subscription transactions, to hand to the account that owns them.
+    func currentTransactionIDs() async -> [String]
     /// The entitlement again whenever a transaction changes it (renewal, refund, a purchase elsewhere).
     func entitlementChanges() -> AsyncStream<Bool>
 }
