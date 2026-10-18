@@ -7,21 +7,26 @@ import SwiftUI
  * while the attending reads; the button only appears once graded.
  *
  *     0ms   header fades in
- *   650ms   event 1 rises, dot pops with glow, connector grows
- *  +650ms   each following event (staggered 650ms, chained)
- *  4300ms   shift summary rises (questions, exams, tests, time)
- *  4550ms   "Dr. Okafor is reading your notes" swaps for the button
- *           (both swap together: no gap, no wait for an exit)
+ *   200ms   event 1 rises, dot pops with glow, connector grows
+ *  +≤120ms  each following event; the whole timeline lands within
+ *           ~1.2s however long the shift was
+ *  +200ms   shift summary rises (questions, exams, tests, time)
+ *  graded   "Dr. Okafor is reading your notes" swaps for the button
+ *           as soon as the grade lands (no minimum wait)
  *
  * Waiting line shimmers so it reads as working, not frozen.
  * Reduce Motion: timeline shows at once, button when graded.
  * ───────────────────────────────────────────────────────── */
 
 private enum TIMING {
-    static let firstEvent = 0.65   // s before the first row
-    static let stagger    = 0.65   // s between rows
-    static let summaryAfterLast = 0.4   // s after the last event before the summary rises
-    static let gradedAfter = 4.55  // shortest wait, so the timeline always finishes before the button
+    static let firstEvent = 0.2    // s before the first row
+    static let maxStagger = 0.12   // s between rows, at most
+    static let rowsWithin = 1.0    // s the rows take in all, however many there are
+    static let summaryAfterLast = 0.2   // s after the last event before the summary rises
+
+    /// Gap between rows: quick for a short shift, tighter for a long one, so a 30-step case
+    /// doesn't make the student wait.
+    static func stagger(rows: Int) -> Double { rows > 1 ? min(maxStagger, rowsWithin / Double(rows - 1)) : 0 }
 }
 
 private enum ROW {
@@ -213,15 +218,14 @@ struct HandoffView: View {
             shownCount = events.count
         } else {
             try? await Task.sleep(for: .seconds(TIMING.firstEvent))
-            for i in 1...events.count {
-                shownCount = i
-                if i < events.count { try? await Task.sleep(for: .seconds(TIMING.stagger)) }
+            let gap = TIMING.stagger(rows: events.count)
+            for i in events.indices {
+                shownCount = i + 1
+                if i + 1 < events.count { try? await Task.sleep(for: .seconds(gap)) }
             }
         }
         if !reduceMotion { try? await Task.sleep(for: .seconds(TIMING.summaryAfterLast)) }
         summaryShown = true
-        let elapsed = reduceMotion ? 0 : TIMING.firstEvent + TIMING.stagger * Double(events.count - 1) + TIMING.summaryAfterLast
-        try? await Task.sleep(for: .seconds(max(0, TIMING.gradedAfter - elapsed)))
         // "Graded" means the grade has landed (or failed: the debrief then shows the problem and a retry).
         _ = try? await grading?.value
         graded = true
