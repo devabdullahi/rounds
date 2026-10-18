@@ -20,6 +20,10 @@ import SwiftUI
  *
  * Every change is a spring on current state, so taps mid-transition
  * (interrupting the patient) redirect smoothly instead of snapping.
+ *
+ * The orb is Liquid Glass (iOS 26+) in the blob's own shape, over a soft
+ * wash of its colour, so it refracts what's behind it and catches light
+ * as it wobbles. Earlier iOS gets the same colour as a gradient.
  * ───────────────────────────────────────────────────────── */
 
 private enum ORB {
@@ -36,6 +40,7 @@ private enum ORB {
     static let wobbleSpeed = 1.8                 // rad/s of the edge noise
     static let compress = Animation.spring(response: 0.35, dampingFraction: 0.72)
     static let release  = Animation.spring(response: 0.5, dampingFraction: 0.5)   // overshoots on purpose
+    static let glassTint = 0.55                  // colour under the glass: reads green/blue, glass still shows
     static let follow   = Animation.spring(response: 0.16, dampingFraction: 0.8)  // tracks the voice
 }
 
@@ -86,11 +91,9 @@ struct VoiceOrb: View {
             TimelineView(.animation) { ctx in
                 let t = ctx.date.timeIntervalSinceReferenceDate
                 let breath = phase == .thinking ? 1 + ORB.breathAmount * CGFloat(sin(t * 2 * .pi / ORB.breathPeriod)) : 1
-                BlobShape(phase: t * ORB.wobbleSpeed, amplitude: ORB.wobbleIdle + ORB.wobbleGain * (phase == .listening ? level : level * 0.4))
-                    .fill(
-                        RadialGradient(colors: [tint.opacity(0.95), tint.opacity(0.55)],
-                                       center: UnitPoint(x: 0.38, y: 0.32), startRadius: 4, endRadius: ORB.size * 0.6)
-                    )
+                let blob = BlobShape(phase: t * ORB.wobbleSpeed, amplitude: ORB.wobbleIdle + ORB.wobbleGain * (phase == .listening ? level : level * 0.4))
+                Color.clear
+                    .glassFill(tint, in: blob, strength: ORB.glassTint, interactive: false)
                     .shadow(color: tint.opacity(0.35 + 0.35 * level), radius: 12 + 24 * level)
                     .scaleEffect(breath)
             }
