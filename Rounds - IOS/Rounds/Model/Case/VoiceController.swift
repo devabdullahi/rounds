@@ -5,8 +5,14 @@ import Observation
 
 /// Turn-taking voice conversation with the patient.
 /// You speak (mic level + live transcript) → silence ends your turn → patient answers aloud → your turn again.
+///
+/// With `transcriber` and `spokenReply` set (the case session's server calls), each turn is also
+/// recorded and transcribed by the server, which hears clinical words better than on-device
+/// recognition, and the patient answers in a natural OpenAI voice. Apple's live transcript still
+/// shows while you talk and decides when you've stopped; if a server call fails, Apple's text and
+/// Apple's voice take over, so voice mode never stops working.
 @Observable
-final class VoiceController: NSObject, AVSpeechSynthesizerDelegate {
+final class VoiceController: NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate {
     enum Phase: Equatable {
         case idle
         case listening         // your turn
@@ -22,12 +28,19 @@ final class VoiceController: NSObject, AVSpeechSynthesizerDelegate {
         static let smoothing: CGFloat = 0.35          // new-sample weight
         static let slowestRate: Float = 0.35         // Settings speed 0
         static let fastestRate: Float = 0.65         // Settings speed 1; 0.5 in between is the natural rate
+        static let slowestPlayback: Float = 0.85     // server voice at Settings speed 0
+        static let fastestPlayback: Float = 1.25     // server voice at Settings speed 1
+        static let recordBitRate = 32_000            // AAC, mono: ~4 KB a second, well under the upload cap
     }
 
     private(set) var phase: Phase = .idle
     private(set) var level: CGFloat = 0          // 0…1, mic level when listening, word pulses when patient speaks
     private(set) var transcript = ""
     var onUtterance: ((String) -> Void)?
+    /// The server's transcription of a recorded turn; nil keeps Apple's live transcript.
+    @ObservationIgnored var transcriber: ((Data) async throws -> String)?
+    /// The patient's latest reply as server audio; nil speaks with the installed iOS voice.
+    @ObservationIgnored var spokenReply: (() async throws -> Data)?
 
     var isActive: Bool { phase != .idle }
 
@@ -43,6 +56,11 @@ final class VoiceController: NSObject, AVSpeechSynthesizerDelegate {
     /// The patient's voice and pitch, chosen once per case (see PatientVoice).
     private var patientVoice: AVSpeechSynthesisVoice?
     private var patientPitch: Float = 1
+    /// This turn's recording, written alongside recognition and sent to `transcriber`.
+    @ObservationIgnored private var recording: AVAudioFile?
+    private let recordingURL = FileManager.default.temporaryDirectory.appendingPathComponent("voice-turn.m4a")
+    @ObservationIgnored private var player: AVAudioPlayer?
+    @ObservationIgnored private var meterTimer: Timer?
 
     override init() {
         super.init()
@@ -79,6 +97,7 @@ final class VoiceController: NSObject, AVSpeechSynthesizerDelegate {
         withAnimation(Springs.slide) { phase = .idle }   // set first so delegate callbacks don't restart listening
         stopAudio()
         synth.stopSpeaking(at: .immediate)
+        stopPlayer()
         level = 0
         transcript = ""
         try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
@@ -88,7 +107,8 @@ final class VoiceController: NSObject, AVSpeechSynthesizerDelegate {
     func interrupt() {
         switch phase {
         case .listening: finishTurn()
-        case .patientSpeaking: synth.stopSpeaking(at: .immediate)   // delegate hands the turn back
+        case .patientSpeaking:
+            if player != nil { stopPlayer(); handBackTurn() } else { synth.stopSpeaking(at: .immediate) }   // the synth's delegate hands the turn back
         default: break
         }
     }
@@ -112,8 +132,11 @@ final class VoiceController: NSObject, AVSpeechSynthesizerDelegate {
 
             let input = engine.inputNode
             let format = input.outputFormat(forBus: 0)
+            recording = transcriber == nil ? nil : makeRecording(format: format)
+            let file = recording
             input.installTap(onBus: 0, bufferSize: 1024, format: format) { [weak self] buffer, _ in
                 req.append(buffer)
+                try? file?.write(from: buffer)
                 let sample = VoiceController.normalizedLevel(buffer)
                 DispatchQueue.main.async { self?.ingest(sample) }
             }
@@ -168,11 +191,29 @@ final class VoiceController: NSObject, AVSpeechSynthesizerDelegate {
 
     private func finishTurn() {
         let text = transcript.trimmingCharacters(in: .whitespacesAndNewlines)
-        stopAudio()
+        let recorded = recording != nil
+        stopAudio()   // closes the recording file
         level = 0
         guard !text.isEmpty else { startListening(); return }
         withAnimation(Springs.slide) { phase = .thinking }
-        onUtterance?(text)
+        guard recorded, let transcriber, let audio = try? Data(contentsOf: recordingURL) else { onUtterance?(text); return }
+        Task { @MainActor in
+            // The server's text when it hears something; Apple's when the call fails or comes back empty.
+            let heard = (try? await transcriber(audio))?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            guard phase == .thinking else { return }   // voice mode ended while transcribing
+            onUtterance?(heard.isEmpty ? text : heard)
+        }
+    }
+
+    /// An AAC file for this turn in the mic's own sample rate, or nil if one can't be made (the turn
+    /// then goes through with Apple's transcript).
+    private func makeRecording(format: AVAudioFormat) -> AVAudioFile? {
+        try? FileManager.default.removeItem(at: recordingURL)
+        let settings: [String: Any] = [
+            AVFormatIDKey: kAudioFormatMPEG4AAC, AVSampleRateKey: format.sampleRate,
+            AVNumberOfChannelsKey: 1, AVEncoderBitRateKey: VOICE.recordBitRate,
+        ]
+        return try? AVAudioFile(forWriting: recordingURL, settings: settings, commonFormat: format.commonFormat, interleaved: format.isInterleaved)
     }
 
     private func stopAudio() {
@@ -181,6 +222,7 @@ final class VoiceController: NSObject, AVSpeechSynthesizerDelegate {
         if tapInstalled { engine.inputNode.removeTap(onBus: 0); tapInstalled = false }
         request?.endAudio(); request = nil
         task?.cancel(); task = nil
+        recording = nil   // releasing the file finishes it
     }
 
     private static func normalizedLevel(_ buffer: AVAudioPCMBuffer) -> CGFloat {
@@ -204,12 +246,62 @@ final class VoiceController: NSObject, AVSpeechSynthesizerDelegate {
     func speak(_ text: String) {
         guard isActive else { return }
         stopAudio()
-        // While listening the session is in call mode (playAndRecord), which on Bluetooth headphones
-        // plays through the low-quality hands-free channel and makes any voice sound robotic. The
-        // patient speaks through plain playback instead; startListening switches back for your turn.
+        guard let spokenReply else { speakOnDevice(text); return }
+        // Stays "thinking" while the server voices the reply, then plays it.
+        Task { @MainActor in
+            guard let audio = try? await spokenReply(), isActive else {
+                if isActive { speakOnDevice(text) }
+                return
+            }
+            play(audio, fallback: text)
+        }
+    }
+
+    /// Plays the server's audio, or falls back to the on-device voice if it won't play.
+    private func play(_ audio: Data, fallback text: String) {
+        usePlaybackSession()
+        guard let p = try? AVAudioPlayer(data: audio, fileTypeHint: "public.aac-audio") else { speakOnDevice(text); return }
+        p.delegate = self
+        p.enableRate = true
+        p.rate = VOICE.slowestPlayback + (VOICE.fastestPlayback - VOICE.slowestPlayback) * Float(Preferences.voiceSpeed)
+        p.isMeteringEnabled = true
+        player = p
+        withAnimation(Springs.slide) { phase = .patientSpeaking }
+        p.play()
+        // The orb pulses with the voice's loudness, like it does with the mic.
+        meterTimer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { [weak self] _ in
+            guard let self, let player = self.player, self.phase == .patientSpeaking else { return }
+            player.updateMeters()
+            let db = player.averagePower(forChannel: 0)
+            let sample = CGFloat(min(max((db - VOICE.levelFloorDb) / VOICE.levelRangeDb, 0), 1))
+            self.level = self.level * (1 - VOICE.smoothing) + sample * VOICE.smoothing
+        }
+    }
+
+    private func stopPlayer() {
+        meterTimer?.invalidate(); meterTimer = nil
+        player?.stop(); player = nil
+    }
+
+    func audioPlayerDidFinishPlaying(_ p: AVAudioPlayer, successfully flag: Bool) {
+        DispatchQueue.main.async {
+            self.stopPlayer()
+            self.handBackTurn()
+        }
+    }
+
+    /// While listening the session is in call mode (playAndRecord), which on Bluetooth headphones
+    /// plays through the low-quality hands-free channel and makes any voice sound robotic. The
+    /// patient speaks through plain playback instead; startListening switches back for your turn.
+    private func usePlaybackSession() {
         let s = AVAudioSession.sharedInstance()
         try? s.setCategory(.playback, mode: .spokenAudio, options: [.duckOthers])
         try? s.setActive(true, options: .notifyOthersOnDeactivation)
+    }
+
+    /// The installed iOS voice: used when no server voice is set, or when it fails.
+    private func speakOnDevice(_ text: String) {
+        usePlaybackSession()
         let u = AVSpeechUtterance(string: text)
         u.voice = patientVoice ?? AVSpeechSynthesisVoice(language: "en-US")
         u.rate = VOICE.slowestRate + (VOICE.fastestRate - VOICE.slowestRate) * Float(Preferences.voiceSpeed)

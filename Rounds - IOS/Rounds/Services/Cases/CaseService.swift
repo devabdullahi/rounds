@@ -36,5 +36,9 @@ protocol CaseService: Sendable {
     func ask(attempt: String, question: String) async throws -> PatientAnswer
     func examine(attempt: String, maneuver: String) async throws -> String
     func order(attempt: String, test: String) async throws -> TestResult
+    /// Voice mode: the student's recorded turn (m4a) as text, transcribed by the server.
+    func transcribe(attempt: String, audio: Data) async throws -> String
+    /// Voice mode: the patient's latest reply as spoken audio (AAC), in the patient's own voice.
+    func speakLatestReply(attempt: String) async throws -> Data
     func submit(attempt: String, diagnosis: String, differential: [String], plan: String) async throws -> Grade
 }
