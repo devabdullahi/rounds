@@ -386,11 +386,12 @@ struct InterviewView: View {
                         .disabled(session.isPatientTyping || !hasText)
                         .transition(.scale(scale: 0.6).combined(with: .opacity))
                     } else {
+                        // Liquid Glass with a light green tint: the quieter twin of the solid send button.
                         Button(action: startVoice) {
                             AppIcon(.mic, size: 22)
-                                .foregroundStyle(.white)
+                                .foregroundStyle(Theme.accentText)
                                 .frame(width: 48, height: 48)
-                                .glassCircle(tint: Theme.accent)
+                                .glassFill(Theme.accent, in: Circle(), strength: 0.16)
                         }
                         .accessibilityLabel("Talk to the patient")
                         .disabled(session.isPatientTyping)

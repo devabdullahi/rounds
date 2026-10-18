@@ -2,11 +2,13 @@
 import SwiftUI
 
 /// Dev-only deep link for screenshots: launch with `-screen <name>`.
-/// Names: firstopen, firstopen-auth, duplicate-account, onboarding (focus), onboarding-account, onboarding-intro, onboarding-graded,
+/// Names: firstopen, firstopen-auth, duplicate-account, voice-glass, onboarding (focus), onboarding-account, onboarding-intro, onboarding-graded,
 /// onboarding-promise, onboarding-graph, onboarding-goal, onboarding-to-goal, onboarding-heart, onboarding-promised,
 /// focus-system, focus-sheet, home, patients, patients-open, previous-tries, previous-try, profile, brief, interview, examine, workup, diagnosis, debrief, diagnosis-suggest.
 enum DebugLaunch {
     static var screen: String? { UserDefaults.standard.string(forKey: "screen") }
+    /// `-screen voice-glass` shows `VoiceGlassDebugView` in place of the app.
+    static var isVoiceGlass: Bool { screen == "voice-glass" }
 
     /// `-hr 130` previews the Home monitor at another heart rate.
     static var heartRate: Int? {

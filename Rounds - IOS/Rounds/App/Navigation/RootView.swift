@@ -39,5 +39,8 @@ struct RootView: View {
         // Signing out (or deleting the account) leaves nothing of that account behind for the next one.
         .onChange(of: signedIn) { _, now in if !now { app.reset() } }
         .background(Theme.bg.ignoresSafeArea())
+        #if DEBUG
+        .overlay { if DebugLaunch.isVoiceGlass { VoiceGlassDebugView() } }
+        #endif
     }
 }
