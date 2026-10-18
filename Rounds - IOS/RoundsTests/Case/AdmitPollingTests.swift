@@ -75,6 +75,7 @@ private actor ScriptedCases: CaseService {
         throw Unused() // opening the case isn't under test
     }
 
+    func pastTries(bed: String) async throws -> [PastTry] { throw Unused() }
     func deletePatients(_ beds: [String]?) async throws -> Int { throw Unused() }
     func start(bed: String, examMode: Bool, timeLimitMinutes: Int?) async throws -> AttemptStart { throw Unused() }
     func ask(attempt: String, question: String) async throws -> PatientAnswer { throw Unused() }

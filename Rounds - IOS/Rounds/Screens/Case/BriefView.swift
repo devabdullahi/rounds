@@ -6,6 +6,10 @@ struct BriefView: View {
     @Bindable var session: CaseSession
     /// Last chosen limit, remembered across cases. 0 = untimed.
     @AppStorage(TimeLimit.storageKey) private var savedLimit = TimeLimit.defaultMinutes
+    @State private var tries: PastTries?
+
+    /// Graded attempts at this patient so far; a revisit offers them for comparison.
+    private var pastCount: Int { app.ward.first { $0.id == c.bed }?.tries ?? 0 }
 
     private var clockRunning: Bool { session.startedAt != nil }
 
@@ -25,6 +29,24 @@ struct BriefView: View {
                             Text("\(c.name), \(c.age)").font(.system(size: 22, weight: .bold))
                             Text(c.setting).font(.system(size: 15)).foregroundStyle(Theme.muted)
                         }
+                    }
+
+                    if pastCount > 0 {
+                        Button { tries = PastTries(bed: c.bed, service: app.cases) } label: {
+                            HStack(spacing: 8) {
+                                AppIcon(.clock, size: 16).foregroundStyle(Theme.accentText)
+                                Text(pastCount == 1 ? "Previous try" : "Previous tries (\(pastCount))")
+                                    .font(.system(size: 15, weight: .semibold)).foregroundStyle(Theme.accentText)
+                                Spacer()
+                                AppIcon(.chevronRight, size: 14).foregroundStyle(Theme.faint)
+                            }
+                            .padding(.horizontal, 14)
+                            .frame(minHeight: 44)
+                            .background(Theme.accentSoft, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(PressableStyle())
+                        .accessibilityHint("Shows what you answered on earlier tries at this patient")
                     }
 
                     // The complaint is the story, not a widget: plain text, no card.
@@ -101,6 +123,7 @@ struct BriefView: View {
                 .padding(.bottom, 8)
         }
         .background(Theme.bg)
+        .sheet(item: $tries) { PreviousTriesView(model: $0) }
         .onAppear {
             if session.startedAt == nil { session.timeLimitMinutes = TimeLimit.minutes(savedLimit) }
         }

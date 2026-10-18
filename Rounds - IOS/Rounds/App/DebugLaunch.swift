@@ -4,7 +4,7 @@ import SwiftUI
 /// Dev-only deep link for screenshots: launch with `-screen <name>`.
 /// Names: firstopen, firstopen-auth, onboarding (focus), onboarding-account, onboarding-intro, onboarding-graded,
 /// onboarding-promise, onboarding-graph, onboarding-goal, onboarding-to-goal, onboarding-heart, onboarding-promised,
-/// focus-system, focus-sheet, home, patients, patients-open, profile, brief, interview, examine, workup, diagnosis, debrief, diagnosis-suggest.
+/// focus-system, focus-sheet, home, patients, patients-open, previous-tries, previous-try, profile, brief, interview, examine, workup, diagnosis, debrief, diagnosis-suggest.
 enum DebugLaunch {
     static var screen: String? { UserDefaults.standard.string(forKey: "screen") }
 
@@ -50,7 +50,7 @@ enum DebugLaunch {
     @MainActor static func apply(app: AppState, tab: inout Tab, expandedPatient: inout String?) {
         guard let screen else { return }
         switch screen {
-        case "patients": tab = .patients
+        case "patients", "previous-tries", "previous-try": tab = .patients
         case "cards", "cards-flip", "cards-correct", "cards-unknown", "cards-new", "cards-new-color", "cards-new-answer",
              "cards-add", "cards-generate", "cards-generate-notes", "cards-generate-notes-pick", "cards-generate-mistakes": tab = .cards
         case "patients-open": tab = .patients; expandedPatient = "R2"

@@ -25,6 +25,9 @@ protocol CaseService: Sendable {
 
     func loadCase(bed: String) async throws -> ClinicalCase
 
+    /// The student's graded attempts at one patient, newest first, with tests and exam named.
+    func pastTries(bed: String) async throws -> [PastTry]
+
     /// Deletes the student's own patients and their attempts (all of them when `beds` is nil).
     /// Returns how many were removed. Ratings already earned stay.
     func deletePatients(_ beds: [String]?) async throws -> Int
