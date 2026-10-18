@@ -76,6 +76,8 @@ private actor ScriptedCases: CaseService {
     }
 
     func pastTries(bed: String) async throws -> [PastTry] { throw Unused() }
+    func transcribe(attempt: String, audio: Data) async throws -> String { throw Unused() }
+    func speakLatestReply(attempt: String) async throws -> Data { throw Unused() }
     func deletePatients(_ beds: [String]?) async throws -> Int { throw Unused() }
     func start(bed: String, examMode: Bool, timeLimitMinutes: Int?) async throws -> AttemptStart { throw Unused() }
     func ask(attempt: String, question: String) async throws -> PatientAnswer { throw Unused() }

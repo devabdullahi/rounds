@@ -119,6 +119,17 @@ struct LiveCaseService: CaseService {
         return TestResult(text: r.result, isAbnormal: r.abnormal)
     }
 
+    func transcribe(attempt: String, audio: Data) async throws -> String {
+        let r: TranscribeReply = try await invoke("case-session", TranscribeBody(attempt_id: attempt, audio: audio.base64EncodedString()))
+        return r.text
+    }
+
+    func speakLatestReply(attempt: String) async throws -> Data {
+        let r: SpeakReply = try await invoke("case-session", ["action": "speak", "attempt_id": attempt])
+        guard let audio = Data(base64Encoded: r.audio) else { throw CaseServiceError(message: "The server sent unreadable audio.") }
+        return audio
+    }
+
     func submit(attempt: String, diagnosis: String, differential: [String], plan: String) async throws -> Grade {
         let r: GradeRow = try await invoke("case-session", SubmitBody(attempt_id: attempt, diagnosis: diagnosis, differential: differential, plan: plan))
         return r.grade
@@ -314,6 +325,14 @@ private struct AdmitReply: Decodable { let case_id: String?; let status: String?
 private struct StartReply: Decodable { let attempt_id: String; let hidden_tests: [String]? }
 private struct ExamineReply: Decodable { let finding: String }
 private struct OrderReply: Decodable { let result: String; let abnormal: Bool }
+private struct TranscribeReply: Decodable { let text: String }
+private struct SpeakReply: Decodable { let audio: String }
+
+private struct TranscribeBody: Encodable {
+    let action = "transcribe"
+    let attempt_id: String
+    let audio: String
+}
 
 private struct AskReply: Decodable {
     struct Revealed: Decodable { let id: String; let label: String }

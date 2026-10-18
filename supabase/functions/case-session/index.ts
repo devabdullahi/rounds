@@ -4,13 +4,18 @@
 //   ask      {attempt_id, question}                    → {reply, revealed[], coverage}
 //   examine  {attempt_id, maneuver_id}                 → {finding}
 //   order    {attempt_id, test_id}                     → {result, abnormal, turnaround_s}
+//   transcribe {attempt_id, audio (base64 m4a)}        → {text}   voice mode: the student's turn
+//   speak    {attempt_id}                              → {audio (base64 AAC)} the latest patient
+//            reply in an OpenAI voice picked for the patient. It speaks only that stored reply,
+//            never text the app sends, so it can't be used as a general text-to-speech service.
 //   submit   {attempt_id, diagnosis, differential, plan} → grade (and queues the next condition
 //            in the case's focus, see _shared/prefetch.ts). The grade carries condition insights
 //            (about, differential, your_extras; see insights.ts) when the case's profile exists.
 //
 // Only a student's first submitted attempt on a case moves their rating; a restart after seeing the
 // answer is graded as usual but unrated. A submission past the chosen time limit is graded and
-// marked over time. Asking and submitting each cost a unit of the daily allowance (_shared/quota.ts).
+// marked over time. Asking and submitting each cost a unit of the daily allowance (_shared/quota.ts),
+// and so does each voice call.
 //
 // Every action verifies the caller, then loads the attempt only if it belongs to them. The patient
 // LLM sees the persona and revealable facts, never the diagnosis or rubric; its reply is checked for
@@ -26,6 +31,8 @@ import { conditionInsights, type InsightProfile, type Insights } from "./insight
 import { namedDiagnoses } from "./leak.ts";
 import { hiddenTests } from "./menu.ts";
 import { workupText } from "./workup.ts";
+import { decodeAudio, lastPatientReply, MAX_SPOKEN_CHARS, pickVoice, speechInstructions, toBase64 } from "./voice.ts";
+import { speak, transcribe } from "../_shared/speech.ts";
 import { parseFocus } from "../_shared/focus.ts";
 import { prepareNext } from "../_shared/prefetch.ts";
 import { withQuota } from "../_shared/quota.ts";
@@ -62,6 +69,9 @@ serve(async (req) => {
     case "ask": return json(await withQuota(userId, "question", () => ask(userId, input)));
     case "examine": return json(await examine(userId, input));
     case "order": return json(await order(userId, input));
+    // Voice mode calls paid audio models; each call counts against the daily voice allowance.
+    case "transcribe": return json(await withQuota(userId, "voice", () => transcribeTurn(userId, input)));
+    case "speak": return json(await withQuota(userId, "voice", () => speakReply(userId, input)));
     // Grading costs a model call too, and a quota keeps restart-and-resubmit loops bounded.
     case "submit": return json(await withQuota(userId, "grade", () => submit(userId, input)));
     default: throw new HttpError(400, "unknown action");
@@ -212,6 +222,38 @@ async function order(userId: string, input: Record<string, unknown>) {
               where id = ${attempt.id} and submitted_at is null and not ordered_tests @> ${sql.json([{ id }])}`;
   }
   return { result: test.result, abnormal: test.abnormal, turnaround_s: test.turnaround_s };
+}
+
+// MARK: - voice
+
+/** Primes the transcriber for clinical words without saying anything about this case. */
+const TRANSCRIBE_HINT = "A medical student is interviewing a patient: history, symptoms, medications, allergies.";
+
+async function transcribeTurn(userId: string, input: Record<string, unknown>) {
+  await loadAttempt(userId, input.attempt_id);
+  const audio = decodeAudio(input.audio);
+  if (!audio) throw new HttpError(400, "audio must be a base64 m4a recording under 400 KB");
+  try {
+    return { text: await transcribe(audio, TRANSCRIBE_HINT) };
+  } catch (error) {
+    console.error("transcription failed", error);
+    throw new HttpError(502, "couldn't transcribe that; try again or type your question");
+  }
+}
+
+async function speakReply(userId: string, input: Record<string, unknown>) {
+  const { attempt, content } = await loadAttempt(userId, input.attempt_id);
+  const reply = lastPatientReply(attempt.transcript);
+  if (!reply) throw new HttpError(404, "no patient reply to speak yet");
+  const persona = content.persona;
+  const voice = pickVoice(String(persona.sex ?? ""), attempt.case_id);
+  const instructions = speechInstructions(Number(persona.age) || 40, String(persona.sex ?? ""), String(persona.voice ?? ""));
+  try {
+    return { audio: toBase64(await speak(reply.slice(0, MAX_SPOKEN_CHARS), voice, instructions)), format: "aac" };
+  } catch (error) {
+    console.error("speech failed", error);
+    throw new HttpError(502, "couldn't voice the reply");
+  }
 }
 
 // MARK: - submit
