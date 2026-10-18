@@ -166,6 +166,14 @@ final class CaseSession {
     var menu: [Investigation] { clinical.tests.filter { !hiddenTests.contains($0.id) } }
 
     /// Tests ordered out of those on the menu, for the workup's progress bar.
+    /// Exam steps done out of the case's exam, for the workup's progress card.
+    var examDone: (done: Int, total: Int) { (examined.count, clinical.exam.count) }
+
+    /// Exam steps and tests it takes before "I'm ready to diagnose" becomes the main action:
+    /// earlier, it would invite skipping the workup the tab is for.
+    static let workupBeforeDiagnosis = 2
+    var hasWorkedUp: Bool { examined.count + testOrder.count >= Self.workupBeforeDiagnosis }
+
     var testsTaken: (done: Int, total: Int) {
         let menuIDs = Set(menu.map(\.id))
         return (tests.keys.filter(menuIDs.contains).count, menuIDs.count)

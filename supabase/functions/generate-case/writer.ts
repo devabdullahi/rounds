@@ -59,7 +59,7 @@ Return JSON:
   "persona": {"voice": "how they talk", "background": "job, family, context in 1–2 sentences", "fallback": "what they say, in character, when a question makes no sense to them"},
   "facts": [{"id": "snake_case", "label": "2–4 word topic shown when revealed, e.g. 'onset'", "reply": "patient's answer", "importance": "essential|important|optional", "screens_for": "a must-not-miss name from the list, or null"}],
   "suggested": [{"text": "a one-tap question", "fact": "fact id"}],
-  "maneuvers": [{"id": "snake_case", "title": "e.g. 'Palpate the abdomen'", "finding": "result", "key": true}],
+  "maneuvers": [{"id": "snake_case", "title": "2–4 words, the step itself, e.g. 'Palpate abdomen', 'Respiratory rate', 'Nasal flaring'", "finding": "result", "key": true}],
   "studies": [{"test_id": "...", "result": "report text", "abnormal": true}],
   "test_meta": [{"test_id": "...", "detail": "e.g. 'Bloods · 4 min'", "cost": 30, "turnaround_s": 5, "delays_care_min": 0}]
 }
