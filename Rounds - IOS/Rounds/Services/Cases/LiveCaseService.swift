@@ -30,7 +30,10 @@ struct LiveCaseService: CaseService {
             .select("case_id, submitted_at, score, grade, started_at")
             .order("started_at", ascending: false)
             .execute().value
-        return cases.map { c in c.wardPatient(latest: attempts.first { $0.case_id == c.id }) }
+        return cases.map { c in
+            let mine = attempts.filter { $0.case_id == c.id }
+            return c.wardPatient(latest: mine.first, tries: mine.filter { $0.submitted_at != nil }.count)
+        }
     }
 
     func gradedCases() async throws -> [GradedCase] {
@@ -74,6 +77,23 @@ struct LiveCaseService: CaseService {
             .single()
             .execute().value
         return row.clinicalCase
+    }
+
+    func pastTries(bed: String) async throws -> [PastTry] {
+        // RLS returns only the caller's attempts. The case's menu turns logged ids into names.
+        async let rows: [PastTryRow] = client.from("attempts")
+            .select("id, submitted_at, score, grade, diagnosis, differential, plan, ordered_tests, examined, exam_mode")
+            .eq("case_id", value: bed)
+            .not("submitted_at", operator: .is, value: "null")
+            .order("submitted_at", ascending: false)
+            .execute().value
+        let clinical = try await loadCase(bed: bed)
+        return try await rows.compactMap { $0.pastTry(tests: clinical.tests, exam: clinical.exam) }
+    }
+
+    /// Maps stored attempt rows to `PastTry`s. Exposed so tests can check the wire mapping without a network call.
+    static func decodePastTries(from data: Data, tests: [Investigation], exam: [ExamManeuver]) throws -> [PastTry] {
+        try JSONDecoder().decode([PastTryRow].self, from: data).compactMap { $0.pastTry(tests: tests, exam: exam) }
     }
 
     // MARK: Encounter
@@ -136,7 +156,7 @@ private struct CaseRow: Decodable {
     let clerkship: String?
     let organ_system: String?
 
-    func wardPatient(latest: AttemptRow?) -> WardPatient {
+    func wardPatient(latest: AttemptRow?, tries: Int) -> WardPatient {
         let rotation = clerkship.flatMap(Clerkship.init(rawValue:))
         let status: WardPatient.Status
         let misses = latest?.grade?.missed_red_flags.map { Miss(flag: $0.flag, why: $0.why) } ?? []
@@ -153,7 +173,7 @@ private struct CaseRow: Decodable {
             rotation: rotation, system: organ_system.flatMap(OrganSystem.init(rawValue:)),
             hr: vital("hr").flatMap { Int($0) }, bp: vital("sbp"),
             spo2: vital("spo2").flatMap { Int($0.trimmingCharacters(in: CharacterSet(charactersIn: "%"))) },
-            status: status, misses: misses, missedDiagnosis: missedDiagnosis, lastScore: latest?.score)
+            status: status, misses: misses, missedDiagnosis: missedDiagnosis, lastScore: latest?.score, tries: tries)
     }
 }
 
@@ -208,6 +228,42 @@ private struct AttemptRow: Decodable {
 }
 
 private struct MissRow: Decodable { let flag: String; let why: String }
+
+/// A submitted attempt with what the student answered and did. The stored grade has no `rating`
+/// (that's returned only at submit), so it's read here rather than through `GradeRow`.
+private struct PastTryRow: Decodable {
+    struct Ordered: Decodable { let id: String }
+    struct GradeBody: Decodable {
+        let verdict: String
+        let diagnosis_correct: Bool
+        let diagnosis: String
+        let feedback: [GradeRow.FeedbackRow]
+        let missed_red_flags: [MissRow]
+    }
+    let id: String
+    let submitted_at: String
+    let score: Int?
+    let grade: GradeBody?
+    let diagnosis: String?
+    let differential: [String]?
+    let plan: String?
+    let ordered_tests: [Ordered]?
+    let examined: [String]?
+    let exam_mode: Bool?
+
+    /// Nil for an attempt without a stored grade. Ids no longer on the case's menu are left out.
+    func pastTry(tests: [Investigation], exam: [ExamManeuver]) -> PastTry? {
+        guard let grade, let score, let date = GradedAttemptRow.timestamp(submitted_at) else { return nil }
+        return PastTry(
+            id: id, submittedAt: date, score: score, verdict: grade.verdict, diagnosisCorrect: grade.diagnosis_correct,
+            actualDiagnosis: grade.diagnosis, yourDiagnosis: diagnosis ?? "", differential: differential ?? [], plan: plan ?? "",
+            testsOrdered: (ordered_tests ?? []).compactMap { o in tests.first { $0.id == o.id }?.name },
+            examDone: (examined ?? []).compactMap { id in exam.first { $0.id == id }?.title },
+            feedback: grade.feedback.map { Feedback(tone: $0.tone == "good" ? .good : .miss, title: $0.title, detail: $0.detail, coversMiss: $0.covers_miss) },
+            missedRedFlags: grade.missed_red_flags.map { Miss(flag: $0.flag, why: $0.why) },
+            examMode: exam_mode ?? false)
+    }
+}
 
 private struct GradedAttemptRow: Decodable {
     struct GradeBody: Decodable {

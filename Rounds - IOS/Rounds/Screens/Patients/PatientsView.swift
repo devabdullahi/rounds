@@ -13,6 +13,8 @@ struct PatientsView: View {
     @State private var confirming: PendingDelete?
     /// A hold just started selecting on this row; its release mustn't also count as a tap.
     @State private var heldRow: String?
+    /// The patient whose previous tries are open in a sheet.
+    @State private var tries: PastTries?
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private enum DELETE {
@@ -106,6 +108,7 @@ struct PatientsView: View {
         } message: { _ in
             Text("Their cases, answers and grades are removed for good. Your rating stays.")
         }
+        .sheet(item: $tries) { PreviousTriesView(model: $0) }
         #if DEBUG
         .task(id: app.ward.count) { applyDebugMode() }
         #endif
@@ -251,6 +254,9 @@ struct PatientsView: View {
     #if DEBUG
     /// `-screen patients-select` / `patients-swipe`: show those states without gestures.
     private func applyDebugMode() {
+        if ["previous-tries", "previous-try"].contains(DebugLaunch.screen), tries == nil {
+            tries = PastTries(bed: "debug", tries: PastTry.debugSamples)
+        }
         guard let first = (revisit + rotation).first else { return }
         switch app.debugPatientsMode {
         case "select": selection = Set((revisit + rotation).prefix(2).map(\.id))
@@ -439,10 +445,18 @@ struct PatientsView: View {
                             MissItem(miss: m).disclosureItem(i + 2)
                         }
                     }
-                    Button("Revisit \(p.id)") { Task { await app.open(bed: p.id) } }
-                        .buttonStyle(SoftButtonStyle(height: 44, fontSize: 16))
-                        .padding(.top, 2)
-                        .disclosureItem(misses.count + 2)
+                    HStack(spacing: 10) {
+                        Button("Revisit \(p.id)") { Task { await app.open(bed: p.id) } }
+                            .buttonStyle(SoftButtonStyle(height: 44, fontSize: 16))
+                        if p.tries > 0 {
+                            Button(p.tries == 1 ? "Previous try" : "Previous tries (\(p.tries))") {
+                                tries = PastTries(bed: p.id, service: app.cases)
+                            }
+                            .buttonStyle(SoftButtonStyle(height: 44, fontSize: 16, tint: Theme.dim))
+                        }
+                    }
+                    .padding(.top, 2)
+                    .disclosureItem(misses.count + 2)
                 }
                 .padding(.horizontal, 16)
                 .padding(.leading, 40)
