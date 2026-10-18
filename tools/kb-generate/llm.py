@@ -57,7 +57,7 @@ class Provider:
 
 
 PROVIDERS = {
-    "deepseek": Provider("deepseek", "https://api.deepseek.com/chat/completions", "DEEPSEEK_API_KEY", "deepseek-v4-pro", "openai", thinking=True),
+    "deepseek": Provider("deepseek", "https://api.deepseek.com/chat/completions", "DEEPSEEK_API_KEY", "deepseek-flash", "openai", thinking=True),
     "openai": Provider("openai", "https://api.openai.com/v1/chat/completions", "OPENAI_API_KEY", "gpt-4.1", "openai"),
     "anthropic": Provider("anthropic", "https://api.anthropic.com/v1/messages", "ANTHROPIC_API_KEY", "claude-sonnet-5-5", "anthropic"),
 }
