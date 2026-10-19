@@ -26,7 +26,7 @@ import { MAX_AGE_GAP, type PatientBackground, pickBackground } from "./backgroun
 import { bedCode } from "./bedcode.ts";
 import { applyFixes, buildRubric, checkWriting, fixPrompt, leakSpots, neutralIds, type Writing, writerPrompt } from "./writer.ts";
 
-/** Tries at writing one patient. A typical write takes 10–20 s, so three stay well inside the
+/** Tries at writing one patient. A typical write takes ~30 s on GPT-6 Luna, so three stay inside the
  *  function's time limit; a reply that fails the checks is retried with the problems listed. */
 const WRITE_ATTEMPTS = 3;
 
@@ -86,7 +86,7 @@ serve(async (req) => {
     await refundQuota(userId, "case");
     throw error;
   }
-  // Writing takes 15–20 s; doing the next one now means the student's next start is instant.
+  // Writing takes ~30 s; doing the next one now means the student's next start is instant.
   EdgeRuntime.waitUntil(writeAhead(userId, focus));
   return json({ case_id: caseId, model: currentModel("case") });
 });
