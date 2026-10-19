@@ -19,9 +19,13 @@ protocol CaseService: Sendable {
     /// How many conditions each topic can draw from, keyed by `StudyFocus.stored`.
     func topicCounts() async throws -> [String: Int]
 
-    /// Generates a new fictional patient for the focus. `.preparing` means the focus has no
-    /// condition ready yet and the server is writing one; ask again shortly.
-    func admit(focus: StudyFocus) async throws -> AdmitOutcome
+    /// Generates a new fictional patient for the focus. `.preparing` means the server accepted a
+    /// background job; set `polling` on follow-up calls while waiting for its ready case.
+    func admit(focus: StudyFocus, polling: Bool) async throws -> AdmitOutcome
+
+    /// Asks the server to write the focus's next patient ahead, so the next `admit` is instant.
+    /// Returns as soon as the job is queued; nothing is admitted.
+    func prepare(focus: StudyFocus) async throws
 
     func loadCase(bed: String) async throws -> ClinicalCase
 

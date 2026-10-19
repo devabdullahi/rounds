@@ -14,6 +14,7 @@ struct AdmitPollingTests {
         await app.admit(focus: FocusSelection())
 
         #expect(await service.admitCalls == 3)
+        #expect(await service.pollingFlags == [false, true, true])
         #expect(await service.loadedBeds == ["A12"])
         #expect(!app.isAdmitting)
         #expect(!app.isPreparingCondition)
@@ -49,12 +50,48 @@ struct AdmitPollingTests {
     }
 }
 
+/// Writing patients ahead: once per focus, one request per topic.
+@MainActor
+struct PrepareAheadTests {
+    @Test func asksForEachTopicOnce() async {
+        let service = ScriptedCases(replies: [])
+        let app = AppState(cases: service, cards: nil)
+        let focus = FocusSelection([.rotation(.surgery), .rotation(.neurology)])
+
+        await app.prepareAhead(focus: focus)
+        await app.prepareAhead(focus: focus)
+
+        #expect(await service.prepared.sorted() == [StudyFocus.rotation(.neurology).stored, StudyFocus.rotation(.surgery).stored])
+    }
+
+    @Test func aMixPreparesMixedCases() async {
+        let service = ScriptedCases(replies: [])
+        let app = AppState(cases: service, cards: nil)
+
+        await app.prepareAhead(focus: FocusSelection())
+
+        #expect(await service.prepared == [StudyFocus.mix.stored])
+    }
+
+    @Test func aNewFocusPreparesAgain() async {
+        let service = ScriptedCases(replies: [])
+        let app = AppState(cases: service, cards: nil)
+
+        await app.prepareAhead(focus: FocusSelection([.rotation(.surgery)]))
+        await app.prepareAhead(focus: FocusSelection([.rotation(.pediatrics)]))
+
+        #expect(await service.prepared.count == 2)
+    }
+}
+
 /// A case service that answers `admit` from a script and records which beds were opened.
 private actor ScriptedCases: CaseService {
     func rating() async throws -> Int? { nil }
     private var replies: [AdmitOutcome]
     private(set) var admitCalls = 0
+    private(set) var pollingFlags: [Bool] = []
     private(set) var loadedBeds: [String] = []
+    private(set) var prepared: [String] = []
 
     init(replies: [AdmitOutcome]) { self.replies = replies }
 
@@ -65,10 +102,13 @@ private actor ScriptedCases: CaseService {
     func topicCounts() async throws -> [String: Int] { [:] }
     func gradedCases() async throws -> [GradedCase] { [] }
 
-    func admit(focus: StudyFocus) async throws -> AdmitOutcome {
+    func admit(focus: StudyFocus, polling: Bool) async throws -> AdmitOutcome {
         admitCalls += 1
+        pollingFlags.append(polling)
         return replies.isEmpty ? .preparing : replies.removeFirst()
     }
+
+    func prepare(focus: StudyFocus) async throws { prepared.append(focus.stored) }
 
     func loadCase(bed: String) async throws -> ClinicalCase {
         loadedBeds.append(bed)

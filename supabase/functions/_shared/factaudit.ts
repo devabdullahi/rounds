@@ -1,7 +1,8 @@
 // The fact audit: after a case is written, every medical claim in the patient's facts must come
 // from what the writer was given. All of it is asked live, nothing is built ahead:
-//   1. A fast model (task "check") lists each fact's medical claims and the planned item each one
-//      matches: a present symptom, an absent one, or a background/risk item; or none.
+//   1. A fast model (task "check") lists each fact's medical claims the patient states as true, as
+//      compact [fact, claim, item] tuples (denials are skipped: they never break the plan, and
+//      leaving them out halves the reply), with the planned item each matches, or none.
 //   2. Code flags two mistakes: a claim matching nothing (invented) and an absent symptom stated as
 //      present (contradicts). Denials ("no fever") are fine.
 //   3. Each invented claim is confirmed with the UMLS API: if it names the same concept (CUI) as a
@@ -27,14 +28,16 @@ export function auditPrompt(items: PlanItems, facts: { id: string; reply: string
 Facts: ${JSON.stringify(facts.map((f) => ({ id: f.id, text: f.reply })))}`;
 }
 
-/** The model's claims, kept only when well formed. */
+/** The model's claims, kept only when well formed: [fact, claim, item] tuples, or the older
+ *  {fact, claim, item, negated} objects. */
 export function parseClaims(reply: unknown, itemCount: number): Claim[] {
   const claims = (reply as { claims?: unknown })?.claims;
   if (!Array.isArray(claims)) return [];
   return claims.flatMap((c) => {
-    if (typeof c?.fact !== "string" || typeof c?.claim !== "string") return [];
-    const item = Number.isInteger(c.item) && c.item >= 0 && c.item < itemCount ? c.item as number : null;
-    return [{ fact: c.fact, claim: c.claim, item, negated: c.negated === true }];
+    const [fact, claim, rawItem, negated] = Array.isArray(c) ? [c[0], c[1], c[2], false] : [c?.fact, c?.claim, c?.item, c?.negated === true];
+    if (typeof fact !== "string" || typeof claim !== "string") return [];
+    const item = Number.isInteger(rawItem) && rawItem >= 0 && rawItem < itemCount ? rawItem as number : null;
+    return [{ fact, claim, item, negated }];
   });
 }
 

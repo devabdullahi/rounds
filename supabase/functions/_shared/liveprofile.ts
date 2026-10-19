@@ -10,8 +10,9 @@
 //
 // SNOMED CT names go only to the model, server side; they're never stored or sent to the app.
 
-import { autoFix, labNormal, repair, ruleErrors, sectionErrors, STAGES, stageOutput, stagePrompt } from "./profilegen.ts";
+import { autoFix, labNormal, repair, ruleErrors, sectionErrors, sectionsOutput, STAGES, stagePrompt } from "./profilegen.ts";
 import { type Level, levelRange, LEVELS, rangeLevel, VITAL_NORMALS } from "./levels.ts";
+import { type Family, familiesOf, withFamilyNotes } from "./families.ts";
 
 // deno-lint-ignore no-explicit-any
 type Json = any;
@@ -138,6 +139,47 @@ function levelStage(stage: number): { instructions: string; schema: string; exam
   return undefined;
 }
 
+// MARK: - Live stages
+
+/** The template's two largest stages, each about 2,000 tokens and 10–12 s, split into parallel
+ *  calls of about half the size. No check ties one half to the other. */
+const SPLITS: Record<string, string[][]> = {
+  diagnostics: [["labs", "ecg"], ["imaging", "workup"]],
+  differential_course: [["differential"], ["course", "cancer"]],
+};
+
+/** One call that fills part of the template: the stored stage it comes from, cut to its sections. */
+type LiveStage = { base: number; name: string; sections: string[]; instructions: string; schema: string; example: string };
+
+/** A stage's instructions, schema and example cut to some of its sections. */
+function cut(stage: { instructions: string; schema: string; example: string }, sections: string[]) {
+  const keep = (line: string) => {
+    const key = line.match(/^- ([a-z_]+)/)?.[1];
+    return !key || sections.includes(key);
+  };
+  const schema = JSON.parse(stage.schema);
+  schema.properties = Object.fromEntries(Object.entries(schema.properties).filter(([k]) => sections.includes(k)));
+  if (Array.isArray(schema.required)) schema.required = schema.required.filter((k: string) => sections.includes(k));
+  const example = Object.fromEntries(Object.entries(JSON.parse(stage.example)).filter(([k]) => sections.includes(k)));
+  return { instructions: stage.instructions.split("\n").filter(keep).join("\n"), schema: JSON.stringify(schema), example: JSON.stringify(example) };
+}
+
+/** Every call the live template makes, in parallel: the stored stages, levels instead of numbers,
+ *  with the large ones split. */
+export const LIVE_STAGES: LiveStage[] = STAGES.flatMap((s, base) => {
+  const full = levelStage(base) ?? { instructions: s.instructions, schema: s.schema, example: s.example };
+  const groups = SPLITS[s.name] ?? [s.sections];
+  return groups.map((sections) => ({ base, name: s.name, sections, ...(groups.length > 1 ? cut(full, sections) : full) }));
+});
+
+/** The prompt for one live call, with the condition families' notes. */
+function livePrompt(stage: number, triage: Json, grounding: string, base: Json, feedback: string[], families: Family[]): string {
+  const s = LIVE_STAGES[stage];
+  return stagePrompt(s.base, triage.name, grounding, base, feedback, {
+    instructions: withFamilyNotes(s.instructions, s.name, families), schema: s.schema, example: s.example, sections: s.sections,
+  });
+}
+
 /** Turns the model's levels back into the ranges planCase draws from. A level that can't apply to
  *  a test (no upper limit to be "high" against) is dropped. */
 export function expandLevels(profile: Json): void {
@@ -169,13 +211,14 @@ export async function fillTemplate(
   complete: (system: string, user: string) => Promise<Json>, system: string,
 ): Promise<{ profile: Json; missing: string[] }> {
   const base: Json = { schema_version: "0.2", slug, triage };
-  const replies = await Promise.all(STAGES.map((_, stage) =>
-    complete(system, stagePrompt(stage, triage.name, grounding, base, [], levelStage(stage))).catch(() => ({}))
+  const families = familiesOf(triage);
+  const replies = await Promise.all(LIVE_STAGES.map((_, stage) =>
+    complete(system, livePrompt(stage, triage, grounding, base, [], families)).catch(() => ({}))
   ));
   const profile: Json = { ...base };
   const missing: string[] = [];
   replies.forEach((reply, stage) => {
-    const { output, missing: m } = stageOutput(stage, reply);
+    const { output, missing: m } = sectionsOutput(LIVE_STAGES[stage].sections, reply);
     Object.assign(profile, output);
     missing.push(...m);
   });
@@ -185,7 +228,7 @@ export async function fillTemplate(
 /** Which template section an error belongs to, from its prefix ("labs[3] k.severe: …" → labs). */
 function stageOf(error: string): number {
   const section = error.match(/^([a-z_]+)/)?.[1] ?? "";
-  return STAGES.findIndex((s) => s.sections.includes(section));
+  return LIVE_STAGES.findIndex((s) => s.sections.includes(section));
 }
 
 /** The profile's problems by template section: blocking ones (structure, medical rules) and
@@ -197,11 +240,11 @@ async function problemsByStage(profile: Json, missing: string[], termErrors: (ou
   const terms = new Map<number, string[]>();
   const add = (map: Map<number, string[]>, stage: number, error: string) => { if (stage >= 0) map.set(stage, [...(map.get(stage) ?? []), error]); };
   for (const m of missing) add(blocking, stageOf(m.replace(/^missing section /, "")), m);
-  for (const [stage, s] of STAGES.entries()) {
+  for (const [stage, s] of LIVE_STAGES.entries()) {
     for (const section of s.sections) if (section in profile) for (const e of sectionErrors(section, profile[section])) add(blocking, stage, e);
   }
   if (blocking.size === 0) for (const e of ruleErrors(profile)) add(blocking, stageOf(e), e);
-  const found = await Promise.all(STAGES.map((s) => termErrors(Object.fromEntries(s.sections.filter((k) => k in profile).map((k) => [k, profile[k]])))));
+  const found = await Promise.all(LIVE_STAGES.map((s) => termErrors(Object.fromEntries(s.sections.filter((k) => k in profile).map((k) => [k, profile[k]])))));
   found.forEach((errors, stage) => errors.forEach((e) => add(terms, stage, e)));
   return { blocking, terms };
 }
@@ -225,9 +268,9 @@ export async function buildLiveProfile(
   if (blocking.size) {
     const base: Json = { schema_version: "0.2", slug, triage };
     await Promise.all([...blocking.entries()].map(async ([stage, errors]) => {
-      const reply = await deps.complete(deps.system, stagePrompt(stage, triage.name, grounding, base, [...errors, ...(terms.get(stage) ?? [])], levelStage(stage)))
+      const reply = await deps.complete(deps.system, livePrompt(stage, triage, grounding, base, [...errors, ...(terms.get(stage) ?? [])], familiesOf(triage)))
         .catch(() => ({}));
-      Object.assign(profile, stageOutput(stage, reply).output);
+      Object.assign(profile, sectionsOutput(LIVE_STAGES[stage].sections, reply).output);
     }));
     expandLevels(profile);
     repair(profile);

@@ -67,6 +67,8 @@ struct HomeView: View {
             GlowBackdrop()   // Metal shader paints the background colour plus the glows
         }
         .task { await play() }
+        // Write this focus's first patients ahead, so tapping a patient doesn't wait for one.
+        .task(id: focusStored) { await app.prepareAhead(focus: focus) }
         .sheet(isPresented: $editingFocus) { FocusSheet(counts: app.topicCounts) }
         #if DEBUG
         .onAppear { if DebugLaunch.screen == "focus-sheet" { editingFocus = true } }

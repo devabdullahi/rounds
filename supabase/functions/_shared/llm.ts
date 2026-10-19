@@ -177,5 +177,31 @@ export function thinkingFields(thinking: Provider["thinking"], maxTokens: number
 export function parseJSON<T>(text: string): T {
   const fenced = text.match(/```(?:json)?\s*(\{[\s\S]*\})\s*```/);
   const raw = fenced ? fenced[1] : text.slice(text.indexOf("{"), text.lastIndexOf("}") + 1);
-  return JSON.parse(raw) as T;
+  try {
+    return JSON.parse(raw) as T;
+  } catch (error) {
+    // DeepSeek sometimes follows the object with more text or a second object. Losing the reply
+    // costs a rewrite round (~10 s), so the first complete object is used when there is one.
+    const first = firstObject(text);
+    if (first === null) throw error;
+    return JSON.parse(first) as T;
+  }
+}
+
+/** The first balanced {...} in the text, reading strings and escapes; null when none closes. */
+export function firstObject(text: string): string | null {
+  const start = text.indexOf("{");
+  if (start < 0) return null;
+  let depth = 0;
+  let inString = false;
+  for (let i = start; i < text.length; i++) {
+    const c = text[i];
+    if (inString) {
+      if (c === "\\") i++;
+      else if (c === '"') inString = false;
+    } else if (c === '"') inString = true;
+    else if (c === "{") depth++;
+    else if (c === "}" && --depth === 0) return text.slice(start, i + 1);
+  }
+  return null;
 }

@@ -33,7 +33,7 @@ const DIRECTIONS: Record<string, Record<string, string>> = labDirections.conditi
 /** The user message for one stage attempt; a retry appends the previous attempt's errors. */
 export function stagePrompt(
   stage: number, name: string, background: string, profile: Json, feedback: string[],
-  override?: { instructions: string; schema: string; example: string },
+  override?: { instructions: string; schema: string; example: string; sections?: string[] },
 ): string {
   const s = { ...STAGES[stage], ...override };
   const previous = Object.fromEntries(
@@ -61,9 +61,14 @@ export function stagePrompt(
 
 /** Keeps only the stage's sections from a reply, and lists sections it left out. */
 export function stageOutput(stage: number, reply: Json): { output: Json; missing: string[] } {
+  return sectionsOutput(STAGES[stage].sections, reply);
+}
+
+/** Keeps only the given sections from a reply, and lists required ones it left out. */
+export function sectionsOutput(sections: string[], reply: Json): { output: Json; missing: string[] } {
   const output: Json = {};
-  for (const s of STAGES[stage].sections) if (reply && s in reply) output[s] = reply[s];
-  const missing = STAGES[stage].sections.filter((s) => !(s in output) && !OPTIONAL.has(s)).map((s) => `missing section ${s}`);
+  for (const s of sections) if (reply && s in reply) output[s] = reply[s];
+  const missing = sections.filter((s) => !(s in output) && !OPTIONAL.has(s)).map((s) => `missing section ${s}`);
   return { output, missing };
 }
 

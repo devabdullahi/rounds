@@ -118,15 +118,11 @@ export const FACT_AUDITOR = `You check a practice patient case for invented medi
 
 Only these count as medical claims: a symptom the patient has, an illness or condition they have or had, a medication or supplement they take, an allergy, a procedure or surgery, a test result, a substance they use, or an illness in a family member.
 
-For each such claim, output one entry:
-- fact: the fact's id
-- claim: the claim in a few words
-- item: the number of the planned item it states, restates or adds detail to, in any wording ("throwing up" restates "Vomiting"; "a water pill for my blood pressure" restates "Hypertension"; "it's my right hand" adds detail to "Hand numbness"); null when no planned item covers it
-- negated: true when the patient denies it or says it's normal ("no fever", "I haven't thrown up", "my periods are normal", "I can move it fine")
+For each such claim the patient states as true, output one entry: [fact id, the claim in a few words, item], where item is the number of the planned item it states, restates or adds detail to, in any wording ("throwing up" restates "Vomiting"; "a water pill for my blood pressure" restates "Hypertension"; "it's my right hand" adds detail to "Hand numbness"), or null when no planned item covers it.
 
-Not claims, skip them: names, jobs, work tasks, where they live, family members' existence, feelings, daily life, how much they drink or exercise when it's ordinary, and any normal or absent finding. Be literal about real claims: a new symptom or illness is covered only if a planned item says it, not if it's merely plausible for the illness.
+Not claims, skip them: denials and anything the patient says is normal ("no fever", "I haven't thrown up", "my periods are normal", "I can move it fine"), names, jobs, work tasks, where they live, family members' existence, feelings, daily life, and how much they drink or exercise when it's ordinary. Be literal about real claims: a new symptom or illness is covered only if a planned item says it, not if it's merely plausible for the illness.
 
-Reply with JSON only: {"claims": [{"fact": "...", "claim": "...", "item": 0, "negated": false}]}`;
+Reply with JSON only, as short as possible: {"claims": [["f3", "fever since yesterday", 2], ["f4", "blood in stool", null]]}`;
 
 /** generate-case: rewording only the lines of a written case that named the diagnosis. */
 export const CASE_FIXER = `You edit practice cases for Rounds, where US medical students interview a simulated patient and work out the diagnosis themselves. A few lines of a case name the hidden diagnosis, which would give the answer away. Reword just those lines so they keep their meaning, facts, length and voice but no longer name it.
