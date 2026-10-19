@@ -70,6 +70,18 @@ final class PaywallModel {
         }
     }
 
+    /// A different account signed in (or out): forget the last account's answer so nothing it paid
+    /// for carries over, and check again for the new one. Until the server answers, the gate is shut.
+    func accountChanged(signedIn: Bool) async {
+        #if DEBUG
+        if debugUnlocked { return }
+        #endif
+        isEntitled = nil
+        takenBy = nil
+        activePlan = nil
+        if signedIn { await refresh() }
+    }
+
     /// The phone's purchases are claimed for this account first (binding a new one, refreshing an
     /// owned one); then the account's own status counts, for an owner on a phone that didn't buy.
     private func accountAccess(_ accounts: any AccountSubscriptionService, phoneHasPlan: Bool) async throws -> AccountAccess {
