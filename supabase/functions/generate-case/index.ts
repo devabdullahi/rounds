@@ -26,7 +26,8 @@ import { auditPrompt, candidateFlags, confirmWithUmls, type Flag, fixRequest, ty
 import { checkTerms, conceptOf, umlsKey } from "../_shared/terms.ts";
 import { buildLiveProfile } from "../_shared/liveprofile.ts";
 import { SYSTEM_PROMPT } from "../_shared/profilegen.ts";
-import { refundQuota, takeQuota } from "../_shared/quota.ts";
+// Daily patient limit off for now (2026-10-19, user request); restore these to turn it back on.
+// import { refundQuota, takeQuota } from "../_shared/quota.ts";
 import { backgroundForWriter, MAX_AGE_GAP, type PatientBackground, pickBackground } from "./background.ts";
 import { bedCode } from "./bedcode.ts";
 import { applyFixes, assemble, buildRubric, checkWriting, fixPrompt, leakSpots, neutralIds, type Voice, voicePrompt, type Writing } from "./writer.ts";
@@ -60,7 +61,7 @@ serve(async (req) => {
   // A new patient counts against the daily limit (refunded on failure), whether it's written now or
   // was written ahead. The quota comes first: a student over the limit mustn't start background
   // writing either.
-  await takeQuota(userId, "case");
+  // await takeQuota(userId, "case");
   let rows: CaseRows | null;
   try {
     rows = await claimReady(userId, focus);
@@ -69,11 +70,11 @@ serve(async (req) => {
       rows = picked ? await composeCase(picked, focus) : null;
     }
   } catch (error) {
-    await refundQuota(userId, "case");
+    // await refundQuota(userId, "case");
     throw error;
   }
   if (!rows) {
-    await refundQuota(userId, "case");
+    // await refundQuota(userId, "case");
     throw new HttpError(404, "no patient could be prepared for this topic right now; try again");
   }
 
@@ -81,7 +82,7 @@ serve(async (req) => {
   try {
     caseId = await insertCase(userId, rows);
   } catch (error) {
-    await refundQuota(userId, "case");
+    // await refundQuota(userId, "case");
     throw error;
   }
   // Writing takes 12–17 s; doing the next one now means the student's next start is instant.
