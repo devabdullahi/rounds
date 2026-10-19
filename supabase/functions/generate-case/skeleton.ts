@@ -87,6 +87,18 @@ export function describing(value: string, banned: string[]): string {
     .join("; ");
 }
 
+/** A trailing clause that reasons about the diagnosis (", more typical of viral conjunctivitis",
+ *  ", which would argue against it"). */
+const REASONING_CLAUSE = /,\s*(?:which\s+|that\s+)?(?:would\s+)?(?:be\s+)?(?:more\s+|less\s+|most\s+)?(?:typical|suggestive|consistent|characteristic|argu\w+|point\w*)\b.*$/i;
+
+/** One short item (a pertinent negative, a history item, an exam finding) without the reasoning a
+ *  clinician wrote next to it: parentheticals and reasoning clauses are cut. Empty when what's left
+ *  still names the diagnosis, so the caller drops the item rather than give the answer away. */
+export function plain(item: string, banned: string[]): string {
+  const cut = item.replace(/\s*\([^)]*\)/g, "").replace(REASONING_CLAUSE, "").trim().replace(/[.;,]$/, "");
+  return banned.some((w) => cut.toLowerCase().includes(w)) ? "" : cut;
+}
+
 /** Every history fact for this patient, from the presentation, the plan's present and absent
  *  symptoms, the profile's history and the synthetic background record. */
 export function skeletonFacts(profile: Profile, plan: CasePlan, background: PatientBackground | null, rng: () => number): SkeletonFact[] {
@@ -116,10 +128,12 @@ export function skeletonFacts(profile: Profile, plan: CasePlan, background: Pati
   const mustNotMiss = profile.differential.filter((d) => d.must_not_miss);
   const negatives = hpi.pertinent_negatives.slice(0, MAX_NEGATIVES);
   for (const negative of negatives) {
+    const said = plain(negative, banned);
+    if (!said) continue;
     const screens = screensFor(negative, mustNotMiss);
-    add(`No ${negative.toLowerCase()}`, `Denies: ${negative}.`, screens ? "important" : "optional", screens);
+    add(`No ${said.toLowerCase()}`, `Denies: ${said}.`, screens ? "important" : "optional", screens);
   }
-  const otherDenied = plan.symptomsAbsent.filter((s) => !negatives.includes(s));
+  const otherDenied = plan.symptomsAbsent.filter((s) => !negatives.includes(s)).map((s) => plain(s, banned)).filter(Boolean);
   if (otherDenied.length) add("Other denied symptoms", `Denies: ${otherDenied.join("; ")}.`, "optional");
 
   // How far along depends on the condition (an ectopic is weeks in, preeclampsia past 20), so
@@ -127,7 +141,9 @@ export function skeletonFacts(profile: Profile, plan: CasePlan, background: Pati
   if (plan.pregnant) add("Pregnancy", "Pregnant.", "essential");
 
   const record = background ? backgroundForWriter(background) : null;
-  const pick = <T>(list: T[], n: number) => [...list].sort(() => rng() - 0.5).slice(0, n);
+  // Items that still name the diagnosis after their reasoning is cut ("Mother with urinary
+  // incontinence" for urinary incontinence) are left out rather than hand the student the answer.
+  const pick = (list: string[], n: number) => [...list].map((x) => plain(x, banned)).filter(Boolean).sort(() => rng() - 0.5).slice(0, n);
   const risks = pick(profile.patient.risk_factors.map((r) => r.text), MAX_HISTORY_ITEMS);
   const history = [...(record?.chronic_conditions ?? []), ...pick(profile.patient.comorbidities ?? [], 1)];
   add("Past medical history", history.length ? history.join("; ") : "No significant past medical history.", "important");
@@ -141,13 +157,14 @@ export function skeletonFacts(profile: Profile, plan: CasePlan, background: Pati
   return facts;
 }
 
-/** Exam steps from the plan: present findings verbatim from the profile; absent ones left for a
- *  normal result from the template (finding null). */
-export function skeletonManeuvers(plan: CasePlan): SkeletonManeuver[] {
+/** Exam steps from the plan: present findings from the profile, without reasoning clauses; absent
+ *  ones left for a normal result from the template (finding null). A finding that can only be said
+ *  by naming the diagnosis keeps its wording, and the leak check rewords it. */
+export function skeletonManeuvers(plan: CasePlan, banned: string[] = []): SkeletonManeuver[] {
   return plan.exam.map((f, i) => ({
     id: `x${i + 1}`,
     title: f.maneuver ?? f.region,
-    finding: f.present ? f.finding : null,
+    finding: f.present ? plain(f.finding, banned) || f.finding : null,
     key: f.importance !== "optional",
   }));
 }
@@ -176,7 +193,7 @@ export function testMeta(test: PlannedTest, psychology = false): TestMeta {
 export function buildSkeleton(profile: Profile, plan: CasePlan, background: PatientBackground | null, rng: () => number): Skeleton {
   return {
     facts: skeletonFacts(profile, plan, background, rng),
-    maneuvers: skeletonManeuvers(plan),
+    maneuvers: skeletonManeuvers(plan, diagnosisWords(profile)),
     test_meta: plan.tests.map((t) => testMeta(t, plan.psychology)),
   };
 }

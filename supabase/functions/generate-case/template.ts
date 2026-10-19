@@ -6,7 +6,7 @@
 // Pure, so the rules are unit-tested.
 import type { CasePlan, Profile } from "../_shared/casegen.ts";
 import { backgroundForWriter, type PatientBackground } from "./background.ts";
-import { diagnosisWords, type Skeleton } from "./skeleton.ts";
+import { diagnosisWords, plain, type Skeleton } from "./skeleton.ts";
 import type { Voice } from "./writer.ts";
 
 /** Fictional names, varied the way a US clinic's patients are. */
@@ -144,7 +144,8 @@ export function templateVoice(profile: Profile, plan: CasePlan, skeleton: Skelet
   const examById = new Map(plan.exam.map((f, i) => [`x${i + 1}`, f as { finding: string; term?: string }]));
   const normals = Object.fromEntries(skeleton.maneuvers.filter((m) => m.finding === null).map((m) => {
     const f = examById.get(m.id);
-    return [m.id, f ? sentence(`No ${lower((f.term ?? f.finding).replace(/\s*\([^)]*\)/g, ""))}`) : "Normal."];
+    const said = f ? plain(f.term ?? f.finding, banned) : "";
+    return [m.id, said ? sentence(`No ${lower(said)}`) : "Normal."];
   }));
 
   const studies = plan.tests.filter((t) => t.kind === "study").map((t) => {

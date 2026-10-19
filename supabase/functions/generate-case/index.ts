@@ -2,10 +2,13 @@
 //
 //   1. Verify the caller and take one case from their daily allowance.
 //   2. Use the case written ahead for this student and focus, if one is waiting (instant). Otherwise
-//      pick any case-suitable condition in their study focus from the catalog and build its profile
-//      live from public medical APIs and the profile template (_shared/liveprofile.ts); nothing is
-//      read from stored profiles. A profile that still fails its checks after one rewrite is dropped
-//      and another condition is tried.
+//      pick a condition in their study focus. Stored first, live fallback: a validated stored profile
+//      (private.condition_profiles) is used as is; a condition without one gets its profile built live
+//      from public medical APIs and the profile template (_shared/liveprofile.ts), and a live profile
+//      that passes its checks is saved for next time (review "pending"), so the catalog fills itself.
+//      While a student waits, only conditions with a stored profile are picked when the focus has
+//      any; writing ahead picks from the whole catalog, so variety grows. A live profile that still
+//      fails its checks after its rewrites is dropped and another condition is tried.
 //   3. Plan the patient in code (severity, age, sex, findings, vitals, lab values), and pick a
 //      synthetic background record of the same sex and a close age (background.ts), if one fits.
 //   4. Build the case's content in code (skeleton.ts): every history fact, present exam findings and
@@ -74,7 +77,7 @@ serve(async (req) => {
   // Prepare only: write this focus's next case ahead, before the student asks for it, so even the
   // first patient in a topic opens instantly. Bounded by one job and one ready case per focus.
   if (prepare === true) {
-    queueGeneration(userId, focus);
+    queueGeneration(userId, focus, true);
     return json({ status: "preparing" }, 202);
   }
 
@@ -101,24 +104,37 @@ serve(async (req) => {
 /** Live profile attempts per case: a condition whose profile still fails its checks is swapped. */
 const LIVE_TRIES = 2;
 
-type Condition = { slug: string; triage: Profile["triage"]; background: string | null; clerkships: string[]; organ_systems: string[]; synonyms: string[] };
+type Condition = {
+  slug: string; triage: Profile["triage"]; background: string | null; clerkships: string[]; organ_systems: string[]; synonyms: string[];
+  /** The condition's validated stored profile, when it has one. */
+  stored: Profile | null;
+};
 
-/** A condition from the catalog for this focus, its profile built live (see the header). Null
- *  when the focus has no condition, or none built cleanly within LIVE_TRIES. */
-async function pickLive(focus: Focus, deadline: number): Promise<Picked | null> {
+/** Where a case's profile came from, for the timing log. */
+type Source = "stored" | "live";
+
+/** A condition in the focus with its profile: stored when it has a validated one, else built live
+ *  (and saved when it passes). `waiting`: a student is waiting, so a condition with a stored profile
+ *  is preferred whenever the focus has one. Null when the focus has no condition, or none built
+ *  cleanly within LIVE_TRIES. */
+async function pickProfile(focus: Focus, deadline: number, waiting: boolean): Promise<(Picked & { source: Source }) | null> {
   const tried: string[] = [];
   for (let attempt = 0; attempt < LIVE_TRIES; attempt++) {
     if (Date.now() >= deadline) break;
     const [c] = await sql<Condition[]>`
-      select slug, triage, background, clerkships, organ_systems,
-        coalesce(array(select jsonb_array_elements_text(terms -> 'snomed' -> 'synonyms')), '{}') as synonyms
-      from private.conditions
-      where case_suitable and triage is not null and not (slug = any(${tried}::text[]))
-        and (${focus.kind !== "rotation"} or ${focus.value} = any(clerkships))
-        and (${focus.kind !== "system"} or ${focus.value} = any(organ_systems))
-      order by random() limit 1`;
+      select c.slug, c.triage, c.background, c.clerkships, c.organ_systems,
+        coalesce(array(select jsonb_array_elements_text(c.terms -> 'snomed' -> 'synonyms')), '{}') as synonyms,
+        p.profile as stored
+      from private.conditions c
+      left join private.condition_profiles p on p.slug = c.slug and p.validation = 'passed' and p.review <> 'rejected'
+      where c.case_suitable and c.triage is not null and not (c.slug = any(${tried}::text[]))
+        and (${focus.kind !== "rotation"} or ${focus.value} = any(c.clerkships))
+        and (${focus.kind !== "system"} or ${focus.value} = any(c.organ_systems))
+      order by (${waiting} and p.profile is not null) desc, random() limit 1`;
     if (!c) return null;
     tried.push(c.slug);
+    const topics = { clerkships: c.clerkships, organ_systems: c.organ_systems, synonyms: c.synonyms };
+    if (c.stored) return { profile: c.stored, ...topics, source: "stored" };
     const { profile, problems } = await buildLiveProfile(c.slug, c.triage, c.background ?? "", {
       umlsKey: umlsKey(),
       system: SYSTEM_PROMPT,
@@ -129,10 +145,26 @@ async function pickLive(focus: Focus, deadline: number): Promise<Picked | null> 
       termErrors: (output) => checkTerms(output, undefined, Math.min(Date.now() + 8000, deadline)).catch(() => []),
     });
     if (Date.now() >= deadline) throw new HttpError(504, "patient generation timed out; try again");
-    if (problems.length === 0) return { profile: profile as Profile, clerkships: c.clerkships, organ_systems: c.organ_systems, synonyms: c.synonyms };
+    if (problems.length === 0) {
+      await saveProfile(c, profile as Profile);
+      return { profile: profile as Profile, ...topics, source: "live" };
+    }
     console.warn("generate-case: live profile failed its checks", c.slug, problems.slice(0, 5));
   }
   return null;
+}
+
+/** Keeps a live profile that passed its checks, so the condition's next case starts from it. It
+ *  goes to clinician review like any new profile. Never replaces a stored one (prepare-profile and
+ *  reviewers own those), and a failed save only costs the head start. */
+async function saveProfile(c: Condition, profile: Profile): Promise<void> {
+  const t = profile.triage;
+  // deno-lint-ignore no-explicit-any
+  const json = sql.json(profile as any);
+  await sql`
+    insert into private.condition_profiles (slug, name, primary_clerkship, clerkships, organ_systems, validation, review, profile)
+    values (${c.slug}, ${t.name}, ${t.primary_clerkship}, ${c.clerkships}, ${c.organ_systems}, 'passed', 'pending', ${json})
+    on conflict (slug) do nothing`.catch((error) => console.error("generate-case: saving the live profile failed", c.slug, error));
 }
 
 /** Takes the student's case written ahead for this focus, if there is a fresh one. */
@@ -164,7 +196,8 @@ async function startGeneration(userId: string, focus: Focus, polling: boolean): 
 }
 
 /** Writes the next case in the background, then makes it available to the next poll. */
-async function writeAhead(userId: string, focus: Focus, token: string): Promise<void> {
+async function writeAhead(userId: string, focus: Focus, token: string, studentWaiting: boolean): Promise<void> {
+  const started = Date.now();
   try {
     const [{ waiting }] = await sql<{ waiting: boolean }[]>`
       select exists(select 1 from private.ready_cases where user_id = ${userId} and focus = ${focus.stored}) as waiting`;
@@ -173,10 +206,16 @@ async function writeAhead(userId: string, focus: Focus, token: string): Promise<
       return;
     }
     const deadline = Date.now() + GENERATION_BUDGET_MS;
-    const picked = await pickLive(focus, deadline);
+    const picked = await pickProfile(focus, deadline, studentWaiting);
     if (!picked) throw new Error("no suitable condition could be prepared");
+    const profiled = Date.now();
     const rows = await composeCase(picked, focus, deadline);
     await finishGeneration(userId, focus, token, rows);
+    // One line per case, for the timing dashboard: where the profile came from and where time went.
+    console.log(JSON.stringify({
+      event: "case_generated", focus: focus.stored, slug: picked.profile.slug, source: picked.source, waiting: studentWaiting,
+      profile_ms: profiled - started, compose_ms: Date.now() - profiled, total_ms: Date.now() - started,
+    }));
   } catch (error) {
     console.error("generate-case: writing ahead failed", error);
     await finishGeneration(userId, focus, token, null, true);
@@ -184,16 +223,18 @@ async function writeAhead(userId: string, focus: Focus, token: string): Promise<
 }
 
 function launchGeneration(userId: string, focus: Focus, token: string): void {
-  EdgeRuntime.waitUntil(writeAhead(userId, focus, token).catch((error) => {
+  EdgeRuntime.waitUntil(writeAhead(userId, focus, token, true).catch((error) => {
     console.error("generate-case: background generation failed", error);
   }));
 }
 
-function queueGeneration(userId: string, focus: Focus): void {
+/** Writes the focus's next case in the background. `waiting`: a student may tap soon (the head
+ *  start on Home), so a stored profile is preferred, as when they're already waiting. */
+function queueGeneration(userId: string, focus: Focus, waiting = false): void {
   EdgeRuntime.waitUntil((async () => {
     try {
       const generation = await startGeneration(userId, focus, false);
-      if (generation.status === "started") await writeAhead(userId, focus, generation.token);
+      if (generation.status === "started") await writeAhead(userId, focus, generation.token, waiting);
     } catch (error) {
       console.error("generate-case: unable to queue next case", error);
     }

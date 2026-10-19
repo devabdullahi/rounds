@@ -1,6 +1,6 @@
 import { assert, assertEquals, assertStringIncludes } from "jsr:@std/assert@1";
 import { factReply, gestationalWeeks, normalReport, studyReport, templateVoice } from "./template.ts";
-import { buildSkeleton, describing, diagnosisWords } from "./skeleton.ts";
+import { buildSkeleton, describing, diagnosisWords, plain } from "./skeleton.ts";
 import { assemble, checkWriting } from "./writer.ts";
 import type { CasePlan, Profile } from "../_shared/casegen.ts";
 
@@ -107,4 +107,11 @@ Deno.test("an eponym keeps its capital in a normal exam line", () => {
     { region: "abdomen", maneuver: "Palpate", finding: "Guarding", present: false, importance: "key" }] } as unknown as CasePlan;
   const voice = templateVoice(profile, p, buildSkeleton(profile, p, null, () => 0.5), null, () => 0.5);
   assertEquals(Object.values(voice.normals), ["No Murphy sign.", "No rigid abdomen.", "No guarding."]);
+});
+
+Deno.test("short items lose the reasoning written next to them, and are dropped if they still name the diagnosis", () => {
+  assertEquals(plain("No access to excessive free water (would argue against hypernatremia).", ["hypernatremia"]), "No access to excessive free water");
+  assertEquals(plain("No tender preauricular lymph node, more typical of viral conjunctivitis.", ["conjunctivitis"]), "No tender preauricular lymph node");
+  assertEquals(plain("Urinary incontinence in a mother or sister.", ["urinary incontinence"]), "");
+  assertEquals(plain("Wheezing on expiration", []), "Wheezing on expiration");
 });
