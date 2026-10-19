@@ -19,7 +19,7 @@ import SwiftUI
 
 /// New-student onboarding: intro pages interleaved with the questions (year, study goal, focus,
 /// interview level), the plan, making the account and the promise, as one carousel. Started from
-/// "First time?" it's signed out until the account page; started by logging in with an account
+/// "Get Started" it's signed out until the account page; started by logging in with an account
 /// that never finished onboarding, that page is skipped.
 struct OnboardingView: View {
     @Environment(AuthModel.self) private var auth
