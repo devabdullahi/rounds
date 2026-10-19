@@ -37,16 +37,18 @@ const REASONING_BUDGET: Record<Exclude<Effort, "off">, number> = { low: 2000, me
  *  - GPT-6 Luna, reasoning off: patient chat and the reply check (~1.6 s a turn; voice runs on them).
  *  - GPT-6.1 Sol: grading and condition profiles, where judgment and medical recall matter. It has
  *    no "none" effort, so its tasks always name one.
- *  - DeepSeek Flash, thinking off: flashcards, and writing cases. A case is ~3.8k tokens of output
- *    whose medicine the plan already fixes; Flash writes it in 12–17 s (Luna ~31 s, Sol 70–88 s,
- *    measured 2026-10-19). Cases carry no student data. */
+ *  - DeepSeek Flash, thinking off: flashcards and live profile templates.
+ *  - GPT-5.4 mini, reasoning off: writing each case (see `case` below). */
 const OPENAI_TASKS: Record<Task, Setting> = {
   patient: { model: "gpt-6-luna", effort: "off" },
   check: { model: "gpt-6-luna", effort: "off" },
   // The fact audit of a written case: the same model as the reply check, but content spend (usage.ts).
   audit: { model: "gpt-6-luna", effort: "off" },
   cards: { provider: "deepseek", model: "deepseek-flash", effort: "off" },
-  case: { provider: "deepseek", model: "deepseek-flash", effort: "off" },
+  // Writing each patient (the voice, leak and fact fixes): GPT-5.4 mini, reasoning off. Measured
+  // 2026-10-19 on 25 conditions: 9.2 s average (DeepSeek Flash 8–10 s), 2 leaks in 25 (fixed in code
+  // paths), as natural; OpenAI stays reachable where networks block DeepSeek.
+  case: { model: "gpt-5.4-mini", effort: "off" },
   // A live profile's template sections for one case, all at once (_shared/liveprofile.ts): ~10–13 s
   // on Flash against 42–56 s on Sol (measured 2026-10-19); the checks catch what it gets wrong.
   template: { provider: "deepseek", model: "deepseek-flash", effort: "off" },
