@@ -136,7 +136,15 @@ final class CaseSession {
         }
         timeline.append(TimelineEvent(at: .now, kind: .question, text: question))
         do {
-            let spoken = try await service.askAloud(attempt: attempt(), question: question)
+            let spoken: SpokenAnswer
+            do {
+                spoken = try await service.askAloud(attempt: attempt(), question: question)
+            } catch let error as CaseServiceError where error.message == Self.unknownAction {
+                // A server without ask_aloud yet: ask as typed, with no audio, so voice falls back
+                // to its separate spoken-reply request instead of failing the question.
+                let answer = try await service.ask(attempt: attempt(), question: question)
+                spoken = SpokenAnswer(answer: answer, audio: AsyncThrowingStream { $0.finish(throwing: error) })
+            }
             show(spoken.answer)
             return (spoken.answer.reply, spoken.audio)
         } catch {
@@ -147,6 +155,9 @@ final class CaseSession {
             return nil
         }
     }
+
+    /// What the server says to an action it doesn't have yet (an app newer than its backend).
+    private static let unknownAction = "Unknown action."
 
     /// The patient's answer in the chat: the reply, what it revealed, and the coverage.
     private func show(_ answer: PatientAnswer) {
