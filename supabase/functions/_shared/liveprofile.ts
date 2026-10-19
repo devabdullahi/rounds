@@ -10,7 +10,8 @@
 //
 // SNOMED CT names go only to the model, server side; they're never stored or sent to the app.
 
-import { autoFix, repair, ruleErrors, sectionErrors, STAGES, stageOutput, stagePrompt } from "./profilegen.ts";
+import { autoFix, labNormal, repair, ruleErrors, sectionErrors, STAGES, stageOutput, stagePrompt } from "./profilegen.ts";
+import { type Level, levelRange, LEVELS, rangeLevel, VITAL_NORMALS } from "./levels.ts";
 
 // deno-lint-ignore no-explicit-any
 type Json = any;
@@ -99,6 +100,68 @@ export function groundingText(facts: Facts, catalogBackground = ""): string {
   return `${parts.join("\n")}\nUse these retrieved facts. Where they're silent, use established clinical knowledge and standard US practice; never contradict them.`;
 }
 
+// MARK: - Levels instead of numbers
+
+const SEVERITIES = ["mild", "moderate", "severe", "critical"];
+const LEVEL_SCHEMA = {
+  type: "object", additionalProperties: false,
+  description: "Per severity, how far from normal: a level, never a number. Code turns levels into values from the reference ranges.",
+  properties: Object.fromEntries(SEVERITIES.map((s) => [s, { enum: [...LEVELS] }])),
+};
+const VITALS_LINE = "- vitals: for each vital that changes, per severity (mild, moderate, severe, critical), a level: normal, slightly_high, high, markedly_high, severely_high, slightly_low, low, markedly_low or severely_low. Never numbers: code computes them. Omit a severity or a vital when it stays normal.";
+const LABS_LINE = "- labs: only tests that are abnormal or decisive, with test ids from the reference table below. For numeric tests give \"levels\": per severity, one of normal, slightly_high, high, markedly_high, severely_high, slightly_low, low, markedly_low, severely_low (never numbers: code computes them from the reference ranges). Omit severities where the test is normal. Never list derived tests (marked derived); code computes them. For qualitative tests use the \"qualitative\" map with values from that test's abnormal list.";
+
+// deno-lint-ignore no-explicit-any
+const toLevels = (ranges: any, normal: [number | null, number | null] | null, kind: "vital" | "lab", id: string) =>
+  Object.fromEntries(Object.entries(ranges ?? {}).map(([sev, r]) => [sev, normal ? rangeLevel(r as { min: number; max: number }, normal, kind, id) : "normal"]));
+
+/** The vitals-and-exam and diagnostics sections reworded to ask for levels: their instructions,
+ *  schema and example (converted from the template's own ranges, so it shows the same patient). */
+function levelStage(stage: number): { instructions: string; schema: string; example: string } | undefined {
+  const s = STAGES[stage];
+  const schema = JSON.parse(s.schema);
+  const example = JSON.parse(s.example);
+  if (s.sections.includes("vitals")) {
+    schema.properties.vitals.properties = Object.fromEntries(Object.keys(VITAL_NORMALS).map((v) => [v, LEVEL_SCHEMA]));
+    schema.properties.vitals.description = "Per vital, per severity: how far from normal, as a level. Code picks the patient's value.";
+    example.vitals = Object.fromEntries(Object.entries(example.vitals ?? {}).map(([v, r]) => [v, toLevels(r, VITAL_NORMALS[v] ?? null, "vital", v)]));
+    return { instructions: s.instructions.replace(/^- vitals:.*$/m, VITALS_LINE), schema: JSON.stringify(schema), example: JSON.stringify(example) };
+  }
+  if (s.sections.includes("labs")) {
+    const item = schema.properties.labs.items;
+    delete item.properties.ranges;
+    item.properties.levels = LEVEL_SCHEMA;
+    // deno-lint-ignore no-explicit-any
+    example.labs = (example.labs ?? []).map(({ ranges, ...lab }: any) => (ranges ? { ...lab, levels: toLevels(ranges, labNormal(lab.test_id), "lab", lab.test_id) } : lab));
+    return { instructions: s.instructions.replace(/^- labs:.*$/m, LABS_LINE), schema: JSON.stringify(schema), example: JSON.stringify(example) };
+  }
+  return undefined;
+}
+
+/** Turns the model's levels back into the ranges planCase draws from. A level that can't apply to
+ *  a test (no upper limit to be "high" against) is dropped. */
+export function expandLevels(profile: Json): void {
+  for (const [vital, bySeverity] of Object.entries<Json>(profile.vitals ?? {})) {
+    const normal = VITAL_NORMALS[vital];
+    for (const [severity, level] of Object.entries<Json>(bySeverity ?? {})) {
+      if (typeof level !== "string") continue;
+      const range = normal && LEVELS.includes(level as Level) ? levelRange(level as Level, normal, "vital", vital) : null;
+      if (range) bySeverity[severity] = range;
+      else delete bySeverity[severity];
+    }
+  }
+  for (const lab of profile.labs ?? []) {
+    if (!lab?.levels) continue;
+    const normal = labNormal(lab.test_id);
+    lab.ranges = {};
+    for (const [severity, level] of Object.entries<Json>(lab.levels)) {
+      const range = normal && LEVELS.includes(level as Level) ? levelRange(level as Level, normal, "lab", lab.test_id) : null;
+      if (range) lab.ranges[severity] = range;
+    }
+    delete lab.levels;
+  }
+}
+
 /** Fills every template section at once, each grounded in the same facts and the condition's
  *  triage. Returns the profile and which sections came back incomplete. */
 export async function fillTemplate(
@@ -107,7 +170,7 @@ export async function fillTemplate(
 ): Promise<{ profile: Json; missing: string[] }> {
   const base: Json = { schema_version: "0.2", slug, triage };
   const replies = await Promise.all(STAGES.map((_, stage) =>
-    complete(system, stagePrompt(stage, triage.name, grounding, base, [])).catch(() => ({}))
+    complete(system, stagePrompt(stage, triage.name, grounding, base, [], levelStage(stage))).catch(() => ({}))
   ));
   const profile: Json = { ...base };
   const missing: string[] = [];
@@ -153,6 +216,7 @@ export async function buildLiveProfile(
   const facts = await fetchFacts(triage.name, deps.umlsKey);
   const grounding = groundingText(facts, catalogBackground);
   const { profile, missing } = await fillTemplate(slug, triage, grounding, deps.complete, deps.system);
+  expandLevels(profile);
   repair(profile);
   // Mechanical rule errors are fixed in code, so most profiles skip the rewrite round (~10 s).
   autoFix(profile);
@@ -161,10 +225,11 @@ export async function buildLiveProfile(
   if (blocking.size) {
     const base: Json = { schema_version: "0.2", slug, triage };
     await Promise.all([...blocking.entries()].map(async ([stage, errors]) => {
-      const reply = await deps.complete(deps.system, stagePrompt(stage, triage.name, grounding, base, [...errors, ...(terms.get(stage) ?? [])]))
+      const reply = await deps.complete(deps.system, stagePrompt(stage, triage.name, grounding, base, [...errors, ...(terms.get(stage) ?? [])], levelStage(stage)))
         .catch(() => ({}));
       Object.assign(profile, stageOutput(stage, reply).output);
     }));
+    expandLevels(profile);
     repair(profile);
     autoFix(profile);
     ({ blocking, terms } = await problemsByStage(profile, [], deps.termErrors));
