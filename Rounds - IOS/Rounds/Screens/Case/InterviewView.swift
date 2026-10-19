@@ -453,7 +453,8 @@ struct InterviewView: View {
     /// The line under the orb: what's being said, or how to use the panel.
     private var voiceLine: (text: String, spoken: Bool) {
         if isLive, let live {
-            if live.phase == .patientSpeaking, !live.caption.isEmpty { return (live.caption, true) }
+            // The caption trails the text events, so it can still be catching up after the reply ended.
+            if !live.caption.isEmpty { return (live.caption, true) }
             return (voiceHint, false)
         }
         if voice.phase == .listening, !voice.transcript.isEmpty { return (voice.transcript, true) }

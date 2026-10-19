@@ -17,7 +17,8 @@ final class LiveVoice {
     private(set) var isConnecting = false
     /// 0…1 for the orb: the mic while the student talks, the patient's voice while they answer.
     private(set) var level: CGFloat = 0
-    /// The patient's words so far in the current reply.
+    /// The patient's words so far in the current reply, revealed at about speaking pace: the API's
+    /// text runs ahead of the audio, so showing it as it lands would put the caption seconds early.
     private(set) var caption = ""
     /// When the call ends on its own; nil until it's live.
     private(set) var endsAt: Date?
@@ -27,6 +28,7 @@ final class LiveVoice {
     private enum LIVE {
         static let levelGain = 2.2      // WebRTC levels run low (speech peaks near 0.3): lift them for the orb
         static let smoothing = 0.35     // new-sample weight
+        static let captionHold: Duration = .seconds(1.5)   // a finished reply stays this long, then clears
     }
 
     /// The case session's side: open a call for an offer, log an exchange (true = the server ended
@@ -46,12 +48,20 @@ final class LiveVoice {
     /// Exchanges still being logged. Hanging up waits for them, since the server refuses turns for a
     /// call that has already ended.
     @ObservationIgnored private var logging: [Task<Void, Never>] = []
+    /// All of the current reply's words received so far; `caption` catches up with them.
+    @ObservationIgnored private var spoken = ""
+    @ObservationIgnored private var replyFinished = false
+    @ObservationIgnored private var pacing: Task<Void, Never>?
+    /// Time per character revealed: about how fast the patient's voice speaks.
+    @ObservationIgnored private let captionPace: Duration
 
     init(open: @escaping (String) async throws -> LiveCall,
          logTurn: @escaping (String, String, String) async -> Bool,
          close: @escaping (String) -> Void,
          makeTransport: @escaping () -> any LiveVoiceTransport,
-         micAllowed: @escaping () async -> Bool = { await AVAudioApplication.requestRecordPermission() }) {
+         micAllowed: @escaping () async -> Bool = { await AVAudioApplication.requestRecordPermission() },
+         captionPace: Duration = .milliseconds(65)) {
+        self.captionPace = captionPace
         self.micAllowed = micAllowed
         self.open = open
         self.logTurn = logTurn
@@ -99,7 +109,7 @@ final class LiveVoice {
     func interrupt() {
         guard phase == .patientSpeaking else { return }
         transport?.cutOffPatient()
-        caption = ""
+        clearCaption()
         phase = .listening
     }
 
@@ -132,7 +142,7 @@ final class LiveVoice {
             phase = .listening
         case .studentStartedSpeaking:
             // Talking over the patient stops them server-side; the half-said line just ends here.
-            caption = ""
+            clearCaption()
             phase = .listening
         case .studentStoppedSpeaking:
             phase = .thinking
@@ -140,9 +150,11 @@ final class LiveVoice {
             if let turn = pairer.studentSaid(text) { log(turn) }
         case .patientWords(let words):
             phase = .patientSpeaking
-            caption += words
+            if replyFinished { clearCaption() }   // a new reply starts its own line
+            spoken += words
+            paceCaption()
         case .patientFinished(let reply):
-            caption = ""
+            replyFinished = true
             if phase == .patientSpeaking || phase == .thinking { phase = .listening }
             if let turn = pairer.patientFinished(reply) { log(turn) }
         case .levels(let mic, let patient):
@@ -154,6 +166,34 @@ final class LiveVoice {
         case .failed(let message, let fatal):
             if fatal { finish("Live voice stopped: \(message)") }
         }
+    }
+
+    /// Reveals `spoken` one character at a time until it's all shown; a finished reply then stays a
+    /// moment and clears.
+    private func paceCaption() {
+        guard pacing == nil else { return }
+        pacing = Task { [weak self] in
+            while let self, !Task.isCancelled {
+                if self.caption.count < self.spoken.count {
+                    self.caption = String(self.spoken.prefix(self.caption.count + 1))
+                    try? await Task.sleep(for: self.captionPace)
+                } else if self.replyFinished {
+                    try? await Task.sleep(for: LIVE.captionHold)
+                    if !Task.isCancelled { self.caption = ""; self.spoken = "" }
+                    break
+                } else {
+                    try? await Task.sleep(for: self.captionPace)
+                }
+            }
+            self?.pacing = nil
+        }
+    }
+
+    private func clearCaption() {
+        pacing?.cancel(); pacing = nil
+        spoken = ""
+        caption = ""
+        replyFinished = false
     }
 
     private func log(_ turn: (question: String, reply: String)) {
@@ -179,7 +219,7 @@ final class LiveVoice {
         endsAt = nil
         pairer = LiveTurnPairer()
         logging = []
-        caption = ""
+        clearCaption()
         level = 0
         isConnecting = false
         phase = .idle

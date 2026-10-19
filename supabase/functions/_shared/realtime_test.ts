@@ -49,9 +49,9 @@ Deno.test("a call books its longest possible run, then settles to the time it re
 
 Deno.test("the per-minute rate falls back on a missing or bad override", () => {
   assertEquals(realtimeUSDPerMinute("0.2"), 0.2);
-  assertEquals(realtimeUSDPerMinute(undefined), 0.15);
-  assertEquals(realtimeUSDPerMinute("-1"), 0.15);
-  assertEquals(realtimeUSDPerMinute("abc"), 0.15);
+  assertEquals(realtimeUSDPerMinute(undefined, "gpt-realtime-2.1"), 0.15);
+  assertEquals(realtimeUSDPerMinute("-1", "gpt-realtime-2.1"), 0.15);
+  assertEquals(realtimeUSDPerMinute("abc", "gpt-realtime-2.1-mini"), 0.05);
 });
 
 Deno.test("a call runs five minutes while the day's budget allows, then shorter, then not at all", () => {

@@ -20,7 +20,8 @@ struct LiveVoiceTests {
             logTurn: { call, question, reply in log.turns.append((call, question, reply)); return log.endsCall },
             close: { log.closed.append($0) },
             makeTransport: { transport },
-            micAllowed: { true })
+            micAllowed: { true },
+            captionPace: .zero)
     }
 
     /// Lets the event loop and logging tasks run.

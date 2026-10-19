@@ -7,9 +7,12 @@
 
 const CALLS_URL = "https://api.openai.com/v1/realtime/calls";
 
-/** The speech-to-speech model; REALTIME_MODEL overrides it (e.g. gpt-realtime-2.1-mini). */
+/** The speech-to-speech model; REALTIME_MODEL overrides it (e.g. gpt-realtime-2.1). Mini by default:
+ *  in a side-by-side test (2026-10-19) it answered in character as well, its first audio came sooner
+ *  (~0.7 s vs ~0.9 s) and it costs about a third, so the daily budget buys about three times the
+ *  minutes. */
 export function realtimeModel(): string {
-  return Deno.env.get("REALTIME_MODEL") ?? "gpt-realtime-2.1";
+  return Deno.env.get("REALTIME_MODEL") ?? "gpt-realtime-2.1-mini";
 }
 
 /** How long one live call may run before the app (and failing that, the server) ends it. */
@@ -28,9 +31,11 @@ export const MAX_CALL_SECONDS = CALL_SECONDS + DEADLINE_SLACK_SECONDS + SWEEP_SE
 
 /** Estimated USD per minute of a live call, for the project-wide daily cap (the audio isn't
  *  metered here: it flows phone ↔ OpenAI). REALTIME_USD_PER_MINUTE overrides it. */
-export function realtimeUSDPerMinute(raw = Deno.env.get("REALTIME_USD_PER_MINUTE")): number {
+export function realtimeUSDPerMinute(raw = Deno.env.get("REALTIME_USD_PER_MINUTE"), model = realtimeModel()): number {
   const value = Number(raw);
-  return raw !== undefined && Number.isFinite(value) && value > 0 ? value : 0.15;
+  if (raw !== undefined && Number.isFinite(value) && value > 0) return value;
+  // About $0.05 a minute on mini (audio $10/$20 per 1M tokens), $0.15 on the full model.
+  return model.endsWith("-mini") ? 0.05 : 0.15;
 }
 
 /** What one student may spend on live voice a day, in USD (2026-10-19: $2, then they'd buy more).
@@ -66,8 +71,13 @@ export function settlementUSD(seconds: number, perMinute = realtimeUSDPerMinute(
 export const MAX_SDP_BYTES = 64 * 1024;
 
 /** Turn detection, decided here rather than in the app. Semantic VAD judges from the words whether
- *  the student has finished, so it cuts in less on the pauses of someone thinking up a question. */
-const TURN_DETECTION = { type: "semantic_vad", eagerness: "medium" } as const;
+ *  the student has finished, so it cuts in less on the pauses of someone thinking up a question.
+ *  "high" answers soonest (end-of-turn waiting is a third of a voice reply's delay); if students
+ *  get cut off mid-question, REALTIME_EAGERNESS=medium (or low) gives them longer. */
+function turnDetection() {
+  const eagerness = Deno.env.get("REALTIME_EAGERNESS") ?? "high";
+  return { type: "semantic_vad", eagerness: ["low", "medium", "high", "auto"].includes(eagerness) ? eagerness : "high" };
+}
 
 /** Primes the student's transcript for clinical words without saying anything about this case. */
 const TRANSCRIBE_PROMPT = "A medical student is interviewing a patient: history, symptoms, medications, allergies.";
@@ -93,7 +103,7 @@ export function sessionConfig(instructions: string, voice: string, model = realt
     output_modalities: ["audio"],
     max_output_tokens: 400,
     audio: {
-      input: { transcription: { model: "gpt-transcribe", prompt: TRANSCRIBE_PROMPT }, turn_detection: TURN_DETECTION },
+      input: { transcription: { model: "gpt-transcribe", prompt: TRANSCRIBE_PROMPT }, turn_detection: turnDetection() },
       output: { voice },
     },
   };
