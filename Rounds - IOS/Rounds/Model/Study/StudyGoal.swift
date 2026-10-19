@@ -20,6 +20,14 @@ enum StudyGoal: String, CaseIterable, Identifiable {
         }
     }
 
+    /// The tag on the onboarding exam-day graph: the exam's name, or "Exam day" when the goal isn't one.
+    var examDayTag: String {
+        switch self {
+        case .step1, .step2CK, .shelf, .osce: label
+        case .other, .practicing: "Exam day"
+        }
+    }
+
     /// Reads the stored raw value; nil when nothing (or something unknown) was saved.
     init?(stored: String) { self.init(rawValue: stored) }
 }

@@ -1,9 +1,10 @@
 import SwiftUI
 
-/// Page 4: with vs. without Rounds, as an illustration (no real data yet, so it says so).
+/// After the study goal: with vs. without Rounds, tagged with the exam just picked, as an illustration (no real data yet, so it says so).
 struct ExamReadyHero: View {
     let shown: Bool
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @AppStorage(StudyGoal.storageKey) private var goalStored = ""
 
     var body: some View {
         HeroCanvas {
@@ -14,7 +15,7 @@ struct ExamReadyHero: View {
                 HStack {
                     Text("Conditions practiced").font(.system(size: 15, weight: .semibold))
                     Spacer()
-                    Text("Exam day")
+                    Text(StudyGoal(stored: goalStored)?.examDayTag ?? "Exam day")
                         .font(.system(size: 12, weight: .bold))
                         .foregroundStyle(Theme.warnText)
                         .padding(.horizontal, 10).padding(.vertical, 4)
