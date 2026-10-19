@@ -1,8 +1,8 @@
 import SwiftUI
 
-/// Composition root for reference data: the one place that decides mock vs live.
-/// Screens read `@Environment(\.reference)`. The default stays `.mock` so previews run offline;
-/// RoundsApp injects `.live` for the running app.
+/// Composition root for reference data. Screens read `@Environment(\.reference)`, which is live
+/// everywhere, so no screen can fall back to sample data; a preview or test that must stay offline
+/// passes `.mock` itself.
 extension EnvironmentValues {
-    @Entry var reference: ReferenceServices = .mock
+    @Entry var reference: ReferenceServices = .live
 }
