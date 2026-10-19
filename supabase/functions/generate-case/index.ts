@@ -21,6 +21,7 @@ import { acceptedNames, type CasePlan, leakTerms, planCase, type Profile } from 
 import { flag, type Patient, TESTS } from "../_shared/labs.ts";
 import { type Focus, parseFocus } from "../_shared/focus.ts";
 import { prepareNext } from "../_shared/prefetch.ts";
+import { requirePlan } from "../_shared/plan.ts";
 import { refundQuota, takeQuota } from "../_shared/quota.ts";
 import { MAX_AGE_GAP, type PatientBackground, pickBackground } from "./background.ts";
 import { bedCode } from "./bedcode.ts";
@@ -48,6 +49,7 @@ const READY_FOR = "3 days";
 
 serve(async (req) => {
   const userId = await callerId(req);
+  await requirePlan(userId);
   const { focus: requested = "" } = await body<Request>(req);
   const focus = parseFocus(requested);
 

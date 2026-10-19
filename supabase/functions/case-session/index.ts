@@ -35,6 +35,7 @@ import { decodeAudio, lastPatientReply, MAX_SPOKEN_CHARS, pickVoice, speechInstr
 import { speak, transcribe } from "../_shared/speech.ts";
 import { parseFocus } from "../_shared/focus.ts";
 import { prepareNext } from "../_shared/prefetch.ts";
+import { requirePlan } from "../_shared/plan.ts";
 import { withQuota } from "../_shared/quota.ts";
 import { type Conduct, conductReply, isProfane, MAX_INAPPROPRIATE, parseConduct, strikes } from "../_shared/conduct.ts";
 
@@ -62,6 +63,8 @@ const GRACE_MINUTES = 2;
 
 serve(async (req) => {
   const userId = await callerId(req);
+  // Cases are part of the paid plan; the app's paywall is only the face of this check.
+  await requirePlan(userId);
   const input = await body<Record<string, unknown>>(req);
   switch (input.action) {
     case "start": return json(await start(userId, input));
