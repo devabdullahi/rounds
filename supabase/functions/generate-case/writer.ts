@@ -2,6 +2,7 @@
 // from the profile plus what was written. Kept apart from index.ts so it's testable without a DB.
 import { type CasePlan, leaks, type Profile } from "../_shared/casegen.ts";
 import { backgroundForWriter, type PatientBackground, SNOMED_TAG } from "./background.ts";
+import type { Skeleton } from "./skeleton.ts";
 
 export type Writing = {
   patient: { name: string; quote: string; demeanor: string; setting: string; complaint: string };
@@ -26,44 +27,60 @@ Maneuvers center on the skin, hair, nails and mucosa (e.g. "Inspect the rash", "
 
 `;
 
-/** Who the patient is outside today's illness, from a synthetic record, and how to use it. */
-function backgroundSection(background: PatientBackground | null | undefined): string {
-  if (!background) return "";
-  return `
-Patient background (synthetic record): ${JSON.stringify(backgroundForWriter(background))}
-Keep the patient consistent with this record: weave it into persona.background and into the facts the student can ask about (past medical history, current medications, allergies, smoking, social history). Say each item in the patient's own plain words, as a patient would (e.g. "I take a water pill for my blood pressure", "peanuts make my throat swell"), never in coding wording such as "(disorder)", "(finding)" or "(substance)", and never with dosing codes. Where it conflicts with this condition's presentation, risk factors or the plan above, those win: leave out or adjust the conflicting item. Nothing from the record may contradict, hint at or name the hidden diagnosis.`;
-}
+/** What the model returns for a code-built case: the human parts only. */
+export type Voice = {
+  patient: Writing["patient"];
+  persona: Writing["persona"];
+  facts: Record<string, { label?: string; reply?: string }>;
+  normals: Record<string, string>;
+  studies: Writing["studies"];
+  suggested: Writing["suggested"];
+};
 
-export function writerPrompt(profile: Profile, plan: CasePlan, background?: PatientBackground | null): string {
+/** The voice step's input: the skeleton's facts and maneuvers to word, and the person to write. */
+export function voicePrompt(profile: Profile, plan: CasePlan, skeleton: Skeleton, background?: PatientBackground | null): string {
   const studies = plan.tests.filter((t) => t.kind === "study");
-  const mustNotMiss = profile.differential.filter((d) => d.must_not_miss).map((d) => ({ name: d.name, trigger: d.trigger ?? d.why_considered }));
+  const who = `${plan.age}-year-old ${plan.age < 18 ? (plan.sex === "F" ? "girl" : "boy") : plan.sex === "F" ? "woman" : "man"}${plan.pregnant ? ", pregnant" : ""}`;
   return `${plan.psychology ? PSYCHOLOGY_FRAME : ""}${plan.dermatology ? DERMATOLOGY_FRAME : ""}Hidden diagnosis (never reveal): ${plan.condition}
 Severity: ${plan.severity}: ${plan.severityText}
-Patient: ${plan.age}-year-old ${plan.age < 18 ? (plan.sex === "F" ? "girl" : "boy") : plan.sex === "F" ? "woman" : "man"}${plan.pregnant ? ", pregnant (choose a gestational age that fits the condition and say it in her facts)" : ""}. Typical setting: ${profile.triage.settings.join(", ")}.${plan.age < 13 ? " A child this age answers simply; a parent or guardian is present and can answer for them, so write facts as the child or the parent would say them." : ""}
-Vitals (already decided): ${JSON.stringify(plan.vitals)}
-
-Presentation pattern: ${JSON.stringify(profile.presentation.hpi)}
-Chief complaints to choose from (patient's words): ${JSON.stringify(profile.presentation.chief_complaints.map((c) => c.text))}
-Symptoms PRESENT: ${JSON.stringify(plan.symptomsPresent)}
-Symptoms ABSENT (deny if asked): ${JSON.stringify(plan.symptomsAbsent)}
-Background to draw from (pick a plausible subset): risk factors ${JSON.stringify(profile.patient.risk_factors.map((r) => r.text))}, comorbidities ${JSON.stringify(profile.patient.comorbidities ?? [])}, social ${JSON.stringify(profile.patient.social_history ?? [])}, family ${JSON.stringify(profile.patient.family_history ?? [])}, medications ${JSON.stringify(profile.patient.risk_medications ?? [])}${backgroundSection(background)}
-Questions a strong student asks (each must be answerable by some fact): ${JSON.stringify(profile.teaching.key_questions.map((q) => ({ question: q.question, importance: q.importance })))}
-Must-not-miss alternatives the student should screen for (write facts whose replies rule them in or out per this case): ${JSON.stringify(mustNotMiss)}
-Exam findings (present ones as written; absent ones as a normal result for that maneuver): ${JSON.stringify(plan.exam.map((f) => ({ id: f.id, maneuver: f.maneuver ?? f.region, finding: f.finding, present: f.present, key: f.importance !== "optional" })))}
-Studies needing a written report (base it on these findings; if none listed, write a normal or nonspecific report): ${JSON.stringify(studies.map((s) => ({ test_id: s.id, name: s.name, findings: s.findings })))}
-Every test on the menu needs a price and wait (USD (0 for free bedside items), seconds 1–20 of in-app wait, delays_care_min = real-world minutes it delays definitive care, 0 for quick bedside tests): ${JSON.stringify(plan.tests.map((t) => ({ test_id: t.id, name: t.name })))}
+Patient: ${who}. Typical setting: ${profile.triage.settings.join(", ")}.${plan.age < 13 ? " A child this age answers simply; a parent or guardian is present and answers for them, so write replies as the child or the parent would say them." : ""}${background ? `\nTheir life outside this illness (for persona.background; the medical items are already in the facts): ${JSON.stringify({ marital_status: backgroundForWriter(background).marital_status, social: backgroundForWriter(background).social })}` : ""}
+Chief complaints, in patients' words: ${JSON.stringify(profile.presentation.chief_complaints.map((c) => c.text))}
+Facts to word: ${JSON.stringify(skeleton.facts.map((f) => ({ id: f.id, topic: f.label, content: f.content })))}
+Maneuvers needing a normal result: ${JSON.stringify(skeleton.maneuvers.filter((m) => m.finding === null).map((m) => ({ id: m.id, maneuver: m.title })))}
+Studies needing a report: ${JSON.stringify(studies.map((s) => ({ test_id: s.id, name: s.name, findings: s.findings })))}
+Questions a strong student asks: ${JSON.stringify(profile.teaching.key_questions.map((q) => q.question))}
 
 Return JSON:
 {
-  "patient": {"name": "First Last", "quote": "what they say walking in", "demeanor": "how they look and act, 3–6 words", "setting": "where they're seen, e.g. 'Walk-in, emergency department'", "complaint": "door note, under 20 words, as a triage nurse writes it (for a psychology intake, the referral line): age, sex, the chief complaint in plain terms and its duration (e.g. '30-year-old man with abdominal pain for 18 hours'). Leave out how it changed, associated symptoms, history and anything that points to the diagnosis; the student finds those out by asking"},
+  "patient": {"name": "First Last", "quote": "what they say walking in", "demeanor": "how they look and act, 3–6 words", "setting": "where they're seen, e.g. 'Walk-in, emergency department'", "complaint": "door note, under 20 words, as a triage nurse writes it: age, sex, the chief complaint in plain terms and its duration. Nothing that points to the diagnosis"},
   "persona": {"voice": "how they talk", "background": "job, family, context in 1–2 sentences", "fallback": "what they say, in character, when a question makes no sense to them"},
-  "facts": [{"id": "snake_case", "label": "2–4 word topic shown when revealed, e.g. 'onset'", "reply": "patient's answer", "importance": "essential|important|optional", "screens_for": "a must-not-miss name from the list, or null"}],
-  "suggested": [{"text": "a one-tap question", "fact": "fact id"}],
-  "maneuvers": [{"id": "snake_case", "title": "2–4 words, the step itself, e.g. 'Palpate abdomen', 'Respiratory rate', 'Nasal flaring'", "finding": "result", "key": true}],
+  "facts": {"f1": {"label": "2–4 words", "reply": "the patient's words"}},
+  "normals": {"x1": "normal result"},
   "studies": [{"test_id": "...", "result": "report text", "abnormal": true}],
-  "test_meta": [{"test_id": "...", "detail": "e.g. 'Bloods · 4 min'", "cost": 30, "turnaround_s": 5, "delays_care_min": 0}]
+  "suggested": [{"text": "a one-tap question", "fact": "f1"}]
+}`;
 }
-Include 10–16 facts (onset/timeline, character, associated symptoms, pertinent negatives, past history, medications, allergies, family, social, and the must-not-miss screens), 5–8 suggested questions, every exam finding above as a maneuver plus 2–3 routine ones (key false).`;
+
+/** The writing a student plays: the skeleton's medicine in the voice's words. A fact or result the
+ *  voice left out falls back to the skeleton's own wording, so nothing planned goes missing. */
+export function assemble(skeleton: Skeleton, voice: Voice): Writing {
+  const facts = skeleton.facts.map((f) => ({
+    id: f.id,
+    label: voice.facts?.[f.id]?.label?.trim() || f.label,
+    reply: voice.facts?.[f.id]?.reply?.trim() || f.content,
+    importance: f.importance,
+    screens_for: f.screens_for,
+  }));
+  const ids = new Set(facts.map((f) => f.id));
+  return {
+    patient: voice.patient,
+    persona: voice.persona,
+    facts,
+    suggested: (voice.suggested ?? []).filter((s) => ids.has(s.fact)),
+    maneuvers: skeleton.maneuvers.map((m) => ({ id: m.id, title: m.title, finding: m.finding ?? voice.normals?.[m.id]?.trim() ?? "Normal.", key: m.key })),
+    studies: voice.studies ?? [],
+    test_meta: skeleton.test_meta,
+  };
 }
 
 // Any short, unique id works: neutralIds() replaces them all before saving.

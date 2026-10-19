@@ -8,8 +8,9 @@
 //      and another condition is tried.
 //   3. Plan the patient in code (severity, age, sex, findings, vitals, lab values), and pick a
 //      synthetic background record of the same sex and a close age (background.ts), if one fits.
-//   4. Have the LLM write the person around that plan: door note, voice, facts, exam findings,
-//      study reports, test prices. It never chooses numbers or the diagnosis.
+//   4. Build the case's content in code (skeleton.ts): every history fact, present exam findings and
+//      test prices. The LLM only voices it: each fact in the patient's words, the door note and
+//      persona, normal exam results and study reports. It never chooses the medicine.
 //   5. Check the writing (structure, no diagnosis leaks, no invented facts: _shared/factaudit.ts). A
 //      leak is reworded field by field; other problems get a full rewrite with the problems listed.
 //   6. Save the public door note and menus, and the private script, results and rubric.
@@ -17,7 +18,7 @@
 import { body, callerId, HttpError, json, serve } from "../_shared/http.ts";
 import { sql } from "../_shared/db.ts";
 import { completeJSON, currentModel } from "../_shared/llm.ts";
-import { CASE_FIXER, CASE_WRITER, FACT_AUDITOR, FACT_FIXER, PROMPT_VERSION } from "../_shared/prompts.ts";
+import { CASE_FIXER, CASE_VOICE, FACT_AUDITOR, FACT_FIXER, PROMPT_VERSION } from "../_shared/prompts.ts";
 import { acceptedNames, type CasePlan, leakTerms, planCase, type Profile } from "../_shared/casegen.ts";
 import { flag, type Patient, TESTS } from "../_shared/labs.ts";
 import { type Focus, parseFocus } from "../_shared/focus.ts";
@@ -28,7 +29,8 @@ import { SYSTEM_PROMPT } from "../_shared/profilegen.ts";
 import { refundQuota, takeQuota } from "../_shared/quota.ts";
 import { backgroundForWriter, MAX_AGE_GAP, type PatientBackground, pickBackground } from "./background.ts";
 import { bedCode } from "./bedcode.ts";
-import { applyFixes, buildRubric, checkWriting, fixPrompt, leakSpots, neutralIds, type Writing, writerPrompt } from "./writer.ts";
+import { applyFixes, assemble, buildRubric, checkWriting, fixPrompt, leakSpots, neutralIds, type Voice, voicePrompt, type Writing } from "./writer.ts";
+import { buildSkeleton } from "./skeleton.ts";
 
 /** Tries at writing one patient. A typical write takes 12–17 s on DeepSeek Flash, so three stay well inside the
  *  function's time limit; a reply that fails the checks is retried with the problems listed. */
@@ -156,13 +158,14 @@ async function composeCase({ profile, clerkships, organ_systems: systems, synony
   const plan = planCase(profile, Math.random, { psychology, dermatology, cardiac });
   const terms = leakTerms(profile);
   const background = await findBackground(plan, [profile.triage.name, ...acceptedNames(profile.teaching.accepted_names, synonyms)]);
-  let user = writerPrompt(profile, plan, background);
+  const skeleton = buildSkeleton(profile, plan, background, Math.random);
+  let user = voicePrompt(profile, plan, skeleton, background);
   const items = planItems(profile, plan, background);
   let writing: Writing | null = null;
   let problems: string[] = [];
   for (let attempt = 0; attempt < WRITE_ATTEMPTS; attempt++) {
     try {
-      writing = await completeJSON<Writing>(CASE_WRITER, user, 7000, { task: "case" });
+      writing = assemble(skeleton, await completeJSON<Voice>(CASE_VOICE, user, 5000, { task: "case" }));
       problems = checkWriting(writing, plan, terms);
       if (problems.length) {
         writing = await fixLeaks(writing, terms);
