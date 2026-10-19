@@ -130,6 +130,35 @@ struct LiveCaseService: CaseService {
         return audio
     }
 
+    func streamLatestReply(attempt: String) async throws -> AsyncThrowingStream<Data, Error> {
+        guard let project = SupabaseService.project else { throw CaseServiceError(message: "Supabase isn't configured.") }
+        let bytes: URLSession.AsyncBytes
+        do {
+            bytes = try await client.streamSigned("case-session", body: ["action": "speak_stream", "attempt_id": attempt], project: project)
+        } catch let FunctionsError.httpError(code, data) {
+            let message = (try? JSONDecoder().decode(ErrorReply.self, from: data))?.error
+            throw CaseServiceError(message: message ?? "The server returned \(code).")
+        }
+        return AsyncThrowingStream { continuation in
+            let reading = Task {
+                // ~100 ms of audio per chunk: small enough to start fast, large enough to schedule cheaply.
+                let chunkBytes = 4_800
+                var chunk = Data(capacity: chunkBytes)
+                do {
+                    for try await byte in bytes {
+                        chunk.append(byte)
+                        if chunk.count >= chunkBytes { continuation.yield(chunk); chunk.removeAll(keepingCapacity: true) }
+                    }
+                    if !chunk.isEmpty { continuation.yield(chunk) }
+                    continuation.finish()
+                } catch {
+                    continuation.finish(throwing: error)
+                }
+            }
+            continuation.onTermination = { _ in reading.cancel() }
+        }
+    }
+
     func submit(attempt: String, diagnosis: String, differential: [String], plan: String) async throws -> Grade {
         let r: GradeRow = try await invoke("case-session", SubmitBody(attempt_id: attempt, diagnosis: diagnosis, differential: differential, plan: plan))
         return r.grade

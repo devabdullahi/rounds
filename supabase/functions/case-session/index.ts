@@ -8,6 +8,8 @@
 //   speak    {attempt_id}                              → {audio (base64 AAC)} the latest patient
 //            reply in an OpenAI voice picked for the patient. It speaks only that stored reply,
 //            never text the app sends, so it can't be used as a general text-to-speech service.
+//   speak_stream {attempt_id}                         → raw PCM (24 kHz, 16-bit, mono), streamed:
+//            the same reply as speak, playing as soon as the first chunk lands.
 //   submit   {attempt_id, diagnosis, differential, plan} → grade (and queues the next condition
 //            in the case's focus, see _shared/prefetch.ts). The grade carries condition insights
 //            (about, differential, your_extras; see insights.ts) when the case's profile exists.
@@ -32,7 +34,7 @@ import { namedDiagnoses } from "./leak.ts";
 import { hiddenTests } from "./menu.ts";
 import { workupText } from "./workup.ts";
 import { decodeAudio, lastPatientReply, MAX_SPOKEN_CHARS, pickVoice, speechInstructions, toBase64 } from "./voice.ts";
-import { speak, transcribe } from "../_shared/speech.ts";
+import { speak, speakStream, STREAM_SAMPLE_RATE, transcribe } from "../_shared/speech.ts";
 import { parseFocus } from "../_shared/focus.ts";
 import { prepareNext } from "../_shared/prefetch.ts";
 import { withQuota } from "../_shared/quota.ts";
@@ -72,6 +74,8 @@ serve(async (req) => {
     // Voice mode calls paid audio models; each call counts against the daily voice allowance.
     case "transcribe": return json(await withQuota(userId, "voice", () => transcribeTurn(userId, input)));
     case "speak": return json(await withQuota(userId, "voice", () => speakReply(userId, input)));
+    // The same reply as raw PCM, streamed as it's made: the first sound in a few hundred ms.
+    case "speak_stream": return await withQuota(userId, "voice", () => speakReplyStream(userId, input));
     // Grading costs a model call too, and a quota keeps restart-and-resubmit loops bounded.
     case "submit": return json(await withQuota(userId, "grade", () => submit(userId, input)));
     default: throw new HttpError(400, "unknown action");
@@ -238,6 +242,24 @@ async function transcribeTurn(userId: string, input: Record<string, unknown>) {
   } catch (error) {
     console.error("transcription failed", error);
     throw new HttpError(502, "couldn't transcribe that; try again or type your question");
+  }
+}
+
+/** The latest stored patient reply, as raw 24 kHz PCM streamed straight from OpenAI. Errors before
+ *  the first byte are normal JSON errors (and refund the quota); after that the stream just ends. */
+async function speakReplyStream(userId: string, input: Record<string, unknown>): Promise<Response> {
+  const { attempt, content } = await loadAttempt(userId, input.attempt_id);
+  const reply = lastPatientReply(attempt.transcript);
+  if (!reply) throw new HttpError(404, "no patient reply to speak yet");
+  const persona = content.persona;
+  const voice = pickVoice(String(persona.sex ?? ""), attempt.case_id);
+  const instructions = speechInstructions(Number(persona.age) || 40, String(persona.sex ?? ""), String(persona.voice ?? ""));
+  try {
+    const audio = await speakStream(reply.slice(0, MAX_SPOKEN_CHARS), voice, instructions);
+    return new Response(audio, { headers: { "Content-Type": "audio/pcm", "X-Sample-Rate": String(STREAM_SAMPLE_RATE) } });
+  } catch (error) {
+    console.error("speech stream failed", error);
+    throw new HttpError(502, "couldn't voice the reply");
   }
 }
 

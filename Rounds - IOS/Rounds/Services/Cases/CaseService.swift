@@ -40,5 +40,8 @@ protocol CaseService: Sendable {
     func transcribe(attempt: String, audio: Data) async throws -> String
     /// Voice mode: the patient's latest reply as spoken audio (AAC), in the patient's own voice.
     func speakLatestReply(attempt: String) async throws -> Data
+    /// Voice mode: the same reply as raw PCM (24 kHz, 16-bit, mono) in chunks as the server makes
+    /// it, so playback starts after the first chunk instead of the whole file.
+    func streamLatestReply(attempt: String) async throws -> AsyncThrowingStream<Data, Error>
     func submit(attempt: String, diagnosis: String, differential: [String], plan: String) async throws -> Grade
 }

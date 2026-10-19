@@ -22,7 +22,7 @@ final class VoiceController: NSObject, AVSpeechSynthesizerDelegate, AVAudioPlaye
     }
 
     private enum VOICE {
-        static let silenceToSend: TimeInterval = 1.4  // quiet this long after speaking → send
+        static let silenceToSend: TimeInterval = 0.9  // quiet this long after speaking → send (was 1.4: felt slow)
         static let levelFloorDb: Float = -50          // dB mapped to level 0
         static let levelRangeDb: Float = 40           // dB span mapped to 0…1
         static let smoothing: CGFloat = 0.35          // new-sample weight
@@ -41,6 +41,10 @@ final class VoiceController: NSObject, AVSpeechSynthesizerDelegate, AVAudioPlaye
     @ObservationIgnored var transcriber: ((Data) async throws -> String)?
     /// The patient's latest reply as server audio; nil speaks with the installed iOS voice.
     @ObservationIgnored var spokenReply: (() async throws -> Data)?
+    /// The same reply streamed as PCM, played as it arrives. Tried first; `spokenReply` is the fallback.
+    @ObservationIgnored var streamedReply: (() async throws -> AsyncThrowingStream<Data, Error>)?
+    @ObservationIgnored private var streamer: StreamingVoicePlayer?
+    @ObservationIgnored private var streaming: Task<Void, Never>?
 
     var isActive: Bool { phase != .idle }
 
@@ -108,7 +112,7 @@ final class VoiceController: NSObject, AVSpeechSynthesizerDelegate, AVAudioPlaye
         switch phase {
         case .listening: finishTurn()
         case .patientSpeaking:
-            if player != nil { stopPlayer(); handBackTurn() } else { synth.stopSpeaking(at: .immediate) }   // the synth's delegate hands the turn back
+            if player != nil || streaming != nil { stopPlayer(); handBackTurn() } else { synth.stopSpeaking(at: .immediate) }   // the synth's delegate hands the turn back
         default: break
         }
     }
@@ -246,6 +250,39 @@ final class VoiceController: NSObject, AVSpeechSynthesizerDelegate, AVAudioPlaye
     func speak(_ text: String) {
         guard isActive else { return }
         stopAudio()
+        if let streamedReply { speakStreamed(text, from: streamedReply); return }
+        speakFromFile(text)
+    }
+
+    /// Plays the reply while it streams in; falls back to the whole-file voice if nothing arrives.
+    private func speakStreamed(_ text: String, from source: @escaping () async throws -> AsyncThrowingStream<Data, Error>) {
+        streaming = Task { @MainActor in
+            let player = streamer ?? StreamingVoicePlayer()
+            streamer = player
+            usePlaybackSession()
+            let rate = VOICE.slowestPlayback + (VOICE.fastestPlayback - VOICE.slowestPlayback) * Float(Preferences.voiceSpeed)
+            do {
+                try await player.play(try await source(), rate: rate) { [weak self] in
+                    guard let self, self.isActive else { return }
+                    withAnimation(Springs.slide) { self.phase = .patientSpeaking }
+                    self.meterTimer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { [weak self] _ in
+                        MainActor.assumeIsolated {
+                            guard let self, self.phase == .patientSpeaking, let streamer = self.streamer else { return }
+                            self.level = self.level * (1 - VOICE.smoothing) + streamer.currentLevel * VOICE.smoothing
+                        }
+                    }
+                }
+                guard !Task.isCancelled else { return }
+                meterTimer?.invalidate(); meterTimer = nil
+                if phase == .patientSpeaking { handBackTurn() }
+            } catch {
+                guard isActive, !Task.isCancelled else { return }
+                speakFromFile(text)
+            }
+        }
+    }
+
+    private func speakFromFile(_ text: String) {
         guard let spokenReply else { speakOnDevice(text); return }
         // Stays "thinking" while the server voices the reply, then plays it.
         Task { @MainActor in
@@ -281,6 +318,8 @@ final class VoiceController: NSObject, AVSpeechSynthesizerDelegate, AVAudioPlaye
     private func stopPlayer() {
         meterTimer?.invalidate(); meterTimer = nil
         player?.stop(); player = nil
+        streaming?.cancel(); streaming = nil
+        streamer?.stop()
     }
 
     func audioPlayerDidFinishPlaying(_ p: AVAudioPlayer, successfully flag: Bool) {

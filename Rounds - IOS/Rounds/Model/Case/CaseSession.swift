@@ -137,6 +137,11 @@ final class CaseSession {
         try await service.speakLatestReply(attempt: attempt())
     }
 
+    /// The same, as PCM chunks that can play while the rest is still being made.
+    func streamedReply() async throws -> AsyncThrowingStream<Data, Error> {
+        try await service.streamLatestReply(attempt: attempt())
+    }
+
     /// Key history areas uncovered so far (onset, character, radiation…), without saying which remain.
     var historyCoverage: (got: Int, total: Int) { coverage }
 
