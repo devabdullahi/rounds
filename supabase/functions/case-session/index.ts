@@ -288,7 +288,12 @@ async function askAloud(userId: string, input: Record<string, unknown>): Promise
   // background work keeps it alive until the voice is sent (the wall clock still applies).
   let sent!: () => void;
   EdgeRuntime.waitUntil(new Promise<void>((resolve) => (sent = resolve)));
+  // Set when the app stops reading (it interrupted the answer), so writing stops quietly.
+  let cancelled = false;
   const body = new ReadableStream<Uint8Array>({
+    cancel() {
+      cancelled = true;
+    },
     async start(out) {
       out.enqueue(new TextEncoder().encode(JSON.stringify(answer) + "\n"));
       try {
@@ -296,15 +301,20 @@ async function askAloud(userId: string, input: Record<string, unknown>): Promise
           const reader = (await speakStream(answer.reply.slice(0, MAX_SPOKEN_CHARS), voice, instructions)).getReader();
           for (;;) {
             const { done, value } = await reader.read();
-            if (done) break;
+            if (done || cancelled) break;
             out.enqueue(value);
           }
         });
       } catch (error) {
-        console.error("ask_aloud voice failed", error);
+        if (!cancelled) console.error("ask_aloud voice failed", error);
+      } finally {
+        try {
+          out.close();
+        } catch {
+          // Already cancelled by the app.
+        }
+        sent();
       }
-      out.close();
-      sent();
     },
   });
   return new Response(body, { headers: { "Content-Type": "application/octet-stream", "X-Sample-Rate": String(STREAM_SAMPLE_RATE) } });
@@ -392,7 +402,8 @@ async function voiceSession(userId: string, input: Record<string, unknown>) {
  *  before this is read, so every one has its end. */
 async function liveVoiceSpentToday(userId: string): Promise<number> {
   const [{ seconds }] = await sql<{ seconds: number }[]>`
-    select coalesce(sum(extract(epoch from coalesce(ended_at, ends_at) - started_at)), 0)::float8 as seconds
+    -- Capped at each call's deadline: calls closed late before that cap went in say they ran for hours.
+    select coalesce(sum(extract(epoch from least(coalesce(ended_at, ends_at), ends_at) - started_at)), 0)::float8 as seconds
     from private.voice_calls
     where user_id = ${userId} and started_at >= (now() at time zone 'utc')::date::timestamp at time zone 'utc'`;
   return (seconds / 60) * realtimeUSDPerMinute();
