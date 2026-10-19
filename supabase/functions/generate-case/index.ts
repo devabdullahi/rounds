@@ -2,27 +2,31 @@
 //
 //   1. Verify the caller and take one case from their daily allowance.
 //   2. Use the case written ahead for this student and focus, if one is waiting (instant). Otherwise
-//      pick a validated condition profile that matches their study focus, and queue one new
-//      condition in that focus for prepare-profile to write in the background (prefetch.ts). When
-//      the focus has no profile at all yet, reply 202 "preparing" and the app asks again shortly.
+//      pick any case-suitable condition in their study focus from the catalog and build its profile
+//      live from public medical APIs and the profile template (_shared/liveprofile.ts); nothing is
+//      read from stored profiles. A profile that still fails its checks after one rewrite is dropped
+//      and another condition is tried.
 //   3. Plan the patient in code (severity, age, sex, findings, vitals, lab values), and pick a
 //      synthetic background record of the same sex and a close age (background.ts), if one fits.
 //   4. Have the LLM write the person around that plan: door note, voice, facts, exam findings,
 //      study reports, test prices. It never chooses numbers or the diagnosis.
-//   5. Check the writing (structure, no diagnosis leaks). A leak is reworded field by field; other
-//      problems get a full rewrite with the problems listed.
+//   5. Check the writing (structure, no diagnosis leaks, no invented facts: _shared/factaudit.ts). A
+//      leak is reworded field by field; other problems get a full rewrite with the problems listed.
 //   6. Save the public door note and menus, and the private script, results and rubric.
 //   7. After replying, write the student's next case for this focus (private.ready_cases).
 import { body, callerId, HttpError, json, serve } from "../_shared/http.ts";
 import { sql } from "../_shared/db.ts";
 import { completeJSON, currentModel } from "../_shared/llm.ts";
-import { CASE_FIXER, CASE_WRITER, PROMPT_VERSION } from "../_shared/prompts.ts";
+import { CASE_FIXER, CASE_WRITER, FACT_AUDITOR, FACT_FIXER, PROMPT_VERSION } from "../_shared/prompts.ts";
 import { acceptedNames, type CasePlan, leakTerms, planCase, type Profile } from "../_shared/casegen.ts";
 import { flag, type Patient, TESTS } from "../_shared/labs.ts";
 import { type Focus, parseFocus } from "../_shared/focus.ts";
-import { prepareNext } from "../_shared/prefetch.ts";
+import { auditPrompt, candidateFlags, confirmWithUmls, type Flag, fixRequest, type PlanItems, parseClaims } from "../_shared/factaudit.ts";
+import { checkTerms, conceptOf, umlsKey } from "../_shared/terms.ts";
+import { buildLiveProfile } from "../_shared/liveprofile.ts";
+import { SYSTEM_PROMPT } from "../_shared/profilegen.ts";
 import { refundQuota, takeQuota } from "../_shared/quota.ts";
-import { MAX_AGE_GAP, type PatientBackground, pickBackground } from "./background.ts";
+import { backgroundForWriter, MAX_AGE_GAP, type PatientBackground, pickBackground } from "./background.ts";
 import { bedCode } from "./bedcode.ts";
 import { applyFixes, buildRubric, checkWriting, fixPrompt, leakSpots, neutralIds, type Writing, writerPrompt } from "./writer.ts";
 
@@ -57,15 +61,9 @@ serve(async (req) => {
   await takeQuota(userId, "case");
   let rows: CaseRows | null;
   try {
-    try {
-      await prepareNext(focus);
-    } catch (error) {
-      // Prefetch only speeds up later cases; it must not cost the student this one.
-      console.error("prepare next before writing", error);
-    }
     rows = await claimReady(userId, focus);
     if (!rows) {
-      const picked = await pickProfile(focus);
+      const picked = await pickLive(focus);
       rows = picked ? await composeCase(picked, focus) : null;
     }
   } catch (error) {
@@ -74,9 +72,7 @@ serve(async (req) => {
   }
   if (!rows) {
     await refundQuota(userId, "case");
-    const queued = await prepareNext(focus);
-    if (queued.inFlight) return json({ status: "preparing" }, 202);
-    throw new HttpError(404, "no conditions available for this focus yet");
+    throw new HttpError(404, "no patient could be prepared for this topic right now; try again");
   }
 
   let caseId: string;
@@ -91,17 +87,37 @@ serve(async (req) => {
   return json({ case_id: caseId, model: currentModel("case") });
 });
 
-async function pickProfile(focus: Focus): Promise<Picked | null> {
-  const rows = await sql<Picked[]>`
-    select profile, clerkships, organ_systems,
-      coalesce((select array(select jsonb_array_elements_text(c.terms -> 'snomed' -> 'synonyms'))
-                from private.conditions c where c.slug = condition_profiles.slug), '{}') as synonyms
-    from private.condition_profiles
-    where validation = 'passed' and review <> 'rejected'
-      and (${focus.kind !== "rotation"} or ${focus.value} = any(clerkships))
-      and (${focus.kind !== "system"} or ${focus.value} = any(organ_systems))
-    order by random() limit 1`;
-  return rows[0] ?? null;
+/** Live profile attempts per case: a condition whose profile still fails its checks is swapped. */
+const LIVE_TRIES = 2;
+
+type Condition = { slug: string; triage: Profile["triage"]; background: string | null; clerkships: string[]; organ_systems: string[]; synonyms: string[] };
+
+/** A condition from the catalog for this focus, its profile built live (see the header). Null
+ *  when the focus has no condition, or none built cleanly within LIVE_TRIES. */
+async function pickLive(focus: Focus): Promise<Picked | null> {
+  const tried: string[] = [];
+  for (let attempt = 0; attempt < LIVE_TRIES; attempt++) {
+    const [c] = await sql<Condition[]>`
+      select slug, triage, background, clerkships, organ_systems,
+        coalesce(array(select jsonb_array_elements_text(terms -> 'snomed' -> 'synonyms')), '{}') as synonyms
+      from private.conditions
+      where case_suitable and triage is not null and not (slug = any(${tried}::text[]))
+        and (${focus.kind !== "rotation"} or ${focus.value} = any(clerkships))
+        and (${focus.kind !== "system"} or ${focus.value} = any(organ_systems))
+      order by random() limit 1`;
+    if (!c) return null;
+    tried.push(c.slug);
+    const { profile, problems } = await buildLiveProfile(c.slug, c.triage, c.background ?? "", {
+      umlsKey: umlsKey(),
+      system: SYSTEM_PROMPT,
+      complete: (system, user) => completeJSON(system, user, 8000, { task: "template", temperature: 0.3 }),
+      // Time-boxed: terms it can't check in time are left unverified rather than holding the case.
+      termErrors: (output) => checkTerms(output, undefined, Date.now() + 8000).catch(() => []),
+    });
+    if (problems.length === 0) return { profile: profile as Profile, clerkships: c.clerkships, organ_systems: c.organ_systems, synonyms: c.synonyms };
+    console.warn("generate-case: live profile failed its checks", c.slug, problems.slice(0, 5));
+  }
+  return null;
 }
 
 /** Takes the student's case written ahead for this focus, if there is a fresh one. */
@@ -119,7 +135,7 @@ async function writeAhead(userId: string, focus: Focus): Promise<void> {
     const [{ waiting }] = await sql<{ waiting: boolean }[]>`
       select exists(select 1 from private.ready_cases where user_id = ${userId} and focus = ${focus.stored}) as waiting`;
     if (waiting) return;
-    const picked = await pickProfile(focus);
+    const picked = await pickLive(focus);
     if (!picked) return;
     const rows = await composeCase(picked, focus);
     await sql`insert into private.ready_cases (user_id, focus, rows) values (${userId}, ${focus.stored}, ${sql.json(rows)})
@@ -141,6 +157,7 @@ async function composeCase({ profile, clerkships, organ_systems: systems, synony
   const terms = leakTerms(profile);
   const background = await findBackground(plan, [profile.triage.name, ...acceptedNames(profile.teaching.accepted_names, synonyms)]);
   let user = writerPrompt(profile, plan, background);
+  const items = planItems(profile, plan, background);
   let writing: Writing | null = null;
   let problems: string[] = [];
   for (let attempt = 0; attempt < WRITE_ATTEMPTS; attempt++) {
@@ -157,11 +174,61 @@ async function composeCase({ profile, clerkships, organ_systems: systems, synony
     if (problems.length === 0) break;
     user += `\n\nYour previous reply had these problems. Fix them and reply with the full JSON again:\n- ${problems.join("\n- ")}`;
   }
+  // Facts the plan doesn't support are reworded in place: a few lines in seconds, where a full
+  // rewrite takes 12–17 s and can invent something else.
+  if (writing && problems.length === 0) writing = await fixUnsupported(writing, await auditCase(writing, items), profile.slug);
   if (!writing || problems.length > 0) {
     console.error("generate-case: writing failed", profile.slug, problems);
     throw new HttpError(502, "the patient couldn't be written; try again");
   }
   return buildRows(profile, clerkships, systems, synonyms, plan, neutralIds(writing), focus, background?.id ?? null);
+}
+
+/** Everything the writer was given that a fact may state: planned symptoms, the presentation's
+ *  details, risk factors and history, and the background record. Absent symptoms apart, since the
+ *  patient may only deny those. */
+function planItems(profile: Profile, plan: CasePlan, background: PatientBackground | null): PlanItems {
+  const texts = (list: unknown) => (Array.isArray(list) ? list : []).map((x) => (typeof x === "string" ? x : x?.text)).filter((x): x is string => !!x);
+  const hpi = profile.presentation.hpi as Record<string, unknown>;
+  const details = Object.entries(hpi).filter(([k]) => k !== "associated_symptoms" && k !== "pertinent_negatives")
+    .flatMap(([, v]) => (typeof v === "string" ? [v] : texts(v)));
+  const p = profile.patient as Record<string, unknown>;
+  const record = background ? backgroundForWriter(background) : null;
+  return {
+    present: plan.symptomsPresent,
+    absent: plan.symptomsAbsent,
+    background: [
+      ...profile.presentation.chief_complaints.map((c) => c.text), ...details,
+      ...texts(p.risk_factors), ...texts(p.comorbidities), ...texts(p.social_history), ...texts(p.family_history), ...texts(p.risk_medications),
+      ...(record ? [...record.chronic_conditions, ...record.current_medications, ...record.allergies, record.smoking, ...record.social] : []),
+    ],
+  };
+}
+
+/** The fact audit (_shared/factaudit.ts): claims the plan doesn't support. Advisory if it can't
+ *  run: a failed audit call never blocks a case. */
+async function auditCase(writing: Writing, items: PlanItems): Promise<Flag[]> {
+  try {
+    const reply = await completeJSON(FACT_AUDITOR, auditPrompt(items, writing.facts ?? []), 2500, { task: "check" });
+    const flags = candidateFlags(parseClaims(reply, items.present.length + items.absent.length + items.background.length), items);
+    return await confirmWithUmls(flags, items, conceptOf);
+  } catch (error) {
+    console.error("generate-case: fact audit failed", (error as Error).message.slice(0, 200));
+    return [];
+  }
+}
+
+/** Rewords the flagged facts so they drop (or deny) what the plan doesn't support. */
+async function fixUnsupported(writing: Writing, flags: Flag[], slug: string): Promise<Writing> {
+  if (!flags.length) return writing;
+  try {
+    const reply = await completeJSON<{ fixes?: { where: string; text: string }[] }>(FACT_FIXER, fixRequest(flags, writing.facts), 2000, { task: "case" });
+    console.log("generate-case: fact audit fixed", slug, flags.map((f) => `${f.kind}: ${f.claim}`));
+    return applyFixes(writing, Array.isArray(reply.fixes) ? reply.fixes : []);
+  } catch (error) {
+    console.error("generate-case: fact fix failed", (error as Error).message.slice(0, 200));
+    return writing;
+  }
 }
 
 /** Rewords only the fields that named the diagnosis. Leaks are the usual reason a writing fails, and
@@ -258,6 +325,8 @@ function buildRows(profile: Profile, clerkships: string[], systems: string[], sy
       condition_slug: profile.slug, severity: plan.severity,
       persona: { ...w.persona, name: w.patient.name, age: plan.age, sex: plan.sex, pregnant: plan.pregnant, model: currentModel("case"), prompt_version: PROMPT_VERSION },
       rubric: buildRubric(profile, plan, w, tests), focus: focus.stored, background_id: backgroundId,
+      // The live profile this case was planned from: grading insights and mistake cards read it.
+      profile,
     },
   };
 }
@@ -275,9 +344,10 @@ async function insertCase(userId: string, { case: c, content: k }: CaseRows): Pr
             false, ${userId}, ${c.setting}, ${c.demeanor}, ${c.organ_system}, ${c.clerkship}, ${tx.json(c.suggested)},
             ${tx.json(c.maneuvers)}, ${tx.json(c.test_menu)}, ${c.key_history})`;
         await tx`
-          insert into private.case_content (case_id, facts, exam, tests, answer_key, condition_slug, severity, persona, rubric, focus, background_id)
+          insert into private.case_content (case_id, facts, exam, tests, answer_key, condition_slug, severity, persona, rubric, focus, background_id, profile)
           values (${id}, ${tx.json(k.facts)}, ${tx.json(k.exam)}, ${tx.json(k.tests)}, ${tx.json(k.answer_key)},
-            ${k.condition_slug}, ${k.severity}, ${tx.json(k.persona)}, ${tx.json(k.rubric)}, ${k.focus}, ${k.background_id})`;
+            ${k.condition_slug}, ${k.severity}, ${tx.json(k.persona)}, ${tx.json(k.rubric)}, ${k.focus}, ${k.background_id},
+            ${k.profile ? tx.json(k.profile) : null})`;
       });
       return id;
     } catch (error) {

@@ -113,6 +113,22 @@ export const VOICE_TURN_REVIEW = `You review one exchange from a medical-school 
 
 Reply with JSON only: {"conduct": "clinical" | "off_topic" | "inappropriate", "fact_ids": [], "seen_ids": [], "invented": true|false}`;
 
+/** generate-case: the fact audit's first step (_shared/factaudit.ts): which planned item each medical
+ *  claim in a written case comes from. Code decides what counts as invented. */
+export const FACT_AUDITOR = `You check a practice patient case for invented medical facts. You get a numbered list of planned items (the symptoms, history and background the writer was allowed to use) and the patient's facts.
+
+Only these count as medical claims: a symptom the patient has, an illness or condition they have or had, a medication or supplement they take, an allergy, a procedure or surgery, a test result, a substance they use, or an illness in a family member.
+
+For each such claim, output one entry:
+- fact: the fact's id
+- claim: the claim in a few words
+- item: the number of the planned item it states, restates or adds detail to, in any wording ("throwing up" restates "Vomiting"; "a water pill for my blood pressure" restates "Hypertension"; "it's my right hand" adds detail to "Hand numbness"); null when no planned item covers it
+- negated: true when the patient denies it or says it's normal ("no fever", "I haven't thrown up", "my periods are normal", "I can move it fine")
+
+Not claims, skip them: names, jobs, work tasks, where they live, family members' existence, feelings, daily life, how much they drink or exercise when it's ordinary, and any normal or absent finding. Be literal about real claims: a new symptom or illness is covered only if a planned item says it, not if it's merely plausible for the illness.
+
+Reply with JSON only: {"claims": [{"fact": "...", "claim": "...", "item": 0, "negated": false}]}`;
+
 /** generate-case: rewording only the lines of a written case that named the diagnosis. */
 export const CASE_FIXER = `You edit practice cases for Rounds, where US medical students interview a simulated patient and work out the diagnosis themselves. A few lines of a case name the hidden diagnosis, which would give the answer away. Reword just those lines so they keep their meaning, facts, length and voice but no longer name it.
 
@@ -122,6 +138,15 @@ export const CASE_FIXER = `You edit practice cases for Rounds, where US medical 
 - Keep the content the same: no new symptoms, findings or history, because code grades the student against the original facts.
 
 Reply with JSON only, one entry per given line, "where" copied exactly: {"fixes": [{"where": "exactly as given", "text": "the reworded line"}]}`;
+
+/** generate-case: fixing only the facts the fact audit flagged (_shared/factaudit.ts). */
+export const FACT_FIXER = `You correct a few lines a simulated patient will say in a medical-school practice case. Each line makes a medical claim the case's plan doesn't support: either something that isn't in the plan, or a symptom the plan says the patient does NOT have.
+
+- Remove each listed claim from its line, or for a symptom the plan says is absent, have the patient deny it ("No, I haven't had that").
+- Keep everything else in the line the same: its other content, length, voice and wording. Don't add any new symptom, illness, medication or history.
+- If nothing is left to say, write a short natural reply with no medical content ("Not that I've noticed.").
+
+Reply with JSON only, one entry per given line, "where" copied exactly: {"fixes": [{"where": "exactly as given", "text": "the corrected line"}]}`;
 
 /** case-session ask: second check on replies that matched no fact. */
 export const REPLY_CHECKER = `You check one line spoken by a simulated patient in a medical-school practice app. The patient may only share medical details from a fixed fact list, and this line used none of them, so it must not contain any.

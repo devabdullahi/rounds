@@ -43,6 +43,17 @@ function umls(path: string, params: Record<string, string | number>, missing: Js
   return getJSON(`${UMLS}${path}`, { ...params, apiKey: umlsKey() }, missing);
 }
 
+/** The UMLS concept (CUI) a term names, exact match first, then normalized; null when none. Asked
+ *  live, uncached: the fact audit compares a patient's words with the planned items this way. */
+export async function conceptOf(term: string): Promise<string | null> {
+  for (const searchType of ["exact", "normalizedString"]) {
+    const data = await umls("/search/current", { string: term, searchType, pageSize: 1 });
+    const hit = data.result?.results?.[0];
+    if (hit?.ui && hit.ui !== "NONE") return hit.ui;
+  }
+  return null;
+}
+
 /** True when SNOMED CT has the term as a finding or disorder (exact or normalized match). Uncached. */
 export async function lookupSnomed(term: string): Promise<boolean> {
   for (const searchType of ["exact", "normalizedString"]) {

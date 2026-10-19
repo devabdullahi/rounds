@@ -20,7 +20,7 @@ export type Provider = {
 };
 
 /** What a call is for. Every call names one, so cost and model choice are tracked per feature. */
-export type Task = "patient" | "check" | "case" | "grade" | "cards" | "profile";
+export type Task = "patient" | "check" | "case" | "grade" | "cards" | "profile" | "template";
 
 /** How hard the model reasons before answering. Only providers with per-task settings use it. */
 export type Effort = "off" | "low" | "medium" | "high" | "max";
@@ -45,6 +45,9 @@ const OPENAI_TASKS: Record<Task, Setting> = {
   check: { model: "gpt-6-luna", effort: "off" },
   cards: { provider: "deepseek", model: "deepseek-flash", effort: "off" },
   case: { provider: "deepseek", model: "deepseek-flash", effort: "off" },
+  // A live profile's template sections for one case, all at once (_shared/liveprofile.ts): ~10–13 s
+  // on Flash against 42–56 s on Sol (measured 2026-10-19); the checks catch what it gets wrong.
+  template: { provider: "deepseek", model: "deepseek-flash", effort: "off" },
   grade: { model: "gpt-6.1-sol", effort: "medium" },
   profile: { model: "gpt-6.1-sol", effort: "medium" },
 };
