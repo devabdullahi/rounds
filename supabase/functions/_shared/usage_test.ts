@@ -1,5 +1,5 @@
 import { assertAlmostEquals, assertEquals } from "jsr:@std/assert@1";
-import { costUSD, dailyBudgetUSD } from "./usage.ts";
+import { contentShare, costUSD, dailyBudgetUSD, isContentTask, withinBudget } from "./usage.ts";
 
 Deno.test("cost uses peak prices per million tokens", () => {
   // 1M cache hits + 1M misses + 1M output on v4-pro = 0.044 + 1.32 + 3.96
@@ -14,4 +14,16 @@ Deno.test("unpriced models cost nothing rather than guessing", () => {
 Deno.test("the daily budget falls back to the default for missing or bad values", () => {
   const table: [string | undefined, number][] = [[undefined, 25], ["", 25], ["abc", 25], ["-5", 25], ["0", 25], ["40", 40], ["7.5", 7.5]];
   for (const [raw, want] of table) assertEquals(dailyBudgetUSD(raw), want, String(raw));
+});
+
+Deno.test("content stops at its share of the cap; chat, grading and voice keep the rest", () => {
+  const cap = 25, share = 0.6;
+  assertEquals(withinBudget("case", { total: 10, content: 14 }, cap, share), true);
+  assertEquals(withinBudget("case", { total: 16, content: 15 }, cap, share), false);
+  assertEquals(withinBudget("template", { total: 16, content: 15 }, cap, share), false);
+  assertEquals(withinBudget("patient", { total: 16, content: 15 }, cap, share), true);
+  assertEquals(withinBudget("grade", { total: 25, content: 15 }, cap, share), false);
+  assertEquals(withinBudget(undefined, { total: 24, content: 20 }, cap, share), true);
+  assertEquals([isContentTask("cards"), isContentTask("check")], [true, false]);
+  assertEquals([contentShare("0.5"), contentShare("2"), contentShare(undefined)], [0.5, 0.6, 0.6]);
 });

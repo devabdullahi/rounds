@@ -108,7 +108,7 @@ export async function completeJSON<T>(
   if (!provider) throw new Error(`unknown LLM provider ${name}`);
   const key = Deno.env.get(provider.keyEnv);
   if (!key) throw new Error(`${provider.keyEnv} is not set`);
-  await takeBudget();
+  await takeBudget(task);
 
   const res = provider.style === "openai"
     ? await fetch(provider.url, {

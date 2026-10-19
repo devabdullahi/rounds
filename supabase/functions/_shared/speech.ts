@@ -28,7 +28,7 @@ function key(): string {
 
 /** The text spoken in `voice`, steered by `instructions` (age, manner), as AAC audio. */
 export async function speak(text: string, voice: string, instructions: string): Promise<Uint8Array> {
-  await takeBudget();
+  await takeBudget("voice");
   const res = await fetch(SPEECH_URL, {
     method: "POST",
     headers: { Authorization: `Bearer ${key()}`, "Content-Type": "application/json" },
@@ -47,7 +47,7 @@ export const STREAM_SAMPLE_RATE = 24_000;
 /** The same speech as a stream of raw PCM, passed on as OpenAI produces it, so the phone starts
  *  playing after the first chunk instead of the whole file. */
 export async function speakStream(text: string, voice: string, instructions: string): Promise<ReadableStream<Uint8Array>> {
-  await takeBudget();
+  await takeBudget("voice");
   const res = await fetch(SPEECH_URL, {
     method: "POST",
     headers: { Authorization: `Bearer ${key()}`, "Content-Type": "application/json" },
@@ -61,7 +61,7 @@ export async function speakStream(text: string, voice: string, instructions: str
 
 /** What the student said in a recorded m4a turn. `hint` primes medical vocabulary. */
 export async function transcribe(audio: Uint8Array, hint: string): Promise<string> {
-  await takeBudget();
+  await takeBudget("voice");
   const form = new FormData();
   form.append("model", TRANSCRIBE_MODEL);
   form.append("file", new Blob([audio.slice()], { type: "audio/mp4" }), "turn.m4a");

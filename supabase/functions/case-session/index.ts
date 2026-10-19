@@ -376,7 +376,7 @@ async function voiceSession(userId: string, input: Record<string, unknown>) {
   if (seconds === 0) {
     throw new HttpError(429, "you've used today's live voice time; it resets at midnight UTC. Turn-by-turn voice and typing still work");
   }
-  await takeBudget();
+  await takeBudget("voice_live");
 
   const persona = content.persona;
   const instructions = liveSessionPrompt(
