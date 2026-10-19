@@ -39,6 +39,7 @@ import { backgroundForWriter, MAX_AGE_GAP, type PatientBackground, pickBackgroun
 import { bedCode } from "./bedcode.ts";
 import { applyFixes, assemble, buildRubric, checkWriting, fixPrompt, leakSpots, neutralIds, type Voice, voicePrompt, type Writing } from "./writer.ts";
 import { buildSkeleton } from "./skeleton.ts";
+import { patientName } from "../_shared/names.ts";
 import { templateVoice } from "./template.ts";
 
 /** Writer tries before falling back to templates. A typical write takes 7–9 s on DeepSeek Flash. Slow
@@ -297,7 +298,8 @@ async function composeCase(
   const terms = leakTerms(profile);
   const background = await findBackground(plan, [profile.triage.name, ...acceptedNames(profile.teaching.accepted_names, synonyms)]);
   const skeleton = buildSkeleton(profile, plan, background, Math.random);
-  let user = voicePrompt(profile, plan, skeleton, background);
+  const name = patientName(plan.sex, plan.age, Math.random);
+  let user = voicePrompt(profile, plan, skeleton, background, name);
   const items = planItems(profile, plan, background);
   let writing: Writing | null = null;
   let problems: string[] = [];
@@ -306,7 +308,7 @@ async function composeCase(
     try {
       writing = assemble(skeleton, await completeJSON<Voice>(CASE_VOICE, user, 5000, {
         task: "case", timeoutMs: timeoutFor(deadline, CASE_TIMEOUT_MS),
-      }));
+      }), name);
       problems = checkWriting(writing, plan, terms);
       if (problems.length) {
         writing = await fixLeaks(writing, terms, deadline);
@@ -325,7 +327,7 @@ async function composeCase(
   } else {
     // The writer failed: a plainer case from templates beats no case. Its words come only from the plan.
     console.warn("generate-case: writer failed, using templates", profile.slug, problems.slice(0, 3));
-    writing = assemble(skeleton, templateVoice(profile, plan, skeleton, background, Math.random));
+    writing = assemble(skeleton, templateVoice(profile, plan, skeleton, background, Math.random), name);
     problems = checkWriting(writing, plan, terms);
     if (problems.length) {
       writing = await fixLeaks(writing, terms, deadline);
