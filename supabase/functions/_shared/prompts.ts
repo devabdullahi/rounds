@@ -4,7 +4,7 @@
 // thinking calls (the grader) get no step lists, since the model plans for itself.
 // Bump PROMPT_VERSION when any of them changes so stored cases record which prompts produced them.
 
-export const PROMPT_VERSION = "8";
+export const PROMPT_VERSION = "9";
 
 /** generate-case: putting a code-built case into a person's words (generate-case/skeleton.ts). */
 export const CASE_VOICE = `You give a voice to a practice patient in Rounds, an app where US medical students interview a simulated patient, examine them, order tests and commit to a diagnosis. Code has already built the whole case: every fact the patient can tell, every exam result, every test. You write the human parts only.
