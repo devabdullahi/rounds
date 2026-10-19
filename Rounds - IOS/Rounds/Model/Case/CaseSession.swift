@@ -147,7 +147,10 @@ final class CaseSession {
         do {
             return try await service.startLiveCall(attempt: attempt(), offer: offer)
         } catch {
-            withAnimation(Springs.slide) { messages.append(ChatMessage(kind: .problem, text: error.localizedDescription)) }
+            // A server without live voice yet ("Unknown action.") just means turn-by-turn: nothing to say.
+            if (error as? CaseServiceError)?.message != "Unknown action." {
+                withAnimation(Springs.slide) { messages.append(ChatMessage(kind: .problem, text: error.localizedDescription)) }
+            }
             throw error
         }
     }
