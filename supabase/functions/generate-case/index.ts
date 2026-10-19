@@ -70,9 +70,9 @@ const READY_FOR = "3 days";
 
 serve(async (req) => {
   const userId = await callerId(req);
-  const { focus: requested = "", polling: pollingInput, prepare } = await body<{ focus?: string; polling?: unknown; prepare?: unknown }>(req);
+  // `polling` is still sent by app builds that waited on background jobs; it no longer changes anything.
+  const { focus: requested = "", prepare } = await body<{ focus?: string; polling?: unknown; prepare?: unknown }>(req);
   const focus = parseFocus(requested);
-  const polling = pollingInput === true;
 
   // Prepare only: write this focus's next case ahead, before the student asks for it, so even the
   // first patient in a topic opens instantly. Bounded by one job and one ready case per focus.
@@ -85,15 +85,10 @@ serve(async (req) => {
   // was written ahead. The quota comes first: a student over the limit mustn't start background
   // writing either.
   // await takeQuota(userId, "case");
-  const rows = await claimReady(userId, focus);
-  if (!rows) {
-    const state = await startGeneration(userId, focus, polling);
-    if (state.status === "failed") {
-      throw new HttpError(503, "Couldn't prepare a patient just now. Tap to try again.");
-    }
-    if (state.status === "started") launchGeneration(userId, focus, state.token);
-    return json({ status: "preparing" }, 202);
-  }
+  // No case waiting: write one now, in this request, as before background jobs. A student never waits
+  // on a background job, which could die with its worker and leave them polling for minutes; writing
+  // ahead is only a head start. A stored profile makes this about a second; a live one 10–15 s.
+  const rows = await claimReady(userId, focus) ?? await writeNow(focus);
 
   const caseId = await insertCase(userId, rows);
   // Queue the next case after this response; the next start can take it as soon as it's ready.
@@ -198,7 +193,22 @@ async function startGeneration(userId: string, focus: Focus, polling: boolean): 
   });
 }
 
-/** Writes the next case in the background, then makes it available to the next poll. */
+/** A case written while the student waits: a stored profile when the focus has one. */
+async function writeNow(focus: Focus): Promise<CaseRows> {
+  const started = Date.now();
+  const deadline = started + GENERATION_BUDGET_MS;
+  const picked = await pickProfile(focus, deadline, true);
+  if (!picked) throw new HttpError(503, "Couldn't prepare a patient just now. Tap to try again.");
+  const profiled = Date.now();
+  const rows = await composeCase(picked, focus, deadline);
+  console.log(JSON.stringify({
+    event: "case_generated", focus: focus.stored, slug: picked.profile.slug, source: picked.source, waiting: true, inline: true,
+    profile_ms: profiled - started, compose_ms: Date.now() - profiled, total_ms: Date.now() - started,
+  }));
+  return rows;
+}
+
+/** Writes the next case in the background, then keeps it for the student's next start. */
 async function writeAhead(userId: string, focus: Focus, token: string, studentWaiting: boolean): Promise<void> {
   const started = Date.now();
   try {
@@ -223,12 +233,6 @@ async function writeAhead(userId: string, focus: Focus, token: string, studentWa
     console.error("generate-case: writing ahead failed", error);
     await finishGeneration(userId, focus, token, null, true);
   }
-}
-
-function launchGeneration(userId: string, focus: Focus, token: string): void {
-  EdgeRuntime.waitUntil(writeAhead(userId, focus, token, true).catch((error) => {
-    console.error("generate-case: background generation failed", error);
-  }));
 }
 
 /** Writes the focus's next case in the background. `waiting`: a student may tap soon (the head
