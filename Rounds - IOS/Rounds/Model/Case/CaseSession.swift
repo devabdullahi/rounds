@@ -106,16 +106,7 @@ final class CaseSession {
         timeline.append(TimelineEvent(at: .now, kind: .question, text: question))
         Task {
             do {
-                let answer = try await service.ask(attempt: attempt(), question: question)
-                withAnimation(Springs.slide) {
-                    isPatientTyping = false
-                    messages.append(ChatMessage(kind: .patient, text: answer.reply))
-                    revealed = Set(answer.revealedIDs)
-                    coverage = answer.coverage
-                    if !answer.revealed.isEmpty && !examMode {
-                        messages.append(ChatMessage(kind: .reveal, text: "Revealed: " + answer.revealed.map(\.label).joined(separator: ", ")))
-                    }
-                }
+                show(try await service.ask(attempt: attempt(), question: question))
             } catch {
                 withAnimation(Springs.slide) {
                     isPatientTyping = false
@@ -127,14 +118,63 @@ final class CaseSession {
 
     // MARK: Voice
 
-    /// What the student said in a recorded voice turn, as the server transcribes it.
-    func transcribe(_ audio: Data) async throws -> String {
-        try await service.transcribe(attempt: attempt(), audio: audio)
-    }
-
     /// The patient's latest reply, spoken in their voice.
     func spokenReply() async throws -> Data {
         try await service.speakLatestReply(attempt: attempt())
+    }
+
+    /// A spoken question: asked, shown and answered like a typed one, and the reply's voice comes back
+    /// in the same response. Returns the reply and its audio, or nil when the question failed (the
+    /// error shows in the chat).
+    func askAloud(_ raw: String) async -> (reply: String, audio: AsyncThrowingStream<Data, Error>)? {
+        let question = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !question.isEmpty, !isPatientTyping else { return nil }
+        startClockIfNeeded()
+        withAnimation(Springs.slide) {
+            messages.append(ChatMessage(kind: .doctor, text: question))
+            isPatientTyping = true
+        }
+        timeline.append(TimelineEvent(at: .now, kind: .question, text: question))
+        do {
+            let spoken: SpokenAnswer
+            do {
+                spoken = try await service.askAloud(attempt: attempt(), question: question)
+            } catch let error as CaseServiceError where error.message == Self.unknownAction {
+                // A server without ask_aloud yet: ask as typed, with no audio, so voice falls back
+                // to its separate spoken-reply request instead of failing the question.
+                let answer = try await service.ask(attempt: attempt(), question: question)
+                spoken = SpokenAnswer(answer: answer, audio: AsyncThrowingStream { $0.finish(throwing: error) })
+            }
+            show(spoken.answer)
+            return (spoken.answer.reply, spoken.audio)
+        } catch {
+            withAnimation(Springs.slide) {
+                isPatientTyping = false
+                messages.append(ChatMessage(kind: .problem, text: error.localizedDescription))
+            }
+            return nil
+        }
+    }
+
+    /// What the server says to an action it doesn't have yet (an app newer than its backend).
+    private static let unknownAction = "Unknown action."
+
+    /// The patient's answer in the chat: the reply, what it revealed, and the coverage.
+    private func show(_ answer: PatientAnswer) {
+        withAnimation(Springs.slide) {
+            isPatientTyping = false
+            messages.append(ChatMessage(kind: .patient, text: answer.reply))
+            revealed = Set(answer.revealedIDs)
+            coverage = answer.coverage
+            if !answer.revealed.isEmpty && !examMode {
+                messages.append(ChatMessage(kind: .reveal, text: "Revealed: " + answer.revealed.map(\.label).joined(separator: ", ")))
+            }
+        }
+    }
+
+    /// The same, as PCM chunks that can play while the rest is still being made.
+    func streamedReply() async throws -> AsyncThrowingStream<Data, Error> {
+        try await service.streamLatestReply(attempt: attempt())
     }
 
     /// Key history areas uncovered so far (onset, character, radiation…), without saying which remain.

@@ -130,6 +130,57 @@ struct LiveCaseService: CaseService {
         return audio
     }
 
+    func streamLatestReply(attempt: String) async throws -> AsyncThrowingStream<Data, Error> {
+        let bytes = try await stream(["action": "speak_stream", "attempt_id": attempt])
+        return Self.audioChunks(bytes.makeAsyncIterator())
+    }
+
+    func askAloud(attempt: String, question: String) async throws -> SpokenAnswer {
+        let bytes = try await stream(["action": "ask_aloud", "attempt_id": attempt, "question": question])
+        // The first line is the answer as JSON; everything after it is the reply's voice.
+        var iterator = bytes.makeAsyncIterator()
+        var line = Data()
+        while let byte = try await iterator.next(), byte != UInt8(ascii: "\n") { line.append(byte) }
+        let r = try JSONDecoder().decode(AskReply.self, from: line)
+        let answer = PatientAnswer(reply: r.reply, revealed: r.revealed.map { ($0.id, $0.label) }, revealedIDs: r.revealed_ids,
+                                   coverage: (r.coverage.got, r.coverage.total))
+        return SpokenAnswer(answer: answer, audio: Self.audioChunks(iterator))
+    }
+
+    /// A case-session call whose reply streams, with the server's error text on a refusal.
+    private func stream(_ body: [String: String]) async throws -> URLSession.AsyncBytes {
+        guard let project = SupabaseService.project else { throw CaseServiceError(message: "Supabase isn't configured.") }
+        do {
+            return try await client.streamSigned("case-session", body: body, project: project)
+        } catch let FunctionsError.httpError(code, data) {
+            let message = (try? JSONDecoder().decode(ErrorReply.self, from: data))?.error
+            throw CaseServiceError(message: message.map { "\($0.prefix(1).uppercased())\($0.dropFirst())." } ?? "The server returned \(code).")
+        }
+    }
+
+    /// The rest of a response as PCM chunks of about 100 ms each.
+    private static func audioChunks(_ source: URLSession.AsyncBytes.AsyncIterator) -> AsyncThrowingStream<Data, Error> {
+        AsyncThrowingStream { continuation in
+            let reading = Task {
+                var bytes = source
+                // ~100 ms of audio per chunk: small enough to start fast, large enough to schedule cheaply.
+                let chunkBytes = 4_800
+                var chunk = Data(capacity: chunkBytes)
+                do {
+                    while let byte = try await bytes.next() {
+                        chunk.append(byte)
+                        if chunk.count >= chunkBytes { continuation.yield(chunk); chunk.removeAll(keepingCapacity: true) }
+                    }
+                    if !chunk.isEmpty { continuation.yield(chunk) }
+                    continuation.finish()
+                } catch {
+                    continuation.finish(throwing: error)
+                }
+            }
+            continuation.onTermination = { _ in reading.cancel() }
+        }
+    }
+
     func submit(attempt: String, diagnosis: String, differential: [String], plan: String) async throws -> Grade {
         let r: GradeRow = try await invoke("case-session", SubmitBody(attempt_id: attempt, diagnosis: diagnosis, differential: differential, plan: plan))
         return r.grade
