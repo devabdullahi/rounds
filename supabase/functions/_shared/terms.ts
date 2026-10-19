@@ -11,6 +11,15 @@ const RXNAV = "https://rxnav.nlm.nih.gov/REST";
 const FINDING_TAGS = ["(finding)", "(disorder)", "(observable entity)", "(morphologic abnormality)"];
 // UMLS allows 20 requests a second per IP; a few terms at a time stays well under it.
 const PARALLEL = 4;
+/** One lookup may take this long; a hung terminology service must not hold the whole call. */
+const LOOKUP_TIMEOUT_MS = 10_000;
+
+/** checkTerms ran out of its time budget; answers so far are cached, so the next call resumes. */
+export class TermsOutOfTime extends Error {
+  constructor() {
+    super("term checks ran out of time");
+  }
+}
 
 // deno-lint-ignore no-explicit-any
 type Json = any;
@@ -23,7 +32,8 @@ export function umlsKey(): string {
 }
 
 async function getJSON(url: string, params: Record<string, string | number>, missing: Json = null): Promise<Json> {
-  const res = await fetch(`${url}?${new URLSearchParams(Object.entries(params).map(([k, v]) => [k, String(v)]))}`);
+  const res = await fetch(`${url}?${new URLSearchParams(Object.entries(params).map(([k, v]) => [k, String(v)]))}`,
+    { signal: AbortSignal.timeout(LOOKUP_TIMEOUT_MS) });
   if (res.status === 404 && missing !== null) return missing;
   if (!res.ok) throw new Error(`terminology lookup ${res.status} for ${url}`);
   return await res.json();
@@ -112,12 +122,22 @@ export function rxnormCheck(name: string): Promise<Check> {
 /** The cached lookups checkTerms uses; tests pass their own to stay off the database. */
 export type TermCheckers = { snomed: (term: string) => Promise<Check>; rxnorm: (name: string) => Promise<Check> };
 
-async function inBatches<T>(items: T[], work: (item: T) => Promise<void>): Promise<void> {
-  for (let i = 0; i < items.length; i += PARALLEL) await Promise.all(items.slice(i, i + PARALLEL).map(work));
+/** Runs `work` a few items at a time. Past `deadline` (ms since epoch) it starts no new batch and
+ *  throws TermsOutOfTime instead. */
+async function inBatches<T>(items: T[], work: (item: T) => Promise<void>, deadline?: number): Promise<void> {
+  for (let i = 0; i < items.length; i += PARALLEL) {
+    if (deadline !== undefined && Date.now() > deadline) throw new TermsOutOfTime();
+    await Promise.all(items.slice(i, i + PARALLEL).map(work));
+  }
 }
 
-/** Marks verified terms on a stage's output in place; returns errors for missing or unknown ones. */
-export async function checkTerms(output: Json, checkers: TermCheckers = { snomed: snomedCheck, rxnorm: rxnormCheck }): Promise<string[]> {
+/** Marks verified terms on a stage's output in place; returns errors for missing or unknown ones.
+ *  With a `deadline`, throws TermsOutOfTime rather than run past it. */
+export async function checkTerms(
+  output: Json,
+  checkers: TermCheckers = { snomed: snomedCheck, rxnorm: rxnormCheck },
+  deadline?: number,
+): Promise<string[]> {
   const errors: string[] = [];
   for (const section of ["presentation", "exam"] as const) {
     await inBatches(findingItems(section, output), async (item) => {
@@ -135,10 +155,10 @@ export async function checkTerms(output: Json, checkers: TermCheckers = { snomed
           : "; use its standard clinical name";
         errors.push(`${section}: term '${term}' isn't a SNOMED CT finding${hint}`);
       }
-    });
+    }, deadline);
   }
   await inBatches<string>(output.patient?.risk_medications ?? [], async (drug) => {
     if (!(await checkers.rxnorm(drug)).ok) errors.push(`patient.risk_medications: '${drug}' isn't an RxNorm drug; use the generic name`);
-  });
+  }, deadline);
   return errors;
 }

@@ -11,8 +11,9 @@ final class ReferenceAssist {
     private(set) var drugs: [DrugMatch] = []
     private(set) var topics: [HealthTopic] = []
 
-    /// Set by the view from `@Environment(\.reference)`.
-    var reference: ReferenceServices = .mock
+    /// Set by the view from `@Environment(\.reference)`. Until then lookups find nothing, rather
+    /// than answering from anything but the real services.
+    var reference: ReferenceServices?
 
     /// The suggestion the student just tapped, so filling the field doesn't reopen the list.
     private var picked: String?
@@ -29,7 +30,7 @@ final class ReferenceAssist {
         picked = nil
         try? await Task.sleep(for: DEBOUNCE.diagnosis)
         guard !Task.isCancelled else { return }
-        let found = (try? await reference.conditions.search(text, limit: 4)) ?? []
+        let found = (try? await reference?.conditions.search(text, limit: 4)) ?? []
         guard !Task.isCancelled else { return }
         query = text
         // Hide the list once the field already says exactly the top match.
@@ -52,12 +53,12 @@ final class ReferenceAssist {
     func planChanged(_ text: String) async {
         try? await Task.sleep(for: DEBOUNCE.plan)
         guard !Task.isCancelled else { return }
-        let found = (try? await reference.drugs.recognize(in: text)) ?? []
+        let found = (try? await reference?.drugs.recognize(in: text)) ?? []
         guard !Task.isCancelled else { return }
         drugs = found
     }
 
     func loadTopics(for diagnosis: String) async {
-        topics = (try? await reference.topics.topics(for: diagnosis)) ?? []
+        topics = (try? await reference?.topics.topics(for: diagnosis)) ?? []
     }
 }
