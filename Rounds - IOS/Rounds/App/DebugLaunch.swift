@@ -85,7 +85,7 @@ enum DebugLaunch {
             tab = .today
             app.debugShowPreparing()
         case "admit":
-            // Generates a live patient (DeepSeek via local Supabase) and opens its door note.
+            // Generates a live patient (the AI model via local Supabase) and opens its door note.
             tab = .today
             Task { @MainActor in await app.admit(focus: FocusSelection()) }
         default:

@@ -50,7 +50,7 @@ A clinical-reasoning trainer for US medical students. Take a fictional patient's
 
 Needs Docker (OrbStack works), the Supabase CLI, Xcode, and an API key for the model.
 
-1. **Model key.** Copy `tools/kb-generate/.env.example` to `.env` and set `DEEPSEEK_API_KEY` (or switch `LLM_PROVIDER` to `anthropic` or `openai`). Put the same lines in `supabase/functions/.env`. Both files are git-ignored.
+1. **Model key.** Copy `tools/kb-generate/.env.example` to `.env` and set `OPENAI_API_KEY` (or switch `LLM_PROVIDER` to `anthropic`). Put the same lines in `supabase/functions/.env`. Both files are git-ignored.
 2. **Backend.**
    ```bash
    supabase start                 # local Postgres, auth and API on port 55321

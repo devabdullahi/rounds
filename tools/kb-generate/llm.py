@@ -2,10 +2,10 @@
 
 Configure in tools/kb-generate/.env (git-ignored; copy .env.example) or the shell, which wins:
 
-    LLM_PROVIDER   openai (default: GPT-6.1 Sol) | deepseek | anthropic | mock
+    LLM_PROVIDER   openai (default: GPT-6.1 Sol) | anthropic | mock
     LLM_MODEL      overrides the provider's default model
     LLM_EFFORT     reasoning effort for providers that think: off | low | medium (default) | high | max
-    DEEPSEEK_API_KEY / ANTHROPIC_API_KEY / OPENAI_API_KEY
+    OPENAI_API_KEY / ANTHROPIC_API_KEY
 
 Switching models later is a change to these variables only. `mock` replays the appendicitis example
 so the pipeline can be tested offline without a key.
@@ -53,14 +53,13 @@ class Provider:
     key_env: str
     default_model: str
     style: str  # "openai" chat completions or "anthropic" messages
-    # How the provider takes LLM_EFFORT: DeepSeek's thinking switch, OpenAI's reasoning models, or not at all.
+    # How the provider takes LLM_EFFORT: OpenAI's reasoning models, or not at all.
     thinking: str = ""
 
 
-# Condition triage, tagging and profiles are written from what the model knows, where GPT-6.1 Sol
-# guesses far less often than DeepSeek (AA-Omniscience hallucination ~54% vs ~95%), so it's the default.
+# Condition triage, tagging and profiles are written from what the model knows, so they use GPT-6.1
+# Sol, which guesses less often than cheaper models.
 PROVIDERS = {
-    "deepseek": Provider("deepseek", "https://api.deepseek.com/chat/completions", "DEEPSEEK_API_KEY", "deepseek-flash", "openai", thinking="deepseek"),
     "openai": Provider("openai", "https://api.openai.com/v1/chat/completions", "OPENAI_API_KEY", "gpt-6.1-sol", "openai", thinking="openai"),
     "anthropic": Provider("anthropic", "https://api.anthropic.com/v1/messages", "ANTHROPIC_API_KEY", "claude-sonnet-5-5", "anthropic"),
 }
@@ -114,20 +113,15 @@ def complete_json(system: str, user: str) -> dict:
 
 
 def thinking_fields(thinking: str, max_tokens: int, effort: str) -> dict:
-    """The token cap plus the provider's reasoning switch. DeepSeek thinks by default, so "off" must say
-    so. OpenAI's reasoning models always reason: they take max_completion_tokens, and "off" leaves
-    their default effort."""
+    """The token cap plus the provider's reasoning switch. OpenAI's reasoning models take
+    max_completion_tokens, and "off" leaves their default effort."""
     if effort != "off" and effort not in REASONING_BUDGET:
         raise SystemExit(f"LLM_EFFORT must be one of off, {', '.join(REASONING_BUDGET)}")
     if thinking == "openai":
         if effort == "off":
             return {"max_completion_tokens": max_tokens + REASONING_BUDGET["medium"]}
         return {"max_completion_tokens": max_tokens + REASONING_BUDGET[effort], "reasoning_effort": effort}
-    if not thinking:
-        return {"max_tokens": max_tokens}
-    if effort == "off":
-        return {"max_tokens": max_tokens, "thinking": {"type": "disabled"}}
-    return {"max_tokens": max_tokens + REASONING_BUDGET[effort], "thinking": {"type": "enabled"}, "reasoning_effort": effort}
+    return {"max_tokens": max_tokens}
 
 
 def _post(url: str, headers: list[str], body: dict) -> dict:
