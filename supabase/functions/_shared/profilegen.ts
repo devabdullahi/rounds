@@ -206,6 +206,89 @@ export function repair(profile: Json): string[] {
   return [...new Set(notes)];
 }
 
+/** Fixes, in code, the rule errors a live profile can't wait a rewrite for (_shared/liveprofile.ts):
+ *  each is mechanical, and where a medical direction is involved the reference tables decide, not the
+ *  model. Swapped min/max, °C written for °F, a qualitative result the test doesn't allow, an
+ *  implausible range, "vitals" ordered as a test, and lab ranges going the wrong way for this
+ *  condition (clamped to normal, or reordered to rise or fall with severity). What's left is
+ *  rewritten by the model. Returns notes for the reviewer. */
+export function autoFix(profile: Json): string[] {
+  const notes: string[] = [];
+  const swap = (r: Json) => { if (typeof r?.min === "number" && typeof r?.max === "number" && r.min > r.max) [r.min, r.max] = [r.max, r.min]; };
+  const expected = DIRECTIONS[profile.slug] ?? {};
+  profile.labs = (profile.labs ?? []).filter((lab: Json) => {
+    const test = TESTS[lab?.test_id];
+    if (!test) return false;
+    for (const [severity, result] of Object.entries(lab.qualitative ?? {})) {
+      if (!(test.abnormal ?? []).includes(result as string)) {
+        delete lab.qualitative[severity];
+        notes.push(`labs ${lab.test_id}.${severity}: dropped result '${result}'`);
+      }
+    }
+    for (const [severity, r] of Object.entries<Json>(lab.ranges ?? {})) {
+      swap(r);
+      const implausible = (test.critical_low != null && r.max < test.critical_low * 0.5) || (test.critical_high != null && r.min > test.critical_high * 3);
+      if (implausible) {
+        delete lab.ranges[severity];
+        notes.push(`labs ${lab.test_id}.${severity}: dropped implausible range`);
+      }
+    }
+    const [low, high] = normalInterval(test);
+    const direction = expected[lab.test_id];
+    const present = SEVERITIES.filter((s) => s in (lab.ranges ?? {}));
+    if (direction === "normal_or_up" || direction === "normal_or_down") {
+      for (const s of present) {
+        const r = lab.ranges[s];
+        if ((direction === "normal_or_up" && low != null && r.max < low) || (direction === "normal_or_down" && high != null && r.min > high)) {
+          lab.ranges[s] = { min: low ?? r.min, max: high ?? r.max };
+          notes.push(`labs ${lab.test_id}.${s}: set to normal (${direction.replace(/_/g, " ")} in this condition)`);
+        }
+      }
+    } else if (direction === "up" || direction === "down") {
+      const mid = (r: Json) => (r.min + r.max) / 2;
+      const ranges = present.map((s) => lab.ranges[s]).sort((a: Json, b: Json) => (direction === "up" ? mid(a) - mid(b) : mid(b) - mid(a)));
+      present.forEach((s, i) => { lab.ranges[s] = ranges[i]; });
+    }
+    return Object.keys(lab.ranges ?? {}).length > 0 || Object.keys(lab.qualitative ?? {}).length > 0;
+  });
+  for (const [vital, bySeverity] of Object.entries<Json>(profile.vitals ?? {})) {
+    for (const r of Object.values<Json>(bySeverity ?? {})) {
+      swap(r);
+      // Celsius slipped into a Fahrenheit field: 36–42 °C reads as a cold-dead patient in °F.
+      if (vital === "temp" && r.max <= 45 && r.min >= 30) {
+        r.min = Math.round((r.min * 9 / 5 + 32) * 10) / 10;
+        r.max = Math.round((r.max * 9 / 5 + 32) * 10) / 10;
+        notes.push("vitals.temp: converted °C to °F");
+      }
+    }
+  }
+  for (const group of WORKUP_GROUPS) {
+    if (Array.isArray(profile.workup?.[group])) profile.workup[group] = profile.workup[group].filter((ref: Json) => ref?.test !== "vitals");
+  }
+  // Keys the template doesn't define ("preferred_when_note") are extra words, not content: drop them.
+  for (const section of Object.keys(SCHEMA.properties)) {
+    if (!(section in profile)) continue;
+    for (const error of sectionErrors(section, profile[section])) {
+      const m = error.match(/^(\$[^:]*): unexpected key (\S+)$/);
+      const parent = m ? at(profile, m[1]) : undefined;
+      if (isObject(parent)) {
+        delete parent[m![2]];
+        notes.push(`${m![1]}: dropped unexpected key ${m![2]}`);
+      }
+    }
+  }
+  return [...new Set(notes)];
+}
+
+/** The value at a schema-error path like "$.imaging[0].findings". */
+function at(root: Json, path: string): Json {
+  let node = root;
+  for (const [, key, index] of path.slice(1).matchAll(/\.([^.[\]]+)|\[(\d+)\]/g)) {
+    node = key !== undefined ? node?.[key] : node?.[Number(index)];
+  }
+  return node;
+}
+
 /** "Chest X-ray", "chest x ray" and "CHEST X-RAY" are one test: lowercase, punctuation as spaces. */
 export function workupKey(name: string): string {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim().split(/\s+/).filter(Boolean).join(" ");

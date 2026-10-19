@@ -1,5 +1,6 @@
 import { assert, assertEquals, assertThrows } from "jsr:@std/assert@1";
 import {
+  autoFix,
   ageErrors, baseTerm, directionErrors, dropEmptyOptional, duplicateErrors, emptyStringErrors, repair, ruleErrors,
   schemaErrors, snomedIdErrors, STAGES, stageOutput, stagePrompt, termSummary, workupKey,
 } from "./profilegen.ts";
@@ -172,4 +173,28 @@ Deno.test("focus parsing accepts the app's stored values only", () => {
   assertEquals(parseFocus("rotation:obgyn"), { kind: "rotation", value: "obgyn", stored: "rotation:obgyn" });
   assertThrows(() => parseFocus("rotation:ob gyn"));
   assertThrows(() => parseFocus("organ:renal"));
+});
+
+Deno.test("autoFix: DKA potassium written low is set to normal, glucose reordered to rise", () => {
+  const profile = {
+    slug: "diabetic-ketoacidosis",
+    labs: [
+      { test_id: "k", ranges: { mild: { min: 4, max: 5 }, severe: { min: 2.5, max: 3.2 } } },
+      { test_id: "glucose", ranges: { mild: { min: 500, max: 700 }, severe: { min: 250, max: 300 } } },
+    ],
+    vitals: { temp: { mild: { min: 37.8, max: 37 } } },
+    workup: { initial: [{ test: "vitals" }, { test: "bmp" }] },
+  };
+  autoFix(profile);
+  const [k, glucose] = profile.labs;
+  assert(k.ranges.severe.min >= 3.5, "potassium no longer low");
+  assert(glucose.ranges.severe.min > glucose.ranges.mild.min, "glucose rises with severity");
+  assertEquals(profile.vitals.temp.mild, { min: 98.6, max: 100 });
+  assertEquals(profile.workup.initial.map((r) => r.test), ["bmp"]);
+});
+
+Deno.test("autoFix drops keys the template doesn't define", () => {
+  const profile = { slug: "x", imaging: [{ study: "Ultrasound", preferred_when_note: "extra" }] };
+  autoFix(profile);
+  assert(!("preferred_when_note" in profile.imaging[0]));
 });

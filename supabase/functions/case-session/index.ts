@@ -58,8 +58,6 @@ import { closeCalls } from "../_shared/voicecalls.ts";
 import { liveSessionPrompt, voiceTurnPrompt } from "../_shared/patientprompt.ts";
 import { recordUsage, takeBudget } from "../_shared/usage.ts";
 import { speak, speakStream, STREAM_SAMPLE_RATE, transcribe } from "../_shared/speech.ts";
-import { parseFocus } from "../_shared/focus.ts";
-import { prepareNext } from "../_shared/prefetch.ts";
 import { withQuota } from "../_shared/quota.ts";
 import { type Conduct, conductReply, isProfane, MAX_INAPPROPRIATE, parseConduct, strikes } from "../_shared/conduct.ts";
 
@@ -524,13 +522,6 @@ async function submit(userId: string, input: Record<string, unknown>) {
     return profile ? { ...result, rating: profile.rating } : null;
   });
   if (!saved) throw new HttpError(409, "attempt already submitted");
-  // The student's next case in this topic should find a fresh condition ready. A failure here
-  // must not cost them their grade.
-  try {
-    await prepareNext(parseFocus(content.focus));
-  } catch (error) {
-    console.error("prepare next after grading", error);
-  }
   return saved;
 }
 
@@ -539,11 +530,12 @@ async function submit(userId: string, input: Record<string, unknown>) {
  *  They go into the stored grade too, so a revisit shows the same. */
 async function insights(caseId: string, differential: string[], key: Content["answer_key"]): Promise<Insights | Record<never, never>> {
   try {
-    const [row] = await sql<{ profile: InsightProfile }[]>`
-      select p.profile from private.case_content c
-      join private.condition_profiles p on p.slug = c.condition_slug
+    // The live profile kept with the case; older cases fall back to the stored one.
+    const [row] = await sql<{ profile: InsightProfile | null }[]>`
+      select coalesce(c.profile, p.profile) as profile from private.case_content c
+      left join private.condition_profiles p on p.slug = c.condition_slug
       where c.case_id = ${caseId}`;
-    return row ? conditionInsights(row.profile, differential, [key.diagnosis, ...key.accepted]) : {};
+    return row?.profile ? conditionInsights(row.profile, differential, [key.diagnosis, ...key.accepted]) : {};
   } catch (error) {
     console.error("condition insights", error);
     return {};
