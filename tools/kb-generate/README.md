@@ -7,10 +7,10 @@ Fills `knowledge-base/profiles/<slug>.json` (schema: `knowledge-base/schema/`) w
 Put your keys in `tools/kb-generate/.env` (git-ignored; template in `.env.example`):
 
 ```
-LLM_PROVIDER=openai            # openai (GPT-6.1 Sol, default) | deepseek | anthropic | mock
+LLM_PROVIDER=openai            # openai (GPT-6.1 Sol, default) | anthropic | mock
 # LLM_MODEL=gpt-6.1-sol        # optional override
 # LLM_EFFORT=medium            # off | low | medium | high | max; reasoning effort
-DEEPSEEK_API_KEY=sk-...
+OPENAI_API_KEY=sk-...
 UMLS_API_KEY=...               # SNOMED CT checks (terminology.py)
 ```
 
@@ -64,7 +64,7 @@ The edge function needs `UMLS_API_KEY` alongside the LLM keys (`supabase/functio
 | File | Job |
 |---|---|
 | `generate.py` | Stages, prompts, retries, saving |
-| `llm.py` | Provider switch (DeepSeek, Anthropic, OpenAI, mock) and `.env` loading |
+| `llm.py` | Provider switch (OpenAI, Anthropic, mock) and `.env` loading |
 | `checks.py` | Schema checker + rule checks against `reference_ranges.json` |
 | `prompts/` | Prompt templates. Bump `PROMPT_VERSION` in `generate.py` when you change one |
 | `terminology.py` | SNOMED CT (UMLS) and RxNorm checks on findings and medications |

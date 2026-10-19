@@ -1,9 +1,9 @@
 // One JSON-returning LLM call behind a provider switch (same variables as tools/kb-generate):
-//   LLM_PROVIDER      = openai (default) | deepseek | anthropic
+//   LLM_PROVIDER      = openai (default) | anthropic
 //   LLM_MODEL         = optional override for every task (a one-line rollback)
-//   LLM_MODEL_<TASK>  = optional override for one task, e.g. LLM_MODEL_PROFILE=deepseek-flash; the
-//                       model name picks its provider (gpt-… OpenAI, claude-… Anthropic, deepseek-…)
-//   DEEPSEEK_API_KEY / ANTHROPIC_API_KEY / OPENAI_API_KEY
+//   LLM_MODEL_<TASK>  = optional override for one task, e.g. LLM_MODEL_GRADE=gpt-6-luna; the
+//                       model name picks its provider (gpt-… OpenAI, claude-… Anthropic)
+//   OPENAI_API_KEY / ANTHROPIC_API_KEY
 // Keys come from supabase/functions/.env locally and `supabase secrets set` when deployed.
 //
 // Each call names its task, and the task picks the model and reasoning effort. Thinking is slow:
@@ -12,10 +12,10 @@
 
 import { costUSD, recordUsage, takeBudget, type Usage } from "./usage.ts";
 
-/** `thinking` says how the provider takes a reasoning effort: DeepSeek's thinking switch, OpenAI's
- *  reasoning models (max_completion_tokens, reasoning_effort, no temperature), or not at all. */
+/** `thinking` says how the provider takes a reasoning effort: OpenAI's reasoning models
+ *  (max_completion_tokens, reasoning_effort, no temperature), or not at all. */
 export type Provider = {
-  url: string; keyEnv: string; model: string; style: "openai" | "anthropic"; thinking?: "deepseek" | "openai";
+  url: string; keyEnv: string; model: string; style: "openai" | "anthropic"; thinking?: "openai";
   tasks?: Record<Task, Setting>;
 };
 
@@ -31,21 +31,6 @@ type Setting = { provider?: string; model: string; effort: Effort };
 /** Reasoning tokens count against max_tokens, so thinking calls get this much extra room or the
  *  answer is cut off after the reasoning (finish_reason "length", empty content). */
 const REASONING_BUDGET: Record<Exclude<Effort, "off">, number> = { low: 2000, medium: 4000, high: 8000, max: 16000 };
-
-/** Per task: V4.1 Flash (the `deepseek-flash` alias) in chat mode where speed matters and the facts
- *  are already decided (patient chat, the reply check, case writing, flashcards), thinking for
- *  grading. Condition profiles are written from memory, where OpenAI's GPT-6.1 Sol guesses far less
- *  often than DeepSeek (AA-Omniscience hallucination ~54% vs ~95%), so they go to Sol. Profiles carry
- *  no student data. Medium effort fits prepare-profile's time limit. */
-const DEEPSEEK_TASKS: Record<Task, Setting> = {
-  patient: { model: "deepseek-flash", effort: "off" },
-  check: { model: "deepseek-flash", effort: "off" },
-  cards: { model: "deepseek-flash", effort: "off" },
-  case: { model: "deepseek-flash", effort: "off" }, // facts come from the profile; 16-20 s vs ~40 s on v4-pro
-  grade: { model: "deepseek-flash", effort: "high" },
-  // Low, not high: one stage must finish inside prepare-profile's 140 s. tools/kb-generate runs high.
-  profile: { provider: "openai", model: "gpt-6.1-sol", effort: "medium" },
-};
 
 /** Per task on OpenAI: GPT-6 Luna with reasoning off where speed matters and the facts are already
  *  decided (patient chat, the reply check, flashcards; ~1.6 s a turn), GPT-6.1 Sol where judgment
@@ -63,7 +48,6 @@ const OPENAI_TASKS: Record<Task, Setting> = {
 export type CallOptions = { task: Task; temperature?: number; timeoutMs?: number };
 
 export const PROVIDERS: Record<string, Provider> = {
-  deepseek: { url: "https://api.deepseek.com/chat/completions", keyEnv: "DEEPSEEK_API_KEY", model: "deepseek-flash", style: "openai", thinking: "deepseek", tasks: DEEPSEEK_TASKS },
   openai: { url: "https://api.openai.com/v1/chat/completions", keyEnv: "OPENAI_API_KEY", model: "gpt-6.1-sol", style: "openai", thinking: "openai", tasks: OPENAI_TASKS },
   anthropic: { url: "https://api.anthropic.com/v1/messages", keyEnv: "ANTHROPIC_API_KEY", model: "claude-sonnet-5-5", style: "anthropic" },
 };
@@ -76,7 +60,6 @@ function providerName(): string {
 function providerOf(model: string): string | undefined {
   if (model.startsWith("gpt-")) return "openai";
   if (model.startsWith("claude-")) return "anthropic";
-  if (model.startsWith("deepseek-")) return "deepseek";
   return undefined;
 }
 
@@ -148,7 +131,7 @@ export async function completeJSON<T>(
   return parseJSON<T>(text);
 }
 
-/** Token counts from either API's usage block. Cache hits are DeepSeek's (and OpenAI's cached) prompt tokens. */
+/** Token counts from either API's usage block. Cache hits are OpenAI's cached prompt tokens. */
 // deno-lint-ignore no-explicit-any
 export function usageOf(reply: any): Usage {
   const u = reply?.usage ?? {};
@@ -156,26 +139,24 @@ export function usageOf(reply: any): Usage {
     const hit = (u.cache_read_input_tokens ?? 0) as number;
     return { hit, miss: (u.input_tokens ?? 0) + (u.cache_creation_input_tokens ?? 0), output: u.output_tokens ?? 0, reasoning: 0 };
   }
-  const hit = (u.prompt_cache_hit_tokens ?? u.prompt_tokens_details?.cached_tokens ?? 0) as number;
+  const hit = (u.prompt_tokens_details?.cached_tokens ?? 0) as number;
   return {
     hit,
-    miss: u.prompt_cache_miss_tokens ?? Math.max(0, (u.prompt_tokens ?? 0) - hit),
+    miss: Math.max(0, (u.prompt_tokens ?? 0) - hit),
     output: u.completion_tokens ?? 0,
     reasoning: u.completion_tokens_details?.reasoning_tokens ?? 0,
   };
 }
 
-/** The token cap plus the provider's reasoning switch. Both providers think by default, so "off"
- *  must say so: DeepSeek's thinking switch, OpenAI's "none" effort (which Luna and GPT-6 Sol accept;
- *  GPT-6.1 Sol and Astra don't, so their tasks name an effort). OpenAI takes max_completion_tokens. */
+/** The token cap plus the provider's reasoning switch. OpenAI reasons by default, so "off" sends the
+ *  "none" effort (which Luna and GPT-6 Sol accept; GPT-6.1 Sol and Astra don't, so their tasks name
+ *  an effort). OpenAI takes max_completion_tokens. */
 export function thinkingFields(thinking: Provider["thinking"], maxTokens: number, effort: Effort): Record<string, unknown> {
   if (thinking === "openai") {
     if (effort === "off") return { max_completion_tokens: maxTokens, reasoning_effort: "none" };
     return { max_completion_tokens: maxTokens + REASONING_BUDGET[effort], reasoning_effort: effort };
   }
-  if (!thinking) return { max_tokens: maxTokens };
-  if (effort === "off") return { max_tokens: maxTokens, thinking: { type: "disabled" } };
-  return { max_tokens: maxTokens + REASONING_BUDGET[effort], thinking: { type: "enabled" }, reasoning_effort: effort };
+  return { max_tokens: maxTokens };
 }
 
 export function parseJSON<T>(text: string): T {
