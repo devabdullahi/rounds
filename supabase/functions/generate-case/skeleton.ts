@@ -1,17 +1,16 @@
 // The case's content built in code, before any model writes a word: every history fact the student
 // can uncover (what it says clinically, its label, how much it counts, which must-not-miss it
 // screens for), the exam results for findings that are present, and each test's price and wait.
-// The model then only says these in the patient's own words (writer.ts voicePrompt) and writes the
-// door note, the voice, normal exam results and study reports. So the medicine comes from the
-// profile and the plan, never from the model, and the model writes about half as much.
+// template.ts then words them and fills in the door note, the person, normal exam results and study
+// reports. So the medicine comes from the profile and the plan, never from a model.
 // Pure, so the rules are unit-tested.
-import type { CasePlan, PlannedTest, Profile } from "../_shared/casegen.ts";
+import { type CasePlan, leakTerms, type PlannedTest, type Profile } from "../_shared/casegen.ts";
 import { backgroundForWriter, type PatientBackground } from "./background.ts";
 
 export type SkeletonFact = {
   id: string;
   label: string;
-  /** What the fact says, clinically; the model turns it into the patient's words. */
+  /** What the fact says, clinically; template.ts turns it into a plain first-person line. */
   content: string;
   importance: "essential" | "important" | "optional";
   screens_for: string | null;
@@ -54,6 +53,40 @@ function text(value: unknown): string {
   return "";
 }
 
+/** Generic words in diagnosis names that say nothing about which diagnosis it is. */
+const GENERIC = new Set(["acute", "chronic", "disease", "disorder", "syndrome", "infection", "primary", "secondary", "severe",
+  "simple", "complicated", "condition", "deficiency", "injury", "failure", "type", "with", "without", "due", "the", "and",
+  // An injury's name says what happened, which the patient tells anyway ("my cat bit me").
+  "animal", "human", "bite", "bites", "burn", "burns", "wound", "wounds", "foreign", "body", "trauma"]);
+
+/** Every name of the diagnosis, and each distinctive word in them ("cholecystitis" from "Acute
+ *  cholecystitis"), unless the patient's own history says it (an alcohol use disorder patient talks
+ *  about alcohol). Text holding one of these would hand the student the answer. */
+export function diagnosisWords(profile: Profile): string[] {
+  const names = leakTerms(profile);
+  const history = [
+    ...profile.patient.risk_factors.map((r) => r.text), ...(profile.patient.social_history ?? []),
+    ...profile.presentation.chief_complaints.map((c) => c.text),
+    ...profile.presentation.hpi.associated_symptoms.map((s) => s.text),
+  ].join(" ").toLowerCase();
+  const words = names.flatMap((n) => n.split(/[^a-z0-9]+/)).filter((w) => w.length >= 5 && !GENERIC.has(w) && !history.includes(w));
+  return [...new Set([...names, ...words])];
+}
+
+/** Profile text reasoning about the diagnosis rather than describing the patient ("suggests
+ *  cholecystitis rather than biliary colic"): fine for a clinician, never for the patient's facts. */
+const TEACHING = /\b(suggests?|suggestive|unlike|rather than|distinguish\w*|differentiat\w*|classic(?:al(?:ly)?)?|typical(?:ly)?|in contrast|consistent with|points? to|hallmark|diagnos\w*|criteria)\b/i;
+const EMPTY = /^(not applicable|n\/a|none|variable|unknown|not relevant)\.?$/i;
+
+/** A presentation detail cut to what describes this patient: sentences that teach or name the
+ *  diagnosis, and empty values ("Not applicable"), are dropped. */
+export function describing(value: string, banned: string[]): string {
+  return value.replace(/\s*\([^)]*\)/g, "").split(/(?<=[.;])\s+/)
+    .map((part) => part.trim().replace(/[.;]$/, ""))
+    .filter((part) => part && !EMPTY.test(part) && !TEACHING.test(part) && !banned.some((w) => part.toLowerCase().includes(w)))
+    .join("; ");
+}
+
 /** Every history fact for this patient, from the presentation, the plan's present and absent
  *  symptoms, the profile's history and the synthetic background record. */
 export function skeletonFacts(profile: Profile, plan: CasePlan, background: PatientBackground | null, rng: () => number): SkeletonFact[] {
@@ -62,8 +95,9 @@ export function skeletonFacts(profile: Profile, plan: CasePlan, background: Pati
     if (content) facts.push({ id: `f${facts.length + 1}`, label, content, importance, screens_for });
   };
   const hpi = profile.presentation.hpi;
+  const banned = diagnosisWords(profile);
   for (const [keys, label, importance] of HPI) {
-    add(label, keys.map((k) => text(hpi[k]) && `${k}: ${text(hpi[k])}`).filter(Boolean).join(". "), importance);
+    add(label, keys.map((k) => describing(text(hpi[k]), banned)).map((v, i) => v && `${keys[i]}: ${v}`).filter(Boolean).join(". "), importance);
   }
 
   // The illness's own associated symptoms are a fact each (the ones a student must find); the rest of
@@ -88,9 +122,9 @@ export function skeletonFacts(profile: Profile, plan: CasePlan, background: Pati
   const otherDenied = plan.symptomsAbsent.filter((s) => !negatives.includes(s));
   if (otherDenied.length) add("Other denied symptoms", `Denies: ${otherDenied.join("; ")}.`, "optional");
 
-  // How far along depends on the condition (an ectopic is weeks in, preeclampsia past 20), so the
-  // writer picks a gestational age that fits and says it.
-  if (plan.pregnant) add("Pregnancy", "Pregnant: give a gestational age that fits the condition.", "essential");
+  // How far along depends on the condition (an ectopic is weeks in, preeclampsia past 20), so
+  // template.ts takes the weeks from the profile.
+  if (plan.pregnant) add("Pregnancy", "Pregnant.", "essential");
 
   const record = background ? backgroundForWriter(background) : null;
   const pick = <T>(list: T[], n: number) => [...list].sort(() => rng() - 0.5).slice(0, n);
@@ -108,7 +142,7 @@ export function skeletonFacts(profile: Profile, plan: CasePlan, background: Pati
 }
 
 /** Exam steps from the plan: present findings verbatim from the profile; absent ones left for a
- *  normal result in the model's words (finding null). */
+ *  normal result from the template (finding null). */
 export function skeletonManeuvers(plan: CasePlan): SkeletonManeuver[] {
   return plan.exam.map((f, i) => ({
     id: `x${i + 1}`,
