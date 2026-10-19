@@ -32,18 +32,18 @@ type Setting = { provider?: string; model: string; effort: Effort };
  *  answer is cut off after the reasoning (finish_reason "length", empty content). */
 const REASONING_BUDGET: Record<Exclude<Effort, "off">, number> = { low: 2000, medium: 4000, high: 8000, max: 16000 };
 
-/** Per task: GPT-6 Luna with reasoning off where speed matters and the facts are already decided
- *  (patient chat, the reply check; ~1.6 s a turn), GPT-6.1 Sol where judgment or medical recall
- *  matters (grading, condition profiles). Sol has no "none" effort, so its tasks always name one.
- *  DeepSeek V4.1 Flash with thinking off writes flashcards (the user's pick) and cases: a case is
- *  ~3.8k tokens of output whose medicine the plan already fixes, and Flash writes it in 12–17 s
- *  against 70–88 s on Sol (measured 2026-10-19), which kept write-ahead and retries inside the
- *  150 s function limit. Cases carry no student data. */
+/** Per task: GPT-6 Luna with reasoning off where speed matters and the facts are already decided:
+ *  patient chat and the reply check (~1.6 s a turn), and writing cases. A case is ~3.8k tokens of
+ *  output whose medicine the plan already fixes; Luna writes it in ~30 s against 70–88 s on Sol
+ *  (measured 2026-10-19), which keeps the write-ahead and retries inside the 150 s function limit.
+ *  GPT-6.1 Sol where judgment or medical recall matters (grading, condition profiles); it has no
+ *  "none" effort, so its tasks always name one. Flashcards go to DeepSeek V4.1 Flash with thinking
+ *  off, the user's pick for cards. */
 const OPENAI_TASKS: Record<Task, Setting> = {
   patient: { model: "gpt-6-luna", effort: "off" },
   check: { model: "gpt-6-luna", effort: "off" },
   cards: { provider: "deepseek", model: "deepseek-flash", effort: "off" },
-  case: { provider: "deepseek", model: "deepseek-flash", effort: "off" },
+  case: { model: "gpt-6-luna", effort: "off" },
   grade: { model: "gpt-6.1-sol", effort: "medium" },
   profile: { model: "gpt-6.1-sol", effort: "medium" },
 };
