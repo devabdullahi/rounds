@@ -4,7 +4,7 @@
 import { HttpError } from "./http.ts";
 import { sql } from "./db.ts";
 
-export type QuotaKind = "case" | "question" | "cards" | "grade" | "voice";
+export type QuotaKind = "case" | "question" | "cards" | "grade" | "voice" | "realtime";
 
 const LIMITS: Record<QuotaKind, { env: string; fallback: number; noun: string }> = {
   case: { env: "LIMIT_CASES_PER_DAY", fallback: 10, noun: "new patients" },
@@ -14,6 +14,8 @@ const LIMITS: Record<QuotaKind, { env: string; fallback: number; noun: string }>
   grade: { env: "LIMIT_GRADES_PER_DAY", fallback: 30, noun: "graded submissions" },
   // Each spoken turn is two units: the student's words transcribed, the patient's reply spoken.
   voice: { env: "LIMIT_VOICE_PER_DAY", fallback: 400, noun: "voice turns" },
+  // Live calls: each runs at most CALL_SECONDS (5 minutes), so 4 is about 20 minutes a day.
+  realtime: { env: "LIMIT_LIVE_CALLS_PER_DAY", fallback: 4, noun: "live voice calls" },
 };
 
 export function dailyLimit(kind: QuotaKind): number {

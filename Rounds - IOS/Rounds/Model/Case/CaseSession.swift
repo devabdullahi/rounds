@@ -137,6 +137,48 @@ final class CaseSession {
         try await service.speakLatestReply(attempt: attempt())
     }
 
+    // MARK: Live voice
+
+    /// Opens a live voice call for the phone's WebRTC offer.
+    func startLiveCall(offer: String) async throws -> LiveCall {
+        startClockIfNeeded()
+        return try await service.startLiveCall(attempt: attempt(), offer: offer)
+    }
+
+    /// One finished spoken exchange: shown in the chat at once (it was already heard), then logged
+    /// so it reveals facts and counts toward the grade. Returns true when the server ended the call.
+    func logLiveTurn(call: String, question: String, reply: String) async -> Bool {
+        withAnimation(Springs.slide) {
+            messages.append(ChatMessage(kind: .doctor, text: question))
+            if !reply.isEmpty { messages.append(ChatMessage(kind: .patient, text: reply)) }
+        }
+        timeline.append(TimelineEvent(at: .now, kind: .question, text: question))
+        do {
+            let outcome = try await service.logVoiceTurn(attempt: attempt(), call: call, question: question, reply: reply)
+            let answer = outcome.answer
+            withAnimation(Springs.slide) {
+                revealed = Set(answer.revealedIDs)
+                coverage = answer.coverage
+                if !answer.revealed.isEmpty && !examMode {
+                    messages.append(ChatMessage(kind: .reveal, text: "Revealed: " + answer.revealed.map(\.label).joined(separator: ", ")))
+                }
+                if outcome.brokeRule {
+                    messages.append(ChatMessage(kind: .problem, text: "The patient said something that isn't part of this case. Don't rely on it."))
+                }
+            }
+            return outcome.ended
+        } catch {
+            withAnimation(Springs.slide) { messages.append(ChatMessage(kind: .problem, text: error.localizedDescription)) }
+            return false
+        }
+    }
+
+    /// The live call ended on the phone; the server hangs up its side. Best effort.
+    func endLiveCall(_ call: String) {
+        guard let attemptID else { return }
+        Task { [service] in try? await service.endLiveCall(attempt: attemptID, call: call) }
+    }
+
     /// Key history areas uncovered so far (onset, character, radiation…), without saying which remain.
     var historyCoverage: (got: Int, total: Int) { coverage }
 
