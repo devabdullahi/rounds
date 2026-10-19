@@ -122,8 +122,7 @@ struct InterviewView: View {
                 session.ask(text)
             }
             voice.usePatient(sex: c.sex, age: c.age, seed: c.bed)
-            // The server transcribes each spoken turn and voices the patient; Apple's speech is the fallback.
-            voice.transcriber = { [session] audio in try await session.transcribe(audio) }
+            // The server voices the patient; Apple's speech is the fallback.
             voice.spokenReply = { [session] in try await session.spokenReply() }
             voice.streamedReply = { [session] in try await session.streamedReply() }
             voice.askAloud = { [session] question in await session.askAloud(question) }

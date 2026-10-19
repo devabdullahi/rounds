@@ -118,11 +118,6 @@ final class CaseSession {
 
     // MARK: Voice
 
-    /// What the student said in a recorded voice turn, as the server transcribes it.
-    func transcribe(_ audio: Data) async throws -> String {
-        try await service.transcribe(attempt: attempt(), audio: audio)
-    }
-
     /// The patient's latest reply, spoken in their voice.
     func spokenReply() async throws -> Data {
         try await service.speakLatestReply(attempt: attempt())
