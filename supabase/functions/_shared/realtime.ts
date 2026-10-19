@@ -101,7 +101,10 @@ export function sessionConfig(instructions: string, voice: string, model = realt
     model,
     instructions,
     output_modalities: ["audio"],
-    max_output_tokens: 400,
+    // Audio counts against this: a 400 cap cut a four-sentence reply off mid-sentence (status
+    // "incomplete", reason max_output_tokens; 2026-10-19), and that reply needed ~830. Replies are
+    // told to stay at 1-2 sentences; the cap is only a backstop against a runaway answer.
+    max_output_tokens: 1500,
     audio: {
       input: { transcription: { model: "gpt-transcribe", prompt: TRANSCRIBE_PROMPT }, turn_detection: turnDetection() },
       output: { voice },
