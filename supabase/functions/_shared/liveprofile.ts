@@ -204,83 +204,105 @@ export function expandLevels(profile: Json): void {
   }
 }
 
-/** Fills every template section at once, each grounded in the same facts and the condition's
- *  triage. Returns the profile and which sections came back incomplete. */
-export async function fillTemplate(
-  slug: string, triage: Json, grounding: string,
-  complete: (system: string, user: string) => Promise<Json>, system: string,
-): Promise<{ profile: Json; missing: string[] }> {
-  const base: Json = { schema_version: "0.2", slug, triage };
-  const families = familiesOf(triage);
-  const replies = await Promise.all(LIVE_STAGES.map((_, stage) =>
-    complete(system, livePrompt(stage, triage, grounding, base, [], families)).catch(() => ({}))
-  ));
-  const profile: Json = { ...base };
-  const missing: string[] = [];
-  replies.forEach((reply, stage) => {
-    const { output, missing: m } = sectionsOutput(LIVE_STAGES[stage].sections, reply);
-    Object.assign(profile, output);
-    missing.push(...m);
-  });
-  return { profile, missing };
-}
-
 /** Which template section an error belongs to, from its prefix ("labs[3] k.severe: …" → labs). */
 function stageOf(error: string): number {
-  const section = error.match(/^([a-z_]+)/)?.[1] ?? "";
+  const section = error.match(/^\$?\.?([a-z_]+)/)?.[1] ?? "";
   return LIVE_STAGES.findIndex((s) => s.sections.includes(section));
 }
 
-/** The profile's problems by template section: blocking ones (structure, medical rules) and
- *  terminology ones (a term that isn't an exact SNOMED CT or RxNorm name). Terms only advise, like
- *  stored profiles' allowance for unverified terms: standard phrases such as "scrotal erythema"
- *  aren't exact SNOMED names, and rejecting on them threw good profiles away. */
-async function problemsByStage(profile: Json, missing: string[], termErrors: (output: Json) => Promise<string[]>) {
-  const blocking = new Map<number, string[]>();
-  const terms = new Map<number, string[]>();
-  const add = (map: Map<number, string[]>, stage: number, error: string) => { if (stage >= 0) map.set(stage, [...(map.get(stage) ?? []), error]); };
-  for (const m of missing) add(blocking, stageOf(m.replace(/^missing section /, "")), m);
-  for (const [stage, s] of LIVE_STAGES.entries()) {
-    for (const section of s.sections) if (section in profile) for (const e of sectionErrors(section, profile[section])) add(blocking, stage, e);
+/** Fixes in code that change nothing a check cares about but used to cost a rewrite round (~8 s):
+ *  - the template's own example shows a condition without ECG findings as "ecg": {}, which the
+ *    schema rejects for missing "findings"; both mean "no ECG findings".
+ *  - a name listed twice in accepted_names. */
+export function normalize(part: Json): void {
+  if (part.ecg && typeof part.ecg === "object" && !Array.isArray(part.ecg) && !("findings" in part.ecg)) part.ecg = { ...part.ecg, findings: [] };
+  const names = part.teaching?.accepted_names;
+  if (Array.isArray(names)) {
+    const seen = new Set<string>();
+    part.teaching.accepted_names = names.filter((n) => {
+      const key = typeof n === "string" ? n.trim().toLowerCase() : n;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
   }
-  if (blocking.size === 0) for (const e of ruleErrors(profile)) add(blocking, stageOf(e), e);
-  const found = await Promise.all(LIVE_STAGES.map((s) => termErrors(Object.fromEntries(s.sections.filter((k) => k in profile).map((k) => [k, profile[k]])))));
-  found.forEach((errors, stage) => errors.forEach((e) => add(terms, stage, e)));
-  return { blocking, terms };
 }
 
-/** A profile for one case, built live: facts from the APIs, the template filled at once, then
- *  checked; sections with problems are rewritten once with them listed. Returns the problems that
- *  remain, so the caller can try another condition rather than plan from a flawed profile. */
+/** One live call's sections, made usable and checked: levels turned into ranges, mechanical
+ *  mistakes fixed in code (each touches only its own section), then the section's structure and
+ *  terminology checked. Blocking problems are structure; term notes only advise (standard phrases
+ *  such as "scrotal erythema" aren't exact SNOMED names, and rejecting on them threw good profiles
+ *  away). */
+type StageResult = { output: Json; blocking: string[]; terms: string[] };
+
+async function fillStage(
+  stage: number, prompt: (feedback: string[]) => string, base: Json,
+  deps: { system: string; complete: (system: string, user: string) => Promise<Json>; termErrors: (output: Json) => Promise<string[]> },
+): Promise<StageResult> {
+  const { sections } = LIVE_STAGES[stage];
+  const attempt = async (feedback: string[]): Promise<StageResult> => {
+    const reply = await deps.complete(deps.system, prompt(feedback)).catch(() => ({}));
+    const { output: raw, missing } = sectionsOutput(sections, reply);
+    const part: Json = { ...base, ...raw };
+    normalize(part);
+    expandLevels(part);
+    repair(part);
+    autoFix(part);
+    const output = Object.fromEntries(sections.filter((k) => k in raw).map((k) => [k, part[k]]));
+    const blocking = [...missing, ...sections.filter((k) => k in output).flatMap((k) => sectionErrors(k, output[k]))];
+    return { output, blocking, terms: await deps.termErrors(output) };
+  };
+  const first = await attempt([]);
+  // Rewritten straight away, while slower sections are still being written: a separate round
+  // after every section returned used to add ~10 s.
+  return first.blocking.length ? await attempt([...first.blocking, ...first.terms]) : first;
+}
+
+/** A profile for one case, built live: facts from the APIs, then every template section written at
+ *  once, each fixed, checked and (once) rewritten with its problems as soon as it arrives. Rules
+ *  across sections are checked when all are in, and the sections they flag rewritten once more.
+ *  Returns the problems that remain, so the caller can try another condition rather than plan from
+ *  a flawed profile. */
 export async function buildLiveProfile(
   slug: string, triage: Json, catalogBackground: string,
   deps: { umlsKey: string; system: string; complete: (system: string, user: string) => Promise<Json>; termErrors: (output: Json) => Promise<string[]> },
 ): Promise<{ profile: Json; problems: string[]; facts: Facts }> {
   const facts = await fetchFacts(triage.name, deps.umlsKey);
   const grounding = groundingText(facts, catalogBackground);
-  const { profile, missing } = await fillTemplate(slug, triage, grounding, deps.complete, deps.system);
-  expandLevels(profile);
-  repair(profile);
-  // Mechanical rule errors are fixed in code, so most profiles skip the rewrite round (~10 s).
-  autoFix(profile);
-  let { blocking, terms } = await problemsByStage(profile, missing, deps.termErrors);
-  // Only sections with blocking problems are rewritten; their term notes ride along as feedback.
-  if (blocking.size) {
-    const base: Json = { schema_version: "0.2", slug, triage };
-    await Promise.all([...blocking.entries()].map(async ([stage, errors]) => {
-      const reply = await deps.complete(deps.system, livePrompt(stage, triage, grounding, base, [...errors, ...(terms.get(stage) ?? [])], familiesOf(triage)))
-        .catch(() => ({}));
-      Object.assign(profile, sectionsOutput(LIVE_STAGES[stage].sections, reply).output);
-    }));
-    expandLevels(profile);
-    repair(profile);
-    autoFix(profile);
-    ({ blocking, terms } = await problemsByStage(profile, [], deps.termErrors));
+  const base: Json = { schema_version: "0.2", slug, triage };
+  const families = familiesOf(triage);
+  const prompt = (stage: number) => (feedback: string[]) => livePrompt(stage, triage, grounding, base, feedback, families);
+  const results = await Promise.all(LIVE_STAGES.map((_, stage) => fillStage(stage, prompt(stage), base, deps)));
+
+  const profile: Json = { ...base, ...Object.assign({}, ...results.map((r) => r.output)) };
+  let blocking = results.flatMap((r) => r.blocking);
+  if (blocking.length === 0) {
+    const byStage = new Map<number, string[]>();
+    for (const e of ruleErrors(profile)) byStage.set(stageOf(e), [...(byStage.get(stageOf(e)) ?? []), e]);
+    byStage.delete(-1);
+    if (byStage.size) {
+      await Promise.all([...byStage.entries()].map(async ([stage, errors]) => {
+        const reply = await deps.complete(deps.system, prompt(stage)([...errors, ...results[stage].terms])).catch(() => ({}));
+        const { output } = sectionsOutput(LIVE_STAGES[stage].sections, reply);
+        const part: Json = { ...base, ...output };
+        normalize(part);
+        expandLevels(part);
+        repair(part);
+        autoFix(part);
+        for (const k of Object.keys(output)) profile[k] = part[k];
+      }));
+      blocking = LIVE_STAGES.flatMap((s) => {
+        const { output, missing } = sectionsOutput(s.sections, profile);
+        return [...missing, ...Object.keys(output).flatMap((k) => sectionErrors(k, output[k]))];
+      });
+      // As before, a rule error no section owns can't be rewritten, so it doesn't block.
+      if (blocking.length === 0) blocking = ruleErrors(profile).filter((e) => stageOf(e) >= 0);
+    }
   }
-  const unverified = [...terms.values()].flat();
+  const unverified = results.flatMap((r) => r.terms);
   profile.generation = {
     stages: [], live: true, review: { status: "pending" },
-    validation: { status: blocking.size ? "failed" : "passed", review_issues: unverified },
+    validation: { status: blocking.length ? "failed" : "passed", review_issues: unverified },
   };
-  return { profile, problems: [...blocking.values()].flat(), facts };
+  return { profile, problems: blocking, facts };
 }
