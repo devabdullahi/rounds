@@ -12,11 +12,11 @@
 //   3. Plan the patient in code (severity, age, sex, findings, vitals, lab values), and pick a
 //      synthetic background record of the same sex and a close age (background.ts), if one fits.
 //   4. Build the case's content in code (skeleton.ts): every history fact, present exam findings and
-//      test prices; then fill in the rest from templates (template.ts): the door note, person, normal
-//      exam results, study reports and one-tap questions. No model writes the case, so nothing in it
-//      is invented; the patient model voices the facts when the student asks.
-//   5. Check the writing (structure, no diagnosis leaks). A field that names the diagnosis is
-//      reworded by the model, field by field.
+//      test prices. The LLM only voices it: each fact in the patient's words, the door note and
+//      persona, normal exam results and study reports. It never chooses the medicine. If the writer
+//      fails, the case is filled from templates instead (template.ts), plainer but correct.
+//   5. Check the writing (structure, no diagnosis leaks, no invented facts: _shared/factaudit.ts). A
+//      leak is reworded field by field; other problems get a rewrite with the problems listed.
 //   6. Save the public door note and menus, and the private script, results and rubric.
 //   7. Queue the student's next case for this focus after replying (private.ready_cases).
 //
@@ -25,25 +25,30 @@
 import { body, callerId, HttpError, json, serve } from "../_shared/http.ts";
 import { sql } from "../_shared/db.ts";
 import { completeJSON, currentModel } from "../_shared/llm.ts";
-import { CASE_FIXER, PROMPT_VERSION } from "../_shared/prompts.ts";
+import { CASE_FIXER, CASE_VOICE, FACT_AUDITOR, FACT_FIXER, PROMPT_VERSION } from "../_shared/prompts.ts";
 import { acceptedNames, type CasePlan, leakTerms, planCase, type Profile } from "../_shared/casegen.ts";
 import { flag, type Patient, TESTS } from "../_shared/labs.ts";
 import { type Focus, parseFocus } from "../_shared/focus.ts";
-import { checkTerms, umlsKey } from "../_shared/terms.ts";
+import { auditPrompt, candidateFlags, confirmWithUmls, type Flag, fixRequest, type PlanItems, parseClaims } from "../_shared/factaudit.ts";
+import { checkTerms, conceptOf, umlsKey } from "../_shared/terms.ts";
 import { buildLiveProfile } from "../_shared/liveprofile.ts";
 import { SYSTEM_PROMPT } from "../_shared/profilegen.ts";
 // Daily patient limit off for now (2026-10-19, user request); restore these to turn it back on.
 // import { refundQuota, takeQuota } from "../_shared/quota.ts";
-import { MAX_AGE_GAP, type PatientBackground, pickBackground } from "./background.ts";
+import { backgroundForWriter, MAX_AGE_GAP, type PatientBackground, pickBackground } from "./background.ts";
 import { bedCode } from "./bedcode.ts";
-import { applyFixes, assemble, buildRubric, checkWriting, fixPrompt, leakSpots, neutralIds, type Writing } from "./writer.ts";
+import { applyFixes, assemble, buildRubric, checkWriting, fixPrompt, leakSpots, neutralIds, type Voice, voicePrompt, type Writing } from "./writer.ts";
 import { buildSkeleton } from "./skeleton.ts";
 import { templateVoice } from "./template.ts";
 
-/** Bound slow provider calls so a stuck one can't keep a student waiting for the edge runtime's
- *  full request limit. */
+/** Writer tries before falling back to templates. A typical write takes 7–9 s on DeepSeek Flash. Slow
+ *  provider calls are bounded so retries can't keep a student waiting for the edge runtime's full
+ *  request limit. */
+const WRITE_ATTEMPTS = 2;
 const GENERATION_BUDGET_MS = 120_000;
 const TEMPLATE_TIMEOUT_MS = 30_000;
+const CASE_TIMEOUT_MS = 40_000;
+const CHECK_TIMEOUT_MS = 10_000;
 const FIX_TIMEOUT_MS = 12_000;
 
 function timeoutFor(deadline: number, maximum: number): number {
@@ -88,13 +93,16 @@ serve(async (req) => {
   // No case waiting: write one now, in this request, as before background jobs. A student never waits
   // on a background job, which could die with its worker and leave them polling for minutes; writing
   // ahead is only a head start. A stored profile makes this about a second; a live one 10–15 s.
-  const rows = await claimReady(userId, focus) ?? await writeNow(focus);
+  const rows = await claimReady(userId, focus) ?? await writeNow(userId, focus);
 
   const caseId = await insertCase(userId, rows);
   // Queue the next case after this response; the next start can take it as soon as it's ready.
   queueGeneration(userId, focus);
   return json({ case_id: caseId, model: currentModel("case") });
 });
+
+/** How many of a student's latest patients' conditions are avoided when picking the next one. */
+const RECENT_CONDITIONS = 15;
 
 /** Live profile attempts per case: a condition whose profile still fails its checks is swapped. */
 const LIVE_TRIES = 2;
@@ -112,7 +120,12 @@ type Source = "stored" | "live";
  *  (and saved when it passes). `waiting`: a student is waiting, so a condition with a stored profile
  *  is preferred whenever the focus has one. Null when the focus has no condition, or none built
  *  cleanly within LIVE_TRIES. */
-async function pickProfile(focus: Focus, deadline: number, waiting: boolean): Promise<(Picked & { source: Source }) | null> {
+async function pickProfile(userId: string, focus: Focus, deadline: number, waiting: boolean): Promise<(Picked & { source: Source }) | null> {
+  // Conditions the student met in their last few patients, so a small topic doesn't repeat itself.
+  const recent = (await sql<{ slug: string }[]>`
+    select cc.condition_slug as slug from public.cases c join private.case_content cc on cc.case_id = c.id
+    where c.created_by = ${userId} and cc.condition_slug is not null
+    order by c.created_at desc limit ${RECENT_CONDITIONS}`).map((r) => r.slug);
   const tried: string[] = [];
   for (let attempt = 0; attempt < LIVE_TRIES; attempt++) {
     if (Date.now() >= deadline) break;
@@ -125,7 +138,7 @@ async function pickProfile(focus: Focus, deadline: number, waiting: boolean): Pr
       where c.case_suitable and c.triage is not null and not (c.slug = any(${tried}::text[]))
         and (${focus.kind !== "rotation"} or ${focus.value} = any(c.clerkships))
         and (${focus.kind !== "system"} or ${focus.value} = any(c.organ_systems))
-      order by (${waiting} and p.profile is not null) desc, random() limit 1`;
+      order by (c.slug = any(${recent}::text[])) asc, (${waiting} and p.profile is not null) desc, random() limit 1`;
     if (!c) return null;
     tried.push(c.slug);
     const topics = { clerkships: c.clerkships, organ_systems: c.organ_systems, synonyms: c.synonyms };
@@ -194,10 +207,10 @@ async function startGeneration(userId: string, focus: Focus, polling: boolean): 
 }
 
 /** A case written while the student waits: a stored profile when the focus has one. */
-async function writeNow(focus: Focus): Promise<CaseRows> {
+async function writeNow(userId: string, focus: Focus): Promise<CaseRows> {
   const started = Date.now();
   const deadline = started + GENERATION_BUDGET_MS;
-  const picked = await pickProfile(focus, deadline, true);
+  const picked = await pickProfile(userId, focus, deadline, true);
   if (!picked) throw new HttpError(503, "Couldn't prepare a patient just now. Tap to try again.");
   const profiled = Date.now();
   const rows = await composeCase(picked, focus, deadline);
@@ -219,7 +232,7 @@ async function writeAhead(userId: string, focus: Focus, token: string, studentWa
       return;
     }
     const deadline = Date.now() + GENERATION_BUDGET_MS;
-    const picked = await pickProfile(focus, deadline, studentWaiting);
+    const picked = await pickProfile(userId, focus, deadline, studentWaiting);
     if (!picked) throw new Error("no suitable condition could be prepared");
     const profiled = Date.now();
     const rows = await composeCase(picked, focus, deadline);
@@ -284,17 +297,109 @@ async function composeCase(
   const terms = leakTerms(profile);
   const background = await findBackground(plan, [profile.triage.name, ...acceptedNames(profile.teaching.accepted_names, synonyms)]);
   const skeleton = buildSkeleton(profile, plan, background, Math.random);
-  let writing: Writing = assemble(skeleton, templateVoice(profile, plan, skeleton, background, Math.random));
-  let problems = checkWriting(writing, plan, terms);
-  if (problems.length) {
-    writing = await fixLeaks(writing, terms, deadline);
-    problems = checkWriting(writing, plan, terms);
+  let user = voicePrompt(profile, plan, skeleton, background);
+  const items = planItems(profile, plan, background);
+  let writing: Writing | null = null;
+  let problems: string[] = [];
+  for (let attempt = 0; attempt < WRITE_ATTEMPTS; attempt++) {
+    if (Date.now() >= deadline) break;
+    try {
+      writing = assemble(skeleton, await completeJSON<Voice>(CASE_VOICE, user, 5000, {
+        task: "case", timeoutMs: timeoutFor(deadline, CASE_TIMEOUT_MS),
+      }));
+      problems = checkWriting(writing, plan, terms);
+      if (problems.length) {
+        writing = await fixLeaks(writing, terms, deadline);
+        problems = checkWriting(writing, plan, terms);
+      }
+    } catch (error) {
+      problems = [`reply unusable: ${(error as Error).message.slice(0, 200)}`];
+    }
+    if (problems.length === 0) break;
+    user += `\n\nYour previous reply had these problems. Fix them and reply with the full JSON again:\n- ${problems.join("\n- ")}`;
   }
-  if (problems.length > 0) {
+  // Facts the plan doesn't support are reworded in place: a few lines in seconds, where a full
+  // rewrite takes 7–9 s and can invent something else.
+  if (writing && problems.length === 0) {
+    writing = await fixUnsupported(writing, await auditCase(writing, items, deadline), profile.slug, deadline);
+  } else {
+    // The writer failed: a plainer case from templates beats no case. Its words come only from the plan.
+    console.warn("generate-case: writer failed, using templates", profile.slug, problems.slice(0, 3));
+    writing = assemble(skeleton, templateVoice(profile, plan, skeleton, background, Math.random));
+    problems = checkWriting(writing, plan, terms);
+    if (problems.length) {
+      writing = await fixLeaks(writing, terms, deadline);
+      problems = checkWriting(writing, plan, terms);
+    }
+  }
+  if (!writing || problems.length > 0) {
     console.error("generate-case: writing failed", profile.slug, problems);
     throw new HttpError(502, "the patient couldn't be written; try again");
   }
   return buildRows(profile, clerkships, systems, synonyms, plan, neutralIds(writing), focus, background?.id ?? null);
+}
+
+/** Everything the writer was given that a fact may state: planned symptoms, the presentation's
+ *  details, risk factors and history, and the background record. Absent symptoms apart, since the
+ *  patient may only deny those. */
+function planItems(profile: Profile, plan: CasePlan, background: PatientBackground | null): PlanItems {
+  const texts = (list: unknown) => (Array.isArray(list) ? list : []).map((x) => (typeof x === "string" ? x : x?.text)).filter((x): x is string => !!x);
+  const hpi = profile.presentation.hpi as Record<string, unknown>;
+  const details = Object.entries(hpi).filter(([k]) => k !== "associated_symptoms" && k !== "pertinent_negatives")
+    .flatMap(([, v]) => (typeof v === "string" ? [v] : texts(v)));
+  const p = profile.patient as Record<string, unknown>;
+  const record = background ? backgroundForWriter(background) : null;
+  return {
+    present: plan.symptomsPresent,
+    absent: plan.symptomsAbsent,
+    background: [
+      ...profile.presentation.chief_complaints.map((c) => c.text), ...details,
+      ...texts(p.risk_factors), ...texts(p.comorbidities), ...texts(p.social_history), ...texts(p.family_history), ...texts(p.risk_medications),
+      ...(record ? [...record.chronic_conditions, ...record.current_medications, ...record.allergies, record.smoking, ...record.social] : []),
+    ],
+  };
+}
+
+/** The fact audit (_shared/factaudit.ts): claims the plan doesn't support. Advisory if it can't
+ *  run: a failed audit call never blocks a case. */
+async function auditCase(writing: Writing, items: PlanItems, deadline: number): Promise<Flag[]> {
+  try {
+    const reply = await completeJSON(FACT_AUDITOR, auditPrompt(items, writing.facts ?? []), 2500, {
+      task: "check", timeoutMs: timeoutFor(deadline, CHECK_TIMEOUT_MS),
+    });
+    const flags = candidateFlags(parseClaims(reply, items.present.length + items.absent.length + items.background.length), items);
+    const remaining = deadline - Date.now();
+    if (!flags.some((flag) => flag.kind === "invented") || remaining <= 0) return flags;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    try {
+      return await Promise.race([
+        confirmWithUmls(flags, items, conceptOf),
+        new Promise<Flag[]>((resolve) => {
+          timer = setTimeout(() => resolve(flags), remaining);
+        }),
+      ]);
+    } finally {
+      if (timer !== undefined) clearTimeout(timer);
+    }
+  } catch (error) {
+    console.error("generate-case: fact audit failed", (error as Error).message.slice(0, 200));
+    return [];
+  }
+}
+
+/** Rewords the flagged facts so they drop (or deny) what the plan doesn't support. */
+async function fixUnsupported(writing: Writing, flags: Flag[], slug: string, deadline: number): Promise<Writing> {
+  if (!flags.length) return writing;
+  try {
+    const reply = await completeJSON<{ fixes?: { where: string; text: string }[] }>(FACT_FIXER, fixRequest(flags, writing.facts), 2000, {
+      task: "case", timeoutMs: timeoutFor(deadline, FIX_TIMEOUT_MS),
+    });
+    console.log("generate-case: fact audit fixed", slug, flags.map((f) => `${f.kind}: ${f.claim}`));
+    return applyFixes(writing, Array.isArray(reply.fixes) ? reply.fixes : []);
+  } catch (error) {
+    console.error("generate-case: fact fix failed", (error as Error).message.slice(0, 200));
+    return writing;
+  }
 }
 
 /** Rewords only the fields that named the diagnosis. Leaks are the usual reason a writing fails, and

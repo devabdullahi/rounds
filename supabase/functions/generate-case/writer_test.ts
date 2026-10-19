@@ -103,7 +103,7 @@ Deno.test("a background's medical items reach the facts cleaned of coding wordin
     id: "x", age: plan.age, sex: plan.sex, marital: "M", conditions: ["Hypertension (disorder)"],
     medications: [{ name: "lisinopril 10 MG Oral Tablet" }], allergies: ["Peanut (substance)"], smoking: "Ex-smoker", social: [],
   }, () => 0.5).map((f) => f.content).join(" | ");
-  assert(facts.includes("Hypertension") && facts.includes("lisinopril 10 MG Oral Tablet") && facts.includes("Peanut"));
+  assert(facts.includes("Hypertension") && facts.includes("lisinopril 10 mg") && facts.includes("Peanut"));
   assert(!facts.includes("(substance)") && !facts.includes("(disorder)"));
 });
 

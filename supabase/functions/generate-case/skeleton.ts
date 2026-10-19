@@ -27,12 +27,52 @@ const HPI: [keys: string[], label: string, importance: SkeletonFact["importance"
 ];
 /** Pertinent negatives that become their own fact; the rest of the denied symptoms share one. */
 const MAX_NEGATIVES = 5;
+/** Other denied symptoms in that shared fact. */
+const MAX_OTHER_DENIED = 6;
 /** The illness's most typical present symptoms get a fact each; the rest share one. */
 const MAX_OWN_SYMPTOMS = 4;
 const FREQUENCY_ORDER = ["almost_always", "common", "sometimes", "rare"];
 const MAX_HISTORY_ITEMS = 2;
 
 const words = (text: string) => new Set(text.toLowerCase().match(/[a-z]{4,}/g) ?? []);
+
+/** Words too common to tell two symptoms apart. */
+const COMMON = new Set(["with", "without", "from", "that", "this", "have", "been", "more", "less", "than", "into", "over",
+  "under", "feeling", "symptoms", "other", "only", "after", "before", "when", "worse", "sometimes", "often", "very", "some"]);
+const keyWords = (text: string) => new Set([...words(text)].filter((w) => !COMMON.has(w)));
+
+/** Whether two symptom phrases name the same thing ("Itchy eyes" and "Itchy, watery, red eyes";
+ *  "Fever" and "No facial swelling or fever"): one's key words contain the other's, or they share two. */
+export function overlaps(a: string, b: string): boolean {
+  const x = keyWords(a), y = keyWords(b);
+  if (!x.size || !y.size) return false;
+  const shared = [...x].filter((w) => y.has(w)).length;
+  return shared === x.size || shared === y.size || shared >= 2;
+}
+
+/** Review-of-systems names as a person would label them. */
+const SYSTEM_LABEL: Record<string, string> = {
+  ent: "Ear, nose and throat", heent: "Head, eyes, ears, nose and throat", constitutional: "General",
+  allergic_immunologic: "Allergies", gastrointestinal: "Stomach and bowels", genitourinary: "Urinary",
+  musculoskeletal: "Muscles and joints", neurologic: "Nervous system", psychiatric: "Mood", integumentary: "Skin",
+  cardiovascular: "Heart", respiratory: "Breathing", hematologic_lymphatic: "Blood and glands", endocrine: "Hormones",
+};
+const systemLabel = (system: string) => SYSTEM_LABEL[system.toLowerCase()] ?? `${system[0].toUpperCase()}${system.slice(1).replace(/_/g, " ")}`;
+
+/** Background records list every diagnosis a synthetic person ever had; a case wants their few
+ *  ongoing conditions, not past sepsis or an old fracture. */
+const ACUTE = /sepsis|fracture|injur|laceration|sprain|pregnan|acute|infection|poisoning|overdose|burn|bite|wound|contusion|concussion|dislocation/i;
+const MAX_CHRONIC = 3;
+/** A risk factor that's only the patient's age or sex. */
+const DEMOGRAPHIC = /^(?:(?:male|female|young|older|advanced|increasing)\s+)?(?:sex|gender|age|childhood|adolescen\w*|infancy|elderly|older adults?|male|female)\b[^;]*$/i;
+const MAX_MEDICATIONS = 4;
+
+/** "Hydrochlorothiazide 25 MG Oral Tablet" → "hydrochlorothiazide 25 mg"; brand and package text dropped. */
+export function medicationName(raw: string): string {
+  const first = raw.split(/\s+\/\s+|\s*\[/)[0].trim();
+  const m = first.match(/^(.+?\d+(?:\.\d+)?\s*(?:MG|MCG|UNT|ML|%)(?:\/ML)?)/i);
+  return (m ? m[1] : first).replace(/\s+/g, " ").toLowerCase();
+}
 
 /** The must-not-miss alternative a pertinent negative helps rule out: the one whose trigger or
  *  reason shares the most meaningful words with it (at least two), else none. */
@@ -120,20 +160,36 @@ export function skeletonFacts(profile: Profile, plan: CasePlan, background: Pati
     .sort((a, b) => FREQUENCY_ORDER.indexOf(a.frequency) - FREQUENCY_ORDER.indexOf(b.frequency)).map((s) => s.text);
   for (const symptom of typical.slice(0, MAX_OWN_SYMPTOMS)) add(symptom, `Has ${symptom.toLowerCase()}.`, "important");
   if (typical.length > MAX_OWN_SYMPTOMS) add("Other symptoms", `Also has ${typical.slice(MAX_OWN_SYMPTOMS).join("; ").toLowerCase()}.`, "important");
+  // What the patient has, in every wording the profile uses, so the same symptom isn't told twice
+  // and nothing they have is also denied.
+  const has = [...typical, ...profile.presentation.chief_complaints.flatMap((c) => [c.text, (c as { term?: string }).term ?? ""])].filter(Boolean);
   for (const system of profile.presentation.ros) {
-    const positives = system.positives.map((p) => p.text).filter((t) => present.has(t) && !associated.has(t));
-    if (positives.length) add(`${system.system[0].toUpperCase()}${system.system.slice(1)} symptoms`, `Has ${positives.join("; ").toLowerCase()}.`, "important");
+    const positives = system.positives.map((p) => p.text)
+      .filter((t) => present.has(t) && !associated.has(t) && !has.some((h) => overlaps(h, t)));
+    has.push(...positives);
+    if (positives.length) add(`${systemLabel(system.system)} symptoms`, `Has ${positives.join("; ").toLowerCase()}.`, "important");
   }
+  const contradicts = (denied: string) => has.some((h) => overlaps(h, denied));
 
   const mustNotMiss = profile.differential.filter((d) => d.must_not_miss);
   const negatives = hpi.pertinent_negatives.slice(0, MAX_NEGATIVES);
+  const deniedSoFar: string[] = [];
   for (const negative of negatives) {
     const said = plain(negative, banned);
-    if (!said) continue;
+    if (!said || contradicts(said)) continue;
+    deniedSoFar.push(said);
     const screens = screensFor(negative, mustNotMiss);
     add(`No ${said.toLowerCase()}`, `Denies: ${said}.`, screens ? "important" : "optional", screens);
   }
-  const otherDenied = plan.symptomsAbsent.filter((s) => !negatives.includes(s)).map((s) => plain(s, banned)).filter(Boolean);
+  // Absent symptoms the patient may deny: never one they have under another name, never one already
+  // denied, and only a handful (a list of twenty reads like a form, not a person).
+  const otherDenied: string[] = [];
+  for (const symptom of plan.symptomsAbsent) {
+    const said = plain(symptom, banned);
+    if (!said || contradicts(said) || [...deniedSoFar, ...otherDenied].some((d) => overlaps(d, said))) continue;
+    otherDenied.push(said);
+    if (otherDenied.length >= MAX_OTHER_DENIED) break;
+  }
   if (otherDenied.length) add("Other denied symptoms", `Denies: ${otherDenied.join("; ")}.`, "optional");
 
   // How far along depends on the condition (an ectopic is weeks in, preeclampsia past 20), so
@@ -144,11 +200,14 @@ export function skeletonFacts(profile: Profile, plan: CasePlan, background: Pati
   // Items that still name the diagnosis after their reasoning is cut ("Mother with urinary
   // incontinence" for urinary incontinence) are left out rather than hand the student the answer.
   const pick = (list: string[], n: number) => [...list].map((x) => plain(x, banned)).filter(Boolean).sort(() => rng() - 0.5).slice(0, n);
-  const risks = pick(profile.patient.risk_factors.map((r) => r.text), MAX_HISTORY_ITEMS);
-  const history = [...(record?.chronic_conditions ?? []), ...pick(profile.patient.comorbidities ?? [], 1)];
+  // Age and sex are risk factors on paper but not something a patient reports ("male sex in childhood").
+  const risks = pick(profile.patient.risk_factors.map((r) => r.text).filter((r) => !DEMOGRAPHIC.test(r)), MAX_HISTORY_ITEMS);
+  const chronic = (record?.chronic_conditions ?? []).filter((c) => !ACUTE.test(c) && plain(c, banned)).slice(0, MAX_CHRONIC);
+  const history = [...chronic, ...pick(profile.patient.comorbidities ?? [], 1)];
   add("Past medical history", history.length ? history.join("; ") : "No significant past medical history.", "important");
   if (risks.length) add("Risk factors", risks.join("; "), "important");
-  add("Medications", record?.current_medications.length ? `Takes ${record.current_medications.join(", ")}.` : "Takes no regular medications.", "important");
+  const medications = [...new Set((record?.current_medications ?? []).map(medicationName))].slice(0, MAX_MEDICATIONS);
+  add("Medications", medications.length ? `Takes ${medications.join(", ")}.` : "Takes no regular medications.", "important");
   add("Allergies", record?.allergies.length ? `Allergic to ${record.allergies.join(", ")}.` : "No known drug allergies.", "optional");
   const social = [record?.smoking && record.smoking !== "unknown" ? record.smoking : "", ...(record?.social ?? []), ...pick(profile.patient.social_history ?? [], 1)].filter(Boolean);
   add("Social history", social.join("; ") || "Nothing notable.", "optional");

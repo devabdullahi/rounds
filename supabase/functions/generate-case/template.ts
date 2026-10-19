@@ -117,7 +117,9 @@ export function templateVoice(profile: Profile, plan: CasePlan, skeleton: Skelet
   const chief = complaints[0] as { text: string; term?: string } | undefined;
   const duration = String(profile.presentation.hpi.duration ?? "").split(/[;,(.]/)[0].trim();
   const spans = /\d|minute|hour|day|week|month|year/i.test(duration) && duration.split(" ").length <= 5 && safe(duration);
-  const complaintText = lower(safe(chief?.term) ?? safe(chief?.text) ?? "feeling unwell");
+  // The clinical term ("Rhinorrhea"); the patient's own words ("my nose is runny") don't fit a triage note.
+  const firstPerson = (t?: string) => t && /\b(i|i'm|i've|my|me)\b/i.test(t) ? undefined : t;
+  const complaintText = lower(safe(chief?.term) ?? safe(firstPerson(chief?.text)) ?? "feeling unwell");
   const doorNote = `${plan.age}-year-old ${who(plan)}${plan.pregnant ? ", pregnant," : ""} with ${complaintText}${spans ? ` for ${lower(duration)}` : ""}.`;
 
   const record = background ? backgroundForWriter(background) : null;
