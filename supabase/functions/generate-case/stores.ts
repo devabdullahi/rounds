@@ -14,18 +14,27 @@ import type { CaseRows, Condition, GenerationStart, History } from "./types.ts";
 const READY_FOR = "3 days";
 
 /** The next condition for this student and focus, never one in `tried`. Conditions they've never
- *  had come first, so nothing repeats until the topic is used up; after that, the one they had
- *  longest ago. Among equals, a condition with a stored profile wins when a student is waiting, then
- *  chance. A condition already waiting for them as a written-ahead case is skipped. */
+ *  had come first, so nothing repeats until the topic is used up; after that, the ones they had
+ *  longest ago (by day, then chance, so one condition that keeps failing can't block every tap).
+ *  Among equals, a condition with a stored profile wins when a student is waiting, then chance.
+ *  Skipped: a condition already waiting for them as a written-ahead case, or being written for them
+ *  by a background job right now. History counts deleted patients too (their fingerprints stay). */
 export async function nextCondition(userId: string, focus: Focus, tried: string[], waiting: boolean): Promise<Condition | null> {
   const [c] = await sql<Condition[]>`
-    with seen as (
-      select cc.condition_slug as slug, max(cs.created_at) as last
+    with had as (
+      select cc.condition_slug as slug, cs.created_at as at
       from public.cases cs join private.case_content cc on cc.case_id = cs.id
       where cs.created_by = ${userId} and cc.condition_slug is not null
-      group by cc.condition_slug
+      union all
+      select condition_slug, created_at from private.patient_fingerprints
+      where user_id = ${userId} and condition_slug is not null
+    ), seen as (
+      select slug, max(at) as last from had group by slug
     ), ahead as (
       select rows -> 'content' ->> 'condition_slug' as slug from private.ready_cases where user_id = ${userId}
+      union all
+      select slug from private.case_generation_jobs
+      where user_id = ${userId} and status = 'running' and started_at > now() - interval '3 minutes'
     )
     select c.slug, c.triage, c.background, c.clerkships, c.organ_systems,
       coalesce(array(select jsonb_array_elements_text(c.terms -> 'snomed' -> 'synonyms')), '{}') as synonyms,
@@ -37,7 +46,7 @@ export async function nextCondition(userId: string, focus: Focus, tried: string[
       and c.slug not in (select slug from ahead where slug is not null)
       and (${focus.kind !== "rotation"} or ${focus.value} = any(c.clerkships))
       and (${focus.kind !== "system"} or ${focus.value} = any(c.organ_systems))
-    order by (s.slug is not null) asc, s.last asc nulls first, (${waiting} and p.profile is not null) desc, random()
+    order by (s.slug is not null) asc, date_trunc('day', s.last) asc nulls first, (${waiting} and p.profile is not null) desc, random()
     limit 1`;
   return c ?? null;
 }
@@ -121,6 +130,12 @@ export async function startGeneration(userId: string, focus: Focus): Promise<Gen
   });
 }
 
+/** Marks the condition a running job picked, so a case written for the student meanwhile skips it. */
+export async function recordJobPick(userId: string, focus: Focus, token: string, slug: string): Promise<void> {
+  await sql`update private.case_generation_jobs set slug = ${slug}
+    where user_id = ${userId} and focus = ${focus.stored} and started_at::text = ${token}`;
+}
+
 /** Releases the slot, keeping the written case (if any) for the student's next start. */
 export async function finishGeneration(
   userId: string, focus: Focus, token: string, rows: CaseRows | null, failed = false,
@@ -163,7 +178,8 @@ export async function insertCase(userId: string, { case: c, content: k, fingerpr
             ${k.condition_slug}, ${k.severity}, ${tx.json(k.persona)}, ${tx.json(k.rubric)}, ${k.focus}, ${k.background_id},
             ${k.profile ? tx.json(k.profile) : null})`;
         if (fingerprint) {
-          await tx`insert into private.patient_fingerprints (user_id, fingerprint, case_id) values (${userId}, ${fingerprint}, ${id})`;
+          await tx`insert into private.patient_fingerprints (user_id, fingerprint, case_id, condition_slug)
+            values (${userId}, ${fingerprint}, ${id}, ${k.condition_slug})`;
         }
       });
       return id;

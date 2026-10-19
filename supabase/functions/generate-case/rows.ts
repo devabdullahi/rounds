@@ -42,7 +42,7 @@ function doorVitals(plan: CasePlan) {
 
 export function buildRows(
   profile: Profile, clerkships: string[], systems: string[], synonyms: string[], plan: CasePlan, w: Writing, focus: Focus,
-  backgroundId: string | null,
+  backgroundId: string | null, writtenBy = currentModel("case"),
 ): CaseRows {
   const meta = new Map(w.test_meta.map((m) => [m.test_id, m]));
   const reports = new Map(w.studies.map((s) => [s.test_id, s]));
@@ -72,7 +72,7 @@ export function buildRows(
       facts: w.facts, exam: w.maneuvers, tests,
       answer_key: { diagnosis: profile.triage.name, accepted: acceptedNames(profile.teaching.accepted_names, synonyms) },
       condition_slug: profile.slug, severity: plan.severity,
-      persona: { ...w.persona, name: w.patient.name, age: plan.age, sex: plan.sex, pregnant: plan.pregnant, model: currentModel("case"), prompt_version: PROMPT_VERSION },
+      persona: { ...w.persona, name: w.patient.name, age: plan.age, sex: plan.sex, pregnant: plan.pregnant, model: writtenBy, prompt_version: PROMPT_VERSION },
       rubric: buildRubric(profile, plan, w, tests), focus: focus.stored, background_id: backgroundId,
       // The profile this case was planned from: grading insights and mistake cards read it.
       profile,

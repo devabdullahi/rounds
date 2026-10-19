@@ -21,7 +21,7 @@ const PRICES: Record<string, { hit: number; miss: number; output: number }> = {
 const DEFAULT_DAILY_BUDGET_USD = 25;
 
 /** Tasks that make content (cases, profiles, flashcards) rather than serve a student mid-visit. */
-const CONTENT_TASKS = ["case", "template", "profile", "cards"];
+const CONTENT_TASKS = ["case", "audit", "template", "profile", "cards"];
 /** Share of the daily cap content may use; the rest is kept for chat, grading and voice, so a rush
  *  of new patients can't stop students in the middle of a case. LLM_CONTENT_BUDGET_SHARE overrides it. */
 const DEFAULT_CONTENT_SHARE = 0.6;
@@ -46,6 +46,13 @@ export function dailyBudgetUSD(raw = Deno.env.get("LLM_DAILY_BUDGET_USD")): numb
   return raw !== undefined && Number.isFinite(value) && value > 0 ? value : DEFAULT_DAILY_BUDGET_USD;
 }
 
+/** The daily spending cap refused a call. Retrying today won't help, so callers pass it on as is. */
+export class BudgetExceeded extends HttpError {
+  constructor(message: string) {
+    super(503, message);
+  }
+}
+
 /** Whether a call may go ahead, from today's spend: content stops at its share of the cap, and
  *  everything stops at the whole cap. Pure, so the split is unit-tested. */
 export function withinBudget(task: string | undefined, spent: { total: number; content: number }, cap = dailyBudgetUSD(), share = contentShare()): boolean {
@@ -68,7 +75,7 @@ export async function takeBudget(task?: string): Promise<void> {
   }
   if (!withinBudget(task, spent)) {
     console.error("llm daily budget reached", task, spent);
-    throw new HttpError(503, isContentTask(task)
+    throw new BudgetExceeded(isContentTask(task)
       ? "Rounds is writing a lot of patients right now. Please try again in a little while."
       : "Rounds is very busy right now. Please try again tomorrow.");
   }

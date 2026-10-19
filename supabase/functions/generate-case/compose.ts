@@ -3,6 +3,7 @@
 // diagnosis leaks, invented facts) and fall back to templates if the writer fails.
 import { HttpError } from "../_shared/http.ts";
 import { completeJSON } from "../_shared/llm.ts";
+import { BudgetExceeded } from "../_shared/usage.ts";
 import { CASE_FIXER, CASE_VOICE, FACT_AUDITOR, FACT_FIXER } from "../_shared/prompts.ts";
 import { acceptedNames, type CasePlan, leakTerms, planCase, type Profile } from "../_shared/casegen.ts";
 import type { Focus } from "../_shared/focus.ts";
@@ -20,8 +21,13 @@ import type { CaseRows, History, Picked } from "./types.ts";
 
 /** Writer tries before falling back to templates. A typical write takes 7–9 s on DeepSeek Flash. */
 const WRITE_ATTEMPTS = 2;
-/** One writer try; a second slow try still fits the inline budget. */
-const CASE_TIMEOUT_MS = 20_000;
+/** One writer try while a student waits; a second slow try still fits the inline budget. */
+export const INLINE_WRITER_MS = 20_000;
+/** One writer try in the background, where there's time to wait for a slow reply. */
+export const BACKGROUND_WRITER_MS = 45_000;
+/** Kept back from the writer for the template fallback and its leak fix, so a slow writer can't
+ *  leave a case with nothing but an error. */
+const FALLBACK_RESERVE_MS = 15_000;
 const CHECK_TIMEOUT_MS = 10_000;
 const FIX_TIMEOUT_MS = 12_000;
 /** Names drawn before accepting one the student has met: with ~600k combinations a repeat is rare. */
@@ -57,6 +63,7 @@ function freshName(plan: CasePlan, history: History): string {
 /** Plans the patient in code, has the model write them and checks the writing. */
 export async function composeCase(
   { profile, clerkships, organ_systems: systems, synonyms }: Picked, focus: Focus, deadline: number, history: History,
+  writerMs = INLINE_WRITER_MS,
 ): Promise<CaseRows> {
   // Clinical psychology is a focus like any rotation; its cases are written as a psychologist's intake.
   const psychology = focus.kind === "rotation" && focus.value === "clinicalPsychology";
@@ -73,11 +80,12 @@ export async function composeCase(
   const items = planItems(profile, plan, background);
   let writing: Writing | null = null;
   let problems: string[] = [];
+  const writerDeadline = deadline - FALLBACK_RESERVE_MS;
   for (let attempt = 0; attempt < WRITE_ATTEMPTS; attempt++) {
-    if (Date.now() >= deadline) break;
+    if (Date.now() >= writerDeadline) break;
     try {
       writing = assemble(skeleton, await completeJSON<Voice>(CASE_VOICE, user, 5000, {
-        task: "case", timeoutMs: timeoutFor(deadline, CASE_TIMEOUT_MS),
+        task: "case", timeoutMs: timeoutFor(writerDeadline, writerMs),
       }), name);
       problems = checkWriting(writing, plan, terms);
       if (problems.length) {
@@ -85,6 +93,8 @@ export async function composeCase(
         problems = checkWriting(writing, plan, terms);
       }
     } catch (error) {
+      // Out of budget: say so, rather than quietly write a plainer case from templates.
+      if (error instanceof BudgetExceeded) throw error;
       problems = [`reply unusable: ${(error as Error).message.slice(0, 200)}`];
     }
     if (problems.length === 0) break;
@@ -92,12 +102,14 @@ export async function composeCase(
   }
   // Facts the plan doesn't support are reworded in place: a few lines in seconds, where a full
   // rewrite takes 7–9 s and can invent something else.
+  let writtenBy: string | undefined;
   if (writing && problems.length === 0) {
     writing = await fixUnsupported(writing, await auditCase(writing, items, deadline), profile.slug, deadline);
   } else {
     // The writer failed: a plainer case from templates beats no case. Its words come only from the plan.
     console.warn("generate-case: writer failed, using templates", profile.slug, problems.slice(0, 3));
     writing = assemble(skeleton, templateVoice(profile, plan, skeleton, background, Math.random), name);
+    writtenBy = "template";
     problems = checkWriting(writing, plan, terms);
     if (problems.length) {
       writing = await fixLeaks(writing, terms, deadline);
@@ -108,7 +120,7 @@ export async function composeCase(
     console.error("generate-case: writing failed", profile.slug, problems);
     throw new HttpError(502, "the patient couldn't be written; try again");
   }
-  return { ...buildRows(profile, clerkships, systems, synonyms, plan, neutralIds(writing), focus, background?.id ?? null), fingerprint: print };
+  return { ...buildRows(profile, clerkships, systems, synonyms, plan, neutralIds(writing), focus, background?.id ?? null, writtenBy), fingerprint: print };
 }
 
 /** Everything the writer was given that a fact may state: planned symptoms, the presentation's
@@ -137,7 +149,7 @@ function planItems(profile: Profile, plan: CasePlan, background: PatientBackgrou
 async function auditCase(writing: Writing, items: PlanItems, deadline: number): Promise<Flag[]> {
   try {
     const reply = await completeJSON(FACT_AUDITOR, auditPrompt(items, writing.facts ?? []), 2500, {
-      task: "check", timeoutMs: timeoutFor(deadline, CHECK_TIMEOUT_MS),
+      task: "audit", timeoutMs: timeoutFor(deadline, CHECK_TIMEOUT_MS),
     });
     const flags = candidateFlags(parseClaims(reply, items.present.length + items.absent.length + items.background.length), items);
     const remaining = deadline - Date.now();

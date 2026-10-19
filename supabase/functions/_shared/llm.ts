@@ -20,7 +20,7 @@ export type Provider = {
 };
 
 /** What a call is for. Every call names one, so cost and model choice are tracked per feature. */
-export type Task = "patient" | "check" | "case" | "grade" | "cards" | "profile" | "template";
+export type Task = "patient" | "check" | "audit" | "case" | "grade" | "cards" | "profile" | "template";
 
 /** How hard the model reasons before answering. Only providers with per-task settings use it. */
 export type Effort = "off" | "low" | "medium" | "high" | "max";
@@ -43,6 +43,8 @@ const REASONING_BUDGET: Record<Exclude<Effort, "off">, number> = { low: 2000, me
 const OPENAI_TASKS: Record<Task, Setting> = {
   patient: { model: "gpt-6-luna", effort: "off" },
   check: { model: "gpt-6-luna", effort: "off" },
+  // The fact audit of a written case: the same model as the reply check, but content spend (usage.ts).
+  audit: { model: "gpt-6-luna", effort: "off" },
   cards: { provider: "deepseek", model: "deepseek-flash", effort: "off" },
   case: { provider: "deepseek", model: "deepseek-flash", effort: "off" },
   // A live profile's template sections for one case, all at once (_shared/liveprofile.ts): ~10–13 s
