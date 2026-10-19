@@ -11,7 +11,8 @@
 //   voice_session {attempt_id, sdp}                    → {sdp, call_id, seconds}  live voice: the app's
 //            WebRTC offer goes to OpenAI's Realtime API with the patient's instructions and our key,
 //            and OpenAI's answer comes back; audio then flows phone ↔ OpenAI (_shared/realtime.ts).
-//            One unit of the daily 'realtime' allowance per call, each call a few minutes at most.
+//            Each student has a daily live-voice budget in dollars (LIVE_VOICE_USD_PER_DAY, $2): a call
+//            runs up to 5 minutes, shorter when the budget is nearly spent, and none once it's gone.
 //   voice_turn {attempt_id, call_id, question, reply}  → like ask  one finished spoken exchange,
 //            logged for the transcript and the grade. The reply was already heard, so it's checked
 //            afterwards: facts it used light their chips, and a reply that named the diagnosis or
@@ -45,7 +46,9 @@ import { workupText } from "./workup.ts";
 import {
   decodeAudio, lastPatientReply, MAX_SPOKEN_CHARS, MAX_TURNS_PER_CALL, pickLiveVoice, pickVoice, speechInstructions, toBase64, turnRefusal,
 } from "./voice.ts";
-import { CALL_SECONDS, DEADLINE_SLACK_SECONDS, isOffer, openCall, realtimeModel, reservedCostUSD, sessionConfig } from "../_shared/realtime.ts";
+import {
+  callSecondsLeft, DEADLINE_SLACK_SECONDS, isOffer, openCall, realtimeModel, realtimeUSDPerMinute, reservedCostUSD, sessionConfig,
+} from "../_shared/realtime.ts";
 import { closeCalls } from "../_shared/voicecalls.ts";
 import { liveSessionPrompt, voiceTurnPrompt } from "../_shared/patientprompt.ts";
 import { recordUsage, takeBudget } from "../_shared/usage.ts";
@@ -91,7 +94,7 @@ serve(async (req) => {
     case "transcribe": return json(await withQuota(userId, "voice", () => transcribeTurn(userId, input)));
     case "speak": return json(await withQuota(userId, "voice", () => speakReply(userId, input)));
     // A live call is the priciest thing a student can start: one unit of a small daily allowance.
-    case "voice_session": return json(await withQuota(userId, "realtime", () => voiceSession(userId, input)));
+    case "voice_session": return json(await voiceSession(userId, input));
     // Each logged exchange costs a review call, like a typed question.
     case "voice_turn": return json(await withQuota(userId, "question", () => voiceTurn(userId, input)));
     case "voice_end": return json(await voiceEnd(userId, input));
@@ -291,6 +294,10 @@ async function voiceSession(userId: string, input: Record<string, unknown>) {
   }
   // One live call per student at a time: a new one ends whatever was still open.
   await closeCalls({ userId, overdueOnly: false });
+  const seconds = callSecondsLeft(await liveVoiceSpentToday(userId));
+  if (seconds === 0) {
+    throw new HttpError(429, "you've used today's live voice time; it resets at midnight UTC. Turn-by-turn voice and typing still work");
+  }
   await takeBudget();
 
   const persona = content.persona;
@@ -310,11 +317,21 @@ async function voiceSession(userId: string, input: Record<string, unknown>) {
   }
   // A little slack past the app's own deadline before the server treats the call as overdue.
   await sql`insert into private.voice_calls (call_id, user_id, attempt_id, ends_at)
-            values (${answer.callId}, ${userId}, ${attempt.id}, now() + make_interval(secs => ${CALL_SECONDS + DEADLINE_SLACK_SECONDS}))`;
+            values (${answer.callId}, ${userId}, ${attempt.id}, now() + make_interval(secs => ${seconds + DEADLINE_SLACK_SECONDS}))`;
   // Booked at the longest the call can run; closing it settles the difference (_shared/voicecalls.ts).
   const zero = { hit: 0, miss: 0, output: 0, reasoning: 0 };
   await recordUsage("voice_live", `openai/${realtimeModel()}`, zero, reservedCostUSD());
-  return { sdp: answer.sdp, call_id: answer.callId, seconds: CALL_SECONDS };
+  return { sdp: answer.sdp, call_id: answer.callId, seconds };
+}
+
+/** What this student's live calls cost today (UTC), from how long each ran. Calls are closed
+ *  before this is read, so every one has its end. */
+async function liveVoiceSpentToday(userId: string): Promise<number> {
+  const [{ seconds }] = await sql<{ seconds: number }[]>`
+    select coalesce(sum(extract(epoch from coalesce(ended_at, ends_at) - started_at)), 0)::float8 as seconds
+    from private.voice_calls
+    where user_id = ${userId} and started_at >= (now() at time zone 'utc')::date::timestamp at time zone 'utc'`;
+  return (seconds / 60) * realtimeUSDPerMinute();
 }
 
 async function ownCall(userId: string, attemptId: string, callId: unknown): Promise<Call> {

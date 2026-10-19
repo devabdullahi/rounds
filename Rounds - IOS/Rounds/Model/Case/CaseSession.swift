@@ -139,10 +139,17 @@ final class CaseSession {
 
     // MARK: Live voice
 
-    /// Opens a live voice call for the phone's WebRTC offer.
+    /// Opens a live voice call for the phone's WebRTC offer. A refusal (today's live voice time is
+    /// used up, or the call couldn't start) is said in the chat, since the screen then quietly
+    /// switches to turn-by-turn voice.
     func startLiveCall(offer: String) async throws -> LiveCall {
         startClockIfNeeded()
-        return try await service.startLiveCall(attempt: attempt(), offer: offer)
+        do {
+            return try await service.startLiveCall(attempt: attempt(), offer: offer)
+        } catch {
+            withAnimation(Springs.slide) { messages.append(ChatMessage(kind: .problem, text: error.localizedDescription)) }
+            throw error
+        }
     }
 
     /// One finished spoken exchange: shown in the chat at once (it was already heard), then logged

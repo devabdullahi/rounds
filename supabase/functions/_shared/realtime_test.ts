@@ -1,6 +1,6 @@
 import { assert, assertEquals } from "jsr:@std/assert@1";
 import {
-  CALL_SECONDS, callIdFrom, isOffer, MAX_CALL_SECONDS, MAX_SDP_BYTES, realtimeUSDPerMinute, reservedCostUSD, safetyId, sessionConfig, settlementUSD,
+  CALL_SECONDS, callIdFrom, callSecondsLeft, isOffer, MAX_CALL_SECONDS, MAX_SDP_BYTES, realtimeUSDPerMinute, reservedCostUSD, safetyId, sessionConfig, settlementUSD,
 } from "./realtime.ts";
 
 Deno.test("only real SDP offers under the cap are forwarded", () => {
@@ -52,4 +52,12 @@ Deno.test("the per-minute rate falls back on a missing or bad override", () => {
   assertEquals(realtimeUSDPerMinute(undefined), 0.15);
   assertEquals(realtimeUSDPerMinute("-1"), 0.15);
   assertEquals(realtimeUSDPerMinute("abc"), 0.15);
+});
+
+Deno.test("a call runs five minutes while the day's budget allows, then shorter, then not at all", () => {
+  // $0.15 a minute against $2 a day.
+  assertEquals(callSecondsLeft(0, 0.15, 2), 300);
+  assertEquals(callSecondsLeft(1.85, 0.15, 2), 60);
+  assertEquals(callSecondsLeft(1.95, 0.15, 2), 0); // 20 s left isn't worth a call
+  assertEquals(callSecondsLeft(2.5, 0.15, 2), 0);
 });

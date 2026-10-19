@@ -33,6 +33,24 @@ export function realtimeUSDPerMinute(raw = Deno.env.get("REALTIME_USD_PER_MINUTE
   return raw !== undefined && Number.isFinite(value) && value > 0 ? value : 0.15;
 }
 
+/** What one student may spend on live voice a day, in USD (2026-10-19: $2, then they'd buy more).
+ *  LIVE_VOICE_USD_PER_DAY overrides it. */
+export function dailyVoiceBudgetUSD(raw = Deno.env.get("LIVE_VOICE_USD_PER_DAY")): number {
+  const value = Number(raw);
+  return raw !== undefined && Number.isFinite(value) && value > 0 ? value : 2;
+}
+
+/** A call shorter than this isn't worth opening: the student would barely get a question in. */
+export const MIN_CALL_SECONDS = 30;
+
+/** How long the next call may run, given what the student spent on live voice today: the usual
+ *  CALL_SECONDS, or less when the day's budget is nearly used up; 0 when it can't buy a short call. */
+export function callSecondsLeft(spentUSD: number, perMinute = realtimeUSDPerMinute(), budget = dailyVoiceBudgetUSD()): number {
+  // The epsilon keeps float error ($0.15 left at $0.15 a minute = 59.999… s) from losing a second.
+  const affordable = Math.floor(((budget - spentUSD) / perMinute) * 60 + 1e-6);
+  return affordable < MIN_CALL_SECONDS ? 0 : Math.min(CALL_SECONDS, affordable);
+}
+
 /** What a call books against the daily cap when it opens: the longest it could run. */
 export function reservedCostUSD(perMinute = realtimeUSDPerMinute()): number {
   return (perMinute * MAX_CALL_SECONDS) / 60;

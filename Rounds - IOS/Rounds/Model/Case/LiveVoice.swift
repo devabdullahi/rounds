@@ -112,7 +112,7 @@ final class LiveVoice {
         deadline = Task { [weak self] in
             try? await Task.sleep(for: .seconds(seconds))
             guard !Task.isCancelled else { return }
-            self?.finish("This live call reached its \(seconds / 60)-minute limit. Tap the mic to start another.")
+            self?.finish("This live call reached its time limit. Tap the mic to start another.")
         }
     }
 
