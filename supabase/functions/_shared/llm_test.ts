@@ -17,7 +17,7 @@ Deno.test("thinking calls get reasoning headroom on top of the answer budget", (
 
 Deno.test("OpenAI reasoning models get max_completion_tokens and an effort, never max_tokens", () => {
   assertEquals(thinkingFields("openai", 7000, "medium"), { max_completion_tokens: 11000, reasoning_effort: "medium" });
-  assertEquals(thinkingFields("openai", 400, "off"), { max_completion_tokens: 4400 });
+  assertEquals(thinkingFields("openai", 400, "off"), { max_completion_tokens: 400, reasoning_effort: "none" });
 });
 
 const deepseek = PROVIDERS.deepseek;
@@ -53,8 +53,22 @@ Deno.test("a per-task override beats the global one, which beats the default", (
   assertEquals(settingFor(deepseek, "cards", env).model, "deepseek-chat");
 });
 
+Deno.test("each OpenAI task gets its model and effort: Luna without reasoning for chat, Sol for judgment", () => {
+  const cases: [Task, string, Effort][] = [
+    ["patient", "gpt-6-luna", "off"],
+    ["check", "gpt-6-luna", "off"],
+    ["cards", "gpt-6-luna", "off"],
+    ["case", "gpt-6.1-sol", "low"],
+    ["grade", "gpt-6.1-sol", "medium"],
+    ["profile", "gpt-6.1-sol", "medium"],
+  ];
+  for (const [task, model, effort] of cases) {
+    assertEquals(settingFor(PROVIDERS.openai, task, noEnv), { model, effort }, task);
+  }
+});
+
 Deno.test("providers without task settings use their one model and never think", () => {
-  assertEquals(settingFor(PROVIDERS.openai, "grade", noEnv), { model: "gpt-6.1-sol", effort: "off" });
+  assertEquals(settingFor(PROVIDERS.anthropic, "grade", noEnv), { model: "claude-sonnet-5-5", effort: "off" });
 });
 
 Deno.test("usage reads DeepSeek's cache split and reasoning tokens", () => {
