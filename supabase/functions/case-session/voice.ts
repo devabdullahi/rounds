@@ -5,6 +5,10 @@
 const LOWER = ["ash", "echo", "onyx", "ballad", "verse", "cedar"];
 const HIGHER = ["coral", "nova", "shimmer", "sage", "marin"];
 
+/** The live (Realtime API) voices, a smaller set: lower and higher pitched. */
+const LIVE_LOWER = ["ash", "echo", "ballad", "verse", "cedar"];
+const LIVE_HIGHER = ["coral", "shimmer", "sage", "marin"];
+
 /** Largest recorded turn accepted, decoded: about a minute and a half of AAC at 32 kbps. */
 export const MAX_AUDIO_BYTES = 400_000;
 /** Longest reply spoken; patient replies are a few sentences, so anything longer isn't one. */
@@ -24,6 +28,13 @@ export function pickVoice(sex: string, caseId: string): string {
   return pool[hash(caseId) % pool.length];
 }
 
+/** The live-call voice for this patient: same rule as pickVoice, from the voices Realtime offers. */
+export function pickLiveVoice(sex: string, caseId: string): string {
+  const s = sex.trim().toLowerCase();
+  const pool = s.startsWith("m") ? LIVE_LOWER : s.startsWith("f") ? LIVE_HIGHER : [...LIVE_LOWER, ...LIVE_HIGHER];
+  return pool[hash(caseId) % pool.length];
+}
+
 /** How the patient should sound: age, sex and the case's own description of how they talk.
  *  Never the diagnosis: only what the student can already see on the door note. */
 export function speechInstructions(age: number, sex: string, howTheyTalk: string): string {
@@ -32,13 +43,33 @@ export function speechInstructions(age: number, sex: string, howTheyTalk: string
   return `You are ${who}, a patient talking to a doctor. Speak naturally, like a real person, not a narrator.${manner}`;
 }
 
-type Turn = { role: string; text: string };
+/** `live` marks a reply from a live call: the app reported its words, so they're never voiced. */
+type Turn = { role: string; text: string; live?: boolean };
 
-/** The patient's latest reply, the only text this endpoint will speak. */
+/** The patient's latest reply, the only text this endpoint will speak. Null when there is none, or
+ *  when it came from a live call, so app-supplied text can't be turned into speech. */
 export function lastPatientReply(transcript: Turn[]): string | null {
   for (let i = transcript.length - 1; i >= 0; i--) {
-    if (transcript[i].role === "patient") return transcript[i].text.trim() || null;
+    if (transcript[i].role === "patient") return transcript[i].live ? null : transcript[i].text.trim() || null;
   }
+  return null;
+}
+
+/** Spoken exchanges one live call may log: far more than five minutes of talk holds. */
+export const MAX_TURNS_PER_CALL = 40;
+/** How long after a call ends, or passes its deadline, its last in-flight exchange is still taken. */
+export const LATE_TURN_SECONDS = 20;
+
+/** Why a live call can't log another exchange, or null when it can. Past the grace window an ended
+ *  call takes nothing, so its call id can't be reused to log made-up exchanges later. */
+export function turnRefusal(
+  call: { ends_at: Date; ended_at: Date | null; turns: number },
+  now = new Date(),
+): string | null {
+  const grace = LATE_TURN_SECONDS * 1000;
+  const closed = call.ended_at !== null && now.getTime() - new Date(call.ended_at).getTime() > grace;
+  if (closed || now.getTime() - new Date(call.ends_at).getTime() > grace) return "call ended";
+  if (call.turns >= MAX_TURNS_PER_CALL) return "this call has logged as many exchanges as it can";
   return null;
 }
 

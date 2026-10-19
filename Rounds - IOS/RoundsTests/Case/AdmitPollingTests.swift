@@ -86,4 +86,7 @@ private actor ScriptedCases: CaseService {
     func examine(attempt: String, maneuver: String) async throws -> String { throw Unused() }
     func order(attempt: String, test: String) async throws -> TestResult { throw Unused() }
     func submit(attempt: String, diagnosis: String, differential: [String], plan: String) async throws -> Grade { throw Unused() }
+    func startLiveCall(attempt: String, offer: String) async throws -> LiveCall { throw Unused() }
+    func logVoiceTurn(attempt: String, call: String, question: String, reply: String) async throws -> VoiceTurnOutcome { throw Unused() }
+    func endLiveCall(attempt: String, call: String) async throws { throw Unused() }
 }

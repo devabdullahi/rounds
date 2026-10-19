@@ -14,6 +14,7 @@ const LIMITS: Record<QuotaKind, { env: string; fallback: number; noun: string }>
   grade: { env: "LIMIT_GRADES_PER_DAY", fallback: 30, noun: "graded submissions" },
   // Each spoken turn is two units: the student's words transcribed, the patient's reply spoken.
   voice: { env: "LIMIT_VOICE_PER_DAY", fallback: 400, noun: "voice turns" },
+  // Live voice is limited by cost instead: a daily dollar budget per student (_shared/realtime.ts).
 };
 
 export function dailyLimit(kind: QuotaKind): number {

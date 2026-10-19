@@ -123,6 +123,58 @@ final class CaseSession {
         try await service.speakLatestReply(attempt: attempt())
     }
 
+    // MARK: Live voice
+
+    /// Opens a live voice call for the phone's WebRTC offer. A refusal (today's live voice time is
+    /// used up, or the call couldn't start) is said in the chat, since the screen then quietly
+    /// switches to turn-by-turn voice.
+    func startLiveCall(offer: String) async throws -> LiveCall {
+        startClockIfNeeded()
+        do {
+            return try await service.startLiveCall(attempt: attempt(), offer: offer)
+        } catch {
+            // A server without live voice yet ("Unknown action.") just means turn-by-turn: nothing to say.
+            if (error as? CaseServiceError)?.message != "Unknown action." {
+                withAnimation(Springs.slide) { messages.append(ChatMessage(kind: .problem, text: error.localizedDescription)) }
+            }
+            throw error
+        }
+    }
+
+    /// One finished spoken exchange: shown in the chat at once (it was already heard), then logged
+    /// so it reveals facts and counts toward the grade. Returns true when the server ended the call.
+    func logLiveTurn(call: String, question: String, reply: String) async -> Bool {
+        withAnimation(Springs.slide) {
+            messages.append(ChatMessage(kind: .doctor, text: question))
+            if !reply.isEmpty { messages.append(ChatMessage(kind: .patient, text: reply)) }
+        }
+        timeline.append(TimelineEvent(at: .now, kind: .question, text: question))
+        do {
+            let outcome = try await service.logVoiceTurn(attempt: attempt(), call: call, question: question, reply: reply)
+            let answer = outcome.answer
+            withAnimation(Springs.slide) {
+                revealed = Set(answer.revealedIDs)
+                coverage = answer.coverage
+                if !answer.revealed.isEmpty && !examMode {
+                    messages.append(ChatMessage(kind: .reveal, text: "Revealed: " + answer.revealed.map(\.label).joined(separator: ", ")))
+                }
+                if outcome.brokeRule {
+                    messages.append(ChatMessage(kind: .problem, text: "The patient said something that isn't part of this case. Don't rely on it."))
+                }
+            }
+            return outcome.ended
+        } catch {
+            withAnimation(Springs.slide) { messages.append(ChatMessage(kind: .problem, text: error.localizedDescription)) }
+            return false
+        }
+    }
+
+    /// The live call ended on the phone; the server hangs up its side. Best effort.
+    func endLiveCall(_ call: String) {
+        guard let attemptID else { return }
+        Task { [service] in try? await service.endLiveCall(attempt: attemptID, call: call) }
+    }
+
     /// A spoken question: asked, shown and answered like a typed one, and the reply's voice comes back
     /// in the same response. Returns the reply and its audio, or nil when the question failed (the
     /// error shows in the chat).

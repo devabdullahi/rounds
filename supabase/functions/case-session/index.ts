@@ -13,6 +13,18 @@
 //   ask_aloud {attempt_id, question}                   → one line of JSON (as ask), then the reply's
 //            raw PCM in the same response: voice mode's question and spoken answer in one round trip.
 //            The reply is checked and stored before any of it is voiced, exactly as for ask.
+//   voice_session {attempt_id, sdp}                    → {sdp, call_id, seconds}  live voice: the app's
+//            WebRTC offer goes to OpenAI's Realtime API with the patient's instructions and our key,
+//            and OpenAI's answer comes back; audio then flows phone ↔ OpenAI (_shared/realtime.ts).
+//            Each student has a daily live-voice budget in dollars (LIVE_VOICE_USD_PER_DAY, $2): a call
+//            runs up to 5 minutes, shorter when the budget is nearly spent, and none once it's gone.
+//   voice_turn {attempt_id, call_id, question, reply}  → like ask  one finished spoken exchange,
+//            logged for the transcript and the grade. The reply was already heard, so it's checked
+//            afterwards: facts it used light their chips, and a reply that named the diagnosis or
+//            invented a medical detail is flagged (the app says so). Too many inappropriate
+//            questions hang the call up. Taken only while the call is open (plus a few seconds for
+//            the last exchange in flight) and up to a cap per call; the reply is never voiced.
+//   voice_end {attempt_id, call_id}                   → {}  the app ended the call; the server hangs up too.
 //   submit   {attempt_id, diagnosis, differential, plan} → grade (and queues the next condition
 //            in the case's focus, see _shared/prefetch.ts). The grade carries condition insights
 //            (about, differential, your_extras; see insights.ts) when the case's profile exists.
@@ -29,14 +41,22 @@
 import { body, callerId, HttpError, json, serve } from "../_shared/http.ts";
 import { sql } from "../_shared/db.ts";
 import { completeJSON } from "../_shared/llm.ts";
-import { GRADER, PATIENT, REPLY_CHECKER } from "../_shared/prompts.ts";
+import { GRADER, LIVE_PATIENT, PATIENT, REPLY_CHECKER, VOICE_TURN_REVIEW } from "../_shared/prompts.ts";
 import { patientPrompt } from "../_shared/patientprompt.ts";
 import { type Actions, grade, type Grade, isSingleDiagnosis, matchesDiagnosis, type Rubric, unrated } from "./grade.ts";
 import { conditionInsights, type InsightProfile, type Insights } from "./insights.ts";
 import { namedDiagnoses } from "./leak.ts";
 import { hiddenTests } from "./menu.ts";
 import { workupText } from "./workup.ts";
-import { decodeAudio, lastPatientReply, MAX_SPOKEN_CHARS, pickVoice, speechInstructions, toBase64 } from "./voice.ts";
+import {
+  decodeAudio, lastPatientReply, MAX_SPOKEN_CHARS, MAX_TURNS_PER_CALL, pickLiveVoice, pickVoice, speechInstructions, toBase64, turnRefusal,
+} from "./voice.ts";
+import {
+  callSecondsLeft, DEADLINE_SLACK_SECONDS, isOffer, openCall, realtimeModel, realtimeUSDPerMinute, reservedCostUSD, sessionConfig,
+} from "../_shared/realtime.ts";
+import { closeCalls } from "../_shared/voicecalls.ts";
+import { liveSessionPrompt, voiceTurnPrompt } from "../_shared/patientprompt.ts";
+import { recordUsage, takeBudget } from "../_shared/usage.ts";
 import { speak, speakStream, STREAM_SAMPLE_RATE, transcribe } from "../_shared/speech.ts";
 import { parseFocus } from "../_shared/focus.ts";
 import { prepareNext } from "../_shared/prefetch.ts";
@@ -48,7 +68,8 @@ declare const EdgeRuntime: { waitUntil(promise: Promise<unknown>): void };
 type Fact = { id: string; label: string; reply: string; importance: string; screens_for: string | null };
 type Maneuver = { id: string; title: string; finding: string };
 type Test = { id: string; name: string; cost: number; turnaround_s: number; delays_care_min: number; result: string; abnormal: boolean };
-type Turn = { role: "student" | "patient"; text: string; facts?: string[]; conduct?: Conduct };
+/** `flag` marks a live-voice reply that broke the patient's rules after it was already heard. */
+type Turn = { role: "student" | "patient"; text: string; facts?: string[]; conduct?: Conduct; flag?: "diagnosis" | "invented"; live?: boolean };
 type Attempt = {
   id: string; case_id: string; exam_mode: boolean; submitted_at: string | null; transcript: Turn[];
   started_at: Date; time_limit_minutes: number | null;
@@ -60,7 +81,7 @@ type Content = {
   focus: string; // study focus the case was generated for
 };
 
-const LIMITS = { question: 500, diagnosis: 200, plan: 2000, differential: 10, transcriptTurns: 12 };
+const LIMITS = { question: 500, reply: 1500, diagnosis: 200, plan: 2000, differential: 10, transcriptTurns: 12 };
 /** Facts one reply may reveal; the model lists the most relevant first. More would let one broad
  *  question ("tell me everything") empty the script. */
 const MAX_FACTS_PER_REPLY = 3;
@@ -82,6 +103,11 @@ serve(async (req) => {
     // The same reply as raw PCM, streamed as it's made: the first sound in a few hundred ms.
     case "speak_stream": return await withQuota(userId, "voice", () => speakReplyStream(userId, input));
     case "ask_aloud": return await withQuota(userId, "question", () => askAloud(userId, input));
+    // A live call is the priciest thing a student can start: one unit of a small daily allowance.
+    case "voice_session": return json(await voiceSession(userId, input));
+    // Each logged exchange costs a review call, like a typed question.
+    case "voice_turn": return json(await withQuota(userId, "question", () => voiceTurn(userId, input)));
+    case "voice_end": return json(await voiceEnd(userId, input));
     // Grading costs a model call too, and a quota keeps restart-and-resubmit loops bounded.
     case "submit": return json(await withQuota(userId, "grade", () => submit(userId, input)));
     default: throw new HttpError(400, "unknown action");
@@ -320,6 +346,133 @@ async function speakReply(userId: string, input: Record<string, unknown>) {
     console.error("speech failed", error);
     throw new HttpError(502, "couldn't voice the reply");
   }
+}
+
+// MARK: - live voice
+
+type Call = { call_id: string; ends_at: Date; ended_at: Date | null; turns: number };
+
+async function voiceSession(userId: string, input: Record<string, unknown>) {
+  const { attempt, content } = await loadAttempt(userId, input.attempt_id);
+  if (!isOffer(input.sdp)) throw new HttpError(400, "sdp must be a WebRTC offer under 64 KB");
+  if (strikes(attempt.transcript) >= MAX_INAPPROPRIATE) {
+    throw new HttpError(403, "the patient has stopped answering questions; you can still examine, order tests and submit");
+  }
+  // One live call per student at a time: a new one ends whatever was still open.
+  await closeCalls({ userId, overdueOnly: false });
+  const seconds = callSecondsLeft(await liveVoiceSpentToday(userId));
+  if (seconds === 0) {
+    throw new HttpError(429, "you've used today's live voice time; it resets at midnight UTC. Turn-by-turn voice and typing still work");
+  }
+  await takeBudget();
+
+  const persona = content.persona;
+  const instructions = liveSessionPrompt(
+    LIVE_PATIENT,
+    { name: String(persona.name), age: persona.age, sex: String(persona.sex), voice: String(persona.voice), background: String(persona.background) },
+    speechInstructions(Number(persona.age) || 40, String(persona.sex ?? ""), String(persona.voice ?? "")),
+    content.facts, content.exam, attempt.transcript.slice(-LIMITS.transcriptTurns),
+  );
+  const session = sessionConfig(instructions, pickLiveVoice(String(persona.sex ?? ""), attempt.case_id));
+  let answer;
+  try {
+    answer = await openCall(input.sdp, session, userId);
+  } catch (error) {
+    console.error("realtime call failed", error);
+    throw new HttpError(502, "live voice couldn't start; try again or use turn-by-turn voice");
+  }
+  // A little slack past the app's own deadline before the server treats the call as overdue.
+  await sql`insert into private.voice_calls (call_id, user_id, attempt_id, ends_at)
+            values (${answer.callId}, ${userId}, ${attempt.id}, now() + make_interval(secs => ${seconds + DEADLINE_SLACK_SECONDS}))`;
+  // Booked at the longest the call can run; closing it settles the difference (_shared/voicecalls.ts).
+  const zero = { hit: 0, miss: 0, output: 0, reasoning: 0 };
+  await recordUsage("voice_live", `openai/${realtimeModel()}`, zero, reservedCostUSD());
+  return { sdp: answer.sdp, call_id: answer.callId, seconds };
+}
+
+/** What this student's live calls cost today (UTC), from how long each ran. Calls are closed
+ *  before this is read, so every one has its end. */
+async function liveVoiceSpentToday(userId: string): Promise<number> {
+  const [{ seconds }] = await sql<{ seconds: number }[]>`
+    select coalesce(sum(extract(epoch from coalesce(ended_at, ends_at) - started_at)), 0)::float8 as seconds
+    from private.voice_calls
+    where user_id = ${userId} and started_at >= (now() at time zone 'utc')::date::timestamp at time zone 'utc'`;
+  return (seconds / 60) * realtimeUSDPerMinute();
+}
+
+async function ownCall(userId: string, attemptId: string, callId: unknown): Promise<Call> {
+  if (typeof callId !== "string" || !/^rtc_[A-Za-z0-9_]+$/.test(callId)) throw new HttpError(400, "call_id required");
+  const [call] = await sql<Call[]>`
+    select call_id, ends_at, ended_at, turns from private.voice_calls
+    where call_id = ${callId} and user_id = ${userId} and attempt_id = ${attemptId}`;
+  if (!call) throw new HttpError(404, "call not found");
+  return call;
+}
+
+async function voiceTurn(userId: string, input: Record<string, unknown>) {
+  const question = text(input.question, "question", LIMITS.question);
+  const reply = text(input.reply ?? "", "reply", LIMITS.reply, false);
+  const { attempt, content } = await loadAttempt(userId, input.attempt_id);
+  const call = await ownCall(userId, attempt.id, input.call_id);
+  const refusal = turnRefusal(call);
+  if (refusal) throw new HttpError(409, refusal);
+  // Counted before the review call, atomically, so parallel requests can't log past the cap.
+  const counted = await sql`update private.voice_calls set turns = turns + 1
+                            where call_id = ${call.call_id} and turns < ${MAX_TURNS_PER_CALL} returning call_id`;
+  if (counted.length === 0) throw new HttpError(409, "this call has logged as many exchanges as it can");
+  await closeCalls({ userId, overdueOnly: true });
+
+  const known = new Map(content.facts.map((f) => [f.id, f]));
+  let conduct: Conduct = isProfane(question) ? "inappropriate" : "clinical";
+  let used: string[] = [];
+  let flag: Turn["flag"];
+  // The reply was already heard, so a failed review still logs the turn, just without chips.
+  try {
+    const review = await completeJSON<{ conduct: string; fact_ids: string[]; invented: boolean }>(
+      VOICE_TURN_REVIEW, voiceTurnPrompt(content.facts, content.exam, question, reply), 150, { task: "check" },
+    );
+    if (conduct === "clinical") conduct = parseConduct(review.conduct);
+    used = [...new Set(review.fact_ids ?? [])].filter((id) => known.has(id)).slice(0, MAX_FACTS_PER_REPLY);
+    if (review.invented === true) flag = "invented";
+  } catch (error) {
+    console.error("voice turn review failed", error);
+  }
+  if (namedDiagnoses(reply, [content.answer_key.diagnosis, ...content.answer_key.accepted]).length > 0) flag = "diagnosis";
+  if (flag) console.warn("live patient broke a rule", { attempt: attempt.id, flag });
+  if (conduct !== "clinical") used = [];
+
+  const asked: Turn = conduct === "clinical" ? { role: "student", text: question } : { role: "student", text: question, conduct };
+  // `live`: the app reported these words, so speak never voices them.
+  const said: Turn = flag ? { role: "patient", text: reply, facts: used, flag, live: true } : { role: "patient", text: reply, facts: used, live: true };
+  const [row] = await sql<{ revealed_facts: string[] }[]>`
+    update public.attempts set transcript = transcript || ${sql.json([asked, said])},
+      revealed_facts = revealed_facts || array(select f from unnest(${used}::text[]) f where not f = any(revealed_facts))
+    where id = ${attempt.id} and submitted_at is null
+    returning revealed_facts`;
+  if (!row) throw new HttpError(409, "attempt already submitted");
+
+  // Past its deadline, or too many inappropriate questions: the call ends from here too.
+  const tooRude = strikes([...attempt.transcript, asked]) >= MAX_INAPPROPRIATE;
+  const ended = call.ended_at !== null || new Date(call.ends_at).getTime() < Date.now() || tooRude;
+  if (ended && call.ended_at === null) await closeCalls({ callId: call.call_id, overdueOnly: false });
+
+  const fresh = used.filter((id) => !attempt.revealed_facts.includes(id));
+  const base = { reply, conduct, flag: flag ?? null, ended };
+  if (attempt.exam_mode) return { ...base, revealed: [], revealed_ids: [], coverage: { got: 0, total: 0 } };
+  const key = content.rubric.key_facts;
+  return {
+    ...base,
+    revealed: fresh.map((id) => ({ id, label: known.get(id)!.label })),
+    revealed_ids: row.revealed_facts,
+    coverage: { got: key.filter((f) => row.revealed_facts.includes(f.id)).length, total: key.length },
+  };
+}
+
+async function voiceEnd(userId: string, input: Record<string, unknown>) {
+  const { attempt } = await loadAttempt(userId, input.attempt_id, false);
+  const call = await ownCall(userId, attempt.id, input.call_id);
+  if (call.ended_at === null) await closeCalls({ callId: call.call_id, overdueOnly: false });
+  return {};
 }
 
 // MARK: - submit

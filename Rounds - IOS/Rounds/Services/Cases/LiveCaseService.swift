@@ -130,6 +130,24 @@ struct LiveCaseService: CaseService {
         return audio
     }
 
+    func startLiveCall(attempt: String, offer: String) async throws -> LiveCall {
+        let r: LiveCallReply = try await invoke("case-session", ["action": "voice_session", "attempt_id": attempt, "sdp": offer])
+        return LiveCall(answer: r.sdp, id: r.call_id, seconds: r.seconds)
+    }
+
+    func logVoiceTurn(attempt: String, call: String, question: String, reply: String) async throws -> VoiceTurnOutcome {
+        let r: VoiceTurnReply = try await invoke("case-session", [
+            "action": "voice_turn", "attempt_id": attempt, "call_id": call, "question": question, "reply": reply,
+        ])
+        let answer = PatientAnswer(reply: r.reply, revealed: r.revealed.map { ($0.id, $0.label) }, revealedIDs: r.revealed_ids,
+                                   coverage: (r.coverage.got, r.coverage.total))
+        return VoiceTurnOutcome(answer: answer, brokeRule: r.flag != nil, ended: r.ended)
+    }
+
+    func endLiveCall(attempt: String, call: String) async throws {
+        let _: EmptyReply = try await invoke("case-session", ["action": "voice_end", "attempt_id": attempt, "call_id": call])
+    }
+
     func streamLatestReply(attempt: String) async throws -> AsyncThrowingStream<Data, Error> {
         let bytes = try await stream(["action": "speak_stream", "attempt_id": attempt])
         return Self.audioChunks(bytes.makeAsyncIterator())
@@ -392,6 +410,18 @@ private struct AskReply: Decodable {
     let revealed: [Revealed]
     let revealed_ids: [String]
     let coverage: Coverage
+}
+
+private struct LiveCallReply: Decodable { let sdp: String; let call_id: String; let seconds: Int }
+private struct EmptyReply: Decodable {}
+
+private struct VoiceTurnReply: Decodable {
+    let reply: String
+    let revealed: [AskReply.Revealed]
+    let revealed_ids: [String]
+    let coverage: AskReply.Coverage
+    let flag: String?
+    let ended: Bool
 }
 
 private struct StartBody: Encodable {
