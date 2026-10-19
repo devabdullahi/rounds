@@ -105,7 +105,8 @@ struct InterviewView: View {
         .background(Theme.bg)
         .onDisappear { voice.end() }
         .onChange(of: session.messages.count) {
-            guard voice.phase == .thinking else { return }
+            // Asked aloud, the answer's voice comes with it; only the older two-request path waits here.
+            guard voice.phase == .thinking, voice.askAloud == nil else { return }
             let replies = session.messages.filter { $0.kind == .patient }
             if replies.count > repliesBeforeQuestion, let reply = replies.last {
                 // The patient answered the spoken question: say it out loud.
@@ -125,6 +126,7 @@ struct InterviewView: View {
             voice.transcriber = { [session] audio in try await session.transcribe(audio) }
             voice.spokenReply = { [session] in try await session.spokenReply() }
             voice.streamedReply = { [session] in try await session.streamedReply() }
+            voice.askAloud = { [session] question in await session.askAloud(question) }
             session.startClockIfNeeded()
             tab = .history
             #if DEBUG

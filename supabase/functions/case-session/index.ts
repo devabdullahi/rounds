@@ -10,6 +10,9 @@
 //            never text the app sends, so it can't be used as a general text-to-speech service.
 //   speak_stream {attempt_id}                         → raw PCM (24 kHz, 16-bit, mono), streamed:
 //            the same reply as speak, playing as soon as the first chunk lands.
+//   ask_aloud {attempt_id, question}                   → one line of JSON (as ask), then the reply's
+//            raw PCM in the same response: voice mode's question and spoken answer in one round trip.
+//            The reply is checked and stored before any of it is voiced, exactly as for ask.
 //   submit   {attempt_id, diagnosis, differential, plan} → grade (and queues the next condition
 //            in the case's focus, see _shared/prefetch.ts). The grade carries condition insights
 //            (about, differential, your_extras; see insights.ts) when the case's profile exists.
@@ -39,6 +42,8 @@ import { parseFocus } from "../_shared/focus.ts";
 import { prepareNext } from "../_shared/prefetch.ts";
 import { withQuota } from "../_shared/quota.ts";
 import { type Conduct, conductReply, isProfane, MAX_INAPPROPRIATE, parseConduct, strikes } from "../_shared/conduct.ts";
+
+declare const EdgeRuntime: { waitUntil(promise: Promise<unknown>): void };
 
 type Fact = { id: string; label: string; reply: string; importance: string; screens_for: string | null };
 type Maneuver = { id: string; title: string; finding: string };
@@ -76,6 +81,7 @@ serve(async (req) => {
     case "speak": return json(await withQuota(userId, "voice", () => speakReply(userId, input)));
     // The same reply as raw PCM, streamed as it's made: the first sound in a few hundred ms.
     case "speak_stream": return await withQuota(userId, "voice", () => speakReplyStream(userId, input));
+    case "ask_aloud": return await withQuota(userId, "question", () => askAloud(userId, input));
     // Grading costs a model call too, and a quota keeps restart-and-resubmit loops bounded.
     case "submit": return json(await withQuota(userId, "grade", () => submit(userId, input)));
     default: throw new HttpError(400, "unknown action");
@@ -245,6 +251,41 @@ async function transcribeTurn(userId: string, input: Record<string, unknown>) {
   }
 }
 
+/** ask, then its reply's voice in the same response: the JSON answer on the first line, so the app
+ *  shows the text at once, then PCM as OpenAI makes it. A voice failure (or no voice allowance
+ *  left) just ends the stream after the text; the app falls back to its own voice. */
+async function askAloud(userId: string, input: Record<string, unknown>): Promise<Response> {
+  const answer = await ask(userId, input);
+  const { attempt, content } = await loadAttempt(userId, input.attempt_id, false);
+  const persona = content.persona;
+  const voice = pickVoice(String(persona.sex ?? ""), attempt.case_id);
+  const instructions = speechInstructions(Number(persona.age) || 40, String(persona.sex ?? ""), String(persona.voice ?? ""));
+  // Supabase may retire a worker whose response is still streaming; registering the stream as
+  // background work keeps it alive until the voice is sent (the wall clock still applies).
+  let sent!: () => void;
+  EdgeRuntime.waitUntil(new Promise<void>((resolve) => (sent = resolve)));
+  const body = new ReadableStream<Uint8Array>({
+    async start(out) {
+      out.enqueue(new TextEncoder().encode(JSON.stringify(answer) + "\n"));
+      try {
+        await withQuota(userId, "voice", async () => {
+          const reader = (await speakStream(answer.reply.slice(0, MAX_SPOKEN_CHARS), voice, instructions)).getReader();
+          for (;;) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            out.enqueue(value);
+          }
+        });
+      } catch (error) {
+        console.error("ask_aloud voice failed", error);
+      }
+      out.close();
+      sent();
+    },
+  });
+  return new Response(body, { headers: { "Content-Type": "application/octet-stream", "X-Sample-Rate": String(STREAM_SAMPLE_RATE) } });
+}
+
 /** The latest stored patient reply, as raw 24 kHz PCM streamed straight from OpenAI. Errors before
  *  the first byte are normal JSON errors (and refund the quota); after that the stream just ends. */
 async function speakReplyStream(userId: string, input: Record<string, unknown>): Promise<Response> {
@@ -256,7 +297,10 @@ async function speakReplyStream(userId: string, input: Record<string, unknown>):
   const instructions = speechInstructions(Number(persona.age) || 40, String(persona.sex ?? ""), String(persona.voice ?? ""));
   try {
     const audio = await speakStream(reply.slice(0, MAX_SPOKEN_CHARS), voice, instructions);
-    return new Response(audio, { headers: { "Content-Type": "audio/pcm", "X-Sample-Rate": String(STREAM_SAMPLE_RATE) } });
+    // Kept alive until the stream is fully read (see askAloud).
+    const [toClient, watched] = audio.tee();
+    EdgeRuntime.waitUntil(watched.pipeTo(new WritableStream()).catch(() => {}));
+    return new Response(toClient, { headers: { "Content-Type": "audio/pcm", "X-Sample-Rate": String(STREAM_SAMPLE_RATE) } });
   } catch (error) {
     console.error("speech stream failed", error);
     throw new HttpError(502, "couldn't voice the reply");

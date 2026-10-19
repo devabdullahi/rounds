@@ -43,5 +43,7 @@ protocol CaseService: Sendable {
     /// Voice mode: the same reply as raw PCM (24 kHz, 16-bit, mono) in chunks as the server makes
     /// it, so playback starts after the first chunk instead of the whole file.
     func streamLatestReply(attempt: String) async throws -> AsyncThrowingStream<Data, Error>
+    /// Voice mode: asks and gets the answer's voice in one round trip (ask, then speak_stream).
+    func askAloud(attempt: String, question: String) async throws -> SpokenAnswer
     func submit(attempt: String, diagnosis: String, differential: [String], plan: String) async throws -> Grade
 }

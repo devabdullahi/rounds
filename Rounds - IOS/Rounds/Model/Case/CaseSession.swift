@@ -106,16 +106,7 @@ final class CaseSession {
         timeline.append(TimelineEvent(at: .now, kind: .question, text: question))
         Task {
             do {
-                let answer = try await service.ask(attempt: attempt(), question: question)
-                withAnimation(Springs.slide) {
-                    isPatientTyping = false
-                    messages.append(ChatMessage(kind: .patient, text: answer.reply))
-                    revealed = Set(answer.revealedIDs)
-                    coverage = answer.coverage
-                    if !answer.revealed.isEmpty && !examMode {
-                        messages.append(ChatMessage(kind: .reveal, text: "Revealed: " + answer.revealed.map(\.label).joined(separator: ", ")))
-                    }
-                }
+                show(try await service.ask(attempt: attempt(), question: question))
             } catch {
                 withAnimation(Springs.slide) {
                     isPatientTyping = false
@@ -135,6 +126,44 @@ final class CaseSession {
     /// The patient's latest reply, spoken in their voice.
     func spokenReply() async throws -> Data {
         try await service.speakLatestReply(attempt: attempt())
+    }
+
+    /// A spoken question: asked, shown and answered like a typed one, and the reply's voice comes back
+    /// in the same response. Returns the reply and its audio, or nil when the question failed (the
+    /// error shows in the chat).
+    func askAloud(_ raw: String) async -> (reply: String, audio: AsyncThrowingStream<Data, Error>)? {
+        let question = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !question.isEmpty, !isPatientTyping else { return nil }
+        startClockIfNeeded()
+        withAnimation(Springs.slide) {
+            messages.append(ChatMessage(kind: .doctor, text: question))
+            isPatientTyping = true
+        }
+        timeline.append(TimelineEvent(at: .now, kind: .question, text: question))
+        do {
+            let spoken = try await service.askAloud(attempt: attempt(), question: question)
+            show(spoken.answer)
+            return (spoken.answer.reply, spoken.audio)
+        } catch {
+            withAnimation(Springs.slide) {
+                isPatientTyping = false
+                messages.append(ChatMessage(kind: .problem, text: error.localizedDescription))
+            }
+            return nil
+        }
+    }
+
+    /// The patient's answer in the chat: the reply, what it revealed, and the coverage.
+    private func show(_ answer: PatientAnswer) {
+        withAnimation(Springs.slide) {
+            isPatientTyping = false
+            messages.append(ChatMessage(kind: .patient, text: answer.reply))
+            revealed = Set(answer.revealedIDs)
+            coverage = answer.coverage
+            if !answer.revealed.isEmpty && !examMode {
+                messages.append(ChatMessage(kind: .reveal, text: "Revealed: " + answer.revealed.map(\.label).joined(separator: ", ")))
+            }
+        }
     }
 
     /// The same, as PCM chunks that can play while the rest is still being made.

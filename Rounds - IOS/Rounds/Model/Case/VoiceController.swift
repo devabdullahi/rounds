@@ -41,6 +41,9 @@ final class VoiceController: NSObject, AVSpeechSynthesizerDelegate, AVAudioPlaye
     @ObservationIgnored var transcriber: ((Data) async throws -> String)?
     /// The patient's latest reply as server audio; nil speaks with the installed iOS voice.
     @ObservationIgnored var spokenReply: (() async throws -> Data)?
+    /// Asks the spoken question and gets the answer's voice in one round trip (nil: the question
+    /// failed). When set, it replaces `onUtterance` plus a separate request for the voice.
+    @ObservationIgnored var askAloud: ((String) async -> (reply: String, audio: AsyncThrowingStream<Data, Error>)?)?
     /// The same reply streamed as PCM, played as it arrives. Tried first; `spokenReply` is the fallback.
     @ObservationIgnored var streamedReply: (() async throws -> AsyncThrowingStream<Data, Error>)?
     @ObservationIgnored private var streamer: StreamingVoicePlayer?
@@ -200,12 +203,23 @@ final class VoiceController: NSObject, AVSpeechSynthesizerDelegate, AVAudioPlaye
         level = 0
         guard !text.isEmpty else { startListening(); return }
         withAnimation(Springs.slide) { phase = .thinking }
-        guard recorded, let transcriber, let audio = try? Data(contentsOf: recordingURL) else { onUtterance?(text); return }
+        guard recorded, let transcriber, let audio = try? Data(contentsOf: recordingURL) else { send(text); return }
         Task { @MainActor in
             // The server's text when it hears something; Apple's when the call fails or comes back empty.
             let heard = (try? await transcriber(audio))?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
             guard phase == .thinking else { return }   // voice mode ended while transcribing
-            onUtterance?(heard.isEmpty ? text : heard)
+            send(heard.isEmpty ? text : heard)
+        }
+    }
+
+    /// Hands the finished question on: asked aloud (answer and voice in one go) when that's set up,
+    /// otherwise to `onUtterance`, whose answer comes back through `speak`.
+    private func send(_ question: String) {
+        guard let askAloud else { onUtterance?(question); return }
+        Task { @MainActor in
+            guard let answer = await askAloud(question) else { end(); return }   // the error shows in the chat
+            guard phase == .thinking else { return }
+            speakStreamed(answer.reply) { answer.audio }
         }
     }
 
