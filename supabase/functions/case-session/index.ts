@@ -59,6 +59,7 @@ import { liveSessionPrompt, voiceTurnPrompt } from "../_shared/patientprompt.ts"
 import { recordUsage, takeBudget } from "../_shared/usage.ts";
 import { speak, speakStream, STREAM_SAMPLE_RATE, transcribe } from "../_shared/speech.ts";
 import { withQuota } from "../_shared/quota.ts";
+import { naturalRefusal, talksAboutScript } from "./refusal.ts";
 import { type Conduct, conductReply, isProfane, MAX_INAPPROPRIATE, parseConduct, strikes } from "../_shared/conduct.ts";
 
 declare const EdgeRuntime: { waitUntil(promise: Promise<unknown>): void };
@@ -188,6 +189,9 @@ async function ask(userId: string, input: Record<string, unknown>) {
     } else if (used.length === 0 && looked.length === 0 && await addsFacts(reply)) {
       // Grounded replies (a fact or a visible finding) skip this; only free-floating ones are checked.
       reply = String(persona.fallback);
+    } else if (talksAboutScript(reply)) {
+      // "I haven't said what it is": the model talking about its script. Said as a person would instead.
+      reply = naturalRefusal(recent.findLast((t) => t.role === "patient")?.text);
     }
   } catch (error) {
     console.error("patient reply failed", error);
