@@ -7,7 +7,9 @@
 //
 //   1. Verify the caller is the service role.
 //   2. Claim the job (queued, or running but stale), so two calls never work on it at once.
-//   3. Run one stage attempt: prompt → model → repairs → schema, rule and SNOMED/RxNorm checks.
+//   3. Run half a stage attempt. First call: prompt → model → repairs → schema and rule checks,
+//      saved as the job's draft. Next call: SNOMED/RxNorm checks on the draft (time-boxed; cached
+//      answers let a call that runs out resume). Together they ran past the worker's limit.
 //   4. Save progress and start the next step; after the last stage, validate and store the profile
 //      in private.condition_profiles (review "pending" until a clinician looks at it).
 
@@ -18,14 +20,19 @@ import {
   dropEmptyOptional, PROFILE_PROMPT_VERSION, repair, ruleErrors, ruleWarnings, sectionErrors, STAGES,
   stageOutput, stagePrompt, SYSTEM_PROMPT, termSummary, validate,
 } from "../_shared/profilegen.ts";
-import { checkTerms, umlsKey } from "../_shared/terms.ts";
+import { checkTerms, TermsOutOfTime, umlsKey } from "../_shared/terms.ts";
 import { kick } from "../_shared/prefetch.ts";
 
 declare const EdgeRuntime: { waitUntil(promise: Promise<unknown>): void };
 
 // deno-lint-ignore no-explicit-any
 type Json = any;
-type Job = { slug: string; token: string; stage: number; attempt: number; profile: Json; feedback: string[]; errors: string[]; repairs: string[]; outages: number };
+/** A stage's model reply waiting for its term checks (the second call of the stage). */
+type Draft = { output: Json; errors: string[]; repairs: string[] };
+type Job = {
+  slug: string; token: string; stage: number; attempt: number; profile: Json; feedback: string[]; errors: string[]; repairs: string[];
+  outages: number; draft: Draft | null;
+};
 
 /** Model or lookup outages tolerated before a job is given up; a later request can requeue it. */
 const MAX_OUTAGES = 3;
@@ -34,6 +41,9 @@ const TEMPERATURE = 0.3;
 /** A stage reply runs to 8,000 tokens, longer than the default model timeout allows; this still
  *  ends the call before the edge runtime's 150 s wall clock, so the job is saved as an outage. */
 const TIMEOUT_MS = 140_000;
+/** How long one call spends on term checks before handing the rest to the next call. The worker
+ *  was dropped about 75 s in when a stage did everything in one call (logs, 2026-10-19). */
+const TERMS_BUDGET_MS = 45_000;
 
 serve(async (req) => {
   const auth = req.headers.get("Authorization") ?? "";
@@ -54,7 +64,7 @@ async function step(slug: string): Promise<void> {
   const [job] = await sql<Job[]>`
     update private.profile_jobs set status = 'running', locked_at = clock_timestamp(), updated_at = now()
     where slug = ${slug} and (status = 'queued' or (status = 'running' and locked_at < now() - interval '4 minutes'))
-    returning slug, locked_at::text as token, stage, attempt, profile, feedback, errors, repairs, outages`;
+    returning slug, locked_at::text as token, stage, attempt, profile, feedback, errors, repairs, outages, draft`;
   if (!job) return; // done, failed, or another call has it
   const token = job.token;
 
@@ -65,23 +75,39 @@ async function step(slug: string): Promise<void> {
     generation: { stages: [], validation: { status: "pending" }, review: { status: "pending" } },
   };
 
-  let output: Json;
-  let errors: string[];
-  let repairs: string[];
-  try {
-    ({ output, errors, repairs } = await attempt(job, condition, profile));
-  } catch (error) {
-    // The model or a terminology service couldn't be reached: says nothing about the condition.
-    const outages = job.outages + 1;
-    console.error("prepare-profile outage", slug, outages, (error as Error).message.slice(0, 200));
-    await sql`update private.profile_jobs set status = ${outages >= MAX_OUTAGES ? "failed" : "queued"},
-      outages = ${outages}, locked_at = null, updated_at = now() where slug = ${slug} and locked_at = ${token}::timestamptz`;
+  // Each stage takes two calls, so each fits the runtime's limit: first the model writes (saved as
+  // the job's draft), then a fresh call checks the draft's terms and moves the job on.
+  if (!job.draft) {
+    let draft: Draft;
+    try {
+      draft = await write(job, condition, profile);
+    } catch (error) {
+      return outage(job, error);
+    }
+    const owned = await sql`update private.profile_jobs set status = 'queued', draft = ${sql.json(draft)}, locked_at = null, updated_at = now()
+      where slug = ${slug} and locked_at = ${token}::timestamptz returning slug`;
+    if (owned.length) await kick(slug);
     return;
+  }
+
+  const { output, repairs } = job.draft;
+  let errors: string[];
+  try {
+    errors = [...job.draft.errors, ...await checkTerms(output, undefined, Date.now() + TERMS_BUDGET_MS)];
+  } catch (error) {
+    if (error instanceof TermsOutOfTime) {
+      // Answers so far are cached, so the next call picks up where this one stopped.
+      const owned = await sql`update private.profile_jobs set status = 'queued', locked_at = null, updated_at = now()
+        where slug = ${slug} and locked_at = ${token}::timestamptz returning slug`;
+      if (owned.length) await kick(slug);
+      return;
+    }
+    return outage(job, error);
   }
 
   if (errors.length && job.attempt === 0) {
     const owned = await sql`update private.profile_jobs set status = 'queued', attempt = 1, feedback = ${errors},
-      repairs = ${[...job.repairs, ...repairs]}, locked_at = null, updated_at = now()
+      repairs = ${[...job.repairs, ...repairs]}, draft = null, locked_at = null, updated_at = now()
       where slug = ${slug} and locked_at = ${token}::timestamptz returning slug`;
     if (owned.length) await kick(slug);
     return;
@@ -97,7 +123,7 @@ async function step(slug: string): Promise<void> {
   const allRepairs = [...new Set([...job.repairs, ...repairs])];
   if (next < STAGES.length) {
     const owned = await sql`update private.profile_jobs set status = 'queued', stage = ${next}, attempt = 0, feedback = '{}',
-      profile = ${sql.json(profile)}, errors = ${allErrors}, repairs = ${allRepairs}, locked_at = null, updated_at = now()
+      profile = ${sql.json(profile)}, errors = ${allErrors}, repairs = ${allRepairs}, draft = null, locked_at = null, updated_at = now()
       where slug = ${slug} and locked_at = ${token}::timestamptz returning slug`;
     if (owned.length) await kick(slug);
     return;
@@ -105,8 +131,18 @@ async function step(slug: string): Promise<void> {
   await finish(slug, token, profile, allRepairs);
 }
 
-/** One stage attempt. Throws only when the model or a lookup service is unreachable. */
-async function attempt(job: Job, condition: { triage: Json; background: string }, profile: Json) {
+/** The model or a terminology service couldn't be reached: says nothing about the condition. The
+ *  job keeps its draft, so a term-check outage doesn't cost the model's writing. */
+async function outage(job: Job, error: unknown): Promise<void> {
+  const outages = job.outages + 1;
+  console.error("prepare-profile outage", job.slug, outages, (error as Error).message.slice(0, 200));
+  await sql`update private.profile_jobs set status = ${outages >= MAX_OUTAGES ? "failed" : "queued"},
+    outages = ${outages}, locked_at = null, updated_at = now() where slug = ${job.slug} and locked_at = ${job.token}::timestamptz`;
+}
+
+/** The first call of a stage: the model writes it, and its structure and rules are checked. Throws
+ *  only when the model is unreachable. */
+async function write(job: Job, condition: { triage: Json; background: string }, profile: Json): Promise<Draft> {
   const user = stagePrompt(job.stage, condition.triage.name, condition.background, profile, job.feedback);
   let reply: Json;
   try {
@@ -123,7 +159,6 @@ async function attempt(job: Job, condition: { triage: Json; background: string }
     const baseline = new Set(ruleErrors(profile));
     errors = ruleErrors({ ...profile, ...output }).filter((e) => !baseline.has(e));
   }
-  errors.push(...await checkTerms(output));
   return { output, errors, repairs };
 }
 
@@ -150,7 +185,7 @@ async function finish(slug: string, token: string, profile: Json, repairs: strin
   const saved = await sql.begin(async (tx) => {
     // Release the job first: if another call took it over, this one saves nothing.
     const owned = await tx`update private.profile_jobs set status = ${status === "passed" ? "done" : "failed"}, profile = ${tx.json(profile)},
-      locked_at = null, updated_at = now() where slug = ${slug} and locked_at = ${token}::timestamptz returning slug`;
+      draft = null, locked_at = null, updated_at = now() where slug = ${slug} and locked_at = ${token}::timestamptz returning slug`;
     if (!owned.length) return false;
     // A rewritten profile is new content: it goes back to review and takes the catalog's current topics.
     await tx`
