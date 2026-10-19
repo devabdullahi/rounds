@@ -15,6 +15,7 @@ const PRICES: Record<string, { hit: number; miss: number; output: number }> = {
   "deepseek-flash": { hit: 0.006, miss: 0.30, output: 1.20 },
   "deepseek-v4-pro": { hit: 0.044, miss: 1.32, output: 3.96 },
   "gpt-6.1-sol": { hit: 0.10, miss: 2.00, output: 10.00 },
+  "gpt-6-luna": { hit: 0.01, miss: 0.10, output: 0.50 },
 };
 
 /** Default daily cap in USD; LLM_DAILY_BUDGET_USD overrides it per deployment. */

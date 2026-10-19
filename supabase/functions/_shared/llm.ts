@@ -1,5 +1,5 @@
 // One JSON-returning LLM call behind a provider switch (same variables as tools/kb-generate):
-//   LLM_PROVIDER      = deepseek (default) | anthropic | openai
+//   LLM_PROVIDER      = openai (default) | deepseek | anthropic
 //   LLM_MODEL         = optional override for every task (a one-line rollback)
 //   LLM_MODEL_<TASK>  = optional override for one task, e.g. LLM_MODEL_PROFILE=deepseek-flash; the
 //                       model name picks its provider (gpt-… OpenAI, claude-… Anthropic, deepseek-…)
@@ -47,16 +47,29 @@ const DEEPSEEK_TASKS: Record<Task, Setting> = {
   profile: { provider: "openai", model: "gpt-6.1-sol", effort: "medium" },
 };
 
+/** Per task on OpenAI: GPT-6 Luna with reasoning off where speed matters and the facts are already
+ *  decided (patient chat, the reply check, flashcards; ~1.6 s a turn), GPT-6.1 Sol where judgment
+ *  or medical recall matters (writing the case, grading, condition profiles). Sol has no "none"
+ *  effort, so its tasks always name one. */
+const OPENAI_TASKS: Record<Task, Setting> = {
+  patient: { model: "gpt-6-luna", effort: "off" },
+  check: { model: "gpt-6-luna", effort: "off" },
+  cards: { model: "gpt-6-luna", effort: "off" },
+  case: { model: "gpt-6.1-sol", effort: "low" },
+  grade: { model: "gpt-6.1-sol", effort: "medium" },
+  profile: { model: "gpt-6.1-sol", effort: "medium" },
+};
+
 export type CallOptions = { task: Task; temperature?: number; timeoutMs?: number };
 
 export const PROVIDERS: Record<string, Provider> = {
   deepseek: { url: "https://api.deepseek.com/chat/completions", keyEnv: "DEEPSEEK_API_KEY", model: "deepseek-flash", style: "openai", thinking: "deepseek", tasks: DEEPSEEK_TASKS },
-  openai: { url: "https://api.openai.com/v1/chat/completions", keyEnv: "OPENAI_API_KEY", model: "gpt-6.1-sol", style: "openai", thinking: "openai" },
+  openai: { url: "https://api.openai.com/v1/chat/completions", keyEnv: "OPENAI_API_KEY", model: "gpt-6.1-sol", style: "openai", thinking: "openai", tasks: OPENAI_TASKS },
   anthropic: { url: "https://api.anthropic.com/v1/messages", keyEnv: "ANTHROPIC_API_KEY", model: "claude-sonnet-5-5", style: "anthropic" },
 };
 
 function providerName(): string {
-  return Deno.env.get("LLM_PROVIDER") ?? "deepseek";
+  return Deno.env.get("LLM_PROVIDER") ?? "openai";
 }
 
 /** The provider a model name belongs to, or undefined for a name that doesn't say. */
@@ -152,12 +165,12 @@ export function usageOf(reply: any): Usage {
   };
 }
 
-/** The token cap plus the provider's reasoning switch. DeepSeek thinks by default, so "off" must say
- *  so. OpenAI's reasoning models always reason: they take max_completion_tokens, and "off" leaves
- *  their default effort. */
+/** The token cap plus the provider's reasoning switch. Both providers think by default, so "off"
+ *  must say so: DeepSeek's thinking switch, OpenAI's "none" effort (which Luna and GPT-6 Sol accept;
+ *  GPT-6.1 Sol and Astra don't, so their tasks name an effort). OpenAI takes max_completion_tokens. */
 export function thinkingFields(thinking: Provider["thinking"], maxTokens: number, effort: Effort): Record<string, unknown> {
   if (thinking === "openai") {
-    if (effort === "off") return { max_completion_tokens: maxTokens + REASONING_BUDGET.medium };
+    if (effort === "off") return { max_completion_tokens: maxTokens, reasoning_effort: "none" };
     return { max_completion_tokens: maxTokens + REASONING_BUDGET[effort], reasoning_effort: effort };
   }
   if (!thinking) return { max_tokens: maxTokens };
