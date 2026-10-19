@@ -30,6 +30,7 @@ from generate import (EXAMPLE, OPTIONAL_SECTIONS, PROMPT_VERSION, REQUIRED_SECTI
 from load_profiles import LOCAL_DB_CONTAINER, array, literal
 from tag_specialties import LIVE, load_tags
 from tag_surgery import load_tags as load_surgery_tags, retagged
+from tag_umbrellas import load_tags as load_umbrella_tags, narrowed
 from tag_systems import load_systems
 from terminology import MAX_UNVERIFIED
 
@@ -88,8 +89,8 @@ def main() -> None:
     args = parser.parse_args()
 
     conditions, triage, tags, systems = load_conditions(), load_triage(), load_tags(), load_systems()
-    surgery = load_surgery_tags()
-    rows = [(slug, conditions[slug], retagged(slug, t["triage"], surgery)) for slug, t in triage.items()
+    surgery, umbrellas = load_surgery_tags(), load_umbrella_tags()
+    rows = [(slug, conditions[slug], narrowed(slug, retagged(slug, t["triage"], surgery), umbrellas)) for slug, t in triage.items()
             if slug in conditions and t.get("triage") and not t.get("errors")]
     # Rows left out of the catalog: say which, so a failed triage batch isn't lost without a trace.
     failed = sorted(s for s, t in triage.items() if not t.get("triage") or t.get("errors"))
