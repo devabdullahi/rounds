@@ -60,6 +60,14 @@ struct PaywallModelTests {
         #expect(await accounts.claimed.isEmpty)
     }
 
+    @Test func aNewAccountDoesNotInheritThePreviousAccountsAccess() async {
+        let model = PaywallModel(store: MockSubscriptionStore(entitled: true), accounts: FailingAccountSubscriptionService(), verifiesAccount: true)
+        await model.purchased()
+        #expect(model.isEntitled == true)
+        await model.accountChanged(signedIn: true)
+        #expect(model.isEntitled == false)
+    }
+
     @Test func anAccountWithoutAPlanSeesThePaywall() async {
         let model = PaywallModel(store: MockSubscriptionStore(), accounts: MockAccountSubscriptionService(), verifiesAccount: true)
         await model.refresh()

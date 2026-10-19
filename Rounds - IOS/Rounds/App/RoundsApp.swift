@@ -56,7 +56,7 @@ struct RoundsApp: App {
                 // Superwall ties purchases to the signed-in account, and forgets it on sign-out.
                 .onChange(of: auth.account?.id, initial: true) { _, id in
                     // Access belongs to the account: check again whenever a different one signs in.
-                    if id != nil { Task { await paywall.refresh() } }
+                    Task { await paywall.accountChanged(signedIn: id != nil) }
                     SuperwallService.identify(id)
                     SuperwallService.setStudyGoal(studyGoal)
                 }
