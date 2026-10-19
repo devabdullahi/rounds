@@ -66,6 +66,8 @@ private actor SlowStartCases: CaseService {
     func pastTries(bed: String) async throws -> [PastTry] { throw Unused() }
     func transcribe(attempt: String, audio: Data) async throws -> String { throw Unused() }
     func speakLatestReply(attempt: String) async throws -> Data { throw Unused() }
+    func streamLatestReply(attempt: String) async throws -> AsyncThrowingStream<Data, Error> { throw Unused() }
+    func askAloud(attempt: String, question: String) async throws -> SpokenAnswer { throw Unused() }
     func deletePatients(_ beds: [String]?) async throws -> Int { throw Unused() }
     func ask(attempt: String, question: String) async throws -> PatientAnswer { throw Unused() }
     func order(attempt: String, test: String) async throws -> TestResult { throw Unused() }

@@ -41,6 +41,24 @@ export async function speak(text: string, voice: string, instructions: string): 
   return audio;
 }
 
+/** Sample rate of streamed speech: OpenAI's raw PCM is 24 kHz, 16-bit little-endian, mono. */
+export const STREAM_SAMPLE_RATE = 24_000;
+
+/** The same speech as a stream of raw PCM, passed on as OpenAI produces it, so the phone starts
+ *  playing after the first chunk instead of the whole file. */
+export async function speakStream(text: string, voice: string, instructions: string): Promise<ReadableStream<Uint8Array>> {
+  await takeBudget();
+  const res = await fetch(SPEECH_URL, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${key()}`, "Content-Type": "application/json" },
+    signal: AbortSignal.timeout(TIMEOUT_MS),
+    body: JSON.stringify({ model: SPEAK_MODEL, voice, input: text, instructions, response_format: "pcm" }),
+  });
+  if (!res.ok || !res.body) throw new Error(`speech ${res.status}: ${await res.text()}`);
+  await recordUsage("speak", `openai/${SPEAK_MODEL}`, { hit: 0, miss: text.length, output: 0, reasoning: 0 }, speakCostUSD(text.length));
+  return res.body;
+}
+
 /** What the student said in a recorded m4a turn. `hint` primes medical vocabulary. */
 export async function transcribe(audio: Uint8Array, hint: string): Promise<string> {
   await takeBudget();

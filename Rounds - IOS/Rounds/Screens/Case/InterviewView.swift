@@ -107,7 +107,8 @@ struct InterviewView: View {
         .background(Theme.bg)
         .onDisappear { endVoice() }
         .onChange(of: session.messages.count) {
-            guard voice.phase == .thinking else { return }
+            // Asked aloud, the answer's voice comes with it; only the older two-request path waits here.
+            guard voice.phase == .thinking, voice.askAloud == nil else { return }
             let replies = session.messages.filter { $0.kind == .patient }
             if replies.count > repliesBeforeQuestion, let reply = replies.last {
                 // The patient answered the spoken question: say it out loud.
@@ -130,19 +131,16 @@ struct InterviewView: View {
                 session.ask(text)
             }
             voice.usePatient(sex: c.sex, age: c.age, seed: c.bed)
-            // The server transcribes each spoken turn and voices the patient; Apple's speech is the fallback.
-            voice.transcriber = { [session] audio in try await session.transcribe(audio) }
+            // The server voices the patient; Apple's speech is the fallback.
             voice.spokenReply = { [session] in try await session.spokenReply() }
+            voice.streamedReply = { [session] in try await session.streamedReply() }
+            voice.askAloud = { [session] question in await session.askAloud(question) }
             session.startClockIfNeeded()
             tab = .history
             #if DEBUG
             if DebugLaunch.screen == "examine" { tab = .workup }
             if DebugLaunch.screen == "workup" { tab = .workup; workupTab = .tests }
-            if DebugLaunch.screen == "interview-exam" || DebugLaunch.screen == "interview-exam-chat" { session.examMode = true }
-            if ["interview-chat", "interview-exam-chat", "interview-findings"].contains(DebugLaunch.screen) { session.debugSeedChat() }
-            if DebugLaunch.screen == "demo-interview" {
-                Task { try? await Task.sleep(for: .seconds(1.5)); await session.debugPlayChat() }
-            }
+            if DebugLaunch.screen == "interview-exam" { session.examMode = true }
             if DebugLaunch.screen == "interview-findings" {
                 Task { try? await Task.sleep(for: .seconds(1)); showingFindings = true }
             }
