@@ -1,6 +1,8 @@
 import SwiftUI
 
-/// Page 1: a ring of fictional patients around "Diagnosis, nailed".
+/// Page 1: a ring of fictional patients around "Diagnosis, nailed", with the patient count on top.
+/// "1B+" is combinations, not clinically distinct cases: even the most limited stored profile
+/// (≈216 presentations) times the generator's ≈600k names per age and sex clears 30 billion.
 struct PatientsHero: View {
     let shown: Bool
 
@@ -38,6 +40,12 @@ struct PatientsHero: View {
             .shadow(color: Theme.accent.opacity(0.18), radius: 20, y: 16)
             .at(58, 248)
             .heroPop(shown, delay: 0.2)
+
+            // Last to land, after the ring: the scale behind the faces.
+            HeroTag(text: "1B+ patient combos", ink: Theme.accentInk, fill: Theme.welcomeGreen)
+                .accessibilityLabel("Over a billion patient combinations")
+                .at(150, 0)
+                .heroPop(shown, delay: 0.5)
         }
     }
 }
