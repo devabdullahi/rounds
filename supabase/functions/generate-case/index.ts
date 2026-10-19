@@ -175,7 +175,10 @@ async function claimReady(userId: string, focus: Focus): Promise<CaseRows | null
   return row?.fresh ? row.rows : null;
 }
 
-/** Claims the one background generation slot for this student and focus. */
+/** Claims the one background generation slot for this student and focus. The token is the slot's
+ *  started_at as text, and is only ever compared as text: passed back as a parameter cast to
+ *  timestamptz, the client turned it into a JS Date and dropped the microseconds, so no job ever
+ *  matched its own slot and every case written in the background was thrown away. */
 async function startGeneration(userId: string, focus: Focus, polling: boolean): Promise<GenerationStart> {
   return await sql.begin(async (tx) => {
     await tx`insert into private.case_generation_jobs (user_id, focus) values (${userId}, ${focus.stored})
@@ -247,7 +250,7 @@ async function finishGeneration(
   await sql.begin(async (tx) => {
     const owned = await tx<{ user_id: string }[]>`
       select user_id from private.case_generation_jobs
-      where user_id = ${userId} and focus = ${focus.stored} and started_at = ${token}::timestamptz
+      where user_id = ${userId} and focus = ${focus.stored} and started_at::text = ${token}
       for update`;
     if (!owned.length) return;
     if (rows) {
@@ -256,7 +259,7 @@ async function finishGeneration(
     }
     if (failed) {
       await tx`update private.case_generation_jobs set status = 'failed'
-        where user_id = ${userId} and focus = ${focus.stored} and started_at = ${token}::timestamptz`;
+        where user_id = ${userId} and focus = ${focus.stored} and started_at::text = ${token}`;
     } else {
       await tx`delete from private.case_generation_jobs where user_id = ${userId} and focus = ${focus.stored}`;
     }
