@@ -27,7 +27,6 @@ private enum RESULT {
 /// Ordering tests and reading their results, inside the interview's workup tab.
 struct TestsPanel: View {
     let session: CaseSession
-    @State private var pendingConfirm: Investigation?
 
     private var c: ClinicalCase { session.clinical }
     private var resulted: [Investigation] { session.testOrder.compactMap { id in c.tests.first { $0.id == id } } }
@@ -62,30 +61,6 @@ struct TestsPanel: View {
         }
         .scrollIndicators(.hidden)
         .task { await session.loadMenu() }
-        .confirmationDialog(
-            "Order \(pendingConfirm?.name ?? "")?",
-            isPresented: Binding(get: { pendingConfirm != nil }, set: { if !$0 { pendingConfirm = nil } }),
-            titleVisibility: .visible,
-            presenting: pendingConfirm
-        ) { t in
-            Button("Order anyway", role: .destructive) { session.order(t) }
-            Button("Cancel", role: .cancel) {}
-        } message: { t in
-            Text(consequence(of: t))
-        }
-    }
-
-    /// Most tests order on one tap. Care-delaying ones ask first.
-    private func requestOrder(_ t: Investigation) {
-        if t.delaysCareMinutes > 0 {
-            pendingConfirm = t
-        } else {
-            session.order(t)
-        }
-    }
-
-    private func consequence(of t: Investigation) -> String {
-        "Delays definitive treatment by \(t.delaysCareMinutes) minutes."
     }
 
     /// How many of the menu's tests have been taken.
@@ -134,7 +109,7 @@ struct TestsPanel: View {
             }
             Spacer()
             // Soft like Examine: each test is a choice to weigh, not a call to action.
-            Button("Order") { requestOrder(t) }
+            Button("Order") { session.order(t) }
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(Theme.accentText)
                 .padding(.horizontal, 12)
