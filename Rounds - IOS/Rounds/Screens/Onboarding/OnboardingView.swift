@@ -12,7 +12,7 @@ import SwiftUI
  * One carousel for every step, so swiping, Next and Back all slide the same way. The
  * background cross-fades between pages (mint, page colour for the focus picker, blush for
  * the promise). Pages past an unanswered step aren't added yet, so a swipe can't skip a
- * choice (year, goal, focus, name, then the account when onboarding began
+ * choice (year, goal, focus, red flag, name, then the account when onboarding began
  * signed out). After the promise the carousel locks. Reduce Motion: final states, instant
  * page changes.
  * ───────────────────────────────────────────────────────── */
@@ -31,6 +31,7 @@ struct OnboardingView: View {
     @AppStorage(StudyFocus.storageKey) private var focusStored = ""
     @AppStorage(CareSetting.storageKey) private var settingStored = ""
     @AppStorage(ProfileName.storageKey) private var nameStored = ""
+    @AppStorage(PracticeReminder.storageKey) private var reminderStored = ""
 
     /// The page in view. A paging scroll view, not a page-style TabView: TabView swaps pages
     /// instantly when Next sets the selection, so Next and a swipe would move differently.
@@ -40,6 +41,8 @@ struct OnboardingView: View {
     @State private var mixChosen = false
     @State private var heart = HoldToCommit()
     @State private var holdingHeart = false
+    /// The red-flag quiz answer (an option's text), nil until the student taps one.
+    @State private var redFlagPick: String?
     /// Set on arrival: whether this run includes the account page.
     @State private var startedSignedOut = false
 
@@ -47,6 +50,7 @@ struct OnboardingView: View {
     private var yearPicked: Bool { SchoolYear(stored: yearStored) != nil }
     private var goalPicked: Bool { StudyGoal(stored: goalStored) != nil }
     private var focusReady: Bool { !pick.isMix || mixChosen }
+    private var reminderPicked: PracticeReminder? { PracticeReminder(stored: reminderStored) }
     private var nameTyped: Bool { ProfileName.clean(nameStored) != nil }
 
     /// The pages a swipe may reach: everything up to and including the first unanswered choice.
@@ -66,6 +70,7 @@ struct OnboardingView: View {
         case .schoolYear: yearPicked
         case .studyGoal: goalPicked
         case .focus: focusReady
+        case .redFlag: redFlagPick != nil
         case .name: nameTyped
         case .account: auth.account != nil
         default: true
@@ -170,6 +175,10 @@ struct OnboardingView: View {
         case .examReady: ExamReadyHero(shown: shown)
         case .studyGoal: StudyGoalHero(shown: shown)
         case .schoolYear: SchoolYearHero(shown: shown)
+        case .careSetting: CareSettingHero(shown: shown)
+        case .redFlag: RedFlagHero(shown: shown, picked: $redFlagPick)
+        case .missCards: MissCardHero(shown: shown)
+        case .reminder: ReminderHero(shown: shown)
         case .name: NameHero(shown: shown, active: page == .name) { step(1) }
         case .plan: PlanHero(shown: shown)
         case .focus, .account, .pledge: EmptyView()
@@ -196,6 +205,23 @@ struct OnboardingView: View {
             OnboardingNextButton(enabled: goalPicked) { step(1) }
         case .name:
             OnboardingNextButton(enabled: nameTyped) { step(1) }
+        case .redFlag:
+            OnboardingNextButton(enabled: redFlagPick != nil) { step(1) }
+        case .reminder:
+            VStack(spacing: 4) {
+                OnboardingNextButton(title: "Remind Me", enabled: reminderPicked != nil) {
+                    guard let reminder = reminderPicked else { return }
+                    Task {
+                        // iOS asks for permission here; the page moves on whatever the answer.
+                        _ = await app.setPracticeReminder(reminder)
+                        step(1)
+                    }
+                }
+                Button("Not now") { step(1) }
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(Theme.muted)
+                    .frame(minHeight: 44)
+            }
         case .focus:
             OnboardingNextButton(title: "Continue", enabled: focusReady) { step(1) }
         case .account:
@@ -257,7 +283,9 @@ struct OnboardingView: View {
     private static let debugPages: [String: OnboardingPage] = [
         "onboarding-intro": .patients, "onboarding-year": .schoolYear, "onboarding-goal": .studyGoal,
         "onboarding-graph": .examReady, "onboarding-graded": .graded, "onboarding": .focus, "focus-system": .focus,
-        "onboarding-name": .name, "onboarding-promise": .promise, "onboarding-plan": .plan,
+        "onboarding-name": .name,
+        "onboarding-setting": .careSetting, "onboarding-redflag": .redFlag, "onboarding-cards": .missCards,
+        "onboarding-reminder": .reminder, "onboarding-promise": .promise, "onboarding-plan": .plan,
         "onboarding-account": .account, "onboarding-heart": .pledge, "onboarding-promised": .pledge,
     ]
 
@@ -279,6 +307,9 @@ struct OnboardingView: View {
         if target.rawValue > OnboardingPage.studyGoal.rawValue, !goalPicked { goalStored = StudyGoal.step2CK.rawValue }
         if target.rawValue >= OnboardingPage.focus.rawValue {
             pick = FocusSelection([.rotation(.internalMedicine), .rotation(.neurology)])
+        }
+        if target.rawValue > OnboardingPage.redFlag.rawValue, redFlagPick == nil {
+            redFlagPick = RedFlagQuiz.chestPain.answer?.id
         }
         if target.rawValue > OnboardingPage.name.rawValue, !nameTyped { nameStored = "Jordan" }
         // The promise comes after the account, so these screens start with the sample one.
