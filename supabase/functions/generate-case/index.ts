@@ -27,6 +27,7 @@
 import { body, callerId, HttpError, json, serve } from "../_shared/http.ts";
 import { currentModel } from "../_shared/llm.ts";
 import { type Focus, parseFocus } from "../_shared/focus.ts";
+import { requirePlan } from "../_shared/plan.ts";
 // Daily patient limit off for now (2026-10-19, user request); restore these to turn it back on.
 // import { refundQuota, takeQuota } from "../_shared/quota.ts";
 import { BudgetExceeded } from "../_shared/usage.ts";
@@ -51,6 +52,7 @@ declare const EdgeRuntime: { waitUntil(promise: Promise<unknown>): void };
 serve(async (req) => {
   const invoked = Date.now();
   const userId = await callerId(req);
+  await requirePlan(userId);
   // `polling` is still sent by app builds that waited on background jobs; it no longer changes anything.
   const { focus: requested = "", prepare } = await body<{ focus?: string; polling?: unknown; prepare?: unknown }>(req);
   const focus = parseFocus(requested);
