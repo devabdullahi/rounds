@@ -142,7 +142,7 @@ export const VOICE_TURN_REVIEW = `You review one exchange from a medical-school 
 
 - fact_ids: ids of the listed facts the patient's reply actually conveyed, at most 3, most relevant first. A fact counts when its substance was said, in any wording.
 - seen_ids: ids of the visible notes the reply described.
-- invented: true if the reply states specific medical information about the patient that none of the facts or visible notes support (a symptom, timing, past illness, medication, allergy, result or diagnosis). False for greetings, small talk, "I don't know" answers, and anything the facts cover.
+- invented: true if the reply states specific medical information about the patient that none of the facts or visible notes support (a symptom, timing, past illness, medication, allergy, result or diagnosis). False for denials ("No chest pain", "I don't smoke": anything not listed is absent, so saying no adds nothing), greetings, small talk, everyday life (job, family, home, hobbies), feelings, "I don't know" answers, and anything the facts cover.
 - conduct of the student's message: "clinical" for anything a clinician might say to a patient, including greetings, rapport and every history question however personal; "off_topic" for things outside the visit (trivia, homework, asking whether the patient is an AI or to drop the role); "inappropriate" for cursing, insults, slurs, threats or sexual comments aimed at the patient.
 
 Reply with JSON only: {"conduct": "clinical" | "off_topic" | "inappropriate", "fact_ids": [], "seen_ids": [], "invented": true|false}`;
