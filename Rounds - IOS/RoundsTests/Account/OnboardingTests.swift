@@ -61,19 +61,9 @@ struct OnboardingTests {
         #expect(SchoolYear(stored: year.rawValue) == year)
     }
 
-    @Test(arguments: InterviewLevel.allCases)
-    func interviewLevelRoundTrips(level: InterviewLevel) {
-        #expect(InterviewLevel(stored: level.rawValue) == level)
-    }
-
     @Test func unknownAnswersReadAsNone() {
         #expect(SchoolYear(stored: "") == nil)
         #expect(SchoolYear(stored: "pgy1") == nil)
-        #expect(InterviewLevel(stored: "") == nil)
-    }
-
-    @Test func levelsLightMoreBarsAsTheyRise() {
-        #expect(InterviewLevel.allCases.map(\.bars) == [1, 2, 3])
     }
 
     @Test(arguments: [(StudyGoal.step2CK, "Step 2 CK"), (.osce, "OSCEs"), (.practicing, "Exam day"), (.other, "Exam day")])
@@ -82,21 +72,21 @@ struct OnboardingTests {
     }
 
     @Test func planReadsEveryAnswerBack() {
-        let plan = OnboardingPlan(year: .ms3, goal: .step2CK,
-                                  focus: FocusSelection([.rotation(.surgery)]), level: .gettingThere)
-        #expect(plan.rows.map(\.title) == ["Year", "Goal", "Focus", "Level"])
-        #expect(plan.rows.map(\.value) == ["MS3", "Step 2 CK", "Surgery", "Getting there"])
+        let plan = OnboardingPlan(name: "  Jordan  Lee ", year: .ms3, goal: .step2CK,
+                                  focus: FocusSelection([.rotation(.surgery)]))
+        #expect(plan.rows.map(\.title) == ["Name", "Year", "Goal", "Focus"])
+        #expect(plan.rows.map(\.value) == ["Jordan Lee", "MS3", "Step 2 CK", "Surgery"])
     }
 
     @Test func planShowsAPickedCareSettingOnTheFocusRow() {
         let plan = OnboardingPlan(year: .ms2, goal: .osce, focus: FocusSelection([.rotation(.surgery)]),
-                                  setting: .clinic, level: nil)
+                                  setting: .clinic)
         #expect(plan.rows.map(\.title) == ["Year", "Goal", "Focus"])
         #expect(plan.rows.last?.value == "Surgery · Clinic")
     }
 
     @Test func planLeavesOutUnansweredQuestions() {
-        let plan = OnboardingPlan(year: nil, goal: nil, focus: FocusSelection(), level: nil)
+        let plan = OnboardingPlan(name: "   ", year: nil, goal: nil, focus: FocusSelection())
         #expect(plan.rows == [OnboardingPlan.Row(title: "Focus", value: "Mixed cases")])
     }
 }
