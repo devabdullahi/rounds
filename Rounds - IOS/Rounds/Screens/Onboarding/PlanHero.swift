@@ -4,7 +4,7 @@ import SwiftUI
  * ANIMATION STORYBOARD · Your plan (on arrival)
  *
  *    0ms   summary card pops in, scale 0.85 → 1
- *  250ms+  each answer row pops in, 180ms apart (Year, Goal, Focus, Level)
+ *  250ms+  each answer row pops in, 180ms apart (Name, Year, Goal, Focus)
  *  ~1.1s   "First patient waiting" pill pops below the card
  *
  * Reads the stored answers, so the student sees their choices built into one plan.
@@ -23,13 +23,12 @@ struct PlanHero: View {
     @AppStorage(SchoolYear.storageKey) private var yearStored = ""
     @AppStorage(StudyGoal.storageKey) private var goalStored = ""
     @AppStorage(StudyFocus.storageKey) private var focusStored = ""
-    @AppStorage(InterviewLevel.storageKey) private var levelStored = ""
+    @AppStorage(ProfileName.storageKey) private var nameStored = ""
     @AppStorage(CareSetting.storageKey) private var settingStored = ""
 
     private var plan: OnboardingPlan {
-        OnboardingPlan(year: SchoolYear(stored: yearStored), goal: StudyGoal(stored: goalStored),
-                       focus: FocusSelection(stored: focusStored), setting: CareSetting(stored: settingStored),
-                       level: InterviewLevel(stored: levelStored))
+        OnboardingPlan(name: nameStored, year: SchoolYear(stored: yearStored), goal: StudyGoal(stored: goalStored),
+                       focus: FocusSelection(stored: focusStored), setting: CareSetting(stored: settingStored))
     }
 
     var body: some View {

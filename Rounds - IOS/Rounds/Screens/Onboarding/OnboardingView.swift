@@ -12,13 +12,14 @@ import SwiftUI
  * One carousel for every step, so swiping, Next and Back all slide the same way. The
  * background cross-fades between pages (mint, page colour for the focus picker, blush for
  * the promise). Pages past an unanswered step aren't added yet, so a swipe can't skip a
- * choice (year, goal, focus, interview level, then the account when onboarding began
+ * choice (year, goal, focus, name, then the account when onboarding began
  * signed out). After the promise the carousel locks. Reduce Motion: final states, instant
  * page changes.
  * ───────────────────────────────────────────────────────── */
 
 /// New-student onboarding: intro pages interleaved with the questions (year, study goal, focus,
-/// interview level), the plan, making the account and the promise, as one carousel. Started from
+/// name), the plan, making the account and the promise, as one carousel. The typed name goes on
+/// the account as soon as there is one. Started from
 /// "Get Started" it's signed out until the account page; started by logging in with an account
 /// that never finished onboarding, that page is skipped.
 struct OnboardingView: View {
@@ -28,7 +29,7 @@ struct OnboardingView: View {
     @AppStorage(StudyGoal.storageKey) private var goalStored = ""
     @AppStorage(StudyFocus.storageKey) private var focusStored = ""
     @AppStorage(CareSetting.storageKey) private var settingStored = ""
-    @AppStorage(InterviewLevel.storageKey) private var levelStored = ""
+    @AppStorage(ProfileName.storageKey) private var nameStored = ""
 
     /// The page in view. A paging scroll view, not a page-style TabView: TabView swaps pages
     /// instantly when Next sets the selection, so Next and a swipe would move differently.
@@ -45,7 +46,7 @@ struct OnboardingView: View {
     private var yearPicked: Bool { SchoolYear(stored: yearStored) != nil }
     private var goalPicked: Bool { StudyGoal(stored: goalStored) != nil }
     private var focusReady: Bool { !pick.isMix || mixChosen }
-    private var levelPicked: Bool { InterviewLevel(stored: levelStored) != nil }
+    private var nameTyped: Bool { ProfileName.clean(nameStored) != nil }
 
     /// The pages a swipe may reach: everything up to and including the first unanswered choice.
     private var pages: [OnboardingPage] {
@@ -64,7 +65,7 @@ struct OnboardingView: View {
         case .schoolYear: yearPicked
         case .studyGoal: goalPicked
         case .focus: focusReady
-        case .interviewLevel: levelPicked
+        case .name: nameTyped
         case .account: auth.account != nil
         default: true
         }
@@ -103,6 +104,9 @@ struct OnboardingView: View {
         .onChange(of: goalStored) { _, new in
             if let goal = StudyGoal(stored: new) { settingStored = goal.careSetting.rawValue }
         }
+        // The typed name replaces whatever Apple or Google gave the account, once the account exists.
+        .onChange(of: page) { old, _ in if old == .name { Task { await saveName() } } }
+        .onChange(of: auth.account?.id) { _, id in if id != nil { Task { await saveName() } } }
         .onAppear { startedSignedOut = auth.account == nil }
         #if DEBUG
         .onAppear { debugStart() }
@@ -157,7 +161,7 @@ struct OnboardingView: View {
         case .examReady: ExamReadyHero(shown: shown)
         case .studyGoal: StudyGoalHero(shown: shown)
         case .schoolYear: SchoolYearHero(shown: shown)
-        case .interviewLevel: InterviewLevelHero(shown: shown)
+        case .name: NameHero(shown: shown, active: page == .name) { step(1) }
         case .plan: PlanHero(shown: shown)
         case .focus, .account, .pledge: EmptyView()
         }
@@ -181,8 +185,8 @@ struct OnboardingView: View {
             OnboardingNextButton(enabled: yearPicked) { step(1) }
         case .studyGoal:
             OnboardingNextButton(enabled: goalPicked) { step(1) }
-        case .interviewLevel:
-            OnboardingNextButton(enabled: levelPicked) { step(1) }
+        case .name:
+            OnboardingNextButton(enabled: nameTyped) { step(1) }
         case .focus:
             OnboardingNextButton(title: "Continue", enabled: focusReady) { step(1) }
         case .account:
@@ -212,6 +216,13 @@ struct OnboardingView: View {
         }
     }
 
+    /// Puts the typed name on the account. Nothing to do until both exist; `rename` skips an
+    /// unchanged name.
+    private func saveName() async {
+        guard auth.account != nil, nameTyped else { return }
+        _ = await auth.rename(nameStored)
+    }
+
     /// Makes (or finds) the account. One that already finished onboarding goes straight in;
     /// a new one goes on to the promise.
     private func signUp(with provider: SocialProvider) async {
@@ -230,7 +241,7 @@ struct OnboardingView: View {
     private static let debugPages: [String: OnboardingPage] = [
         "onboarding-intro": .patients, "onboarding-year": .schoolYear, "onboarding-goal": .studyGoal,
         "onboarding-graph": .examReady, "onboarding-graded": .graded, "onboarding": .focus, "focus-system": .focus,
-        "onboarding-level": .interviewLevel, "onboarding-promise": .promise, "onboarding-plan": .plan,
+        "onboarding-name": .name, "onboarding-promise": .promise, "onboarding-plan": .plan,
         "onboarding-account": .account, "onboarding-heart": .pledge, "onboarding-promised": .pledge,
     ]
 
@@ -253,9 +264,7 @@ struct OnboardingView: View {
         if target.rawValue >= OnboardingPage.focus.rawValue {
             pick = FocusSelection([.rotation(.internalMedicine), .rotation(.neurology)])
         }
-        if target.rawValue > OnboardingPage.interviewLevel.rawValue, !levelPicked {
-            levelStored = InterviewLevel.gettingThere.rawValue
-        }
+        if target.rawValue > OnboardingPage.name.rawValue, !nameTyped { nameStored = "Jordan" }
         // The promise comes after the account, so these screens start with the sample one.
         // Session restore can clear the sample right after launch, so also run as if onboarding
         // began signed in: no account page to gate the promise.

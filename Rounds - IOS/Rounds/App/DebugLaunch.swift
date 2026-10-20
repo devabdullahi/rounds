@@ -3,7 +3,7 @@ import SwiftUI
 
 /// Dev-only deep link for screenshots: launch with `-screen <name>`.
 /// Names: firstopen, firstopen-auth, duplicate-account, voice-glass, onboarding (focus), onboarding-account, onboarding-intro, onboarding-graded,
-/// onboarding-promise, onboarding-graph, onboarding-goal, onboarding-to-goal, onboarding-year, onboarding-level, onboarding-plan, onboarding-heart, onboarding-promised,
+/// onboarding-promise, onboarding-graph, onboarding-goal, onboarding-to-goal, onboarding-year, onboarding-name, onboarding-plan, onboarding-heart, onboarding-promised,
 /// focus-system, focus-sheet, home, patients, patients-open, previous-tries, previous-try, badge-unlock-many, badge-unlock-all, paywall-taken, profile, brief, interview, examine, workup, diagnosis, debrief, diagnosis-suggest.
 enum DebugLaunch {
     static var screen: String? { UserDefaults.standard.string(forKey: "screen") }
@@ -19,7 +19,7 @@ enum DebugLaunch {
     private static let authScreens = ["firstopen", "firstopen-auth", "duplicate-account", "onboarding", "focus-system", "google-signin",
                                       "onboarding-intro", "onboarding-graded", "onboarding-promise", "onboarding-graph",
                                       "onboarding-goal", "onboarding-to-goal", "onboarding-account", "onboarding-heart",
-                                      "onboarding-promised", "onboarding-year", "onboarding-level", "onboarding-plan"]
+                                      "onboarding-promised", "onboarding-year", "onboarding-name", "onboarding-plan"]
 
     /// Runs before the first frame so the root picks the right side (auth vs app).
     static func prepareDefaults() {
@@ -45,7 +45,7 @@ enum DebugLaunch {
         case "onboarding-intro", "onboarding-graded", "onboarding-promise", "onboarding-graph",
              "onboarding-goal", "onboarding-to-goal", "onboarding", "focus-system",
              "onboarding-account", "onboarding-heart", "onboarding-promised",
-             "onboarding-year", "onboarding-level", "onboarding-plan": [.onboarding]
+             "onboarding-year", "onboarding-name", "onboarding-plan": [.onboarding]
         default: []
         }
     }
