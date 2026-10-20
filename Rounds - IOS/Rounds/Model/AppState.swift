@@ -351,6 +351,14 @@ final class AppState {
         await reminders?.announce(title: title, body: body)
     }
 
+    /// Turns on the daily practice reminder the student picked: asks for permission first (the
+    /// system prompts only once) and schedules it only if allowed. False when notifications are off.
+    func setPracticeReminder(_ reminder: PracticeReminder) async -> Bool {
+        guard let reminders, await reminders.requestPermission() else { return false }
+        await reminders.scheduleDaily(reminder)
+        return true
+    }
+
     /// Moves the reminder to two hours before the streak resets, or clears it with no streak or
     /// when the student turned streak alerts off. Settings calls it when that switch changes.
     func updateReminder() async {

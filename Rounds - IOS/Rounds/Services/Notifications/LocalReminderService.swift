@@ -4,6 +4,7 @@ import UserNotifications
 /// Streak reminders as local notifications: scheduled on the device, so no server or push token.
 struct LocalReminderService: ReminderService {
     private static let id = "streak-reminder"
+    private static let dailyID = "practice-reminder"
 
     func requestPermission() async -> Bool {
         let center = UNUserNotificationCenter.current()
@@ -27,6 +28,18 @@ struct LocalReminderService: ReminderService {
         try? await center.add(UNNotificationRequest(identifier: Self.id, content: content, trigger: trigger))
     }
 
+    func scheduleDaily(_ reminder: PracticeReminder?) async {
+        let center = UNUserNotificationCenter.current()
+        center.removePendingNotificationRequests(withIdentifiers: [Self.dailyID])
+        guard let reminder else { return }
+        let content = UNMutableNotificationContent()
+        content.title = reminder.title
+        content.body = reminder.body
+        content.sound = .default
+        let when = DateComponents(hour: reminder.time.hour, minute: reminder.time.minute)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: when, repeats: true)
+        try? await center.add(UNNotificationRequest(identifier: Self.dailyID, content: content, trigger: trigger))
+    }
 
     func announce(title: String, body: String) async {
         let content = UNMutableNotificationContent()
