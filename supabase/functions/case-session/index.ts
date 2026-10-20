@@ -85,6 +85,8 @@ type Content = {
 };
 
 const LIMITS = { question: 500, reply: 1500, diagnosis: 200, plan: 2000, differential: 10, transcriptTurns: 80 };
+/** Unsubmitted attempts one student may have at one case before start refuses another. */
+const MAX_OPEN_ATTEMPTS = 5;
 /** Facts one reply may reveal; the model lists the most relevant first. More would let one broad
  *  question ("tell me everything") empty the script. */
 const MAX_FACTS_PER_REPLY = 3;
@@ -147,8 +149,12 @@ async function start(userId: string, input: Record<string, unknown>) {
   if (limit !== null && limit !== undefined && !(Number.isInteger(limit) && (limit as number) >= 1 && (limit as number) <= 120)) {
     throw new HttpError(400, "time_limit_minutes must be 1–120 or null");
   }
-  const visible = await sql`select 1 from public.cases where id = ${caseId} and (published or created_by = ${userId})`;
-  if (visible.length === 0) throw new HttpError(404, "case not found");
+  const [found] = await sql<{ open: number }[]>`
+    select (select count(*)::int from public.attempts a where a.user_id = ${userId} and a.case_id = ${caseId} and a.submitted_at is null) as open
+    from public.cases where id = ${caseId} and (published or created_by = ${userId})`;
+  if (!found) throw new HttpError(404, "case not found");
+  // The app continues a left attempt (resume), so a pile of unfinished ones is a script, not a student.
+  if (found.open >= MAX_OPEN_ATTEMPTS) throw new HttpError(429, "you already have unfinished tries at this patient; finish one first");
   const examMode = input.exam_mode === true;
   const [row] = await sql<{ id: string }[]>`
     insert into public.attempts (user_id, case_id, exam_mode, time_limit_minutes)

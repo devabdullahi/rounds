@@ -19,13 +19,21 @@ serve(async (req) => {
   const userId = await callerId(req);
   const base = Deno.env.get("SUPABASE_URL");
 
-  // Best effort: a leftover photo must not block deleting the account itself.
+  // Best effort: a leftover file must not block deleting the account itself. Everything in the
+  // student's folder goes, not only the avatar, in case other files were ever added there.
+  const listed = await fetch(`${base}/storage/v1/object/list/avatars`, {
+    method: "POST",
+    headers: { ...SERVICE_HEADERS, "Content-Type": "application/json" },
+    body: JSON.stringify({ prefix: `${userId}/`, limit: 1000 }),
+  });
+  const names = listed.ok ? ((await listed.json()) as { name: string }[]).map((f) => `${userId}/${f.name}`) : [];
+  const files = [...new Set([`${userId}/avatar.jpg`, ...names])];
   const photo = await fetch(`${base}/storage/v1/object/avatars`, {
     method: "DELETE",
     headers: { ...SERVICE_HEADERS, "Content-Type": "application/json" },
-    body: JSON.stringify({ prefixes: [`${userId}/avatar.jpg`] }),
+    body: JSON.stringify({ prefixes: files }),
   });
-  if (!photo.ok) console.error("delete-account photo cleanup failed", userId, photo.status);
+  if (!photo.ok) console.error("delete-account file cleanup failed", userId, photo.status);
 
   const res = await fetch(`${base}/auth/v1/admin/users/${userId}`, { method: "DELETE", headers: SERVICE_HEADERS });
   if (!res.ok) {

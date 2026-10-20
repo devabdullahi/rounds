@@ -61,8 +61,9 @@ export function withinBudget(task: string | undefined, spent: { total: number; c
   return !isContentTask(task) || spent.content < cap * share;
 }
 
-/** Refuses the call once today's spend reaches its cap (see withinBudget). A failed lookup lets the
- *  call through: the cap guards cost, not access, and the per-student quotas still apply. */
+/** Refuses the call once today's spend reaches its cap (see withinBudget). A failed lookup lets a
+ *  student mid-visit through (the cap guards cost, not access, and their quotas still apply), but not
+ *  content writing (new patients, profiles, cards), which can run unattended and add up. */
 export async function takeBudget(task?: string): Promise<void> {
   let spent = { total: 0, content: 0 };
   try {
@@ -72,6 +73,7 @@ export async function takeBudget(task?: string): Promise<void> {
       from private.llm_usage where day = (now() at time zone 'utc')::date`;
   } catch (error) {
     console.error("llm budget check failed", error);
+    if (isContentTask(task)) throw new BudgetExceeded("Rounds couldn't check its limits just now. Please try again in a moment.");
     return;
   }
   if (!withinBudget(task, spent)) {
