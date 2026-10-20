@@ -145,6 +145,8 @@ final class AppState {
 
     /// Graded cases, counting one just finished before the server's copy arrives.
     var patientsSeen: Int { graded.count }
+    /// Cases graded since midnight on this device, for the daily goal on Home.
+    var gradedToday: Int { graded.filter { Calendar.current.isDateInToday($0.submittedAt) }.count }
     /// Share of graded cases with the right diagnosis; nil before the first one.
     var rightDiagnosisRate: Double? {
         graded.isEmpty ? nil : Double(graded.filter(\.diagnosisCorrect).count) / Double(graded.count)
