@@ -10,7 +10,7 @@ struct StreakIntent: AppIntent {
 
     @MainActor
     func perform() async throws -> some IntentResult & ReturnsValue<Int> & ProvidesDialog {
-        guard IntentSupport.isSignedIn else { return .result(value: 0, dialog: IntentSupport.signInFirst) }
+        guard IntentSupport.isReady else { return .result(value: 0, dialog: IntentSupport.openAppFirst) }
         let (days, dialog) = await IntentActions.streak(app)
         return .result(value: days, dialog: dialog)
     }

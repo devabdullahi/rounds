@@ -5,6 +5,8 @@ struct RootView: View {
     @AppStorage(AuthModel.signedInKey) private var signedIn = false
     @Environment(AppState.self) private var app
     @Environment(PaywallModel.self) private var paywall
+    /// The AI consent on this phone: nothing that reaches an AI provider runs before it.
+    @AppStorage(AIConsent.storageKey) private var consentStored = AIConsent.withdrawn
     /// Fresh on every cold launch (process start), so the splash replays each time the app is reopened
     /// after being closed. Signed-out launches skip it: the welcome screen plays the same heart trace.
     @State private var showSplash = RootView.splashOnLaunch
@@ -19,9 +21,11 @@ struct RootView: View {
     var body: some View {
         ZStack {
             if signedIn {
-                // Signed in, the app opens only with an active plan; until the store answers, nothing shows.
+                // Signed in, the app opens only with an active plan and the AI consent; until the store
+                // answers, nothing shows.
                 switch paywall.isEntitled {
-                case true?: MainTabsView().transition(.opacity)
+                case true? where AIConsent.isGiven(stored: consentStored): MainTabsView().transition(.opacity)
+                case true?: AIConsentView().transition(.opacity)
                 case false?: GateView(model: paywall).transition(.opacity)
                 case nil: Theme.bg.ignoresSafeArea()
                 }
@@ -36,8 +40,14 @@ struct RootView: View {
         }
         .animation(.easeInOut(duration: 0.35), value: signedIn)
         .animation(.easeInOut(duration: 0.35), value: paywall.isEntitled)
-        // Signing out (or deleting the account) leaves nothing of that account behind for the next one.
-        .onChange(of: signedIn) { _, now in if !now { app.reset() } }
+        .animation(.easeInOut(duration: 0.35), value: consentStored)
+        // Signing out (or deleting the account) leaves nothing of that account behind for the next
+        // one, including the consent: whoever signs in next agrees for themselves.
+        .onChange(of: signedIn) { _, now in
+            guard !now else { return }
+            app.reset()
+            consentStored = AIConsent.withdrawn
+        }
         .background(Theme.bg.ignoresSafeArea())
         #if DEBUG
         .overlay { if DebugLaunch.isVoiceGlass { VoiceGlassDebugView() } }

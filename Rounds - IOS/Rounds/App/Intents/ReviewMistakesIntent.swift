@@ -12,7 +12,7 @@ struct ReviewMistakesIntent: AppIntent {
 
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
-        guard IntentSupport.isSignedIn else { return .result(dialog: IntentSupport.signInFirst) }
+        guard IntentSupport.isReady else { return .result(dialog: IntentSupport.openAppFirst) }
         return .result(dialog: await IntentActions.reviewMistakes(app, count: count.rawValue))
     }
 }

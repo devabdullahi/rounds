@@ -2,11 +2,11 @@ import Foundation
 
 /// Every onboarding step, in order. Ordered for attention: one promise page, then quick questions
 /// early (fast progress), a value page between groups of answers, the heavier focus picker mid-flow,
-/// the answers read back as a plan, then the account (only when onboarding began signed out) and
-/// the promise. They're pages of one carousel (`OnboardingView`), so every step slides the same way.
+/// the answers read back as a plan, the AI consent (before anything is sent to an AI provider),
+/// then the account (only when onboarding began signed out) and the promise. They're pages of one carousel (`OnboardingView`), so every step slides the same way.
 enum OnboardingPage: Int, CaseIterable {
     case patients, schoolYear, studyGoal, examReady, graded, focus, careSetting, struggles, redFlag, talkStyle,
-         caseMode, caseTimer, name, promise, missCards, progress, dailyGoal, reminder, plan, account, pledge
+         caseMode, caseTimer, name, promise, missCards, progress, dailyGoal, reminder, plan, aiConsent, account, pledge
 
     /// Question pages share one layout (question on top, answers as a list); the rest show art.
     var isQuestion: Bool {

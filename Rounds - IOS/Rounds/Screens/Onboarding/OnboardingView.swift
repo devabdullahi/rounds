@@ -13,8 +13,8 @@ import SwiftUI
  * background cross-fades between pages (mint, page colour for the focus picker, blush for
  * the promise). Question pages have no art: the question on top, answers as a list (no
  * entrance animation). Pages past an unanswered step aren't added yet, so a swipe can't skip a
- * choice (year, goal, focus, hardest part, red flag, name, then the account when onboarding began
- * signed out). After the promise the carousel locks. Reduce Motion: final states, instant
+ * choice (year, goal, focus, hardest part, red flag, name, the AI consent, then the account when
+ * onboarding began signed out). After the promise the carousel locks. Reduce Motion: final states, instant
  * page changes.
  * ───────────────────────────────────────────────────────── */
 
@@ -34,6 +34,7 @@ struct OnboardingView: View {
     @AppStorage(ProfileName.storageKey) private var nameStored = ""
     @AppStorage(PracticeReminder.storageKey) private var reminderStored = ""
     @AppStorage(StudyStruggle.storageKey) private var strugglesStored = ""
+    @AppStorage(AIConsent.storageKey) private var consentStored = AIConsent.withdrawn
 
     /// The page in view. A paging scroll view, not a page-style TabView: TabView swaps pages
     /// instantly when Next sets the selection, so Next and a swipe would move differently.
@@ -54,6 +55,7 @@ struct OnboardingView: View {
     private var focusReady: Bool { !pick.isMix || mixChosen }
     private var reminderPicked: PracticeReminder? { PracticeReminder(stored: reminderStored) }
     private var nameTyped: Bool { ProfileName.clean(nameStored) != nil }
+    private var consented: Bool { AIConsent.isGiven(stored: consentStored) }
 
     /// The pages a swipe may reach: everything up to and including the first unanswered choice.
     private var pages: [OnboardingPage] {
@@ -75,6 +77,7 @@ struct OnboardingView: View {
         case .struggles: !StudyStruggle.decode(strugglesStored).isEmpty
         case .redFlag: redFlagPick != nil
         case .name: nameTyped
+        case .aiConsent: consented
         case .account: auth.account != nil
         default: true
         }
@@ -114,7 +117,8 @@ struct OnboardingView: View {
             if let goal = StudyGoal(stored: new) { settingStored = goal.careSetting.rawValue }
         }
         // Once there's an account: the typed name replaces whatever Apple or Google gave it, and
-        // patients from the student's picks start being written, so some wait when onboarding ends.
+        // (after the AI consent) patients from the student's picks start being written, so some
+        // wait when onboarding ends.
         .onChange(of: page) { old, _ in
             if old == .name { Task { await saveName() } }
             if old == .focus { stockWard() }
@@ -124,6 +128,8 @@ struct OnboardingView: View {
             Task { await saveName() }
             stockWard()
         }
+        // Signed in from the start (no account page): the first patients wait for the consent.
+        .onChange(of: consentStored) { _, _ in stockWard() }
         .onAppear { startedSignedOut = auth.account == nil }
         #if DEBUG
         .onAppear { debugStart() }
@@ -154,6 +160,7 @@ struct OnboardingView: View {
         case .name: NamePage(shown: seen.contains(p), active: page == .name) { step(1) }
         case .dailyGoal: DailyGoalPage(shown: seen.contains(p))
         case .reminder: ReminderPage(shown: seen.contains(p))
+        case .aiConsent: AIConsentPage(shown: seen.contains(p))
         case .pledge:
             PledgePage(heart: $heart, isHolding: $holdingHeart)
         case .account:
@@ -225,6 +232,17 @@ struct OnboardingView: View {
             }
         case .focus:
             OnboardingNextButton(title: "Continue", enabled: focusReady) { step(1) }
+        case .aiConsent:
+            // Agreeing is the only way on: the carousel ends here until it's recorded.
+            OnboardingNextButton(title: "I agree") {
+                consentStored = AIConsent.agreed
+                // The next page joins the carousel only once the agreement is stored and laid out;
+                // a scroll position set before that is dropped.
+                Task {
+                    try? await Task.sleep(for: .milliseconds(120))
+                    step(1)
+                }
+            }
         case let p where p.isQuestion:
             OnboardingNextButton(title: "Continue", enabled: answered(p)) { step(1) }
         case .account:
@@ -255,8 +273,9 @@ struct OnboardingView: View {
     }
 
     /// Starts writing the student's first patients, in the background: it outlives this screen.
+    /// Not before the AI consent: writing a patient sends the student's picks to an AI provider.
     private func stockWard() {
-        guard auth.account != nil, focusReady else { return }
+        guard auth.account != nil, focusReady, consented else { return }
         let focus = pick
         Task { await app.stockWard(focus: focus) }
     }
@@ -291,7 +310,7 @@ struct OnboardingView: View {
         "onboarding-struggles": .struggles, "onboarding-talk": .talkStyle, "onboarding-mode": .caseMode,
         "onboarding-timer": .caseTimer, "onboarding-progress": .progress, "onboarding-daily": .dailyGoal,
         "onboarding-reminder": .reminder, "onboarding-promise": .promise, "onboarding-plan": .plan,
-        "onboarding-account": .account, "onboarding-heart": .pledge, "onboarding-promised": .pledge,
+        "onboarding-consent": .aiConsent, "onboarding-account": .account, "onboarding-heart": .pledge, "onboarding-promised": .pledge,
     ]
 
     private func debugStart() {
@@ -320,6 +339,7 @@ struct OnboardingView: View {
             redFlagPick = RedFlagQuiz.chestPain.answer?.id
         }
         if target.rawValue > OnboardingPage.name.rawValue, !nameTyped { nameStored = "Jordan" }
+        if target.rawValue > OnboardingPage.aiConsent.rawValue, !consented { consentStored = AIConsent.agreed }
         // The promise comes after the account, so these screens start with the sample one.
         // Session restore can clear the sample right after launch, so also run as if onboarding
         // began signed in: no account page to gate the promise.
