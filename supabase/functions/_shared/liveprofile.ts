@@ -11,6 +11,7 @@
 // SNOMED CT names go only to the model, server side; they're never stored or sent to the app.
 
 import { ingredients, labelCandidates, labelFacts, labelLines } from "./fdalabel.ts";
+import { medlinePlusSummary } from "./medlineplus.ts";
 import { autoFix, labNormal, repair, ruleErrors, sectionErrors, sectionsOutput, STAGES, stagePrompt } from "./profilegen.ts";
 import { type Level, levelRange, LEVELS, rangeLevel, VITAL_NORMALS } from "./levels.ts";
 import { type Family, familiesOf, withFamilyNotes } from "./families.ts";
@@ -35,20 +36,6 @@ async function getJSON(url: string): Promise<Json> {
   const res = await fetch(url, { signal: AbortSignal.timeout(TIMEOUT_MS) });
   if (!res.ok) throw new Error(`${res.status} ${url.split("?")[0]}`);
   return await res.json();
-}
-
-/** MedlinePlus's summary of the health topic whose title best matches the name, as plain text. */
-export async function medlinePlusSummary(name: string): Promise<string> {
-  const url = `https://wsearch.nlm.nih.gov/ws/query?db=healthTopics&rettype=brief&retmax=1&term=${encodeURIComponent(`title:${name}`)}`;
-  const res = await fetch(url, { signal: AbortSignal.timeout(TIMEOUT_MS) });
-  if (!res.ok) return "";
-  const xml = await res.text();
-  const summary = xml.match(/<content name="FullSummary">([\s\S]*?)<\/content>/)?.[1] ?? "";
-  return decode(summary).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 4000);
-}
-
-function decode(text: string): string {
-  return text.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, "&");
 }
 
 /** UMLS definitions and SNOMED CT relationships for the condition's concept. */
