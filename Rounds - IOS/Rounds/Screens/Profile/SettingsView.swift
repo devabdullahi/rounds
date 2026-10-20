@@ -15,6 +15,7 @@ private enum SETTINGS {
     static let dependentDim = 0.4     // opacity of rows that need voice mode
     static let dimAnimation = Springs.slide
     static let voiceSection = "voice"  // scroll target for the settings-voice debug screen
+    static let aboutSection = "about"  // scroll target for the settings-about debug screen
 }
 
 /// Settings: account facts, study focus, and device preferences. Preferences are stored on this
@@ -27,7 +28,7 @@ struct SettingsView: View {
 
     // Shared with the door note so both show the same default.
     @AppStorage(TimeLimit.storageKey) private var timeLimit = TimeLimit.defaultMinutes
-    @AppStorage(Appearance.storageKey) private var appearance = Appearance.system
+    @AppStorage(Appearance.storageKey) private var appearance = Appearance.defaultChoice
 
     @AppStorage(Preferences.examByDefaultKey) private var examByDefault = Preferences.examByDefaultDefault
     @AppStorage(Preferences.voiceModeKey) private var voiceMode = Preferences.voiceModeDefault
@@ -141,12 +142,21 @@ struct SettingsView: View {
                         navRow(.mic, "Siri commands") { showingSiri = true }
                     }
 
-                    section("About") {
-                        linkRow(.messageSquare, "Send feedback", AppLinks.feedback)
-                        linkRow(.shield, "Privacy", AppLinks.privacyPolicy)
-                        linkRow(.fileText, "Terms", AppLinks.terms)
-                        navRow(.info, "Acknowledgements") { showingCredits = true }
+                    VStack(alignment: .leading, spacing: 10) {
+                        section("About") {
+                            linkRow(.messageSquare, "Send feedback", AppLinks.feedback)
+                            linkRow(.shield, "Privacy", AppLinks.privacyPolicy)
+                            linkRow(.fileText, "Terms", AppLinks.terms)
+                            navRow(.info, "Acknowledgements") { showingCredits = true }
+                        }
+                        // What Rounds is, and the NLM attribution its reference lookups require.
+                        Text("For practice only. Fictional patients, not medical advice.\n\nUses data from the U.S. National Library of Medicine (NLM). NLM does not endorse this product.")
+                            .font(.system(size: 12))
+                            .foregroundStyle(Theme.muted)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .padding(.horizontal, 4)
                     }
+                    .id(SETTINGS.aboutSection)
 
                     VStack(spacing: 10) {
                         Button { confirmSignOut = true } label: {
@@ -169,7 +179,7 @@ struct SettingsView: View {
                             .frame(maxWidth: .infinity, minHeight: 44)
                             .disabled(auth.busy != nil)
 
-                        Text("Rounds \(AppVersion.display)\nFor training only. Not for clinical use.")
+                        Text("Rounds \(AppVersion.display)")
                             .font(.system(size: 12))
                             .foregroundStyle(Theme.faint)
                             .multilineTextAlignment(.center)
@@ -189,7 +199,10 @@ struct SettingsView: View {
             }
             .softTopEdge()
             #if DEBUG
-            .onAppear { if DebugLaunch.screen == "settings-voice" { scroller.scrollTo(SETTINGS.voiceSection, anchor: .top) } }
+            .onAppear {
+                if DebugLaunch.screen == "settings-voice" { scroller.scrollTo(SETTINGS.voiceSection, anchor: .top) }
+                if DebugLaunch.screen == "settings-about" { scroller.scrollTo(SETTINGS.aboutSection, anchor: .top) }
+            }
             #endif
         }
         .background(Theme.bg)

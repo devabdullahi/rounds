@@ -4,7 +4,7 @@ import SwiftUI
 struct PrimaryButtonStyle: ButtonStyle {
     @Environment(\.isEnabled) private var isEnabled
     var height: CGFloat = 54
-    var tint: Color = Theme.accent
+    var tint: Color = Theme.accentFill
     /// Off for buttons inside draggable cards: the glass must not swell when a swipe starts on it.
     var reactive = true
     func makeBody(configuration: Configuration) -> some View {

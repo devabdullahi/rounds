@@ -6,6 +6,11 @@ enum Appearance: Int, CaseIterable, Sendable {
 
     static let storageKey = "appearance"
 
+    /// What a student who never picked gets: Light, whatever iOS is set to. Rounds is designed
+    /// light-first (the signed-out screens and paywall are always light), so the app opens the same
+    /// way. An explicit System or Dark choice is stored and kept.
+    static let defaultChoice = Appearance.light
+
     var title: String {
         switch self {
         case .system: "System"
