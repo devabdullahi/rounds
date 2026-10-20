@@ -72,6 +72,10 @@ struct SettingsView: View {
                     section("Subscription") {
                         if let plan = paywall.activePlan {
                             navRow(.crown, "Manage subscription", detail: "\(plan.summary()) · \(ActivePlan.manageHint)") { managingAppStorePlan = true }
+                        } else if paywall.isEntitled == true {
+                            // Paid, but the App Store didn't give the plan's details (it can lag, notably
+                            // in TestFlight): Apple's sheet still manages it.
+                            navRow(.crown, "Manage subscription", detail: ActivePlan.manageHint) { managingAppStorePlan = true }
                         } else {
                             infoRow(.crown, "Subscription", value: "No active plan")
                         }
