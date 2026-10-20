@@ -13,6 +13,14 @@ const NATURAL = [
   "Hmm, I can't say for sure.",
 ];
 
+/** What a patient says to a health question their facts don't cover: anything not listed is absent. */
+const DENIALS = [
+  "No, nothing like that.",
+  "Not that I've noticed, no.",
+  "No, I haven't had that.",
+  "No, that hasn't been a problem.",
+];
+
 export function talksAboutScript(reply: string): boolean {
   return META.test(reply);
 }
@@ -20,5 +28,12 @@ export function talksAboutScript(reply: string): boolean {
 /** A natural stand-in for a scripted refusal, never the patient's previous reply word for word. */
 export function naturalRefusal(previous: string | undefined, rng: () => number = Math.random): string {
   const options = NATURAL.filter((line) => line !== previous?.trim());
+  return options[Math.floor(rng() * options.length) % options.length];
+}
+
+/** A plain "no" in place of a reply that slipped in a medical detail the case doesn't have. Never the
+ *  previous reply word for word. */
+export function naturalDenial(previous: string | undefined, rng: () => number = Math.random): string {
+  const options = DENIALS.filter((line) => line !== previous?.trim());
   return options[Math.floor(rng() * options.length) % options.length];
 }

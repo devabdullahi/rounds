@@ -1,5 +1,5 @@
 import { assert, assertEquals, assertNotEquals } from "jsr:@std/assert@1";
-import { naturalRefusal, talksAboutScript } from "./refusal.ts";
+import { naturalDenial, naturalRefusal, talksAboutScript } from "./refusal.ts";
 
 Deno.test("replies about the script are caught; ordinary refusals aren't", () => {
   for (const [reply, meta] of [
@@ -20,4 +20,10 @@ Deno.test("a stand-in refusal never repeats the patient's last reply", () => {
     assertNotEquals(naturalRefusal(first, () => i / 20), first);
   }
   assert(naturalRefusal(undefined, () => 0.99).length > 0);
+});
+
+Deno.test("a slipped-in medical detail becomes a plain no, never the last reply again", () => {
+  const first = naturalDenial(undefined, () => 0);
+  assert(/^No|^Not that/.test(first));
+  for (let i = 0; i < 4; i++) assertNotEquals(naturalDenial(first, () => i / 4), first);
 });
