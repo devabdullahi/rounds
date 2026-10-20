@@ -320,6 +320,9 @@ final class AppState {
             let session = CaseSession(clinical: clinical, service: cases)
             // The door note can still switch it; this is just where it starts.
             session.examMode = Preferences.examByDefault
+            // A case left mid-way continues where it stopped. If the lookup fails, the case still
+            // opens, just from the start.
+            if let left = try? await cases.resume(bed: bed) { session.restore(left) }
             activeCase = session
         } catch {
             problem = error.localizedDescription

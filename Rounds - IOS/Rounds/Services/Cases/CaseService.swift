@@ -37,6 +37,9 @@ protocol CaseService: Sendable {
     func deletePatients(_ beds: [String]?) async throws -> Int
 
     func start(bed: String, examMode: Bool, timeLimitMinutes: Int?) async throws -> AttemptStart
+
+    /// The student's unsubmitted attempt at this case, if they left one; nil when there's none.
+    func resume(bed: String) async throws -> ResumedAttempt?
     func ask(attempt: String, question: String) async throws -> PatientAnswer
     func examine(attempt: String, maneuver: String) async throws -> String
     func order(attempt: String, test: String) async throws -> TestResult

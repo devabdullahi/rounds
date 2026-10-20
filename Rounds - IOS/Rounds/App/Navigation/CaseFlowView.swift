@@ -41,6 +41,11 @@ struct CaseFlowView: View {
         .onChange(of: router.path) { _, path in NavLock.isLocked = path.contains(.handoff) || path.contains(.debrief) }
         .onDisappear { NavLock.isLocked = false }
         .onAppear {
+            // A case the student left goes straight back to the interview, not the door note.
+            if session.resumed, router.path.isEmpty {
+                var t = Transaction(); t.disablesAnimations = true
+                withTransaction(t) { router.path = [.interview] }
+            }
             if !app.debugInitialPath.isEmpty {
                 var t = Transaction(); t.disablesAnimations = true
                 withTransaction(t) { router.path = app.debugInitialPath }
