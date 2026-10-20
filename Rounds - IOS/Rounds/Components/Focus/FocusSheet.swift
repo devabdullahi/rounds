@@ -26,7 +26,7 @@ struct FocusSheet: View {
                     .foregroundStyle(Theme.accentText)
                     .frame(minHeight: 44)
             }
-            Text(focus.isMix ? "Pick one or more. Matching patients come first." : "\(focus.items.count) picked · matching patients come first.")
+            Text(focus.isMix ? "Pick one or more. You'll only see these patients." : "\(focus.items.count) picked · you'll only see these patients.")
                 .font(.system(size: 14))
                 .foregroundStyle(Theme.muted)
 

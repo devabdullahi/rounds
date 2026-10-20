@@ -181,6 +181,6 @@ struct HomeView: View {
         }
         .buttonStyle(PressableStyle())
         .accessibilityLabel("Study focus: \(chipLabel)")
-        .accessibilityHint("Changes which patients come first")
+        .accessibilityHint("Changes which patients you see")
     }
 }

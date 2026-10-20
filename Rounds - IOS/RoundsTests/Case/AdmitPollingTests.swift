@@ -84,6 +84,44 @@ struct PrepareAheadTests {
     }
 }
 
+/// Stocking the ward after onboarding: patients from the student's picks, waiting on arrival.
+@MainActor
+struct StockWardTests {
+    private func patient(_ id: String, _ rotation: Clerkship) -> WardPatient {
+        WardPatient(id: id, quote: "", meta: "", rotation: rotation, system: nil, hr: nil, bp: nil, spo2: nil, status: .new)
+    }
+
+    @Test func writesThreePatientsTakingThePickedTopicsInTurn() async {
+        let service = ScriptedCases(replies: Array(repeating: .admitted(bed: "X"), count: 3))
+        let app = AppState(cases: service, cards: nil)
+
+        await app.stockWard(focus: FocusSelection([.rotation(.surgery), .rotation(.neurology)]))
+
+        #expect(await service.admittedTopics == ["rotation:surgery", "rotation:neurology", "rotation:surgery"])
+    }
+
+    @Test func stocksOncePerFocus() async {
+        let service = ScriptedCases(replies: Array(repeating: .admitted(bed: "X"), count: 6))
+        let app = AppState(cases: service, cards: nil)
+        let focus = FocusSelection([.rotation(.surgery)])
+
+        await app.stockWard(focus: focus)
+        await app.stockWard(focus: focus)
+
+        #expect(await service.admitCalls == AppState.starterPatients)
+    }
+
+    @Test func patientsAlreadyWaitingInTheFocusCount() async {
+        let service = ScriptedCases(replies: [.admitted(bed: "X")],
+                                    ward: [patient("A1", .surgery), patient("A2", .surgery), patient("A3", .pediatrics)])
+        let app = AppState(cases: service, cards: nil)
+
+        await app.stockWard(focus: FocusSelection([.rotation(.surgery)]))
+
+        #expect(await service.admitCalls == 1)
+    }
+}
+
 /// A case service that answers `admit` from a script and records which beds were opened.
 private actor ScriptedCases: CaseService {
     func rating() async throws -> Int? { nil }
@@ -92,18 +130,24 @@ private actor ScriptedCases: CaseService {
     private(set) var pollingFlags: [Bool] = []
     private(set) var loadedBeds: [String] = []
     private(set) var prepared: [String] = []
+    private(set) var admittedTopics: [String] = []
+    private let wardPatients: [WardPatient]
 
-    init(replies: [AdmitOutcome]) { self.replies = replies }
+    init(replies: [AdmitOutcome], ward: [WardPatient] = []) {
+        self.replies = replies
+        self.wardPatients = ward
+    }
 
     struct Unused: Error {}
 
     func ensureSignedIn() async throws {}
-    func ward() async throws -> [WardPatient] { [] }
+    func ward() async throws -> [WardPatient] { wardPatients }
     func topicCounts() async throws -> [String: Int] { [:] }
     func gradedCases() async throws -> [GradedCase] { [] }
 
     func admit(focus: StudyFocus, setting: CareSetting, polling: Bool) async throws -> AdmitOutcome {
         admitCalls += 1
+        admittedTopics.append(focus.stored)
         pollingFlags.append(polling)
         return replies.isEmpty ? .preparing : replies.removeFirst()
     }

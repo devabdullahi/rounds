@@ -23,6 +23,7 @@ import SwiftUI
 /// that never finished onboarding, that page is skipped.
 struct OnboardingView: View {
     @Environment(AuthModel.self) private var auth
+    @Environment(AppState.self) private var app
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @AppStorage(SchoolYear.storageKey) private var yearStored = ""
     @AppStorage(StudyGoal.storageKey) private var goalStored = ""
@@ -103,6 +104,10 @@ struct OnboardingView: View {
         .onChange(of: goalStored) { _, new in
             if let goal = StudyGoal(stored: new) { settingStored = goal.careSetting.rawValue }
         }
+        // Patients from the student's picks start being written once there's an account to hold
+        // them, so the deck has some waiting when onboarding ends.
+        .onChange(of: page) { old, _ in if old == .focus { stockWard() } }
+        .onChange(of: auth.account?.id) { _, id in if id != nil { stockWard() } }
         .onAppear { startedSignedOut = auth.account == nil }
         #if DEBUG
         .onAppear { debugStart() }
@@ -210,6 +215,13 @@ struct OnboardingView: View {
         default:
             OnboardingNextButton { step(1) }
         }
+    }
+
+    /// Starts writing the student's first patients, in the background: it outlives this screen.
+    private func stockWard() {
+        guard auth.account != nil, focusReady else { return }
+        let focus = pick
+        Task { await app.stockWard(focus: focus) }
     }
 
     /// Makes (or finds) the account. One that already finished onboarding goes straight in;
