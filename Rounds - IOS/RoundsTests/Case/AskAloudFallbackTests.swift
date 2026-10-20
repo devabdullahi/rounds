@@ -25,6 +25,7 @@ private actor OlderServer: CaseService {
         PatientAnswer(reply: "Last night.", revealed: [], revealedIDs: [], coverage: (0, 0))
     }
     func start(bed: String, examMode: Bool, timeLimitMinutes: Int?) async throws -> AttemptStart { AttemptStart(id: "A1", hiddenTests: []) }
+    func resume(bed: String) async throws -> ResumedAttempt? { nil }
     func examine(attempt: String, maneuver: String) async throws -> String { throw Unused() }
     func rating() async throws -> Int? { nil }
     func ensureSignedIn() async throws {}

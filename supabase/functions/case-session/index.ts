@@ -1,6 +1,8 @@
 // case-session: everything a student does inside a case, one action per request.
 //
 //   start    {case_id, exam_mode, time_limit_minutes}  → {attempt_id, hidden_tests}
+//   resume   {case_id}                                 → {attempt: null | the unsubmitted attempt's
+//            conversation, revealed facts, findings, results and progress (resume.ts)}
 //   ask      {attempt_id, question}                    → {reply, revealed[], coverage}
 //   examine  {attempt_id, maneuver_id}                 → {finding}
 //   order    {attempt_id, test_id}                     → {result, abnormal, turnaround_s}
@@ -47,6 +49,7 @@ import { type Actions, grade, type Grade, isSingleDiagnosis, matchesDiagnosis, t
 import { conditionInsights, type InsightProfile, type Insights } from "./insights.ts";
 import { namedDiagnoses } from "./leak.ts";
 import { hiddenTests } from "./menu.ts";
+import { resumeState } from "./resume.ts";
 import { workupText } from "./workup.ts";
 import {
   decodeAudio, lastPatientReply, MAX_SPOKEN_CHARS, MAX_TURNS_PER_CALL, pickLiveVoice, pickVoice, speechInstructions, toBase64, turnRefusal,
@@ -95,6 +98,7 @@ serve(async (req) => {
   const input = await body<Record<string, unknown>>(req);
   switch (input.action) {
     case "start": return json(await start(userId, input));
+    case "resume": return json(await resume(userId, input));
     // Each question costs a model call (reply plus check): it counts against the daily limit.
     case "ask": return json(await withQuota(userId, "question", () => ask(userId, input)));
     case "examine": return json(await examine(userId, input));
@@ -152,6 +156,19 @@ async function start(userId: string, input: Record<string, unknown>) {
     returning id`;
   const [content] = await sql<{ rubric: Rubric }[]>`select rubric from private.case_content where case_id = ${caseId}`;
   return { attempt_id: row.id, hidden_tests: content ? hiddenTests(content.rubric, examMode) : [] };
+}
+
+/** The student's unsubmitted attempt at this case, if they left one, with everything it holds, so
+ *  reopening the case continues it instead of starting over (resume.ts). */
+async function resume(userId: string, input: Record<string, unknown>) {
+  const caseId = text(input.case_id, "case_id", 16);
+  const [open] = await sql<{ id: string }[]>`
+    select id from public.attempts
+    where user_id = ${userId} and case_id = ${caseId} and submitted_at is null
+    order by started_at desc limit 1`;
+  if (!open) return { attempt: null };
+  const { attempt, content } = await loadAttempt(userId, open.id);
+  return { attempt: resumeState(attempt, content, hiddenTests(content.rubric, attempt.exam_mode)) };
 }
 
 // MARK: - ask

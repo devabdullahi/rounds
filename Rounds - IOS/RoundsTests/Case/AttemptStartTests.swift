@@ -37,6 +37,36 @@ struct AttemptStartTests {
         #expect(await service.starts == 1)
         #expect(await service.examinedOn == ["A1", "A1"])
     }
+
+    /// A case the student left comes back as they left it, and new work goes on the same attempt.
+    @Test func aLeftCaseContinuesOnItsAttempt() async throws {
+        let tests = [Investigation(id: "cbc", name: "CBC", detail: "", cost: 10)]
+        let service = SlowStartCases()
+        let session = CaseSession(clinical: ClinicalCase(bed: "X1", name: "Test Patient", age: 40, sex: "F", setting: "", quote: "",
+                                                         demeanor: "", complaint: "", vitals: [], task: "", minutes: 10,
+                                                         suggestedQuestions: [], exam: [], tests: tests, clerkship: nil, system: nil,
+                                                         keyHistoryTotal: 4),
+                                  service: service)
+        let started = Date(timeIntervalSinceNow: -300)
+        session.restore(ResumedAttempt(
+            id: "LEFT", examMode: false, timeLimitMinutes: 15, startedAt: started,
+            transcript: [.init(fromStudent: true, text: "When did it start?"), .init(fromStudent: false, text: "Last night.")],
+            revealedIDs: ["f1"], coverage: (1, 4), examined: [("abdomen", "Soft, non-tender.")],
+            ordered: [.init(id: "cbc", at: started, result: TestResult(text: "WBC 14", isAbnormal: true))], hiddenTests: []))
+
+        #expect(session.resumed)
+        #expect(session.messages.map(\.text) == ["When did it start?", "Last night."])
+        #expect(session.historyCoverage == (1, 4))
+        #expect(session.findings["abdomen"] == "Soft, non-tender.")
+        #expect(session.tests["cbc"] == .ready)
+        #expect(session.testsTaken == (1, 1))
+        #expect(session.startedAt == started)
+
+        session.examine("chest")
+        try await Task.sleep(for: .milliseconds(100))
+        #expect(await service.starts == 0)
+        #expect(await service.examinedOn == ["LEFT"])
+    }
 }
 
 /// Starts slowly, so two actions overlap the first start.
@@ -50,6 +80,8 @@ private actor SlowStartCases: CaseService {
         try await Task.sleep(for: .milliseconds(100))
         return AttemptStart(id: "A\(starts)", hiddenTests: ["chest_x_ray"])
     }
+
+    func resume(bed: String) async throws -> ResumedAttempt? { nil }
 
     func examine(attempt: String, maneuver: String) async throws -> String {
         examinedOn.append(attempt)

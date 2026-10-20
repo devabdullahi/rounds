@@ -12,6 +12,8 @@ final class CaseSession {
     var examMode = false
 
     private(set) var attemptID: String?
+    /// True when this session continues an attempt the student left; the case opens on the interview.
+    private(set) var resumed = false
     /// The attempt start in flight, shared by every action that arrives before it returns.
     @ObservationIgnored private var starting: Task<AttemptStart, Error>?
     /// Tests left off this attempt's menu (practice mode hides the ones the case doesn't call for).
@@ -45,6 +47,30 @@ final class CaseSession {
         self.service = service
         self.timeLimitMinutes = clinical.minutes
         self.coverage = (0, clinical.keyHistoryTotal)
+    }
+
+    /// Picks up an attempt the student left: the conversation, what it uncovered, exam findings,
+    /// test results and the clock, so the progress bars and chat are as they left them. Exam steps
+    /// and tests go on the timeline at their own times when known (tests), else at the start.
+    func restore(_ a: ResumedAttempt) {
+        attemptID = a.id
+        resumed = true
+        examMode = a.examMode
+        timeLimitMinutes = a.timeLimitMinutes
+        hiddenTests = a.hiddenTests
+        menuReady = true
+        startedAt = a.startedAt
+        messages = a.transcript.map { ChatMessage(kind: $0.fromStudent ? .doctor : .patient, text: $0.text) }
+        revealed = a.revealedIDs
+        if a.coverage.total > 0 { coverage = a.coverage }
+        examined = a.examined.map(\.id)
+        findings = Dictionary(a.examined.map { ($0.id, $0.finding) }, uniquingKeysWith: { first, _ in first })
+        testOrder = a.ordered.map(\.id)
+        tests = Dictionary(a.ordered.map { ($0.id, TestState.ready) }, uniquingKeysWith: { first, _ in first })
+        results = Dictionary(a.ordered.map { ($0.id, $0.result) }, uniquingKeysWith: { first, _ in first })
+        timeline = a.transcript.filter(\.fromStudent).map { TimelineEvent(at: a.startedAt, kind: .question, text: $0.text) }
+            + a.examined.compactMap { e in clinical.exam.first { $0.id == e.id }.map { TimelineEvent(at: a.startedAt, kind: .exam, text: $0.title) } }
+            + a.ordered.compactMap { o in clinical.tests.first { $0.id == o.id }.map { TimelineEvent(at: o.at, kind: .test, text: "Ordered \($0.name)") } }
     }
 
     // MARK: Clock

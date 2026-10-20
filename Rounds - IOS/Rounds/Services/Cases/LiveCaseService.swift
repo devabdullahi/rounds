@@ -107,6 +107,11 @@ struct LiveCaseService: CaseService {
         return AttemptStart(id: reply.attempt_id, hiddenTests: Set(reply.hidden_tests ?? []))
     }
 
+    func resume(bed: String) async throws -> ResumedAttempt? {
+        let reply: ResumeReply = try await invoke("case-session", ["action": "resume", "case_id": bed])
+        return reply.attempt?.resumed
+    }
+
     func ask(attempt: String, question: String) async throws -> PatientAnswer {
         let r: AskReply = try await invoke("case-session", ["action": "ask", "attempt_id": attempt, "question": question])
         return PatientAnswer(reply: r.reply, revealed: r.revealed.map { ($0.id, $0.label) }, revealedIDs: r.revealed_ids,
@@ -398,6 +403,38 @@ private struct AdmitReply: Decodable { let case_id: String?; let status: String?
 private struct AdmitBody: Encodable { let focus: String; let setting: String; let polling: Bool }
 private struct PrepareBody: Encodable { let focus: String; let setting: String; let prepare = true }
 private struct StartReply: Decodable { let attempt_id: String; let hidden_tests: [String]? }
+private struct ResumeReply: Decodable {
+    struct Attempt: Decodable {
+        struct Turn: Decodable { let role: String; let text: String }
+        struct Coverage: Decodable { let got: Int; let total: Int }
+        struct Examined: Decodable { let id: String; let finding: String }
+        struct Ordered: Decodable { let id: String; let at: String; let result: String; let abnormal: Bool }
+        let attempt_id: String
+        let exam_mode: Bool
+        let time_limit_minutes: Int?
+        let started_at: String
+        let transcript: [Turn]
+        let revealed_ids: [String]
+        let coverage: Coverage
+        let examined: [Examined]
+        let ordered: [Ordered]
+        let hidden_tests: [String]
+
+        var resumed: ResumedAttempt {
+            let iso = ISO8601DateFormatter()
+            iso.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+            let date = { (s: String) in iso.date(from: s) ?? ISO8601DateFormatter().date(from: s) ?? .now }
+            return ResumedAttempt(
+                id: attempt_id, examMode: exam_mode, timeLimitMinutes: time_limit_minutes, startedAt: date(started_at),
+                transcript: transcript.map { .init(fromStudent: $0.role == "student", text: $0.text) },
+                revealedIDs: Set(revealed_ids), coverage: (coverage.got, coverage.total),
+                examined: examined.map { ($0.id, $0.finding) },
+                ordered: ordered.map { .init(id: $0.id, at: date($0.at), result: TestResult(text: $0.result, isAbnormal: $0.abnormal)) },
+                hiddenTests: Set(hidden_tests))
+        }
+    }
+    let attempt: Attempt?
+}
 private struct ExamineReply: Decodable { let finding: String }
 private struct OrderReply: Decodable { let result: String; let abnormal: Bool }
 private struct TranscribeReply: Decodable { let text: String }
