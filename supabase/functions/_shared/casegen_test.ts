@@ -95,3 +95,13 @@ Deno.test("every heart case offers troponin; others don't add it", () => {
   const indicating = profiles.find((p) => (p.workup?.initial ?? []).some((t) => t.test === "hs_tnt" && !t.only_if));
   if (indicating) assertEquals(planCase(indicating, seeded(1), { cardiac: true }).tests.find((t) => t.id === "hs_tnt")?.role, "indicated");
 });
+
+Deno.test("supporting tests aren't scored when a profile has a core workup", () => {
+  const profile = JSON.parse(Deno.readTextFileSync(new URL("acute-pyelonephritis.json", dir))) as Profile;
+  const supporting = (profile.workup.supporting ?? []).filter((r) => !r.only_if).map((r) => r.test.toLowerCase());
+  assert(supporting.length > 0 && (profile.workup.initial ?? []).length > 0, "fixture needs both kinds");
+  const plan = planCase(profile, seeded(7));
+  const indicated = plan.tests.filter((t) => t.role === "indicated").map((t) => t.id.toLowerCase());
+  for (const test of supporting) assert(!indicated.includes(test), `${test} is supporting but scored`);
+  assert(indicated.length > 0);
+});

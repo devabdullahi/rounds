@@ -192,9 +192,12 @@ function planTests(profile: Profile, severity: Severity, patient: Patient, rng: 
   let roles = new Map<string, { role: PlannedTest["role"]; why?: string }>();
   const group = (g: WorkupGroup) => profile.workup?.[g] ?? [];
   const notIndicated = new Set(group("not_indicated").map((t) => t.test.toLowerCase()));
+  // Supporting tests are fine to order but aren't the core workup, so they don't count toward test
+  // points; only a profile with no initial or confirmatory tests scores its supporting ones.
+  const hasCore = group("initial").length + group("confirmatory").length > 0;
   for (const g of ["initial", "confirmatory", "supporting"] as const) {
     for (const ref of group(g)) {
-      const conditional = !!ref.only_if || notIndicated.has(ref.test.toLowerCase());
+      const conditional = !!ref.only_if || notIndicated.has(ref.test.toLowerCase()) || (g === "supporting" && hasCore);
       roles.set(ref.test, { role: conditional ? "conditional" : "indicated", why: ref.only_if ?? ref.why });
     }
   }
