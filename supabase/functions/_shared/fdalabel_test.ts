@@ -49,3 +49,8 @@ Deno.test("a WARNINGS heading is dropped too", () => {
   const f = readLabel("x", { boxed_warning: ["WARNINGS: Hyperkalemia: Abnormal elevation of serum potassium can occur."] }, []);
   assertEquals(f.boxed, "Hyperkalemia: Abnormal elevation of serum potassium can occur.");
 });
+
+Deno.test("form words and typos in label names collapse into the drug seen first", () => {
+  assertEquals(ingredients(["ciprofloxacin", "ciprofolxacin", "ciprofloxacin tablets", "ciprofloxacin hcl", "levofloxacin", "hydrochlorothiazide", "hydrocodone"]),
+    ["ciprofloxacin", "levofloxacin", "hydrochlorothiazide", "hydrocodone"]);
+});

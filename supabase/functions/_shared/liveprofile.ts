@@ -10,7 +10,7 @@
 //
 // SNOMED CT names go only to the model, server side; they're never stored or sent to the app.
 
-import { ingredients, labelFacts, labelLines } from "./fdalabel.ts";
+import { ingredients, labelCandidates, labelFacts, labelLines } from "./fdalabel.ts";
 import { autoFix, labNormal, repair, ruleErrors, sectionErrors, sectionsOutput, STAGES, stagePrompt } from "./profilegen.ts";
 import { type Level, levelRange, LEVELS, rangeLevel, VITAL_NORMALS } from "./levels.ts";
 import { type Family, familiesOf, withFamilyNotes } from "./families.ts";
@@ -83,15 +83,19 @@ export async function treatments(name: string): Promise<string[]> {
 
 /** Everything the APIs say, fetched at once; each source that fails is left empty. */
 export async function fetchFacts(name: string, umlsKey: string): Promise<Facts> {
-  // The FDA labels need RxClass's drug list, so they run right after it, alongside the others.
-  const drugsAndLabels = treatments(name).catch(() => [] as string[])
-    .then(async (drugs) => ({ drugs, labels: labelLines(await labelFacts(drugs, [name]).catch(() => [])) }));
+  // Drugs come from two places: the labels that name the condition (openFDA's count, the usual
+  // choices first) and RxClass. The labels are then read for both, right after, alongside the rest.
+  const drugsAndLabels = Promise.all([labelCandidates(name).catch(() => [] as string[]), treatments(name).catch(() => [] as string[])])
+    .then(async ([fromLabels, fromRxClass]) => {
+      const drugs = ingredients([...fromLabels, ...fromRxClass]);
+      return { drugs, labels: labelLines(await labelFacts(drugs, [name]).catch(() => [])) };
+    });
   const [summary, umls, { drugs, labels }] = await Promise.all([
     medlinePlusSummary(name).catch(() => ""),
     umlsFacts(name, umlsKey).catch(() => ({ definitions: [], relations: [] })),
     drugsAndLabels,
   ]);
-  return { summary, definitions: umls.definitions, relations: umls.relations, treatments: ingredients(drugs), labels };
+  return { summary, definitions: umls.definitions, relations: umls.relations, treatments: drugs.slice(0, 20), labels };
 }
 
 /** The facts as the template's background: sourced, so the model can lean on them. */

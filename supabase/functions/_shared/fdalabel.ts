@@ -23,12 +23,32 @@ const DOSE_WINDOW = 180;
  *  monohydrate"); the ingredient is what a label is filed under. */
 const SALT = /\b(hydrochloride|hydrobromide|monohydrate|hemihydrate|dihydrate|trihydrate|anhydrous|sulfate|sodium|potassium|calcium|lactate|tosylate|mesylate|maleate|acetate|citrate|phosphate|succinate|tartrate|fumarate|besylate|disodium|magnesium|medoxomil|kamedoxomil|axetil|cilexetil|mofetil|pivoxil)\b/gi;
 
-/** RxClass members as unique ingredients, first-seen order kept. */
+/** Form words that labels add to the generic name ("ciprofloxacin tablets", "ciprofloxacin hcl"). */
+const FORM = /\b(tablets?|capsules?|hcl|oral|solution|suspension|extended-release|delayed-release|er|xr|sr|usp)\b/gi;
+
+/** Edits between two short names, to catch typos in label names ("ciprofolxacin"). */
+function distance(a: string, b: string): number {
+  const row = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i++) {
+    let prev = row[0]++;
+    for (let j = 1; j <= b.length; j++) {
+      const here = row[j];
+      row[j] = Math.min(row[j] + 1, row[j - 1] + 1, prev + (a[i - 1] === b[j - 1] ? 0 : 1));
+      prev = here;
+    }
+  }
+  return row[b.length];
+}
+
+/** Drug names as unique ingredients, first-seen order kept: salts, forms and typos of a name seen
+ *  earlier collapse into it. */
 export function ingredients(names: string[]): string[] {
   const out: string[] = [];
   for (const raw of names) {
-    const name = raw.toLowerCase().replace(SALT, " ").replace(/[^a-z0-9 -]+/g, " ").replace(/\s+/g, " ").trim();
-    if (name && !out.includes(name)) out.push(name);
+    const name = raw.toLowerCase().replace(SALT, " ").replace(FORM, " ").replace(/[^a-z0-9 ,-]+/g, " ")
+      .replace(/\s+/g, " ").replace(/^[\s,]+|[\s,]+$/g, "").trim();
+    if (!name || out.some((seen) => seen === name || (name.length >= 8 && distance(seen, name) <= 2))) continue;
+    out.push(name);
   }
   return out;
 }
@@ -85,11 +105,27 @@ export function readLabel(drug: string, label: Json, names: string[]): LabelFact
   return { drug, routes, indicated, dose, boxed: boxed || null };
 }
 
-/** Labels for the condition's drugs, approved-for-this-condition first, then oral. */
+/** Oral drugs whose labels name the condition in their indications, most labels first: generics
+ *  common enough to have many manufacturers' labels come first, which puts the usual choices
+ *  ahead of rare ones (openFDA's count). Mentions that rule the condition out are caught later,
+ *  when each label is read. */
+export async function labelCandidates(name: string, apiKey = Deno.env.get("OPENFDA_API_KEY") ?? ""): Promise<string[]> {
+  const key = apiKey ? `&api_key=${encodeURIComponent(apiKey)}` : "";
+  const search = encodeURIComponent(`indications_and_usage:"${name}" AND openfda.route:"ORAL"`);
+  const res = await fetch(`${API}?search=${search}&count=openfda.generic_name.exact&limit=30${key}`, { signal: AbortSignal.timeout(TIMEOUT_MS) });
+  if (!res.ok) return [];
+  return ingredients(((await res.json()).results ?? []).map((r: Json) => String(r.term ?? "")))
+    // Combination products ("acetaminophen, aspirin, caffeine") aren't one drug a profile can name.
+    .filter((d) => !d.includes(","));
+}
+
+/** Labels for the condition's drugs (in the order given, most likely first), ranked: approved for
+ *  this condition and dosed for it first, then oral. */
 export async function labelFacts(drugs: string[], names: string[], apiKey = Deno.env.get("OPENFDA_API_KEY") ?? ""): Promise<LabelFact[]> {
   const key = apiKey ? `&api_key=${encodeURIComponent(apiKey)}` : "";
   const first = async (search: string): Promise<Json | null> => {
-    const res = await fetch(`${API}?search=${encodeURIComponent(search)}&limit=1${key}`, { signal: AbortSignal.timeout(TIMEOUT_MS) });
+    // Newest label first, so its dosing is the current one.
+    const res = await fetch(`${API}?search=${encodeURIComponent(search)}&sort=effective_time:desc&limit=1${key}`, { signal: AbortSignal.timeout(TIMEOUT_MS) });
     return res.ok ? (await res.json()).results?.[0] ?? null : null;
   };
   // The oral label first: a drug's first hit is as likely to be its ear drops or IV form.
@@ -102,7 +138,8 @@ export async function labelFacts(drugs: string[], names: string[], apiKey = Deno
     }
   };
   const found = (await Promise.all(ingredients(drugs).slice(0, MAX_LOOKUPS).map(one))).filter((f): f is LabelFact => !!f);
-  const rank = (f: LabelFact) => (f.indicated ? 0 : 2) + (f.routes.includes("oral") ? 0 : 1);
+  // Stable sort: within a rank, the order given (most labels first) stands.
+  const rank = (f: LabelFact) => (f.indicated ? 0 : 4) + (f.dose ? 0 : 2) + (f.routes.includes("oral") ? 0 : 1);
   return found.sort((a, b) => rank(a) - rank(b)).slice(0, MAX_LABELS);
 }
 
