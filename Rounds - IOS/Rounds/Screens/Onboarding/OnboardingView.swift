@@ -11,8 +11,9 @@ import SwiftUI
  *
  * One carousel for every step, so swiping, Next and Back all slide the same way. The
  * background cross-fades between pages (mint, page colour for the focus picker, blush for
- * the promise). Pages past an unanswered step aren't added yet, so a swipe can't skip a
- * choice (year, goal, focus, red flag, name, then the account when onboarding began
+ * the promise). Question pages have no art: the question on top, answers as a list (no
+ * entrance animation). Pages past an unanswered step aren't added yet, so a swipe can't skip a
+ * choice (year, goal, focus, hardest part, red flag, name, then the account when onboarding began
  * signed out). After the promise the carousel locks. Reduce Motion: final states, instant
  * page changes.
  * ───────────────────────────────────────────────────────── */
@@ -32,6 +33,7 @@ struct OnboardingView: View {
     @AppStorage(CareSetting.storageKey) private var settingStored = ""
     @AppStorage(ProfileName.storageKey) private var nameStored = ""
     @AppStorage(PracticeReminder.storageKey) private var reminderStored = ""
+    @AppStorage(StudyStruggle.storageKey) private var strugglesStored = ""
 
     /// The page in view. A paging scroll view, not a page-style TabView: TabView swaps pages
     /// instantly when Next sets the selection, so Next and a swipe would move differently.
@@ -70,6 +72,7 @@ struct OnboardingView: View {
         case .schoolYear: yearPicked
         case .studyGoal: goalPicked
         case .focus: focusReady
+        case .struggles: !StudyStruggle.decode(strugglesStored).isEmpty
         case .redFlag: redFlagPick != nil
         case .name: nameTyped
         case .account: auth.account != nil
@@ -140,6 +143,17 @@ struct OnboardingView: View {
         switch p {
         case .focus:
             FocusPage(pick: $pick, mixChosen: $mixChosen)
+        case .schoolYear: SchoolYearPage()
+        case .studyGoal: StudyGoalPage()
+        case .careSetting: CareSettingPage()
+        case .struggles: StrugglePage()
+        case .redFlag: RedFlagPage(picked: $redFlagPick)
+        case .talkStyle: TalkStylePage()
+        case .caseMode: CaseModePage()
+        case .caseTimer: CaseTimerPage()
+        case .name: NamePage(active: page == .name) { step(1) }
+        case .dailyGoal: DailyGoalPage()
+        case .reminder: ReminderPage()
         case .pledge:
             PledgePage(heart: $heart, isHolding: $holdingHeart)
         case .account:
@@ -173,15 +187,10 @@ struct OnboardingView: View {
         case .graded: GradedHero(shown: shown)
         case .promise: PromiseHero(shown: shown)
         case .examReady: ExamReadyHero(shown: shown)
-        case .studyGoal: StudyGoalHero(shown: shown)
-        case .schoolYear: SchoolYearHero(shown: shown)
-        case .careSetting: CareSettingHero(shown: shown)
-        case .redFlag: RedFlagHero(shown: shown, picked: $redFlagPick)
         case .missCards: MissCardHero(shown: shown)
-        case .reminder: ReminderHero(shown: shown)
-        case .name: NameHero(shown: shown, active: page == .name) { step(1) }
+        case .progress: ProgressHero(shown: shown)
         case .plan: PlanHero(shown: shown)
-        case .focus, .account, .pledge: EmptyView()
+        default: EmptyView()
         }
     }
 
@@ -199,17 +208,9 @@ struct OnboardingView: View {
     @ViewBuilder
     private var bottom: some View {
         switch page {
-        case .schoolYear:
-            OnboardingNextButton(enabled: yearPicked) { step(1) }
-        case .studyGoal:
-            OnboardingNextButton(enabled: goalPicked) { step(1) }
-        case .name:
-            OnboardingNextButton(enabled: nameTyped) { step(1) }
-        case .redFlag:
-            OnboardingNextButton(enabled: redFlagPick != nil) { step(1) }
         case .reminder:
             VStack(spacing: 4) {
-                OnboardingNextButton(title: "Remind Me", enabled: reminderPicked != nil) {
+                OnboardingNextButton(title: "Turn On Reminders", enabled: reminderPicked != nil) {
                     guard let reminder = reminderPicked else { return }
                     Task {
                         // iOS asks for permission here; the page moves on whatever the answer.
@@ -224,6 +225,8 @@ struct OnboardingView: View {
             }
         case .focus:
             OnboardingNextButton(title: "Continue", enabled: focusReady) { step(1) }
+        case let p where p.isQuestion:
+            OnboardingNextButton(title: "Continue", enabled: answered(p)) { step(1) }
         case .account:
             // Signed in already (they came back a page): just move on. Otherwise the page's own buttons.
             if auth.account != nil {
@@ -285,6 +288,8 @@ struct OnboardingView: View {
         "onboarding-graph": .examReady, "onboarding-graded": .graded, "onboarding": .focus, "focus-system": .focus,
         "onboarding-name": .name,
         "onboarding-setting": .careSetting, "onboarding-redflag": .redFlag, "onboarding-cards": .missCards,
+        "onboarding-struggles": .struggles, "onboarding-talk": .talkStyle, "onboarding-mode": .caseMode,
+        "onboarding-timer": .caseTimer, "onboarding-progress": .progress, "onboarding-daily": .dailyGoal,
         "onboarding-reminder": .reminder, "onboarding-promise": .promise, "onboarding-plan": .plan,
         "onboarding-account": .account, "onboarding-heart": .pledge, "onboarding-promised": .pledge,
     ]
@@ -307,6 +312,9 @@ struct OnboardingView: View {
         if target.rawValue > OnboardingPage.studyGoal.rawValue, !goalPicked { goalStored = StudyGoal.step2CK.rawValue }
         if target.rawValue >= OnboardingPage.focus.rawValue {
             pick = FocusSelection([.rotation(.internalMedicine), .rotation(.neurology)])
+        }
+        if target.rawValue > OnboardingPage.struggles.rawValue, StudyStruggle.decode(strugglesStored).isEmpty {
+            strugglesStored = StudyStruggle.whatToAsk.rawValue
         }
         if target.rawValue > OnboardingPage.redFlag.rawValue, redFlagPick == nil {
             redFlagPick = RedFlagQuiz.chestPain.answer?.id

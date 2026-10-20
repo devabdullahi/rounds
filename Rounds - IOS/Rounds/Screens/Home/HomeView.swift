@@ -41,6 +41,7 @@ struct HomeView: View {
     @State private var editingFocus = false
     @AppStorage(StudyFocus.storageKey) private var focusStored = ""
     @AppStorage(CareSetting.storageKey) private var settingStored = ""
+    @AppStorage(DailyGoal.storageKey) private var dailyGoalStored = DailyGoal.default.rawValue
     private var focus: FocusSelection { FocusSelection(stored: focusStored) }
 
     var body: some View {
@@ -137,10 +138,14 @@ struct HomeView: View {
             }
 
             VStack(alignment: .leading, spacing: 10) {
-                Text(shiftTitle)
-                    .font(.system(size: 34, weight: .bold))
-                    .tracking(-0.5)
-                    .accessibilityAddTraits(.isHeader)
+                HStack(alignment: .firstTextBaseline) {
+                    Text(shiftTitle)
+                        .font(.system(size: 34, weight: .bold))
+                        .tracking(-0.5)
+                        .accessibilityAddTraits(.isHeader)
+                    Spacer(minLength: 8)
+                    dailyCount
+                }
                 // An empty focus says so beside the chip, on the same line, so the deck doesn't move.
                 HStack(spacing: 10) {
                     focusChip
@@ -155,6 +160,17 @@ struct HomeView: View {
             }
             .animation(.easeOut(duration: 0.2), value: focusStored)
         }
+    }
+
+    /// Today's graded cases against the daily goal ("1 of 2 today"), green once it's met.
+    private var dailyCount: some View {
+        let goal = DailyGoal(stored: dailyGoalStored).cases
+        let done = app.gradedToday
+        return Text("\(min(done, goal)) of \(goal) today")
+            .font(.system(size: 15, weight: .semibold))
+            .foregroundStyle(done >= goal ? Theme.accentText : Theme.muted)
+            .contentTransition(.numericText())
+            .accessibilityLabel("\(done) of \(goal) cases done today")
     }
 
     /// The focus label, with the care setting when one is picked ("Surgery · Clinic").
