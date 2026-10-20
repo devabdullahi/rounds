@@ -22,6 +22,8 @@ export type Subscription = {
   active: boolean;
   /** Refunded or revoked: never entitles again. */
   revoked: boolean;
+  /** The Rounds account id the app tagged the purchase with (lowercased), when it did. */
+  appAccountToken?: string;
 };
 
 /** The JSON inside a JWS Apple sent us. */
@@ -59,6 +61,7 @@ export function summarize(response: StatusResponse, originalTransactionId?: stri
       environment: String(info.environment ?? response.environment ?? "Production"),
       active: !revoked && (t.status === 1 || t.status === 4),
       revoked,
+      appAccountToken: typeof info.appAccountToken === "string" ? info.appAccountToken.toLowerCase() : undefined,
     };
   }
   return null;

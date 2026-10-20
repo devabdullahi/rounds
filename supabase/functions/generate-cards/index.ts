@@ -18,6 +18,7 @@ import { completeJSON } from "../_shared/llm.ts";
 import { type Profile } from "../_shared/casegen.ts";
 import { type CardFacts, cardFacts, missFacts } from "../_shared/cardfacts.ts";
 import { CARD_WRITER, NOTES_CARD_WRITER } from "../_shared/prompts.ts";
+import { requirePlan } from "../_shared/plan.ts";
 import { remainingToday, withQuota } from "../_shared/quota.ts";
 import { deckTitle, mentionsSource } from "../_shared/notescards.ts";
 
@@ -33,6 +34,7 @@ const NOTES_SOURCE = "notes";
 
 serve(async (req) => {
   const userId = await callerId(req);
+  await requirePlan(userId);
   const input = await body<Request>(req);
   const topics = input.topics ?? [];
   const count = input.count ?? 0;

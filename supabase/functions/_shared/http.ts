@@ -32,6 +32,21 @@ export interface Caller {
   user_metadata?: Record<string, unknown>;
 }
 
+/** Refuses unless the request carries the service role key: for internal functions with verify_jwt off. */
+export function requireServiceRole(req: Request): void {
+  const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  if (!key || !sameText(req.headers.get("Authorization") ?? "", `Bearer ${key}`)) throw new HttpError(401, "internal function");
+}
+
+/** Constant-time string comparison, so response timing doesn't reveal how much of a secret matched. */
+export function sameText(a: string, b: string): boolean {
+  const x = new TextEncoder().encode(a);
+  const y = new TextEncoder().encode(b);
+  let diff = x.length ^ y.length;
+  for (let i = 0; i < Math.max(x.length, y.length); i++) diff |= (x[i] ?? 0) ^ (y[i] ?? 0);
+  return diff === 0;
+}
+
 /** Verifies the bearer token with Supabase Auth and returns the user. */
 export async function caller(req: Request): Promise<Caller> {
   const auth = req.headers.get("Authorization");

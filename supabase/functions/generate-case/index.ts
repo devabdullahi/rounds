@@ -26,6 +26,7 @@ import { auditPrompt, candidateFlags, confirmWithUmls, type Flag, fixRequest, ty
 import { checkTerms, conceptOf, umlsKey } from "../_shared/terms.ts";
 import { buildLiveProfile } from "../_shared/liveprofile.ts";
 import { SYSTEM_PROMPT } from "../_shared/profilegen.ts";
+import { requirePlan } from "../_shared/plan.ts";
 // Daily patient limit off for now (2026-10-19, user request); restore these to turn it back on.
 // import { refundQuota, takeQuota } from "../_shared/quota.ts";
 import { backgroundForWriter, MAX_AGE_GAP, type PatientBackground, pickBackground } from "./background.ts";
@@ -55,6 +56,7 @@ const READY_FOR = "3 days";
 
 serve(async (req) => {
   const userId = await callerId(req);
+  await requirePlan(userId);
   const { focus: requested = "" } = await body<Request>(req);
   const focus = parseFocus(requested);
 
