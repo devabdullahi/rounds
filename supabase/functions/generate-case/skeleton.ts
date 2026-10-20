@@ -6,6 +6,7 @@
 // Pure, so the rules are unit-tested.
 import { type CasePlan, leakTerms, type PlannedTest, type Profile } from "../_shared/casegen.ts";
 import { backgroundForWriter, type PatientBackground } from "./background.ts";
+import { historyFacts, priorCare } from "./history.ts";
 
 export type SkeletonFact = {
   id: string;
@@ -203,12 +204,14 @@ export function skeletonFacts(profile: Profile, plan: CasePlan, background: Pati
   // Age and sex are risk factors on paper but not something a patient reports ("male sex in childhood").
   const risks = pick(profile.patient.risk_factors.map((r) => r.text).filter((r) => !DEMOGRAPHIC.test(r)), MAX_HISTORY_ITEMS);
   const chronic = (record?.chronic_conditions ?? []).filter((c) => !ACUTE.test(c) && plain(c, banned)).slice(0, MAX_CHRONIC);
-  const history = [...chronic, ...pick(profile.patient.comorbidities ?? [], 1)];
-  add("Past medical history", history.length ? history.join("; ") : "No significant past medical history.", "important");
-  if (risks.length) add("Risk factors", risks.join("; "), "important");
+  const conditions = [...chronic, ...pick(profile.patient.comorbidities ?? [], 1)];
   const medications = [...new Set((record?.current_medications ?? []).map(medicationName))].slice(0, MAX_MEDICATIONS);
-  add("Medications", medications.length ? `Takes ${medications.join(", ")}.` : "Takes no regular medications.", "important");
-  add("Allergies", record?.allergies.length ? `Allergic to ${record.allergies.join(", ")}.` : "No known drug allergies.", "optional");
+  // Each condition with its age, medicine and what the doctor said; medicines with doses; allergies
+  // with the reaction (history.ts).
+  for (const f of historyFacts(conditions, medications, record?.allergies ?? [], rng)) add(f.label, f.content, f.importance);
+  if (risks.length) add("Risk factors", risks.join("; "), "important");
+  const care = priorCare(rng);
+  add(care.label, care.content, care.importance);
   const social = [record?.smoking && record.smoking !== "unknown" ? record.smoking : "", ...(record?.social ?? []), ...pick(profile.patient.social_history ?? [], 1)].filter(Boolean);
   add("Social history", social.join("; ") || "Nothing notable.", "optional");
   const family = pick(profile.patient.family_history ?? [], 1);

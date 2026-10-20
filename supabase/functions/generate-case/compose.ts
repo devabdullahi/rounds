@@ -80,7 +80,7 @@ export async function composeCase(
   const skeleton = buildSkeleton(profile, plan, background, Math.random);
   const name = freshName(plan, history);
   let user = voicePrompt(profile, plan, skeleton, background, name);
-  const items = planItems(profile, plan, background);
+  const items = planItems(profile, plan, background, skeleton.facts.map((f) => f.content));
   let writing: Writing | null = null;
   let problems: string[] = [];
   const writerDeadline = deadline - FALLBACK_RESERVE_MS;
@@ -127,9 +127,10 @@ export async function composeCase(
 }
 
 /** Everything the writer was given that a fact may state: planned symptoms, the presentation's
- *  details, risk factors and history, and the background record. Absent symptoms apart, since the
- *  patient may only deny those. */
-function planItems(profile: Profile, plan: CasePlan, background: PatientBackground | null): PlanItems {
+ *  details, risk factors and history, the background record, and every fact the skeleton planned
+ *  (its history details are built in code, so they're true by construction). Absent symptoms
+ *  apart, since the patient may only deny those. */
+function planItems(profile: Profile, plan: CasePlan, background: PatientBackground | null, planned: string[] = []): PlanItems {
   const texts = (list: unknown) => (Array.isArray(list) ? list : []).map((x) => (typeof x === "string" ? x : x?.text)).filter((x): x is string => !!x);
   const hpi = profile.presentation.hpi as Record<string, unknown>;
   const details = Object.entries(hpi).filter(([k]) => k !== "associated_symptoms" && k !== "pertinent_negatives")
@@ -143,6 +144,7 @@ function planItems(profile: Profile, plan: CasePlan, background: PatientBackgrou
       ...profile.presentation.chief_complaints.map((c) => c.text), ...details,
       ...texts(p.risk_factors), ...texts(p.comorbidities), ...texts(p.social_history), ...texts(p.family_history), ...texts(p.risk_medications),
       ...(record ? [...record.chronic_conditions, ...record.current_medications, ...record.allergies, record.smoking, ...record.social] : []),
+      ...planned,
     ],
   };
 }
