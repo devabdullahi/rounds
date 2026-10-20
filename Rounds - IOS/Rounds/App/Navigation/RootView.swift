@@ -18,16 +18,30 @@ struct RootView: View {
         return UserDefaults.standard.bool(forKey: AuthModel.signedInKey)
     }
 
+    /// `-screen plan-checking` holds the spinner shown while the plan check hasn't answered.
+    private static func debugPlanCheck(_ entitled: Bool?) -> Bool? {
+        #if DEBUG
+        if DebugLaunch.screen == "plan-checking" { return nil }
+        #endif
+        return entitled
+    }
+
     var body: some View {
         ZStack {
             if signedIn {
                 // Signed in, the app opens only with an active plan and the AI consent; until the store
                 // answers, nothing shows.
-                switch paywall.isEntitled {
+                switch Self.debugPlanCheck(paywall.isEntitled) {
                 case true? where AIConsent.isGiven(stored: consentStored): MainTabsView().transition(.opacity)
                 case true?: AIConsentView().transition(.opacity)
                 case false?: GateView(model: paywall).transition(.opacity)
-                case nil: Theme.bg.ignoresSafeArea()
+                // The plan check can take a moment (StoreKit, then our server): say so, never a blank.
+                case nil: ProgressView()
+                    .controlSize(.large)
+                    .tint(Theme.accent)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Theme.bg.ignoresSafeArea())
+                    .accessibilityLabel("Checking your plan")
                 }
             } else {
                 AuthFlowView().transition(.opacity)

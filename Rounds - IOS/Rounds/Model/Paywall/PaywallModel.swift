@@ -5,9 +5,9 @@ import Observation
 /// `isEntitled` is true, and until the first check it's nil and nothing shows. Selling is Superwall's
 /// paywall (designed in its dashboard); this model hears what it sold and asks the App Store the rest.
 ///
-/// A subscription belongs to the Rounds account that bought it. The phone's purchase is claimed for
-/// the signed-in account, and the server's answer decides access, so another account on a paying
-/// phone sees the paywall and the owner gets in on any phone.
+/// A subscription belongs to one Rounds account at a time. The phone's purchase is claimed for the
+/// signed-in account and the server's answer decides access: the owner gets in on any phone, and
+/// another account on a paying phone is told whose plan it is and may move it here (`movePlanHere`).
 @MainActor
 @Observable
 final class PaywallModel {
@@ -19,6 +19,13 @@ final class PaywallModel {
     var problem: String?
     /// The phone's subscription belongs to another Rounds account (masked email); the gate says so.
     private(set) var takenBy: String?
+    /// The purchase `takenBy` has, for moving it here.
+    private var takenTransactionID: String?
+    /// Purchases the server already bound to this account: later checks ask `status` instead of
+    /// claiming again (each claim is an App Store call, with a daily allowance).
+    private var boundIDs: Set<String> = []
+    /// Bumped when the account changes, so an answer for the previous account is dropped.
+    private var generation = 0
 
     private let store: any SubscriptionStore
     private let accounts: (any AccountSubscriptionService)?
@@ -60,11 +67,15 @@ final class PaywallModel {
             isEntitled = onPhone
             return
         }
+        let asked = generation
         do {
             let access = try await accountAccess(accounts, phoneHasPlan: onPhone)
+            guard asked == generation else { return }
             takenBy = access.entitled ? nil : access.ownedBy
+            takenTransactionID = access.entitled ? nil : access.takenTransactionID
             isEntitled = access.entitled
         } catch {
+            guard asked == generation else { return }
             // Server unreachable: keep the last answer; with none yet, the gate stays closed.
             if isEntitled == nil { isEntitled = false }
         }
@@ -76,8 +87,11 @@ final class PaywallModel {
         #if DEBUG
         if debugUnlocked { return }
         #endif
+        generation += 1
         isEntitled = nil
         takenBy = nil
+        takenTransactionID = nil
+        boundIDs = []
         activePlan = nil
         if signedIn { await refresh() }
     }
@@ -85,26 +99,64 @@ final class PaywallModel {
     /// The phone's purchases are claimed for this account first (binding a new one, refreshing an
     /// owned one); then the account's own status counts, for an owner on a phone that didn't buy.
     private func accountAccess(_ accounts: any AccountSubscriptionService, phoneHasPlan: Bool) async throws -> AccountAccess {
-        var ownedBy: String?
-        if phoneHasPlan {
-            for id in await store.currentTransactionIDs() {
-                let claim = try await accounts.claim(transactionID: id)
-                if claim.entitled { return claim }
-                ownedBy = claim.ownedBy ?? ownedBy
+        let ids = phoneHasPlan ? await store.currentTransactionIDs() : []
+        // Already bound here: the account's status answers without another App Store call. If it
+        // says no (the plan moved to another account, or lapsed), claim again to learn which.
+        if ids.contains(where: boundIDs.contains) {
+            let status = try await accounts.status()
+            if status.entitled { return status }
+            boundIDs.subtract(ids)
+        }
+        var taken: AccountAccess?
+        for id in ids {
+            let claim = try await accounts.claim(transactionID: id)
+            if claim.entitled {
+                boundIDs.insert(id)
+                return claim
             }
+            if let owner = claim.ownedBy { taken = AccountAccess(entitled: false, ownedBy: owner, takenTransactionID: id) }
         }
         let status = try await accounts.status()
-        return status.entitled ? status : AccountAccess(entitled: false, ownedBy: ownedBy)
+        return status.entitled ? status : taken ?? status
     }
 
-    /// The paywall sold a plan: open the app now.
+    /// The paywall sold a plan: open the app now, then bind the purchase to this account. A claim
+    /// that fails or finds nothing doesn't close the gate (the phone can lag a moment behind a
+    /// purchase); only a server saying another account has it does.
     func purchased() async {
         isEntitled = true
         activePlan = await store.activePlan()
-        // Binds the new purchase to this account on the server. Only binds: the phone can lag a
-        // moment behind a purchase, and a re-check then must not close the gate just opened.
-        if verifiesAccount, let accounts {
-            for id in await store.currentTransactionIDs() { _ = try? await accounts.claim(transactionID: id) }
+        guard verifiesAccount, let accounts else { return }
+        let asked = generation
+        for id in await store.currentTransactionIDs() {
+            guard let claim = try? await accounts.claim(transactionID: id), asked == generation else { continue }
+            if claim.entitled { boundIDs.insert(id) }
+            else if let owner = claim.ownedBy {
+                takenBy = owner
+                takenTransactionID = id
+                isEntitled = false
+            }
+        }
+    }
+
+    /// The student asked to move the phone's plan to this account; the account that had it loses it.
+    func movePlanHere() async {
+        guard !isWorking, let accounts, let id = takenTransactionID else { return }
+        isWorking = true
+        defer { isWorking = false }
+        do {
+            let access = try await accounts.transfer(transactionID: id)
+            if access.entitled {
+                boundIDs.insert(id)
+                takenBy = nil
+                takenTransactionID = nil
+                isEntitled = true
+            } else {
+                problem = "That plan has ended. Choose a plan to keep going."
+                await refresh()
+            }
+        } catch {
+            problem = "Couldn't move the plan. Try again in a moment."
         }
     }
 

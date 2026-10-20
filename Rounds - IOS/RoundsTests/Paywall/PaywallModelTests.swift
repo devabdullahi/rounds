@@ -81,4 +81,32 @@ struct PaywallModelTests {
         #expect(model.isEntitled == false)
         #expect(model.problem == "No active subscription was found for this Apple Account.")
     }
+
+    @Test func movingThePlanHereOpensTheApp() async {
+        let accounts = MockAccountSubscriptionService(claim: AccountAccess(entitled: false, ownedBy: "j•••@gmail.com"))
+        let model = PaywallModel(store: MockSubscriptionStore(entitled: true), accounts: accounts, verifiesAccount: true)
+        await model.refresh()
+        await model.movePlanHere()
+        #expect(await accounts.transferred == ["2000000111"])
+        #expect(model.isEntitled == true)
+        #expect(model.takenBy == nil)
+    }
+
+    @Test func aBoundPlanIsCheckedByStatusNotClaimedAgain() async {
+        let accounts = MockAccountSubscriptionService(claim: AccountAccess(entitled: true), status: AccountAccess(entitled: true))
+        let model = PaywallModel(store: MockSubscriptionStore(entitled: true), accounts: accounts, verifiesAccount: true)
+        await model.refresh()
+        await model.refresh()
+        #expect(await accounts.claimed == ["2000000111"])
+        #expect(model.isEntitled == true)
+    }
+
+    @Test func aBoundPlanThatMovedAwayIsClaimedAgainToSayWhere() async {
+        // Bound on the first check; the status then says no, as after another account moved it.
+        let accounts = MockAccountSubscriptionService(claim: AccountAccess(entitled: true), status: AccountAccess(entitled: false))
+        let model = PaywallModel(store: MockSubscriptionStore(entitled: true), accounts: accounts, verifiesAccount: true)
+        await model.refresh()
+        await model.refresh()
+        #expect(await accounts.claimed == ["2000000111", "2000000111"])
+    }
 }
