@@ -9,8 +9,10 @@ import { baseTerm, findingItems } from "./profilegen.ts";
 const UMLS = "https://uts-ws.nlm.nih.gov/rest";
 const RXNAV = "https://rxnav.nlm.nih.gov/REST";
 const FINDING_TAGS = ["(finding)", "(disorder)", "(observable entity)", "(morphologic abnormality)"];
-// UMLS allows 20 requests a second per IP; a few terms at a time stays well under it.
+// UMLS allows 20 requests a second per IP, and several instances can share one IP: each instance
+// runs at most a few at once and starts at most RATE a second.
 const PARALLEL = 4;
+const RATE_PER_SECOND = 8;
 /** One lookup may take this long; a hung terminology service must not hold the whole call. */
 const LOOKUP_TIMEOUT_MS = 10_000;
 
@@ -32,8 +34,13 @@ export function umlsKey(): string {
 }
 
 async function getJSON(url: string, params: Record<string, string | number>, missing: Json = null): Promise<Json> {
-  const res = await fetch(`${url}?${new URLSearchParams(Object.entries(params).map(([k, v]) => [k, String(v)]))}`,
-    { signal: AbortSignal.timeout(LOOKUP_TIMEOUT_MS) });
+  const full = `${url}?${new URLSearchParams(Object.entries(params).map(([k, v]) => [k, String(v)]))}`;
+  let res = await fetch(full, { signal: AbortSignal.timeout(LOOKUP_TIMEOUT_MS) });
+  // Over the rate limit: one retry after a pause, rather than failing the check.
+  if (res.status === 429) {
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    res = await fetch(full, { signal: AbortSignal.timeout(LOOKUP_TIMEOUT_MS) });
+  }
   if (res.status === 404 && missing !== null) return missing;
   if (!res.ok) throw new Error(`terminology lookup ${res.status} for ${url}`);
   return await res.json();
@@ -44,10 +51,17 @@ async function getJSON(url: string, params: Record<string, string | number>, mis
 let inFlight = 0;
 const waiting: (() => void)[] = [];
 
-/** Runs `work` once fewer than PARALLEL UMLS requests are in flight. */
+/** When the next UMLS request may start: starts are spaced 1/RATE_PER_SECOND apart. */
+let nextStart = 0;
+
+/** Runs `work` once fewer than PARALLEL UMLS requests are in flight and its start slot has come, so
+ *  this instance never starts more than RATE_PER_SECOND a second. */
 export async function throttled<T>(work: () => Promise<T>): Promise<T> {
   while (inFlight >= PARALLEL) await new Promise<void>((resolve) => waiting.push(resolve));
   inFlight++;
+  const slot = Math.max(Date.now(), nextStart);
+  nextStart = slot + 1000 / RATE_PER_SECOND;
+  if (slot > Date.now()) await new Promise((resolve) => setTimeout(resolve, slot - Date.now()));
   try {
     return await work();
   } finally {
@@ -154,12 +168,40 @@ export function snomedCheck(term: string): Promise<Check> {
   });
 }
 
-/** True when RxNorm knows the drug name, exactly or by approximate match. Uncached. */
+/** Edits between two strings, for telling a misspelling from a different drug. */
+function editDistance(a: string, b: string): number {
+  const row = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i++) {
+    let prev = row[0]++;
+    for (let j = 1; j <= b.length; j++) {
+      const here = row[j];
+      row[j] = Math.min(row[j] + 1, row[j - 1] + 1, prev + (a[i - 1] === b[j - 1] ? 0 : 1));
+      prev = here;
+    }
+  }
+  return row[b.length];
+}
+
+const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+
+/** Whether a fuzzy RxNorm candidate is the drug that was written, misspelled ("metformn" →
+ *  metformin), and not merely a drug that shares a word with it ("blue pill" → methylene blue
+ *  pill) or happens to score high ("made-up-ol" → terpinen-4-ol). */
+export function sameDrug(written: string, candidate: string): boolean {
+  const a = norm(written);
+  const b = norm(candidate);
+  if (!a || !b) return false;
+  return a === b || editDistance(a, b) <= Math.max(1, Math.floor(Math.min(a.length, b.length) * 0.2));
+}
+
+/** True when RxNorm knows the drug name: exactly or normalized, or as a near-spelling of an RxNorm
+ *  name. Approximate matching alone returns a candidate for almost anything. Uncached. */
 export async function lookupRxnorm(name: string): Promise<boolean> {
   const exact = await getJSON(`${RXNAV}/rxcui.json`, { name, search: 2 });
   if (exact.idGroup?.rxnormId?.length) return true;
-  const approx = await getJSON(`${RXNAV}/approximateTerm.json`, { term: name, maxEntries: 1 });
-  return Boolean(approx.approximateGroup?.candidate?.length);
+  const approx = await getJSON(`${RXNAV}/approximateTerm.json`, { term: name, maxEntries: 5 });
+  return (approx.approximateGroup?.candidate ?? [])
+    .some((c: Json) => c.source === "RXNORM" && typeof c.name === "string" && sameDrug(name, c.name));
 }
 
 export function rxnormCheck(name: string): Promise<Check> {

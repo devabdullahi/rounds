@@ -10,6 +10,10 @@
 //
 // SNOMED CT names go only to the model, server side; they're never stored or sent to the app.
 
+import { ingredients, labelCandidates, labelFacts, labelLines } from "./fdalabel.ts";
+import { medlinePlusSummary } from "./medlineplus.ts";
+import { cachedFor } from "./apicache.ts";
+import { throttled } from "./terms.ts";
 import { autoFix, labNormal, repair, ruleErrors, sectionErrors, sectionsOutput, STAGES, stagePrompt } from "./profilegen.ts";
 import { type Level, levelRange, LEVELS, rangeLevel, VITAL_NORMALS } from "./levels.ts";
 import { type Family, familiesOf, withFamilyNotes } from "./families.ts";
@@ -18,7 +22,7 @@ import { ageUnitErrors } from "./agecheck.ts";
 // deno-lint-ignore no-explicit-any
 type Json = any;
 
-export type Facts = { summary: string; definitions: string[]; relations: string[]; treatments: string[] };
+export type Facts = { summary: string; definitions: string[]; relations: string[]; treatments: string[]; labels?: string[] };
 
 const TIMEOUT_MS = 6_000;
 const UMLS = "https://uts-ws.nlm.nih.gov/rest";
@@ -36,24 +40,11 @@ async function getJSON(url: string): Promise<Json> {
   return await res.json();
 }
 
-/** MedlinePlus's summary of the health topic whose title best matches the name, as plain text. */
-export async function medlinePlusSummary(name: string): Promise<string> {
-  const url = `https://wsearch.nlm.nih.gov/ws/query?db=healthTopics&rettype=brief&retmax=1&term=${encodeURIComponent(`title:${name}`)}`;
-  const res = await fetch(url, { signal: AbortSignal.timeout(TIMEOUT_MS) });
-  if (!res.ok) return "";
-  const xml = await res.text();
-  const summary = xml.match(/<content name="FullSummary">([\s\S]*?)<\/content>/)?.[1] ?? "";
-  return decode(summary).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 4000);
-}
-
-function decode(text: string): string {
-  return text.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, "&");
-}
-
 /** UMLS definitions and SNOMED CT relationships for the condition's concept. */
 export async function umlsFacts(name: string, key: string): Promise<{ definitions: string[]; relations: string[] }> {
+  // Through the shared UMLS limiter (terms.ts), like every other UMLS call.
   const q = (path: string, params: Record<string, string>) =>
-    getJSON(`${UMLS}${path}?${new URLSearchParams({ ...params, apiKey: key })}`);
+    throttled(() => getJSON(`${UMLS}${path}?${new URLSearchParams({ ...params, apiKey: key })}`));
   const hit = (await q("/search/current", { string: name, searchType: "exact", pageSize: "1" })).result?.results?.[0];
   if (!hit?.ui || hit.ui === "NONE") return { definitions: [], relations: [] };
   const [defs, rels] = await Promise.all([
@@ -75,19 +66,33 @@ export async function treatments(name: string): Promise<string[]> {
   const found = await getJSON(`${RX}/class/byName.json?className=${encodeURIComponent(name)}&classTypes=DISEASE`);
   const classId = found.rxclassMinConceptList?.rxclassMinConcept?.[0]?.classId;
   if (!classId) return [];
-  const members = await getJSON(`${RX}/classMembers.json?classId=${classId}&relaSource=MEDRT&rela=may_treat`);
+  // ttys=IN: ingredients only, so salt and hydrate forms aren't listed as separate drugs.
+  const members = await getJSON(`${RX}/classMembers.json?classId=${classId}&relaSource=MEDRT&rela=may_treat&ttys=IN`);
   const names = (members.drugMemberGroup?.drugMember ?? []).map((m: Json) => String(m.minConcept?.name ?? "").toLowerCase());
   return [...new Set(names.filter(Boolean))].slice(0, 20) as string[];
 }
 
-/** Everything the APIs say, fetched at once; each source that fails is left empty. */
-export async function fetchFacts(name: string, umlsKey: string): Promise<Facts> {
-  const [summary, umls, drugs] = await Promise.all([
+/** Everything the APIs say, fetched at once; each source that fails is left empty. Kept a day per
+ *  condition (apicache.ts), as NLM asks; an answer with nothing in it isn't kept. */
+export function fetchFacts(name: string, umlsKey: string): Promise<Facts> {
+  return cachedFor(`facts:${name.toLowerCase()}`, () => fetchFreshFacts(name, umlsKey),
+    (f) => !f.summary && !f.definitions.length && !f.treatments.length && !(f.labels ?? []).length);
+}
+
+async function fetchFreshFacts(name: string, umlsKey: string): Promise<Facts> {
+  // Drugs come from two places: the labels that name the condition (openFDA's count, the usual
+  // choices first) and RxClass. The labels are then read for both, right after, alongside the rest.
+  const drugsAndLabels = Promise.all([labelCandidates(name).catch(() => [] as string[]), treatments(name).catch(() => [] as string[])])
+    .then(async ([fromLabels, fromRxClass]) => {
+      const drugs = ingredients([...fromLabels, ...fromRxClass]);
+      return { drugs, labels: labelLines(await labelFacts(drugs, [name]).catch(() => [])) };
+    });
+  const [summary, umls, { drugs, labels }] = await Promise.all([
     medlinePlusSummary(name).catch(() => ""),
     umlsFacts(name, umlsKey).catch(() => ({ definitions: [], relations: [] })),
-    treatments(name).catch(() => [] as string[]),
+    drugsAndLabels,
   ]);
-  return { summary, definitions: umls.definitions, relations: umls.relations, treatments: drugs };
+  return { summary, definitions: umls.definitions, relations: umls.relations, treatments: drugs.slice(0, 20), labels };
 }
 
 /** The facts as the template's background: sourced, so the model can lean on them. */
@@ -98,6 +103,7 @@ export function groundingText(facts: Facts, catalogBackground = ""): string {
     facts.definitions.length && `Definitions (UMLS): ${facts.definitions.join(" | ")}`,
     facts.relations.length && `SNOMED CT relationships: ${facts.relations.join("; ")}`,
     facts.treatments.length && `Drugs that may treat it (MED-RT): ${facts.treatments.join(", ")}`,
+    facts.labels?.length && `FDA drug labels (openFDA):\n- ${facts.labels.join("\n- ")}`,
   ].filter(Boolean);
   return `${parts.join("\n")}\nUse these retrieved facts. Where they're silent, use established clinical knowledge and standard US practice; never contradict them.`;
 }
