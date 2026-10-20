@@ -24,10 +24,12 @@ struct PlanHero: View {
     @AppStorage(StudyGoal.storageKey) private var goalStored = ""
     @AppStorage(StudyFocus.storageKey) private var focusStored = ""
     @AppStorage(InterviewLevel.storageKey) private var levelStored = ""
+    @AppStorage(CareSetting.storageKey) private var settingStored = ""
 
     private var plan: OnboardingPlan {
         OnboardingPlan(year: SchoolYear(stored: yearStored), goal: StudyGoal(stored: goalStored),
-                       focus: FocusSelection(stored: focusStored), level: InterviewLevel(stored: levelStored))
+                       focus: FocusSelection(stored: focusStored), setting: CareSetting(stored: settingStored),
+                       level: InterviewLevel(stored: levelStored))
     }
 
     var body: some View {
@@ -52,6 +54,7 @@ struct PlanHero: View {
                             .font(.system(size: 16, weight: .semibold))
                             .foregroundStyle(Theme.text)
                             .lineLimit(1)
+                            .minimumScaleFactor(0.75)   // "Internal medicine +1 · Clinic" fits whole
                         Spacer(minLength: 0)
                     }
                     .frame(height: 52)

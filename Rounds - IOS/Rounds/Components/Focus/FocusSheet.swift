@@ -1,16 +1,20 @@
 import SwiftUI
 
-/// Home chip and Settings row open this: pick any rotations and systems, or a mix.
-/// Rows use the onboarding selection look and keep the example complaints.
+/// Home chip and Settings row open this: where patients are met (any, clinic, hospital), then any
+/// rotations and systems, or a mix. Rows use the onboarding selection look and keep the example complaints.
 struct FocusSheet: View {
     /// Conditions per topic, keyed by `StudyFocus.stored`; empty hides the counts.
     var counts: [String: Int] = [:]
     @Environment(\.dismiss) private var dismiss
     @AppStorage(StudyFocus.storageKey) private var focusStored = ""
+    @AppStorage(CareSetting.storageKey) private var settingStored = ""
 
     @State private var bySystem = false
 
     private var focus: FocusSelection { FocusSelection(stored: focusStored) }
+    private var setting: Binding<CareSetting> {
+        Binding { CareSetting(stored: settingStored) } set: { settingStored = $0.rawValue }
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -26,8 +30,23 @@ struct FocusSheet: View {
                 .font(.system(size: 14))
                 .foregroundStyle(Theme.muted)
 
+            Text("Setting")
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundStyle(Theme.muted)
+                .padding(.top, 16)
+            Segmented(options: CareSetting.allCases.map { ($0, $0.label) }, selection: setting)
+                .padding(.top, 6)
+            Text(setting.wrappedValue.detail)
+                .font(.system(size: 13))
+                .foregroundStyle(Theme.muted)
+                .padding(.top, 6)
+
+            Text("Topics")
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundStyle(Theme.muted)
+                .padding(.top, 16)
             Segmented(options: [(false, "Specialty"), (true, "System")], selection: $bySystem)
-                .padding(.top, 14)
+                .padding(.top, 6)
 
             ScrollView {
                 VStack(spacing: 8) {

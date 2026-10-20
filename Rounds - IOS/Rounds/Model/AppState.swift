@@ -192,7 +192,8 @@ final class AppState {
     /// Generation takes 2–4 minutes; past this, something went wrong on the server.
     private static let preparingGiveUp: Duration = .seconds(8 * 60)
 
-    /// Generates a new patient for the focus (a random pick when several are chosen) and opens it.
+    /// Generates a new patient for the focus (a random pick when several are chosen), in the
+    /// student's care setting, and opens it.
     /// When the focus has no condition ready, waits while the server writes one, asking again.
     func admit(focus: FocusSelection) async {
         guard let cases, !isAdmitting else { return }
@@ -201,11 +202,12 @@ final class AppState {
         do {
             try await cases.ensureSignedIn()
             let pick = pickTopic(from: focus)
+            let setting = CareSetting.current
             let clock = ContinuousClock()
             let deadline = clock.now + Self.preparingGiveUp
             var polling = false
             while true {
-                switch try await cases.admit(focus: pick, polling: polling) {
+                switch try await cases.admit(focus: pick, setting: setting, polling: polling) {
                 case .admitted(let bed):
                     await refresh()
                     await open(bed: bed)
@@ -233,15 +235,18 @@ final class AppState {
     /// Asks the server to write a patient ahead for each topic in the focus, so even the first case
     /// in a topic opens instantly. Once per focus; failures only cost the head start.
     func prepareAhead(focus: FocusSelection) async {
-        guard let cases, preparedFocus != focus.stored else { return }
-        preparedFocus = focus.stored
+        // The setting is part of the key: a new setting needs its own patients written ahead.
+        let setting = CareSetting.current
+        let key = focus.stored + "@" + setting.rawValue
+        guard let cases, preparedFocus != key else { return }
+        preparedFocus = key
         let topics = focus.isMix ? [StudyFocus.mix] : Array(focus.items.prefix(Self.prepareLimit))
         do {
             try await cases.ensureSignedIn()
             await withTaskGroup(of: Void.self) { group in
                 // Skip only topics known to be empty; before the counts load, every topic is tried.
                 for topic in topics where topicCounts.isEmpty || (conditionCount(for: topic) ?? 1) > 0 {
-                    group.addTask { try? await cases.prepare(focus: topic) }
+                    group.addTask { try? await cases.prepare(focus: topic, setting: setting) }
                 }
             }
         } catch {
@@ -255,7 +260,7 @@ final class AppState {
         guard let cases else { return .failed("Rounds isn't connected to its server.") }
         do {
             try await cases.ensureSignedIn()
-            switch try await cases.admit(focus: pickTopic(from: focus), polling: false) {
+            switch try await cases.admit(focus: pickTopic(from: focus), setting: .current, polling: false) {
             case .admitted(let bed):
                 await refresh()
                 return .ready(ward.first { $0.id == bed })

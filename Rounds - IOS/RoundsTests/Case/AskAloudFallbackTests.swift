@@ -31,8 +31,8 @@ private actor OlderServer: CaseService {
     func ward() async throws -> [WardPatient] { [] }
     func topicCounts() async throws -> [String: Int] { [:] }
     func gradedCases() async throws -> [GradedCase] { [] }
-    func admit(focus: StudyFocus, polling: Bool) async throws -> AdmitOutcome { throw Unused() }
-    func prepare(focus: StudyFocus) async throws { throw Unused() }
+    func admit(focus: StudyFocus, setting: CareSetting, polling: Bool) async throws -> AdmitOutcome { throw Unused() }
+    func prepare(focus: StudyFocus, setting: CareSetting) async throws { throw Unused() }
     func loadCase(bed: String) async throws -> ClinicalCase { throw Unused() }
     func pastTries(bed: String) async throws -> [PastTry] { throw Unused() }
     func transcribe(attempt: String, audio: Data) async throws -> String { throw Unused() }

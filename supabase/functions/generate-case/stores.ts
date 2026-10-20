@@ -4,7 +4,7 @@
 import { sql } from "../_shared/db.ts";
 import { HttpError } from "../_shared/http.ts";
 import type { CasePlan, Profile } from "../_shared/casegen.ts";
-import type { Focus } from "../_shared/focus.ts";
+import { type Focus, settingTags } from "../_shared/focus.ts";
 import { MAX_AGE_GAP, type PatientBackground, pickBackground } from "./background.ts";
 import { bedCode } from "./bedcode.ts";
 import type { CaseRows, Condition, GenerationStart, History } from "./types.ts";
@@ -13,7 +13,7 @@ import type { CaseRows, Condition, GenerationStart, History } from "./types.ts";
  *  fixed or rejected meanwhile don't reach students. */
 const READY_FOR = "3 days";
 
-/** The next condition for this student and focus, never one in `tried`. Conditions they've never
+/** The next condition for this student and focus (and care setting, if one is picked), never one in `tried`. Conditions they've never
  *  had come first, so nothing repeats until the topic is used up; after that, the ones they had
  *  longest ago (by day, then chance, so one condition that keeps failing can't block every tap).
  *  Among equals, a condition with a stored profile wins when a student is waiting, then chance.
@@ -46,6 +46,8 @@ export async function nextCondition(userId: string, focus: Focus, tried: string[
       and c.slug not in (select slug from ahead where slug is not null)
       and (${focus.kind !== "rotation"} or ${focus.value} = any(c.clerkships))
       and (${focus.kind !== "system"} or ${focus.value} = any(c.organ_systems))
+      and (${!focus.setting} or exists (
+        select 1 from jsonb_array_elements_text(c.triage -> 'settings') t where t = any(${settingTags(focus.setting)}::text[])))
     order by (s.slug is not null) asc, date_trunc('day', s.last) asc nulls first, (${waiting} and p.profile is not null) desc, random()
     limit 1`;
   return c ?? null;

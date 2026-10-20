@@ -21,7 +21,10 @@ const SETTING: Record<string, string> = {
   emergency: "Walk-in, emergency department",
   urgent_care: "Walk-in, urgent care",
   clinic: "Scheduled visit, primary care clinic",
+  pediatric_clinic: "Scheduled visit, pediatric clinic",
   outpatient: "Scheduled visit, primary care clinic",
+  labor_delivery: "Admitted, labor and delivery",
+  psychiatric: "Admitted, inpatient psychiatric unit",
   inpatient: "Admitted, medical ward",
   icu: "Transferred, intensive care unit",
 };
