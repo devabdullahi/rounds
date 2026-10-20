@@ -3,6 +3,7 @@ import SwiftUI
 /// "What should we call you?": a first-name field. The keyboard opens while the page is in view;
 /// Return moves on once a name is typed.
 struct NamePage: View {
+    var shown = true
     /// Whether this page is the one in view: the keyboard is up only then.
     let active: Bool
     let onSubmit: () -> Void
@@ -10,7 +11,7 @@ struct NamePage: View {
     @FocusState private var typing: Bool
 
     var body: some View {
-        OnboardingQuestion(title: "What should we call you?") {
+        OnboardingQuestion(title: "What should we call you?", glyph: .user, shown: shown) {
             VStack(alignment: .leading, spacing: 8) {
                 Text("First name")
                     .font(.system(size: 14, weight: .semibold))

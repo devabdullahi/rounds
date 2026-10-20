@@ -3,14 +3,16 @@ import SwiftUI
 /// "When should we remind you to practice?": three times and a preview of the notification. The
 /// page's button asks iOS for permission and schedules it.
 struct ReminderPage: View {
+    var shown = true
     @AppStorage(PracticeReminder.storageKey) private var stored = ""
 
     private var reminder: PracticeReminder? { PracticeReminder(stored: stored) }
 
     var body: some View {
-        OnboardingQuestion(title: "When should we remind you to practice?") {
-            ForEach(PracticeReminder.allCases) { r in
-                ChoiceRow(title: r.period, trailing: r.label, on: reminder == r) { stored = r.rawValue }
+        OnboardingQuestion(title: "When should we remind you to practice?", glyph: .bell, shown: shown) {
+            ForEach(Array(PracticeReminder.allCases.enumerated()), id: \.element) { i, r in
+                ChoiceRow(title: r.period, trailing: r.label, glyph: .clock, tint: ChoiceRow.tint(i + 3),
+                          on: reminder == r, order: i) { stored = r.rawValue }
             }
             Text("PREVIEW")
                 .font(.system(size: 13, weight: .semibold))
@@ -18,7 +20,8 @@ struct ReminderPage: View {
                 .foregroundStyle(Theme.muted)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.top, 10)
-            preview
+                .modifier(QuestionEntrance(order: 3))
+            preview.modifier(QuestionEntrance(order: 4))
         }
     }
 

@@ -1,25 +1,33 @@
 import SwiftUI
 
-/// One answer in an onboarding question list: a full-width row with an optional icon, a title, an
-/// optional line under it or value on the right, and a check when picked (a circle for one answer,
-/// a box when several can be picked).
+/// One answer in an onboarding question list: a full-width row with a tinted icon (or short text)
+/// tile, a title, an optional line under it or value on the right, and a check when picked (a circle
+/// for one answer, a box when several can be picked). It fades in `order` rows after the first.
 struct ChoiceRow: View {
     let title: String
     var detail: String?
     var trailing: String?
     var glyph: IconGlyph?
+    /// Short text in the tile instead of an icon ("MS1", "2").
+    var badge: String?
+    var tint: Color = Theme.accent
     let on: Bool
     var multiple = false
+    var order = 0
     let action: () -> Void
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    /// Tile tints taken in turn down a list, so neighbouring rows differ.
+    static let tints: [Color] = [Theme.cardBlue, Theme.cardTeal, Theme.cardPurple, Theme.cardPink, Theme.cardYellow, Theme.cardRed]
+    static func tint(_ index: Int) -> Color { tints[index % tints.count] }
+
     var body: some View {
-        Button(action: action) {
+        Button {
+            withAnimation(reduceMotion ? nil : QUESTION.spring) { action() }
+        } label: {
             HStack(spacing: 14) {
-                if let glyph {
-                    AppIcon(glyph, size: 22)
-                        .foregroundStyle(on ? Theme.accentText : Theme.muted)
-                        .frame(width: 26)
-                }
+                if glyph != nil || badge != nil { tile }
                 VStack(alignment: .leading, spacing: 2) {
                     Text(title).font(.system(size: 17, weight: .semibold))
                     if let detail {
@@ -38,9 +46,27 @@ struct ChoiceRow: View {
             .padding(.vertical, 12)
             .frame(maxWidth: .infinity, minHeight: detail == nil ? 60 : 72)
             .modifier(SelectableSurface(on: on))
+            .scaleEffect(on && !reduceMotion ? 1.015 : 1)
         }
         .buttonStyle(PressDownStyle())
+        .haptic(.selection, trigger: on) { _, now in now }
         .accessibilityAddTraits(on ? .isSelected : [])
+        .modifier(QuestionEntrance(order: order))
+    }
+
+    /// The row's icon or short text on a soft square of its tint.
+    private var tile: some View {
+        Group {
+            if let glyph {
+                AppIcon(glyph, size: 20)
+            } else if let badge {
+                Text(badge).font(.system(size: 15, weight: .bold))
+            }
+        }
+        .foregroundStyle(tint)
+        .frame(width: 40, height: 40)
+        .background(tint.opacity(0.14), in: RoundedRectangle(cornerRadius: 11, style: .continuous))
+        .accessibilityHidden(true)
     }
 
     @ViewBuilder
