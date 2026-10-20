@@ -62,9 +62,17 @@ targets:
         CFBundleURLTypes:
           - CFBundleURLSchemes: [$(GOOGLE_REVERSED_CLIENT_ID)]
           - CFBundleURLSchemes: [rounds]
-        # Lets the simulator reach the local Supabase over http://127.0.0.1; doesn't relax anything else.
-        NSAppTransportSecurity:
-          NSAllowsLocalNetworking: true
+    # Debug builds only: lets the simulator reach a local Supabase over http://127.0.0.1 (relaxes
+    # nothing else). Release ships without it. A dictionary key has no INFOPLIST_KEY_ setting, so it's
+    # added to the built Info.plist before signing.
+    postBuildScripts:
+      - name: Debug-only local networking
+        basedOnDependencyAnalysis: false
+        script: |
+          [ "$CONFIGURATION" = "Debug" ] || exit 0
+          plist="$TARGET_BUILD_DIR/$INFOPLIST_PATH"
+          /usr/libexec/PlistBuddy -c "Delete :NSAppTransportSecurity" "$plist" 2>/dev/null || true
+          /usr/libexec/PlistBuddy -c "Add :NSAppTransportSecurity dict" -c "Add :NSAppTransportSecurity:NSAllowsLocalNetworking bool true" "$plist"
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.abdul.rounds
@@ -81,8 +89,11 @@ targets:
         INFOPLIST_KEY_NSMicrophoneUsageDescription: "Rounds listens so you can talk to the patient out loud."
         INFOPLIST_KEY_NSCameraUsageDescription: "Rounds uses the camera to scan your notes into flashcards."
         INFOPLIST_KEY_NSSpeechRecognitionUsageDescription: "Rounds turns what you say into questions for the patient."
-        INFOPLIST_KEY_NSLocalNetworkUsageDescription: "Rounds connects to the development server on your Mac."
         TARGETED_DEVICE_FAMILY: "1"
+      configs:
+        # The local development server prompt is for Debug builds only.
+        Debug:
+          INFOPLIST_KEY_NSLocalNetworkUsageDescription: "Rounds connects to the development server on your Mac."
   RoundsTests:
     type: bundle.unit-test
     platform: iOS
