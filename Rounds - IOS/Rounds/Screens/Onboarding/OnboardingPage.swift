@@ -27,7 +27,7 @@ enum OnboardingPage: Int, CaseIterable {
         case .missCards: "Learn From\nEvery Miss"
         case .progress: "See Where You're\nGetting Better"
         case .plan: "Your Rounds\nAre Ready"
-        case .account: "Save Your\nProgress"
+        case .account: "Create Your\nAccount"
         default: nil
         }
     }

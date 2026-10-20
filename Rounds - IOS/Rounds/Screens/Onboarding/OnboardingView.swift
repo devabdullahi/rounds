@@ -143,17 +143,17 @@ struct OnboardingView: View {
         switch p {
         case .focus:
             FocusPage(pick: $pick, mixChosen: $mixChosen)
-        case .schoolYear: SchoolYearPage()
-        case .studyGoal: StudyGoalPage()
-        case .careSetting: CareSettingPage()
-        case .struggles: StrugglePage()
-        case .redFlag: RedFlagPage(picked: $redFlagPick)
-        case .talkStyle: TalkStylePage()
-        case .caseMode: CaseModePage()
-        case .caseTimer: CaseTimerPage()
-        case .name: NamePage(active: page == .name) { step(1) }
-        case .dailyGoal: DailyGoalPage()
-        case .reminder: ReminderPage()
+        case .schoolYear: SchoolYearPage(shown: seen.contains(p))
+        case .studyGoal: StudyGoalPage(shown: seen.contains(p))
+        case .careSetting: CareSettingPage(shown: seen.contains(p))
+        case .struggles: StrugglePage(shown: seen.contains(p))
+        case .redFlag: RedFlagPage(shown: seen.contains(p), picked: $redFlagPick)
+        case .talkStyle: TalkStylePage(shown: seen.contains(p))
+        case .caseMode: CaseModePage(shown: seen.contains(p))
+        case .caseTimer: CaseTimerPage(shown: seen.contains(p))
+        case .name: NamePage(shown: seen.contains(p), active: page == .name) { step(1) }
+        case .dailyGoal: DailyGoalPage(shown: seen.contains(p))
+        case .reminder: ReminderPage(shown: seen.contains(p))
         case .pledge:
             PledgePage(heart: $heart, isHolding: $holdingHeart)
         case .account:

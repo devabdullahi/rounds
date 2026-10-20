@@ -3,6 +3,7 @@ import SwiftUI
 /// "Where do you want to see patients?": clinic, hospital or both. Starts on what the study goal
 /// set (OSCEs → clinic).
 struct CareSettingPage: View {
+    var shown = true
     @AppStorage(CareSetting.storageKey) private var stored = ""
 
     private static let rows: [(CareSetting, String, String, IconGlyph)] = [
@@ -12,9 +13,11 @@ struct CareSettingPage: View {
     ]
 
     var body: some View {
-        OnboardingQuestion(title: "Where do you want to see patients?") {
-            ForEach(Self.rows, id: \.0) { setting, title, detail, glyph in
-                ChoiceRow(title: title, detail: detail, glyph: glyph, on: CareSetting(stored: stored) == setting) {
+        OnboardingQuestion(title: "Where do you want to see patients?", glyph: .compass, shown: shown) {
+            ForEach(Array(Self.rows.enumerated()), id: \.element.0) { i, row in
+                let (setting, title, detail, glyph) = row
+                ChoiceRow(title: title, detail: detail, glyph: glyph, tint: ChoiceRow.tint(i),
+                          on: CareSetting(stored: stored) == setting, order: i) {
                     stored = setting.rawValue
                 }
             }

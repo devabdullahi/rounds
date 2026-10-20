@@ -3,13 +3,15 @@ import SwiftUI
 /// "Which one is the red flag?": a chest-pain patient and four things they say. One tap answers:
 /// the red flag is marked right, a wrong pick is marked wrong, and a line says why.
 struct RedFlagPage: View {
+    var shown = true
     /// The option picked (its text); set once, so the answer can't change after it's shown.
     @Binding var picked: String?
 
     private let quiz = RedFlagQuiz.chestPain
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
-        OnboardingQuestion(title: "Which one is the red flag?") {
+        OnboardingQuestion(title: "Which one is the red flag?", glyph: .siren, shown: shown) {
             HStack(spacing: 12) {
                 PatientAvatar(initials: "RM", size: 40, tint: .blue)
                 VStack(alignment: .leading, spacing: 2) {
@@ -24,8 +26,11 @@ struct RedFlagPage: View {
             .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).strokeBorder(Theme.text.opacity(0.08)))
             .accessibilityElement(children: .combine)
             .padding(.bottom, 4)
+            .modifier(QuestionEntrance(order: 0))
 
-            ForEach(quiz.options) { option in row(option) }
+            ForEach(Array(quiz.options.enumerated()), id: \.element.id) { i, option in
+                row(option).modifier(QuestionEntrance(order: i + 1))
+            }
 
             if let picked {
                 let right = quiz.answer?.id == picked
@@ -46,7 +51,7 @@ struct RedFlagPage: View {
         let wrong = chosen && !option.isRedFlag
         return Button {
             guard picked == nil else { return }
-            picked = option.id
+            withAnimation(reduceMotion ? nil : QUESTION.spring) { picked = option.id }
         } label: {
             HStack(spacing: 12) {
                 Text(option.text)
@@ -70,6 +75,7 @@ struct RedFlagPage: View {
         }
         .buttonStyle(PressDownStyle())
         .disabled(answered)
+        .haptic(option.isRedFlag ? .success : .error, trigger: chosen) { _, now in now }
         .accessibilityValue(right ? "Red flag" : wrong ? "Not the red flag" : "")
     }
 }
