@@ -30,7 +30,7 @@ export type Feedback = { tone: "good" | "miss"; title: string; detail: string; c
 type Ranked = Feedback & { rank: number };
 
 // Which feedback survives the cap: safety first, then the answer, then process, then praise.
-const RANK = { overTime: -1, redFlag: 0, diagnosis: 1, unnecessaryTest: 2, history: 3, exam: 4, plan: 5, praise: 6 };
+const RANK = { overTime: -1, redFlag: 0, diagnosis: 1, unnecessaryTest: 2, keyTest: 2.5, history: 3, exam: 4, plan: 5, praise: 6 };
 export type Grade = {
   score: number;
   diagnosis_correct: boolean;
@@ -52,6 +52,11 @@ export type Part = "diagnosis" | "history" | "exam" | "red_flags" | "tests" | "p
 // Points per part; they sum to 100.
 const POINTS = { diagnosis: 35, history: 25, exam: 15, redFlags: 10, tests: 10, plan: 5 };
 const PENALTY = { unnecessaryTest: 3 };
+/** At most this many indicated tests count; the rubric lists the core workup (initial, then
+ *  confirmatory) first, so a long list never punishes a focused workup. */
+const KEY_TESTS = 5;
+/** Share of the key tests that earns full points: a sensible workup can leave one out. */
+const KEY_TESTS_FULL = 0.8;
 /** The least a correct diagnosis scores. Getting the answer is what matters most, so a right call
  *  always passes (and always gains rating); the breakdown still shows the points actually earned. */
 export const PASSING_SCORE = 70;
@@ -142,8 +147,18 @@ export function grade(r: Rubric, act: Actions, judge: Judge): Grade {
   }
 
   let tests = 0;
-  const indicated = r.indicated_tests.filter((t) => act.ordered.includes(t.id));
-  tests += r.indicated_tests.length ? (indicated.length / r.indicated_tests.length) * (POINTS.tests - 3) : POINTS.tests - 3;
+  const key = r.indicated_tests.slice(0, KEY_TESTS);
+  const need = Math.ceil(key.length * KEY_TESTS_FULL);
+  const keyOrdered = key.filter((t) => act.ordered.includes(t.id)).length;
+  tests += need ? Math.min(1, keyOrdered / need) * (POINTS.tests - 3) : POINTS.tests - 3;
+  const keyMissed = key.filter((t) => !act.ordered.includes(t.id));
+  if (keyOrdered < need) {
+    const others = keyMissed.slice(1).map((t) => t.name);
+    feedback.push({
+      rank: RANK.keyTest, tone: "miss", title: `Key test missed: ${keyMissed[0].name}`,
+      detail: others.length ? `Also part of the core workup: ${others.join(", ")}.` : "It's part of the core workup for this case.",
+    });
+  }
   const firstGood = act.ordered.length > 0 && r.first_tests.map(slug).includes(act.ordered[0]);
   if (firstGood) {
     tests += 3;

@@ -133,3 +133,30 @@ Deno.test("a right diagnosis always passes; a wrong one gets no floor", () => {
   assertEquals(full.score, 100);
   assert(grade(rubric, bare, right).rating_delta > 0);
 });
+
+const longWorkup: Rubric = {
+  ...rubric,
+  indicated_tests: Array.from({ length: 20 }, (_, i) => ({ id: `t${i}`, name: `Test ${i}` })),
+  first_tests: ["t0"],
+};
+
+Deno.test("only the first five indicated tests count, and four of them earn full test points", () => {
+  const all = ["t0", "t1", "t2", "t3"];
+  const g = grade(longWorkup, { revealed: [], examined: [], ordered: all }, right);
+  assertEquals(g.breakdown.tests, { got: 10, max: 10 });
+  assert(!g.feedback.some((f) => f.title.startsWith("Key test missed")));
+});
+
+Deno.test("tests past the first five never cost points", () => {
+  const focused = grade(longWorkup, { revealed: [], examined: [], ordered: ["t0", "t1", "t2", "t3", "t4"] }, right);
+  const everything = grade(longWorkup, { revealed: [], examined: [], ordered: longWorkup.indicated_tests.map((t) => t.id) }, right);
+  assertEquals(focused.breakdown.tests, everything.breakdown.tests);
+});
+
+Deno.test("too few key tests names the missed ones", () => {
+  const g = grade(longWorkup, { revealed: [], examined: [], ordered: ["t0", "t1"] }, right);
+  assertEquals(g.breakdown.tests.got, 3 + Math.round(7 * 2 / 4));
+  const miss = g.feedback.find((f) => f.title.startsWith("Key test missed"));
+  assertEquals(miss?.title, "Key test missed: Test 2");
+  assertEquals(miss?.detail, "Also part of the core workup: Test 3, Test 4.");
+});
