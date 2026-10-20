@@ -7,7 +7,8 @@
 // Env: SANDBOX_PURCHASES is "all" while TestFlight testers buy in the sandbox before launch, or a
 // comma list of user ids allowed to use sandbox purchases after it; unset, only App Store purchases
 // count. PLAN_EXEMPT_USER_IDS lists developer accounts that use Xcode builds, whose local StoreKit
-// purchases Apple can't confirm.
+// purchases Apple can't confirm. PLAN_CHECK=off gives every account access without buying, for
+// testers before launch; unset (or anything else), the check runs.
 
 import { lookUp } from "./appstore.ts";
 import { sql } from "./db.ts";
@@ -33,6 +34,12 @@ function idList(raw: string): string[] {
 export function environmentCounts(environment: string, userId: string, raw = Deno.env.get("SANDBOX_PURCHASES") ?? ""): boolean {
   if (environment === "Production") return true;
   return raw.trim() === "all" || idList(raw).includes(userId.toLowerCase());
+}
+
+/** Whether the plan check is switched off for everyone (testers before launch). Only an exact
+ *  "off" counts, so a typo or a missing secret leaves the check on. */
+export function planCheckOff(raw = Deno.env.get("PLAN_CHECK") ?? ""): boolean {
+  return raw.trim().toLowerCase() === "off";
 }
 
 /** Developer accounts that skip the plan check (Xcode builds can't buy through Apple). */
@@ -64,6 +71,8 @@ export function toRefresh(rows: PlanRow[], now: Date = new Date()): string[] {
 
 /** The caller's access, on any device, refreshed from Apple where our record may be stale. */
 export async function accountPlan(userId: string): Promise<{ entitled: boolean; expires_at?: Date }> {
+  // The app opens on this answer too (subscription status), so switching the check off opens both.
+  if (planCheckOff()) return { entitled: true };
   const load = async () =>
     (await sql<PlanRow[]>`
       select original_transaction_id, user_id, expires_at, revoked, environment, updated_at
