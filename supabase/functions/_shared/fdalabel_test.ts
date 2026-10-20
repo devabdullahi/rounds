@@ -1,5 +1,5 @@
 import { assert, assertEquals } from "jsr:@std/assert@1";
-import { ingredients, labelLines, mentionsAsUse, readLabel } from "./fdalabel.ts";
+import { ingredients, labelLines, mentionsAsUse, readLabel, singleIngredient } from "./fdalabel.ts";
 
 Deno.test("RxClass salt and hydrate entries collapse to one ingredient each", () => {
   assertEquals(
@@ -53,4 +53,11 @@ Deno.test("a WARNINGS heading is dropped too", () => {
 Deno.test("form words and typos in label names collapse into the drug seen first", () => {
   assertEquals(ingredients(["ciprofloxacin", "ciprofolxacin", "ciprofloxacin tablets", "ciprofloxacin hcl", "levofloxacin", "hydrochlorothiazide", "hydrocodone"]),
     ["ciprofloxacin", "levofloxacin", "hydrochlorothiazide", "hydrocodone"]);
+});
+
+Deno.test("a combination product's label isn't taken for one of its drugs", () => {
+  assertEquals(singleIngredient({ openfda: { generic_name: ["AMOXICILLIN AND CLAVULANATE POTASSIUM"] } }, "amoxicillin"), false);
+  assertEquals(singleIngredient({ openfda: { generic_name: ["AMOXICILLIN"] } }, "amoxicillin"), true);
+  assertEquals(singleIngredient({ openfda: { generic_name: ["CIPROFLOXACIN HYDROCHLORIDE"] } }, "ciprofloxacin"), true);
+  assertEquals(singleIngredient({ openfda: {} }, "ciprofloxacin"), false);
 });

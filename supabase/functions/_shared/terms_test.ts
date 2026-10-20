@@ -1,6 +1,6 @@
 // Terminology lookups against a fake fetch: no network, no database (checkTerms gets its checkers).
 import { assert, assertEquals, assertRejects } from "jsr:@std/assert@1";
-import { type Check, checkTerms, lookupRxnorm, lookupSnomed, TermsOutOfTime } from "./terms.ts";
+import { type Check, checkTerms, lookupRxnorm, lookupSnomed, TermsOutOfTime, sameDrug } from "./terms.ts";
 
 type Route = (url: URL) => Response | undefined;
 
@@ -68,16 +68,22 @@ Deno.test("missing atoms read as no match, other errors throw as outages", async
   });
 });
 
-Deno.test("RxNorm accepts exact names, then approximate ones", async () => {
+Deno.test("RxNorm accepts exact names, then near-spellings, never a different drug", async () => {
   await withFetch((url) => {
     if (url.pathname.endsWith("/rxcui.json")) return json({ idGroup: url.searchParams.get("name") === "lisinopril" ? { rxnormId: ["29046"] } : {} });
     if (url.pathname.endsWith("/approximateTerm.json")) {
-      return json({ approximateGroup: url.searchParams.get("term") === "lisinoprill" ? { candidate: [{ rxcui: "29046" }] } : {} });
+      // Approximate matching finds a candidate for almost anything; only a near-spelling counts.
+      const term = url.searchParams.get("term");
+      const candidate = term === "lisinoprill" ? [{ rxcui: "29046", name: "lisinopril", source: "RXNORM" }]
+        : term === "made-up-ol" ? [{ rxcui: "37818", name: "Terpinen-4-ol", source: "DRUGBANK" }, { rxcui: "1534778", name: "limonen-10-ol, (+)-", source: "RXNORM" }]
+        : [];
+      return json({ approximateGroup: { candidate } });
     }
   }, async (calls) => {
     assertEquals(await lookupRxnorm("lisinopril"), true);
     assertEquals(calls.length, 1);
     assertEquals(await lookupRxnorm("lisinoprill"), true);
+    assertEquals(await lookupRxnorm("made-up-ol"), false);
     assertEquals(await lookupRxnorm("notadrug"), false);
   });
 });
@@ -115,4 +121,14 @@ Deno.test("no more than four lookups run at once", async () => {
     running--;
   })));
   if (peak > 4) throw new Error(`peak ${peak}`);
+});
+
+Deno.test("a fuzzy RxNorm hit counts only when it's the written drug misspelled", () => {
+  for (const [written, candidate, same] of [
+    ["metformn", "metformin", true],
+    ["lisinopril", "lisinopril", true],
+    ["made-up-ol", "Terpinen-4-ol", false],
+    ["blue pill", "methylene blue Pill", false],
+    ["ibuprofin", "ibuprofen", true],
+  ] as const) assertEquals(sameDrug(written, candidate), same, `${written} vs ${candidate}`);
 });

@@ -12,6 +12,8 @@
 
 import { ingredients, labelCandidates, labelFacts, labelLines } from "./fdalabel.ts";
 import { medlinePlusSummary } from "./medlineplus.ts";
+import { cachedFor } from "./apicache.ts";
+import { throttled } from "./terms.ts";
 import { autoFix, labNormal, repair, ruleErrors, sectionErrors, sectionsOutput, STAGES, stagePrompt } from "./profilegen.ts";
 import { type Level, levelRange, LEVELS, rangeLevel, VITAL_NORMALS } from "./levels.ts";
 import { type Family, familiesOf, withFamilyNotes } from "./families.ts";
@@ -40,8 +42,9 @@ async function getJSON(url: string): Promise<Json> {
 
 /** UMLS definitions and SNOMED CT relationships for the condition's concept. */
 export async function umlsFacts(name: string, key: string): Promise<{ definitions: string[]; relations: string[] }> {
+  // Through the shared UMLS limiter (terms.ts), like every other UMLS call.
   const q = (path: string, params: Record<string, string>) =>
-    getJSON(`${UMLS}${path}?${new URLSearchParams({ ...params, apiKey: key })}`);
+    throttled(() => getJSON(`${UMLS}${path}?${new URLSearchParams({ ...params, apiKey: key })}`));
   const hit = (await q("/search/current", { string: name, searchType: "exact", pageSize: "1" })).result?.results?.[0];
   if (!hit?.ui || hit.ui === "NONE") return { definitions: [], relations: [] };
   const [defs, rels] = await Promise.all([
@@ -63,13 +66,20 @@ export async function treatments(name: string): Promise<string[]> {
   const found = await getJSON(`${RX}/class/byName.json?className=${encodeURIComponent(name)}&classTypes=DISEASE`);
   const classId = found.rxclassMinConceptList?.rxclassMinConcept?.[0]?.classId;
   if (!classId) return [];
-  const members = await getJSON(`${RX}/classMembers.json?classId=${classId}&relaSource=MEDRT&rela=may_treat`);
+  // ttys=IN: ingredients only, so salt and hydrate forms aren't listed as separate drugs.
+  const members = await getJSON(`${RX}/classMembers.json?classId=${classId}&relaSource=MEDRT&rela=may_treat&ttys=IN`);
   const names = (members.drugMemberGroup?.drugMember ?? []).map((m: Json) => String(m.minConcept?.name ?? "").toLowerCase());
   return [...new Set(names.filter(Boolean))].slice(0, 20) as string[];
 }
 
-/** Everything the APIs say, fetched at once; each source that fails is left empty. */
-export async function fetchFacts(name: string, umlsKey: string): Promise<Facts> {
+/** Everything the APIs say, fetched at once; each source that fails is left empty. Kept a day per
+ *  condition (apicache.ts), as NLM asks; an answer with nothing in it isn't kept. */
+export function fetchFacts(name: string, umlsKey: string): Promise<Facts> {
+  return cachedFor(`facts:${name.toLowerCase()}`, () => fetchFreshFacts(name, umlsKey),
+    (f) => !f.summary && !f.definitions.length && !f.treatments.length && !(f.labels ?? []).length);
+}
+
+async function fetchFreshFacts(name: string, umlsKey: string): Promise<Facts> {
   // Drugs come from two places: the labels that name the condition (openFDA's count, the usual
   // choices first) and RxClass. The labels are then read for both, right after, alongside the rest.
   const drugsAndLabels = Promise.all([labelCandidates(name).catch(() => [] as string[]), treatments(name).catch(() => [] as string[])])

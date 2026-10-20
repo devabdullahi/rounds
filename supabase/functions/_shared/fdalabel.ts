@@ -53,6 +53,13 @@ export function ingredients(names: string[]): string[] {
   return out;
 }
 
+/** Whether a label is for this drug alone: every generic name it lists comes down to the drug
+ *  (salts and forms aside), so a combination product's dose and warnings are never taken for it. */
+export function singleIngredient(label: Json, drug: string): boolean {
+  const generic = (label.openfda?.generic_name as string[] | undefined) ?? [];
+  return generic.length > 0 && generic.every((g) => ingredients([g])[0] === drug);
+}
+
 export type LabelFact = {
   drug: string;
   routes: string[];
@@ -123,15 +130,22 @@ export async function labelCandidates(name: string, apiKey = Deno.env.get("OPENF
  *  this condition and dosed for it first, then oral. */
 export async function labelFacts(drugs: string[], names: string[], apiKey = Deno.env.get("OPENFDA_API_KEY") ?? ""): Promise<LabelFact[]> {
   const key = apiKey ? `&api_key=${encodeURIComponent(apiKey)}` : "";
-  const first = async (search: string): Promise<Json | null> => {
-    // Newest label first, so its dosing is the current one.
-    const res = await fetch(`${API}?search=${encodeURIComponent(search)}&sort=effective_time:desc&limit=1${key}`, { signal: AbortSignal.timeout(TIMEOUT_MS) });
-    return res.ok ? (await res.json()).results?.[0] ?? null : null;
+  // Over openFDA's rate limit: no more requests this round (a fallback would only double the load).
+  let limited = false;
+  const first = async (drug: string, search: string): Promise<Json | null> => {
+    if (limited) return null;
+    // Newest labels first, so the dosing is current; a few, because the phrase match also finds
+    // combination products ("amoxicillin and clavulanate" for amoxicillin).
+    const res = await fetch(`${API}?search=${encodeURIComponent(search)}&sort=effective_time:desc&limit=5${key}`, { signal: AbortSignal.timeout(TIMEOUT_MS) });
+    if (res.status === 429) limited = true;
+    if (!res.ok) return null;
+    return ((await res.json()).results ?? []).find((label: Json) => singleIngredient(label, drug)) ?? null;
   };
   // The oral label first: a drug's first hit is as likely to be its ear drops or IV form.
   const one = async (drug: string): Promise<LabelFact | null> => {
     try {
-      const label = await first(`openfda.generic_name:"${drug}" AND openfda.route:"ORAL"`) ?? await first(`openfda.generic_name:"${drug}"`);
+      const label = await first(drug, `openfda.generic_name:"${drug}" AND openfda.route:"ORAL"`) ??
+        await first(drug, `openfda.generic_name:"${drug}"`);
       return label ? readLabel(drug, label, names) : null;
     } catch {
       return null;
