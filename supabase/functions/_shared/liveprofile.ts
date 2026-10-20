@@ -10,6 +10,7 @@
 //
 // SNOMED CT names go only to the model, server side; they're never stored or sent to the app.
 
+import { ingredients, labelFacts, labelLines } from "./fdalabel.ts";
 import { autoFix, labNormal, repair, ruleErrors, sectionErrors, sectionsOutput, STAGES, stagePrompt } from "./profilegen.ts";
 import { type Level, levelRange, LEVELS, rangeLevel, VITAL_NORMALS } from "./levels.ts";
 import { type Family, familiesOf, withFamilyNotes } from "./families.ts";
@@ -18,7 +19,7 @@ import { ageUnitErrors } from "./agecheck.ts";
 // deno-lint-ignore no-explicit-any
 type Json = any;
 
-export type Facts = { summary: string; definitions: string[]; relations: string[]; treatments: string[] };
+export type Facts = { summary: string; definitions: string[]; relations: string[]; treatments: string[]; labels?: string[] };
 
 const TIMEOUT_MS = 6_000;
 const UMLS = "https://uts-ws.nlm.nih.gov/rest";
@@ -82,12 +83,15 @@ export async function treatments(name: string): Promise<string[]> {
 
 /** Everything the APIs say, fetched at once; each source that fails is left empty. */
 export async function fetchFacts(name: string, umlsKey: string): Promise<Facts> {
-  const [summary, umls, drugs] = await Promise.all([
+  // The FDA labels need RxClass's drug list, so they run right after it, alongside the others.
+  const drugsAndLabels = treatments(name).catch(() => [] as string[])
+    .then(async (drugs) => ({ drugs, labels: labelLines(await labelFacts(drugs, [name]).catch(() => [])) }));
+  const [summary, umls, { drugs, labels }] = await Promise.all([
     medlinePlusSummary(name).catch(() => ""),
     umlsFacts(name, umlsKey).catch(() => ({ definitions: [], relations: [] })),
-    treatments(name).catch(() => [] as string[]),
+    drugsAndLabels,
   ]);
-  return { summary, definitions: umls.definitions, relations: umls.relations, treatments: drugs };
+  return { summary, definitions: umls.definitions, relations: umls.relations, treatments: ingredients(drugs), labels };
 }
 
 /** The facts as the template's background: sourced, so the model can lean on them. */
@@ -98,6 +102,7 @@ export function groundingText(facts: Facts, catalogBackground = ""): string {
     facts.definitions.length && `Definitions (UMLS): ${facts.definitions.join(" | ")}`,
     facts.relations.length && `SNOMED CT relationships: ${facts.relations.join("; ")}`,
     facts.treatments.length && `Drugs that may treat it (MED-RT): ${facts.treatments.join(", ")}`,
+    facts.labels?.length && `FDA drug labels (openFDA):\n- ${facts.labels.join("\n- ")}`,
   ].filter(Boolean);
   return `${parts.join("\n")}\nUse these retrieved facts. Where they're silent, use established clinical knowledge and standard US practice; never contradict them.`;
 }
