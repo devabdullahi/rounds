@@ -6,7 +6,8 @@ import type { Skeleton } from "./skeleton.ts";
 
 export type Writing = {
   patient: { name: string; quote: string; demeanor: string; setting: string; complaint: string };
-  persona: { voice: string; background: string; fallback: string };
+  /** `asks`: the questions the patient puts to the doctor (concerns.ts); older cases have none. */
+  persona: { voice: string; background: string; fallback: string; asks?: string[] };
   facts: { id: string; label: string; reply: string; importance: "essential" | "important" | "optional"; screens_for: string | null }[];
   suggested: { text: string; fact: string }[];
   maneuvers: { id: string; title: string; finding: string; key: boolean }[];
@@ -76,7 +77,7 @@ export function assemble(skeleton: Skeleton, voice: Voice, name?: string): Writi
   return {
     // The name is picked in code (_shared/names.ts): models asked for one reuse the same few.
     patient: name ? { ...voice.patient, name } : voice.patient,
-    persona: voice.persona,
+    persona: { ...voice.persona, asks: skeleton.asks },
     facts,
     suggested: (voice.suggested ?? []).filter((s) => ids.has(s.fact)),
     maneuvers: skeleton.maneuvers.map((m) => ({ id: m.id, title: m.title, finding: m.finding ?? voice.normals?.[m.id]?.trim() ?? "Normal.", key: m.key })),

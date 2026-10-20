@@ -44,7 +44,7 @@ import { body, callerId, HttpError, json, serve } from "../_shared/http.ts";
 import { sql } from "../_shared/db.ts";
 import { completeJSON } from "../_shared/llm.ts";
 import { GRADER, LIVE_PATIENT, PATIENT, REPLY_CHECKER, VOICE_TURN_REVIEW } from "../_shared/prompts.ts";
-import { patientPrompt } from "../_shared/patientprompt.ts";
+import { patientPrompt, type PromptPersona } from "../_shared/patientprompt.ts";
 import { type Actions, grade, type Grade, isSingleDiagnosis, matchesDiagnosis, type Rubric, unrated } from "./grade.ts";
 import { conditionInsights, type InsightProfile, type Insights } from "./insights.ts";
 import { namedDiagnoses } from "./leak.ts";
@@ -84,7 +84,7 @@ type Content = {
   focus: string; // study focus the case was generated for
 };
 
-const LIMITS = { question: 500, reply: 1500, diagnosis: 200, plan: 2000, differential: 10, transcriptTurns: 12 };
+const LIMITS = { question: 500, reply: 1500, diagnosis: 200, plan: 2000, differential: 10, transcriptTurns: 80 };
 /** Facts one reply may reveal; the model lists the most relevant first. More would let one broad
  *  question ("tell me everything") empty the script. */
 const MAX_FACTS_PER_REPLY = 3;
@@ -171,6 +171,15 @@ async function resume(userId: string, input: Record<string, unknown>) {
   return { attempt: resumeState(attempt, content, hiddenTests(content.rubric, attempt.exam_mode)) };
 }
 
+/** The stored persona as the patient prompts take it. */
+function promptPersona(persona: Content["persona"]): PromptPersona {
+  const asks = (persona as Record<string, unknown>).asks;
+  return {
+    name: String(persona.name), age: persona.age, sex: String(persona.sex), voice: String(persona.voice), background: String(persona.background),
+    asks: Array.isArray(asks) ? asks.filter((a): a is string => typeof a === "string") : [],
+  };
+}
+
 // MARK: - ask
 
 async function ask(userId: string, input: Record<string, unknown>) {
@@ -183,8 +192,7 @@ async function ask(userId: string, input: Record<string, unknown>) {
   const recent = attempt.transcript.slice(-LIMITS.transcriptTurns);
   const persona = content.persona;
   const prompt = patientPrompt(
-    { name: String(persona.name), age: persona.age, sex: String(persona.sex), voice: String(persona.voice), background: String(persona.background) },
-    content.facts, content.exam, recent, question,
+    promptPersona(persona), content.facts, content.exam, recent, question, new Set(attempt.revealed_facts),
   );
 
   const known = new Map(content.facts.map((f) => [f.id, f]));
@@ -404,7 +412,7 @@ async function voiceSession(userId: string, input: Record<string, unknown>) {
   const persona = content.persona;
   const instructions = liveSessionPrompt(
     LIVE_PATIENT,
-    { name: String(persona.name), age: persona.age, sex: String(persona.sex), voice: String(persona.voice), background: String(persona.background) },
+    promptPersona(persona),
     speechInstructions(Number(persona.age) || 40, String(persona.sex ?? ""), String(persona.voice ?? "")),
     content.facts, content.exam, attempt.transcript.slice(-LIMITS.transcriptTurns),
   );

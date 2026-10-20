@@ -8,7 +8,13 @@
 //              limits the patient to plain-word looks: never results that need pressing,
 //              instruments or tests, which stay behind the Examine tab.
 
-export type PromptPersona = { name: string; age: string | number; sex: string; voice: string; background: string };
+/** `asks`: questions the patient may put to the doctor (older cases have none). */
+export type PromptPersona = { name: string; age: string | number; sex: string; voice: string; background: string; asks?: string[] };
+
+/** The patient's questions for the doctor, as one prompt line (nothing when there are none). */
+function asksLine(persona: PromptPersona): string {
+  return persona.asks?.length ? `\nQuestions you may ask the doctor (each at most once): ${JSON.stringify(persona.asks)}` : "";
+}
 export type PromptFact = { id: string; reply: string };
 export type PromptManeuver = { id: string; finding: string };
 export type PromptTurn = { role: string; text: string };
@@ -19,11 +25,13 @@ export function patientPrompt(
   exam: PromptManeuver[],
   recent: PromptTurn[],
   question: string,
+  told: ReadonlySet<string> = new Set(),
 ): string {
+  // `told` marks facts already shared, so a long visit stays consistent ("like I said, Sunday").
   return `You are ${persona.name}, ${persona.age}, ${persona.sex === "F" ? "female" : "male"}.
 Voice: ${persona.voice}
-Background: ${persona.background}
-Facts you may reveal: ${JSON.stringify(facts.map(({ id, reply }) => ({ id, content: reply })))}
+Background: ${persona.background}${asksLine(persona)}
+Facts you may reveal: ${JSON.stringify(facts.map(({ id, reply }) => (told.has(id) ? { id, content: reply, told: true } : { id, content: reply })))}
 What can be seen on the body (clinical notes; describe only what anyone could see by looking, in plain words): ${JSON.stringify(exam.map(({ id, finding }) => ({ id, note: finding })))}
 Conversation so far: ${JSON.stringify(recent.map(({ role, text }) => ({ role, text })))}
 Student's latest message: ${JSON.stringify(question)}`;
@@ -44,7 +52,7 @@ export function liveSessionPrompt(
 
 You are ${persona.name}, ${persona.age}, ${persona.sex === "F" ? "female" : "male"}.
 How you sound: ${howTheySound}
-Background: ${persona.background}
+Background: ${persona.background}${asksLine(persona)}
 Facts you may reveal: ${JSON.stringify(facts.map(({ reply }) => reply))}
 What can be seen on the body (clinical notes; describe only what anyone could see by looking, in plain words): ${JSON.stringify(exam.map(({ finding }) => finding))}
 Conversation so far: ${JSON.stringify(recent.map(({ role, text }) => ({ role, text })))}`;

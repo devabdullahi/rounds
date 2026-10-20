@@ -31,3 +31,18 @@ Deno.test("the voice-turn reviewer sees ids so it can name the facts a reply use
   assertStringIncludes(prompt, '"id":"f01"');
   assertStringIncludes(prompt, 'Patient replied: "I\'ve had it since I was born."');
 });
+
+Deno.test("facts already told are marked, and the patient's questions are listed", () => {
+  const prompt = patientPrompt(
+    { name: "Ray", age: 58, sex: "M", voice: "plain", background: "retired", asks: ["Is this serious?"] },
+    [{ id: "f1", reply: "Started Sunday." }, { id: "f2", reply: "No fever." }], [], [], "When did it start?", new Set(["f1"]),
+  );
+  assert(prompt.includes('{"id":"f1","content":"Started Sunday.","told":true}'));
+  assert(prompt.includes('{"id":"f2","content":"No fever."}'));
+  assert(prompt.includes('Questions you may ask the doctor (each at most once): ["Is this serious?"]'));
+});
+
+Deno.test("an older case without questions adds no questions line", () => {
+  const prompt = patientPrompt({ name: "Ray", age: 58, sex: "M", voice: "plain", background: "retired" }, [], [], [], "Hi");
+  assert(!prompt.includes("Questions you may ask"));
+});
