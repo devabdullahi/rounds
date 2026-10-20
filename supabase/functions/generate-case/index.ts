@@ -29,8 +29,7 @@ import { body, callerId, HttpError, json, serve } from "../_shared/http.ts";
 import { currentModel } from "../_shared/llm.ts";
 import { type Focus, parseFocus } from "../_shared/focus.ts";
 import { requirePlan } from "../_shared/plan.ts";
-// Daily patient limit off for now (2026-10-19, user request); restore these to turn it back on.
-// import { refundQuota, takeQuota } from "../_shared/quota.ts";
+import { refundQuota, takeQuota } from "../_shared/quota.ts";
 import { BudgetExceeded } from "../_shared/usage.ts";
 import { BACKGROUND_WRITER_MS, composeCase, NoNewPatient } from "./compose.ts";
 import { pickProfile } from "./pick.ts";
@@ -73,18 +72,26 @@ serve(async (req) => {
   // A new patient counts against the daily limit (refunded on failure), whether it's written now or
   // was written ahead. The quota comes first: a student over the limit mustn't start background
   // writing either.
-  // await takeQuota(userId, "case");
+  // One account mustn't use up the shared content budget for everyone (LIMIT_CASES_PER_DAY, 10 by
+  // default; launch blocker from the security review, 2026-10-20).
+  await takeQuota(userId, "case");
   // No case waiting: write one now, in this request. A student never waits on a background job,
   // which could die with its worker; writing ahead is only a head start.
-  let rows = await claimReady(userId, focus);
   let caseId: string;
   try {
-    caseId = await insertCase(userId, rows ?? (rows = await writeNow(userId, focus)));
+    let rows = await claimReady(userId, focus);
+    try {
+      caseId = await insertCase(userId, rows ?? (rows = await writeNow(userId, focus)));
+    } catch (error) {
+      // A case written ahead can turn out identical to one written for this student since (409):
+      // write a fresh one instead of losing the tap.
+      if (!(error instanceof HttpError && error.status === 409)) throw error;
+      caseId = await insertCase(userId, await writeNow(userId, focus));
+    }
   } catch (error) {
-    // A case written ahead can turn out identical to one written for this student since (409):
-    // write a fresh one instead of losing the tap.
-    if (!(error instanceof HttpError && error.status === 409)) throw error;
-    caseId = await insertCase(userId, await writeNow(userId, focus));
+    // No patient came of it: the tap doesn't count against the day.
+    await refundQuota(userId, "case").catch(() => {});
+    throw error;
   }
   // Queue the next case after this response; the next start can take it as soon as it's ready.
   queueGeneration(userId, focus, invoked);
