@@ -88,6 +88,13 @@ struct OnboardingTests {
         #expect(plan.rows.map(\.value) == ["MS3", "Step 2 CK", "Surgery", "Getting there"])
     }
 
+    @Test func planShowsAPickedCareSettingOnTheFocusRow() {
+        let plan = OnboardingPlan(year: .ms2, goal: .osce, focus: FocusSelection([.rotation(.surgery)]),
+                                  setting: .clinic, level: nil)
+        #expect(plan.rows.map(\.title) == ["Year", "Goal", "Focus"])
+        #expect(plan.rows.last?.value == "Surgery · Clinic")
+    }
+
     @Test func planLeavesOutUnansweredQuestions() {
         let plan = OnboardingPlan(year: nil, goal: nil, focus: FocusSelection(), level: nil)
         #expect(plan.rows == [OnboardingPlan.Row(title: "Focus", value: "Mixed cases")])

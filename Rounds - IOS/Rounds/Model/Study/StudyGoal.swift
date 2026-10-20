@@ -28,6 +28,10 @@ enum StudyGoal: String, CaseIterable, Identifiable {
         }
     }
 
+    /// The care setting onboarding starts this student in: OSCEs at most schools are outpatient
+    /// only, so they start in clinic cases. They can change it any time in the Focus sheet.
+    var careSetting: CareSetting { self == .osce ? .clinic : .any }
+
     /// Reads the stored raw value; nil when nothing (or something unknown) was saved.
     init?(stored: String) { self.init(rawValue: stored) }
 }

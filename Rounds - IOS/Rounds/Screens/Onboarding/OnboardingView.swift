@@ -27,6 +27,7 @@ struct OnboardingView: View {
     @AppStorage(SchoolYear.storageKey) private var yearStored = ""
     @AppStorage(StudyGoal.storageKey) private var goalStored = ""
     @AppStorage(StudyFocus.storageKey) private var focusStored = ""
+    @AppStorage(CareSetting.storageKey) private var settingStored = ""
     @AppStorage(InterviewLevel.storageKey) private var levelStored = ""
 
     /// The page in view. A paging scroll view, not a page-style TabView: TabView swaps pages
@@ -99,6 +100,9 @@ struct OnboardingView: View {
         // The focus picker saves as it changes, so swiping on to the promise keeps the latest picks.
         .onChange(of: pick) { _, new in if focusReady { focusStored = new.stored } }
         .onChange(of: mixChosen) { _, _ in if focusReady { focusStored = pick.stored } }
+        .onChange(of: goalStored) { _, new in
+            if let goal = StudyGoal(stored: new) { settingStored = goal.careSetting.rawValue }
+        }
         .onAppear { startedSignedOut = auth.account == nil }
         #if DEBUG
         .onAppear { debugStart() }

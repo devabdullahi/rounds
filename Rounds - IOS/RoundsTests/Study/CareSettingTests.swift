@@ -12,6 +12,12 @@ struct CareSettingTests {
         #expect(CareSetting.allCases.map(\.rawValue) == ["", "clinic", "hospital"])
     }
 
+    /// OSCEs are outpatient, so an OSCE student starts in clinic cases; everyone else in any setting.
+    @Test(arguments: StudyGoal.allCases)
+    func onboardingGoalPicksTheStartingSetting(goal: StudyGoal) {
+        #expect(goal.careSetting == (goal == .osce ? .clinic : .any))
+    }
+
     @Test(arguments: ["office", "Clinic", "inpatient"])
     func unknownStoredValueReadsAsAny(stored: String) {
         #expect(CareSetting(stored: stored) == .any)
