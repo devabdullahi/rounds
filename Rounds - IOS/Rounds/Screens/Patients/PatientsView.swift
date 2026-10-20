@@ -349,13 +349,23 @@ struct PatientsView: View {
         .padding(.top, 2)
     }
 
+    /// The bed code column: wide enough for five characters ("SD595"), shrinking rather than wrapping.
+    private func bedLabel(_ bed: String) -> some View {
+        Text(bed)
+            .font(.mono(13))
+            .foregroundStyle(Theme.muted)
+            .lineLimit(1)
+            .minimumScaleFactor(0.7)
+            .frame(width: 44, alignment: .leading)
+    }
+
     private func row(_ p: WardPatient) -> some View {
         Button {
             tapped(p.id) { Task { await app.open(bed: p.id) } }
         } label: {
             HStack(spacing: 12) {
                 selectMark(p.id)
-                Text(p.id).font(.mono(13)).foregroundStyle(Theme.muted).frame(width: 28, alignment: .leading)
+                bedLabel(p.id)
                 VStack(alignment: .leading, spacing: 2) {
                     Text("\u{201C}\(p.quote)\u{201D}").font(.system(size: 16, weight: .semibold))
                     Text(p.meta).font(.system(size: 13)).foregroundStyle(Theme.muted)
@@ -399,7 +409,7 @@ struct PatientsView: View {
             } label: {
                 HStack(spacing: 12) {
                     selectMark(p.id)
-                    Text(p.id).font(.mono(13)).foregroundStyle(Theme.muted).frame(width: 28, alignment: .leading)
+                    bedLabel(p.id)
                     VStack(alignment: .leading, spacing: 2) {
                         Text("\u{201C}\(p.quote)\u{201D}").font(.system(size: 16, weight: .semibold))
                         HStack(spacing: 0) {

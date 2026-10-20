@@ -4,6 +4,7 @@ import SwiftUI
 /// Dev-only deep link for screenshots: launch with `-screen <name>`.
 /// Names: firstopen, firstopen-auth, duplicate-account, voice-glass, onboarding (focus), onboarding-account, onboarding-intro, onboarding-graded,
 /// onboarding-promise, onboarding-graph, onboarding-goal, onboarding-to-goal, onboarding-year, onboarding-name, onboarding-setting, onboarding-redflag, onboarding-cards, onboarding-reminder, onboarding-struggles, onboarding-talk, onboarding-mode, onboarding-timer, onboarding-progress, onboarding-daily, onboarding-plan, onboarding-heart, onboarding-promised,
+/// settings-about, onboarding-consent, ai-consent, paywall, paywall-unavailable, paywall-delete,
 /// focus-system, focus-sheet, home, patients, patients-open, previous-tries, previous-try, badge-unlock-many, badge-unlock-all, paywall-taken, profile, brief, interview, examine, workup, diagnosis, debrief, diagnosis-suggest.
 enum DebugLaunch {
     static var screen: String? { UserDefaults.standard.string(forKey: "screen") }
@@ -16,24 +17,33 @@ enum DebugLaunch {
         return v > 0 ? v : nil
     }
 
+    /// Screens that stay on the paywall (no debug unlock): Superwall's, the "plans couldn't load"
+    /// fallback, the delete confirmation over it, and the plan-owned-by-another-account state.
+    static let paywallScreens: Set<String> = ["paywall", "paywall-taken", "paywall-unavailable", "paywall-delete"]
+    /// `-screen paywall-unavailable`: the fallback in place of Superwall's paywall.
+    static var isPaywallUnavailable: Bool { screen == "paywall-unavailable" }
+
     private static let authScreens = ["firstopen", "firstopen-auth", "duplicate-account", "onboarding", "focus-system", "google-signin",
                                       "onboarding-intro", "onboarding-graded", "onboarding-promise", "onboarding-graph",
                                       "onboarding-goal", "onboarding-to-goal", "onboarding-account", "onboarding-heart",
                                       "onboarding-promised", "onboarding-year", "onboarding-name", "onboarding-plan",
                                       "onboarding-setting", "onboarding-redflag", "onboarding-cards", "onboarding-reminder",
                                       "onboarding-struggles", "onboarding-talk", "onboarding-mode", "onboarding-timer",
-                                      "onboarding-progress", "onboarding-daily"]
+                                      "onboarding-progress", "onboarding-daily", "onboarding-consent"]
 
     /// Runs before the first frame so the root picks the right side (auth vs app).
     static func prepareDefaults() {
         guard let screen else { return }
         let d = UserDefaults.standard
         d.set(!authScreens.contains(screen), forKey: AuthModel.signedInKey)
-        if ["onboarding-heart", "onboarding-promised", "paywall", "paywall-taken"].contains(screen) {
+        // App screens open past the AI consent; `ai-consent` and onboarding start without it.
+        let consented = !authScreens.contains(screen) && screen != "ai-consent"
+        d.set(consented ? AIConsent.agreed : AIConsent.withdrawn, forKey: AIConsent.storageKey)
+        if ["onboarding-heart", "onboarding-promised"].contains(screen) || paywallScreens.contains(screen) {
             d.set(StudyGoal.step2CK.rawValue, forKey: StudyGoal.storageKey)
             d.set(StudyFocus.rotation(.internalMedicine).stored, forKey: StudyFocus.storageKey)
         }
-        if ["focus-sheet", "home", "settings", "settings-siri", "settings-voice", "settings-subscription"].contains(screen) {
+        if ["focus-sheet", "home", "settings", "settings-siri", "settings-voice", "settings-about", "settings-subscription"].contains(screen) {
             d.set(StudyFocus.rotation(.internalMedicine).stored, forKey: StudyFocus.storageKey)
         }
     }
@@ -50,7 +60,7 @@ enum DebugLaunch {
              "onboarding-account", "onboarding-heart", "onboarding-promised",
              "onboarding-year", "onboarding-name", "onboarding-plan", "onboarding-setting", "onboarding-redflag",
              "onboarding-cards", "onboarding-reminder", "onboarding-struggles", "onboarding-talk", "onboarding-mode",
-             "onboarding-timer", "onboarding-progress", "onboarding-daily": [.onboarding]
+             "onboarding-timer", "onboarding-progress", "onboarding-daily", "onboarding-consent": [.onboarding]
         default: []
         }
     }
@@ -62,7 +72,7 @@ enum DebugLaunch {
         case "cards", "cards-flip", "cards-correct", "cards-unknown", "cards-new", "cards-new-color", "cards-new-answer",
              "cards-add", "cards-generate", "cards-generate-notes", "cards-generate-notes-pick", "cards-generate-mistakes": tab = .cards
         case "patients-open": tab = .patients; expandedPatient = "R2"
-        case "profile", "settings", "settings-siri", "settings-voice", "settings-subscription", "profile-weakspots", "profile-badges", "profile-edit": tab = .profile
+        case "profile", "settings", "settings-siri", "settings-voice", "settings-about", "settings-subscription", "profile-weakspots", "profile-badges", "profile-edit": tab = .profile
         case "home", "focus-sheet", "splash", "home-swipe-right", "home-swipe-left": tab = .today
         case "home-empty":
             tab = .today
@@ -112,28 +122,4 @@ enum DebugLaunch {
         }
     }
 }
-
-// MOCK (disabled): seeded the scripted chest-pain conversation for screenshots.
-// extension CaseSession {
-//     func debugSeed(through step: CaseStep) {
-//         debugInject(
-//             messages: [
-//                 ChatMessage(kind: .doctor, text: "Can you show me where the pain is? Does it go anywhere else?"),
-//                 ChatMessage(kind: .patient, text: clinical.facts[1].reply),
-//                 ChatMessage(kind: .reveal, text: "Revealed: radiation, site"),
-//                 ChatMessage(kind: .doctor, text: "Do you smoke, or have any heart problems in the family?"),
-//                 ChatMessage(kind: .patient, text: clinical.facts[5].reply),
-//                 ChatMessage(kind: .reveal, text: "Revealed: smoking, family history"),
-//             ],
-//             revealed: ["site", "risk", "onset", "character"],
-//             examined: step == .interview ? [] : ["inspect", "heart"],
-//             tests: step == .interview ? [] : ["ecg", "trop"],
-//             pending: step == .workup ? ["trop"] : []
-//         )
-//         if step == .diagnosis {
-//             diagnosis = "Inferior STEMI"
-//             plan = "Aspirin, activate cath lab for primary PCI, oxygen only if sats drop below 94%, analgesia."
-//         }
-//     }
-// }
 #endif

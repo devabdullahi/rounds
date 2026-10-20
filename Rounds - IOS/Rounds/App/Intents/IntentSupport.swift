@@ -6,9 +6,14 @@ import UIKit
 @MainActor
 enum IntentSupport {
     /// Intents act on the student's account, so they wait until someone has signed in on this
-    /// device (otherwise the case service would quietly start a guest session).
-    static var isSignedIn: Bool { UserDefaults.standard.bool(forKey: AuthModel.signedInKey) }
-    static let signInFirst: IntentDialog = "Open Rounds and sign in first."
+    /// device (otherwise the case service would quietly start a guest session) and agreed to the
+    /// AI consent (patients and cards are written by AI providers).
+    static var isReady: Bool {
+        let defaults = UserDefaults.standard
+        return defaults.bool(forKey: AuthModel.signedInKey)
+            && AIConsent.isGiven(stored: defaults.integer(forKey: AIConsent.storageKey))
+    }
+    static let openAppFirst: IntentDialog = "Open Rounds and sign in first."
 
     /// The focus the student picked in the app, or a mix.
     static var savedFocus: FocusSelection {

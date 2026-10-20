@@ -44,6 +44,10 @@ struct PatientCard: View {
                 Text(patient.id)
                     .font(.system(size: 17, weight: .bold))
                     .foregroundStyle(Theme.accent)
+                    // Bed codes run up to five characters ("SD595"): shrink to fit the circle, never wrap.
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
+                    .padding(.horizontal, 5)
                     .frame(width: 52, height: 52)
                     .background(Theme.accentSoft, in: Circle())
                 VStack(alignment: .leading, spacing: 2) {

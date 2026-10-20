@@ -25,7 +25,7 @@ extension SupabaseClient {
         request.setValue(project.key, forHTTPHeaderField: "apikey")
         for (field, value) in try await bearer() { request.setValue(value, forHTTPHeaderField: field) }
         request.httpBody = try JSONEncoder().encode(body)
-        let (bytes, response) = try await URLSession.shared.bytes(for: request)
+        let (bytes, response) = try await SupabaseService.session.bytes(for: request)
         let status = (response as? HTTPURLResponse)?.statusCode ?? 0
         guard status == 200 else {
             var data = Data()

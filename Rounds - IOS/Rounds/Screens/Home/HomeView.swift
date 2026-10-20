@@ -91,7 +91,7 @@ struct HomeView: View {
 
     // MARK: Sections
 
-    @AppStorage(Appearance.storageKey) private var appearance = Appearance.system
+    @AppStorage(Appearance.storageKey) private var appearance = Appearance.defaultChoice
 
     /// An explicit Light/Dark choice sets the shift; System follows the clock (07:00–18:59 is day).
     private var shiftTitle: String {

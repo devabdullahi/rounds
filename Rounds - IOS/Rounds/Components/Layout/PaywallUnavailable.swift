@@ -1,12 +1,16 @@
 import SwiftUI
 
-/// Shown in place of the paywall when it can't load: what happened, and two ways forward.
+/// Shown in place of the paywall when it can't load: what happened, two ways forward, and the
+/// ways out (sign out, delete the account), so nobody is stuck here without a plan.
 struct PaywallUnavailable: View {
     let isWorking: Bool
     /// Why it couldn't load, shown small under the message (debug builds pass Superwall's reason).
     var detail: String? = nil
     let retry: () -> Void
     let restore: () -> Void
+    let signOut: () -> Void
+    /// Asks to delete the account; the caller confirms first.
+    let deleteAccount: () -> Void
 
     var body: some View {
         VStack(spacing: 16) {
@@ -36,6 +40,14 @@ struct PaywallUnavailable: View {
                 .foregroundStyle(Theme.accentText)
                 .frame(minHeight: 44)
                 .disabled(isWorking)
+            HStack(spacing: 24) {
+                Button("Sign out", action: signOut)
+                    .foregroundStyle(Theme.muted)
+                Button("Delete account", role: .destructive, action: deleteAccount)
+                    .foregroundStyle(Theme.warnText)
+            }
+            .font(.system(size: 15, weight: .semibold))
+            .frame(minHeight: 44)
         }
         .padding(.horizontal, 24)
         .padding(.bottom, 16)
