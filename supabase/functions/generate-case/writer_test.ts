@@ -1,7 +1,8 @@
 import { assert, assertEquals } from "jsr:@std/assert@1";
 import { leakTerms, planCase, type Profile } from "../_shared/casegen.ts";
 import { seeded } from "../_shared/labs.ts";
-import { applyFixes, buildRubric, checkWriting, fixPrompt, leakSpots, neutralIds, type Writing, writerPrompt } from "./writer.ts";
+import { applyFixes, buildRubric, checkWriting, fixPrompt, leakSpots, neutralIds, type Writing } from "./writer.ts";
+import { skeletonFacts } from "./skeleton.ts";
 
 const dir = new URL("../../../knowledge-base/profiles/", import.meta.url);
 let profile: Profile | null = null;
@@ -97,15 +98,13 @@ Deno.test("coding wording from a synthetic record is caught, in replies and the 
   assert(problem?.includes("(substance)") && problem.includes("(disorder)"), problem);
 });
 
-Deno.test("a background goes to the writer cleaned, and only when there is one", () => {
-  assert(!writerPrompt(profile!, plan).includes("Patient background (synthetic record)"));
-  const prompt = writerPrompt(profile!, plan, {
+Deno.test("a background's medical items reach the facts cleaned of coding wording", () => {
+  const facts = skeletonFacts(profile!, plan, {
     id: "x", age: plan.age, sex: plan.sex, marital: "M", conditions: ["Hypertension (disorder)"],
     medications: [{ name: "lisinopril 10 MG Oral Tablet" }], allergies: ["Peanut (substance)"], smoking: "Ex-smoker", social: [],
-  });
-  assert(prompt.includes("Patient background (synthetic record)"));
-  assert(prompt.includes("lisinopril 10 MG Oral Tablet") && prompt.includes('"Peanut"'));
-  assert(!prompt.includes("Peanut (substance)") &&!prompt.includes("Hypertension (disorder)"));
+  }, () => 0.5).map((f) => f.content).join(" | ");
+  assert(facts.includes("Hypertension") && facts.includes("lisinopril 10 MG Oral Tablet") && facts.includes("Peanut"));
+  assert(!facts.includes("(substance)") && !facts.includes("(disorder)"));
 });
 
 Deno.test("a leak names the field it's in, so the retry can fix it", () => {

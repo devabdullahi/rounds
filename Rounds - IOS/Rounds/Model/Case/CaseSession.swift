@@ -106,16 +106,7 @@ final class CaseSession {
         timeline.append(TimelineEvent(at: .now, kind: .question, text: question))
         Task {
             do {
-                let answer = try await service.ask(attempt: attempt(), question: question)
-                withAnimation(Springs.slide) {
-                    isPatientTyping = false
-                    messages.append(ChatMessage(kind: .patient, text: answer.reply))
-                    revealed = Set(answer.revealedIDs)
-                    coverage = answer.coverage
-                    if !answer.revealed.isEmpty && !examMode {
-                        messages.append(ChatMessage(kind: .reveal, text: "Revealed: " + answer.revealed.map(\.label).joined(separator: ", ")))
-                    }
-                }
+                show(try await service.ask(attempt: attempt(), question: question))
             } catch {
                 withAnimation(Springs.slide) {
                     isPatientTyping = false
@@ -127,14 +118,115 @@ final class CaseSession {
 
     // MARK: Voice
 
-    /// What the student said in a recorded voice turn, as the server transcribes it.
-    func transcribe(_ audio: Data) async throws -> String {
-        try await service.transcribe(attempt: attempt(), audio: audio)
-    }
-
     /// The patient's latest reply, spoken in their voice.
     func spokenReply() async throws -> Data {
         try await service.speakLatestReply(attempt: attempt())
+    }
+
+    // MARK: Live voice
+
+    /// Opens a live voice call for the phone's WebRTC offer. A refusal (today's live voice time is
+    /// used up, or the call couldn't start) is said in the chat, since the screen then quietly
+    /// switches to turn-by-turn voice.
+    func startLiveCall(offer: String) async throws -> LiveCall {
+        startClockIfNeeded()
+        do {
+            return try await service.startLiveCall(attempt: attempt(), offer: offer)
+        } catch {
+            // A server without live voice yet ("Unknown action.") just means turn-by-turn: nothing to say.
+            if (error as? CaseServiceError)?.message != "Unknown action." {
+                withAnimation(Springs.slide) { messages.append(ChatMessage(kind: .problem, text: error.localizedDescription)) }
+            }
+            throw error
+        }
+    }
+
+    /// One finished spoken exchange: shown in the chat at once (it was already heard), then logged
+    /// so it reveals facts and counts toward the grade. Returns true when the server ended the call.
+    func logLiveTurn(call: String, question: String, reply: String) async -> Bool {
+        withAnimation(Springs.slide) {
+            messages.append(ChatMessage(kind: .doctor, text: question))
+            if !reply.isEmpty { messages.append(ChatMessage(kind: .patient, text: reply)) }
+        }
+        timeline.append(TimelineEvent(at: .now, kind: .question, text: question))
+        do {
+            let outcome = try await service.logVoiceTurn(attempt: attempt(), call: call, question: question, reply: reply)
+            let answer = outcome.answer
+            withAnimation(Springs.slide) {
+                revealed = Set(answer.revealedIDs)
+                coverage = answer.coverage
+                if !answer.revealed.isEmpty && !examMode {
+                    messages.append(ChatMessage(kind: .reveal, text: "Revealed: " + answer.revealed.map(\.label).joined(separator: ", ")))
+                }
+                if outcome.brokeRule {
+                    messages.append(ChatMessage(kind: .problem, text: "The patient said something that isn't part of this case. Don't rely on it."))
+                }
+            }
+            return outcome.ended
+        } catch {
+            withAnimation(Springs.slide) { messages.append(ChatMessage(kind: .problem, text: error.localizedDescription)) }
+            return false
+        }
+    }
+
+    /// The live call ended on the phone; the server hangs up its side. Best effort.
+    func endLiveCall(_ call: String) {
+        guard let attemptID else { return }
+        Task { [service] in try? await service.endLiveCall(attempt: attemptID, call: call) }
+    }
+
+    /// A spoken question: asked, shown and answered like a typed one, and the reply's voice comes back
+    /// in the same response. Returns the reply and its audio, or nil when the question failed (the
+    /// error shows in the chat).
+    func askAloud(_ raw: String) async -> (reply: String, audio: AsyncThrowingStream<Data, Error>)? {
+        let question = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !question.isEmpty, !isPatientTyping else { return nil }
+        startClockIfNeeded()
+        withAnimation(Springs.slide) {
+            messages.append(ChatMessage(kind: .doctor, text: question))
+            isPatientTyping = true
+        }
+        timeline.append(TimelineEvent(at: .now, kind: .question, text: question))
+        do {
+            let spoken: SpokenAnswer
+            do {
+                spoken = try await service.askAloud(attempt: attempt(), question: question)
+            } catch let error as CaseServiceError where error.message == Self.unknownAction {
+                // A server without ask_aloud yet: ask as typed, with no audio, so voice falls back
+                // to its separate spoken-reply request instead of failing the question.
+                let answer = try await service.ask(attempt: attempt(), question: question)
+                spoken = SpokenAnswer(answer: answer, audio: AsyncThrowingStream { $0.finish(throwing: error) })
+            }
+            show(spoken.answer)
+            return (spoken.answer.reply, spoken.audio)
+        } catch {
+            withAnimation(Springs.slide) {
+                isPatientTyping = false
+                messages.append(ChatMessage(kind: .problem, text: error.localizedDescription))
+            }
+            return nil
+        }
+    }
+
+    /// What the server says to an action it doesn't have yet (an app newer than its backend).
+    private static let unknownAction = "Unknown action."
+
+    /// The patient's answer in the chat: the reply, what it revealed, and the coverage.
+    private func show(_ answer: PatientAnswer) {
+        withAnimation(Springs.slide) {
+            isPatientTyping = false
+            messages.append(ChatMessage(kind: .patient, text: answer.reply))
+            revealed = Set(answer.revealedIDs)
+            coverage = answer.coverage
+            if !answer.revealed.isEmpty && !examMode {
+                messages.append(ChatMessage(kind: .reveal, text: "Revealed: " + answer.revealed.map(\.label).joined(separator: ", ")))
+            }
+        }
+    }
+
+    /// The same, as PCM chunks that can play while the rest is still being made.
+    func streamedReply() async throws -> AsyncThrowingStream<Data, Error> {
+        try await service.streamLatestReply(attempt: attempt())
     }
 
     /// Key history areas uncovered so far (onset, character, radiation…), without saying which remain.
@@ -231,42 +323,6 @@ final class CaseSession {
         }
     }
 }
-
-#if DEBUG
-extension CaseSession {
-    /// `-screen interview-chat` / `interview-exam-chat`: a short fictional exchange for screenshots,
-    /// with reveal chips only in practice mode (as in a real case).
-    func debugSeedChat() {
-        messages = Self.debugLines.filter { !examMode || $0.0 != .reveal }.map { ChatMessage(kind: $0.0, text: $0.1) }
-    }
-
-    /// `-screen demo-interview`: the same exchange played out over time, with the patient typing
-    /// before each reply, so the real interview screen can be screen-recorded for the website.
-    func debugPlayChat() async {
-        messages = []
-        for (kind, text) in Self.debugLines where !examMode || kind != .reveal {
-            if kind == .patient {
-                isPatientTyping = true
-                try? await Task.sleep(for: .seconds(1.2))
-                isPatientTyping = false
-            }
-            messages.append(ChatMessage(kind: kind, text: text))
-            try? await Task.sleep(for: .seconds(kind == .reveal ? 0.9 : 1.0))
-        }
-    }
-
-    private static let debugLines: [(ChatMessage.Kind, String)] = [
-            (.doctor, "Hi, I'm a student doctor. What brings you in today?"),
-            (.patient, "I've had this painful sore inside my mouth for about four days. It hurts to eat."),
-            (.reveal, "Onset: 4 days"),
-            (.doctor, "Have you had sores like this before?"),
-            (.patient, "A few times a year, usually when I'm stressed. They go away on their own."),
-            (.reveal, "Recurrent episodes"),
-            (.doctor, "Any fever, rash, or sores anywhere else?"),
-            (.patient, "No fever. Nothing anywhere else that I've noticed."),
-        ]
-}
-#endif
 
 /// Lets a running case drive `.fullScreenCover(item:)`: each session is its own identity.
 extension CaseSession: Identifiable {

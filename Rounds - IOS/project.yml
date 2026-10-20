@@ -19,6 +19,11 @@ packages:
   SuperwallKit:
     url: https://github.com/superwall/Superwall-iOS
     from: 4.16.0
+  # Live voice with the patient over OpenAI's Realtime API (approved dependency, 2026-10-18):
+  # prebuilt Google WebRTC. Pinned, never tracking main.
+  WebRTC:
+    url: https://github.com/stasel/WebRTC
+    exactVersion: 154.0.0
 configFiles:
   Debug: Config/Base.xcconfig
   Release: Config/Base.xcconfig
@@ -26,7 +31,7 @@ settings:
   base:
     SWIFT_VERSION: "5.0"
     MARKETING_VERSION: "0.1.0"
-    CURRENT_PROJECT_VERSION: "9"
+    CURRENT_PROJECT_VERSION: "10"
 targets:
   Rounds:
     type: application
@@ -37,6 +42,7 @@ targets:
       - package: GoogleSignIn
         product: GoogleSignIn
       - package: SuperwallKit
+      - package: WebRTC
     scheme:
       testTargets: [RoundsTests]
       # Local StoreKit testing: the subscriptions in Config/Rounds.storekit, no App Store Connect needed.

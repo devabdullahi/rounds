@@ -16,6 +16,7 @@ const LIMITS: Record<QuotaKind, { env: string; fallback: number; noun: string }>
   voice: { env: "LIMIT_VOICE_PER_DAY", fallback: 400, noun: "voice turns" },
   // Purchase claims each ask Apple; the app claims on launch and after a purchase, far below this.
   claim: { env: "LIMIT_CLAIMS_PER_DAY", fallback: 50, noun: "purchase checks" },
+  // Live voice is limited by cost instead: a daily dollar budget per student (_shared/realtime.ts).
 };
 
 export function dailyLimit(kind: QuotaKind): number {

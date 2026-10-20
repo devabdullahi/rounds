@@ -30,14 +30,23 @@ Deno.test("each OpenAI task gets its model and effort: Luna without reasoning fo
   const cases: [Task, string, Effort][] = [
     ["patient", "gpt-6-luna", "off"],
     ["check", "gpt-6-luna", "off"],
-    ["cards", "gpt-6-luna", "off"],
-    ["case", "gpt-6.1-sol", "low"],
     ["grade", "gpt-6.1-sol", "medium"],
     ["profile", "gpt-6.1-sol", "medium"],
   ];
   for (const [task, model, effort] of cases) {
     assertEquals(settingFor(PROVIDERS.openai, task, noEnv), { model, effort }, task);
   }
+});
+
+Deno.test("flashcards and case writing go to DeepSeek V4.1 Flash without thinking", () => {
+  assertEquals(settingFor(openai, "cards", noEnv), { provider: "deepseek", model: "deepseek-flash", effort: "off" });
+  assertEquals(settingFor(openai, "case", noEnv), { provider: "deepseek", model: "deepseek-flash", effort: "off" });
+  assertEquals(thinkingFields("deepseek", 400, "off"), { max_tokens: 400, thinking: { type: "disabled" } });
+});
+
+Deno.test("usage reads DeepSeek's cache split", () => {
+  const reply = { usage: { prompt_tokens: 141, completion_tokens: 30, prompt_cache_hit_tokens: 128, prompt_cache_miss_tokens: 13 } };
+  assertEquals(usageOf(reply), { hit: 128, miss: 13, output: 30, reasoning: 0 });
 });
 
 Deno.test("providers without task settings use their one model and never think", () => {

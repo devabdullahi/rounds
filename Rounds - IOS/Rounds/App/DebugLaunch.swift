@@ -3,7 +3,7 @@ import SwiftUI
 
 /// Dev-only deep link for screenshots: launch with `-screen <name>`.
 /// Names: firstopen, firstopen-auth, duplicate-account, voice-glass, onboarding (focus), onboarding-account, onboarding-intro, onboarding-graded,
-/// onboarding-promise, onboarding-graph, onboarding-goal, onboarding-to-goal, onboarding-heart, onboarding-promised,
+/// onboarding-promise, onboarding-graph, onboarding-goal, onboarding-to-goal, onboarding-year, onboarding-level, onboarding-plan, onboarding-heart, onboarding-promised,
 /// focus-system, focus-sheet, home, patients, patients-open, previous-tries, previous-try, badge-unlock-many, badge-unlock-all, paywall-taken, profile, brief, interview, examine, workup, diagnosis, debrief, diagnosis-suggest.
 enum DebugLaunch {
     static var screen: String? { UserDefaults.standard.string(forKey: "screen") }
@@ -19,7 +19,7 @@ enum DebugLaunch {
     private static let authScreens = ["firstopen", "firstopen-auth", "duplicate-account", "onboarding", "focus-system", "google-signin",
                                       "onboarding-intro", "onboarding-graded", "onboarding-promise", "onboarding-graph",
                                       "onboarding-goal", "onboarding-to-goal", "onboarding-account", "onboarding-heart",
-                                      "onboarding-promised"]
+                                      "onboarding-promised", "onboarding-year", "onboarding-level", "onboarding-plan"]
 
     /// Runs before the first frame so the root picks the right side (auth vs app).
     static func prepareDefaults() {
@@ -44,7 +44,8 @@ enum DebugLaunch {
         switch screen {
         case "onboarding-intro", "onboarding-graded", "onboarding-promise", "onboarding-graph",
              "onboarding-goal", "onboarding-to-goal", "onboarding", "focus-system",
-             "onboarding-account", "onboarding-heart", "onboarding-promised": [.onboarding]
+             "onboarding-account", "onboarding-heart", "onboarding-promised",
+             "onboarding-year", "onboarding-level", "onboarding-plan": [.onboarding]
         default: []
         }
     }
@@ -92,7 +93,7 @@ enum DebugLaunch {
             // Case screens open the newest generated patient (admit one first from Home).
             let path: [CaseStep]
             switch screen {
-            case "interview", "demo-interview", "interview-exam", "interview-chat", "interview-exam-chat", "interview-findings", "voice-listen", "voice-patient", "examine", "workup": path = [.interview]
+            case "interview", "interview-exam", "interview-findings", "voice-listen", "voice-patient", "voice-live", "examine", "workup": path = [.interview]
             case "diagnosis", "diagnosis-suggest", "diagnosis-ddx", "diagnosis-ddx-add": path = [.interview, .diagnosis]
             case "handoff": path = [.interview, .diagnosis, .handoff]
             case "debrief", "debrief-graded": path = [.interview, .diagnosis, .handoff, .debrief]

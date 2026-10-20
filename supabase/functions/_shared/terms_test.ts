@@ -1,6 +1,6 @@
 // Terminology lookups against a fake fetch: no network, no database (checkTerms gets its checkers).
 import { assert, assertEquals, assertRejects } from "jsr:@std/assert@1";
-import { type Check, checkTerms, lookupRxnorm, lookupSnomed } from "./terms.ts";
+import { type Check, checkTerms, lookupRxnorm, lookupSnomed, TermsOutOfTime } from "./terms.ts";
 
 type Route = (url: URL) => Response | undefined;
 
@@ -97,4 +97,10 @@ Deno.test("checkTerms marks verified terms and explains the rest", async () => {
   assert(errors.includes("exam: 'looks unwell' has no term; add its standard clinical name"));
   assert(errors.includes("patient.risk_medications: 'made-up-ol' isn't an RxNorm drug; use the generic name"));
   assertEquals(errors.length, 3);
+});
+
+Deno.test("checkTerms stops at its deadline instead of running past it", async () => {
+  const output = { presentation: { chief_complaints: [{ text: "my belly hurts", term: "Abdominal pain" }] }, exam: {}, patient: {} };
+  const ok = () => Promise.resolve({ ok: true, suggestions: [] });
+  await assertRejects(() => checkTerms(output, { snomed: ok, rxnorm: ok }, Date.now() - 1), TermsOutOfTime);
 });

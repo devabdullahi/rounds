@@ -3,7 +3,7 @@
 //   LLM_MODEL         = optional override for every task (a one-line rollback)
 //   LLM_MODEL_<TASK>  = optional override for one task, e.g. LLM_MODEL_GRADE=gpt-6-luna; the
 //                       model name picks its provider (gpt-… OpenAI, claude-… Anthropic)
-//   OPENAI_API_KEY / ANTHROPIC_API_KEY
+//   OPENAI_API_KEY / ANTHROPIC_API_KEY / DEEPSEEK_API_KEY (flashcards)
 // Keys come from supabase/functions/.env locally and `supabase secrets set` when deployed.
 //
 // Each call names its task, and the task picks the model and reasoning effort. Thinking is slow:
@@ -15,12 +15,12 @@ import { costUSD, recordUsage, takeBudget, type Usage } from "./usage.ts";
 /** `thinking` says how the provider takes a reasoning effort: OpenAI's reasoning models
  *  (max_completion_tokens, reasoning_effort, no temperature), or not at all. */
 export type Provider = {
-  url: string; keyEnv: string; model: string; style: "openai" | "anthropic"; thinking?: "openai";
+  url: string; keyEnv: string; model: string; style: "openai" | "anthropic"; thinking?: "openai" | "deepseek";
   tasks?: Record<Task, Setting>;
 };
 
 /** What a call is for. Every call names one, so cost and model choice are tracked per feature. */
-export type Task = "patient" | "check" | "case" | "grade" | "cards" | "profile";
+export type Task = "patient" | "check" | "case" | "grade" | "cards" | "profile" | "template";
 
 /** How hard the model reasons before answering. Only providers with per-task settings use it. */
 export type Effort = "off" | "low" | "medium" | "high" | "max";
@@ -32,15 +32,22 @@ type Setting = { provider?: string; model: string; effort: Effort };
  *  answer is cut off after the reasoning (finish_reason "length", empty content). */
 const REASONING_BUDGET: Record<Exclude<Effort, "off">, number> = { low: 2000, medium: 4000, high: 8000, max: 16000 };
 
-/** Per task on OpenAI: GPT-6 Luna with reasoning off where speed matters and the facts are already
- *  decided (patient chat, the reply check, flashcards; ~1.6 s a turn), GPT-6.1 Sol where judgment
- *  or medical recall matters (writing the case, grading, condition profiles). Sol has no "none"
- *  effort, so its tasks always name one. */
+/** Per task, as the user split it (2026-10-19): OpenAI for everything the student talks to or is
+ *  judged by, DeepSeek V4.1 Flash for generating content.
+ *  - GPT-6 Luna, reasoning off: patient chat and the reply check (~1.6 s a turn; voice runs on them).
+ *  - GPT-6.1 Sol: grading and condition profiles, where judgment and medical recall matter. It has
+ *    no "none" effort, so its tasks always name one.
+ *  - DeepSeek Flash, thinking off: flashcards, and writing cases. A case is ~3.8k tokens of output
+ *    whose medicine the plan already fixes; Flash writes it in 12–17 s (Luna ~31 s, Sol 70–88 s,
+ *    measured 2026-10-19). Cases carry no student data. */
 const OPENAI_TASKS: Record<Task, Setting> = {
   patient: { model: "gpt-6-luna", effort: "off" },
   check: { model: "gpt-6-luna", effort: "off" },
-  cards: { model: "gpt-6-luna", effort: "off" },
-  case: { model: "gpt-6.1-sol", effort: "low" },
+  cards: { provider: "deepseek", model: "deepseek-flash", effort: "off" },
+  case: { provider: "deepseek", model: "deepseek-flash", effort: "off" },
+  // A live profile's template sections for one case, all at once (_shared/liveprofile.ts): ~10–13 s
+  // on Flash against 42–56 s on Sol (measured 2026-10-19); the checks catch what it gets wrong.
+  template: { provider: "deepseek", model: "deepseek-flash", effort: "off" },
   grade: { model: "gpt-6.1-sol", effort: "medium" },
   profile: { model: "gpt-6.1-sol", effort: "medium" },
 };
@@ -49,6 +56,7 @@ export type CallOptions = { task: Task; temperature?: number; timeoutMs?: number
 
 export const PROVIDERS: Record<string, Provider> = {
   openai: { url: "https://api.openai.com/v1/chat/completions", keyEnv: "OPENAI_API_KEY", model: "gpt-6.1-sol", style: "openai", thinking: "openai", tasks: OPENAI_TASKS },
+  deepseek: { url: "https://api.deepseek.com/chat/completions", keyEnv: "DEEPSEEK_API_KEY", model: "deepseek-flash", style: "openai", thinking: "deepseek" },
   anthropic: { url: "https://api.anthropic.com/v1/messages", keyEnv: "ANTHROPIC_API_KEY", model: "claude-sonnet-5-5", style: "anthropic" },
 };
 
@@ -60,6 +68,7 @@ function providerName(): string {
 function providerOf(model: string): string | undefined {
   if (model.startsWith("gpt-")) return "openai";
   if (model.startsWith("claude-")) return "anthropic";
+  if (model.startsWith("deepseek-")) return "deepseek";
   return undefined;
 }
 
@@ -139,10 +148,11 @@ export function usageOf(reply: any): Usage {
     const hit = (u.cache_read_input_tokens ?? 0) as number;
     return { hit, miss: (u.input_tokens ?? 0) + (u.cache_creation_input_tokens ?? 0), output: u.output_tokens ?? 0, reasoning: 0 };
   }
-  const hit = (u.prompt_tokens_details?.cached_tokens ?? 0) as number;
+  // DeepSeek reports its cache split directly; OpenAI reports cached tokens inside the prompt count.
+  const hit = (u.prompt_cache_hit_tokens ?? u.prompt_tokens_details?.cached_tokens ?? 0) as number;
   return {
     hit,
-    miss: Math.max(0, (u.prompt_tokens ?? 0) - hit),
+    miss: u.prompt_cache_miss_tokens ?? Math.max(0, (u.prompt_tokens ?? 0) - hit),
     output: u.completion_tokens ?? 0,
     reasoning: u.completion_tokens_details?.reasoning_tokens ?? 0,
   };
@@ -155,6 +165,11 @@ export function thinkingFields(thinking: Provider["thinking"], maxTokens: number
   if (thinking === "openai") {
     if (effort === "off") return { max_completion_tokens: maxTokens, reasoning_effort: "none" };
     return { max_completion_tokens: maxTokens + REASONING_BUDGET[effort], reasoning_effort: effort };
+  }
+  // DeepSeek thinks by default too: "off" disables it explicitly.
+  if (thinking === "deepseek") {
+    if (effort === "off") return { max_tokens: maxTokens, thinking: { type: "disabled" } };
+    return { max_tokens: maxTokens + REASONING_BUDGET[effort], thinking: { type: "enabled" }, reasoning_effort: effort };
   }
   return { max_tokens: maxTokens };
 }

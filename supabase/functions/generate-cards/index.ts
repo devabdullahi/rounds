@@ -62,16 +62,19 @@ serve(async (req) => {
 
   if (input.mistakes === true) {
     // The conditions behind the student's 20 most recent wrong diagnoses, newest first.
+    // Each missed case's own profile (built live for it); older cases fall back to the stored one.
     const wrong = await sql<{ profile: Profile }[]>`
-      select p.profile from private.condition_profiles p
-      join (
-        select cc.condition_slug as slug, max(a.submitted_at) as last
-        from public.attempts a join private.case_content cc on cc.case_id = a.case_id
+      select profile from (
+        select distinct on (cc.condition_slug) coalesce(cc.profile, p.profile) as profile, a.submitted_at as last
+        from public.attempts a
+        join private.case_content cc on cc.case_id = a.case_id
+        left join private.condition_profiles p on p.slug = cc.condition_slug and p.validation = 'passed' and p.review <> 'rejected'
         where a.user_id = ${userId} and a.submitted_at is not null and cc.condition_slug is not null
           and coalesce((a.grade ->> 'diagnosis_correct')::boolean, false) = false
-        group by cc.condition_slug order by last desc limit 20
-      ) w on w.slug = p.slug
-      where p.validation = 'passed' and p.review <> 'rejected'`;
+          and coalesce(cc.profile, p.profile) is not null
+        order by cc.condition_slug, a.submitted_at desc
+      ) missed
+      order by last desc limit 20`;
     const sets: CardFacts[] = wrong.map((r) => cardFacts(r.profile)).filter((s) => s.facts.length > 0);
     const misses = await recentMisses(userId);
     if (misses) sets.push(misses);

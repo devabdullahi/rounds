@@ -28,3 +28,32 @@ What can be seen on the body (clinical notes; describe only what anyone could se
 Conversation so far: ${JSON.stringify(recent.map(({ role, text }) => ({ role, text })))}
 Student's latest message: ${JSON.stringify(question)}`;
 }
+
+/** The live voice session's instructions: the rules, then who the patient is, how they sound, what
+ *  they may reveal and the conversation so far (typed questions carry over into voice). Never the
+ *  diagnosis or the rubric. */
+export function liveSessionPrompt(
+  rules: string,
+  persona: PromptPersona,
+  howTheySound: string,
+  facts: PromptFact[],
+  exam: PromptManeuver[],
+  recent: PromptTurn[],
+): string {
+  return `${rules}
+
+You are ${persona.name}, ${persona.age}, ${persona.sex === "F" ? "female" : "male"}.
+How you sound: ${howTheySound}
+Background: ${persona.background}
+Facts you may reveal: ${JSON.stringify(facts.map(({ reply }) => reply))}
+What can be seen on the body (clinical notes; describe only what anyone could see by looking, in plain words): ${JSON.stringify(exam.map(({ finding }) => finding))}
+Conversation so far: ${JSON.stringify(recent.map(({ role, text }) => ({ role, text })))}`;
+}
+
+/** One finished live-voice exchange for the reviewer: the facts and notes with ids, then what was said. */
+export function voiceTurnPrompt(facts: PromptFact[], exam: PromptManeuver[], question: string, reply: string): string {
+  return `Facts: ${JSON.stringify(facts.map(({ id, reply }) => ({ id, content: reply })))}
+Visible notes: ${JSON.stringify(exam.map(({ id, finding }) => ({ id, note: finding })))}
+Student said: ${JSON.stringify(question)}
+Patient replied: ${JSON.stringify(reply)}`;
+}

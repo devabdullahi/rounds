@@ -43,6 +43,8 @@ struct InterviewView: View {
     @State private var draft = ""
     @FocusState private var inputFocused: Bool
     @State private var voice = VoiceController()
+    /// Live voice (real-time, interruptible). Tried first; turn-by-turn `voice` is the fallback.
+    @State private var live: LiveVoice?
     /// Patient replies already in the chat when the last spoken question went out; only a newer one is
     /// the answer to speak (the question itself changes the message count first).
     @State private var repliesBeforeQuestion = 0
@@ -92,7 +94,7 @@ struct InterviewView: View {
                     .padding(.horizontal, 20)
                     .padding(.top, 16)
                     .padding(.bottom, 8)
-            } else if voice.isActive {
+            } else if isVoiceActive {
                 voicePanel
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             } else {
@@ -100,12 +102,13 @@ struct InterviewView: View {
                     .transition(.opacity)   // pops out at once so the panel isn't waiting on it
             }
         }
-        .animation(VOICEPANEL.spring, value: voice.isActive)
+        .animation(VOICEPANEL.spring, value: isVoiceActive)
         .animation(MONITOR.spring, value: inputFocused)
         .background(Theme.bg)
-        .onDisappear { voice.end() }
+        .onDisappear { endVoice() }
         .onChange(of: session.messages.count) {
-            guard voice.phase == .thinking else { return }
+            // Asked aloud, the answer's voice comes with it; only the older two-request path waits here.
+            guard voice.phase == .thinking, voice.askAloud == nil else { return }
             let replies = session.messages.filter { $0.kind == .patient }
             if replies.count > repliesBeforeQuestion, let reply = replies.last {
                 // The patient answered the spoken question: say it out loud.
@@ -116,33 +119,38 @@ struct InterviewView: View {
             }
         }
         .onAppear {
+            if live == nil {
+                live = LiveVoice(
+                    open: { [session] offer in try await session.startLiveCall(offer: offer) },
+                    logTurn: { [session] call, question, reply in await session.logLiveTurn(call: call, question: question, reply: reply) },
+                    close: { [session] call in session.endLiveCall(call) },
+                    makeTransport: { RealtimeClient() })
+            }
             voice.onUtterance = { [session] text in
                 repliesBeforeQuestion = session.messages.filter { $0.kind == .patient }.count
                 session.ask(text)
             }
             voice.usePatient(sex: c.sex, age: c.age, seed: c.bed)
-            // The server transcribes each spoken turn and voices the patient; Apple's speech is the fallback.
-            voice.transcriber = { [session] audio in try await session.transcribe(audio) }
+            // The server voices the patient; Apple's speech is the fallback.
             voice.spokenReply = { [session] in try await session.spokenReply() }
+            voice.streamedReply = { [session] in try await session.streamedReply() }
+            voice.askAloud = { [session] question in await session.askAloud(question) }
             session.startClockIfNeeded()
             tab = .history
             #if DEBUG
             if DebugLaunch.screen == "examine" { tab = .workup }
             if DebugLaunch.screen == "workup" { tab = .workup; workupTab = .tests }
-            if DebugLaunch.screen == "interview-exam" || DebugLaunch.screen == "interview-exam-chat" { session.examMode = true }
-            if ["interview-chat", "interview-exam-chat", "interview-findings"].contains(DebugLaunch.screen) { session.debugSeedChat() }
-            if DebugLaunch.screen == "demo-interview" {
-                Task { try? await Task.sleep(for: .seconds(1.5)); await session.debugPlayChat() }
-            }
+            if DebugLaunch.screen == "interview-exam" { session.examMode = true }
             if DebugLaunch.screen == "interview-findings" {
                 Task { try? await Task.sleep(for: .seconds(1)); showingFindings = true }
             }
             if DebugLaunch.screen == "voice-listen" { voice.debugPin(.listening, level: 0.75, transcript: "Any sweating or feeling sick?") }
             if DebugLaunch.screen == "voice-patient" { voice.debugPin(.patientSpeaking, level: 0.5) }
+            if DebugLaunch.screen == "voice-live" { live?.debugPin(.patientSpeaking, level: 0.5, caption: "It started last night, right around my belly button.") }
             #endif
         }
         .onChange(of: tab) { _, new in
-            if new != .history { voice.end() }
+            if new != .history { endVoice() }
         }
     }
 
@@ -419,11 +427,42 @@ struct InterviewView: View {
 
     private func startVoice() {
         inputFocused = false
-        Task { await voice.begin() }
+        Task {
+            // Live first; if it can't start (allowance used up, no connection), turn-by-turn voice.
+            if let live, await live.begin() { return }
+            await voice.begin()
+        }
+    }
+
+    private var isVoiceActive: Bool { live?.isActive == true || voice.isActive }
+    private var isLive: Bool { live?.isActive == true }
+    private var voicePhase: VoiceController.Phase { isLive ? live?.phase ?? .idle : voice.phase }
+    private var voiceLevel: CGFloat { isLive ? live?.level ?? 0 : voice.level }
+
+    private func endVoice() {
+        live?.end()
+        voice.end()
+    }
+
+    private func interruptVoice() {
+        if isLive { live?.interrupt() } else { voice.interrupt() }
+    }
+
+    /// The line under the orb: what's being said, or how to use the panel.
+    private var voiceLine: (text: String, spoken: Bool) {
+        if isLive, let live {
+            // The caption trails the text events, so it can still be catching up after the reply ended.
+            if !live.caption.isEmpty { return (live.caption, true) }
+            return (voiceHint, false)
+        }
+        if voice.phase == .listening, !voice.transcript.isEmpty { return (voice.transcript, true) }
+        return (voiceHint, false)
     }
 
     private var voiceStatus: String {
-        switch voice.phase {
+        if isLive, live?.isConnecting == true { return "Connecting to \(c.firstName)…" }
+        if isLive, voicePhase == .listening { return "Your turn. Speak to \(c.firstName)." }
+        return switch voicePhase {
         case .listening: voice.transcript.isEmpty ? "Your turn. Speak to \(c.firstName)." : "Listening…"
         case .thinking: "\(c.firstName) is thinking…"
         case .patientSpeaking: "\(c.firstName) is answering"
@@ -433,7 +472,17 @@ struct InterviewView: View {
     }
 
     private var voiceHint: String {
-        switch voice.phase {
+        if isLive, let live {
+            switch live.phase {
+            case .listening, .thinking:
+                guard let endsAt = live.endsAt else { return " " }
+                let left = max(0, Int(endsAt.timeIntervalSinceNow))
+                return "Just talk; \(c.firstName) answers when you pause · \(left / 60):\(String(format: "%02d", left % 60)) left"
+            case .patientSpeaking: return "Talk or tap the orb to interrupt"
+            default: return " "
+            }
+        }
+        return switch voice.phase {
         case .listening: autoSend ? "Pause to send, or tap the orb" : "Tap the orb to send"
         case .patientSpeaking: "Tap the orb to interrupt"
         default: " "
@@ -445,30 +494,33 @@ struct InterviewView: View {
             HStack {
                 Text(voiceStatus)
                     .font(.system(size: 15, weight: .semibold))
-                    .foregroundStyle(voice.phase == .patientSpeaking ? Theme.info : Theme.text)
+                    .foregroundStyle(voicePhase == .patientSpeaking ? Theme.info : Theme.text)
                     .contentTransition(.opacity)
                     .animation(.easeOut(duration: 0.15), value: voiceStatus)
                 Spacer()
-                IconButton(glyph: .x, label: "End voice mode") { voice.end() }
+                IconButton(glyph: .x, label: "End voice mode") { endVoice() }
             }
 
-            if case .unavailable = voice.phase {
+            if case .unavailable = voicePhase {
                 EmptyView()
             } else {
-                Button { voice.interrupt() } label: {
-                    VoiceOrb(phase: voice.phase, level: voice.level)
+                Button { interruptVoice() } label: {
+                    VoiceOrb(phase: voicePhase, level: voiceLevel)
                         .frame(width: VOICEPANEL.orbArea, height: VOICEPANEL.orbArea)
                         .contentShape(Circle())
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel(voice.phase == .patientSpeaking ? "Interrupt the patient" : "Send what you said")
+                .accessibilityLabel(voicePhase == .patientSpeaking ? "Interrupt the patient" : "Send what you said")
 
-                Text(voice.phase == .listening && !voice.transcript.isEmpty ? voice.transcript : voiceHint)
-                    .font(.system(size: voice.transcript.isEmpty || voice.phase != .listening ? 13 : 16))
-                    .foregroundStyle(voice.phase == .listening && !voice.transcript.isEmpty ? Theme.text : Theme.muted)
-                    .multilineTextAlignment(.center)
-                    .lineLimit(2)
-                    .frame(maxWidth: .infinity, minHeight: 40)
+                // The countdown ticks with the clock; the caption and status update on their own.
+                TimelineView(.periodic(from: .now, by: 1)) { _ in
+                    Text(voiceLine.text)
+                        .font(.system(size: voiceLine.spoken ? 16 : 13))
+                        .foregroundStyle(voiceLine.spoken ? Theme.text : Theme.muted)
+                        .multilineTextAlignment(.center)
+                        .lineLimit(2)
+                        .frame(maxWidth: .infinity, minHeight: 40)
+                }
             }
         }
         .padding(.horizontal, 16)

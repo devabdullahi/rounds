@@ -40,5 +40,16 @@ protocol CaseService: Sendable {
     func transcribe(attempt: String, audio: Data) async throws -> String
     /// Voice mode: the patient's latest reply as spoken audio (AAC), in the patient's own voice.
     func speakLatestReply(attempt: String) async throws -> Data
+    /// Voice mode: the same reply as raw PCM (24 kHz, 16-bit, mono) in chunks as the server makes
+    /// it, so playback starts after the first chunk instead of the whole file.
+    func streamLatestReply(attempt: String) async throws -> AsyncThrowingStream<Data, Error>
+    /// Voice mode: asks and gets the answer's voice in one round trip (ask, then speak_stream).
+    func askAloud(attempt: String, question: String) async throws -> SpokenAnswer
+    /// Live voice: hands the phone's WebRTC offer to the server, which opens the call with OpenAI.
+    func startLiveCall(attempt: String, offer: String) async throws -> LiveCall
+    /// Live voice: logs one finished exchange (the reply was already heard) for the transcript and grade.
+    func logVoiceTurn(attempt: String, call: String, question: String, reply: String) async throws -> VoiceTurnOutcome
+    /// Live voice: the call ended on the phone; the server hangs up its side too.
+    func endLiveCall(attempt: String, call: String) async throws
     func submit(attempt: String, diagnosis: String, differential: [String], plan: String) async throws -> Grade
 }

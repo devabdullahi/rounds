@@ -10,7 +10,7 @@ AI roleplay practice app for **US medical students**: the student interviews a f
 | `tools/` | Python pipeline: `kb-import/` (MedlinePlus, MeSH, UMLS/SNOMED import), `kb-generate/` (AI triage, tagging, profiles, loaders) |
 | `website/` | Marketing site (static HTML/CSS/JS, app recordings in `media/`) |
 
-Current phase: **live backend, pre-launch.** The app talks to the cloud Supabase project (`mpyxaefnytviwnjuqtbu`, linked; `supabase/cloud.env` holds the DB password, git-ignored): accounts (email code, Apple, Google), cases and patient chat, grading, flashcards, profile photos. Edge functions are deployed with `supabase functions deploy <name>`, migrations with `supabase db push --linked`. Reference data (`Services/Reference/`) is still mock. Changes to cloud data, deploys and pushes affect the real project: say what you'll change first. Don't create new cloud projects or add keys unless asked.
+Current phase: **live backend, pre-launch.** The app talks to the cloud Supabase project (`mpyxaefnytviwnjuqtbu`, linked; `supabase/cloud.env` holds the DB password, git-ignored): accounts (email code, Apple, Google), cases and patient chat, grading, flashcards, profile photos. Edge functions are deployed with `supabase functions deploy <name>`, migrations with `supabase db push --linked`. Reference lookups (`Services/Reference/`) are live too (NIH Clinical Tables, RxNorm, MedlinePlus); mocks exist only for tests, previews and `#if DEBUG` screens, never in what students run. Changes to cloud data, deploys and pushes affect the real project: say what you'll change first. Don't create new cloud projects or add keys unless asked.
 
 ## Commands
 
@@ -60,7 +60,7 @@ Rules that follow from this:
 - Reusable visual pieces live in `Components/` and take plain values plus closures, never `AppState`.
 - Backend split: **the DB** enforces who can read/write (RLS, grants, constraints). **Edge functions** hold privileged logic and third-party calls (LLM, grading). **The app** only displays and requests. Don't duplicate a server rule in Swift as the only check.
 - When a file starts doing two of these jobs, split it before adding more.
-- Outside medical data (conditions, drugs, MedlinePlus, authoring helpers) goes through the protocols in `Services/Reference/`, injected once via `@Environment(\.reference)` (`App/ReferenceEnvironment.swift`). Everything is mock today; a live client is a new type conforming to the same protocol, with caching.
+- Outside medical data (conditions, drugs, MedlinePlus, authoring helpers) goes through the protocols in `Services/Reference/`, injected once via `@Environment(\.reference)` (`App/ReferenceEnvironment.swift`). The environment default is `.live`; previews and tests that must stay offline pass `.mock` themselves.
 - Known debt: `VoiceController` (speech is a service) sits in `Model/`, and some models import SwiftUI where `Observation` would do. Fix these when you're already editing those files; don't do it as a drive-by.
 
 ## SwiftUI architecture
