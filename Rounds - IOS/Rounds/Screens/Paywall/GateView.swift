@@ -3,12 +3,14 @@ import SwiftUI
 
 /// What a signed-in student without a plan sees: Superwall's paywall for the gate placement, full
 /// screen. If it can't show (no key, offline, or no campaign matches), a plain fallback offers to
-/// try again or restore, so nobody is stuck on a blank screen.
+/// try again or restore, so nobody is stuck on a blank screen. Either way the student can sign out
+/// or delete the account from here, without buying a plan first.
 struct GateView: View {
     let model: PaywallModel
     @Environment(AuthModel.self) private var auth
     /// Bumped by "Try again" to rebuild Superwall's view, which loads once per instance.
     @State private var attempt = 0
+    @State private var confirmDelete = false
 
     var body: some View {
         Group {
@@ -17,7 +19,8 @@ struct GateView: View {
                 SubscriptionTaken(owner: owner, isWorking: model.isWorking,
                                   signOut: { Task { await auth.signOut() } },
                                   retry: { Task { await model.refresh() } })
-            } else if SuperwallService.isConfigured {
+                    .overlay(alignment: .topLeading) { accountMenu }
+            } else if SuperwallService.isConfigured, !Self.debugForcesFallback {
                 PaywallView(
                     placement: SuperwallService.gatePlacement,
                     onRequestDismiss: { _, result in closed(result) },
@@ -26,12 +29,32 @@ struct GateView: View {
                 )
                 .id(attempt)
                 .ignoresSafeArea()
+                .overlay(alignment: .topLeading) { accountMenu }
             } else {
                 fallback(Self.debugOnly("Superwall isn't configured: SUPERWALL_API_KEY is missing from Secrets.xcconfig."))
             }
         }
         .background(Theme.bg.ignoresSafeArea())
         .problemAlert(Binding(get: { model.problem }, set: { model.problem = $0 }))
+        // Same deletion as Settings: the account and its data, for good.
+        .confirmationDialog("Delete your account?", isPresented: $confirmDelete, titleVisibility: .visible) {
+            Button("Delete account and data", role: .destructive) { Task { await auth.deleteAccount() } }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("Your patients, grades, flashcards and badges are deleted for good. This can't be undone.")
+        }
+        .background { Color.clear.problemAlert(Binding(get: { auth.problem }, set: { auth.problem = $0 })) }
+        #if DEBUG
+        .onAppear { if DebugLaunch.screen == "paywall-delete" { confirmDelete = true } }
+        #endif
+    }
+
+    /// Top-left over the paywall: sign out or delete the account without buying.
+    private var accountMenu: some View {
+        AccountMenuButton(signOut: { Task { await auth.signOut() } },
+                          deleteAccount: { confirmDelete = true },
+                          disabled: auth.busy != nil)
+            .padding(.leading, 12)
     }
 
     private func fallback(_ detail: String?) -> some View {
@@ -39,7 +62,9 @@ struct GateView: View {
             isWorking: model.isWorking,
             detail: detail,
             retry: { attempt += 1; Task { await model.refresh() } },
-            restore: { Task { await model.restore() } })
+            restore: { Task { await model.restore() } },
+            signOut: { Task { await auth.signOut() } },
+            deleteAccount: { confirmDelete = true })
     }
 
     /// Superwall's reason for not showing a paywall, in debug builds only: a student never sees it.
@@ -54,6 +79,15 @@ struct GateView: View {
 
     private static func why(_ error: Error) -> String? {
         debugOnly("Superwall error: \(error.localizedDescription)")
+    }
+
+    /// `-screen paywall-unavailable` shows the fallback even when Superwall is set up.
+    private static var debugForcesFallback: Bool {
+        #if DEBUG
+        DebugLaunch.isPaywallUnavailable
+        #else
+        false
+        #endif
     }
 
     private static func debugOnly(_ text: String) -> String? {

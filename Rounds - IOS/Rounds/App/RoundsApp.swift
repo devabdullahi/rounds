@@ -6,7 +6,7 @@ struct RoundsApp: App {
     @State private var app: AppState
     @State private var auth = AuthModel(service: SupabaseService.client.map { LiveAuthService(client: $0) })
     @State private var paywall: PaywallModel
-    @AppStorage(Appearance.storageKey) private var appearance = Appearance.system
+    @AppStorage(Appearance.storageKey) private var appearance = Appearance.defaultChoice
     @AppStorage(AuthModel.signedInKey) private var signedIn = false
     /// The exam picked in onboarding, passed to Superwall for audience targeting.
     @AppStorage(StudyGoal.storageKey) private var studyGoal = ""
@@ -35,14 +35,14 @@ struct RoundsApp: App {
                 .task {
                     #if DEBUG
                     // Debug screens other than the paywall open straight into the app.
-                    if let screen = DebugLaunch.screen, !["paywall", "paywall-taken"].contains(screen) { paywall.debugUnlock() }
+                    if let screen = DebugLaunch.screen, !DebugLaunch.paywallScreens.contains(screen) { paywall.debugUnlock() }
                     #endif
                     await paywall.start()
                 }
                 .task {
                     await auth.restore()
                     #if DEBUG
-                    if ["settings", "settings-siri", "settings-voice", "settings-subscription", "profile", "profile-edit"].contains(DebugLaunch.screen) { auth.debugUse(DebugLaunch.sampleAccount) }
+                    if ["settings", "settings-siri", "settings-voice", "settings-about", "settings-subscription", "profile", "profile-edit"].contains(DebugLaunch.screen) { auth.debugUse(DebugLaunch.sampleAccount) }
                     #endif
                 }
                 // Superwall's paywall previews, Google's sheet returning, and email confirmation links
@@ -83,7 +83,7 @@ struct RoundsApp: App {
     /// The App Store, or offline plans on the paywall debug screen.
     private static var subscriptionStore: any SubscriptionStore {
         #if DEBUG
-        if DebugLaunch.screen == "paywall" { return MockSubscriptionStore() }
+        if ["paywall", "paywall-unavailable", "paywall-delete"].contains(DebugLaunch.screen) { return MockSubscriptionStore() }
         if DebugLaunch.screen == "settings-subscription" { return MockSubscriptionStore(entitled: true) }
         #endif
         return StoreKitSubscriptionStore()
