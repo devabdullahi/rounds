@@ -1,5 +1,5 @@
 import { assertEquals, assertThrows } from "jsr:@std/assert@1";
-import { type Effort, parseJSON, PROVIDERS, settingFor, type Task, thinkingFields, usageOf } from "./llm.ts";
+import { type Effort, parseJSON, PROVIDERS, retryWait, settingFor, type Task, thinkingFields, usageOf } from "./llm.ts";
 
 Deno.test("providers without thinking get the plain token cap", () => {
   assertEquals(thinkingFields(undefined, 400, "high"), { max_tokens: 400 });
@@ -75,4 +75,14 @@ Deno.test("parseJSON keeps the first object when more text or a second object fo
 
 Deno.test("parseJSON still fails when no object closes", () => {
   assertThrows(() => parseJSON('{"a": 1'));
+});
+
+Deno.test("provider errors worth retrying wait a little; client errors don't retry", () => {
+  const mid = () => 0.5;
+  assertEquals(retryWait(429, null, 0, mid), 1000);
+  assertEquals(retryWait(503, null, 1, mid), 3000);
+  assertEquals(retryWait(429, "2", 0, mid), 2000);
+  assertEquals(retryWait(429, "120", 0, mid), 10000);
+  assertEquals(retryWait(400, null, 0, mid), null);
+  assertEquals(retryWait(401, null, 0, mid), null);
 });

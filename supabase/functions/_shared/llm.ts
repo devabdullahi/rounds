@@ -105,6 +105,18 @@ export function currentModel(task: Task): string {
  *  the student can retry) well before the edge runtime kills the whole request. */
 export const LLM_TIMEOUT_MS = 90_000;
 
+/** Extra tries after a rate-limit or server error from the provider. */
+const LLM_RETRIES = 2;
+
+/** How long to wait before retrying a failed provider response, or null when it shouldn't be retried
+ *  (a 400 won't get better). Honors a short Retry-After; otherwise 1 s, then 3 s, with jitter. */
+export function retryWait(status: number, retryAfter: string | null, attempt: number, rng: () => number = Math.random): number | null {
+  if (!(status === 429 || (status >= 500 && status <= 504))) return null;
+  const seconds = Number(retryAfter);
+  if (retryAfter && Number.isFinite(seconds) && seconds >= 0) return Math.min(seconds, 10) * 1000;
+  return [1000, 3000][Math.min(attempt, 1)] * (0.75 + rng() * 0.5);
+}
+
 export async function completeJSON<T>(
   system: string, user: string, maxTokens: number, { task, temperature, timeoutMs = LLM_TIMEOUT_MS }: CallOptions,
 ): Promise<T> {
@@ -114,11 +126,12 @@ export async function completeJSON<T>(
   if (!key) throw new Error(`${provider.keyEnv} is not set`);
   await takeBudget(task);
 
-  const res = provider.style === "openai"
-    ? await fetch(provider.url, {
+  const deadline = Date.now() + timeoutMs;
+  const send = (signal: AbortSignal) => provider.style === "openai"
+    ? fetch(provider.url, {
       method: "POST",
       headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-      signal: AbortSignal.timeout(timeoutMs),
+      signal,
       body: JSON.stringify({
         model,
         messages: [{ role: "system", content: system }, { role: "user", content: user }],
@@ -128,12 +141,21 @@ export async function completeJSON<T>(
         ...(provider.thinking === "openai" ? {} : { temperature: temperature ?? 0.7 }),
       }),
     })
-    : await fetch(provider.url, {
+    : fetch(provider.url, {
       method: "POST",
       headers: { "x-api-key": key, "anthropic-version": "2023-06-01", "Content-Type": "application/json" },
-      signal: AbortSignal.timeout(timeoutMs),
+      signal,
       body: JSON.stringify({ model, max_tokens: maxTokens, system, messages: [{ role: "user", content: user }], ...(temperature === undefined ? {} : { temperature }) }),
     });
+  // A busy or briefly failing provider (429, 5xx) gets a couple more tries inside the same time limit.
+  let res = await send(AbortSignal.timeout(timeoutMs));
+  for (let attempt = 0; !res.ok && attempt < LLM_RETRIES; attempt++) {
+    const wait = retryWait(res.status, res.headers.get("retry-after"), attempt);
+    if (wait === null || Date.now() + wait + 1_000 >= deadline) break;
+    await res.body?.cancel();
+    await new Promise((resolve) => setTimeout(resolve, wait));
+    res = await send(AbortSignal.timeout(deadline - Date.now()));
+  }
   if (!res.ok) throw new Error(`LLM ${res.status}: ${await res.text()}`);
   const reply = await res.json();
   const usage = usageOf(reply);
