@@ -12,9 +12,10 @@ import SwiftUI
  *
  * RELEASE
  *   past 110pt or a fast flick → card flies off that side, carrying the
- *          finger's speed (spring seeded with the release velocity), and
- *          leaves the deck only once it's off screen, so it never vanishes
- *          mid-flight; the cards behind then spring up a place
+ *          finger's speed (spring seeded with the release velocity)
+ *  220ms   card is off screen: it's hidden and leaves the deck, and the cards
+ *          behind (or the admit card) spring up a place while the fly-off
+ *          spring is still settling, so no empty gap shows
  *   right  take the patient (opens the case)
  *   left   card leaves the deck for good (skipped); the next one rises
  *   short  springs back to centre
@@ -36,6 +37,9 @@ private enum SWIPE {
     static let flyStiffness: Double = 210     // fly-off spring: quick, no bounce back into view
     static let flyDamping: Double = 28
     static let snapBack = Animation.spring(response: 0.35, dampingFraction: 0.7)
+    /// When a skipped card is off screen and the deck restacks. Waiting for the fly-off spring to
+    /// settle left an empty spot for about 0.4 s.
+    static let leaveAfter = 0.22
 }
 
 private enum RIFFLE {
@@ -100,6 +104,9 @@ struct PatientDeck: View {
     @State private var drag: CGSize = .zero
     @State private var pastCommit = false
     @State private var busy = false
+    /// The skipped card on its way out: hidden once it's off screen, so resetting the drag can't
+    /// bring it back to the centre while its removal animates.
+    @State private var leaving: String?
 
     var body: some View {
         VStack(spacing: 14) {
@@ -157,6 +164,7 @@ struct PatientDeck: View {
             .offset(y: effectiveDepth * STACK.depthOffset)
             .offset(x: dx, y: isTop ? drag.height * 0.15 : 0)
             .rotationEffect(.degrees(reduceMotion ? 0 : Double(dx) * SWIPE.tiltPer), anchor: .bottom)
+            .opacity(p.id == leaving ? 0 : 1)
             .allowsHitTesting(isTop)
             .zIndex(Double(STACK.visible - depth))
             .gesture(isTop ? dragGesture : nil)
@@ -287,16 +295,22 @@ struct PatientDeck: View {
     private func skip(velocity: CGFloat = 0) {
         guard !busy, let p = queue.first else { withAnimation(SWIPE.snapBack) { drag = .zero }; return }
         busy = true
-        withAnimation(flyOff(to: -SWIPE.flyDistance, velocity: velocity), completionCriteria: .logicallyComplete) {
+        withAnimation(flyOff(to: -SWIPE.flyDistance, velocity: velocity)) {
             drag = CGSize(width: -SWIPE.flyDistance, height: 0)
-        } completion: {
-            // Off screen now. One pass: the leaver goes (its .identity removal) and the drag resets
-            // without animating, so nothing flashes back to the centre while the cards behind rise.
+        }
+        Task { @MainActor in
+            try? await Task.sleep(for: .seconds(SWIPE.leaveAfter))
+            // Off screen now. The leaver is hidden before the drag resets (a view removed inside an
+            // animation stays on screen until it ends, which drew it back at the centre), then the
+            // cards behind rise.
             var t = Transaction(); t.disablesAnimations = true
-            withTransaction(t) { drag = .zero }
+            withTransaction(t) { leaving = p.id; drag = .zero }
             withAnimation(STACK.restack) { _ = queue.removeFirst() }
             app.skip(bed: p.id)
             busy = false
+            // Cleared once the removal has finished, so a patient brought back later shows again.
+            try? await Task.sleep(for: .seconds(0.6))
+            if leaving == p.id { leaving = nil }
         }
     }
 

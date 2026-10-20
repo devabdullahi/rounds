@@ -25,6 +25,9 @@ final class AppState {
     private(set) var isPreparingCondition = false
     /// A patient's case is being fetched to open.
     private(set) var openingBed: String?
+    /// The focus whose patients were last asked to be written ahead, so revisiting Home doesn't ask
+    /// again. After each admit the server queues the next one itself.
+    private var preparedFocus: String?
     var problem: String?
 
     var misses: [String: [Miss]] { Dictionary(uniqueKeysWithValues: ward.map { ($0.id, $0.misses) }) }
@@ -184,8 +187,8 @@ final class AppState {
         }
     }
 
-    /// How often to ask again while the server writes a focus's first condition. Tests shorten it.
-    var preparingPoll: Duration = .seconds(15)
+    /// How often to check for a case the server is writing in the background. Tests shorten it.
+    var preparingPoll: Duration = .seconds(2)
     /// Generation takes 2–4 minutes; past this, something went wrong on the server.
     private static let preparingGiveUp: Duration = .seconds(8 * 60)
 
@@ -200,14 +203,16 @@ final class AppState {
             let pick = pickTopic(from: focus)
             let clock = ContinuousClock()
             let deadline = clock.now + Self.preparingGiveUp
+            var polling = false
             while true {
-                switch try await cases.admit(focus: pick) {
+                switch try await cases.admit(focus: pick, polling: polling) {
                 case .admitted(let bed):
                     await refresh()
                     await open(bed: bed)
                     return
                 case .preparing:
                     isPreparingCondition = true
+                    polling = true
                     guard clock.now < deadline else {
                         problem = "The first case for this topic is taking longer than usual. Try again in a few minutes."
                         return
@@ -222,13 +227,35 @@ final class AppState {
         }
     }
 
+    /// Most topics written ahead per focus: each costs a background case, and students rarely pick more.
+    private static let prepareLimit = 4
+
+    /// Asks the server to write a patient ahead for each topic in the focus, so even the first case
+    /// in a topic opens instantly. Once per focus; failures only cost the head start.
+    func prepareAhead(focus: FocusSelection) async {
+        guard let cases, preparedFocus != focus.stored else { return }
+        preparedFocus = focus.stored
+        let topics = focus.isMix ? [StudyFocus.mix] : Array(focus.items.prefix(Self.prepareLimit))
+        do {
+            try await cases.ensureSignedIn()
+            await withTaskGroup(of: Void.self) { group in
+                // Skip only topics known to be empty; before the counts load, every topic is tried.
+                for topic in topics where topicCounts.isEmpty || (conditionCount(for: topic) ?? 1) > 0 {
+                    group.addTask { try? await cases.prepare(focus: topic) }
+                }
+            }
+        } catch {
+            preparedFocus = nil
+        }
+    }
+
     /// Admits a patient onto the ward without opening the case, for Shortcuts and Siri. One try: a
     /// topic whose first case is still being written answers `.preparing` rather than waiting minutes.
     func queuePatient(focus: FocusSelection) async -> QueueOutcome {
         guard let cases else { return .failed("Rounds isn't connected to its server.") }
         do {
             try await cases.ensureSignedIn()
-            switch try await cases.admit(focus: pickTopic(from: focus)) {
+            switch try await cases.admit(focus: pickTopic(from: focus), polling: false) {
             case .admitted(let bed):
                 await refresh()
                 return .ready(ward.first { $0.id == bed })
@@ -331,6 +358,7 @@ final class AppState {
         showingAllUnlocks = false
         debriefSettled = false
         hasLoadedRecord = false
+        preparedFocus = nil
         seenBadges = nil
         UserDefaults.standard.removeObject(forKey: Self.seenBadgesStorageKey)
         skipped = []

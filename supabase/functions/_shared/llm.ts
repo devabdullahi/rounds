@@ -20,7 +20,7 @@ export type Provider = {
 };
 
 /** What a call is for. Every call names one, so cost and model choice are tracked per feature. */
-export type Task = "patient" | "check" | "case" | "grade" | "cards" | "profile" | "template";
+export type Task = "patient" | "check" | "audit" | "case" | "grade" | "cards" | "profile" | "template";
 
 /** How hard the model reasons before answering. Only providers with per-task settings use it. */
 export type Effort = "off" | "low" | "medium" | "high" | "max";
@@ -37,14 +37,18 @@ const REASONING_BUDGET: Record<Exclude<Effort, "off">, number> = { low: 2000, me
  *  - GPT-6 Luna, reasoning off: patient chat and the reply check (~1.6 s a turn; voice runs on them).
  *  - GPT-6.1 Sol: grading and condition profiles, where judgment and medical recall matter. It has
  *    no "none" effort, so its tasks always name one.
- *  - DeepSeek Flash, thinking off: flashcards, and writing cases. A case is ~3.8k tokens of output
- *    whose medicine the plan already fixes; Flash writes it in 12–17 s (Luna ~31 s, Sol 70–88 s,
- *    measured 2026-10-19). Cases carry no student data. */
+ *  - DeepSeek Flash, thinking off: flashcards and live profile templates.
+ *  - GPT-5.4 mini, reasoning off: writing each case (see `case` below). */
 const OPENAI_TASKS: Record<Task, Setting> = {
   patient: { model: "gpt-6-luna", effort: "off" },
   check: { model: "gpt-6-luna", effort: "off" },
+  // The fact audit of a written case: the same model as the reply check, but content spend (usage.ts).
+  audit: { model: "gpt-6-luna", effort: "off" },
   cards: { provider: "deepseek", model: "deepseek-flash", effort: "off" },
-  case: { provider: "deepseek", model: "deepseek-flash", effort: "off" },
+  // Writing each patient (the voice, leak and fact fixes): GPT-5.4 mini, reasoning off. Measured
+  // 2026-10-19 on 25 conditions: 9.2 s average (DeepSeek Flash 8–10 s), 2 leaks in 25 (fixed in code
+  // paths), as natural; OpenAI stays reachable where networks block DeepSeek.
+  case: { model: "gpt-5.4-mini", effort: "off" },
   // A live profile's template sections for one case, all at once (_shared/liveprofile.ts): ~10–13 s
   // on Flash against 42–56 s on Sol (measured 2026-10-19); the checks catch what it gets wrong.
   template: { provider: "deepseek", model: "deepseek-flash", effort: "off" },
@@ -108,7 +112,7 @@ export async function completeJSON<T>(
   if (!provider) throw new Error(`unknown LLM provider ${name}`);
   const key = Deno.env.get(provider.keyEnv);
   if (!key) throw new Error(`${provider.keyEnv} is not set`);
-  await takeBudget();
+  await takeBudget(task);
 
   const res = provider.style === "openai"
     ? await fetch(provider.url, {
@@ -177,5 +181,31 @@ export function thinkingFields(thinking: Provider["thinking"], maxTokens: number
 export function parseJSON<T>(text: string): T {
   const fenced = text.match(/```(?:json)?\s*(\{[\s\S]*\})\s*```/);
   const raw = fenced ? fenced[1] : text.slice(text.indexOf("{"), text.lastIndexOf("}") + 1);
-  return JSON.parse(raw) as T;
+  try {
+    return JSON.parse(raw) as T;
+  } catch (error) {
+    // DeepSeek sometimes follows the object with more text or a second object. Losing the reply
+    // costs a rewrite round (~10 s), so the first complete object is used when there is one.
+    const first = firstObject(text);
+    if (first === null) throw error;
+    return JSON.parse(first) as T;
+  }
+}
+
+/** The first balanced {...} in the text, reading strings and escapes; null when none closes. */
+export function firstObject(text: string): string | null {
+  const start = text.indexOf("{");
+  if (start < 0) return null;
+  let depth = 0;
+  let inString = false;
+  for (let i = start; i < text.length; i++) {
+    const c = text[i];
+    if (inString) {
+      if (c === "\\") i++;
+      else if (c === '"') inString = false;
+    } else if (c === '"') inString = true;
+    else if (c === "{") depth++;
+    else if (c === "}" && --depth === 0) return text.slice(start, i + 1);
+  }
+  return null;
 }

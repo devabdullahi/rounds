@@ -11,7 +11,7 @@ Deno.test("a patient keeps the same voice, matched to their sex", () => {
 
 Deno.test("instructions describe the person and how they talk, nothing else", () => {
   assertEquals(speechInstructions(68, "F", "Anxious, short sentences"),
-    "You are a 68-year-old woman, a patient talking to a doctor. Speak naturally, like a real person, not a narrator. Anxious, short sentences.");
+    "You are a 68-year-old woman, a patient talking to a doctor. Speak naturally, like a real person, not a narrator: conversational pace, small pauses where you'd think, and a voice that sounds as unwell or worried as the words. Anxious, short sentences.");
   assert(speechInstructions(8, "M", "").startsWith("You are a 8-year-old child"));
   assert(speechInstructions(15, "F", "").includes("teenager"));
 });

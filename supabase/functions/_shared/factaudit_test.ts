@@ -14,6 +14,14 @@ Deno.test("malformed claims are dropped and out-of-range items read as none", ()
   assertEquals(claims.map((c) => [c.fact, c.item]), [["f1", 0], ["f2", null]]);
 });
 
+Deno.test("compact [fact, claim, item] tuples read as stated claims", () => {
+  const claims = parseClaims({ claims: [["f1", "pain", 0], ["f2", "rash", null], ["f3"], [4, "x", 0]] }, 4);
+  assertEquals(claims, [
+    { fact: "f1", claim: "pain", item: 0, negated: false },
+    { fact: "f2", claim: "rash", item: null, negated: false },
+  ]);
+});
+
 Deno.test("unplanned claims and absent symptoms stated as present are flagged; denials are not", () => {
   const flags = candidateFlags([
     { fact: "f1", claim: "belly pain", item: 0, negated: false },

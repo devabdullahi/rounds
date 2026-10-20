@@ -58,11 +58,15 @@ struct LiveCaseService: CaseService {
         return Dictionary(rows.map { ("\($0.kind):\($0.topic)", $0.conditions) }, uniquingKeysWith: +)
     }
 
-    func admit(focus: StudyFocus) async throws -> AdmitOutcome {
-        let reply: AdmitReply = try await invoke("generate-case", ["focus": focus.stored])
+    func admit(focus: StudyFocus, polling: Bool) async throws -> AdmitOutcome {
+        let reply: AdmitReply = try await invoke("generate-case", AdmitBody(focus: focus.stored, polling: polling))
         if let bed = reply.case_id { return .admitted(bed: bed) }
         guard reply.status == "preparing" else { throw CaseServiceError(message: "The server sent no patient.") }
         return .preparing
+    }
+
+    func prepare(focus: StudyFocus) async throws {
+        let _: AdmitReply = try await invoke("generate-case", PrepareBody(focus: focus.stored))
     }
 
     func deletePatients(_ beds: [String]?) async throws -> Int {
@@ -391,6 +395,8 @@ private struct ErrorReply: Decodable { let error: String }
 private struct DeleteBody: Encodable { let case_ids: [String]? }
 /// `{case_id}` once written, or `{status: "preparing"}` (HTTP 202) while the focus's first condition is.
 private struct AdmitReply: Decodable { let case_id: String?; let status: String? }
+private struct AdmitBody: Encodable { let focus: String; let polling: Bool }
+private struct PrepareBody: Encodable { let focus: String; let prepare = true }
 private struct StartReply: Decodable { let attempt_id: String; let hidden_tests: [String]? }
 private struct ExamineReply: Decodable { let finding: String }
 private struct OrderReply: Decodable { let result: String; let abnormal: Bool }

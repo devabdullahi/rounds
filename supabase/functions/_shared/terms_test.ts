@@ -104,3 +104,15 @@ Deno.test("checkTerms stops at its deadline instead of running past it", async (
   const ok = () => Promise.resolve({ ok: true, suggestions: [] });
   await assertRejects(() => checkTerms(output, { snomed: ok, rxnorm: ok }, Date.now() - 1), TermsOutOfTime);
 });
+
+Deno.test("no more than four lookups run at once", async () => {
+  const { throttled } = await import("./terms.ts");
+  let running = 0, peak = 0;
+  await Promise.all(Array.from({ length: 20 }, () => throttled(async () => {
+    running++;
+    peak = Math.max(peak, running);
+    await new Promise((r) => setTimeout(r, 5));
+    running--;
+  })));
+  if (peak > 4) throw new Error(`peak ${peak}`);
+});

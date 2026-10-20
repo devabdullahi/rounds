@@ -1,5 +1,5 @@
-// The case writer's prompt, the shape it must return, the checks on it, and the rubric derived
-// from the profile plus what was written. Kept apart from index.ts so it's testable without a DB.
+// The case writer's prompt, the shape it must return, how it's assembled from the skeleton, the checks on it,
+// and the rubric derived from the profile plus what was written. Kept apart from index.ts so it's testable without a DB.
 import { type CasePlan, leaks, type Profile } from "../_shared/casegen.ts";
 import { backgroundForWriter, type PatientBackground, SNOMED_TAG } from "./background.ts";
 import type { Skeleton } from "./skeleton.ts";
@@ -27,7 +27,8 @@ Maneuvers center on the skin, hair, nails and mucosa (e.g. "Inspect the rash", "
 
 `;
 
-/** What the model returns for a code-built case: the human parts only. */
+/** What the model returns for a code-built case: the human parts only (template.ts fills the same
+ *  shape when the model can't). */
 export type Voice = {
   patient: Writing["patient"];
   persona: Writing["persona"];
@@ -38,12 +39,12 @@ export type Voice = {
 };
 
 /** The voice step's input: the skeleton's facts and maneuvers to word, and the person to write. */
-export function voicePrompt(profile: Profile, plan: CasePlan, skeleton: Skeleton, background?: PatientBackground | null): string {
+export function voicePrompt(profile: Profile, plan: CasePlan, skeleton: Skeleton, background?: PatientBackground | null, name?: string): string {
   const studies = plan.tests.filter((t) => t.kind === "study");
   const who = `${plan.age}-year-old ${plan.age < 18 ? (plan.sex === "F" ? "girl" : "boy") : plan.sex === "F" ? "woman" : "man"}${plan.pregnant ? ", pregnant" : ""}`;
   return `${plan.psychology ? PSYCHOLOGY_FRAME : ""}${plan.dermatology ? DERMATOLOGY_FRAME : ""}Hidden diagnosis (never reveal): ${plan.condition}
 Severity: ${plan.severity}: ${plan.severityText}
-Patient: ${who}. Typical setting: ${profile.triage.settings.join(", ")}.${plan.age < 13 ? " A child this age answers simply; a parent or guardian is present and answers for them, so write replies as the child or the parent would say them." : ""}${background ? `\nTheir life outside this illness (for persona.background; the medical items are already in the facts): ${JSON.stringify({ marital_status: backgroundForWriter(background).marital_status, social: backgroundForWriter(background).social })}` : ""}
+Patient: ${who}${name ? `, named ${name} (use this name exactly)` : ""}. Typical setting: ${profile.triage.settings.join(", ")}.${plan.age < 13 ? " A child this age answers simply; a parent or guardian is present and answers for them, so write replies as the child or the parent would say them." : ""}${background ? `\nTheir life outside this illness (for persona.background; the medical items are already in the facts): ${JSON.stringify({ marital_status: backgroundForWriter(background).marital_status, social: backgroundForWriter(background).social })}` : ""}
 Chief complaints, in patients' words: ${JSON.stringify(profile.presentation.chief_complaints.map((c) => c.text))}
 Facts to word: ${JSON.stringify(skeleton.facts.map((f) => ({ id: f.id, topic: f.label, content: f.content })))}
 Maneuvers needing a normal result: ${JSON.stringify(skeleton.maneuvers.filter((m) => m.finding === null).map((m) => ({ id: m.id, maneuver: m.title })))}
@@ -61,9 +62,9 @@ Return JSON:
 }`;
 }
 
-/** The writing a student plays: the skeleton's medicine in the voice's words. A fact or result the
- *  voice left out falls back to the skeleton's own wording, so nothing planned goes missing. */
-export function assemble(skeleton: Skeleton, voice: Voice): Writing {
+/** The writing a student plays: the skeleton's medicine with the template's wording. A fact or
+ *  result the voice left out falls back to the skeleton's own wording, so nothing planned goes missing. */
+export function assemble(skeleton: Skeleton, voice: Voice, name?: string): Writing {
   const facts = skeleton.facts.map((f) => ({
     id: f.id,
     label: voice.facts?.[f.id]?.label?.trim() || f.label,
@@ -73,7 +74,8 @@ export function assemble(skeleton: Skeleton, voice: Voice): Writing {
   }));
   const ids = new Set(facts.map((f) => f.id));
   return {
-    patient: voice.patient,
+    // The name is picked in code (_shared/names.ts): models asked for one reuse the same few.
+    patient: name ? { ...voice.patient, name } : voice.patient,
     persona: voice.persona,
     facts,
     suggested: (voice.suggested ?? []).filter((s) => ids.has(s.fact)),

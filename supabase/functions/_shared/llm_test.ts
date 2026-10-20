@@ -1,5 +1,5 @@
-import { assertEquals } from "jsr:@std/assert@1";
-import { type Effort, PROVIDERS, settingFor, type Task, thinkingFields, usageOf } from "./llm.ts";
+import { assertEquals, assertThrows } from "jsr:@std/assert@1";
+import { type Effort, parseJSON, PROVIDERS, settingFor, type Task, thinkingFields, usageOf } from "./llm.ts";
 
 Deno.test("providers without thinking get the plain token cap", () => {
   assertEquals(thinkingFields(undefined, 400, "high"), { max_tokens: 400 });
@@ -38,9 +38,9 @@ Deno.test("each OpenAI task gets its model and effort: Luna without reasoning fo
   }
 });
 
-Deno.test("flashcards and case writing go to DeepSeek V4.1 Flash without thinking", () => {
+Deno.test("flashcards go to DeepSeek V4.1 Flash and case writing to GPT-5.4 mini, without thinking", () => {
   assertEquals(settingFor(openai, "cards", noEnv), { provider: "deepseek", model: "deepseek-flash", effort: "off" });
-  assertEquals(settingFor(openai, "case", noEnv), { provider: "deepseek", model: "deepseek-flash", effort: "off" });
+  assertEquals(settingFor(openai, "case", noEnv), { model: "gpt-5.4-mini", effort: "off" });
   assertEquals(thinkingFields("deepseek", 400, "off"), { max_tokens: 400, thinking: { type: "disabled" } });
 });
 
@@ -65,4 +65,14 @@ Deno.test("usage reads Anthropic's input and cache fields", () => {
 
 Deno.test("a reply without usage counts as zero", () => {
   assertEquals(usageOf({}), { hit: 0, miss: 0, output: 0, reasoning: 0 });
+});
+
+Deno.test("parseJSON keeps the first object when more text or a second object follows it", () => {
+  assertEquals(parseJSON('{"a": 1, "b": "x}"}\n{"a": 2}'), { a: 1, b: "x}" });
+  assertEquals(parseJSON('Here: {"a": {"b": "q\\"}"}} and then } more'), { a: { b: 'q"}' } });
+  assertEquals(parseJSON('```json\n{"a": 3}\n```'), { a: 3 });
+});
+
+Deno.test("parseJSON still fails when no object closes", () => {
+  assertThrows(() => parseJSON('{"a": 1'));
 });
