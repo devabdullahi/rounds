@@ -1,19 +1,28 @@
 import { assertEquals } from "jsr:@std/assert@1";
-import { ownerAfterClaim } from "./rules.ts";
+import { decideClaim } from "./rules.ts";
 
-Deno.test("the first account to claim a subscription owns it", () => {
-  assertEquals(ownerAfterClaim(null, "a"), { owner: "a", takenByAnother: false });
+const claim = (rowOwner: string | null, taggedAccount: string | null, current: boolean) =>
+  decideClaim({ caller: "b", rowOwner, taggedAccount, current });
+
+Deno.test("a new plan with no record or tag goes to whoever claims it", () => {
+  assertEquals(claim(null, null, true), { kind: "own" });
 });
 
-Deno.test("the owner claiming again keeps it", () => {
-  assertEquals(ownerAfterClaim("a", "a"), { owner: "a", takenByAnother: false });
+Deno.test("the caller's own plan stays theirs", () => {
+  assertEquals(claim("b", null, true), { kind: "own" });
+  assertEquals(claim(null, "b", true), { kind: "own" });
 });
 
-Deno.test("another account can't take a claimed subscription", () => {
-  assertEquals(ownerAfterClaim("a", "b"), { owner: "a", takenByAnother: true });
+Deno.test("a plan in use by another account is taken, by record or by tag", () => {
+  assertEquals(claim("a", null, true), { kind: "taken", owner: "a" });
+  assertEquals(claim(null, "a", true), { kind: "taken", owner: "a" });
 });
 
-Deno.test("the account that made the purchase owns it, whoever claimed it first", () => {
-  assertEquals(ownerAfterClaim(null, "b", "a"), { owner: "a", takenByAnother: true });
-  assertEquals(ownerAfterClaim("b", "a", "a"), { owner: "a", takenByAnother: false });
+Deno.test("a lapsed or refunded plan blocks nobody", () => {
+  assertEquals(claim("a", null, false), { kind: "own" });
+  assertEquals(claim(null, "a", false), { kind: "own" });
+});
+
+Deno.test("once recorded, the record decides, not a newer tag (no silent moves on a tier change)", () => {
+  assertEquals(claim("a", "b", true), { kind: "taken", owner: "a" });
 });

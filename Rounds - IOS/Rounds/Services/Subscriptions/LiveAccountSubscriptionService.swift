@@ -6,7 +6,12 @@ struct LiveAccountSubscriptionService: AccountSubscriptionService {
     let client: SupabaseClient
 
     func claim(transactionID: String) async throws -> AccountAccess {
-        let reply: AccessReply = try await client.invokeSigned("subscription", body: ClaimBody(transaction_id: transactionID))
+        let reply: AccessReply = try await client.invokeSigned("subscription", body: PurchaseBody(action: "claim", transaction_id: transactionID))
+        return reply.access
+    }
+
+    func transfer(transactionID: String) async throws -> AccountAccess {
+        let reply: AccessReply = try await client.invokeSigned("subscription", body: PurchaseBody(action: "transfer", transaction_id: transactionID))
         return reply.access
     }
 
@@ -16,8 +21,8 @@ struct LiveAccountSubscriptionService: AccountSubscriptionService {
     }
 }
 
-private struct ClaimBody: Encodable {
-    let action = "claim"
+private struct PurchaseBody: Encodable {
+    let action: String
     let transaction_id: String
 }
 

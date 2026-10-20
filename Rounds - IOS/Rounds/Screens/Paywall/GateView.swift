@@ -19,8 +19,9 @@ struct GateView: View {
             // The phone pays, but for another account: explain rather than offer a plan Apple won't sell twice.
             if let owner = model.takenBy {
                 SubscriptionTaken(owner: owner, isWorking: model.isWorking,
-                                  signOut: { Task { await auth.signOut() } },
-                                  retry: { Task { await model.refresh() } })
+                                  movePlan: { Task { await model.movePlanHere() } },
+                                  manage: { managingSubscription = true },
+                                  signOut: { Task { await auth.signOut() } })
                     .overlay(alignment: .topLeading) { accountMenu }
             } else if SuperwallService.isConfigured, !Self.debugForcesFallback {
                 PaywallView(

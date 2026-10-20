@@ -6,4 +6,6 @@ struct AccountAccess: Equatable, Sendable {
     let entitled: Bool
     /// When the phone's subscription belongs to a different account: who, masked ("j•••@gmail.com").
     var ownedBy: String? = nil
+    /// The phone's purchase another account has, which `transfer` can move here.
+    var takenTransactionID: String? = nil
 }
