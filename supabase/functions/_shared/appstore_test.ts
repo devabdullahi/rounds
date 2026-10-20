@@ -48,3 +48,9 @@ Deno.test("emails are masked; Apple relay addresses say Apple", () => {
   assertEquals(maskEmail("x7@privaterelay.appleid.com"), "an account signed in with Apple");
   assertEquals(maskEmail(null), "another account");
 });
+
+Deno.test("reads the account the app tagged the purchase with, lowercased", () => {
+  assertEquals(summarize(response(1, tx({ appAccountToken: "AB12CD34-0000-4000-8000-000000000000" })))?.appAccountToken,
+    "ab12cd34-0000-4000-8000-000000000000");
+  assertEquals(summarize(response(1, tx()))?.appAccountToken, undefined);
+});

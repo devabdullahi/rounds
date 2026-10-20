@@ -8,7 +8,7 @@ import SwiftUI
  * Intro
  *    0ms   heart trace draws left → right (1400ms, ease in-out)
  *  300ms   headline rises, y 12 → 0
- *  500ms   "Log in" rises, "First time?" with it
+ *  500ms   "Get Started" rises, "I have an account" with it
  *
  * Differential loop (one case at a time, forever)
  *    0ms   case summary fades up ("54 · chest pain · sweating · HR 104")
@@ -20,15 +20,15 @@ import SwiftUI
  *  +500ms  the answer turns green, grows 1.12×, check slides in
  *  +2.4s   hold, then everything fades out (350ms) and the next case starts
  *
- * "Log in" tapped: headline + buttons fade; sheet (Apple, Google) springs up over a scrim.
- * "First time?" tapped: onboarding pushes in; the account is made near its end.
+ * "I have an account" tapped: headline + buttons fade; sheet (Apple, Google) springs up over a scrim.
+ * "Get Started" tapped: onboarding pushes in; the account is made near its end.
  * Tap the scrim or drag the sheet's handle down: back to welcome.
  * Reduce Motion: first case shown solved, no loop, no trace draw.
  * ───────────────────────────────────────────────────────── */
 
 private enum TIMING {
     static let headline = 0.30   // headline rises
-    static let cta      = 0.50   // "Log in" rises
+    static let cta      = 0.50   // "Get Started" rises
 }
 
 private enum TRACE {
@@ -91,8 +91,8 @@ private let slots: [(trailing: Bool, inset: CGFloat, y: CGFloat)] = [
 ]
 private let answerY: CGFloat = 218
 
-/// The signed-out welcome: a returning student logs in with Apple or Google; a new one taps
-/// "First time?" and makes their account during onboarding.
+/// The signed-out welcome: a new student taps "Get Started" and makes their account during
+/// onboarding; a returning one taps "I have an account" and logs in with Apple or Google.
 struct FirstOpenView: View {
     /// The provider whose sheet is open; both buttons wait while it is.
     var signingInWith: SocialProvider?
@@ -171,13 +171,14 @@ struct FirstOpenView: View {
                     .fixedSize(horizontal: false, vertical: true)
                     .rise(shown && !showAuth, at: showAuth ? 0 : TIMING.headline)
 
+                // New students are the ones to win over, so starting is the big button.
                 VStack(spacing: 6) {
-                    Button("Log in") { open() }
+                    Button("Get Started", action: onFirstTime)
                         .buttonStyle(PrimaryButtonStyle(height: 54, tint: Theme.welcomeGreen))
 
-                    Button(action: onFirstTime) {
+                    Button { open() } label: {
                         HStack(spacing: 6) {
-                            Text("First time?")
+                            Text("I have an account")
                             AppIcon(.arrowRight, size: 16)
                         }
                         .font(.system(size: 16, weight: .semibold))
@@ -186,7 +187,7 @@ struct FirstOpenView: View {
                         .contentShape(Rectangle())
                     }
                     .buttonStyle(PressDownStyle())
-                    .accessibilityLabel("First time? Get started")
+                    .accessibilityLabel("I have an account. Log in")
                 }
                 .rise(shown && !showAuth, at: showAuth ? 0 : TIMING.cta)
                 .allowsHitTesting(!showAuth)

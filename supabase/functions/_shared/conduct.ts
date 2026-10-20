@@ -34,8 +34,19 @@ export function strikes(transcript: { role: string; conduct?: Conduct }[]): numb
 }
 
 /** What the patient says to a flagged question. `strike` is this question's count (1-based). */
-export function conductReply(conduct: Exclude<Conduct, "clinical">, strike: number): string {
-  if (conduct === "off_topic") return "Sorry, I'm not really up for talking about that. Can we get back to why I came in today?";
+export function conductReply(conduct: Exclude<Conduct, "clinical">, strike: number, rng: () => number = Math.random): string {
+  // A few wordings each, so a patient asked twice doesn't answer like a recording.
+  const say = (lines: string[]) => lines[Math.floor(rng() * lines.length) % lines.length];
+  if (conduct === "off_topic") {
+    return say([
+      "Sorry, I'm not really up for talking about that. Can we get back to why I came in today?",
+      "Honestly, I don't feel well enough for that. Can we talk about what's going on with me?",
+      "Um, I'm not sure what you mean. I'm just here because I feel awful.",
+    ]);
+  }
   if (strike >= MAX_INAPPROPRIATE) return "I'm not comfortable continuing this conversation.";
-  return "Please don't talk to me like that. Can we keep this respectful?";
+  return say([
+    "Please don't talk to me like that. Can we keep this respectful?",
+    "Hey, that's not okay. Can we keep this respectful, please?",
+  ]);
 }

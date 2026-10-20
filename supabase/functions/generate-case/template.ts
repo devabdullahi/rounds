@@ -7,17 +7,8 @@
 import type { CasePlan, Profile } from "../_shared/casegen.ts";
 import { backgroundForWriter, type PatientBackground } from "./background.ts";
 import { diagnosisWords, plain, type Skeleton } from "./skeleton.ts";
+import { patientName } from "../_shared/names.ts";
 import type { Voice } from "./writer.ts";
-
-/** Fictional names, varied the way a US clinic's patients are. */
-const FIRST: Record<"F" | "M", string[]> = {
-  F: ["Maria", "Aisha", "Emily", "Grace", "Priya", "Keisha", "Sofia", "Hannah", "Mei", "Fatima", "Olivia", "Rosa",
-    "Danielle", "Leah", "Amara", "Chloe", "Nadia", "Brianna", "Ana", "Joy", "Elena", "Tanya", "Imani", "Claire"],
-  M: ["James", "Carlos", "Andre", "Wei", "Omar", "Ethan", "Raj", "Marcus", "Luis", "Daniel", "Kofi", "Tyler",
-    "Hassan", "Noah", "Diego", "Samuel", "Jamal", "Ryan", "Minh", "Isaac", "Victor", "Darnell", "Owen", "Jorge"],
-};
-const LAST = ["Johnson", "Garcia", "Nguyen", "Patel", "Williams", "Kim", "Okafor", "Martinez", "Brown", "Chen", "Hassan",
-  "Lopez", "Davis", "Singh", "Rivera", "Thompson", "Ali", "Wilson", "Moreno", "Jackson", "Park", "Mensah", "Reyes", "Clark"];
 
 const DEMEANOR: Record<string, string> = {
   mild: "Comfortable, talking easily",
@@ -110,14 +101,15 @@ function who(plan: CasePlan): string {
 
 /** Everything a written case needs beyond the skeleton, filled in from templates. */
 export function templateVoice(profile: Profile, plan: CasePlan, skeleton: Skeleton, background: PatientBackground | null, rng: () => number): Voice {
-  const sex = plan.sex === "F" ? "F" : "M";
   const complaints = profile.presentation.chief_complaints;
   const banned = diagnosisWords(profile);
   const safe = (t: string | undefined) => t && !banned.some((w) => t.toLowerCase().includes(w)) ? t : undefined;
   const chief = complaints[0] as { text: string; term?: string } | undefined;
   const duration = String(profile.presentation.hpi.duration ?? "").split(/[;,(.]/)[0].trim();
   const spans = /\d|minute|hour|day|week|month|year/i.test(duration) && duration.split(" ").length <= 5 && safe(duration);
-  const complaintText = lower(safe(chief?.term) ?? safe(chief?.text) ?? "feeling unwell");
+  // The clinical term ("Rhinorrhea"); the patient's own words ("my nose is runny") don't fit a triage note.
+  const firstPerson = (t?: string) => t && /\b(i|i'm|i've|my|me)\b/i.test(t) ? undefined : t;
+  const complaintText = lower(safe(chief?.term) ?? safe(firstPerson(chief?.text)) ?? "feeling unwell");
   const doorNote = `${plan.age}-year-old ${who(plan)}${plan.pregnant ? ", pregnant," : ""} with ${complaintText}${spans ? ` for ${lower(duration)}` : ""}.`;
 
   const record = background ? backgroundForWriter(background) : null;
@@ -155,7 +147,7 @@ export function templateVoice(profile: Profile, plan: CasePlan, skeleton: Skelet
 
   return {
     patient: {
-      name: `${pick(FIRST[sex], rng)} ${pick(LAST, rng)}`,
+      name: patientName(plan.sex, plan.age, rng),
       quote: pick(complaints.map((c) => c.text).filter((t) => safe(t)), rng) ?? "I haven't been feeling well.",
       demeanor: DEMEANOR[plan.severity] ?? DEMEANOR.moderate,
       setting: plan.psychology ? "Referral, outpatient psychology clinic"

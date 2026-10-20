@@ -2,7 +2,7 @@ import SwiftUI
 import Observation
 
 /// Signed-out shell: welcome and onboarding, over real accounts (AuthModel). Accounts are Apple or
-/// Google only. "First time?" runs onboarding and makes the account inside it; logging in with an
+/// Google only. "Get Started" runs onboarding and makes the account inside it; logging in with an
 /// account that never finished onboarding runs it too. A returning account goes straight in.
 struct AuthFlowView: View {
     @Environment(AuthModel.self) private var auth

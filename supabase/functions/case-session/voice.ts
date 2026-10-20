@@ -40,7 +40,7 @@ export function pickLiveVoice(sex: string, caseId: string): string {
 export function speechInstructions(age: number, sex: string, howTheyTalk: string): string {
   const who = age < 13 ? `a ${age}-year-old child` : age < 18 ? `a ${age}-year-old teenager` : `a ${age}-year-old ${sex.toLowerCase().startsWith("f") ? "woman" : sex.toLowerCase().startsWith("m") ? "man" : "adult"}`;
   const manner = howTheyTalk.trim() ? ` ${howTheyTalk.trim().replace(/\.?$/, ".")}` : "";
-  return `You are ${who}, a patient talking to a doctor. Speak naturally, like a real person, not a narrator.${manner}`;
+  return `You are ${who}, a patient talking to a doctor. Speak naturally, like a real person, not a narrator: conversational pace, small pauses where you'd think, and a voice that sounds as unwell or worried as the words.${manner}`;
 }
 
 /** `live` marks a reply from a live call: the app reported its words, so they're never voiced. */

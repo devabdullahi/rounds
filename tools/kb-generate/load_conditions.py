@@ -9,6 +9,8 @@
   - supabase/functions/_shared/reference_ranges.json: a copy of knowledge-base/reference_ranges.json,
     which labs.ts and profilegen.ts import (a deploy bundles only supabase/functions/; labs_test.ts
     fails when the copy drifts).
+  - supabase/functions/_shared/lab_directions.json: a copy of knowledge-base/lab_directions.json,
+    the expected lab directions profilegen.ts checks (assets_sync_test.ts fails when it drifts).
 
     python3 load_conditions.py           # regenerate the files
     python3 load_conditions.py --apply   # also upsert the catalog into the running local database
@@ -27,6 +29,8 @@ from generate import (EXAMPLE, OPTIONAL_SECTIONS, PROMPT_VERSION, REQUIRED_SECTI
                       load_conditions, load_triage, prompt, reference_table, stage_schema)
 from load_profiles import LOCAL_DB_CONTAINER, array, literal
 from tag_specialties import LIVE, load_tags
+from tag_surgery import load_tags as load_surgery_tags, retagged
+from tag_umbrellas import load_tags as load_umbrella_tags, narrowed
 from tag_systems import load_systems
 from terminology import MAX_UNVERIFIED
 
@@ -35,6 +39,8 @@ SEED = ROOT / "supabase" / "seed_conditions.sql"
 ASSETS = ROOT / "supabase" / "functions" / "_shared" / "profilegen_assets.json"
 RANGES = ROOT / "knowledge-base" / "reference_ranges.json"
 RANGES_COPY = ROOT / "supabase" / "functions" / "_shared" / "reference_ranges.json"
+DIRECTIONS = ROOT / "knowledge-base" / "lab_directions.json"
+DIRECTIONS_COPY = ROOT / "supabase" / "functions" / "_shared" / "lab_directions.json"
 
 
 def upsert(slug: str, condition: dict, triage: dict, specialties: list[str] | None = None,
@@ -83,7 +89,8 @@ def main() -> None:
     args = parser.parse_args()
 
     conditions, triage, tags, systems = load_conditions(), load_triage(), load_tags(), load_systems()
-    rows = [(slug, conditions[slug], t["triage"]) for slug, t in triage.items()
+    surgery, umbrellas = load_surgery_tags(), load_umbrella_tags()
+    rows = [(slug, conditions[slug], narrowed(slug, retagged(slug, t["triage"], surgery), umbrellas)) for slug, t in triage.items()
             if slug in conditions and t.get("triage") and not t.get("errors")]
     # Rows left out of the catalog: say which, so a failed triage batch isn't lost without a trace.
     failed = sorted(s for s, t in triage.items() if not t.get("triage") or t.get("errors"))
@@ -99,9 +106,10 @@ def main() -> None:
     SEED.write_text(sql)
     ASSETS.write_text(json.dumps(assets(), ensure_ascii=False, indent=1) + "\n")
     shutil.copyfile(RANGES, RANGES_COPY)
+    shutil.copyfile(DIRECTIONS, DIRECTIONS_COPY)
     suitable = sum(1 for _, _, t in rows if t["case_suitable"])
     print(f"wrote {len(rows)} conditions ({suitable} case-suitable) to {SEED.relative_to(ROOT)}; "
-          f"assets to {ASSETS.relative_to(ROOT)}; ranges to {RANGES_COPY.relative_to(ROOT)}", file=sys.stderr)
+          f"assets to {ASSETS.relative_to(ROOT)}; ranges and lab directions to {RANGES_COPY.parent.relative_to(ROOT)}", file=sys.stderr)
     untriaged = sorted(set(conditions) - set(triage))
     if untriaged:
         print(f"{len(untriaged)} conditions have no triage yet (run generate.py triage)", file=sys.stderr)

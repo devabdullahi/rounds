@@ -1,7 +1,7 @@
-// The written case's shape, how it's assembled from the skeleton and template, the checks on it,
+// The case writer's prompt, the shape it must return, how it's assembled from the skeleton, the checks on it,
 // and the rubric derived from the profile plus what was written. Kept apart from index.ts so it's testable without a DB.
 import { type CasePlan, leaks, type Profile } from "../_shared/casegen.ts";
-import { SNOMED_TAG } from "./background.ts";
+import { backgroundForWriter, type PatientBackground, SNOMED_TAG } from "./background.ts";
 import type { Skeleton } from "./skeleton.ts";
 
 export type Writing = {
@@ -14,7 +14,21 @@ export type Writing = {
   test_meta: { test_id: string; detail: string; cost: number; turnaround_s: number; delays_care_min?: number }[];
 };
 
-/** The human parts of a code-built case, filled in by template.ts. */
+/** A clinical psychology case: same screens and JSON, written as a psychologist's intake. */
+const PSYCHOLOGY_FRAME = `Clinician: a clinical psychology trainee doing a 50-minute outpatient intake. The setting is an outpatient psychology clinic and the door note is the referral (who referred them and why), not a triage note.
+Maneuvers are mental status exam observations a psychologist makes by watching and talking (appearance, behavior, speech, mood, affect, thought process, thought content, perception, cognition, insight and judgment). Write each exam finding below as that kind of observation, titled like "Observe affect" or "Assess thought content"; a finding that needs touch or instruments becomes what can be seen or reported (e.g. "Appears tremulous"). The 2–3 routine maneuvers are other mental status domains. No physical exam maneuvers.
+Tests are standardized questionnaires the patient fills in: in test_meta use cost 0, detail like "Questionnaire · 3 min", turnaround_s 3–6 and delays_care_min 0.
+
+`;
+
+/** A dermatology case: same screens; the exam is a skin exam charted the way a dermatologist does. */
+const DERMATOLOGY_FRAME = `Clinician: a student on a dermatology clinic rotation. The setting is an outpatient dermatology clinic.
+Maneuvers center on the skin, hair, nails and mucosa (e.g. "Inspect the rash", "Palpate the lesion", "Examine the scalp and nails", "Dermoscopy of the lesion"). Write every skin finding with its morphology as a dermatologist charts it: primary lesion type, size, color, shape and border, distribution and arrangement, and secondary changes (scale, crust, erosion). The student can't see a photo, so the words must carry the picture without naming the diagnosis.
+
+`;
+
+/** What the model returns for a code-built case: the human parts only (template.ts fills the same
+ *  shape when the model can't). */
 export type Voice = {
   patient: Writing["patient"];
   persona: Writing["persona"];
@@ -24,9 +38,33 @@ export type Voice = {
   suggested: Writing["suggested"];
 };
 
+/** The voice step's input: the skeleton's facts and maneuvers to word, and the person to write. */
+export function voicePrompt(profile: Profile, plan: CasePlan, skeleton: Skeleton, background?: PatientBackground | null, name?: string): string {
+  const studies = plan.tests.filter((t) => t.kind === "study");
+  const who = `${plan.age}-year-old ${plan.age < 18 ? (plan.sex === "F" ? "girl" : "boy") : plan.sex === "F" ? "woman" : "man"}${plan.pregnant ? ", pregnant" : ""}`;
+  return `${plan.psychology ? PSYCHOLOGY_FRAME : ""}${plan.dermatology ? DERMATOLOGY_FRAME : ""}Hidden diagnosis (never reveal): ${plan.condition}
+Severity: ${plan.severity}: ${plan.severityText}
+Patient: ${who}${name ? `, named ${name} (use this name exactly)` : ""}. Typical setting: ${profile.triage.settings.join(", ")}.${plan.age < 13 ? " A child this age answers simply; a parent or guardian is present and answers for them, so write replies as the child or the parent would say them." : ""}${background ? `\nTheir life outside this illness (for persona.background; the medical items are already in the facts): ${JSON.stringify({ marital_status: backgroundForWriter(background).marital_status, social: backgroundForWriter(background).social })}` : ""}
+Chief complaints, in patients' words: ${JSON.stringify(profile.presentation.chief_complaints.map((c) => c.text))}
+Facts to word: ${JSON.stringify(skeleton.facts.map((f) => ({ id: f.id, topic: f.label, content: f.content })))}
+Maneuvers needing a normal result: ${JSON.stringify(skeleton.maneuvers.filter((m) => m.finding === null).map((m) => ({ id: m.id, maneuver: m.title })))}
+Studies needing a report: ${JSON.stringify(studies.map((s) => ({ test_id: s.id, name: s.name, findings: s.findings })))}
+Questions a strong student asks: ${JSON.stringify(profile.teaching.key_questions.map((q) => q.question))}
+
+Return JSON:
+{
+  "patient": {"name": "First Last", "quote": "what they say walking in", "demeanor": "how they look and act, 3–6 words", "setting": "where they're seen, e.g. 'Walk-in, emergency department'", "complaint": "door note, under 20 words, as a triage nurse writes it: age, sex, the chief complaint in plain terms and its duration. Nothing that points to the diagnosis"},
+  "persona": {"voice": "how they talk", "background": "job, family, context in 1–2 sentences", "fallback": "what they say, in character, when a question makes no sense to them"},
+  "facts": {"f1": {"label": "2–4 words", "reply": "the patient's words"}},
+  "normals": {"x1": "normal result"},
+  "studies": [{"test_id": "...", "result": "report text", "abnormal": true}],
+  "suggested": [{"text": "a one-tap question", "fact": "f1"}]
+}`;
+}
+
 /** The writing a student plays: the skeleton's medicine with the template's wording. A fact or
  *  result the voice left out falls back to the skeleton's own wording, so nothing planned goes missing. */
-export function assemble(skeleton: Skeleton, voice: Voice): Writing {
+export function assemble(skeleton: Skeleton, voice: Voice, name?: string): Writing {
   const facts = skeleton.facts.map((f) => ({
     id: f.id,
     label: voice.facts?.[f.id]?.label?.trim() || f.label,
@@ -36,7 +74,8 @@ export function assemble(skeleton: Skeleton, voice: Voice): Writing {
   }));
   const ids = new Set(facts.map((f) => f.id));
   return {
-    patient: voice.patient,
+    // The name is picked in code (_shared/names.ts): models asked for one reuse the same few.
+    patient: name ? { ...voice.patient, name } : voice.patient,
     persona: voice.persona,
     facts,
     suggested: (voice.suggested ?? []).filter((s) => ids.has(s.fact)),

@@ -4,7 +4,7 @@
 import { HttpError } from "./http.ts";
 import { sql } from "./db.ts";
 
-export type QuotaKind = "case" | "question" | "cards" | "grade" | "voice";
+export type QuotaKind = "case" | "question" | "cards" | "grade" | "voice" | "claim";
 
 const LIMITS: Record<QuotaKind, { env: string; fallback: number; noun: string }> = {
   case: { env: "LIMIT_CASES_PER_DAY", fallback: 10, noun: "new patients" },
@@ -14,6 +14,8 @@ const LIMITS: Record<QuotaKind, { env: string; fallback: number; noun: string }>
   grade: { env: "LIMIT_GRADES_PER_DAY", fallback: 30, noun: "graded submissions" },
   // Each spoken turn is two units: the student's words transcribed, the patient's reply spoken.
   voice: { env: "LIMIT_VOICE_PER_DAY", fallback: 400, noun: "voice turns" },
+  // Purchase claims each ask Apple; the app claims on launch and after a purchase, far below this.
+  claim: { env: "LIMIT_CLAIMS_PER_DAY", fallback: 50, noun: "purchase checks" },
   // Live voice is limited by cost instead: a daily dollar budget per student (_shared/realtime.ts).
 };
 
@@ -22,11 +24,17 @@ export function dailyLimit(kind: QuotaKind): number {
   return Number.isInteger(raw) && raw > 0 ? raw : LIMITS[kind].fallback;
 }
 
+/** Takes one unit of today's allowance; false when none is left. */
+export async function tryQuota(userId: string, kind: QuotaKind): Promise<boolean> {
+  const [{ ok }] = await sql<{ ok: boolean }[]>`select private.take_quota(${userId}, ${kind}, ${dailyLimit(kind)}) as ok`;
+  return ok;
+}
+
 /** Takes one unit of today's allowance, or refuses with a 429 the app shows as is. */
 export async function takeQuota(userId: string, kind: QuotaKind): Promise<void> {
-  const cap = dailyLimit(kind);
-  const [{ ok }] = await sql<{ ok: boolean }[]>`select private.take_quota(${userId}, ${kind}, ${cap}) as ok`;
-  if (!ok) throw new HttpError(429, `you've reached today's limit of ${cap} ${LIMITS[kind].noun}; it resets at midnight UTC`);
+  if (!(await tryQuota(userId, kind))) {
+    throw new HttpError(429, `you've reached today's limit of ${dailyLimit(kind)} ${LIMITS[kind].noun}; it resets at midnight UTC`);
+  }
 }
 
 /** Units of today's allowance still free, for showing "2 of 3 left today". */

@@ -1,5 +1,5 @@
 import { assert, assertEquals } from "jsr:@std/assert@1";
-import { buildSkeleton, screensFor, testMeta } from "./skeleton.ts";
+import { buildSkeleton, medicationName, overlaps, screensFor, skeletonFacts, testMeta } from "./skeleton.ts";
 import { assemble } from "./writer.ts";
 import type { CasePlan, Profile } from "../_shared/casegen.ts";
 
@@ -50,4 +50,39 @@ Deno.test("anything the voice leaves out falls back to the skeleton's own wordin
   assertEquals(w.maneuvers[1].finding, "Normal.");
   assertEquals(w.suggested.length, 1);
   assertEquals(testMeta({ id: "ct", name: "CT abdomen", kind: "study", role: "indicated" } as never).cost, 700);
+});
+
+Deno.test("two wordings of one symptom overlap; different symptoms don't", () => {
+  for (const [a, b, same] of [
+    ["Itchy eyes", "Itchy, watery, red eyes", true],
+    ["Fever", "No facial swelling or fever", true],
+    ["Sneezing", "Sneezing fits", true],
+    ["Chest pain", "Abdominal pain", false],
+    ["Nausea", "Vomiting", false],
+  ] as const) {
+    assertEquals(overlaps(a, b), same, `${a} / ${b}`);
+  }
+});
+
+Deno.test("medications read as name and strength", () => {
+  assertEquals(medicationName("Hydrochlorothiazide 25 MG Oral Tablet"), "hydrochlorothiazide 25 mg");
+  assertEquals(medicationName("insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]"), "insulin isophane, human 70 unt/ml");
+  assertEquals(medicationName("Acetaminophen"), "acetaminophen");
+});
+
+Deno.test("nothing the patient has is also denied, and the other denials are few", () => {
+  const p = { ...profile, presentation: { ...profile.presentation,
+    hpi: { ...profile.presentation.hpi, associated_symptoms: [{ text: "Fever", frequency: "common" }], pertinent_negatives: ["No facial swelling or fever", "Black or bloody stools"] } } } as unknown as Profile;
+  const pl = { ...plan, symptomsPresent: ["Fever"], symptomsAbsent: ["High fever", "Rash", "Cough", "Headache", "Chills", "Sore throat", "Earache", "Diarrhea", "Joint pain"] } as unknown as CasePlan;
+  const facts = skeletonFacts(p, pl, null, () => 0.5);
+  const denials = facts.filter((f) => f.content.startsWith("Denies")).map((f) => f.content).join(" ");
+  assert(!/fever/i.test(denials), denials);
+  const other = facts.find((f) => f.label === "Other denied symptoms")!;
+  assert(other.content.split(";").length <= 6, other.content);
+});
+
+Deno.test("age and sex aren't told as risk factors", () => {
+  const p = { ...profile, patient: { ...profile.patient, risk_factors: [{ text: "Male sex in childhood" }, { text: "Childhood or adolescent age" }, { text: "Smoking" }] } } as unknown as Profile;
+  const risk = skeletonFacts(p, plan, null, () => 0.5).find((f) => f.label === "Risk factors")!;
+  assertEquals(risk.content, "Smoking");
 });

@@ -13,7 +13,7 @@
 //   4. Save progress and start the next step; after the last stage, validate and store the profile
 //      in private.condition_profiles (review "pending" until a clinician looks at it).
 
-import { body, HttpError, json, serve } from "../_shared/http.ts";
+import { body, HttpError, json, requireServiceRole, serve } from "../_shared/http.ts";
 import { sql } from "../_shared/db.ts";
 import { completeJSON, currentModel } from "../_shared/llm.ts";
 import {
@@ -46,9 +46,7 @@ const TIMEOUT_MS = 140_000;
 const TERMS_BUDGET_MS = 45_000;
 
 serve(async (req) => {
-  const auth = req.headers.get("Authorization") ?? "";
-  const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-  if (!key || auth !== `Bearer ${key}`) throw new HttpError(401, "internal function");
+  requireServiceRole(req);
   const { slug } = await body<{ slug?: unknown }>(req);
   if (typeof slug !== "string" || !/^[a-z0-9-]{1,120}$/.test(slug)) throw new HttpError(400, "slug required");
   umlsKey(); // fail before claiming the job when the SNOMED check can't run

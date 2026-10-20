@@ -74,6 +74,16 @@ def linked_topics(row: dict | None) -> list[str]:
     return [url.rstrip("/").replace("http://www.nlm.nih.gov/medlineplus", "https://medlineplus.gov") for url, _ in links]
 
 
+def umbrella_condition_ids() -> set[str]:
+    """Condition ids of topics tagged as umbrellas, mapped through triage's slugs."""
+    umbrellas = KB / "umbrellas.jsonl"
+    if not umbrellas.exists():
+        return set()
+    slugs = {r["slug"] for r in map(json.loads, umbrellas.read_text().splitlines()) if r.get("umbrella")}
+    return {t["condition_id"] for t in map(json.loads, (KB / "triage.jsonl").read_text().splitlines())
+            if t.get("slug") in slugs and t.get("condition_id")}
+
+
 def main() -> None:
     key()
     rows = load_clinical_tables()
@@ -90,7 +100,16 @@ def main() -> None:
             by_name.setdefault(norm(uninvert(n)), r)
 
     existing = [json.loads(line) for line in (KB / "conditions.jsonl").open()]
-    known = {norm(n) for c in existing for n in [c["name"], *c["also_called"], *(m["name"] for m in c["mesh"])]}
+    # A condition is already covered when a topic is that condition: its name or alias, or its only
+    # MeSH heading. A broad topic listing it among several headings ("Eating Disorders" with Bulimia
+    # Nervosa) doesn't count, or umbrellas swallow the specific conditions students should practise.
+    # Umbrella topics (tools/kb-generate/tag_umbrellas.py) list their subtypes as aliases ("Eating
+    # Disorders": "Anorexia nervosa", "Bulimia"); only an umbrella's own name counts as covered.
+    umbrella_ids = umbrella_condition_ids()
+    umbrella_names = {norm(c["name"]) for c in existing if c["id"] in umbrella_ids}
+    known = {norm(n) for c in existing
+             for n in ([c["name"]] if c["id"] in umbrella_ids
+                       else [c["name"], *c["also_called"], *(m["name"] for m in c["mesh"] if len(c["mesh"]) == 1)])}
     by_medlineplus = {c["source"]["medlineplus_url"].rstrip("/"): c for c in existing}
 
     print("MeSH descriptors…", file=sys.stderr)
@@ -110,7 +129,9 @@ def main() -> None:
             name = names[0]
             # A condition can sit under two specialties (iron deficiency anemia: internal medicine and
             # nutrition); it is imported once.
-            if any(norm(n) in known for n in names) or norm(name) in added:
+            # An alias can be the broad topic the condition sits under ("Generalized anxiety disorder",
+            # alias "anxiety"): aliases that name an umbrella don't count as covered.
+            if any(norm(n) in known and norm(n) not in umbrella_names for n in names) or norm(name) in added:
                 continue
             ct = next((by_name[norm(n)] for n in names if norm(n) in by_name), None)
             snomed = next((c for n in names if (c := concept(n))), None)

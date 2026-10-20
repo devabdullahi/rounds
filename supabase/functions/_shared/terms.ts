@@ -39,13 +39,49 @@ async function getJSON(url: string, params: Record<string, string | number>, mis
   return await res.json();
 }
 
-function umls(path: string, params: Record<string, string | number>, missing: Json = null): Promise<Json> {
-  return getJSON(`${UMLS}${path}`, { ...params, apiKey: umlsKey() }, missing);
+/** UMLS requests in flight from this instance. The fact audit used to start 40–80 lookups at once,
+ *  and two cases together went past UMLS's 20 requests a second per IP. */
+let inFlight = 0;
+const waiting: (() => void)[] = [];
+
+/** Runs `work` once fewer than PARALLEL UMLS requests are in flight. */
+export async function throttled<T>(work: () => Promise<T>): Promise<T> {
+  while (inFlight >= PARALLEL) await new Promise<void>((resolve) => waiting.push(resolve));
+  inFlight++;
+  try {
+    return await work();
+  } finally {
+    inFlight--;
+    waiting.shift()?.();
+  }
 }
 
-/** The UMLS concept (CUI) a term names, exact match first, then normalized; null when none. Asked
- *  live, uncached: the fact audit compares a patient's words with the planned items this way. */
-export async function conceptOf(term: string): Promise<string | null> {
+function umls(path: string, params: Record<string, string | number>, missing: Json = null): Promise<Json> {
+  return throttled(() => getJSON(`${UMLS}${path}`, { ...params, apiKey: umlsKey() }, missing));
+}
+
+/** Concepts already looked up by this instance: the same planned items ("Fever", "Nausea") come up in
+ *  case after case. Kept small; a cold instance just asks again. */
+const concepts = new Map<string, Promise<string | null>>();
+const MAX_CACHED_CONCEPTS = 5000;
+
+/** The UMLS concept (CUI) a term names, exact match first, then normalized; null when none. The
+ *  fact audit compares a patient's words with the planned items this way. */
+export function conceptOf(term: string): Promise<string | null> {
+  const key = term.trim().toLowerCase();
+  const known = concepts.get(key);
+  if (known) return known;
+  if (concepts.size >= MAX_CACHED_CONCEPTS) concepts.clear();
+  // A failed lookup isn't kept, so the next case asks again.
+  const lookup = lookUpConcept(term).catch((error) => {
+    concepts.delete(key);
+    throw error;
+  });
+  concepts.set(key, lookup);
+  return lookup;
+}
+
+async function lookUpConcept(term: string): Promise<string | null> {
   for (const searchType of ["exact", "normalizedString"]) {
     const data = await umls("/search/current", { string: term, searchType, pageSize: 1 });
     const hit = data.result?.results?.[0];

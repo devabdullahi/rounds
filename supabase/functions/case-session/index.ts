@@ -58,7 +58,9 @@ import { closeCalls } from "../_shared/voicecalls.ts";
 import { liveSessionPrompt, voiceTurnPrompt } from "../_shared/patientprompt.ts";
 import { recordUsage, takeBudget } from "../_shared/usage.ts";
 import { speak, speakStream, STREAM_SAMPLE_RATE, transcribe } from "../_shared/speech.ts";
+import { requirePlan } from "../_shared/plan.ts";
 import { withQuota } from "../_shared/quota.ts";
+import { naturalRefusal, talksAboutScript } from "./refusal.ts";
 import { type Conduct, conductReply, isProfane, MAX_INAPPROPRIATE, parseConduct, strikes } from "../_shared/conduct.ts";
 
 declare const EdgeRuntime: { waitUntil(promise: Promise<unknown>): void };
@@ -88,6 +90,8 @@ const GRACE_MINUTES = 2;
 
 serve(async (req) => {
   const userId = await callerId(req);
+  // Cases are part of the paid plan; the app's paywall is only the face of this check.
+  await requirePlan(userId);
   const input = await body<Record<string, unknown>>(req);
   switch (input.action) {
     case "start": return json(await start(userId, input));
@@ -188,6 +192,9 @@ async function ask(userId: string, input: Record<string, unknown>) {
     } else if (used.length === 0 && looked.length === 0 && await addsFacts(reply)) {
       // Grounded replies (a fact or a visible finding) skip this; only free-floating ones are checked.
       reply = String(persona.fallback);
+    } else if (talksAboutScript(reply)) {
+      // "I haven't said what it is": the model talking about its script. Said as a person would instead.
+      reply = naturalRefusal(recent.findLast((t) => t.role === "patient")?.text);
     }
   } catch (error) {
     console.error("patient reply failed", error);
@@ -288,7 +295,12 @@ async function askAloud(userId: string, input: Record<string, unknown>): Promise
   // background work keeps it alive until the voice is sent (the wall clock still applies).
   let sent!: () => void;
   EdgeRuntime.waitUntil(new Promise<void>((resolve) => (sent = resolve)));
+  // Set when the app stops reading (it interrupted the answer), so writing stops quietly.
+  let cancelled = false;
   const body = new ReadableStream<Uint8Array>({
+    cancel() {
+      cancelled = true;
+    },
     async start(out) {
       out.enqueue(new TextEncoder().encode(JSON.stringify(answer) + "\n"));
       try {
@@ -296,15 +308,20 @@ async function askAloud(userId: string, input: Record<string, unknown>): Promise
           const reader = (await speakStream(answer.reply.slice(0, MAX_SPOKEN_CHARS), voice, instructions)).getReader();
           for (;;) {
             const { done, value } = await reader.read();
-            if (done) break;
+            if (done || cancelled) break;
             out.enqueue(value);
           }
         });
       } catch (error) {
-        console.error("ask_aloud voice failed", error);
+        if (!cancelled) console.error("ask_aloud voice failed", error);
+      } finally {
+        try {
+          out.close();
+        } catch {
+          // Already cancelled by the app.
+        }
+        sent();
       }
-      out.close();
-      sent();
     },
   });
   return new Response(body, { headers: { "Content-Type": "application/octet-stream", "X-Sample-Rate": String(STREAM_SAMPLE_RATE) } });
@@ -362,7 +379,7 @@ async function voiceSession(userId: string, input: Record<string, unknown>) {
   if (seconds === 0) {
     throw new HttpError(429, "you've used today's live voice time; it resets at midnight UTC. Turn-by-turn voice and typing still work");
   }
-  await takeBudget();
+  await takeBudget("voice_live");
 
   const persona = content.persona;
   const instructions = liveSessionPrompt(
@@ -392,7 +409,8 @@ async function voiceSession(userId: string, input: Record<string, unknown>) {
  *  before this is read, so every one has its end. */
 async function liveVoiceSpentToday(userId: string): Promise<number> {
   const [{ seconds }] = await sql<{ seconds: number }[]>`
-    select coalesce(sum(extract(epoch from coalesce(ended_at, ends_at) - started_at)), 0)::float8 as seconds
+    -- Capped at each call's deadline: calls closed late before that cap went in say they ran for hours.
+    select coalesce(sum(extract(epoch from least(coalesce(ended_at, ends_at), ends_at) - started_at)), 0)::float8 as seconds
     from private.voice_calls
     where user_id = ${userId} and started_at >= (now() at time zone 'utc')::date::timestamp at time zone 'utc'`;
   return (seconds / 60) * realtimeUSDPerMinute();
