@@ -24,14 +24,22 @@ struct GateView: View {
                                   signOut: { Task { await auth.signOut() } })
                     .overlay(alignment: .topLeading) { accountMenu }
             } else if SuperwallService.isConfigured, !Self.debugForcesFallback {
-                PaywallView(
-                    placement: SuperwallService.gatePlacement,
-                    onRequestDismiss: { _, result in closed(result) },
-                    onSkippedView: { reason in fallback(Self.why(reason)) },
-                    onErrorView: { error in fallback(Self.why(error)) }
-                )
-                .id(attempt)
-                .ignoresSafeArea()
+                // Superwall draws nothing until the paywall and its products load; the spinner shows through.
+                ZStack {
+                    ProgressView()
+                        .controlSize(.large)
+                        .tint(Theme.accent)
+                        .accessibilityLabel("Loading plans")
+                    PaywallView(
+                        placement: SuperwallService.gatePlacement,
+                        onRequestDismiss: { _, result in closed(result) },
+                        onSkippedView: { reason in fallback(Self.why(reason)) },
+                        onErrorView: { error in fallback(Self.why(error)) }
+                    )
+                    .id(attempt)
+                    .ignoresSafeArea()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .overlay(alignment: .topLeading) { accountMenu }
             } else {
                 fallback(Self.debugOnly("Superwall isn't configured: SUPERWALL_API_KEY is missing from Secrets.xcconfig."))

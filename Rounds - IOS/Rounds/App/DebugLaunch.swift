@@ -5,7 +5,7 @@ import SwiftUI
 /// Names: firstopen, firstopen-auth, duplicate-account, voice-glass, onboarding (focus), onboarding-account, onboarding-intro, onboarding-graded,
 /// onboarding-promise, onboarding-graph, onboarding-goal, onboarding-to-goal, onboarding-year, onboarding-name, onboarding-setting, onboarding-redflag, onboarding-cards, onboarding-reminder, onboarding-struggles, onboarding-talk, onboarding-mode, onboarding-timer, onboarding-progress, onboarding-daily, onboarding-plan, onboarding-heart, onboarding-promised,
 /// settings-about, onboarding-consent, ai-consent, paywall, paywall-unavailable, paywall-delete,
-/// focus-system, focus-sheet, home, patients, patients-open, previous-tries, previous-try, badge-unlock-many, badge-unlock-all, paywall-taken, profile, brief, interview, examine, workup, diagnosis, debrief, diagnosis-suggest.
+/// focus-system, focus-sheet, home, patients, patients-open, previous-tries, previous-try, badge-unlock-many, badge-unlock-all, paywall-taken, plan-checking, profile, brief, interview, examine, workup, diagnosis, debrief, diagnosis-suggest.
 enum DebugLaunch {
     static var screen: String? { UserDefaults.standard.string(forKey: "screen") }
     /// `-screen voice-glass` shows `VoiceGlassDebugView` in place of the app.
@@ -19,7 +19,7 @@ enum DebugLaunch {
 
     /// Screens that stay on the paywall (no debug unlock): Superwall's, the "plans couldn't load"
     /// fallback, the delete confirmation over it, and the plan-owned-by-another-account state.
-    static let paywallScreens: Set<String> = ["paywall", "paywall-taken", "paywall-unavailable", "paywall-delete"]
+    static let paywallScreens: Set<String> = ["paywall", "paywall-taken", "paywall-unavailable", "paywall-delete", "plan-checking"]
     /// `-screen paywall-unavailable`: the fallback in place of Superwall's paywall.
     static var isPaywallUnavailable: Bool { screen == "paywall-unavailable" }
 
