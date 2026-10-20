@@ -41,16 +41,25 @@ export function timeoutFor(deadline: number, maximum: number): number {
   return Math.min(remaining, maximum);
 }
 
+/** Every plan tried for this condition was a patient the student already had: the condition has
+ *  little room left for them. Thrown before any model call, so moving on to another condition in
+ *  the topic costs nothing. */
+export class NoNewPatient extends Error {
+  constructor(readonly slug: string) {
+    super(`no new patient left for ${slug}`);
+  }
+}
+
 /** A plan whose fingerprint the student doesn't hold yet. A condition can come back once a topic is
  *  used up, but always as a different patient: another severity, decade, sex or set of symptoms. */
-async function freshPlan(profile: Profile, opts: Parameters<typeof planCase>[2], history: History): Promise<{ plan: CasePlan; print: string }> {
+export async function freshPlan(profile: Profile, opts: Parameters<typeof planCase>[2], history: History): Promise<{ plan: CasePlan; print: string }> {
   let plan = planCase(profile, Math.random, opts);
   let print = await fingerprint(plan);
   for (let i = 1; i < PLAN_TRIES && history.fingerprints.has(print); i++) {
     plan = planCase(profile, Math.random, opts);
     print = await fingerprint(plan);
   }
-  if (history.fingerprints.has(print)) throw new HttpError(503, "Couldn't find a new patient for this topic just now. Tap to try again.");
+  if (history.fingerprints.has(print)) throw new NoNewPatient(profile.slug);
   return { plan, print };
 }
 
