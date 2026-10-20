@@ -1,5 +1,5 @@
 import { assertEquals } from "jsr:@std/assert@1";
-import { entitled, environmentCounts, planExempt, type PlanRow, toRecheck, toRefresh } from "./plan.ts";
+import { entitled, environmentCounts, planCheckOff, planExempt, type PlanRow, toRecheck, toRefresh } from "./plan.ts";
 
 const now = new Date("2026-10-19T12:00:00Z");
 const later = new Date("2026-11-19T12:00:00Z");
@@ -54,4 +54,9 @@ Deno.test("only listed developer accounts skip the plan check", () => {
   assertEquals(planExempt("a", ""), false);
   assertEquals(planExempt("a", "b,a"), true);
   assertEquals(planExempt("a", "ab"), false);
+});
+
+Deno.test("the plan check is off only for an exact \"off\"", () => {
+  for (const raw of ["off", " OFF ", "Off"]) assertEquals(planCheckOff(raw), true);
+  for (const raw of ["", "on", "false", "0", "of", "disabled"]) assertEquals(planCheckOff(raw), false);
 });
