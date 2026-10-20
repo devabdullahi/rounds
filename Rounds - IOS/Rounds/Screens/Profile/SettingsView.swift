@@ -214,11 +214,13 @@ struct SettingsView: View {
         } message: {
             Text("Your streak and casebook stay saved to your account.")
         }
-        .confirmationDialog("Delete your account?", isPresented: $confirmDelete, titleVisibility: .visible) {
-            Button("Delete account and data", role: .destructive) { Task { await auth.deleteAccount() } }
+        .confirmationDialog(AccountDeletion.title, isPresented: $confirmDelete, titleVisibility: .visible) {
+            Button(AccountDeletion.confirm, role: .destructive) { Task { await auth.deleteAccount() } }
+            // Apple's own sheet: the only place a subscription can be cancelled.
+            Button(AccountDeletion.manage) { managingAppStorePlan = true }
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("Your patients, grades, flashcards and badges are deleted for good. This can't be undone.")
+            Text(AccountDeletion.message)
         }
         .sheet(isPresented: $editingProfile) { EditProfileView() }
         .sheet(isPresented: $showingCredits) { AcknowledgementsView() }

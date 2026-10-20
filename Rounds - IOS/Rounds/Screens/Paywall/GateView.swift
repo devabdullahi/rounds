@@ -1,4 +1,5 @@
 import SuperwallKit
+import StoreKit
 import SwiftUI
 
 /// What a signed-in student without a plan sees: Superwall's paywall for the gate placement, full
@@ -11,6 +12,7 @@ struct GateView: View {
     /// Bumped by "Try again" to rebuild Superwall's view, which loads once per instance.
     @State private var attempt = 0
     @State private var confirmDelete = false
+    @State private var managingSubscription = false
 
     var body: some View {
         Group {
@@ -37,12 +39,15 @@ struct GateView: View {
         .background(Theme.bg.ignoresSafeArea())
         .problemAlert(Binding(get: { model.problem }, set: { model.problem = $0 }))
         // Same deletion as Settings: the account and its data, for good.
-        .confirmationDialog("Delete your account?", isPresented: $confirmDelete, titleVisibility: .visible) {
-            Button("Delete account and data", role: .destructive) { Task { await auth.deleteAccount() } }
+        .confirmationDialog(AccountDeletion.title, isPresented: $confirmDelete, titleVisibility: .visible) {
+            Button(AccountDeletion.confirm, role: .destructive) { Task { await auth.deleteAccount() } }
+            // Apple's own sheet: the only place a subscription can be cancelled.
+            Button(AccountDeletion.manage) { managingSubscription = true }
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("Your patients, grades, flashcards and badges are deleted for good. This can't be undone.")
+            Text(AccountDeletion.message)
         }
+        .manageSubscriptionsSheet(isPresented: $managingSubscription)
         .background { Color.clear.problemAlert(Binding(get: { auth.problem }, set: { auth.problem = $0 })) }
         #if DEBUG
         .onAppear { if DebugLaunch.screen == "paywall-delete" { confirmDelete = true } }
