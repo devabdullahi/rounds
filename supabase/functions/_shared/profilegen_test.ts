@@ -170,7 +170,7 @@ Deno.test("term summary fails a section only above the unverified share", () => 
 
 Deno.test("focus parsing accepts the app's stored values only", () => {
   assertEquals(parseFocus("").kind, "");
-  assertEquals(parseFocus("rotation:obgyn"), { kind: "rotation", value: "obgyn", stored: "rotation:obgyn" });
+  assertEquals(parseFocus("rotation:obgyn"), { kind: "rotation", value: "obgyn", setting: "", stored: "rotation:obgyn" });
   assertThrows(() => parseFocus("rotation:ob gyn"));
   assertThrows(() => parseFocus("organ:renal"));
 });

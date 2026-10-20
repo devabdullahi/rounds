@@ -102,13 +102,13 @@ private actor ScriptedCases: CaseService {
     func topicCounts() async throws -> [String: Int] { [:] }
     func gradedCases() async throws -> [GradedCase] { [] }
 
-    func admit(focus: StudyFocus, polling: Bool) async throws -> AdmitOutcome {
+    func admit(focus: StudyFocus, setting: CareSetting, polling: Bool) async throws -> AdmitOutcome {
         admitCalls += 1
         pollingFlags.append(polling)
         return replies.isEmpty ? .preparing : replies.removeFirst()
     }
 
-    func prepare(focus: StudyFocus) async throws { prepared.append(focus.stored) }
+    func prepare(focus: StudyFocus, setting: CareSetting) async throws { prepared.append(focus.stored) }
 
     func loadCase(bed: String) async throws -> ClinicalCase {
         loadedBeds.append(bed)

@@ -40,6 +40,7 @@ struct HomeView: View {
     @State private var stage = INTRO.hasPlayed ? 4 : -1
     @State private var editingFocus = false
     @AppStorage(StudyFocus.storageKey) private var focusStored = ""
+    @AppStorage(CareSetting.storageKey) private var settingStored = ""
     private var focus: FocusSelection { FocusSelection(stored: focusStored) }
 
     var body: some View {
@@ -68,7 +69,7 @@ struct HomeView: View {
         }
         .task { await play() }
         // Write this focus's first patients ahead, so tapping a patient doesn't wait for one.
-        .task(id: focusStored) { await app.prepareAhead(focus: focus) }
+        .task(id: focusStored + "@" + settingStored) { await app.prepareAhead(focus: focus) }
         .sheet(isPresented: $editingFocus) { FocusSheet(counts: app.topicCounts) }
         #if DEBUG
         .onAppear { if DebugLaunch.screen == "focus-sheet" { editingFocus = true } }
@@ -156,12 +157,18 @@ struct HomeView: View {
         }
     }
 
+    /// The focus label, with the care setting when one is picked ("Surgery · Clinic").
+    private var chipLabel: String {
+        let setting = CareSetting(stored: settingStored)
+        return setting == .any ? focus.label : "\(focus.label) · \(setting.label)"
+    }
+
     /// What the deck puts first. Tapping opens the focus sheet.
     private var focusChip: some View {
         return Button { editingFocus = true } label: {
             HStack(spacing: 8) {
                 AppIcon(.target, size: 18).foregroundStyle(Theme.accentText)
-                Text(focus.label).font(.system(size: 15, weight: .semibold))
+                Text(chipLabel).font(.system(size: 15, weight: .semibold))
                 AppIcon(.chevronDown, size: 14).foregroundStyle(Theme.muted)
             }
             .foregroundStyle(Theme.text)
@@ -173,7 +180,7 @@ struct HomeView: View {
             .contentShape(Capsule())
         }
         .buttonStyle(PressableStyle())
-        .accessibilityLabel("Study focus: \(focus.label)")
+        .accessibilityLabel("Study focus: \(chipLabel)")
         .accessibilityHint("Changes which patients come first")
     }
 }

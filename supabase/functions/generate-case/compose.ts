@@ -7,6 +7,7 @@ import { BudgetExceeded } from "../_shared/usage.ts";
 import { CASE_FIXER, CASE_VOICE, FACT_AUDITOR, FACT_FIXER } from "../_shared/prompts.ts";
 import { acceptedNames, type CasePlan, leakTerms, planCase, type Profile } from "../_shared/casegen.ts";
 import type { Focus } from "../_shared/focus.ts";
+import { forSetting } from "./setting.ts";
 import { auditPrompt, candidateFlags, confirmWithUmls, type Flag, fixRequest, type PlanItems, parseClaims } from "../_shared/factaudit.ts";
 import { conceptOf } from "../_shared/terms.ts";
 import { patientName } from "../_shared/names.ts";
@@ -62,9 +63,11 @@ function freshName(plan: CasePlan, history: History): string {
 
 /** Plans the patient in code, has the model write them and checks the writing. */
 export async function composeCase(
-  { profile, clerkships, organ_systems: systems, synonyms }: Picked, focus: Focus, deadline: number, history: History,
+  picked: Picked, focus: Focus, deadline: number, history: History,
   writerMs = INLINE_WRITER_MS,
 ): Promise<CaseRows> {
+  const { clerkships, organ_systems: systems, synonyms } = picked;
+  const profile = forSetting(picked.profile, focus.setting);
   // Clinical psychology is a focus like any rotation; its cases are written as a psychologist's intake.
   const psychology = focus.kind === "rotation" && focus.value === "clinicalPsychology";
   const dermatology = focus.kind === "rotation" && focus.value === "dermatology";

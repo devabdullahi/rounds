@@ -22,8 +22,9 @@
 //   6. Save the public door note and menus, and the private script, results and rubric.
 //   7. Queue the student's next case for this focus after replying (private.ready_cases).
 //
-// `{focus, prepare: true}` only does step 7: the app sends it when a focus is chosen or the app
-// opens, so the first case in a topic is usually written before the student asks for it.
+// `setting` ("clinic" / "hospital", optional) narrows step 2 to conditions seen there and sets the
+// encounter there (setting.ts). `{focus, prepare: true}` only does step 7: the app sends it when a
+// focus is chosen or the app opens, so the first case in a topic is usually written before the student asks for it.
 import { body, callerId, HttpError, json, serve } from "../_shared/http.ts";
 import { currentModel } from "../_shared/llm.ts";
 import { type Focus, parseFocus } from "../_shared/focus.ts";
@@ -54,8 +55,9 @@ serve(async (req) => {
   const userId = await callerId(req);
   await requirePlan(userId);
   // `polling` is still sent by app builds that waited on background jobs; it no longer changes anything.
-  const { focus: requested = "", prepare } = await body<{ focus?: string; polling?: unknown; prepare?: unknown }>(req);
-  const focus = parseFocus(requested);
+  const { focus: requested = "", setting = "", prepare } =
+    await body<{ focus?: string; setting?: unknown; polling?: unknown; prepare?: unknown }>(req);
+  const focus = parseFocus(requested, setting);
 
   // Prepare only: write this focus's next case ahead, before the student asks for it, so even the
   // first patient in a topic opens instantly. Bounded by one job and one ready case per focus.
