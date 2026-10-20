@@ -24,6 +24,7 @@ import SwiftUI
 /// that never finished onboarding, that page is skipped.
 struct OnboardingView: View {
     @Environment(AuthModel.self) private var auth
+    @Environment(AppState.self) private var app
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @AppStorage(SchoolYear.storageKey) private var yearStored = ""
     @AppStorage(StudyGoal.storageKey) private var goalStored = ""
@@ -104,9 +105,17 @@ struct OnboardingView: View {
         .onChange(of: goalStored) { _, new in
             if let goal = StudyGoal(stored: new) { settingStored = goal.careSetting.rawValue }
         }
-        // The typed name replaces whatever Apple or Google gave the account, once the account exists.
-        .onChange(of: page) { old, _ in if old == .name { Task { await saveName() } } }
-        .onChange(of: auth.account?.id) { _, id in if id != nil { Task { await saveName() } } }
+        // Once there's an account: the typed name replaces whatever Apple or Google gave it, and
+        // patients from the student's picks start being written, so some wait when onboarding ends.
+        .onChange(of: page) { old, _ in
+            if old == .name { Task { await saveName() } }
+            if old == .focus { stockWard() }
+        }
+        .onChange(of: auth.account?.id) { _, id in
+            guard id != nil else { return }
+            Task { await saveName() }
+            stockWard()
+        }
         .onAppear { startedSignedOut = auth.account == nil }
         #if DEBUG
         .onAppear { debugStart() }
@@ -214,6 +223,13 @@ struct OnboardingView: View {
         default:
             OnboardingNextButton { step(1) }
         }
+    }
+
+    /// Starts writing the student's first patients, in the background: it outlives this screen.
+    private func stockWard() {
+        guard auth.account != nil, focusReady else { return }
+        let focus = pick
+        Task { await app.stockWard(focus: focus) }
     }
 
     /// Puts the typed name on the account. Nothing to do until both exist; `rename` skips an

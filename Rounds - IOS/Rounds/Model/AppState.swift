@@ -28,6 +28,8 @@ final class AppState {
     /// The focus whose patients were last asked to be written ahead, so revisiting Home doesn't ask
     /// again. After each admit the server queues the next one itself.
     private var preparedFocus: String?
+    /// The focus the ward was last stocked for after onboarding, so it's stocked once per focus.
+    private var stockedFocus: String?
     var problem: String?
 
     var misses: [String: [Miss]] { Dictionary(uniqueKeysWithValues: ward.map { ($0.id, $0.misses) }) }
@@ -251,6 +253,35 @@ final class AppState {
             }
         } catch {
             preparedFocus = nil
+        }
+    }
+
+    /// Patients a new student finds waiting after onboarding.
+    static let starterPatients = 3
+
+    /// Puts patients from the student's picks on the ward without opening them, so the deck isn't
+    /// empty on arrival: up to `starterPatients`, counting ones already waiting that fit, taking the
+    /// picked topics in turn. Once per focus; a topic still being written is skipped, not waited on.
+    func stockWard(focus: FocusSelection) async {
+        guard let cases, stockedFocus != focus.stored else { return }
+        stockedFocus = focus.stored
+        do {
+            try await cases.ensureSignedIn()
+            await refresh()
+            let missing = Self.starterPatients - waiting.filter { $0.fits(focus) }.count
+            guard missing > 0 else { return }
+            let topics = focus.isMix ? [StudyFocus.mix] : focus.items.filter { (conditionCount(for: $0) ?? 1) > 0 }
+            guard !topics.isEmpty else { return }
+            var added = 0
+            for i in 0..<missing {
+                if case .admitted = try await cases.admit(focus: topics[i % topics.count], setting: .current, polling: false) {
+                    added += 1
+                }
+            }
+            if added > 0 { await refresh() }
+        } catch {
+            // A failed start only costs the head start; the deck's dice still admit a patient.
+            stockedFocus = nil
         }
     }
 

@@ -135,7 +135,7 @@ struct PatientDeck: View {
         .haptic(.selection, trigger: pastCommit)
         .onAppear { syncQueue() }
         .onChange(of: app.ward) { withAnimation(STACK.restack) { syncQueue() } }
-        .onChange(of: focusStored) { withAnimation(STACK.restack) { putFocusFirst() } }
+        .onChange(of: focusStored) { withAnimation(STACK.restack) { syncQueue() } }
         #if DEBUG
         .task {
             switch DebugLaunch.screen {
@@ -275,19 +275,13 @@ struct PatientDeck: View {
         Task { await app.admit(focus: FocusSelection(stored: focusStored)) }
     }
 
-    /// Waiting patients, focus first, keeping the student's current order for ones already shown.
+    /// Waiting patients in the student's focus, keeping the current order for ones already shown.
+    /// Patients outside the focus stay off the deck (they're still on the Patients tab); a mix shows all.
     private func syncQueue() {
-        let waiting = app.waiting
+        let focus = FocusSelection(stored: focusStored)
+        let waiting = app.waiting.filter { $0.fits(focus) }
         let kept = queue.compactMap { q in waiting.first { $0.id == q.id } }
         queue = waiting.filter { w in !kept.contains { $0.id == w.id } } + kept
-        putFocusFirst()
-    }
-
-    /// Left: the top patient goes to the back of the list.
-    /// Matching patients move to the front, in their current order; the rest follow.
-    private func putFocusFirst() {
-        let focus = FocusSelection(stored: focusStored)
-        queue = queue.filter { $0.fits(focus) } + queue.filter { !$0.fits(focus) }
     }
 
     /// Left: the top patient leaves the deck for good. They stay on the Patients tab.
