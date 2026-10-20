@@ -7,6 +7,7 @@
 import { type CasePlan, leakTerms, type PlannedTest, type Profile } from "../_shared/casegen.ts";
 import { backgroundForWriter, type PatientBackground } from "./background.ts";
 import { historyFacts, priorCare } from "./history.ts";
+import { patientConcerns } from "./concerns.ts";
 
 export type SkeletonFact = {
   id: string;
@@ -18,7 +19,8 @@ export type SkeletonFact = {
 };
 export type SkeletonManeuver = { id: string; title: string; finding: string | null; key: boolean };
 export type TestMeta = { test_id: string; detail: string; cost: number; turnaround_s: number; delays_care_min: number };
-export type Skeleton = { facts: SkeletonFact[]; maneuvers: SkeletonManeuver[]; test_meta: TestMeta[] };
+/** `asks`: questions the patient puts to the doctor at a natural moment (concerns.ts). */
+export type Skeleton = { facts: SkeletonFact[]; maneuvers: SkeletonManeuver[]; test_meta: TestMeta[]; asks: string[] };
 
 /** The presentation details a strong history covers, paired the way a student asks about them. */
 const HPI: [keys: string[], label: string, importance: SkeletonFact["importance"]][] = [
@@ -253,9 +255,17 @@ export function testMeta(test: PlannedTest, psychology = false): TestMeta {
 }
 
 export function buildSkeleton(profile: Profile, plan: CasePlan, background: PatientBackground | null, rng: () => number): Skeleton {
+  const facts = skeletonFacts(profile, plan, background, rng);
+  // What they think it is, what worries them, what they hope for, and what they'll ask back.
+  const concerns = patientConcerns({
+    systems: profile.triage.organ_systems ?? [], surgical: profile.triage.primary_clerkship === "surgery",
+    age: plan.age, banned: diagnosisWords(profile),
+  }, rng);
+  for (const f of concerns.facts) facts.push({ id: `f${facts.length + 1}`, label: f.label, content: f.content, importance: f.importance, screens_for: null });
   return {
-    facts: skeletonFacts(profile, plan, background, rng),
+    facts,
     maneuvers: skeletonManeuvers(plan, diagnosisWords(profile)),
     test_meta: plan.tests.map((t) => testMeta(t, plan.psychology)),
+    asks: concerns.asks,
   };
 }
