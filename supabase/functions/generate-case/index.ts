@@ -32,7 +32,7 @@ import { requirePlan } from "../_shared/plan.ts";
 // Daily patient limit off for now (2026-10-19, user request); restore these to turn it back on.
 // import { refundQuota, takeQuota } from "../_shared/quota.ts";
 import { BudgetExceeded } from "../_shared/usage.ts";
-import { BACKGROUND_WRITER_MS, composeCase } from "./compose.ts";
+import { BACKGROUND_WRITER_MS, composeCase, NoNewPatient } from "./compose.ts";
 import { pickProfile } from "./pick.ts";
 import { claimReady, finishGeneration, hasReady, insertCase, recordJobPick, startGeneration, studentHistory } from "./stores.ts";
 import type { CaseRows } from "./types.ts";
@@ -44,6 +44,10 @@ const GENERATION_BUDGET_MS = 120_000;
 const INVOCATION_BUDGET_MS = 140_000;
 /** Time a tap needs left to try a second condition after the first failed. */
 const RETRY_MIN_MS = 25_000;
+/** Used-up conditions skipped for one patient before giving up. Each skip costs only a database
+ *  pick (no model call), and a topic rarely has more than a few nearly exhausted conditions. */
+const MAX_USED_UP = 6;
+const USED_UP_MESSAGE = "You've had nearly every patient this topic can make. Try another topic, or mix it up.";
 /** A student waiting gets an answer within this. The app gives up after 60 s, and a case written
  *  after that is never seen: the student taps again and gets a duplicate. */
 const INLINE_BUDGET_MS = 50_000;
@@ -102,18 +106,24 @@ async function writeNow(userId: string, focus: Focus): Promise<CaseRows> {
   const deadline = started + INLINE_BUDGET_MS;
   const history = await studentHistory(userId);
   const tried: string[] = [];
+  let failed = false;   // one writing failure may move on to another condition, not more
+  let usedUp = 0;
   for (;;) {
     const picked = await pickProfile(userId, focus, deadline, { waiting: true, tried });
-    if (!picked) throw new HttpError(503, "Couldn't prepare a patient just now. Tap to try again.");
+    if (!picked) throw new HttpError(503, usedUp ? USED_UP_MESSAGE : "Couldn't prepare a patient just now. Tap to try again.");
     const profiled = Date.now();
     try {
       const rows = await composeCase(picked, focus, deadline, history);
       logGenerated(focus, picked.profile.slug, picked.source, true, true, started, profiled);
       return rows;
     } catch (error) {
-      if (error instanceof BudgetExceeded || deadline - Date.now() < RETRY_MIN_MS || tried.length) throw error;
-      console.warn("generate-case: writing failed, trying another condition", picked.profile.slug, (error as Error).message.slice(0, 120));
       tried.push(picked.profile.slug);
+      // A condition the student has used up: the next one in the topic, at no cost.
+      if (error instanceof NoNewPatient && ++usedUp < MAX_USED_UP) continue;
+      if (error instanceof NoNewPatient) throw new HttpError(503, USED_UP_MESSAGE);
+      if (error instanceof BudgetExceeded || deadline - Date.now() < RETRY_MIN_MS || failed) throw error;
+      console.warn("generate-case: writing failed, trying another condition", picked.profile.slug, (error as Error).message.slice(0, 120));
+      failed = true;
     }
   }
 }
@@ -127,15 +137,25 @@ async function writeAhead(userId: string, focus: Focus, token: string, studentWa
       return;
     }
     const deadline = Math.min(Date.now() + GENERATION_BUDGET_MS, invoked + INVOCATION_BUDGET_MS);
-    const [picked, history] = await Promise.all([
-      pickProfile(userId, focus, deadline, { waiting: studentWaiting, onPick: (slug) => recordJobPick(userId, focus, token, slug) }),
-      studentHistory(userId),
-    ]);
-    if (!picked) throw new Error("no suitable condition could be prepared");
-    const profiled = Date.now();
-    const rows = await composeCase(picked, focus, deadline, history, BACKGROUND_WRITER_MS);
-    await finishGeneration(userId, focus, token, rows);
-    logGenerated(focus, picked.profile.slug, picked.source, studentWaiting, false, started, profiled);
+    const history = await studentHistory(userId);
+    const tried: string[] = [];
+    // A condition the student has used up is skipped for the next one in the topic.
+    for (let usedUp = 0; ; usedUp++) {
+      const picked = await pickProfile(userId, focus, deadline, {
+        waiting: studentWaiting, tried, onPick: (slug) => recordJobPick(userId, focus, token, slug),
+      });
+      if (!picked) throw new Error(usedUp ? "every condition tried was used up for this student" : "no suitable condition could be prepared");
+      const profiled = Date.now();
+      try {
+        const rows = await composeCase(picked, focus, deadline, history, BACKGROUND_WRITER_MS);
+        await finishGeneration(userId, focus, token, rows);
+        logGenerated(focus, picked.profile.slug, picked.source, studentWaiting, false, started, profiled);
+        return;
+      } catch (error) {
+        if (!(error instanceof NoNewPatient) || usedUp + 1 >= MAX_USED_UP) throw error;
+        tried.push(picked.profile.slug);
+      }
+    }
   } catch (error) {
     console.error("generate-case: writing ahead failed", error);
     await finishGeneration(userId, focus, token, null, true);
