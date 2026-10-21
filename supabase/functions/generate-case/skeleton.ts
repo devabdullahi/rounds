@@ -130,6 +130,28 @@ export function describing(value: string, banned: string[]): string {
     .join("; ");
 }
 
+/** Onsets that begin with something happening to the patient. */
+const EVENT = /\b(?:after|at the time of|following|during)\b[^;]{0,40}\b(blows?|falls?|fell|injur\w*|trauma\w*|bites?|bitten|stings?|stung|burn(?:s|ed)?|crash\w*|collisions?|accidents?|struck|hit|twist\w*|lifting)\b/i;
+/** ...and come on with it, not gradually afterwards ("gradual after a period of straining"). */
+const ACUTE_ONSET = /\b(sudden\w*|abrupt\w*|acute\w*|immediately|right after|at the time of|within (?:minutes|hours))\b/i;
+/** Onsets that only might involve an event ("may follow trauma", "without a remembered injury"). */
+const HEDGED = /\b(no clear|without|never|when caused by|if|can|may|might|sometimes|in some)\b/i;
+/** Risk factors that are things a person does, which can set the scene for the event. */
+const ACTIVITY = /\b(sports?|playing|athlet\w*|falls?|work\w*|driving|motor vehicle|bicycl\w*|cycling|lifting|outdoor\w*|hiking|camping|swimming|animals?|dogs?|cats?|gardening|construction|cooking)\b/i;
+
+/**
+ * The event behind an illness that starts with one (a blow, a fall, a bite, a burn): how it
+ * happened, from the onset, and the activity it most likely happened during, from the risk factors.
+ * The writer turns it into one specific story. Null for illnesses that don't start with an event.
+ */
+export function injuryEvent(profile: Profile, banned: string[]): string | null {
+  const onset = describing(text(profile.presentation.hpi.onset), banned);
+  const how = onset.split("; ").find((part) => EVENT.test(part) && ACUTE_ONSET.test(part) && !HEDGED.test(part));
+  if (!how) return null;
+  const during = profile.patient.risk_factors.map((r) => describing(r.text, banned)).find((r) => r && ACTIVITY.test(r));
+  return `how: ${how}${during ? `. during: ${during}` : ""}`;
+}
+
 /** A trailing clause that reasons about the diagnosis (", more typical of viral conjunctivitis",
  *  ", which would argue against it"). */
 const REASONING_CLAUSE = /,\s*(?:which\s+|that\s+)?(?:would\s+)?(?:be\s+)?(?:more\s+|less\s+|most\s+)?(?:typical|suggestive|consistent|characteristic|argu\w+|point\w*)\b.*$/i;
@@ -154,6 +176,10 @@ export function skeletonFacts(profile: Profile, plan: CasePlan, background: Pati
   for (const [keys, label, importance] of HPI) {
     add(label, keys.map((k) => describing(text(hpi[k]), banned)).map((v, i) => v && `${keys[i]}: ${v}`).filter(Boolean).join(". "), importance);
   }
+  // "How did it happen?" is the first thing asked about an injury, and the onset alone ("after a
+  // blow to the head") gives the patient nothing to tell.
+  const event = injuryEvent(profile, banned);
+  if (event) add("What happened", event, "essential");
 
   // The illness's own associated symptoms are a fact each (the ones a student must find); the rest of
   // the review of systems is one fact per body system, so the case stays 15–25 facts, not 40.

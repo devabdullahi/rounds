@@ -22,7 +22,8 @@ const DENIALS = [
 ];
 
 export function talksAboutScript(reply: string): boolean {
-  return META.test(reply);
+  // The model writes curly apostrophes as often as straight ones ("haven’t").
+  return META.test(reply.replace(/[\u2018\u2019\u02BC]/g, "'"));
 }
 
 /** A natural stand-in for a scripted refusal, never the patient's previous reply word for word. */

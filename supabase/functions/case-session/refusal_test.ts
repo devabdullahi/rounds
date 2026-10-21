@@ -9,6 +9,9 @@ Deno.test("replies about the script are caught; ordinary refusals aren't", () =>
     ["I haven't noticed anything like that.", false],
     ["I'd rather not say right now.", false],
     ["I never told my wife about it.", false],
+    ["It started hurting right after I got hit. You\u2019re asking how it happened, but I haven\u2019t told you that yet.", true],
+    ["You're asking about my diet, but that's private.", false],
+    ["You're asking a lot of questions, doc.", false],
   ] as const) {
     assertEquals(talksAboutScript(reply), meta, reply);
   }
