@@ -26,6 +26,8 @@ protocol AuthService: Sendable {
     func sendWelcome() async throws
     /// Records on the account that onboarding is done.
     func markOnboarded() async throws
+    /// Saves the onboarding picks for product research, once per account; a repeat is ignored.
+    func saveOnboardingAnswers(_ answers: OnboardingAnswers) async throws
     /// Saves the name the student goes by (already cleaned by `ProfileName`).
     func updateName(_ name: String) async throws -> Account
     /// Saves the specialty they're aiming for; nil clears it.

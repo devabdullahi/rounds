@@ -258,7 +258,7 @@ struct OnboardingView: View {
             }
         case .pledge:
             if heart.isDone {
-                OnboardingNextButton(title: "Get Started") { auth.finishOnboarding() }
+                OnboardingNextButton(title: "Get Started") { auth.finishOnboarding(answers: .stored(redFlagPick: redFlagPick)) }
                     .transition(reduceMotion ? .opacity : .opacity.combined(with: .scale(scale: 0.95)))
             } else {
                 Text(holdingHeart ? "Keep holding\u{2026}" : "Press and hold")

@@ -220,8 +220,12 @@ final class AuthModel {
 
     /// End of onboarding: recorded on the account (so no device asks again), then into the app.
     /// Recording is best effort; if it fails, the student simply sees onboarding again next time.
-    func finishOnboarding() {
-        if let service { Task { try? await service.markOnboarded() } }
+    /// The picks are saved for research the same way: a failure never holds the student up.
+    func finishOnboarding(answers: OnboardingAnswers? = nil) {
+        if let service {
+            Task { try? await service.markOnboarded() }
+            if let answers { Task { try? await service.saveOnboardingAnswers(answers) } }
+        }
         if let account { self.account = account.markedOnboarded() }
         finishSignIn()
     }
