@@ -1,5 +1,5 @@
 import { assert, assertEquals } from "jsr:@std/assert@1";
-import { acceptedNames, isPregnant, leaks, leakTerms, planCase, type Profile } from "./casegen.ts";
+import { acceptedNames, confirmsCondition, isPregnant, leaks, leakTerms, planCase, type Profile } from "./casegen.ts";
 import { seeded } from "./labs.ts";
 
 const dir = new URL("../../../knowledge-base/profiles/", import.meta.url);
@@ -104,4 +104,16 @@ Deno.test("supporting tests aren't scored when a profile has a core workup", () 
   const indicated = plan.tests.filter((t) => t.role === "indicated").map((t) => t.id.toLowerCase());
   for (const test of supporting) assert(!indicated.includes(test), `${test} is supporting but scored`);
   assert(indicated.length > 0);
+});
+
+Deno.test("an indicated culture that identifies the condition comes back positive", () => {
+  assertEquals(confirmsCondition("Stool culture", "indicated", "Identifies E. coli and other bacterial causes in bloody or severe diarrhea"), true);
+  assertEquals(confirmsCondition("Rapid influenza test", "indicated", "Confirms influenza when it changes management"), true);
+});
+
+Deno.test("a test that rules something out, a conditional one, or imaging stays as planned", () => {
+  assertEquals(confirmsCondition("Stool culture", "indicated", "Excludes infectious colitis before steroids"), false);
+  assertEquals(confirmsCondition("Blood cultures", "conditional", "Detects bloodstream infection in sepsis"), false);
+  assertEquals(confirmsCondition("CT abdomen", "indicated", "Confirms the diagnosis"), false);
+  assertEquals(confirmsCondition("Stool culture", "indicated"), false);
 });

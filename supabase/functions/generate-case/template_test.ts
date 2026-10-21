@@ -1,5 +1,5 @@
 import { assert, assertEquals, assertStringIncludes } from "jsr:@std/assert@1";
-import { factReply, gestationalWeeks, normalReport, studyReport, templateVoice } from "./template.ts";
+import { factReply, gestationalWeeks, normalReport, positiveReport, studyReport, templateVoice } from "./template.ts";
 import { buildSkeleton, describing, diagnosisWords, plain } from "./skeleton.ts";
 import { assemble, checkWriting } from "./writer.ts";
 import type { CasePlan, Profile } from "../_shared/casegen.ts";
@@ -114,4 +114,9 @@ Deno.test("short items lose the reasoning written next to them, and are dropped 
   assertEquals(plain("No tender preauricular lymph node, more typical of viral conjunctivitis.", ["conjunctivitis"]), "No tender preauricular lymph node");
   assertEquals(plain("Urinary incontinence in a mother or sister.", ["urinary incontinence"]), "");
   assertEquals(plain("Wheezing on expiration", []), "Wheezing on expiration");
+});
+
+Deno.test("a positive culture with no writer reads positive, never negative", () => {
+  assertEquals(positiveReport("Stool culture"), "Growth of a pathogenic organism. Identification and susceptibilities to follow.");
+  assertEquals(positiveReport("Rapid influenza test"), "Detected.");
 });

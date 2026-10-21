@@ -1,6 +1,6 @@
 // The rows a written case saves: the door note and menus the student sees, and the private script,
 // results and rubric. Pure.
-import { acceptedNames, type CasePlan, type Profile } from "../_shared/casegen.ts";
+import { acceptedNames, type CasePlan, type PlannedTest, type Profile } from "../_shared/casegen.ts";
 import { flag, type Patient, TESTS } from "../_shared/labs.ts";
 import type { Focus } from "../_shared/focus.ts";
 import { currentModel } from "../_shared/llm.ts";
@@ -53,7 +53,7 @@ export function buildRows(
       id: t.id, name: t.name, detail: m.detail, cost: m.cost, turnaround_s: m.turnaround_s,
       delays_care_min: m.delays_care_min ?? 0,
       result: t.kind === "lab" ? t.result : study!.result,
-      abnormal: t.kind === "lab" ? t.abnormal : study!.abnormal,
+      abnormal: t.kind === "lab" ? t.abnormal : studyAbnormal(t, study!),
       role: t.role, why: t.why ?? null,
     };
   });
@@ -79,3 +79,16 @@ export function buildRows(
     },
   };
 }
+
+/** A report's abnormal flag, kept true to what it says: a planned-positive test is abnormal, and a
+ *  report worded as negative or normal never is (a writer once flagged "No pathogen isolated"). */
+export function studyAbnormal(t: PlannedTest, study: { result: string; abnormal: boolean }): boolean {
+  if (t.positive) return true;
+  const result = study.result.trim();
+  if (NEGATIVE_REPORT.test(result) || NEGATIVE_ONLY.test(result)) return false;
+  return study.abnormal;
+}
+
+/** A one-line report that only says nothing was found ("Shiga toxin not detected."). */
+const NEGATIVE_ONLY = /^[^.;]{0,60}\b(not detected|not isolated|none detected|no growth|negative)\.?$/i;
+const NEGATIVE_REPORT = /^(negative|normal|within normal limits|no (?:acute |significant |diagnostic )?(?:abnormalit|pathogen|growth|enteric|bacterial|organism)|not detected|no \w+ (?:detected|isolated|seen))/i;

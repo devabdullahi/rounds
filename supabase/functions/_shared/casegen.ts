@@ -62,6 +62,10 @@ export type PlannedTest = {
   result?: string;
   abnormal?: boolean;
   findings?: string[];
+  /** A microbiology or serology test the workup orders to find this condition: it comes back
+   *  positive (the organism grown, the antigen detected). Profiles plan findings for imaging and
+   *  ECGs only, so without this a confirming culture would read negative and mislead. */
+  positive?: boolean;
   role: "indicated" | "conditional" | "not_indicated" | "neutral";
   why?: string;
 };
@@ -189,7 +193,7 @@ export function planCase(profile: Profile, rng: () => number, options: PlanOptio
 
 /** The test menu: everything the profile's workup mentions plus routine panels, with lab results filled in. */
 function planTests(profile: Profile, severity: Severity, patient: Patient, rng: () => number, psychology: boolean, cardiac: boolean): PlannedTest[] {
-  let roles = new Map<string, { role: PlannedTest["role"]; why?: string }>();
+  let roles = new Map<string, { role: PlannedTest["role"]; why?: string; core?: boolean }>();
   const group = (g: WorkupGroup) => profile.workup?.[g] ?? [];
   const notIndicated = new Set(group("not_indicated").map((t) => t.test.toLowerCase()));
   // Supporting tests are fine to order but aren't the core workup, so they don't count toward test
@@ -198,7 +202,7 @@ function planTests(profile: Profile, severity: Severity, patient: Patient, rng: 
   for (const g of ["initial", "confirmatory", "supporting"] as const) {
     for (const ref of group(g)) {
       const conditional = !!ref.only_if || notIndicated.has(ref.test.toLowerCase()) || (g === "supporting" && hasCore);
-      roles.set(ref.test, { role: conditional ? "conditional" : "indicated", why: ref.only_if ?? ref.why });
+      roles.set(ref.test, { role: conditional ? "conditional" : "indicated", why: ref.only_if ?? ref.why, core: g !== "supporting" });
     }
   }
   for (const ref of group("not_indicated")) {
@@ -225,7 +229,7 @@ function planTests(profile: Profile, severity: Severity, patient: Patient, rng: 
     return id;
   };
 
-  return [...roles.entries()].map(([test, { role, why }]) => {
+  return [...roles.entries()].map(([test, { role, why, core }]) => {
     if (panelFor(test)) {
       const r = report(test, values, patient);
       const name = TESTS.get(test)?.name ?? test.toUpperCase();
@@ -236,8 +240,25 @@ function planTests(profile: Profile, severity: Severity, patient: Patient, rng: 
     const findings = isEcg
       ? (profile.ecg?.findings ?? []).filter((f) => atLeast(severity, f.min_severity) && rng() < PRESENT_CHANCE[f.frequency]).map((f) => f.finding)
       : (study?.findings ?? []).filter((f) => rng() < PRESENT_CHANCE[f.frequency]).map((f) => f.text);
-    return { id: uniqueId(test), name: test, kind: "study", findings, role, why };
+    // Only the core workup confirms: supporting extras (hepatitis screening alongside chlamydia)
+    // aren't the test that finds this condition.
+    const positive = !study && !isEcg && !!core && confirmsCondition(test, role, why);
+    return { id: uniqueId(test), name: test, kind: "study", findings, role, why, ...(positive ? { positive } : {}) };
   });
+}
+
+/** Tests that find an organism or antibody: their result is the organism, not a picture. */
+const MICROBIOLOGY = /culture|\bpcr\b|\bnaat\b|antigen|toxin|swab|serolog|smear|gram stain|pathogen panel|viral panel|\brapid\b|titer|\big[gm]\b|antibod|monospot|nucleic acid/i;
+/** Reasons that say the test finds this condition... */
+const FINDS = /\b(identif\w*|confirm\w*|detect\w*|diagnos\w*|isolat\w*|establish\w*|grows?|proves?)\b/i;
+/** ...unless it's there to rule something else out (a stool culture in Crohn's disease). */
+const RULES_OUT = /\b(exclud\w*|rul(?:e|es|ed|ing) out|other than|alternative|mimic\w*)\b/i;
+
+/** Whether an indicated microbiology or serology test confirms this condition, so it should come
+ *  back positive. Conditional tests (ordered only in some patients) stay negative: a blood culture
+ *  for "fever or sepsis" isn't positive in an uncomplicated case. */
+export function confirmsCondition(test: string, role: PlannedTest["role"], why?: string): boolean {
+  return role === "indicated" && MICROBIOLOGY.test(test) && !!why && FINDS.test(why) && !RULES_OUT.test(why);
 }
 
 /** A psychology case's menu: the questionnaires the profile scores, then the rest as optional ones

@@ -1,5 +1,5 @@
 import { assert, assertEquals } from "jsr:@std/assert@1";
-import { buildSkeleton, medicationName, overlaps, screensFor, skeletonFacts, testMeta } from "./skeleton.ts";
+import { buildSkeleton, injuryEvent, medicationName, overlaps, screensFor, skeletonFacts, testMeta } from "./skeleton.ts";
 import { assemble } from "./writer.ts";
 import type { CasePlan, Profile } from "../_shared/casegen.ts";
 
@@ -85,4 +85,12 @@ Deno.test("age and sex aren't told as risk factors", () => {
   const p = { ...profile, patient: { ...profile.patient, risk_factors: [{ text: "Male sex in childhood" }, { text: "Childhood or adolescent age" }, { text: "Smoking" }] } } as unknown as Profile;
   const risk = skeletonFacts(p, plan, null, () => 0.5).find((f) => f.label === "Risk factors")!;
   assertEquals(risk.content, "Smoking");
+});
+
+Deno.test("an injury gets a what-happened fact; an illness without an event doesn't", () => {
+  const injury = { presentation: { hpi: { onset: "Sudden, immediately after a blow to the head or body; symptoms may not be noticed until hours later" } },
+    patient: { risk_factors: [{ text: "Prior concussion" }, { text: "Participation in contact or collision sports (e.g., football, soccer)" }] } } as unknown as Profile;
+  assertEquals(injuryEvent(injury, []), "how: Sudden, immediately after a blow to the head or body. during: Participation in contact or collision sports");
+  const illness = { presentation: { hpi: { onset: "Gradual over several days" } }, patient: { risk_factors: [{ text: "Smoking" }] } } as unknown as Profile;
+  assertEquals(injuryEvent(illness, []), null);
 });
