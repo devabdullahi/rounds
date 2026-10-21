@@ -31,7 +31,6 @@ import { type Focus, parseFocus } from "../_shared/focus.ts";
 import { requirePlan } from "../_shared/plan.ts";
 import { refundQuota, takeQuota } from "../_shared/quota.ts";
 import { BudgetExceeded } from "../_shared/usage.ts";
-import { aiOnlyCase, aiOnlyUser } from "./aionly.ts";
 import { BACKGROUND_WRITER_MS, composeCase, NoNewPatient } from "./compose.ts";
 import { pickProfile } from "./pick.ts";
 import { claimReady, finishGeneration, hasReady, insertCase, recordJobPick, startGeneration, studentHistory } from "./stores.ts";
@@ -113,8 +112,6 @@ async function writeNow(userId: string, focus: Focus): Promise<CaseRows> {
   const started = Date.now();
   const deadline = started + INLINE_BUDGET_MS;
   const history = await studentHistory(userId);
-  // The AI-only experiment: listed accounts get a case the model invents whole (aionly.ts).
-  if (await aiOnlyUser(userId)) return await aiOnlyCase(userId, focus, history, deadline);
   const tried: string[] = [];
   let failed = false;   // one writing failure may move on to another condition, not more
   let usedUp = 0;
@@ -148,10 +145,6 @@ async function writeAhead(userId: string, focus: Focus, token: string, studentWa
     }
     const deadline = Math.min(Date.now() + GENERATION_BUDGET_MS, invoked + INVOCATION_BUDGET_MS);
     const history = await studentHistory(userId);
-    if (await aiOnlyUser(userId)) {
-      await finishGeneration(userId, focus, token, await aiOnlyCase(userId, focus, history, deadline));
-      return;
-    }
     const tried: string[] = [];
     // A condition the student has used up is skipped for the next one in the topic.
     for (let usedUp = 0; ; usedUp++) {
