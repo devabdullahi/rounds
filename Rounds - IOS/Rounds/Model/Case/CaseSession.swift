@@ -14,6 +14,9 @@ final class CaseSession {
     private(set) var attemptID: String?
     /// True when this session continues an attempt the student left; the case opens on the interview.
     private(set) var resumed = false
+    /// The server has this attempt in `examMode`, so the mode can't change any more: switching after
+    /// Practice hints would be graded as Exam, and a resumed case would come back in its old mode.
+    var modeLocked: Bool { attemptID != nil }
     /// The attempt start in flight, shared by every action that arrives before it returns.
     @ObservationIgnored private var starting: Task<AttemptStart, Error>?
     /// Tests left off this attempt's menu (practice mode hides the ones the case doesn't call for).
