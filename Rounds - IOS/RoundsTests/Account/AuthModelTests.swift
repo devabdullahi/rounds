@@ -70,6 +70,15 @@ struct AuthModelTests {
         #expect(await service.onboarded.count == 1)
     }
 
+    @Test func finishingOnboardingSavesTheAnswers() async {
+        let service = ScriptedAuth(signIn: .success(account))
+        let auth = AuthModel(service: service, defaults: defaults)
+        _ = await auth.verifyCode(email: "sam@school.edu", code: "123456")
+        auth.finishOnboarding(answers: .stored(in: defaults, redFlagPick: nil))
+        await service.answersSaved.waitFor(1)
+        #expect(await service.answersSaved.count == 1)
+    }
+
     @Test func aWrongCodeStaysOnTheCodeScreen() async {
         let auth = AuthModel(service: ScriptedAuth(signIn: .failure(CodeRejected())), defaults: defaults)
         #expect(await auth.verifyCode(email: "sam@school.edu", code: "000000") == nil)
@@ -157,6 +166,7 @@ private actor Counter {
 private struct ScriptedAuth: AuthService {
     let welcomes = Counter()
     let onboarded = Counter()
+    let answersSaved = Counter()
     let sent = Counter()
     let profile = SavedProfile()
     var signIn: Result<Account, Error> = .failure(URLError(.notConnectedToInternet))
@@ -174,6 +184,7 @@ private struct ScriptedAuth: AuthService {
     func deleteAccount() async throws {}
     func sendWelcome() async throws { await welcomes.increment() }
     func markOnboarded() async throws { await onboarded.increment() }
+    func saveOnboardingAnswers(_ answers: OnboardingAnswers) async throws { await answersSaved.increment() }
     func updateName(_ name: String) async throws -> Account {
         await profile.set(name: name)
         return await profile.applied(to: try signIn.get())

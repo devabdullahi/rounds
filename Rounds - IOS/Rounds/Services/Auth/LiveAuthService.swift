@@ -92,6 +92,17 @@ struct LiveAuthService: AuthService {
         _ = try await client.auth.update(user: UserAttributes(data: ["onboarded": .bool(true)]))
     }
 
+    func saveOnboardingAnswers(_ answers: OnboardingAnswers) async throws {
+        let id = try await client.auth.session.user.id
+        do {
+            try await client.from("onboarding_answers")
+                .insert(OnboardingAnswersRow(userID: id, answers: answers, appVersion: AppVersion.display))
+                .execute()
+        } catch let error as PostgrestError where error.code == "23505" {
+            // Already saved for this account (onboarding ran again): the first answers stand.
+        }
+    }
+
     func updateName(_ name: String) async throws -> Account {
         let user = try await client.auth.update(user: UserAttributes(data: ["full_name": .string(name)]))
         // The profiles row keeps the same name for server-side features; the account metadata is
