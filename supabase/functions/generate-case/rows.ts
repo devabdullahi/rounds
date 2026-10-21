@@ -26,7 +26,7 @@ const VITAL_LABELS: Record<string, string> = { hr: "HR", sbp: "BP", rr: "RR", sp
 
 /** Door-note vitals with an abnormal flag from this patient's normal ranges (age, pregnancy);
  *  the app turns the flag into a color. */
-function doorVitals(plan: CasePlan) {
+export function doorVitals(plan: Pick<CasePlan, "vitals" | "sex" | "age" | "pregnant">) {
   const v = plan.vitals as Record<string, number>;
   const patient: Patient = { sex: plan.sex, age: plan.age, pregnant: plan.pregnant };
   const off = (id: string) => !!flag(TESTS.get(id)!, v[id], patient);
