@@ -49,7 +49,7 @@ Patient: ${who}${name ? `, named ${name} (use this name exactly)` : ""}. Typical
 Chief complaints, in patients' words: ${JSON.stringify(profile.presentation.chief_complaints.map((c) => c.text))}
 Facts to word: ${JSON.stringify(skeleton.facts.map((f) => ({ id: f.id, topic: f.label, content: f.content })))}
 Maneuvers needing a normal result: ${JSON.stringify(skeleton.maneuvers.filter((m) => m.finding === null).map((m) => ({ id: m.id, maneuver: m.title })))}
-Studies needing a report: ${JSON.stringify(studies.map((s) => ({ test_id: s.id, name: s.name, findings: s.findings })))}
+Studies needing a report: ${JSON.stringify(studies.map((s) => ({ test_id: s.id, name: s.name, findings: s.findings, ...(s.positive ? { positive: true } : {}) })))}
 Questions a strong student asks: ${JSON.stringify(profile.teaching.key_questions.map((q) => q.question))}
 
 Return JSON:

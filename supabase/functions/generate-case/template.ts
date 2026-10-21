@@ -96,6 +96,15 @@ export function normalReport(name: string, psychology: boolean): string {
   return "Within normal limits.";
 }
 
+/** A positive report for a test that finds the condition, when no writer worded it. It doesn't name
+ *  the organism (the template has no safe source for it) but never reads negative. */
+export function positiveReport(name: string): string {
+  const n = name.toLowerCase();
+  if (/culture/.test(n)) return "Growth of a pathogenic organism. Identification and susceptibilities to follow.";
+  if (/serolog|antibod|titer|\big[gm]\b|monospot/.test(n)) return "Positive.";
+  return "Detected.";
+}
+
 /** The person: an age- and sex-appropriate word for them. */
 function who(plan: CasePlan): string {
   if (plan.age < 18) return plan.sex === "F" ? "girl" : "boy";
@@ -145,6 +154,7 @@ export function templateVoice(profile: Profile, plan: CasePlan, skeleton: Skelet
 
   const studies = plan.tests.filter((t) => t.kind === "study").map((t) => {
     const found = studyReport(t.findings ?? [], banned);
+    if (!found.length && t.positive) return { test_id: t.id, result: positiveReport(t.name), abnormal: true };
     return { test_id: t.id, result: found.length ? found.join(" ") : normalReport(t.name, plan.psychology), abnormal: found.length > 0 };
   });
 
