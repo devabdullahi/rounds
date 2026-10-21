@@ -62,11 +62,13 @@ serve(async (req) => {
   const { focus: requested = "", setting = "", prepare } =
     await body<{ focus?: string; setting?: unknown; polling?: unknown; prepare?: unknown }>(req);
   const focus = parseFocus(requested, setting);
+  // AI-only testers get each patient written on demand: nothing ahead, nothing waiting from before.
+  const onDemand = await aiOnlyUser(userId);
 
   // Prepare only: write this focus's next case ahead, before the student asks for it, so even the
   // first patient in a topic opens instantly. Bounded by one job and one ready case per focus.
   if (prepare === true) {
-    queueGeneration(userId, focus, invoked, true);
+    if (!onDemand) queueGeneration(userId, focus, invoked, true);
     return json({ status: "preparing" }, 202);
   }
 
@@ -80,7 +82,7 @@ serve(async (req) => {
   // which could die with its worker; writing ahead is only a head start.
   let caseId: string;
   try {
-    let rows = await claimReady(userId, focus);
+    let rows = onDemand ? null : await claimReady(userId, focus);
     try {
       caseId = await insertCase(userId, rows ?? (rows = await writeNow(userId, focus)));
     } catch (error) {
@@ -95,7 +97,7 @@ serve(async (req) => {
     throw error;
   }
   // Queue the next case after this response; the next start can take it as soon as it's ready.
-  queueGeneration(userId, focus, invoked);
+  if (!onDemand) queueGeneration(userId, focus, invoked);
   return json({ case_id: caseId, model: currentModel("case") });
 });
 
