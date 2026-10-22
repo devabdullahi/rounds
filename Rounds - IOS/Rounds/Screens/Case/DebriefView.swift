@@ -251,6 +251,11 @@ struct DebriefView: View {
                     .contentTransition(.numericText(value: Double(g.score)))
                 Text("/100").font(.score(22)).foregroundStyle(Theme.muted)
             }
+            if let note = g.floorNote {
+                Text(note)
+                    .font(.system(size: 14))
+                    .foregroundStyle(Theme.muted)
+            }
 
             // Rating is the secondary, career-level number.
             VStack(alignment: .leading, spacing: 6) {

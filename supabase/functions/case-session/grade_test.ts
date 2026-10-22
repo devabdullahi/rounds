@@ -1,5 +1,5 @@
 import { assert, assertEquals } from "jsr:@std/assert@1";
-import { grade, isSingleDiagnosis, matchesDiagnosis, PASSING_SCORE, type Rubric, unrated } from "./grade.ts";
+import { creditedFacts, grade, isCatchAll, isSingleDiagnosis, matchesDiagnosis, PASSING_SCORE, type Rubric, unrated } from "./grade.ts";
 
 const rubric: Rubric = {
   diagnosis: "Acute appendicitis", accepted: ["Appendicitis"], reasoning_points: ["Migrating pain", "RLQ tenderness"], severity: "moderate",
@@ -187,4 +187,39 @@ Deno.test("safety still comes before a focus area", () => {
   const g = grade(rubric, { revealed: ["onset", "migration"], examined: ["rlq"], ordered: ["cbc"] }, right, ["whatToAsk"]);
   assertEquals(g.feedback[0].covers_miss, "Ectopic pregnancy");
   assertEquals(g.feedback[1].focus, true);
+});
+
+Deno.test("tapping every exam row costs points past the routine few", () => {
+  const all = { revealed: ["onset", "migration", "appetite", "lmp"], ordered: ["hcg", "cbc"] };
+  const focused = grade(rubric, { ...all, examined: ["rlq", "vitals", "general", "heart"] }, right);
+  assertEquals(focused.breakdown.exam.got, 15); // three routine extras are free
+  const shotgun = grade(rubric, { ...all, examined: ["rlq", "a", "b", "c", "d", "e", "f"] }, right);
+  assertEquals(shotgun.breakdown.exam.got, 12); // six extras, three over the free allowance
+  assert(shotgun.feedback.some((f) => f.title === "6 exam checks this case didn't need"));
+});
+
+Deno.test("catch-all questions earn credit for one fact, targeted ones for all they reveal", () => {
+  assert(isCatchAll("Tell me everything about your symptoms"));
+  assert(isCatchAll("Anything else?"));
+  assert(!isCatchAll("What brings you in today?"));
+  assert(!isCatchAll("When did the pain start?"));
+  const transcript = [
+    { role: "student", text: "Tell me everything" }, { role: "patient", text: "...", facts: ["onset", "migration", "appetite"] },
+    { role: "student", text: "Could you be pregnant?" }, { role: "patient", text: "...", facts: ["lmp"] },
+  ];
+  assertEquals(creditedFacts(transcript), ["onset", "lmp"]);
+  assertEquals(creditedFacts([{ role: "student", text: "hi" }, { role: "patient", text: "hello" }]), null);
+  const g = grade(rubric, { revealed: ["onset", "migration", "appetite", "lmp"], credited: ["onset", "lmp"], examined: ["rlq"], ordered: ["hcg", "cbc"] }, right);
+  assertEquals(g.breakdown.history.got, 10); // 2 of 5 weight
+});
+
+Deno.test("a right call lifted to the floor says so, with the workup's own points", () => {
+  const g = grade(rubric, { revealed: [], examined: [], ordered: [] }, right);
+  assertEquals(g.score, PASSING_SCORE);
+  assert(g.floor_applied);
+  assertEquals(g.workup.max, 65);
+  assert(g.workup.got < 35);
+  const full = grade(rubric, { revealed: ["onset", "migration", "appetite", "lmp"], examined: ["rlq"], ordered: ["hcg", "cbc"] }, right);
+  assert(!full.floor_applied);
+  assertEquals(full.workup.got, 65);
 });
