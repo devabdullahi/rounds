@@ -161,7 +161,7 @@ struct OnboardingView: View {
         case .tests: TestsDemoPage(shown: shown) { finished.insert(.tests) }
         case .debrief: DebriefDemoPage(shown: shown) { finished.insert(.debrief) }
         case .voiceIntro: VoiceIntroPage(shown: shown)
-        case .voiceTour: VoiceTourPage(shown: shown) { finished.insert(.voiceTour) }
+        case .voiceTour: VoiceTourPage(shown: shown, onFinished: { finished.insert(.voiceTour) }, onTypeInstead: typeInstead)
         case .heardFrom: HeardFromPage(shown: shown)
         case .pledge: PledgePage(heart: $heart, isHolding: $holdingHeart)
         case .account:
@@ -277,6 +277,13 @@ struct OnboardingView: View {
             try? await Task.sleep(for: .milliseconds(120))
             action()
         }
+    }
+
+    /// The mic or speech recognition is off on the voice tour: voice off, on to the page after it.
+    private func typeInstead() {
+        let next = flow.first { $0.rawValue > OnboardingPage.voiceTour.rawValue }
+        voiceMode = false
+        later { if let next { withAnimation(reduceMotion ? nil : Springs.slide) { visible = next } } }
     }
 
     /// Starts writing the student's first patients, in the background: it outlives this screen.
