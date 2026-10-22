@@ -26,8 +26,18 @@ export type Actions = {
 
 export type Judge = { diagnosisCorrect: boolean; planAppropriate: boolean; planNote: string };
 
-export type Feedback = { tone: "good" | "miss"; title: string; detail: string; covers_miss?: string };
-type Ranked = Feedback & { rank: number };
+/** `focus`: the note is about one of the areas the student said they find hardest, so it's kept
+ *  near the top and the app marks it. */
+export type Feedback = { tone: "good" | "miss"; title: string; detail: string; covers_miss?: string; focus?: boolean };
+type Ranked = Feedback & { rank: number; area?: FocusArea };
+
+/** What a student said they find hardest in onboarding (StudyStruggle in the app). */
+export const FOCUS_AREAS = ["whatToAsk", "differential", "tests", "timing", "talking"] as const;
+export type FocusArea = typeof FOCUS_AREAS[number];
+
+/** Where a note about one of the student's focus areas ranks: right after safety and the answer,
+ *  so it survives the cap. */
+const FOCUS_RANK = 1.5;
 
 // Which feedback survives the cap: safety first, then the answer, then process, then praise.
 const RANK = { overTime: -1, redFlag: 0, diagnosis: 1, unnecessaryTest: 2, keyTest: 2.5, history: 3, exam: 4, plan: 5, praise: 6 };
@@ -111,13 +121,16 @@ export function matchesDiagnosis(answer: string, accepted: string[]): boolean {
   return candidates.length === 1 && names.some((name) => ` ${candidates[0]} `.includes(` ${name} `));
 }
 
-export function grade(r: Rubric, act: Actions, judge: Judge): Grade {
+/** Grades an attempt. `focus` lists the areas the student finds hardest: notes about those rank
+ *  higher and are marked. `missedMustNotMiss` (a can't-miss alternative their differential left
+ *  out) becomes a note only when they named the differential as a focus. */
+export function grade(r: Rubric, act: Actions, judge: Judge, focus: FocusArea[] = [], missedMustNotMiss?: string): Grade {
   const feedback: Ranked[] = [];
   const missed: { flag: string; why: string }[] = [];
   let score = 0;
   const got: Record<Part, number> = { diagnosis: 0, history: 0, exam: 0, red_flags: 0, tests: 0, plan: 0 };
 
-  if (act.overTime) feedback.push({ rank: RANK.overTime, tone: "miss", title: "Over the time limit", detail: "You submitted after the time you set for this case ran out." });
+  if (act.overTime) feedback.push({ rank: RANK.overTime, area: "timing", tone: "miss", title: "Over the time limit", detail: "You submitted after the time you set for this case ran out." });
 
   if (judge.diagnosisCorrect) got.diagnosis = POINTS.diagnosis;
   else feedback.push({ rank: RANK.diagnosis, tone: "miss", title: `The diagnosis was ${r.diagnosis}`, detail: r.reasoning_points.slice(0, 3).join(". ") + "." });
@@ -126,7 +139,7 @@ export function grade(r: Rubric, act: Actions, judge: Judge): Grade {
   const gotWeight = r.key_facts.filter((f) => act.revealed.includes(f.id)).reduce((s, f) => s + f.weight, 0);
   got.history = totalWeight ? Math.round((gotWeight / totalWeight) * POINTS.history) : POINTS.history;
   const gap = [...r.key_facts].sort((a, b) => b.weight - a.weight).find((f) => !act.revealed.includes(f.id));
-  if (gap) feedback.push({ rank: RANK.history, tone: "miss", title: `History gap: ${gap.label}`, detail: "You never asked about it." });
+  if (gap) feedback.push({ rank: RANK.history, area: "whatToAsk", tone: "miss", title: `History gap: ${gap.label}`, detail: "You never asked about it." });
 
   const examined = r.key_maneuvers.filter((m) => act.examined.includes(m.id));
   got.exam = r.key_maneuvers.length ? Math.round((examined.length / r.key_maneuvers.length) * POINTS.exam) : POINTS.exam;
@@ -155,7 +168,7 @@ export function grade(r: Rubric, act: Actions, judge: Judge): Grade {
   if (keyOrdered < need) {
     const others = keyMissed.slice(1).map((t) => t.name);
     feedback.push({
-      rank: RANK.keyTest, tone: "miss", title: `Key test missed: ${keyMissed[0].name}`,
+      rank: RANK.keyTest, area: "tests", tone: "miss", title: `Key test missed: ${keyMissed[0].name}`,
       detail: others.length ? `Also part of the core workup: ${others.join(", ")}.` : "It's part of the core workup for this case.",
     });
   }
@@ -166,13 +179,23 @@ export function grade(r: Rubric, act: Actions, judge: Judge): Grade {
   }
   const wasted = r.unnecessary_tests.filter((t) => act.ordered.includes(t.id));
   tests -= wasted.length * PENALTY.unnecessaryTest;
-  if (wasted.length) feedback.push({ rank: RANK.unnecessaryTest, tone: "miss", title: `${wasted[0].name} wasn't indicated`, detail: wasted[0].why ?? "It didn't change management." });
+  if (wasted.length) feedback.push({ rank: RANK.unnecessaryTest, area: "tests", tone: "miss", title: `${wasted[0].name} wasn't indicated`, detail: wasted[0].why ?? "It didn't change management." });
   // Penalties can push tests below zero, which still lowers the total; the breakdown floors at 0.
   const testPoints = Math.round(tests);
   got.tests = Math.max(0, testPoints);
 
   if (judge.planAppropriate) got.plan = POINTS.plan;
   else if (judge.planNote) feedback.push({ rank: RANK.plan, tone: "miss", title: "Plan needs work", detail: judge.planNote });
+
+  if (missedMustNotMiss && focus.includes("differential")) {
+    feedback.push({ rank: RANK.history, area: "differential", tone: "miss", title: `Your differential left out ${missedMustNotMiss}`, detail: "It's a can't-miss alternative for this presentation." });
+  }
+  for (const f of feedback) {
+    if (f.area && focus.includes(f.area)) {
+      f.focus = true;
+      f.rank = Math.min(f.rank, FOCUS_RANK);
+    }
+  }
 
   score = got.diagnosis + got.history + got.exam + got.red_flags + testPoints + got.plan;
   score = Math.min(100, Math.max(0, score));
@@ -182,7 +205,7 @@ export function grade(r: Rubric, act: Actions, judge: Judge): Grade {
     red_flags: POINTS.redFlags, tests: POINTS.tests, plan: POINTS.plan,
   };
   const verdict = !judge.diagnosisCorrect ? "Missed diagnosis" : score >= 85 ? "Textbook workup" : "Right diagnosis, incomplete path";
-  const ordered = feedback.sort((a, b) => a.rank - b.rank).map(({ rank: _, ...f }) => f);
+  const ordered = feedback.sort((a, b) => a.rank - b.rank).map(({ rank: _, area: __, ...f }) => f);
   return {
     score, diagnosis_correct: judge.diagnosisCorrect, diagnosis: r.diagnosis, verdict,
     rating_delta: Math.round((score - 60) / 2), rated: true, over_time: act.overTime === true, feedback: ordered.slice(0, MAX_FEEDBACK), missed_red_flags: missed,
