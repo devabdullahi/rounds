@@ -74,7 +74,7 @@ struct AuthModelTests {
         let service = ScriptedAuth(signIn: .success(account))
         let auth = AuthModel(service: service, defaults: defaults)
         _ = await auth.verifyCode(email: "sam@school.edu", code: "123456")
-        auth.finishOnboarding(answers: .stored(in: defaults))
+        auth.finishOnboarding(answers: .stored(in: defaults, redFlagPick: nil))
         await service.answersSaved.waitFor(1)
         #expect(await service.answersSaved.count == 1)
     }

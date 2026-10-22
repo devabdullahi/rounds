@@ -8,6 +8,8 @@ struct OnboardingAnswersRow: Encodable {
     let study_focus: String?
     let care_setting: String?
     let struggles: [String]
+    let red_flag_pick: Int?
+    let red_flag_correct: Bool?
     let voice_mode: Bool
     let exam_by_default: Bool
     let time_limit_minutes: Int
@@ -22,6 +24,8 @@ struct OnboardingAnswersRow: Encodable {
         study_focus = answers.studyFocus
         care_setting = answers.careSetting
         struggles = answers.struggles
+        red_flag_pick = answers.redFlagPick
+        red_flag_correct = answers.redFlagCorrect
         voice_mode = answers.voiceMode
         exam_by_default = answers.examByDefault
         time_limit_minutes = answers.timeLimitMinutes
