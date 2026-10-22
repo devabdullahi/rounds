@@ -43,6 +43,8 @@ struct OnboardingView: View {
     @State private var skipped: Set<OnboardingPage> = []
     /// Set on arrival: whether this run includes the account page.
     @State private var startedSignedOut = false
+    /// Set on first appear, so coming back to this page never clears the answers mid-flow.
+    @State private var started = false
 
     private var page: OnboardingPage { visible ?? .schoolYear }
     private var goal: StudyGoal? { StudyGoal(stored: goalStored) }
@@ -121,10 +123,15 @@ struct OnboardingView: View {
         // when onboarding ends.
         .onChange(of: auth.account?.id) { _, id in if id != nil { stockWard() } }
         .onChange(of: consentStored) { _, _ in stockWard() }
-        .onAppear { startedSignedOut = auth.account == nil }
-        #if DEBUG
-        .onAppear { debugStart() }
-        #endif
+        .onAppear {
+            guard !started else { return }
+            started = true
+            startedSignedOut = auth.account == nil
+            OnboardingAnswers.clearPicks()
+            #if DEBUG
+            debugStart()
+            #endif
+        }
     }
 
     // MARK: Pages
