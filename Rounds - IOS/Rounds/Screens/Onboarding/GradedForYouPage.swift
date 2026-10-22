@@ -13,14 +13,27 @@ struct GradedForYouPage: View {
 
     private var title: String {
         guard let goal, isExam else { return "Great choice. Every case is graded like an attending would." }
-        return goal == .shelf ? "Great choice. Every case is graded for your shelves." : "Great choice. Every case is graded for \(goal.label)."
+        return goal == .shelf ? "Great choice. Every debrief has tips for your shelves." : "Great choice. Every debrief has \(tipsName) tips."
+    }
+
+    /// The exam as it reads before "tips": "Step 2 CK tips", "OSCE tips", "Shelf tips".
+    private var tipsName: String {
+        switch goal {
+        case .shelf: "Shelf"
+        case .osce: "OSCE"
+        case let goal?: goal.label
+        case nil: "Exam"
+        }
     }
 
     private var rows: [(IconGlyph, String, String)] {
         [
-            (.user, "Patients at your level", year.map { "\($0.label), the cases your year sees" } ?? "Cases that match where you are"),
-            (.check, isExam ? "Graded on what \(goal?.label ?? "your exam") tests" : "Graded on every move", "History, exam, tests, diagnosis"),
-            (.cards, "Your misses become cards", isExam ? "Review them before test day" : "Review them any time"),
+            // Only what the app really does: the exam lens in each debrief, the same full grading
+            // for everyone, and cards from misses. No claims about case level or schedule yet.
+            goal?.debriefTips.map { (.user, "\(tipsName) tips in every debrief", $0) }
+                ?? (.user, "An attending's feedback", "What went well, and what to fix"),
+            (.check, "Graded on the whole workup", "History, exam, tests, diagnosis"),
+            (.cards, "Turn your misses into cards", isExam ? "Review them before test day" : "Review them any time"),
         ]
     }
 
