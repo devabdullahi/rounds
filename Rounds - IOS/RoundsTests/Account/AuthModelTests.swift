@@ -79,6 +79,22 @@ struct AuthModelTests {
         #expect(await service.answersSaved.count == 1)
     }
 
+    @Test func eachOnboardingPageIsLoggedOncePerRun() async {
+        let service = ScriptedAuth(signIn: .success(account))
+        let auth = AuthModel(service: service, defaults: defaults)
+        auth.reachedOnboarding(page: "patients", step: 1)
+        auth.reachedOnboarding(page: "tryInterview", step: 2)
+        auth.reachedOnboarding(page: "patients", step: 1)   // swiped back
+        await service.stepsLogged.waitFor(2)
+        try? await Task.sleep(for: .milliseconds(50))
+        #expect(await service.stepsLogged.count == 2)
+    }
+
+    @Test func theInstallIDIsMadeOnceAndKept() {
+        let first = InstallID.current(in: defaults)
+        #expect(InstallID.current(in: defaults) == first)
+    }
+
     @Test func aWrongCodeStaysOnTheCodeScreen() async {
         let auth = AuthModel(service: ScriptedAuth(signIn: .failure(CodeRejected())), defaults: defaults)
         #expect(await auth.verifyCode(email: "sam@school.edu", code: "000000") == nil)
@@ -167,6 +183,7 @@ private struct ScriptedAuth: AuthService {
     let welcomes = Counter()
     let onboarded = Counter()
     let answersSaved = Counter()
+    let stepsLogged = Counter()
     let sent = Counter()
     let profile = SavedProfile()
     var signIn: Result<Account, Error> = .failure(URLError(.notConnectedToInternet))
@@ -185,6 +202,7 @@ private struct ScriptedAuth: AuthService {
     func sendWelcome() async throws { await welcomes.increment() }
     func markOnboarded() async throws { await onboarded.increment() }
     func saveOnboardingAnswers(_ answers: OnboardingAnswers) async throws { await answersSaved.increment() }
+    func logOnboardingStep(install: UUID, page: String, step: Int) async throws { await stepsLogged.increment() }
     func updateName(_ name: String) async throws -> Account {
         await profile.set(name: name)
         return await profile.applied(to: try signIn.get())

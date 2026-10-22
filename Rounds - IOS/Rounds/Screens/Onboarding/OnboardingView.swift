@@ -109,7 +109,10 @@ struct OnboardingView: View {
                 .animation(.easeOut(duration: 0.25), value: heart.isDone)
         }
         .background { background.animation(.easeInOut(duration: 0.35), value: page) }
-        .onChange(of: page, initial: true) { _, p in seen.insert(p) }
+        .onChange(of: page, initial: true) { _, p in
+            seen.insert(p)
+            auth.reachedOnboarding(page: String(describing: p), step: stepNumber)
+        }
         // The focus picker saves as it changes, so swiping on to the promise keeps the latest picks.
         .onChange(of: pick) { _, new in if focusReady { focusStored = new.stored } }
         .onChange(of: mixChosen) { _, _ in if focusReady { focusStored = pick.stored } }
@@ -149,6 +152,7 @@ struct OnboardingView: View {
         switch p {
         case .focus:
             FocusPage(pick: $pick, mixChosen: $mixChosen)
+        case .tryInterview: TryInterviewPage(shown: seen.contains(p))
         case .schoolYear: SchoolYearPage(shown: seen.contains(p))
         case .studyGoal: StudyGoalPage(shown: seen.contains(p))
         case .careSetting: CareSettingPage(shown: seen.contains(p))
@@ -303,7 +307,7 @@ struct OnboardingView: View {
     #if DEBUG
     /// `-screen` names that open onboarding on a given page.
     private static let debugPages: [String: OnboardingPage] = [
-        "onboarding-intro": .patients, "onboarding-year": .schoolYear, "onboarding-goal": .studyGoal,
+        "onboarding-intro": .patients, "onboarding-try": .tryInterview, "onboarding-year": .schoolYear, "onboarding-goal": .studyGoal,
         "onboarding-graph": .examReady, "onboarding-graded": .graded, "onboarding": .focus, "focus-system": .focus,
         "onboarding-name": .name,
         "onboarding-setting": .careSetting, "onboarding-redflag": .redFlag, "onboarding-cards": .missCards,

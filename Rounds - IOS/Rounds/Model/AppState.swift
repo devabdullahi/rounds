@@ -147,6 +147,9 @@ final class AppState {
     var patientsSeen: Int { graded.count }
     /// Cases graded since midnight on this device, for the daily goal on Home.
     var gradedToday: Int { graded.filter { Calendar.current.isDateInToday($0.submittedAt) }.count }
+    /// A student who hasn't finished a case yet, once their record has loaded: Home points them at
+    /// their first patient instead of greeting them by shift, so onboarding never ends on a blank.
+    var isFirstPatient: Bool { hasLoadedRecord && graded.isEmpty }
     /// Share of graded cases with the right diagnosis; nil before the first one.
     var rightDiagnosisRate: Double? {
         graded.isEmpty ? nil : Double(graded.filter(\.diagnosisCorrect).count) / Double(graded.count)

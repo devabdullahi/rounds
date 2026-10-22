@@ -103,6 +103,16 @@ struct LiveAuthService: AuthService {
         }
     }
 
+    func logOnboardingStep(install: UUID, page: String, step: Int) async throws {
+        do {
+            try await client.from("onboarding_steps")
+                .insert(OnboardingStepRow(install_id: install, page: page, step: step, app_version: AppVersion.display))
+                .execute()
+        } catch let error as PostgrestError where error.code == "23505" {
+            // Already logged for this install (onboarding ran again).
+        }
+    }
+
     func updateName(_ name: String) async throws -> Account {
         let user = try await client.auth.update(user: UserAttributes(data: ["full_name": .string(name)]))
         // The profiles row keeps the same name for server-side features; the account metadata is
