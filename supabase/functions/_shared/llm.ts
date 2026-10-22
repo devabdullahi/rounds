@@ -126,7 +126,6 @@ export async function completeJSON<T>(
   if (!key) throw new Error(`${provider.keyEnv} is not set`);
   await takeBudget(task);
 
-  const deadline = Date.now() + timeoutMs;
   const send = (signal: AbortSignal) => provider.style === "openai"
     ? fetch(provider.url, {
       method: "POST",
@@ -147,7 +146,20 @@ export async function completeJSON<T>(
       signal,
       body: JSON.stringify({ model, max_tokens: maxTokens, system, messages: [{ role: "user", content: user }], ...(temperature === undefined ? {} : { temperature }) }),
     });
-  // A busy or briefly failing provider (429, 5xx) gets a couple more tries inside the same time limit.
+  const res = await sendWithRetries(send, timeoutMs);
+  const reply = await res.json();
+  const usage = usageOf(reply);
+  await recordUsage(task, `${name}/${model}`, usage, costUSD(model, usage));
+  const text: string = provider.style === "openai"
+    ? reply.choices[0].message.content
+    : reply.content.map((b: { text?: string }) => b.text ?? "").join("");
+  return parseJSON<T>(text);
+}
+
+/** Sends a request, giving a busy or briefly failing provider (429, 5xx) a couple more tries inside
+ *  the same time limit. Throws with the provider's error text when it still fails. */
+async function sendWithRetries(send: (signal: AbortSignal) => Promise<Response>, timeoutMs: number): Promise<Response> {
+  const deadline = Date.now() + timeoutMs;
   let res = await send(AbortSignal.timeout(timeoutMs));
   for (let attempt = 0; !res.ok && attempt < LLM_RETRIES; attempt++) {
     const wait = retryWait(res.status, res.headers.get("retry-after"), attempt);
@@ -157,13 +169,69 @@ export async function completeJSON<T>(
     res = await send(AbortSignal.timeout(deadline - Date.now()));
   }
   if (!res.ok) throw new Error(`LLM ${res.status}: ${await res.text()}`);
-  const reply = await res.json();
-  const usage = usageOf(reply);
+  return res;
+}
+
+/** completeJSON, streamed: `onText` gets the model's raw output so far each time more arrives, so a
+ *  caller can show part of the answer before it's finished. The parsed whole comes back as usual.
+ *  OpenAI-style providers only; any other just answers in one piece, with no partial text. */
+export async function streamJSON<T>(
+  system: string, user: string, maxTokens: number, options: CallOptions, onText: (soFar: string) => void,
+): Promise<T> {
+  const { task, temperature, timeoutMs = LLM_TIMEOUT_MS } = options;
+  const { name, provider, setting: { model, effort } } = resolve(task);
+  if (!provider) throw new Error(`unknown LLM provider ${name}`);
+  if (provider.style !== "openai") return completeJSON<T>(system, user, maxTokens, options);
+  const key = Deno.env.get(provider.keyEnv);
+  if (!key) throw new Error(`${provider.keyEnv} is not set`);
+  await takeBudget(task);
+
+  const res = await sendWithRetries((signal) => fetch(provider.url, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+    signal,
+    body: JSON.stringify({
+      model,
+      messages: [{ role: "system", content: system }, { role: "user", content: user }],
+      response_format: { type: "json_object" },
+      stream: true,
+      // The last chunk carries the token counts, for the spend log.
+      stream_options: { include_usage: true },
+      ...thinkingFields(provider.thinking, maxTokens, effort),
+      ...(provider.thinking === "openai" ? {} : { temperature: temperature ?? 0.7 }),
+    }),
+  }), timeoutMs);
+  let text = "";
+  // deno-lint-ignore no-explicit-any
+  let last: any = null;
+  for await (const data of sseData(res.body!)) {
+    if (data === "[DONE]") break;
+    const chunk = JSON.parse(data);
+    if (chunk.usage) last = chunk;
+    const piece: string | undefined = chunk.choices?.[0]?.delta?.content;
+    if (piece) {
+      text += piece;
+      onText(text);
+    }
+  }
+  const usage = usageOf(last);
   await recordUsage(task, `${name}/${model}`, usage, costUSD(model, usage));
-  const text: string = provider.style === "openai"
-    ? reply.choices[0].message.content
-    : reply.content.map((b: { text?: string }) => b.text ?? "").join("");
   return parseJSON<T>(text);
+}
+
+/** The `data:` payloads of a server-sent event stream, in order, however the bytes are split. */
+export async function* sseData(body: ReadableStream<Uint8Array>): AsyncGenerator<string> {
+  let buffer = "";
+  for await (const piece of body.pipeThrough(new TextDecoderStream())) {
+    buffer += piece;
+    let newline: number;
+    while ((newline = buffer.indexOf("\n")) >= 0) {
+      const line = buffer.slice(0, newline).replace(/\r$/, "");
+      buffer = buffer.slice(newline + 1);
+      if (line.startsWith("data:")) yield line.slice(5).trimStart();
+    }
+  }
+  if (buffer.startsWith("data:")) yield buffer.slice(5).trimStart();
 }
 
 /** Token counts from either API's usage block. Cache hits are OpenAI's cached prompt tokens. */

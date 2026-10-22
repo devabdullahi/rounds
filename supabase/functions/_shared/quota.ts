@@ -4,7 +4,7 @@
 import { HttpError } from "./http.ts";
 import { sql } from "./db.ts";
 
-export type QuotaKind = "case" | "question" | "cards" | "grade" | "voice" | "claim";
+export type QuotaKind = "case" | "question" | "cards" | "grade" | "claim";
 
 const LIMITS: Record<QuotaKind, { env: string; fallback: number; noun: string }> = {
   case: { env: "LIMIT_CASES_PER_DAY", fallback: 10, noun: "new patients" },
@@ -12,11 +12,9 @@ const LIMITS: Record<QuotaKind, { env: string; fallback: number; noun: string }>
   cards: { env: "LIMIT_CARD_DECKS_PER_DAY", fallback: 3, noun: "generated card decks" },
   // Above the case limit: shared published cases and resubmits are graded too.
   grade: { env: "LIMIT_GRADES_PER_DAY", fallback: 30, noun: "graded submissions" },
-  // Each spoken turn is two units: the student's words transcribed, the patient's reply spoken.
-  voice: { env: "LIMIT_VOICE_PER_DAY", fallback: 400, noun: "voice turns" },
   // Purchase claims each ask Apple; the app claims on launch and after a purchase, far below this.
   claim: { env: "LIMIT_CLAIMS_PER_DAY", fallback: 50, noun: "purchase checks" },
-  // Live voice is limited by cost instead: a daily dollar budget per student (_shared/realtime.ts).
+  // Voice has no allowance of its own (2026-10-21): the project-wide daily cap (usage.ts) bounds it.
 };
 
 export function dailyLimit(kind: QuotaKind): number {

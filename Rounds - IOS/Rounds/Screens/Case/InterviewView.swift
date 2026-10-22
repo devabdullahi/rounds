@@ -281,7 +281,7 @@ struct InterviewView: View {
                     ForEach(session.messages) { m in
                         bubble(m).id(m.id)
                     }
-                    if session.isPatientTyping {
+                    if session.showsTypingDots {
                         TypingDots()
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .transition(.opacity.combined(with: .offset(y: BUBBLE.offsetY)))
@@ -309,6 +309,10 @@ struct InterviewView: View {
             }
             .onChange(of: session.isPatientTyping) {
                 withAnimation(Springs.slide) { proxy.scrollTo("bottom", anchor: .bottom) }
+            }
+            // A streamed reply grows in place: keep its newest line in view.
+            .onChange(of: session.messages.last?.text) {
+                proxy.scrollTo("bottom", anchor: .bottom)
             }
         }
     }
@@ -475,9 +479,7 @@ struct InterviewView: View {
         if isLive, let live {
             switch live.phase {
             case .listening, .thinking:
-                guard let endsAt = live.endsAt else { return " " }
-                let left = max(0, Int(endsAt.timeIntervalSinceNow))
-                return "Just talk; \(c.firstName) answers when you pause · \(left / 60):\(String(format: "%02d", left % 60)) left"
+                return "Just talk; \(c.firstName) answers when you pause"
             case .patientSpeaking: return "Talk or tap the orb to interrupt"
             default: return " "
             }

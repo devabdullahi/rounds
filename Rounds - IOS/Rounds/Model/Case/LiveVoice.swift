@@ -5,10 +5,11 @@ import Observation
 /// A live voice conversation with the patient: the student talks, the patient answers out loud in
 /// real time, and either can cut in. Audio runs phone ↔ OpenAI (`LiveVoiceTransport`); this model
 /// keeps the phase for the orb, pairs each question with its answer and hands the pair to the case
-/// session to log, and ends the call when its time is up.
+/// session to log. A call has no time limit; it ends after a stretch with no finished exchange, as
+/// the server does, so a phone left on a desk doesn't keep talking to OpenAI.
 ///
-/// If a call can't start (no allowance left today, no connection), `begin` returns false and the
-/// screen falls back to turn-by-turn voice (`VoiceController`).
+/// If a call can't start (no connection, the server refused), `begin` returns false and the screen
+/// falls back to turn-by-turn voice (`VoiceController`).
 @MainActor
 @Observable
 final class LiveVoice {
@@ -20,8 +21,6 @@ final class LiveVoice {
     /// The patient's words so far in the current reply, revealed at about speaking pace: the API's
     /// text runs ahead of the audio, so showing it as it lands would put the caption seconds early.
     private(set) var caption = ""
-    /// When the call ends on its own; nil until it's live.
-    private(set) var endsAt: Date?
 
     var isActive: Bool { phase != .idle }
 
@@ -44,7 +43,9 @@ final class LiveVoice {
     @ObservationIgnored private var callID: String?
     @ObservationIgnored private var pairer = LiveTurnPairer()
     @ObservationIgnored private var listening: Task<Void, Never>?
-    @ObservationIgnored private var deadline: Task<Void, Never>?
+    /// Hangs up after the call's idle window with no finished exchange; restarted by each one.
+    @ObservationIgnored private var idle: Task<Void, Never>?
+    @ObservationIgnored private var idleSeconds = LiveCall.defaultIdleSeconds
     /// Exchanges still being logged. Hanging up waits for them, since the server refuses turns for a
     /// call that has already ended.
     @ObservationIgnored private var logging: [Task<Void, Never>] = []
@@ -117,12 +118,19 @@ final class LiveVoice {
 
     private func started(_ call: LiveCall) {
         callID = call.id
-        let seconds = call.seconds
-        endsAt = .now.addingTimeInterval(TimeInterval(seconds))
-        deadline = Task { [weak self] in
+        idleSeconds = call.idleSeconds
+        restartIdle()
+    }
+
+    /// The server hangs up a call that logs no exchange for its idle window; this ends it on the
+    /// phone at the same time, with a message that says why.
+    private func restartIdle() {
+        idle?.cancel()
+        let seconds = idleSeconds
+        idle = Task { [weak self] in
             try? await Task.sleep(for: .seconds(seconds))
             guard !Task.isCancelled else { return }
-            self?.finish("This live call reached its time limit. Tap the mic to start another.")
+            self?.finish("The call ended after a quiet stretch. Tap the mic to pick up where you left off.")
         }
     }
 
@@ -198,6 +206,7 @@ final class LiveVoice {
 
     private func log(_ turn: (question: String, reply: String)) {
         guard let callID else { return }
+        restartIdle()   // logging it keeps the call open on the server too
         logging.append(Task { [weak self, logTurn] in
             let ended = await logTurn(callID, turn.question, turn.reply)
             if ended { self?.finish("The live call ended. You can still type, examine and order tests.") }
@@ -213,10 +222,9 @@ final class LiveVoice {
 
     private func stop() {
         listening?.cancel(); listening = nil
-        deadline?.cancel(); deadline = nil
+        idle?.cancel(); idle = nil
         transport?.disconnect(); transport = nil
         callID = nil
-        endsAt = nil
         pairer = LiveTurnPairer()
         logging = []
         clearCaption()
@@ -228,7 +236,6 @@ final class LiveVoice {
     #if DEBUG
     func debugPin(_ phase: VoiceController.Phase, level: CGFloat, caption: String = "") {
         self.phase = phase; self.level = level; self.caption = caption
-        endsAt = .now.addingTimeInterval(240)
     }
     #endif
 }

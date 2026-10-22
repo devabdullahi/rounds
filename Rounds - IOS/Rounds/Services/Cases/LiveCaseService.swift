@@ -114,8 +114,45 @@ struct LiveCaseService: CaseService {
 
     func ask(attempt: String, question: String) async throws -> PatientAnswer {
         let r: AskReply = try await invoke("case-session", ["action": "ask", "attempt_id": attempt, "question": question])
-        return PatientAnswer(reply: r.reply, revealed: r.revealed.map { ($0.id, $0.label) }, revealedIDs: r.revealed_ids,
-                             coverage: (r.coverage.got, r.coverage.total))
+        return r.answer
+    }
+
+    func askStreaming(attempt: String, question: String) async throws -> AsyncThrowingStream<AnswerProgress, Error> {
+        let bytes: URLSession.AsyncBytes
+        do {
+            bytes = try await stream(["action": "ask_stream", "attempt_id": attempt, "question": question])
+        } catch let error as CaseServiceError where error.message == "Unknown action." {
+            // A server from before ask_stream: the whole answer at once.
+            let answer = try await ask(attempt: attempt, question: question)
+            return AsyncThrowingStream { $0.yield(.done(answer)); $0.finish() }
+        }
+        return AsyncThrowingStream { continuation in
+            let reading = Task {
+                do {
+                    // One JSON object per line: the reply so far, then the answer (or an error).
+                    for try await line in bytes.lines {
+                        let data = Data(line.utf8)
+                        let step = try JSONDecoder().decode(AskStreamLine.self, from: data)
+                        switch step.type {
+                        case "text":
+                            if let text = step.text { continuation.yield(.writing(text)) }
+                        case "done":
+                            continuation.yield(.done(try JSONDecoder().decode(AskReply.self, from: data).answer))
+                            continuation.finish()
+                            return
+                        case "error":
+                            throw CaseServiceError(message: Self.sentence(step.error ?? "the patient didn't answer; try again"))
+                        default:
+                            continue   // a step this build doesn't know
+                        }
+                    }
+                    throw CaseServiceError(message: "The patient didn't answer; try again.")
+                } catch {
+                    continuation.finish(throwing: error)
+                }
+            }
+            continuation.onTermination = { _ in reading.cancel() }
+        }
     }
 
     func examine(attempt: String, maneuver: String) async throws -> String {
@@ -141,7 +178,7 @@ struct LiveCaseService: CaseService {
 
     func startLiveCall(attempt: String, offer: String) async throws -> LiveCall {
         let r: LiveCallReply = try await invoke("case-session", ["action": "voice_session", "attempt_id": attempt, "sdp": offer])
-        return LiveCall(answer: r.sdp, id: r.call_id, seconds: r.seconds)
+        return LiveCall(answer: r.sdp, id: r.call_id, idleSeconds: r.idle_seconds ?? r.seconds ?? LiveCall.defaultIdleSeconds)
     }
 
     func logVoiceTurn(attempt: String, call: String, question: String, reply: String) async throws -> VoiceTurnOutcome {
@@ -168,9 +205,7 @@ struct LiveCaseService: CaseService {
         var iterator = bytes.makeAsyncIterator()
         var line = Data()
         while let byte = try await iterator.next(), byte != UInt8(ascii: "\n") { line.append(byte) }
-        let r = try JSONDecoder().decode(AskReply.self, from: line)
-        let answer = PatientAnswer(reply: r.reply, revealed: r.revealed.map { ($0.id, $0.label) }, revealedIDs: r.revealed_ids,
-                                   coverage: (r.coverage.got, r.coverage.total))
+        let answer = try JSONDecoder().decode(AskReply.self, from: line).answer
         return SpokenAnswer(answer: answer, audio: Self.audioChunks(iterator))
     }
 
@@ -181,8 +216,13 @@ struct LiveCaseService: CaseService {
             return try await client.streamSigned("case-session", body: body, project: project)
         } catch let FunctionsError.httpError(code, data) {
             let message = (try? JSONDecoder().decode(ErrorReply.self, from: data))?.error
-            throw CaseServiceError(message: message.map { "\($0.prefix(1).uppercased())\($0.dropFirst())." } ?? "The server returned \(code).")
+            throw CaseServiceError(message: message.map(Self.sentence) ?? "The server returned \(code).")
         }
+    }
+
+    /// The server's lower-case error text as a sentence for the chat.
+    private static func sentence(_ message: String) -> String {
+        "\(message.prefix(1).uppercased())\(message.dropFirst())."
     }
 
     /// The rest of a response as PCM chunks of about 100 ms each.
@@ -453,9 +493,19 @@ private struct AskReply: Decodable {
     let revealed: [Revealed]
     let revealed_ids: [String]
     let coverage: Coverage
+
+    var answer: PatientAnswer {
+        PatientAnswer(reply: reply, revealed: revealed.map { ($0.id, $0.label) }, revealedIDs: revealed_ids,
+                      coverage: (coverage.got, coverage.total))
+    }
 }
 
-private struct LiveCallReply: Decodable { let sdp: String; let call_id: String; let seconds: Int }
+/// One line of ask_stream: `text` carries the reply so far, `done` the answer (as AskReply, decoded
+/// from the same line), `error` why it failed.
+private struct AskStreamLine: Decodable { let type: String; let text: String?; let error: String? }
+
+/// `idle_seconds` is missing from servers that still ended calls after a fixed `seconds`.
+private struct LiveCallReply: Decodable { let sdp: String; let call_id: String; let idle_seconds: Int?; let seconds: Int? }
 private struct EmptyReply: Decodable {}
 
 private struct VoiceTurnReply: Decodable {

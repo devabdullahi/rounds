@@ -1,5 +1,5 @@
 import { assertEquals, assertThrows } from "jsr:@std/assert@1";
-import { type Effort, parseJSON, PROVIDERS, retryWait, settingFor, type Task, thinkingFields, usageOf } from "./llm.ts";
+import { type Effort, parseJSON, PROVIDERS, retryWait, settingFor, sseData, type Task, thinkingFields, usageOf } from "./llm.ts";
 
 Deno.test("providers without thinking get the plain token cap", () => {
   assertEquals(thinkingFields(undefined, 400, "high"), { max_tokens: 400 });
@@ -85,4 +85,20 @@ Deno.test("provider errors worth retrying wait a little; client errors don't ret
   assertEquals(retryWait(429, "120", 0, mid), 10000);
   assertEquals(retryWait(400, null, 0, mid), null);
   assertEquals(retryWait(401, null, 0, mid), null);
+});
+
+Deno.test("server-sent events read whole however the bytes are split", async () => {
+  const wire = 'data: {"a":1}\r\n\r\n: keep-alive\n\ndata: {"b":"x\\ny"}\n\ndata: [DONE]';
+  const encoder = new TextEncoder();
+  // Split mid-line and mid-multibyte-free text, in three-byte pieces.
+  const pieces = [...encoder.encode(wire)].reduce<number[][]>((all, byte, i) => (i % 3 ? all.at(-1)!.push(byte) : all.push([byte]), all), []);
+  const body = new ReadableStream<Uint8Array>({
+    start(out) {
+      for (const piece of pieces) out.enqueue(new Uint8Array(piece));
+      out.close();
+    },
+  });
+  const seen: string[] = [];
+  for await (const data of sseData(body)) seen.push(data);
+  assertEquals(seen, ['{"a":1}', '{"b":"x\\ny"}', "[DONE]"]);
 });
