@@ -6,13 +6,13 @@ import Foundation
 /// the answers read back as a plan, the AI consent (before anything is sent to an AI provider),
 /// then the account (only when onboarding began signed out) and the promise. They're pages of one carousel (`OnboardingView`), so every step slides the same way.
 enum OnboardingPage: Int, CaseIterable {
-    case patients, tryInterview, schoolYear, studyGoal, examReady, graded, focus, careSetting, struggles, redFlag, talkStyle,
-         caseMode, caseTimer, name, promise, missCards, progress, dailyGoal, reminder, plan, aiConsent, account, pledge
+    case patients, tryInterview, schoolYear, studyGoal, examReady, graded, focus, careSetting, struggles, talkStyle,
+         caseTimer, name, promise, missCards, progress, dailyGoal, reminder, plan, aiConsent, account, pledge
 
     /// Question pages share one layout (question on top, answers as a list); the rest show art.
     var isQuestion: Bool {
         switch self {
-        case .tryInterview, .schoolYear, .studyGoal, .careSetting, .struggles, .redFlag, .talkStyle, .caseMode, .caseTimer,
+        case .tryInterview, .schoolYear, .studyGoal, .careSetting, .struggles, .talkStyle, .caseTimer,
              .name, .dailyGoal, .reminder: true
         default: false
         }
@@ -20,7 +20,7 @@ enum OnboardingPage: Int, CaseIterable {
 
     /// Questions with no sensible default that the student may still pass over: nothing is saved
     /// and the flow goes on. The rest either need an answer (year, goal, name) or start answered.
-    var isSkippable: Bool { self == .struggles || self == .redFlag }
+    var isSkippable: Bool { self == .struggles }
 
     /// The big headline under the hero art, said with the student's answers so far where a page
     /// has a personal version. Question pages and the focus picker set their own title.

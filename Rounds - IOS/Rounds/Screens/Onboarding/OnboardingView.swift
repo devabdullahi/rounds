@@ -13,7 +13,7 @@ import SwiftUI
  * background cross-fades between pages (mint, page colour for the focus picker, blush for
  * the promise). Question pages have no art: the question on top, answers as a list (no
  * entrance animation). Pages past an unanswered step aren't added yet, so a swipe can't skip a
- * choice (year, goal, focus, hardest part, red flag, name, the AI consent, then the account when
+ * choice (year, goal, focus, hardest part, name, the AI consent, then the account when
  * onboarding began signed out). After the promise the carousel locks. Reduce Motion: final states, instant
  * page changes.
  * ───────────────────────────────────────────────────────── */
@@ -44,8 +44,6 @@ struct OnboardingView: View {
     @State private var mixChosen = false
     @State private var heart = HoldToCommit()
     @State private var holdingHeart = false
-    /// The red-flag quiz answer (an option's text), nil until the student taps one.
-    @State private var redFlagPick: String?
     /// Optional questions the student skipped: they count as answered, with nothing saved.
     @State private var skipped: Set<OnboardingPage> = []
     /// Set on arrival: whether this run includes the account page.
@@ -82,7 +80,6 @@ struct OnboardingView: View {
         case .studyGoal: goalPicked
         case .focus: focusReady
         case .struggles: !StudyStruggle.decode(strugglesStored).isEmpty
-        case .redFlag: redFlagPick != nil
         case .name: nameTyped
         case .aiConsent: consented
         case .account: auth.account != nil
@@ -164,9 +161,7 @@ struct OnboardingView: View {
         case .studyGoal: StudyGoalPage(shown: seen.contains(p))
         case .careSetting: CareSettingPage(shown: seen.contains(p))
         case .struggles: StrugglePage(shown: seen.contains(p))
-        case .redFlag: RedFlagPage(shown: seen.contains(p), picked: $redFlagPick)
         case .talkStyle: TalkStylePage(shown: seen.contains(p))
-        case .caseMode: CaseModePage(shown: seen.contains(p))
         case .caseTimer: CaseTimerPage(shown: seen.contains(p))
         case .name: NamePage(shown: seen.contains(p), active: page == .name) { step(1) }
         case .dailyGoal: DailyGoalPage(shown: seen.contains(p))
@@ -286,7 +281,7 @@ struct OnboardingView: View {
             }
         case .pledge:
             if heart.isDone {
-                OnboardingNextButton(title: "Get Started") { auth.finishOnboarding(answers: .stored(redFlagPick: redFlagPick)) }
+                OnboardingNextButton(title: "Get Started") { auth.finishOnboarding(answers: .stored()) }
                     .transition(reduceMotion ? .opacity : .opacity.combined(with: .scale(scale: 0.95)))
             } else {
                 Text(holdingHeart ? "Keep holding\u{2026}" : "Press and hold")
@@ -334,8 +329,8 @@ struct OnboardingView: View {
         "onboarding-intro": .patients, "onboarding-try": .tryInterview, "onboarding-year": .schoolYear, "onboarding-goal": .studyGoal,
         "onboarding-graph": .examReady, "onboarding-graded": .graded, "onboarding": .focus, "focus-system": .focus,
         "onboarding-name": .name,
-        "onboarding-setting": .careSetting, "onboarding-redflag": .redFlag, "onboarding-cards": .missCards,
-        "onboarding-struggles": .struggles, "onboarding-talk": .talkStyle, "onboarding-mode": .caseMode,
+        "onboarding-setting": .careSetting, "onboarding-cards": .missCards,
+        "onboarding-struggles": .struggles, "onboarding-talk": .talkStyle, 
         "onboarding-timer": .caseTimer, "onboarding-progress": .progress, "onboarding-daily": .dailyGoal,
         "onboarding-reminder": .reminder, "onboarding-promise": .promise, "onboarding-plan": .plan,
         "onboarding-consent": .aiConsent, "onboarding-account": .account, "onboarding-heart": .pledge, "onboarding-promised": .pledge,
@@ -362,9 +357,6 @@ struct OnboardingView: View {
         }
         if target.rawValue > OnboardingPage.struggles.rawValue, StudyStruggle.decode(strugglesStored).isEmpty {
             strugglesStored = StudyStruggle.whatToAsk.rawValue
-        }
-        if target.rawValue > OnboardingPage.redFlag.rawValue, redFlagPick == nil {
-            redFlagPick = RedFlagQuiz.chestPain.answer?.id
         }
         if target.rawValue > OnboardingPage.name.rawValue, !nameTyped { nameStored = "Jordan" }
         if target.rawValue > OnboardingPage.aiConsent.rawValue, !consented { consentStored = AIConsent.agreed }
