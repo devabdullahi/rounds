@@ -1,6 +1,9 @@
 // Who has a paid plan right now. The app's paywall is only the face of it: every model-backed action
 // calls requirePlan, so a modified app or a scripted guest account can't spend model calls unpaid.
 //
+// One graded case is free (2026-10-22): until a student's first submission, cases and the interview
+// work without a plan (requirePlanOrFreeCase), and at most FREE_CASES patients are written for them.
+//
 // Our record of a subscription is refreshed from Apple when it may be wrong: a lapsed one (it may have
 // renewed) and a paid-up one we haven't checked for a day (it may have been refunded).
 //
@@ -100,6 +103,36 @@ export async function accountPlan(userId: string): Promise<{ entitled: boolean; 
   const live = rows.filter((r) => entitled([r], now));
   if (!live.length) return { entitled: false };
   return { entitled: true, expires_at: live.map((r) => r.expires_at).sort((a, b) => b.getTime() - a.getTime())[0] };
+}
+
+/** Patients written for a student without a plan, before their first graded case: the one they
+ *  play plus the few the app writes ahead so it opens instantly. Bounds what a fresh account costs. */
+export const FREE_CASES = 3;
+
+/** What the free case allows, from what the student has done: nothing once they've submitted a case,
+ *  and (when `writing`) no new patients past FREE_CASES. Pure, so the rule is tested. */
+export function freeCaseAllows(record: { graded: boolean; written: number }, writing: boolean): boolean {
+  if (record.graded) return false;
+  return !writing || record.written < FREE_CASES;
+}
+
+/** Whether the caller's free case is still unused, and, for `writing`, whether another patient may be
+ *  written for it (cases they own plus ones waiting for them). */
+export async function freeCaseLeft(userId: string, writing = false): Promise<boolean> {
+  const [record] = await sql<{ graded: boolean; written: number }[]>`
+    select exists (select 1 from public.attempts where user_id = ${userId} and submitted_at is not null) as graded,
+      (select count(*)::int from public.cases where created_by = ${userId})
+        + (select count(*)::int from private.ready_cases where user_id = ${userId}) as written`;
+  return freeCaseAllows(record, writing);
+}
+
+/** requirePlan, except that a student who hasn't submitted a case yet may play their free one.
+ *  `writing` is for writing patients, which the free case caps at FREE_CASES. */
+export async function requirePlanOrFreeCase(userId: string, writing = false): Promise<void> {
+  if (planExempt(userId)) return;
+  if ((await accountPlan(userId)).entitled) return;
+  if (await freeCaseLeft(userId, writing)) return;
+  throw new HttpError(402, "an active plan is required");
 }
 
 /** Refuses with a 402 unless the caller has a paid plan. Run it before taking any quota. */

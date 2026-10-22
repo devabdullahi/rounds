@@ -46,6 +46,8 @@ struct OnboardingView: View {
     @State private var holdingHeart = false
     /// The red-flag quiz answer (an option's text), nil until the student taps one.
     @State private var redFlagPick: String?
+    /// Optional questions the student skipped: they count as answered, with nothing saved.
+    @State private var skipped: Set<OnboardingPage> = []
     /// Set on arrival: whether this run includes the account page.
     @State private var startedSignedOut = false
 
@@ -56,6 +58,10 @@ struct OnboardingView: View {
     private var reminderPicked: PracticeReminder? { PracticeReminder(stored: reminderStored) }
     private var nameTyped: Bool { ProfileName.clean(nameStored) != nil }
     private var consented: Bool { AIConsent.isGiven(stored: consentStored) }
+    /// The value pages' headlines with the answers given so far.
+    private var personal: OnboardingHeadlines {
+        OnboardingHeadlines(goal: StudyGoal(stored: goalStored), focus: focusReady ? pick : nil, name: nameStored)
+    }
 
     /// The pages a swipe may reach: everything up to and including the first unanswered choice.
     private var pages: [OnboardingPage] {
@@ -70,7 +76,8 @@ struct OnboardingView: View {
 
     /// Whether a page's choice is made, so the pages after it may be shown.
     private func answered(_ p: OnboardingPage) -> Bool {
-        switch p {
+        if skipped.contains(p) { return true }
+        return switch p {
         case .schoolYear: yearPicked
         case .studyGoal: goalPicked
         case .focus: focusReady
@@ -169,7 +176,7 @@ struct OnboardingView: View {
             PledgePage(heart: $heart, isHolding: $holdingHeart)
         case .account:
             VStack(spacing: 14) {
-                if let headline = p.headline { OnboardingHeadline(text: headline) }
+                if let headline = p.headline(personal) { OnboardingHeadline(text: headline) }
                 Spacer(minLength: 0)
                 AppIcon(.brandMark, size: 72)
                     .foregroundStyle(Theme.accent)
@@ -182,7 +189,7 @@ struct OnboardingView: View {
         default:
             VStack(spacing: 14) {
                 hero(p).frame(maxHeight: 420)
-                if let headline = p.headline { OnboardingHeadline(text: headline) }
+                if let headline = p.headline(personal) { OnboardingHeadline(text: headline) }
                 Spacer(minLength: 0)
             }
             .padding(.horizontal, 20)
@@ -246,6 +253,23 @@ struct OnboardingView: View {
                     try? await Task.sleep(for: .milliseconds(120))
                     step(1)
                 }
+            }
+        case let p where p.isSkippable:
+            VStack(spacing: 4) {
+                OnboardingNextButton(title: "Continue", enabled: answered(p)) { step(1) }
+                Button("Skip") {
+                    skipped.insert(p)
+                    // The next page joins the carousel only once the skip is laid out (see the consent).
+                    Task {
+                        try? await Task.sleep(for: .milliseconds(120))
+                        step(1)
+                    }
+                }
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundStyle(Theme.muted)
+                .frame(minHeight: 44)
+                .opacity(answered(p) && !skipped.contains(p) ? 0 : 1)
+                .disabled(answered(p) && !skipped.contains(p))
             }
         case let p where p.isQuestion:
             OnboardingNextButton(title: "Continue", enabled: answered(p)) { step(1) }

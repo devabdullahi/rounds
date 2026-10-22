@@ -33,6 +33,27 @@ struct PaywallModelTests {
         #expect(model.problem == nil)
     }
 
+    // MARK: One free graded case
+
+    @Test func theFreeCaseOpensTheAppUntilItsUsed() async {
+        let accounts = MockAccountSubscriptionService(status: AccountAccess(entitled: false, freeCase: true))
+        let model = PaywallModel(store: MockSubscriptionStore(), accounts: accounts, verifiesAccount: true)
+        await model.refresh()
+        #expect(model.isEntitled == false)
+        #expect(model.opensApp == true)
+        await accounts.answerStatus(AccountAccess(entitled: false))
+        await model.refresh()
+        #expect(model.opensApp == false)
+    }
+
+    @Test func aPlanNeverCountsAsTheFreeCase() async {
+        let accounts = MockAccountSubscriptionService(claim: AccountAccess(entitled: true), status: AccountAccess(entitled: true, freeCase: true))
+        let model = PaywallModel(store: MockSubscriptionStore(entitled: true), accounts: accounts, verifiesAccount: true)
+        await model.refresh()
+        #expect(model.isEntitled == true)
+        #expect(model.freeCase == false)
+    }
+
     // MARK: A subscription belongs to the account that bought it
 
     @Test func thePhonesPurchaseOpensTheAppForTheAccountThatOwnsIt() async {

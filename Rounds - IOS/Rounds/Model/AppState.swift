@@ -341,7 +341,11 @@ final class AppState {
     var showTodayRequested = false
 
     /// Closes a graded case and lands on the ward, or on a mistakes deck when the student asked for one.
+    /// Bumped each time a graded case is left, so the paywall can check again: a free case ends here.
+    private(set) var casesFinished = 0
+
     func finishCase(reviewingMistakes: Bool = false) {
+        casesFinished += 1
         debriefSettled = false
         if reviewingMistakes { reviewMistakesRequested = true } else { returnToPatients = true }
         activeCase = nil

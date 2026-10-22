@@ -3,7 +3,7 @@ import Foundation
 /// A scripted subscription server for tests and previews: what a claim and a status check answer.
 actor MockAccountSubscriptionService: AccountSubscriptionService {
     private let claimAnswer: AccountAccess
-    private let statusAnswer: AccountAccess
+    private var statusAnswer: AccountAccess
     private(set) var claimed: [String] = []
     private(set) var transferred: [String] = []
 
@@ -23,4 +23,7 @@ actor MockAccountSubscriptionService: AccountSubscriptionService {
     }
 
     func status() async throws -> AccountAccess { statusAnswer }
+
+    /// What later status checks answer (a free case used up, a plan bought elsewhere).
+    func answerStatus(_ access: AccountAccess) { statusAnswer = access }
 }

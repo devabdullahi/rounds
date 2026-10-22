@@ -18,15 +18,20 @@ enum OnboardingPage: Int, CaseIterable {
         }
     }
 
-    /// The big headline under the hero art. Question pages and the focus picker set their own title.
-    var headline: String? {
+    /// Questions with no sensible default that the student may still pass over: nothing is saved
+    /// and the flow goes on. The rest either need an answer (year, goal, name) or start answered.
+    var isSkippable: Bool { self == .struggles || self == .redFlag }
+
+    /// The big headline under the hero art, said with the student's answers so far where a page
+    /// has a personal version. Question pages and the focus picker set their own title.
+    func headline(_ personal: OnboardingHeadlines) -> String? {
         switch self {
         case .patients: "Interview Patients,\nFind the Diagnosis"
-        case .examReady: "Walk Into Your\nExam Ready"
+        case .examReady: personal.examReady
         case .graded: "Graded On\nEvery Move"
-        case .promise: "Think Like\na Doctor"
-        case .missCards: "Learn From\nEvery Miss"
-        case .progress: "See Where You're\nGetting Better"
+        case .promise: personal.promise
+        case .missCards: personal.missCards
+        case .progress: personal.progress
         case .plan: "Your Rounds\nAre Ready"
         case .account: "Create Your\nAccount"
         default: nil
