@@ -1,8 +1,9 @@
 import SwiftUI
 
-/// The daily reminder, offered once over Home after onboarding: the lock-screen preview and three
-/// times (ReminderPage), then turn it on (iOS asks for permission) or not now.
-struct ReminderSheet: View {
+/// The daily reminder, offered once as its own full screen after onboarding (and after the welcome
+/// that follows a purchase): the lock-screen preview and three times (ReminderPage), then turn it
+/// on (iOS asks for permission) or not now.
+struct ReminderView: View {
     let onDone: () -> Void
     @Environment(AppState.self) private var app
     @AppStorage(PracticeReminder.storageKey) private var stored = ""
@@ -14,7 +15,7 @@ struct ReminderSheet: View {
             OnboardingNextButton(title: "Turn On Reminders", enabled: PracticeReminder(stored: stored) != nil) {
                 guard let reminder = PracticeReminder(stored: stored) else { return }
                 Task {
-                    // iOS asks for permission here; the sheet closes whatever the answer.
+                    // iOS asks for permission here; the screen closes whatever the answer.
                     _ = await app.setPracticeReminder(reminder)
                     onDone()
                 }
@@ -26,7 +27,6 @@ struct ReminderSheet: View {
         }
         .padding(.bottom, 8)
         .background(Theme.surface.ignoresSafeArea())
-        .presentationDragIndicator(.visible)
         .onAppear { if stored.isEmpty { stored = PracticeReminder.evening.rawValue } }
     }
 }

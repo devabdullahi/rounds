@@ -3,7 +3,7 @@ import Foundation
 /// Every onboarding step, in order (the design canvas's flow). The two quick questions first, then
 /// the student's answers read back (what grading means for their exam, when it is, their plan),
 /// a patient to try, voice, the account (only when onboarding began signed out), where they heard
-/// about Rounds, and the promise. Reminders are asked later, over Home (ReminderSheet). They're pages of one carousel (`OnboardingView`), so
+/// about Rounds, and the promise. Reminders are asked after it, on their own screen (ReminderView). They're pages of one carousel (`OnboardingView`), so
 /// every step slides the same way. The welcome screen before it and the paywall after it are
 /// their own screens.
 enum OnboardingPage: Int, CaseIterable {

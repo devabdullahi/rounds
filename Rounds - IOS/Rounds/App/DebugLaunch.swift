@@ -4,7 +4,7 @@ import SwiftUI
 /// Dev-only deep link for screenshots: launch with `-screen <name>`.
 /// Names: firstopen, firstopen-auth, duplicate-account, voice-glass, onboarding (focus), onboarding-account, onboarding-intro, onboarding-try, onboarding-graded,
 /// onboarding-promise, onboarding-graph, onboarding-goal, onboarding-to-goal, onboarding-year, onboarding-name, onboarding-setting, onboarding-redflag, onboarding-cards, onboarding-reminder, onboarding-struggles, onboarding-talk, onboarding-voice, onboarding-mode, onboarding-timer, onboarding-progress, onboarding-daily, onboarding-plan, onboarding-heart, onboarding-promised,
-/// settings-about, onboarding-consent, ai-consent, paywall (trial page), paywall-plans, purchased, reminder-sheet, onboarding-graded, onboarding-exam, onboarding-plan, onboarding-voice-intro, onboarding-heard, paywall-unavailable, paywall-delete,
+/// settings-about, onboarding-consent, ai-consent, paywall (trial page), paywall-plans, purchased, reminders, onboarding-graded, onboarding-exam, onboarding-plan, onboarding-voice-intro, onboarding-heard, paywall-unavailable, paywall-delete,
 /// focus-system, focus-sheet, home, patients, patients-open, previous-tries, previous-try, badge-unlock-many, badge-unlock-all, paywall-taken, plan-checking, profile, brief, interview, examine, workup, diagnosis, debrief, diagnosis-suggest.
 enum DebugLaunch {
     static var screen: String? { UserDefaults.standard.string(forKey: "screen") }
@@ -100,7 +100,7 @@ enum DebugLaunch {
         case "home-preparing":
             tab = .today
             app.debugShowPreparing()
-        case "purchased", "reminder-sheet":
+        case "purchased", "reminders":
             // The welcome after buying shows over Home (RootView).
             tab = .today
         case "admit":
