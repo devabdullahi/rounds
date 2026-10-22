@@ -1,6 +1,6 @@
 import { assert, assertEquals } from "jsr:@std/assert@1";
 import {
-  CALL_SECONDS, callIdFrom, callSecondsLeft, isOffer, MAX_CALL_SECONDS, MAX_SDP_BYTES, realtimeUSDPerMinute, reservedCostUSD, safetyId, sessionConfig, settlementUSD,
+  bookedSeconds, callCostUSD, callIdFrom, IDLE_SECONDS, isOffer, MAX_SDP_BYTES, realtimeUSDPerMinute, safetyId, sessionConfig, settlementUSD, SWEEP_SECONDS,
 } from "./realtime.ts";
 
 Deno.test("only real SDP offers under the cap are forwarded", () => {
@@ -35,16 +35,17 @@ Deno.test("the safety identifier is a stable hash, never the user id itself", as
   assert(!a.includes(id));
 });
 
-Deno.test("a call books its longest possible run, then settles to the time it really ran", () => {
-  assert(MAX_CALL_SECONDS > CALL_SECONDS);
-  assertEquals(reservedCostUSD(0.6), 0.6 * MAX_CALL_SECONDS / 60);
-  // Reservation plus settlement is the cost of the actual duration.
-  for (const seconds of [0, 45, CALL_SECONDS, MAX_CALL_SECONDS + 600]) {
-    const total = reservedCostUSD(0.6) + settlementUSD(seconds, 0.6);
-    assert(Math.abs(total - 0.6 * seconds / 60) < 1e-9, `${seconds}s`);
+Deno.test("a call books its window plus a sweep, then settles to the time it really ran", () => {
+  assertEquals(bookedSeconds(IDLE_SECONDS), IDLE_SECONDS + SWEEP_SECONDS);
+  assertEquals(callCostUSD(90, 0.6), 0.9);
+  // Booked (open plus extensions, up to a window of `window` seconds) plus settlement is the cost of
+  // the actual duration, however long the call grew.
+  for (const [ran, window] of [[0, 120], [45, 120], [120, 120], [1800, 1850], [4000, 3990]]) {
+    const total = callCostUSD(bookedSeconds(window), 0.6) + settlementUSD(ran, window, 0.6);
+    assert(Math.abs(total - 0.6 * ran / 60) < 1e-9, `${ran}s of ${window}s`);
   }
-  assert(settlementUSD(60, 0.6) < 0);
-  assertEquals(settlementUSD(-5, 0.6), -reservedCostUSD(0.6));
+  assert(settlementUSD(60, IDLE_SECONDS, 0.6) < 0);
+  assertEquals(settlementUSD(-5, IDLE_SECONDS, 0.6), -callCostUSD(bookedSeconds(IDLE_SECONDS), 0.6));
 });
 
 Deno.test("the per-minute rate falls back on a missing or bad override", () => {
@@ -54,10 +55,3 @@ Deno.test("the per-minute rate falls back on a missing or bad override", () => {
   assertEquals(realtimeUSDPerMinute("abc", "gpt-realtime-2.1-mini"), 0.05);
 });
 
-Deno.test("a call runs five minutes while the day's budget allows, then shorter, then not at all", () => {
-  // $0.15 a minute against $2 a day.
-  assertEquals(callSecondsLeft(0, 0.15, 2), 300);
-  assertEquals(callSecondsLeft(1.85, 0.15, 2), 60);
-  assertEquals(callSecondsLeft(1.95, 0.15, 2), 0); // 20 s left isn't worth a call
-  assertEquals(callSecondsLeft(2.5, 0.15, 2), 0);
-});

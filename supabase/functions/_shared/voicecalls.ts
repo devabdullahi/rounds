@@ -14,7 +14,7 @@ const NO_TOKENS = { hit: 0, miss: 0, output: 0, reasoning: 0 };
 /** Closes the open calls in scope and returns how many. The update claims each row once, so two
  *  closers racing on the same call hang it up and settle it only once. */
 export async function closeCalls({ userId, callId, overdueOnly }: CallScope): Promise<number> {
-  const calls = await sql<{ call_id: string; seconds: number }[]>`
+  const calls = await sql<{ call_id: string; seconds: number; window_seconds: number }[]>`
     -- A call noticed after its deadline ended at the deadline: OpenAI hangs up by then, and a call
     -- left open for hours (no sweeper running) must not bill hours.
     update private.voice_calls set ended_at = least(now(), ends_at)
@@ -22,10 +22,11 @@ export async function closeCalls({ userId, callId, overdueOnly }: CallScope): Pr
       and (${userId ?? null}::uuid is null or user_id = ${userId ?? null}::uuid)
       and (${callId ?? null}::text is null or call_id = ${callId ?? null}::text)
       and (not ${overdueOnly} or ends_at < now())
-    returning call_id, extract(epoch from ended_at - started_at)::float8 as seconds`;
+    returning call_id, extract(epoch from ended_at - started_at)::float8 as seconds,
+      extract(epoch from ends_at - started_at)::float8 as window_seconds`;
   await Promise.all(calls.map(async (call) => {
     await hangUp(call.call_id);
-    await recordUsage("voice_live_settle", `openai/${realtimeModel()}`, NO_TOKENS, settlementUSD(call.seconds));
+    await recordUsage("voice_live_settle", `openai/${realtimeModel()}`, NO_TOKENS, settlementUSD(call.seconds, call.window_seconds));
   }));
   return calls.length;
 }

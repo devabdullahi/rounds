@@ -15,19 +15,17 @@ export function realtimeModel(): string {
   return Deno.env.get("REALTIME_MODEL") ?? "gpt-realtime-2.1-mini";
 }
 
-/** How long one live call may run before the app (and failing that, the server) ends it. */
-export const CALL_SECONDS = 300;
+/** A live call with no finished exchange for this long is hung up (2026-10-21: no per-student
+ *  limit on live voice). Each logged exchange pushes the call's deadline this far out again, so a
+ *  call lasts as long as the student keeps talking; only a phone left on a desk times out. */
+export const IDLE_SECONDS = 120;
 
-/** Slack past the app's own deadline before the server treats a call as overdue. */
-export const DEADLINE_SLACK_SECONDS = 30;
+/** What builds before the idle window read as the call's length; they end the call there themselves. */
+export const LEGACY_CALL_SECONDS = 300;
 
 /** How often voice-sweep hangs up overdue calls (its pg_cron schedule, migration
  *  20261019000300_voice_call_sweeper). */
 export const SWEEP_SECONDS = 60;
-
-/** The longest a call can really run: its deadline, the slack, then at most one sweep interval
- *  before the sweeper hangs it up, even when the app never reports back. */
-export const MAX_CALL_SECONDS = CALL_SECONDS + DEADLINE_SLACK_SECONDS + SWEEP_SECONDS;
 
 /** Estimated USD per minute of a live call, for the project-wide daily cap (the audio isn't
  *  metered here: it flows phone ↔ OpenAI). REALTIME_USD_PER_MINUTE overrides it. */
@@ -38,33 +36,22 @@ export function realtimeUSDPerMinute(raw = Deno.env.get("REALTIME_USD_PER_MINUTE
   return model.endsWith("-mini") ? 0.05 : 0.15;
 }
 
-/** What one student may spend on live voice a day, in USD (2026-10-19: $2, then they'd buy more).
- *  LIVE_VOICE_USD_PER_DAY overrides it. */
-export function dailyVoiceBudgetUSD(raw = Deno.env.get("LIVE_VOICE_USD_PER_DAY")): number {
-  const value = Number(raw);
-  return raw !== undefined && Number.isFinite(value) && value > 0 ? value : 2;
+/** What `seconds` of live call cost against the daily cap. */
+export function callCostUSD(seconds: number, perMinute = realtimeUSDPerMinute()): number {
+  return (perMinute * Math.max(0, seconds)) / 60;
 }
 
-/** A call shorter than this isn't worth opening: the student would barely get a question in. */
-export const MIN_CALL_SECONDS = 30;
-
-/** How long the next call may run, given what the student spent on live voice today: the usual
- *  CALL_SECONDS, or less when the day's budget is nearly used up; 0 when it can't buy a short call. */
-export function callSecondsLeft(spentUSD: number, perMinute = realtimeUSDPerMinute(), budget = dailyVoiceBudgetUSD()): number {
-  // The epsilon keeps float error ($0.15 left at $0.15 a minute = 59.999… s) from losing a second.
-  const affordable = Math.floor(((budget - spentUSD) / perMinute) * 60 + 1e-6);
-  return affordable < MIN_CALL_SECONDS ? 0 : Math.min(CALL_SECONDS, affordable);
-}
-
-/** What a call books against the daily cap when it opens: the longest it could run. */
-export function reservedCostUSD(perMinute = realtimeUSDPerMinute()): number {
-  return (perMinute * MAX_CALL_SECONDS) / 60;
+/** The time a call books against the cap: its window up to the deadline, plus one sweep interval,
+ *  the longest it can run past the deadline before voice-sweep hangs it up. Booked as it grows (at
+ *  open, then each extension), so a long call counts against the cap while it runs. */
+export function bookedSeconds(windowSeconds: number): number {
+  return Math.max(0, windowSeconds) + SWEEP_SECONDS;
 }
 
 /** The correction booked when a call closes, so the cap ends up charged for the time it actually
- *  ran. Negative for every call that ended inside the reservation. */
-export function settlementUSD(seconds: number, perMinute = realtimeUSDPerMinute()): number {
-  return (perMinute * Math.max(0, seconds)) / 60 - reservedCostUSD(perMinute);
+ *  ran. Negative for every call that ended inside what was booked. */
+export function settlementUSD(ranSeconds: number, windowSeconds: number, perMinute = realtimeUSDPerMinute()): number {
+  return callCostUSD(ranSeconds, perMinute) - callCostUSD(bookedSeconds(windowSeconds), perMinute);
 }
 
 /** Largest SDP offer accepted; real offers are a few KB. */
@@ -93,8 +80,9 @@ export function isOffer(sdp: unknown): sdp is string {
  *  Accepted risk: the app holds the call's data channel, so a modified client can send its own
  *  session.update (new instructions, no output cap). This API offers no way to lock the session
  *  from the server short of a sideband connection held for the whole call, which an edge function
- *  can't do. What bounds it: the call needs an active plan and a unit of the small daily
- *  allowance, it is hung up within MAX_CALL_SECONDS by voice-sweep, and its cost is booked. */
+ *  can't do. What bounds it: the call needs an active plan, voice-sweep hangs it up once no exchange
+ *  has been logged for IDLE_SECONDS, its cost is booked as it runs, and the project-wide daily cap
+ *  stops extending calls once it's reached (usage.ts). */
 export function sessionConfig(instructions: string, voice: string, model = realtimeModel()) {
   return {
     type: "realtime",

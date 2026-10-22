@@ -55,21 +55,18 @@ export function lastPatientReply(transcript: Turn[]): string | null {
   return null;
 }
 
-/** Spoken exchanges one live call may log: far more than five minutes of talk holds. */
-export const MAX_TURNS_PER_CALL = 40;
 /** How long after a call ends, or passes its deadline, its last in-flight exchange is still taken. */
 export const LATE_TURN_SECONDS = 20;
 
 /** Why a live call can't log another exchange, or null when it can. Past the grace window an ended
  *  call takes nothing, so its call id can't be reused to log made-up exchanges later. */
 export function turnRefusal(
-  call: { ends_at: Date; ended_at: Date | null; turns: number },
+  call: { ends_at: Date; ended_at: Date | null },
   now = new Date(),
 ): string | null {
   const grace = LATE_TURN_SECONDS * 1000;
   const closed = call.ended_at !== null && now.getTime() - new Date(call.ended_at).getTime() > grace;
   if (closed || now.getTime() - new Date(call.ends_at).getTime() > grace) return "call ended";
-  if (call.turns >= MAX_TURNS_PER_CALL) return "this call has logged as many exchanges as it can";
   return null;
 }
 

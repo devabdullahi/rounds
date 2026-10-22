@@ -4,6 +4,9 @@
 //   resume   {case_id}                                 → {attempt: null | the unsubmitted attempt's
 //            conversation, revealed facts, findings, results and progress (resume.ts)}
 //   ask      {attempt_id, question}                    → {reply, revealed[], coverage}
+//   ask_stream {attempt_id, question}                  → the same answer as lines of JSON while it's
+//            written: {"type":"text","text"} with the reply so far (only what may be shown early,
+//            stream.ts), then {"type":"done", …ask's answer} or {"type":"error","error"}.
 //   examine  {attempt_id, maneuver_id}                 → {finding}
 //   order    {attempt_id, test_id}                     → {result, abnormal, turnaround_s}
 //   transcribe {attempt_id, audio (base64 m4a)}        → {text}   voice mode: the student's turn
@@ -15,17 +18,17 @@
 //   ask_aloud {attempt_id, question}                   → one line of JSON (as ask), then the reply's
 //            raw PCM in the same response: voice mode's question and spoken answer in one round trip.
 //            The reply is checked and stored before any of it is voiced, exactly as for ask.
-//   voice_session {attempt_id, sdp}                    → {sdp, call_id, seconds}  live voice: the app's
-//            WebRTC offer goes to OpenAI's Realtime API with the patient's instructions and our key,
-//            and OpenAI's answer comes back; audio then flows phone ↔ OpenAI (_shared/realtime.ts).
-//            Each student has a daily live-voice budget in dollars (LIVE_VOICE_USD_PER_DAY, $2): a call
-//            runs up to 5 minutes, shorter when the budget is nearly spent, and none once it's gone.
+//   voice_session {attempt_id, sdp}                    → {sdp, call_id, idle_seconds}  live voice: the
+//            app's WebRTC offer goes to OpenAI's Realtime API with the patient's instructions and our
+//            key, and OpenAI's answer comes back; audio then flows phone ↔ OpenAI (_shared/realtime.ts).
+//            A call has no time limit: it runs while exchanges keep coming, and is hung up after
+//            idle_seconds without one. (`seconds` is still sent for older builds, which end there.)
 //   voice_turn {attempt_id, call_id, question, reply}  → like ask  one finished spoken exchange,
 //            logged for the transcript and the grade. The reply was already heard, so it's checked
 //            afterwards: facts it used light their chips, and a reply that named the diagnosis or
 //            invented a medical detail is flagged (the app says so). Too many inappropriate
 //            questions hang the call up. Taken only while the call is open (plus a few seconds for
-//            the last exchange in flight) and up to a cap per call; the reply is never voiced.
+//            the last exchange in flight); each one keeps the call open longer. The reply is never voiced.
 //   voice_end {attempt_id, call_id}                   → {}  the app ended the call; the server hangs up too.
 //   submit   {attempt_id, diagnosis, differential, plan} → grade (and queues the next condition
 //            in the case's focus, see _shared/prefetch.ts). The grade carries condition insights
@@ -33,8 +36,8 @@
 //
 // Only a student's first submitted attempt on a case moves their rating; a restart after seeing the
 // answer is graded as usual but unrated. A submission past the chosen time limit is graded and
-// marked over time. Asking and submitting each cost a unit of the daily allowance (_shared/quota.ts),
-// and so does each voice call.
+// marked over time. Asking and submitting each cost a unit of the daily allowance (_shared/quota.ts);
+// voice has no allowance of its own, only the project-wide daily spend cap (_shared/usage.ts).
 //
 // Every action verifies the caller, then loads the attempt only if it belongs to them. The patient
 // LLM sees the persona and revealable facts, never the diagnosis or rubric; its reply is checked for
@@ -42,7 +45,7 @@
 // Off-topic and inappropriate questions get a fixed reply and reveal nothing (_shared/conduct.ts).
 import { body, callerId, HttpError, json, serve } from "../_shared/http.ts";
 import { sql } from "../_shared/db.ts";
-import { completeJSON } from "../_shared/llm.ts";
+import { completeJSON, streamJSON } from "../_shared/llm.ts";
 import { GRADER, LIVE_PATIENT, PATIENT, REPLY_CHECKER, VOICE_TURN_REVIEW } from "../_shared/prompts.ts";
 import { patientPrompt, type PromptPersona } from "../_shared/patientprompt.ts";
 import { type Actions, grade, type Grade, isSingleDiagnosis, matchesDiagnosis, type Rubric, unrated } from "./grade.ts";
@@ -52,18 +55,19 @@ import { hiddenTests } from "./menu.ts";
 import { resumeState } from "./resume.ts";
 import { workupText } from "./workup.ts";
 import {
-  decodeAudio, lastPatientReply, MAX_SPOKEN_CHARS, MAX_TURNS_PER_CALL, pickLiveVoice, pickVoice, speechInstructions, toBase64, turnRefusal,
+  decodeAudio, lastPatientReply, MAX_SPOKEN_CHARS, pickLiveVoice, pickVoice, speechInstructions, toBase64, turnRefusal,
 } from "./voice.ts";
 import {
-  callSecondsLeft, DEADLINE_SLACK_SECONDS, isOffer, openCall, realtimeModel, realtimeUSDPerMinute, reservedCostUSD, sessionConfig,
+  bookedSeconds, callCostUSD, IDLE_SECONDS, isOffer, LEGACY_CALL_SECONDS, openCall, realtimeModel, sessionConfig,
 } from "../_shared/realtime.ts";
 import { closeCalls } from "../_shared/voicecalls.ts";
 import { liveSessionPrompt, voiceTurnPrompt } from "../_shared/patientprompt.ts";
 import { recordUsage, takeBudget } from "../_shared/usage.ts";
 import { speak, speakStream, STREAM_SAMPLE_RATE, transcribe } from "../_shared/speech.ts";
 import { requirePlan } from "../_shared/plan.ts";
-import { withQuota } from "../_shared/quota.ts";
+import { refundQuota, withQuota } from "../_shared/quota.ts";
 import { naturalDenial, naturalRefusal, talksAboutScript } from "./refusal.ts";
+import { ReplyGate } from "./stream.ts";
 import { type Conduct, conductReply, isProfane, MAX_INAPPROPRIATE, parseConduct, strikes } from "../_shared/conduct.ts";
 
 declare const EdgeRuntime: { waitUntil(promise: Promise<unknown>): void };
@@ -103,15 +107,16 @@ serve(async (req) => {
     case "resume": return json(await resume(userId, input));
     // Each question costs a model call (reply plus check): it counts against the daily limit.
     case "ask": return json(await withQuota(userId, "question", () => ask(userId, input)));
+    // The same answer, shown as it's written. Refunds its own unit if it fails after streaming starts.
+    case "ask_stream": return await withQuota(userId, "question", () => askStream(userId, input));
     case "examine": return json(await examine(userId, input));
     case "order": return json(await order(userId, input));
-    // Voice mode calls paid audio models; each call counts against the daily voice allowance.
-    case "transcribe": return json(await withQuota(userId, "voice", () => transcribeTurn(userId, input)));
-    case "speak": return json(await withQuota(userId, "voice", () => speakReply(userId, input)));
+    // Voice has no daily allowance (2026-10-21); the audio models' cost counts toward the daily cap.
+    case "transcribe": return json(await transcribeTurn(userId, input));
+    case "speak": return json(await speakReply(userId, input));
     // The same reply as raw PCM, streamed as it's made: the first sound in a few hundred ms.
-    case "speak_stream": return await withQuota(userId, "voice", () => speakReplyStream(userId, input));
+    case "speak_stream": return await speakReplyStream(userId, input);
     case "ask_aloud": return await withQuota(userId, "question", () => askAloud(userId, input));
-    // A live call is the priciest thing a student can start: one unit of a small daily allowance.
     case "voice_session": return json(await voiceSession(userId, input));
     // Each logged exchange costs a review call, like a typed question.
     case "voice_turn": return json(await withQuota(userId, "question", () => voiceTurn(userId, input)));
@@ -188,7 +193,13 @@ function promptPersona(persona: Content["persona"]): PromptPersona {
 
 // MARK: - ask
 
-async function ask(userId: string, input: Record<string, unknown>) {
+/** A patient answer as the model writes it. */
+type PatientJSON = { conduct: string; fact_ids: string[]; seen_ids?: string[]; reply: string };
+
+/** Everything a question needs before the model is called: the attempt, its case and the prompt. */
+type Question = { question: string; attempt: Attempt; content: Content; recent: Turn[]; prompt: string; known: Map<string, Fact> };
+
+async function readQuestion(userId: string, input: Record<string, unknown>): Promise<Question> {
   const question = text(input.question, "question", LIMITS.question);
   const { attempt, content } = await loadAttempt(userId, input.attempt_id);
   // Refused before any model call; throwing also hands back the question's quota.
@@ -196,19 +207,76 @@ async function ask(userId: string, input: Record<string, unknown>) {
     throw new HttpError(403, "the patient has stopped answering questions; you can still examine, order tests and submit");
   }
   const recent = attempt.transcript.slice(-LIMITS.transcriptTurns);
-  const persona = content.persona;
   const prompt = patientPrompt(
-    promptPersona(persona), content.facts, content.exam, recent, question, new Set(attempt.revealed_facts),
+    promptPersona(content.persona), content.facts, content.exam, recent, question, new Set(attempt.revealed_facts),
   );
+  return { question, attempt, content, recent, prompt, known: new Map(content.facts.map((f) => [f.id, f])) };
+}
 
-  const known = new Map(content.facts.map((f) => [f.id, f]));
+async function ask(userId: string, input: Record<string, unknown>) {
+  return answer(await readQuestion(userId, input), (prompt) => completeJSON<PatientJSON>(PATIENT, prompt, 400, { task: "patient" }));
+}
+
+/** ask, shown as it's written: lines of JSON, the reply so far while the model writes it (only what
+ *  ReplyGate lets through), then the finished, checked answer exactly as ask returns it. Everything
+ *  that can refuse the question runs before the first line, so those stay normal JSON errors. */
+async function askStream(userId: string, input: Record<string, unknown>): Promise<Response> {
+  const q = await readQuestion(userId, input);
+  const gate = new ReplyGate(
+    [q.content.answer_key.diagnosis, ...q.content.answer_key.accepted],
+    new Set(q.known.keys()),
+    new Set(q.content.exam.map((m) => m.id)),
+  );
+  // Kept alive until the answer is sent and stored (see askAloud).
+  let sent!: () => void;
+  EdgeRuntime.waitUntil(new Promise<void>((resolve) => (sent = resolve)));
+  const encoder = new TextEncoder();
+  const body = new ReadableStream<Uint8Array>({
+    async start(out) {
+      // The app may stop reading (it left the case); the answer is still stored.
+      const line = (value: unknown) => {
+        try {
+          out.enqueue(encoder.encode(JSON.stringify(value) + "\n"));
+        } catch {
+          // Cancelled by the app.
+        }
+      };
+      try {
+        const done = await answer(q, (prompt) => streamJSON<PatientJSON>(PATIENT, prompt, 400, { task: "patient" }, (raw) => {
+          const shown = gate.update(raw);
+          if (shown !== null) line({ type: "text", text: shown });
+        }));
+        line({ type: "done", ...done });
+      } catch (error) {
+        // The response already started, so withQuota can't see this failure: refund here.
+        await refundQuota(userId, "question");
+        if (!(error instanceof HttpError)) console.error("streamed ask failed", error);
+        line({ type: "error", error: error instanceof HttpError ? error.message : "the patient didn't answer; try again" });
+      } finally {
+        try {
+          out.close();
+        } catch {
+          // Already cancelled by the app.
+        }
+        sent();
+      }
+    },
+  });
+  return new Response(body, { headers: { "Content-Type": "application/x-ndjson" } });
+}
+
+/** The model's answer to a question, checked, stored and shaped for the app. `model` is the patient
+ *  call itself, so ask and askStream check and store answers exactly the same way. */
+async function answer(q: Question, model: (prompt: string) => Promise<PatientJSON>) {
+  const { question, attempt, content, recent, known } = q;
+  const persona = content.persona;
   let reply = String(persona.fallback ?? "");
   let used: string[] = [];
   let looked: string[] = [];   // exam findings described as what anyone could see (no chip)
   let conduct: Conduct = isProfane(question) ? "inappropriate" : "clinical";
   try {
     if (conduct === "clinical") {
-      const answer = await completeJSON<{ conduct: string; fact_ids: string[]; seen_ids?: string[]; reply: string }>(PATIENT, prompt, 400, { task: "patient" });
+      const answer = await model(q.prompt);
       conduct = parseConduct(answer.conduct);
       used = [...new Set(answer.fact_ids ?? [])].filter((id) => known.has(id)).slice(0, MAX_FACTS_PER_REPLY);
       looked = (answer.seen_ids ?? []).filter((id) => content.exam.some((m) => m.id === id));
@@ -317,8 +385,8 @@ async function transcribeTurn(userId: string, input: Record<string, unknown>) {
 }
 
 /** ask, then its reply's voice in the same response: the JSON answer on the first line, so the app
- *  shows the text at once, then PCM as OpenAI makes it. A voice failure (or no voice allowance
- *  left) just ends the stream after the text; the app falls back to its own voice. */
+ *  shows the text at once, then PCM as OpenAI makes it. A voice failure just ends the stream after
+ *  the text; the app falls back to its own voice. */
 async function askAloud(userId: string, input: Record<string, unknown>): Promise<Response> {
   const answer = await ask(userId, input);
   const { attempt, content } = await loadAttempt(userId, input.attempt_id, false);
@@ -338,14 +406,12 @@ async function askAloud(userId: string, input: Record<string, unknown>): Promise
     async start(out) {
       out.enqueue(new TextEncoder().encode(JSON.stringify(answer) + "\n"));
       try {
-        await withQuota(userId, "voice", async () => {
-          const reader = (await speakStream(answer.reply.slice(0, MAX_SPOKEN_CHARS), voice, instructions)).getReader();
-          for (;;) {
-            const { done, value } = await reader.read();
-            if (done || cancelled) break;
-            out.enqueue(value);
-          }
-        });
+        const reader = (await speakStream(answer.reply.slice(0, MAX_SPOKEN_CHARS), voice, instructions)).getReader();
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done || cancelled) break;
+          out.enqueue(value);
+        }
       } catch (error) {
         if (!cancelled) console.error("ask_aloud voice failed", error);
       } finally {
@@ -362,7 +428,7 @@ async function askAloud(userId: string, input: Record<string, unknown>): Promise
 }
 
 /** The latest stored patient reply, as raw 24 kHz PCM streamed straight from OpenAI. Errors before
- *  the first byte are normal JSON errors (and refund the quota); after that the stream just ends. */
+ *  the first byte are normal JSON errors; after that the stream just ends. */
 async function speakReplyStream(userId: string, input: Record<string, unknown>): Promise<Response> {
   const { attempt, content } = await loadAttempt(userId, input.attempt_id);
   const reply = lastPatientReply(attempt.transcript);
@@ -409,10 +475,6 @@ async function voiceSession(userId: string, input: Record<string, unknown>) {
   }
   // One live call per student at a time: a new one ends whatever was still open.
   await closeCalls({ userId, overdueOnly: false });
-  const seconds = callSecondsLeft(await liveVoiceSpentToday(userId));
-  if (seconds === 0) {
-    throw new HttpError(429, "you've used today's live voice time; it resets at midnight UTC. Turn-by-turn voice and typing still work");
-  }
   await takeBudget("voice_live");
 
   const persona = content.persona;
@@ -430,24 +492,32 @@ async function voiceSession(userId: string, input: Record<string, unknown>) {
     console.error("realtime call failed", error);
     throw new HttpError(502, "live voice couldn't start; try again or use turn-by-turn voice");
   }
-  // A little slack past the app's own deadline before the server treats the call as overdue.
+  // The first idle window; each logged exchange pushes the deadline out again (voiceTurn).
   await sql`insert into private.voice_calls (call_id, user_id, attempt_id, ends_at)
-            values (${answer.callId}, ${userId}, ${attempt.id}, now() + make_interval(secs => ${seconds + DEADLINE_SLACK_SECONDS}))`;
-  // Booked at the longest the call can run; closing it settles the difference (_shared/voicecalls.ts).
-  const zero = { hit: 0, miss: 0, output: 0, reasoning: 0 };
-  await recordUsage("voice_live", `openai/${realtimeModel()}`, zero, reservedCostUSD());
-  return { sdp: answer.sdp, call_id: answer.callId, seconds };
+            values (${answer.callId}, ${userId}, ${attempt.id}, now() + make_interval(secs => ${IDLE_SECONDS}))`;
+  // Booked up to the deadline as it moves; closing the call settles the difference (_shared/voicecalls.ts).
+  await recordUsage("voice_live", `openai/${realtimeModel()}`, NO_TOKENS, callCostUSD(bookedSeconds(IDLE_SECONDS)));
+  return { sdp: answer.sdp, call_id: answer.callId, idle_seconds: IDLE_SECONDS, seconds: LEGACY_CALL_SECONDS };
 }
 
-/** What this student's live calls cost today (UTC), from how long each ran. Calls are closed
- *  before this is read, so every one has its end. */
-async function liveVoiceSpentToday(userId: string): Promise<number> {
-  const [{ seconds }] = await sql<{ seconds: number }[]>`
-    -- Capped at each call's deadline: calls closed late before that cap went in say they ran for hours.
-    select coalesce(sum(extract(epoch from least(coalesce(ended_at, ends_at), ends_at) - started_at)), 0)::float8 as seconds
-    from private.voice_calls
-    where user_id = ${userId} and started_at >= (now() at time zone 'utc')::date::timestamp at time zone 'utc'`;
-  return (seconds / 60) * realtimeUSDPerMinute();
+const NO_TOKENS = { hit: 0, miss: 0, output: 0, reasoning: 0 };
+
+/** Pushes an open call's deadline to IDLE_SECONDS from now and books the added time on the daily
+ *  cap. Once the cap is reached the deadline stays put, so the call ends at it. */
+async function keepOpen(call: Call): Promise<void> {
+  if (call.ended_at !== null || new Date(call.ends_at).getTime() < Date.now()) return;
+  try {
+    await takeBudget("voice_live");
+  } catch (error) {
+    console.error("live call not extended", error);
+    return;
+  }
+  const [row] = await sql<{ added: number }[]>`
+    update private.voice_calls v set ends_at = greatest(v.ends_at, now() + make_interval(secs => ${IDLE_SECONDS}))
+    from private.voice_calls o
+    where v.call_id = ${call.call_id} and o.call_id = v.call_id and v.ended_at is null and v.ends_at > now()
+    returning extract(epoch from v.ends_at - o.ends_at)::float8 as added`;
+  if (row && row.added > 0) await recordUsage("voice_live", `openai/${realtimeModel()}`, NO_TOKENS, callCostUSD(row.added));
 }
 
 async function ownCall(userId: string, attemptId: string, callId: unknown): Promise<Call> {
@@ -466,10 +536,8 @@ async function voiceTurn(userId: string, input: Record<string, unknown>) {
   const call = await ownCall(userId, attempt.id, input.call_id);
   const refusal = turnRefusal(call);
   if (refusal) throw new HttpError(409, refusal);
-  // Counted before the review call, atomically, so parallel requests can't log past the cap.
-  const counted = await sql`update private.voice_calls set turns = turns + 1
-                            where call_id = ${call.call_id} and turns < ${MAX_TURNS_PER_CALL} returning call_id`;
-  if (counted.length === 0) throw new HttpError(409, "this call has logged as many exchanges as it can");
+  await sql`update private.voice_calls set turns = turns + 1 where call_id = ${call.call_id}`;
+  await keepOpen(call);
   await closeCalls({ userId, overdueOnly: true });
 
   const known = new Map(content.facts.map((f) => [f.id, f]));

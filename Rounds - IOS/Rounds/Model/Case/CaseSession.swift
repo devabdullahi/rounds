@@ -33,7 +33,12 @@ final class CaseSession {
     private(set) var coverage: (got: Int, total: Int) = (0, 0)
     /// Questions, exams and tests in the order they happened.
     private(set) var timeline: [TimelineEvent] = []
+    /// True from a question until the patient's answer is finished; new questions wait for it.
     var isPatientTyping = false
+    /// The patient message a streamed reply is still writing; nil when none is.
+    private(set) var writingID: UUID?
+    /// The typing dots: waiting on the patient, before any of the reply shows.
+    var showsTypingDots: Bool { isPatientTyping && writingID == nil }
 
     var diagnosis = ""
     var differential: [String] = []
@@ -132,12 +137,33 @@ final class CaseSession {
         timeline.append(TimelineEvent(at: .now, kind: .question, text: question))
         Task {
             do {
-                show(try await service.ask(attempt: attempt(), question: question))
+                for try await step in try await service.askStreaming(attempt: attempt(), question: question) {
+                    switch step {
+                    case .writing(let text): write(text)
+                    case .done(let answer): show(answer)
+                    }
+                }
             } catch {
                 withAnimation(Springs.slide) {
+                    // A reply cut off mid-way wasn't stored, so it doesn't stay in the chat either.
+                    if let writingID { messages.removeAll { $0.id == writingID } }
+                    writingID = nil
                     isPatientTyping = false
                     messages.append(ChatMessage(kind: .problem, text: error.localizedDescription))
                 }
+            }
+        }
+    }
+
+    /// The streamed reply so far: its bubble appears with the first words, then grows in place.
+    private func write(_ text: String) {
+        if let writingID, let index = messages.firstIndex(where: { $0.id == writingID }) {
+            messages[index].text = text
+        } else {
+            let message = ChatMessage(kind: .patient, text: text)
+            withAnimation(Springs.slide) {
+                messages.append(message)
+                writingID = message.id
             }
         }
     }
@@ -241,7 +267,13 @@ final class CaseSession {
     private func show(_ answer: PatientAnswer) {
         withAnimation(Springs.slide) {
             isPatientTyping = false
-            messages.append(ChatMessage(kind: .patient, text: answer.reply))
+            // A streamed reply settles on the finished text, which the server may have changed.
+            if let writingID, let index = messages.firstIndex(where: { $0.id == writingID }) {
+                messages[index].text = answer.reply
+            } else {
+                messages.append(ChatMessage(kind: .patient, text: answer.reply))
+            }
+            writingID = nil
             revealed = Set(answer.revealedIDs)
             coverage = answer.coverage
             if !answer.revealed.isEmpty && !examMode {

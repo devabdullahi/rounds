@@ -16,7 +16,7 @@ struct LiveVoiceTests {
 
     private func model(_ transport: MockLiveVoiceTransport, log: Log, open: (@Sendable (String) async throws -> LiveCall)? = nil) -> LiveVoice {
         LiveVoice(
-            open: open ?? { _ in LiveCall(answer: "v=0 answer", id: "rtc_1", seconds: 300) },
+            open: open ?? { _ in LiveCall(answer: "v=0 answer", id: "rtc_1", idleSeconds: 300) },
             logTurn: { call, question, reply in log.turns.append((call, question, reply)); return log.endsCall },
             close: { log.closed.append($0) },
             makeTransport: { transport },
@@ -48,7 +48,6 @@ struct LiveVoiceTests {
         #expect(await voice.begin())
         await settle()
         #expect(voice.phase == .listening)
-        #expect(voice.endsAt != nil)
 
         transport.push(.studentSaid("When did it start?"))
         transport.push(.patientWords("Last "))
@@ -61,6 +60,17 @@ struct LiveVoiceTests {
         #expect(log.turns.first?.0 == "rtc_1")
         #expect(log.turns.first?.1 == "When did it start?")
         #expect(voice.phase == .listening)
+    }
+
+    @Test func aQuietCallHangsUpWithAMessage() async throws {
+        let log = Log()
+        let voice = model(MockLiveVoiceTransport(), log: log, open: { _ in LiveCall(answer: "v=0 answer", id: "rtc_1", idleSeconds: 0) })
+        #expect(await voice.begin())
+        try await Task.sleep(for: .milliseconds(100))
+        await settle()
+        guard case .unavailable(let message) = voice.phase else { Issue.record("still \(voice.phase)"); return }
+        #expect(message.contains("quiet"))
+        #expect(log.closed == ["rtc_1"])
     }
 
     @Test func tappingWhileThePatientTalksCutsThemOff() async {

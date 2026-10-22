@@ -1,6 +1,6 @@
 import { assert, assertEquals } from "jsr:@std/assert@1";
 import {
-  decodeAudio, lastPatientReply, MAX_AUDIO_BYTES, MAX_TURNS_PER_CALL, pickLiveVoice, pickVoice, speechInstructions, toBase64, turnRefusal,
+  decodeAudio, lastPatientReply, MAX_AUDIO_BYTES, pickLiveVoice, pickVoice, speechInstructions, toBase64, turnRefusal,
 } from "./voice.ts";
 
 Deno.test("a patient keeps the same voice, matched to their sex", () => {
@@ -28,16 +28,15 @@ Deno.test("a live-call reply is never voiced, since the app supplied its words",
   assertEquals(lastPatientReply([{ role: "patient", text: "Typed reply." }, { role: "patient", text: "Live.", live: true }]), null);
 });
 
-Deno.test("a live call logs exchanges only while open, briefly after, and up to its cap", () => {
+Deno.test("a live call logs exchanges only while open and briefly after", () => {
   const now = new Date("2026-10-19T12:00:00Z");
   const at = (s: number) => new Date(now.getTime() + s * 1000);
-  const open = { ends_at: at(120), ended_at: null, turns: 0 };
+  const open = { ends_at: at(120), ended_at: null };
   assertEquals(turnRefusal(open, now), null);
   assertEquals(turnRefusal({ ...open, ended_at: at(-5) }, now), null);             // last exchange in flight
   assertEquals(turnRefusal({ ...open, ended_at: at(-60) }, now), "call ended");
   assertEquals(turnRefusal({ ...open, ends_at: at(-10) }, now), null);
   assertEquals(turnRefusal({ ...open, ends_at: at(-60) }, now), "call ended");
-  assert(turnRefusal({ ...open, turns: MAX_TURNS_PER_CALL }, now)?.includes("as many exchanges"));
 });
 
 Deno.test("uploads must be base64 audio within the size limit", () => {

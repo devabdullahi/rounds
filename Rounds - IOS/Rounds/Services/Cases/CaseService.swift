@@ -41,6 +41,9 @@ protocol CaseService: Sendable {
     /// The student's unsubmitted attempt at this case, if they left one; nil when there's none.
     func resume(bed: String) async throws -> ResumedAttempt?
     func ask(attempt: String, question: String) async throws -> PatientAnswer
+    /// The same answer, shown as it's written: the reply so far while the patient "types", then the
+    /// finished answer.
+    func askStreaming(attempt: String, question: String) async throws -> AsyncThrowingStream<AnswerProgress, Error>
     func examine(attempt: String, maneuver: String) async throws -> String
     func order(attempt: String, test: String) async throws -> TestResult
     /// Voice mode: the student's recorded turn (m4a) as text, transcribed by the server.
@@ -59,4 +62,15 @@ protocol CaseService: Sendable {
     /// Live voice: the call ended on the phone; the server hangs up its side too.
     func endLiveCall(attempt: String, call: String) async throws
     func submit(attempt: String, diagnosis: String, differential: [String], plan: String) async throws -> Grade
+}
+
+extension CaseService {
+    /// A service that can't stream answers gives the whole one at once.
+    func askStreaming(attempt: String, question: String) async throws -> AsyncThrowingStream<AnswerProgress, Error> {
+        let answer = try await ask(attempt: attempt, question: question)
+        return AsyncThrowingStream { continuation in
+            continuation.yield(.done(answer))
+            continuation.finish()
+        }
+    }
 }
