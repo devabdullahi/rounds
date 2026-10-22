@@ -43,6 +43,12 @@ struct RealityCheckPage: View {
                 .padding(.top, 8)
                 .rise(shown, at: 0, offset: 8)
                 .accessibilityAddTraits(.isHeader)
+            Text("\(exam?.weeksLeft() ?? 0) weeks to go, and rotations rarely grade every case.")
+                .font(.system(size: 16))
+                .foregroundStyle(Theme.dim)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 8)
+                .rise(shown, at: 0, offset: 8)
 
             chart
                 .padding(16)
