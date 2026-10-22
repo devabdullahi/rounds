@@ -1,9 +1,10 @@
 import Foundation
 
-/// The student's year of medical school, asked once during onboarding. Stored for steering case
+/// The student's year of medical school, asked once during onboarding, or "just practicing" for
+/// everyone else (residents, PA and NP students, anyone brushing up). Stored for steering case
 /// difficulty later; students still browse by topic (`StudyFocus`), never by year.
 enum SchoolYear: String, CaseIterable, Identifiable {
-    case ms1, ms2, ms3, ms4
+    case ms1, ms2, ms3, ms4, practicing
 
     static let storageKey = "schoolYear"
 
@@ -15,6 +16,7 @@ enum SchoolYear: String, CaseIterable, Identifiable {
         case .ms2: "MS2"
         case .ms3: "MS3"
         case .ms4: "MS4"
+        case .practicing: "Just practicing"
         }
     }
 
