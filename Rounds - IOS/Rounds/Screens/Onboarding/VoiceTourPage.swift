@@ -21,6 +21,8 @@ private enum TIMING {
 /// exactly as in a case. A card says what to say on each turn. Nothing moves on until they tap.
 struct VoiceTourPage: View {
     var shown = true
+    /// Called once the tour is done, so the page's Next can open.
+    var onFinished: () -> Void = {}
 
     @State private var tour = VoiceTour()
     @State private var taps = 0
@@ -80,6 +82,7 @@ struct VoiceTourPage: View {
         }
         .animation(reduceMotion ? nil : Springs.slide, value: tour)
         .task(id: tour.phase) { await advance() }
+        .onChange(of: tour.phase) { _, phase in if phase == .done { onFinished() } }
     }
 
     private var conversation: some View {

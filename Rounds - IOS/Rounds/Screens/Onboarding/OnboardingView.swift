@@ -41,6 +41,8 @@ struct OnboardingView: View {
     @State private var holdingHeart = false
     /// Optional questions the student skipped: they count as answered, with nothing saved.
     @State private var skipped: Set<OnboardingPage> = []
+    /// The pages where the student has talked to Dana all the way through; their Continue waits for it.
+    @State private var talked: Set<OnboardingPage> = []
     /// Set on arrival: whether this run includes the account page.
     @State private var startedSignedOut = false
     /// Set on first appear, so coming back to this page never clears the answers mid-flow.
@@ -82,6 +84,7 @@ struct OnboardingView: View {
         case .examDate: !examStored.isEmpty
         case .heardFrom: HeardFrom(rawValue: heardStored) != nil
         case .account: auth.account != nil
+        case .tryInterview, .voiceTour: talked.contains(p)
         default: true
         }
     }
@@ -148,9 +151,9 @@ struct OnboardingView: View {
         case .gradedForYou: GradedForYouPage(shown: shown)
         case .examDate: ExamDatePage(shown: shown)
         case .plan: StudyPlanPage(shown: shown)
-        case .tryInterview: TryInterviewPage(shown: shown)
+        case .tryInterview: TryInterviewPage(shown: shown) { talked.insert(.tryInterview) }
         case .voiceIntro: VoiceIntroPage(shown: shown)
-        case .voiceTour: VoiceTourPage(shown: shown)
+        case .voiceTour: VoiceTourPage(shown: shown) { talked.insert(.voiceTour) }
         case .heardFrom: HeardFromPage(shown: shown)
         case .pledge: PledgePage(heart: $heart, isHolding: $holdingHeart)
         case .account:
@@ -209,6 +212,8 @@ struct OnboardingView: View {
                 .opacity(answered(p) && !skipped.contains(p) ? 0 : 1)
                 .disabled(answered(p) && !skipped.contains(p))
             }
+        case .voiceTour:
+            OnboardingNextButton(enabled: answered(.voiceTour)) { step(1) }
         case let p where p.isQuestion:
             OnboardingNextButton(title: "Continue", enabled: answered(p)) { step(1) }
         case .account:
@@ -285,6 +290,8 @@ struct OnboardingView: View {
         if target.rawValue > OnboardingPage.studyGoal.rawValue, goal == nil { goalStored = StudyGoal.step2CK.rawValue }
         if target.rawValue > OnboardingPage.examDate.rawValue, examStored.isEmpty, let month = ExamMonth.upcoming().dropFirst(2).first { examStored = month.stored }
         if target == .voiceTour { voiceMode = true }
+        if target.rawValue > OnboardingPage.tryInterview.rawValue { talked.insert(.tryInterview) }
+        if target.rawValue > OnboardingPage.voiceTour.rawValue { talked.insert(.voiceTour) }
         if target.rawValue > OnboardingPage.heardFrom.rawValue, heardStored.isEmpty { heardStored = HeardFrom.friend.rawValue }
         // Where-heard and the promise come after the account, so these screens start with the sample one.
         // Session restore can clear the sample right after launch, so also run as if onboarding

@@ -17,10 +17,12 @@ private enum TIMING {
 }
 
 /// "Ask your first patient": show, don't tell. A scripted patient and three question chips; each
-/// tap plays the exchange the way a real case does (typing, reply, revealed topic). Optional:
-/// Continue works with nothing asked.
+/// tap plays the exchange the way a real case does (typing, reply, revealed topic). Continue waits
+/// until every question has been asked and answered.
 struct TryInterviewPage: View {
     var shown = true
+    /// Called once the last question's answer and topic are shown.
+    var onFinished: () -> Void = {}
 
     private let interview = SampleInterview.burning
     @State private var asked: [String] = []
@@ -128,6 +130,7 @@ struct TryInterviewPage: View {
             withAnimation(reduceMotion ? nil : Springs.slide) { typing = nil }
             if !reduceMotion { try? await Task.sleep(for: TIMING.reveal) }
             withAnimation(reduceMotion ? nil : Springs.pop) { _ = revealed.insert(exchange.id) }
+            if revealed.count == interview.exchanges.count { onFinished() }
         }
     }
 }
