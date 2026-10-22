@@ -24,7 +24,7 @@ struct TryInterviewPage: View {
     /// Called once the last question's answer and topic are shown.
     var onFinished: () -> Void = {}
 
-    private let interview = SampleInterview.burning
+    private let interview = SampleInterview.soreThroat
     @State private var asked: [String] = []
     /// The question whose reply is still "typing"; its reply and chip wait.
     @State private var typing: String?

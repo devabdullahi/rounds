@@ -17,21 +17,20 @@ struct SampleInterview: Equatable {
     let complaint: String
     let exchanges: [Exchange]
 
-    /// A 24-year-old with burning when she pees: an uncomplicated bladder infection, the most
-    /// basic case there is (three classic symptoms, one bedside test), so the first patient a
-    /// student meets is one any year can work up.
-    static let burning = SampleInterview(
-        initials: "DR", patient: "Dana, 24", complaint: "Burning when she pees",
+    /// A 24-year-old with a sore throat: strep throat, the most basic case there is (four classic
+    /// signs, one bedside test), so the first patient a student meets is one any year can work up.
+    static let soreThroat = SampleInterview(
+        initials: "DR", patient: "Dana, 24", complaint: "Sore throat for two days",
         exchanges: [
             Exchange(question: "When did it start?",
-                     reply: "Two days ago. It burns every time I pee.",
+                     reply: "Two days ago. It really hurts to swallow.",
                      reveals: "Onset"),
-            Exchange(question: "How often are you going?",
-                     reply: "All the time. I go, and ten minutes later I need to go again.",
-                     reveals: "Frequency"),
-            Exchange(question: "Any fever or back pain?",
-                     reply: "No fever, and my back feels fine.",
-                     reveals: "Red flags"),
+            Exchange(question: "Any fever or cough?",
+                     reply: "I've felt hot and shivery. No cough at all.",
+                     reveals: "Fever, no cough"),
+            Exchange(question: "Anyone sick around you?",
+                     reply: "My roommate had strep last week.",
+                     reveals: "Sick contact"),
         ])
 
     /// The exchanges asked so far, in the order the student asked them.
