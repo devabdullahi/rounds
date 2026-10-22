@@ -276,10 +276,10 @@ struct OnboardingView: View {
         if target.rawValue > OnboardingPage.examDate.rawValue, examStored.isEmpty, let month = ExamMonth.upcoming().dropFirst(2).first { examStored = month.stored }
         if target == .voiceTour { voiceMode = true }
         if target.rawValue > OnboardingPage.heardFrom.rawValue, heardStored.isEmpty { heardStored = HeardFrom.friend.rawValue }
-        // The promise comes after the account, so these screens start with the sample one.
+        // Where-heard and the promise come after the account, so these screens start with the sample one.
         // Session restore can clear the sample right after launch, so also run as if onboarding
         // began signed in: no account page to gate the promise.
-        if target == .pledge { auth.debugUse(DebugLaunch.sampleAccount); startedSignedOut = false }
+        if target.rawValue > OnboardingPage.account.rawValue { auth.debugUse(DebugLaunch.sampleAccount); startedSignedOut = false }
         if screen == "onboarding-promised" { heart.complete() }
         // After a beat: the pages up to the target exist only once the answers above are laid out,
         // and a scroll position set before that is dropped.
