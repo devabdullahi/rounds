@@ -1,20 +1,22 @@
 import Foundation
 
-/// Every onboarding step, in order (the design canvas's flow). The quick questions first (year,
-/// goal, what to practice), then the answers read back (exam tips, when the exam is, their pace,
-/// a short "setting up" beat, their plan), a whole sample case (ask, examine, tests, debrief),
-/// voice, the account (only when onboarding began signed out), where they heard about Rounds, and
-/// the promise. Reminders are asked after it, on their own screen (ReminderView). They're pages of
-/// one carousel (`OnboardingView`), so every step slides the same way. The welcome screen before
-/// it and the paywall after it are their own screens.
+/// Every onboarding step, in order (the design canvas's flow, shaped like Ahead's: questions about
+/// the student, then a plan built from them, then the paywall). The quick questions (year, goal,
+/// what to practice), the answers read back (exam tips, when the exam is), how sure they feel and
+/// a reality check built from those answers, their pace, a short "setting up" beat, their plan,
+/// the account (only when onboarding began signed out), where they heard about Rounds, and the
+/// promise. Students meet their first real patient after onboarding; reminders are asked after
+/// it, on their own screen (ReminderView). They're pages of one carousel (`OnboardingView`), so
+/// every step slides the same way. The welcome screen before it and the paywall after it are
+/// their own screens.
 enum OnboardingPage: Int, CaseIterable {
-    case schoolYear, studyGoal, practice, gradedForYou, examDate, pace, settingUp, plan,
-         tryInterview, examine, tests, debrief, voiceIntro, voiceTour, account, heardFrom, pledge
+    case schoolYear, studyGoal, practice, gradedForYou, examDate, confidence, realityCheck, pace,
+         settingUp, plan, account, heardFrom, pledge
 
     /// Question pages share one layout (question on top, answers below) and a Continue button.
     var isQuestion: Bool {
         switch self {
-        case .schoolYear, .studyGoal, .practice, .examDate, .tryInterview, .heardFrom: true
+        case .schoolYear, .studyGoal, .practice, .examDate, .confidence, .heardFrom: true
         default: false
         }
     }

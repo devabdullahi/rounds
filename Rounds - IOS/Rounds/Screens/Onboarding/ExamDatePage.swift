@@ -66,7 +66,7 @@ struct ExamDatePage: View {
             WeekBars(weeks: weeks)
                 .id(weeks)
                 .accessibilityHidden(true)
-            Text("\(perDay) patients a day gets you \(month.patients(perDay: perDay)) patients before test day.")
+            Text("\(month.patients(perDay: perDay)) cases at \(perDay) a day")
                 .font(.system(size: 15))
                 .opacity(0.9)
                 .fixedSize(horizontal: false, vertical: true)

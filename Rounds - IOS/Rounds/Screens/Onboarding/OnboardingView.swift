@@ -10,17 +10,16 @@ import SwiftUI
  * background cross-fades between pages (mint, blush for the promise). Pages past an unanswered
  * step aren't added yet, so a swipe can't skip a choice (year, goal, then the account when
  * onboarding began signed out). The exam date is left out for goals that aren't an exam, and the
- * voice tour when the student chose to type. After the promise the carousel locks.
+ * reality check without an exam month. After the promise the carousel locks.
  * Reduce Motion: final states, instant page changes.
  * ───────────────────────────────────────────────────────── */
 
 /// New-student onboarding, the design canvas's flow: year, goal and what to practice, the answers
-/// read back (exam tips, when the exam is, their pace, a "setting up" beat, their plan), a whole
-/// sample case (ask, examine, tests, debrief), voice, the account, where they heard about Rounds,
-/// and the promise, as one carousel. Started from "Get Started" it's signed
-/// out until the account page; started by logging in with an account that never finished
-/// onboarding, that page is skipped. The AI consent comes after, before anything reaches an AI
-/// provider (RootView).
+/// read back (exam tips, when the exam is), how sure they feel and a reality check, their pace, a
+/// "setting up" beat, their plan, the account, where they heard about Rounds, and the promise, as
+/// one carousel. Started from "Get Started" it's signed out until the account page; started by
+/// logging in with an account that never finished onboarding, that page is skipped. The AI
+/// consent comes after, before anything reaches an AI provider (RootView).
 struct OnboardingView: View {
     @Environment(AuthModel.self) private var auth
     @Environment(AppState.self) private var app
@@ -31,7 +30,7 @@ struct OnboardingView: View {
     @AppStorage(CareSetting.storageKey) private var settingStored = ""
     @AppStorage(HeardFrom.storageKey) private var heardStored = ""
     @AppStorage(ExamMonth.storageKey) private var examStored = ""
-    @AppStorage(Preferences.voiceModeKey) private var voiceMode = Preferences.voiceModeDefault
+    @AppStorage(DiagnosisConfidence.storageKey) private var confidenceStored = 0
     @AppStorage(AIConsent.storageKey) private var consentStored = AIConsent.withdrawn
 
     /// The page in view. A paging scroll view, not a page-style TabView: TabView swaps pages
@@ -42,8 +41,7 @@ struct OnboardingView: View {
     @State private var holdingHeart = false
     /// Optional questions the student skipped: they count as answered, with nothing saved.
     @State private var skipped: Set<OnboardingPage> = []
-    /// Pages whose task the student has done (a pick, Dana's questions, the exam, the tests, the
-    /// call, the voice tour); their Continue waits for it.
+    /// Pages whose task the student has done (the practice pick); their Continue waits for it.
     @State private var finished: Set<OnboardingPage> = []
     /// Set on arrival: whether this run includes the account page.
     @State private var startedSignedOut = false
@@ -55,13 +53,13 @@ struct OnboardingView: View {
     private var consented: Bool { AIConsent.isGiven(stored: consentStored) }
 
     /// Pages in this run: the account only when it began signed out, the exam date only for an
-    /// exam goal, the voice tour only when they'll talk.
+    /// exam goal, the reality check only once there's an exam month to count down to.
     private var flow: [OnboardingPage] {
         OnboardingPage.allCases.filter { p in
             switch p {
             case .account: startedSignedOut
             case .examDate: goal.map { [.step1, .step2CK, .shelf, .osce].contains($0) } ?? true
-            case .voiceTour: voiceMode
+            case .realityCheck: ExamMonth(stored: examStored) != nil
             default: true
             }
         }
@@ -86,7 +84,8 @@ struct OnboardingView: View {
         case .examDate: !examStored.isEmpty
         case .heardFrom: HeardFrom(rawValue: heardStored) != nil
         case .account: auth.account != nil
-        case .practice, .tryInterview, .examine, .tests, .debrief, .voiceTour: finished.contains(p)
+        case .practice: finished.contains(p)
+        case .confidence: DiagnosisConfidence(stored: confidenceStored) != nil
         default: true
         }
     }
@@ -153,20 +152,16 @@ struct OnboardingView: View {
         case .practice: PracticePage(shown: shown, counts: app.topicCounts) { finished.insert(.practice) }
         case .gradedForYou: GradedForYouPage(shown: shown)
         case .examDate: ExamDatePage(shown: shown)
+        case .confidence: ConfidencePage(shown: shown)
+        case .realityCheck: RealityCheckPage(shown: shown)
         case .pace: PacePage(shown: shown)
         case .settingUp: SettingUpPage(shown: shown) { if page == .settingUp { step(1) } }
         case .plan: StudyPlanPage(shown: shown)
-        case .tryInterview: TryInterviewPage(shown: shown) { finished.insert(.tryInterview) }
-        case .examine: ExaminePage(shown: shown) { finished.insert(.examine) }
-        case .tests: TestsDemoPage(shown: shown) { finished.insert(.tests) }
-        case .debrief: DebriefDemoPage(shown: shown) { finished.insert(.debrief) }
-        case .voiceIntro: VoiceIntroPage(shown: shown)
-        case .voiceTour: VoiceTourPage(shown: shown, onFinished: { finished.insert(.voiceTour) }, onTypeInstead: typeInstead)
         case .heardFrom: HeardFromPage(shown: shown)
         case .pledge: PledgePage(heart: $heart, isHolding: $holdingHeart)
         case .account:
             VStack(spacing: 14) {
-                OnboardingHeadline(text: "Save Your Plan\nand First Debrief")
+                OnboardingHeadline(text: "Save Your\nPlan")
                 Spacer(minLength: 0)
                 AppIcon(.brandMark, size: 72)
                     .foregroundStyle(Theme.accent)
@@ -183,8 +178,6 @@ struct OnboardingView: View {
     private var background: some View {
         switch page {
         case .pledge: HeroWash(tint: Theme.heroBlush)
-        // The sample case sits on the app's own case background, so its cards read as in a case.
-        case .examine, .tests, .debrief: Theme.bg.ignoresSafeArea()
         default: Theme.surface.ignoresSafeArea()
         }
     }
@@ -194,21 +187,6 @@ struct OnboardingView: View {
     @ViewBuilder
     private var bottom: some View {
         switch page {
-        case .voiceIntro:
-            VStack(spacing: 4) {
-                OnboardingNextButton(title: "Show me how") {
-                    voiceMode = true
-                    later { step(1) }
-                }
-                Button("Type instead") {
-                    // Typing: the tour drops out of the flow, so the next page is the one after it.
-                    voiceMode = false
-                    later { step(1) }
-                }
-                .font(.system(size: 15, weight: .semibold))
-                .foregroundStyle(Theme.muted)
-                .frame(minHeight: 44)
-            }
         case let p where p.isSkippable:
             VStack(spacing: 4) {
                 OnboardingNextButton(title: nextTitle(p), enabled: answered(p)) { step(1) }
@@ -257,14 +235,10 @@ struct OnboardingView: View {
     /// What the page's main button says: what happens next, not just "Continue".
     private func nextTitle(_ p: OnboardingPage) -> String {
         switch p {
-        case .gradedForYou: flow.contains(.examDate) ? "Pick my test day" : "Set my pace"
-        case .examDate: "Set my pace"
+        case .gradedForYou: flow.contains(.examDate) ? "Pick my test day" : "Continue"
         case .pace: "Build my plan"
-        case .plan: "Meet my first patient"
-        case .tryInterview: "Examine Dana"
-        case .examine: "Order tests"
-        case .tests: "I'm ready to diagnose"
-        case .debrief: "Try it out loud"
+        case .realityCheck: "Close the gap"
+        case .plan: "Save my plan"
         case let p where p.isQuestion: "Continue"
         default: "Next"
         }
@@ -277,13 +251,6 @@ struct OnboardingView: View {
             try? await Task.sleep(for: .milliseconds(120))
             action()
         }
-    }
-
-    /// The mic or speech recognition is off on the voice tour: voice off, on to the page after it.
-    private func typeInstead() {
-        let next = flow.first { $0.rawValue > OnboardingPage.voiceTour.rawValue }
-        voiceMode = false
-        later { if let next { withAnimation(reduceMotion ? nil : Springs.slide) { visible = next } } }
     }
 
     /// Starts writing the student's first patients, in the background: it outlives this screen.
@@ -316,8 +283,7 @@ struct OnboardingView: View {
         "onboarding": .schoolYear, "onboarding-year": .schoolYear, "onboarding-goal": .studyGoal,
         "onboarding-practice": .practice, "onboarding-graded": .gradedForYou, "onboarding-exam": .examDate,
         "onboarding-pace": .pace, "onboarding-setting-up": .settingUp, "onboarding-plan": .plan,
-        "onboarding-try": .tryInterview, "onboarding-examine": .examine, "onboarding-tests": .tests,
-        "onboarding-debrief": .debrief, "onboarding-voice-intro": .voiceIntro, "onboarding-voice": .voiceTour,
+        "onboarding-confidence": .confidence, "onboarding-reality": .realityCheck,
         "onboarding-account": .account, "onboarding-heard": .heardFrom,
         "onboarding-heart": .pledge, "onboarding-promised": .pledge,
     ]
@@ -328,10 +294,8 @@ struct OnboardingView: View {
         if target.rawValue > OnboardingPage.schoolYear.rawValue, SchoolYear(stored: yearStored) == nil { yearStored = SchoolYear.ms3.rawValue }
         if target.rawValue > OnboardingPage.studyGoal.rawValue, goal == nil { goalStored = StudyGoal.step2CK.rawValue }
         if target.rawValue > OnboardingPage.examDate.rawValue, examStored.isEmpty, let month = ExamMonth.upcoming().dropFirst(2).first { examStored = month.stored }
-        if target == .voiceTour { voiceMode = true }
-        for p in [OnboardingPage.practice, .tryInterview, .examine, .tests, .debrief, .voiceTour] where target.rawValue > p.rawValue {
-            finished.insert(p)
-        }
+        if target.rawValue > OnboardingPage.practice.rawValue { finished.insert(.practice) }
+        if target.rawValue > OnboardingPage.confidence.rawValue, DiagnosisConfidence(stored: confidenceStored) == nil { confidenceStored = 6 }
         if target.rawValue > OnboardingPage.heardFrom.rawValue, heardStored.isEmpty { heardStored = HeardFrom.friend.rawValue }
         // Where-heard and the promise come after the account, so these screens start with the sample one.
         // Session restore can clear the sample right after launch, so also run as if onboarding
