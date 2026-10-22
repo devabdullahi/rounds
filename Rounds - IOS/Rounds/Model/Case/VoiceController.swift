@@ -216,13 +216,7 @@ final class VoiceController: NSObject, AVSpeechSynthesizerDelegate, AVAudioPlaye
     }
 
     private static func normalizedLevel(_ buffer: AVAudioPCMBuffer) -> CGFloat {
-        guard let data = buffer.floatChannelData?[0], buffer.frameLength > 0 else { return 0 }
-        let n = Int(buffer.frameLength)
-        var sum: Float = 0
-        for i in 0..<n { sum += data[i] * data[i] }
-        let rms = sqrt(sum / Float(n))
-        let db = 20 * log10(max(rms, 1e-7))
-        return CGFloat(min(max((db - VOICE.levelFloorDb) / VOICE.levelRangeDb, 0), 1))
+        micLevel(buffer, floorDb: VOICE.levelFloorDb, rangeDb: VOICE.levelRangeDb)
     }
 
     // MARK: Patient's turn
