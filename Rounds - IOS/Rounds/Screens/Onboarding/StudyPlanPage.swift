@@ -15,6 +15,7 @@ struct StudyPlanPage: View {
     @AppStorage(SchoolYear.storageKey) private var yearStored = ""
     @AppStorage(StudyGoal.storageKey) private var goalStored = ""
     @AppStorage(ExamMonth.storageKey) private var examStored = ""
+    @AppStorage(StudyFocus.storageKey) private var focusStored = ""
     @AppStorage(DailyGoal.storageKey) private var dailyGoalStored = DailyGoal.default.rawValue
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
@@ -33,6 +34,8 @@ struct StudyPlanPage: View {
     private var rows: [(String, String)] {
         var out: [(String, String)] = []
         if let year = SchoolYear(stored: yearStored) { out.append(("Year", year.label)) }
+        let focus = FocusSelection(stored: focusStored)
+        out.append(("Practicing", focus.isMix ? "A mix of everything" : focus.label))
         if let exam { out.append(("Test day", "\(exam.name()) · \(exam.weeksLeft()) weeks")) }
         out.append(("Each day", "\(perDay) patients"))
         return out

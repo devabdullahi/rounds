@@ -12,4 +12,12 @@ struct DailyGoalTests {
         #expect(DailyGoal.three.label == "3 cases")
         #expect(DailyGoal.three.duration == "About 30 min")
     }
+
+    @Test func stepsThroughThePacesAndStopsAtTheEnds() {
+        #expect(DailyGoal.two.stepped(by: 1) == .three)
+        #expect(DailyGoal.three.stepped(by: 1) == .five)
+        #expect(DailyGoal.two.stepped(by: -1) == .one)
+        #expect(DailyGoal.one.stepped(by: -1) == nil)
+        #expect(DailyGoal.five.stepped(by: 1) == nil)
+    }
 }

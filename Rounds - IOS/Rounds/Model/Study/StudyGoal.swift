@@ -43,6 +43,15 @@ enum StudyGoal: String, CaseIterable, Identifiable {
         }
     }
 
+    /// The goal as it reads before "tips": "Step 2 CK tips", "OSCE tips", "Shelf tips".
+    var tipsName: String {
+        switch self {
+        case .shelf: "Shelf"
+        case .osce: "OSCE"
+        default: label
+        }
+    }
+
     /// Reads the stored raw value; nil when nothing (or something unknown) was saved.
     init?(stored: String) { self.init(rawValue: stored) }
 }

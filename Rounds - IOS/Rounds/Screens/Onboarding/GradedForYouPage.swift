@@ -16,15 +16,7 @@ struct GradedForYouPage: View {
         return goal == .shelf ? "Great choice. Every debrief has tips for your shelves." : "Great choice. Every debrief has \(tipsName) tips."
     }
 
-    /// The exam as it reads before "tips": "Step 2 CK tips", "OSCE tips", "Shelf tips".
-    private var tipsName: String {
-        switch goal {
-        case .shelf: "Shelf"
-        case .osce: "OSCE"
-        case let goal?: goal.label
-        case nil: "Exam"
-        }
-    }
+    private var tipsName: String { goal?.tipsName ?? "Exam" }
 
     private var rows: [(IconGlyph, String, String)] {
         [

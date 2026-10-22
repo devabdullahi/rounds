@@ -49,15 +49,12 @@ struct FocusSheet: View {
                 .padding(.top, 6)
 
             ScrollView {
-                VStack(spacing: 8) {
-                    if bySystem {
-                        ForEach(OrganSystem.allCases) { s in row(s.label, s.examples, .system(s)) }
-                    } else {
-                        ForEach(Clerkship.allCases) { c in row(c.label, c.examples, .rotation(c)) }
-                    }
-                    MixRow(byRotation: !bySystem, on: focus.isMix) {
-                        withAnimation(Springs.pop) { focusStored = FocusSelection().stored }
-                    }
+                FocusTopicList(focus: focus, bySystem: bySystem, counts: counts) { value in
+                    var next = focus
+                    next.toggle(value)
+                    withAnimation(Springs.pop) { focusStored = next.stored }
+                } onMix: {
+                    withAnimation(Springs.pop) { focusStored = FocusSelection().stored }
                 }
                 .padding(.top, 12)
                 .padding(.bottom, 12)
@@ -70,37 +67,5 @@ struct FocusSheet: View {
         .presentationDragIndicator(.visible)
         .presentationBackground(Theme.bg)
         .onAppear { bySystem = focus.leadsWithSystem }
-    }
-
-    private func row(_ label: String, _ detail: String, _ value: StudyFocus) -> some View {
-        let on = focus.contains(value)
-        let count = conditionCount(value, in: counts)
-        return Button {
-            var next = focus
-            next.toggle(value)
-            withAnimation(Springs.pop) { focusStored = next.stored }
-        } label: {
-            HStack(spacing: 12) {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(label).font(.system(size: 16, weight: .semibold))
-                    Text(detail).font(.system(size: 13)).foregroundStyle(Theme.muted)
-                }
-                Spacer(minLength: 8)
-                if let count {
-                    Text(count.text)
-                        .font(.system(size: 13, weight: .semibold))
-                        .foregroundStyle(count.empty ? Theme.faint : Theme.accentText)
-                }
-                if on { FocusCheck(size: 20) }
-            }
-            .foregroundStyle(Theme.text)
-            .padding(.horizontal, 16)
-            .padding(.vertical, 10)
-            .frame(maxWidth: .infinity, minHeight: 60)
-            .modifier(SelectableSurface(on: on))
-        }
-        .buttonStyle(PressDownStyle())
-        .accessibilityValue(count?.text ?? "")
-        .accessibilityAddTraits(on ? .isSelected : [])
     }
 }
