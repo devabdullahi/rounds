@@ -3,8 +3,8 @@ import SwiftUI
 
 /// Dev-only deep link for screenshots: launch with `-screen <name>`.
 /// Names: firstopen, firstopen-auth, duplicate-account, voice-glass, onboarding (focus), onboarding-account, onboarding-intro, onboarding-try, onboarding-graded,
-/// onboarding-promise, onboarding-graph, onboarding-goal, onboarding-to-goal, onboarding-year, onboarding-name, onboarding-setting, onboarding-redflag, onboarding-cards, onboarding-reminder, onboarding-struggles, onboarding-talk, onboarding-mode, onboarding-timer, onboarding-progress, onboarding-daily, onboarding-plan, onboarding-heart, onboarding-promised,
-/// settings-about, onboarding-consent, ai-consent, paywall, paywall-unavailable, paywall-delete,
+/// onboarding-promise, onboarding-graph, onboarding-goal, onboarding-to-goal, onboarding-year, onboarding-name, onboarding-setting, onboarding-redflag, onboarding-cards, onboarding-reminder, onboarding-struggles, onboarding-talk, onboarding-voice, onboarding-mode, onboarding-timer, onboarding-progress, onboarding-daily, onboarding-plan, onboarding-heart, onboarding-promised,
+/// settings-about, onboarding-consent, ai-consent, paywall (trial page), paywall-plans, purchased, paywall-unavailable, paywall-delete,
 /// focus-system, focus-sheet, home, patients, patients-open, previous-tries, previous-try, badge-unlock-many, badge-unlock-all, paywall-taken, plan-checking, profile, brief, interview, examine, workup, diagnosis, debrief, diagnosis-suggest.
 enum DebugLaunch {
     static var screen: String? { UserDefaults.standard.string(forKey: "screen") }
@@ -19,7 +19,7 @@ enum DebugLaunch {
 
     /// Screens that stay on the paywall (no debug unlock): Superwall's, the "plans couldn't load"
     /// fallback, the delete confirmation over it, and the plan-owned-by-another-account state.
-    static let paywallScreens: Set<String> = ["paywall", "paywall-taken", "paywall-unavailable", "paywall-delete", "plan-checking"]
+    static let paywallScreens: Set<String> = ["paywall", "paywall-plans", "paywall-taken", "paywall-unavailable", "paywall-delete", "plan-checking"]
     /// `-screen paywall-unavailable`: the fallback in place of Superwall's paywall.
     static var isPaywallUnavailable: Bool { screen == "paywall-unavailable" }
 
@@ -28,7 +28,7 @@ enum DebugLaunch {
                                       "onboarding-goal", "onboarding-to-goal", "onboarding-account", "onboarding-heart",
                                       "onboarding-promised", "onboarding-year", "onboarding-name", "onboarding-plan",
                                       "onboarding-setting", "onboarding-redflag", "onboarding-cards", "onboarding-reminder",
-                                      "onboarding-struggles", "onboarding-talk", "onboarding-mode", "onboarding-timer",
+                                      "onboarding-struggles", "onboarding-talk", "onboarding-voice", "onboarding-mode", "onboarding-timer",
                                       "onboarding-progress", "onboarding-daily", "onboarding-consent"]
 
     /// Runs before the first frame so the root picks the right side (auth vs app).
@@ -59,7 +59,7 @@ enum DebugLaunch {
              "onboarding-goal", "onboarding-to-goal", "onboarding", "focus-system",
              "onboarding-account", "onboarding-heart", "onboarding-promised",
              "onboarding-year", "onboarding-name", "onboarding-plan", "onboarding-setting", "onboarding-redflag",
-             "onboarding-cards", "onboarding-reminder", "onboarding-struggles", "onboarding-talk", "onboarding-mode",
+             "onboarding-cards", "onboarding-reminder", "onboarding-struggles", "onboarding-talk", "onboarding-voice", "onboarding-mode",
              "onboarding-timer", "onboarding-progress", "onboarding-daily", "onboarding-consent": [.onboarding]
         default: []
         }
@@ -100,6 +100,9 @@ enum DebugLaunch {
         case "home-preparing":
             tab = .today
             app.debugShowPreparing()
+        case "purchased":
+            // The welcome after buying shows over Home (RootView).
+            tab = .today
         case "admit":
             // Generates a live patient (the AI model via local Supabase) and opens its door note.
             tab = .today

@@ -166,6 +166,7 @@ struct OnboardingView: View {
         case .struggles: StrugglePage(shown: seen.contains(p))
         case .redFlag: RedFlagPage(shown: seen.contains(p), picked: $redFlagPick)
         case .talkStyle: TalkStylePage(shown: seen.contains(p))
+        case .voiceTour: VoiceTourPage(shown: seen.contains(p))
         case .caseMode: CaseModePage(shown: seen.contains(p))
         case .caseTimer: CaseTimerPage(shown: seen.contains(p))
         case .name: NamePage(shown: seen.contains(p), active: page == .name) { step(1) }
@@ -335,7 +336,7 @@ struct OnboardingView: View {
         "onboarding-graph": .examReady, "onboarding-graded": .graded, "onboarding": .focus, "focus-system": .focus,
         "onboarding-name": .name,
         "onboarding-setting": .careSetting, "onboarding-redflag": .redFlag, "onboarding-cards": .missCards,
-        "onboarding-struggles": .struggles, "onboarding-talk": .talkStyle, "onboarding-mode": .caseMode,
+        "onboarding-struggles": .struggles, "onboarding-talk": .talkStyle, "onboarding-voice": .voiceTour, "onboarding-mode": .caseMode,
         "onboarding-timer": .caseTimer, "onboarding-progress": .progress, "onboarding-daily": .dailyGoal,
         "onboarding-reminder": .reminder, "onboarding-promise": .promise, "onboarding-plan": .plan,
         "onboarding-consent": .aiConsent, "onboarding-account": .account, "onboarding-heart": .pledge, "onboarding-promised": .pledge,

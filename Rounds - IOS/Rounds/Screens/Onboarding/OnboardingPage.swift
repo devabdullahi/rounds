@@ -6,7 +6,7 @@ import Foundation
 /// the answers read back as a plan, the AI consent (before anything is sent to an AI provider),
 /// then the account (only when onboarding began signed out) and the promise. They're pages of one carousel (`OnboardingView`), so every step slides the same way.
 enum OnboardingPage: Int, CaseIterable {
-    case patients, tryInterview, schoolYear, studyGoal, examReady, graded, focus, careSetting, struggles, redFlag, talkStyle,
+    case patients, tryInterview, schoolYear, studyGoal, examReady, graded, focus, careSetting, struggles, redFlag, talkStyle, voiceTour,
          caseMode, caseTimer, name, promise, missCards, progress, dailyGoal, reminder, plan, aiConsent, account, pledge
 
     /// Question pages share one layout (question on top, answers as a list); the rest show art.
