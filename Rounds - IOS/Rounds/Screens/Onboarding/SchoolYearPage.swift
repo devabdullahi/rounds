@@ -10,7 +10,7 @@ struct SchoolYearPage: View {
     ]
 
     var body: some View {
-        OnboardingQuestion(title: "What year are you in?", glyph: .graduationCap, shown: shown) {
+        OnboardingQuestion(title: "What year are you in?", shown: shown) {
             ForEach(Array(SchoolYear.allCases.enumerated()), id: \.element) { i, year in
                 ChoiceRow(title: year.label, detail: Self.detail[year], badge: String(i + 1), tint: ChoiceRow.tint(i),
                           on: SchoolYear(stored: stored) == year, order: i) { stored = year.rawValue }

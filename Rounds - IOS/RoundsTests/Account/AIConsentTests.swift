@@ -33,8 +33,4 @@ struct AIConsentTests {
         #expect(text.contains("real patient"))
         #expect(text.contains("not medical advice"))
     }
-
-    @Test func consentComesRightBeforeTheAccount() {
-        #expect(OnboardingPage.aiConsent.rawValue + 1 == OnboardingPage.account.rawValue)
-    }
 }

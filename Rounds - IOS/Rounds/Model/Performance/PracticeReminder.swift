@@ -6,6 +6,8 @@ enum PracticeReminder: String, CaseIterable, Identifiable, Sendable {
     case morning, lunch, evening
 
     static let storageKey = "practiceReminder"
+    /// Set once the reminder has been offered over Home, so it's offered only once.
+    static let offeredKey = "practiceReminderOffered"
 
     var id: String { rawValue }
 

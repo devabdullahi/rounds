@@ -30,7 +30,7 @@ struct TryInterviewPage: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
-        OnboardingQuestion(title: "Ask your first patient", glyph: .messageSquare, shown: shown) {
+        OnboardingQuestion(title: "Ask your first patient", shown: shown) {
             patientCard
                 .padding(.bottom, 6)
                 .modifier(QuestionEntrance(order: 0))

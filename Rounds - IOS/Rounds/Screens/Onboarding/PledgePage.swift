@@ -30,7 +30,7 @@ struct PledgePage: View {
     @Binding var isHolding: Bool
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @AppStorage(StudyGoal.storageKey) private var goalStored = ""
-    @AppStorage(StudyFocus.storageKey) private var focusStored = ""
+    @AppStorage(DailyGoal.storageKey) private var dailyGoalStored = DailyGoal.default.rawValue
 
     /// Resets by itself when the touch ends *or* the system cancels it (a call, Control Center),
     /// so the heart can never keep filling with no finger on it.
@@ -45,7 +45,7 @@ struct PledgePage: View {
                 Sparkle().fill(Theme.surface).frame(width: 28, height: 28).at(24, 40)
                 Sparkle().fill(Theme.surface).frame(width: 24, height: 40).at(300, 290)
                 if let goal = StudyGoal(stored: goalStored) { HeroTag(text: goal.label).at(4, 270) }
-                HeroTag(text: FocusSelection(stored: focusStored).label).at(196, 70)
+                HeroTag(text: "\(DailyGoal(stored: dailyGoalStored).cases) patients a day").at(196, 70)
             }
             .overlay { heartButton }
             .frame(maxHeight: 420)

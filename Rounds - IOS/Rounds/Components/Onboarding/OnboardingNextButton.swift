@@ -8,14 +8,11 @@ struct OnboardingNextButton: View {
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 8) {
-                Text(title)
-                AppIcon(.arrowRight, size: 18)
-            }
+            Text(title)
         }
-        .buttonStyle(PrimaryButtonStyle(height: 60))
-        .frame(width: 230)
+        .buttonStyle(PrimaryButtonStyle(height: 56))
         .disabled(!enabled)
         .frame(maxWidth: .infinity)
+        .padding(.horizontal, 20)
     }
 }

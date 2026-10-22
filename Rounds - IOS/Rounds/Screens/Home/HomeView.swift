@@ -42,6 +42,10 @@ struct HomeView: View {
     @AppStorage(StudyFocus.storageKey) private var focusStored = ""
     @AppStorage(CareSetting.storageKey) private var settingStored = ""
     @AppStorage(DailyGoal.storageKey) private var dailyGoalStored = DailyGoal.default.rawValue
+    @AppStorage(PracticeReminder.offeredKey) private var reminderOffered = false
+    @AppStorage(PracticeReminder.storageKey) private var reminderStored = ""
+    @Environment(PaywallModel.self) private var paywall
+    @State private var askingReminder = false
     private var focus: FocusSelection { FocusSelection(stored: focusStored) }
 
     var body: some View {
@@ -49,6 +53,17 @@ struct HomeView: View {
             VStack(alignment: .leading, spacing: 20) {
                 header
                     .opacity(stage >= 0 ? 1 : 0)
+
+                // The first shift: today's patients as a ward board, until the first case is graded.
+                if app.isFirstPatient, !app.ward.isEmpty {
+                    FirstShiftBoard(
+                        date: .now,
+                        beds: app.ward.prefix(3).map { .init(id: $0.id, who: $0.meta, why: $0.quote, isNew: $0.status == .new) },
+                        seen: app.gradedToday, goal: DailyGoal(stored: dailyGoalStored).cases)
+                        .opacity(stage >= 1 ? 1 : 0)
+                        .offset(y: stage >= 1 ? 0 : CARD.offsetY)
+                        .animation(CARD.spring, value: stage)
+                }
 
                 PatientDeck(stage: stage)
                     .opacity(stage >= 1 ? 1 : 0)
@@ -72,9 +87,33 @@ struct HomeView: View {
         // Write this focus's first patients ahead, so tapping a patient doesn't wait for one.
         .task(id: focusStored + "@" + settingStored) { await app.prepareAhead(focus: focus) }
         .sheet(isPresented: $editingFocus) { FocusSheet(counts: app.topicCounts) }
+        // The daily reminder is offered once, over Home, after onboarding (and after the welcome
+        // that follows a purchase).
+        .task { await offerReminder() }
+        .onChange(of: paywall.justBought) { _, now in if !now { Task { await offerReminder() } } }
+        .sheet(isPresented: $askingReminder) {
+            ReminderSheet {
+                reminderOffered = true
+                askingReminder = false
+            }
+        }
         #if DEBUG
         .onAppear { if DebugLaunch.screen == "focus-sheet" { editingFocus = true } }
         #endif
+    }
+
+    private func offerReminder() async {
+        #if DEBUG
+        // Debug launches show the sheet only when asked for (`-screen reminder-sheet`).
+        if let screen = DebugLaunch.screen {
+            if screen == "reminder-sheet" { askingReminder = true }
+            return
+        }
+        #endif
+        guard !reminderOffered, PracticeReminder(stored: reminderStored) == nil else { return }
+        try? await Task.sleep(for: .seconds(1.2))
+        guard !Task.isCancelled, !paywall.justBought, !editingFocus else { return }
+        askingReminder = true
     }
 
     private func play() async {
