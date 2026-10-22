@@ -127,9 +127,12 @@ struct OnboardingView: View {
             guard !started else { return }
             started = true
             startedSignedOut = auth.account == nil
-            OnboardingAnswers.clearPicks()
             #if DEBUG
+            // A `-screen` past the first page keeps the sample answers it needs to get there.
+            if (DebugLaunch.screen.flatMap { Self.debugPages[$0] } ?? .schoolYear) == .schoolYear { OnboardingAnswers.clearPicks() }
             debugStart()
+            #else
+            OnboardingAnswers.clearPicks()
             #endif
         }
     }

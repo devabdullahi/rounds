@@ -45,7 +45,7 @@ struct FocusSheet: View {
                 .font(.system(size: 13, weight: .semibold))
                 .foregroundStyle(Theme.muted)
                 .padding(.top, 16)
-            Segmented(options: [(false, "Specialty"), (true, "System")], selection: $bySystem)
+            Segmented(options: [(false, "Specialty"), (true, "Body systems")], selection: $bySystem)
                 .padding(.top, 6)
 
             ScrollView {

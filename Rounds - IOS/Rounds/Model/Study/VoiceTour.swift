@@ -13,8 +13,8 @@ struct VoiceTour: Equatable {
     }
 
     static let lines = [
-        Line(question: "When did the pain start?", reply: "Last night, around dinner. A dull ache by my belly button, and then it moved…"),
-        Line(question: "Does anything make it worse?", reply: "Walking. Every bump in the car hurt."),
+        Line(question: "When did the burning start?", reply: "Two days ago. It stings every time I pee, and I keep needing to go…"),
+        Line(question: "Any fever or back pain?", reply: "No fever, and my back feels fine."),
     ]
 
     private(set) var phase: Phase = .listening

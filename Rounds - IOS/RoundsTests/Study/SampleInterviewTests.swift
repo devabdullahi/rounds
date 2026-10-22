@@ -5,7 +5,7 @@ import Testing
 /// come back in the order the student asked them.
 struct SampleInterviewTests {
     @Test func everyQuestionHasAReplyAndATopic() {
-        let interview = SampleInterview.bellyPain
+        let interview = SampleInterview.burning
         #expect(interview.exchanges.count == 3)
         for exchange in interview.exchanges {
             #expect(!exchange.reply.isEmpty)
@@ -15,7 +15,7 @@ struct SampleInterviewTests {
     }
 
     @Test func askedQuestionsKeepTheStudentsOrder() {
-        let interview = SampleInterview.bellyPain
+        let interview = SampleInterview.burning
         let ids = interview.exchanges.map(\.id)
         #expect(interview.asked([ids[2], ids[0]]).map(\.id) == [ids[2], ids[0]])
         #expect(interview.asked(["Something else"]).isEmpty)

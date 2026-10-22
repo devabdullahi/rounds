@@ -22,7 +22,7 @@ private enum TIMING {
 struct TryInterviewPage: View {
     var shown = true
 
-    private let interview = SampleInterview.bellyPain
+    private let interview = SampleInterview.burning
     @State private var asked: [String] = []
     /// The question whose reply is still "typing"; its reply and chip wait.
     @State private var typing: String?

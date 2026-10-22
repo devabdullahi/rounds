@@ -36,7 +36,7 @@ struct VoiceTourPage: View {
 
     private var coach: String {
         switch tour.phase {
-        case .listening: tour.asked == 0 ? "Just talk. Ask Dana when her pain started." : "You have the floor. Ask your next question."
+        case .listening: tour.asked == 0 ? "Just talk. Ask Dana when the burning started." : "You have the floor. Ask your next question."
         case .thinking: "Sent. Dana heard you."
         case .patient: tour.asked == 1 ? "She's still talking. Tap the orb to cut in." : "She answers out loud."
         case .done: "That's voice. Ask anything, any time."
