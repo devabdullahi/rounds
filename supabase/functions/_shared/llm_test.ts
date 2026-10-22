@@ -38,9 +38,10 @@ Deno.test("each OpenAI task gets its model and effort: Luna without reasoning fo
   }
 });
 
-Deno.test("flashcards go to DeepSeek V4.1 Flash and case writing to GPT-5.4 mini, without thinking", () => {
-  assertEquals(settingFor(openai, "cards", noEnv), { provider: "deepseek", model: "deepseek-flash", effort: "off" });
-  assertEquals(settingFor(openai, "case", noEnv), { model: "gpt-5.4-mini", effort: "off" });
+Deno.test("case writing, flashcards and templates go to GPT-5.4 mini, without thinking", () => {
+  for (const task of ["case", "cards", "template"] as const) {
+    assertEquals(settingFor(openai, task, noEnv), { model: "gpt-5.4-mini", effort: "off" });
+  }
   assertEquals(thinkingFields("deepseek", 400, "off"), { max_tokens: 400, thinking: { type: "disabled" } });
 });
 
