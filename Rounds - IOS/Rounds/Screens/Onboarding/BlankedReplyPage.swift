@@ -72,13 +72,8 @@ struct BlankedReplyPage: View {
         .onChange(of: shown, initial: true) { _, now in if now { played = true } }
     }
 
-    private var wash: Color {
-        switch answer {
-        case .often: Theme.cardYellow.opacity(0.12)
-        case .sometimes: Theme.cardBlue.opacity(0.10)
-        case .rarely: Theme.accentSoft
-        }
-    }
+    /// The circle behind each scene: the same soft accent for all three, like the answer tiles.
+    private var wash: Color { Theme.accentSoft }
 
     // MARK: All the time: dots that keep thinking
 

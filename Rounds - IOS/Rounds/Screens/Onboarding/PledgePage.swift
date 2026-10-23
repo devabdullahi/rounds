@@ -50,7 +50,7 @@ struct PledgePage: View {
             .overlay { heartButton }
             .frame(maxHeight: 420)
 
-            OnboardingHeadline(text: heart.isDone ? "Promise Made" : "I Promise to Show Up\nfor My Patients")
+            OnboardingHeadline(text: heart.isDone ? "Promise made" : "I promise to show up\nfor my patients")
                 .contentTransition(.opacity)
                 .animation(.easeOut(duration: 0.25), value: heart.isDone)
             Spacer(minLength: 0)
