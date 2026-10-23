@@ -10,17 +10,14 @@ struct ChoiceRow: View {
     var glyph: IconGlyph?
     /// Short text in the tile instead of an icon ("MS1", "2").
     var badge: String?
-    var tint: Color = Theme.accent
+    /// One accent for every tile: a color per row carried no meaning and put red on neutral answers.
+    var tint: Color = Theme.accentText
     let on: Bool
     var multiple = false
     var order = 0
     let action: () -> Void
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    /// Tile tints taken in turn down a list, so neighbouring rows differ.
-    static let tints: [Color] = [Theme.cardBlue, Theme.cardTeal, Theme.cardPurple, Theme.cardPink, Theme.cardYellow, Theme.cardRed]
-    static func tint(_ index: Int) -> Color { tints[index % tints.count] }
 
     var body: some View {
         Button {

@@ -11,7 +11,7 @@ struct BlankedPage: View {
     var body: some View {
         OnboardingQuestion(title: "Ever blanked on something you knew?", shown: shown) {
             ForEach(Array(BlankFrequency.allCases.enumerated()), id: \.element) { i, answer in
-                ChoiceRow(title: answer.label, detail: answer.detail, glyph: Self.glyphs[answer], tint: ChoiceRow.tint(i),
+                ChoiceRow(title: answer.label, detail: answer.detail, glyph: Self.glyphs[answer],
                           on: stored == answer.rawValue, order: i) { stored = answer.rawValue }
             }
         }

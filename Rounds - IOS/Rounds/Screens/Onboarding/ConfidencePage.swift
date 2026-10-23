@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// "How sure are you diagnosing a patient today?": 1 to 10, one tap. The reality check after it
+/// "How sure are you of your diagnoses?": 1 to 10, one tap. The reality check after it
 /// reads the number back.
 struct ConfidencePage: View {
     var shown = true
@@ -8,7 +8,7 @@ struct ConfidencePage: View {
 
 
     var body: some View {
-        OnboardingQuestion(title: "How sure are you diagnosing a patient today?", shown: shown) {
+        OnboardingQuestion(title: "How sure are you of your diagnoses?", shown: shown) {
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 5), spacing: 8) {
                 ForEach(Array(DiagnosisConfidence.range), id: \.self) { n in
                     Button { stored = n } label: {

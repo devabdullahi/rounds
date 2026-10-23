@@ -50,8 +50,11 @@ struct ExamMonth: Equatable, Hashable {
         return max(1, days / 7)
     }
 
-    /// "7 weeks", under each month in the picker, so the student sees how far away it is.
+    /// "7 weeks", under each month in the picker, so the student sees how far away it is. The
+    /// current month says "This month": counting to its middle would say "1 week" on the 28th.
     func away(from now: Date = .now, calendar: Calendar = .current) -> String {
+        let today = calendar.dateComponents([.year, .month], from: now)
+        if today.year == year, today.month == month { return "This month" }
         let weeks = weeksLeft(from: now, calendar: calendar)
         return weeks == 1 ? "1 week" : "\(weeks) weeks"
     }

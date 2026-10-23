@@ -15,9 +15,9 @@ private enum TIMING {
     static let labels = 1.5
 }
 
-/// Tough love after the confidence question, short enough to read in a glance and built only
-/// from true things: the student's own number, their exam month and their plan's patient count.
-/// Only shown with an exam month.
+/// Tough love after the confidence and pace questions, short enough to read in a glance and built
+/// only from true things: the student's own number, their exam month and the pace they just picked
+/// (it comes after PacePage so the patient count is theirs, not a default). Only shown with an exam month.
 struct RealityCheckPage: View {
     var shown = true
     @AppStorage(DiagnosisConfidence.storageKey) private var confidenceStored = 0
