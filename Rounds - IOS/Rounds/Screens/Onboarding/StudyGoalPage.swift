@@ -12,7 +12,7 @@ struct StudyGoalPage: View {
     var body: some View {
         OnboardingQuestion(title: "What are you studying for?", shown: shown) {
             ForEach(Array(StudyGoal.allCases.enumerated()), id: \.element) { i, goal in
-                ChoiceRow(title: goal.label, glyph: Self.glyphs[goal],
+                ChoiceRow(title: goal.label, glyph: Self.glyphs[goal], tint: ChoiceRow.tint(i),
                           on: StudyGoal(stored: stored) == goal, order: i) { stored = goal.rawValue }
             }
         }
