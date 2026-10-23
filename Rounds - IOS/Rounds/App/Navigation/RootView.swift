@@ -23,7 +23,7 @@ struct RootView: View {
 
     /// The student's badge, shown once right after buying.
     private var welcomeAboard: some View {
-        WelcomeAboardView(name: auth.account?.name?.split(separator: " ").first.map(String.init),
+        WelcomeAboardView(fullName: auth.account?.name,
                           year: SchoolYear(stored: yearStored), goal: StudyGoal(stored: goalStored),
                           plan: paywall.activePlan) { paywall.welcomed() }
     }

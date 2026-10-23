@@ -36,7 +36,8 @@ private struct DropPose {
 /// Shown once, right after a plan is bought: the student's Rounds ID badge on a lanyard, then
 /// "Start my first shift" into the app.
 struct WelcomeAboardView: View {
-    let name: String?
+    /// The account's full name: the badge says "Dr. Surname", the headline uses the first name.
+    let fullName: String?
     let year: SchoolYear?
     let goal: StudyGoal?
     let plan: ActivePlan?
@@ -79,7 +80,7 @@ struct WelcomeAboardView: View {
             }
             Spacer(minLength: 16)
             VStack(spacing: 14) {
-                Text(name.map { "Welcome to the team, \($0)" } ?? "Welcome to the team")
+                Text(DoctorTitle.firstName(of: fullName).map { "Welcome to the team, \($0)" } ?? "Welcome to the team")
                     .font(.system(size: 32, weight: .bold))
                     .tracking(-0.6)
                     .multilineTextAlignment(.center)
@@ -143,7 +144,7 @@ struct WelcomeAboardView: View {
             badge.padding(.top, -4)
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(["Rounds badge", name, year?.label, goal?.label].compactMap { $0 }.joined(separator: ", "))
+        .accessibilityLabel(["Rounds badge", DoctorTitle.from(fullName: fullName), year?.label, goal?.label].compactMap { $0 }.joined(separator: ", "))
     }
 
     /// One side of the lanyard: a striped strap, slanted toward the clip.
@@ -177,17 +178,12 @@ struct WelcomeAboardView: View {
 
             VStack(spacing: 10) {
                 // Sits half over the green band, like a photo on an ID.
-                Text(initial)
-                    .font(.system(size: 34, weight: .bold))
-                    .foregroundStyle(Theme.info)
-                    .frame(width: 84, height: 84)
-                    .background(Circle().fill(Theme.info.opacity(0.18)))
-                    .background(Circle().fill(Theme.surface))
+                DoctorAvatar(size: 84)
                     .overlay(Circle().strokeBorder(Theme.surface, lineWidth: 4))
                     .padding(.top, -48)
                 VStack(spacing: 2) {
-                    Text(name ?? "Student doctor").font(.system(size: 24, weight: .bold)).tracking(-0.4)
-                    Text([name == nil ? nil : "Student doctor", year?.label].compactMap { $0 }.joined(separator: " · "))
+                    Text(DoctorTitle.from(fullName: fullName) ?? "Student doctor").font(.system(size: 24, weight: .bold)).tracking(-0.4)
+                    Text([DoctorTitle.from(fullName: fullName) == nil ? nil : "Student doctor", year?.label].compactMap { $0 }.joined(separator: " · "))
                         .font(.system(size: 13)).foregroundStyle(Theme.muted)
                 }
                 HStack(spacing: 8) {
@@ -236,10 +232,6 @@ struct WelcomeAboardView: View {
         }
         .allowsHitTesting(false)
         .opacity(reduceMotion ? 0 : 1)
-    }
-
-    private var initial: String {
-        name?.first.map { String($0).uppercased() } ?? "R"
     }
 
     private func field(_ label: String, _ value: String) -> some View {
