@@ -32,5 +32,17 @@ struct AIConsentTests {
         #expect(text.contains("DeepSeek"))
         #expect(text.contains("real patient"))
         #expect(text.contains("not medical advice"))
+        #expect(text.contains("isn't responsible for any diagnosis"))
+    }
+
+    @Test func noteAcceptsBothDocuments() {
+        #expect(AIConsent.termsNote.contains("Terms of Use"))
+        #expect(AIConsent.termsNote.contains("Privacy Policy"))
+    }
+
+    /// Adding the terms raised the version, so a student who agreed to the AI-only wording is asked again.
+    @Test func earlierAgreementAsksAgain() {
+        #expect(AIConsent.currentVersion >= 2)
+        #expect(!AIConsent.isGiven(stored: 1))
     }
 }
