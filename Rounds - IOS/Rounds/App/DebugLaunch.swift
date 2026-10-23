@@ -3,7 +3,7 @@ import SwiftUI
 
 /// Dev-only deep link for screenshots: launch with `-screen <name>`.
 /// Names: firstopen, firstopen-auth, duplicate-account, voice-glass, onboarding (year), onboarding-year, onboarding-goal,
-/// onboarding-practice, onboarding-graded, onboarding-exam, onboarding-pace, onboarding-setting-up, onboarding-plan,
+/// onboarding-practice, onboarding-blanked, onboarding-blanked-reply, onboarding-exam, onboarding-countdown, onboarding-study-time, onboarding-pace, onboarding-setting-up, onboarding-plan,
 /// onboarding-confidence, onboarding-reality,
 /// onboarding-account, onboarding-heard, onboarding-heart, onboarding-promised (every `onboarding…` name opens onboarding),
 /// settings-about, ai-consent, paywall (trial page), paywall-plans, purchased, reminders, paywall-unavailable, paywall-delete,

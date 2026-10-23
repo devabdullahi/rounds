@@ -14,12 +14,14 @@ private enum TIMING {
 
 /// The daily reminder, offered once as its own full screen after onboarding (and after the welcome
 /// that follows a purchase). Kept simple: what it's for, Allow (iOS asks for permission next) or
-/// Skip. The time is the evening one; students change it in Settings.
+/// Skip. The time is the one they picked in onboarding (evening if none); Settings changes it.
 struct ReminderView: View {
     let onDone: () -> Void
     @Environment(AppState.self) private var app
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @AppStorage(PracticeReminder.storageKey) private var stored = ""
+    /// The time they said they study best in onboarding; evening when they didn't say.
+    @AppStorage(PracticeReminder.preferredKey) private var preferredStored = ""
     @State private var shown = false
     @State private var swung = false
 
@@ -50,7 +52,8 @@ struct ReminderView: View {
             Button("Allow notifications") {
                 Task {
                     // iOS asks for permission here; the screen closes whatever the answer.
-                    if await app.setPracticeReminder(.evening) { stored = PracticeReminder.evening.rawValue }
+                    let time = PracticeReminder(stored: preferredStored) ?? .evening
+                    if await app.setPracticeReminder(time) { stored = time.rawValue }
                     onDone()
                 }
             }

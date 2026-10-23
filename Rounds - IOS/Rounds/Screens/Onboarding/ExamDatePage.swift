@@ -1,17 +1,15 @@
 import SwiftUI
 
-/// "When is your Step 2 CK?": the next five months and "Later", and a countdown card that turns
-/// the pick into weeks and patients. "Not sure yet" (the page's Skip) leaves it unset. Only asked
+/// "When is your Step 2 CK?": the next five months and "Later". The weeks it leaves are their own
+/// screen after it (CountdownPage). "Not sure yet" (the page's Skip) leaves it unset. Only asked
 /// when the goal is an exam.
 struct ExamDatePage: View {
     var shown = true
     @AppStorage(ExamMonth.storageKey) private var stored = ""
     @AppStorage(StudyGoal.storageKey) private var goalStored = ""
-    @AppStorage(DailyGoal.storageKey) private var dailyGoalStored = DailyGoal.default.rawValue
 
     private let months = ExamMonth.upcoming()
     private var picked: ExamMonth? { ExamMonth(stored: stored) }
-    private var perDay: Int { DailyGoal(stored: dailyGoalStored).cases }
 
     private var title: String {
         switch StudyGoal(stored: goalStored) {
@@ -29,11 +27,6 @@ struct ExamDatePage: View {
                     monthButton(m.shortName(), detail: String(m.year), on: picked == m, order: i) { stored = m.stored }
                 }
                 monthButton("Later", detail: " ", on: stored == ExamMonth.later, order: months.count) { stored = ExamMonth.later }
-            }
-            if let picked {
-                countdown(picked)
-                    .padding(.top, 12)
-                    .transition(.opacity.combined(with: .scale(scale: 0.96)))
             }
         }
         .animation(Springs.slide, value: stored)
@@ -54,27 +47,5 @@ struct ExamDatePage: View {
         .accessibilityAddTraits(on ? .isSelected : [])
         .sensoryFeedback(.selection, trigger: on)
         .modifier(QuestionEntrance(order: order))
-    }
-
-    private func countdown(_ month: ExamMonth) -> some View {
-        let weeks = month.weeksLeft()
-        return VStack(alignment: .leading, spacing: 12) {
-            HStack(alignment: .firstTextBaseline, spacing: 8) {
-                Text("\(weeks)").font(.system(size: 40, weight: .bold)).tracking(-1).contentTransition(.numericText())
-                Text(weeks == 1 ? "week to go" : "weeks to go").font(.system(size: 17, weight: .semibold))
-            }
-            WeekBars(weeks: weeks)
-                .id(weeks)
-                .accessibilityHidden(true)
-            Text("\(month.patients(perDay: perDay)) cases at \(perDay) a day")
-                .font(.system(size: 15))
-                .opacity(0.9)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-        .foregroundStyle(Theme.accentInk)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(18)
-        .background(Theme.welcomeGreen, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
-        .accessibilityElement(children: .combine)
     }
 }
