@@ -139,7 +139,7 @@ struct HomeView: View {
 
             VStack(alignment: .leading, spacing: 10) {
                 HStack(alignment: .firstTextBaseline) {
-                    Text(shiftTitle)
+                    Text(app.isFirstPatient ? "Your first patient" : shiftTitle)
                         .font(.system(size: 34, weight: .bold))
                         .tracking(-0.5)
                         .accessibilityAddTraits(.isHeader)

@@ -221,6 +221,17 @@ final class AuthModel {
     /// End of onboarding: recorded on the account (so no device asks again), then into the app.
     /// Recording is best effort; if it fails, the student simply sees onboarding again next time.
     /// The picks are saved for research the same way: a failure never holds the student up.
+    /// Pages already logged this run, so swiping back and forth sends each one once.
+    @ObservationIgnored private var loggedSteps: Set<String> = []
+
+    /// Notes that this install reached an onboarding page, for seeing where students leave the
+    /// flow. Fire and forget: it never holds the student up or shows an error.
+    func reachedOnboarding(page: String, step: Int) {
+        guard let service, loggedSteps.insert(page).inserted else { return }
+        let install = InstallID.current(in: defaults)
+        Task { try? await service.logOnboardingStep(install: install, page: page, step: step) }
+    }
+
     func finishOnboarding(answers: OnboardingAnswers? = nil) {
         if let service {
             Task { try? await service.markOnboarded() }

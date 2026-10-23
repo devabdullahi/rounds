@@ -14,12 +14,6 @@ private enum BUBBLE {
     static let maxWidth: CGFloat = 0.78     // fraction of row width
 }
 
-private enum DOTS {
-    static let stagger = 0.15               // s between dot bounces
-    static let lift: CGFloat = 4            // px each dot hops
-    static let period = 0.9                 // s per bounce cycle
-}
-
 private enum VOICEPANEL {
     static let orbArea: CGFloat = 190            // room for rings to ripple out
     static let spring = Animation.spring(response: 0.38, dampingFraction: 0.86)
@@ -629,26 +623,5 @@ struct InterviewView: View {
         .buttonStyle(PressableStyle())
         .disabled(done)
         .accessibilityLabel(done ? "\(m.title), examined. \(session.findings[m.id] ?? "Examining")" : "Examine: \(m.title)")
-    }
-}
-
-private struct TypingDots: View {
-    var body: some View {
-        TimelineView(.animation) { ctx in
-            let t = ctx.date.timeIntervalSinceReferenceDate
-            HStack(spacing: 5) {
-                ForEach(0..<3, id: \.self) { i in
-                    let phase = (t - Double(i) * DOTS.stagger).truncatingRemainder(dividingBy: DOTS.period) / DOTS.period
-                    Circle()
-                        .fill(Theme.faint)
-                        .frame(width: 7, height: 7)
-                        .offset(y: -DOTS.lift * max(0, sin(phase * .pi * 2)))
-                }
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 14)
-            .background(Theme.surface, in: RoundedRectangle(cornerRadius: 18))
-        }
-        .accessibilityLabel("Patient is answering")
     }
 }
