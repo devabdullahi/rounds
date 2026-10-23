@@ -160,3 +160,31 @@ Deno.test("too few key tests names the missed ones", () => {
   assertEquals(miss?.title, "Key test missed: Test 2");
   assertEquals(miss?.detail, "Also part of the core workup: Test 3, Test 4.");
 });
+
+Deno.test("notes on the student's hardest areas are marked and move up", () => {
+  // History gap (appetite), a skipped exam and an unneeded x-ray: without a focus the exam note sits above nothing special.
+  const act = { revealed: ["onset", "migration", "lmp"], examined: [], ordered: ["cbc", "abdominal_x_ray"] };
+  const plain = grade(rubric, act, right);
+  assertEquals(plain.feedback.some((f) => f.focus), false);
+  const tests = grade(rubric, act, right, ["tests"]);
+  assertEquals(tests.feedback.slice(0, 2).map((f) => f.title), ["Key test missed: hCG", "Abdominal x-ray wasn't indicated"]);
+  assertEquals(tests.feedback.slice(0, 2).every((f) => f.focus), true);
+  const asking = grade(rubric, act, right, ["whatToAsk"]);
+  assertEquals(asking.feedback[0], { tone: "miss", title: "History gap: appetite", detail: "You never asked about it.", focus: true });
+  // Focus changes what's said first, never the score.
+  assertEquals(tests.score, plain.score);
+});
+
+Deno.test("a can't-miss alternative left off the differential is a note only for students who asked for it", () => {
+  const act = { revealed: ["onset", "migration", "appetite", "lmp"], examined: ["rlq"], ordered: ["hcg", "cbc"] };
+  assertEquals(grade(rubric, act, right, [], "Ectopic pregnancy").feedback.some((f) => f.title.includes("differential")), false);
+  const g = grade(rubric, act, right, ["differential"], "Ectopic pregnancy");
+  assertEquals(g.feedback[0].title, "Your differential left out Ectopic pregnancy");
+  assertEquals(g.feedback[0].focus, true);
+});
+
+Deno.test("safety still comes before a focus area", () => {
+  const g = grade(rubric, { revealed: ["onset", "migration"], examined: ["rlq"], ordered: ["cbc"] }, right, ["whatToAsk"]);
+  assertEquals(g.feedback[0].covers_miss, "Ectopic pregnancy");
+  assertEquals(g.feedback[1].focus, true);
+});

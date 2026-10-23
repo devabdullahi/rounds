@@ -1,7 +1,7 @@
 import Foundation
 
-/// What the student finds hardest, asked during onboarding (any number). Stored on the device for
-/// now; nothing reads it yet.
+/// What the student finds hardest, asked during onboarding (any number). Stored on the device and
+/// sent with each submission, so feedback on these areas is marked and comes first (GradingFocus).
 enum StudyStruggle: String, CaseIterable, Identifiable {
     case whatToAsk, differential, tests, timing, talking
 

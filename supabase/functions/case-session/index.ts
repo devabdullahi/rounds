@@ -30,9 +30,11 @@
 //            questions hang the call up. Taken only while the call is open (plus a few seconds for
 //            the last exchange in flight); each one keeps the call open longer. The reply is never voiced.
 //   voice_end {attempt_id, call_id}                   → {}  the app ended the call; the server hangs up too.
-//   submit   {attempt_id, diagnosis, differential, plan} → grade (and queues the next condition
-//            in the case's focus, see _shared/prefetch.ts). The grade carries condition insights
-//            (about, differential, your_extras; see insights.ts) when the case's profile exists.
+//   submit   {attempt_id, diagnosis, differential, plan, goal?, struggles?} → grade (and queues the
+//            next condition in the case's focus, see _shared/prefetch.ts). The grade carries condition
+//            insights (about, differential, your_extras; see insights.ts) when the case's profile
+//            exists. `goal` (the student's exam) adds a lens: the case taught the way that exam asks
+//            (lens.ts). `struggles` (what they find hardest) marks and promotes feedback on those areas.
 //
 // Only a student's first submitted attempt on a case moves their rating; a restart after seeing the
 // answer is graded as usual but unrated. A submission past the chosen time limit is graded and
@@ -48,7 +50,8 @@ import { sql } from "../_shared/db.ts";
 import { completeJSON, streamJSON } from "../_shared/llm.ts";
 import { GRADER, LIVE_PATIENT, PATIENT, REPLY_CHECKER, VOICE_TURN_REVIEW } from "../_shared/prompts.ts";
 import { patientPrompt, type PromptPersona } from "../_shared/patientprompt.ts";
-import { type Actions, grade, type Grade, isSingleDiagnosis, matchesDiagnosis, type Rubric, unrated } from "./grade.ts";
+import { type Actions, FOCUS_AREAS, type FocusArea, grade, type Grade, isSingleDiagnosis, matchesDiagnosis, type Rubric, unrated } from "./grade.ts";
+import { examLens, type Lens, type LensProfile, parseGoal } from "./lens.ts";
 import { conditionInsights, type InsightProfile, type Insights } from "./insights.ts";
 import { namedDiagnoses } from "./leak.ts";
 import { hiddenTests } from "./menu.ts";
@@ -64,7 +67,7 @@ import { closeCalls } from "../_shared/voicecalls.ts";
 import { liveSessionPrompt, voiceTurnPrompt } from "../_shared/patientprompt.ts";
 import { recordUsage, takeBudget } from "../_shared/usage.ts";
 import { speak, speakStream, STREAM_SAMPLE_RATE, transcribe } from "../_shared/speech.ts";
-import { requirePlan } from "../_shared/plan.ts";
+import { requirePlanOrFreeCase } from "../_shared/plan.ts";
 import { refundQuota, withQuota } from "../_shared/quota.ts";
 import { naturalDenial, naturalRefusal, talksAboutScript } from "./refusal.ts";
 import { ReplyGate } from "./stream.ts";
@@ -99,8 +102,9 @@ const GRACE_MINUTES = 2;
 
 serve(async (req) => {
   const userId = await callerId(req);
-  // Cases are part of the paid plan; the app's paywall is only the face of this check.
-  await requirePlan(userId);
+  // Cases are part of the paid plan, except one free graded case; the app's paywall is only the face
+  // of this check.
+  await requirePlanOrFreeCase(userId);
   const input = await body<Record<string, unknown>>(req);
   switch (input.action) {
     case "start": return json(await start(userId, input));
@@ -619,7 +623,13 @@ async function submit(userId: string, input: Record<string, unknown>) {
     console.error("grading failed", error);
     throw new HttpError(502, "grading failed; try again");
   }
-  const graded: Grade & Partial<Insights> = { ...grade(rubric, actions, judged), ...await insights(attempt.case_id, differential, content.answer_key) };
+  const goal = parseGoal(input.goal);
+  const focus: FocusArea[] = Array.isArray(input.struggles)
+    ? [...new Set(input.struggles.filter((s): s is FocusArea => (FOCUS_AREAS as readonly unknown[]).includes(s)))]
+    : [];
+  const teaching = await insights(attempt.case_id, differential, content.answer_key, goal);
+  const missedMustNotMiss = teaching.differential?.find((d) => d.must_not_miss && !d.in_yours)?.name;
+  const graded: Grade & Partial<Insights> & { lens?: Lens } = { ...grade(rubric, actions, judged, focus, missedMustNotMiss), ...teaching };
 
   const saved = await sql.begin(async (tx) => {
     // One submit at a time per student and case, so two attempts submitted together can't both be
@@ -648,14 +658,16 @@ async function submit(userId: string, input: Record<string, unknown>) {
 /** The condition insights for a graded attempt, or nothing when the case has no profile (older
  *  hand-written cases) or it can't be read: insights are extra, never a reason to lose a grade.
  *  They go into the stored grade too, so a revisit shows the same. */
-async function insights(caseId: string, differential: string[], key: Content["answer_key"]): Promise<Insights | Record<never, never>> {
+async function insights(caseId: string, differential: string[], key: Content["answer_key"], goal: ReturnType<typeof parseGoal>): Promise<Partial<Insights> & { lens?: Lens }> {
   try {
     // The live profile kept with the case; older cases fall back to the stored one.
-    const [row] = await sql<{ profile: InsightProfile | null }[]>`
+    const [row] = await sql<{ profile: (InsightProfile & LensProfile) | null }[]>`
       select coalesce(c.profile, p.profile) as profile from private.case_content c
       left join private.condition_profiles p on p.slug = c.condition_slug
       where c.case_id = ${caseId}`;
-    return row?.profile ? conditionInsights(row.profile, differential, [key.diagnosis, ...key.accepted]) : {};
+    if (!row?.profile) return {};
+    const lens = examLens(row.profile, goal);
+    return { ...conditionInsights(row.profile, differential, [key.diagnosis, ...key.accepted]), ...(lens ? { lens } : {}) };
   } catch (error) {
     console.error("condition insights", error);
     return {};

@@ -13,6 +13,8 @@ struct GateView: View {
     @State private var attempt = 0
     @State private var confirmDelete = false
     @State private var managingSubscription = false
+    /// The free-trial page comes first; "See the plans" shows the paywall.
+    @State private var seenTrial = false
 
     var body: some View {
         Group {
@@ -23,6 +25,11 @@ struct GateView: View {
                                   manage: { managingSubscription = true },
                                   signOut: { Task { await auth.signOut() } })
                     .overlay(alignment: .topLeading) { accountMenu }
+            } else if !seenTrial {
+                TrialIntroView(name: auth.account?.name?.split(separator: " ").first.map(String.init)) {
+                    withAnimation(.easeInOut(duration: 0.3)) { seenTrial = true }
+                }
+                .overlay(alignment: .topLeading) { accountMenu }
             } else if SuperwallService.isConfigured, !Self.debugForcesFallback {
                 // Superwall draws nothing until the paywall and its products load; the spinner shows through.
                 ZStack {
@@ -59,7 +66,11 @@ struct GateView: View {
         .manageSubscriptionsSheet(isPresented: $managingSubscription)
         .background { Color.clear.problemAlert(Binding(get: { auth.problem }, set: { auth.problem = $0 })) }
         #if DEBUG
-        .onAppear { if DebugLaunch.screen == "paywall-delete" { confirmDelete = true } }
+        .onAppear {
+            if DebugLaunch.screen == "paywall-delete" { confirmDelete = true }
+            // These screens show the paywall or its fallback itself; "paywall" starts on the trial page.
+            if ["paywall-plans", "paywall-unavailable", "paywall-delete"].contains(DebugLaunch.screen) { seenTrial = true }
+        }
         #endif
     }
 

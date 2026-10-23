@@ -104,7 +104,7 @@ private actor SlowStartCases: CaseService {
     func deletePatients(_ beds: [String]?) async throws -> Int { throw Unused() }
     func ask(attempt: String, question: String) async throws -> PatientAnswer { throw Unused() }
     func order(attempt: String, test: String) async throws -> TestResult { throw Unused() }
-    func submit(attempt: String, diagnosis: String, differential: [String], plan: String) async throws -> Grade { throw Unused() }
+    func submit(attempt: String, diagnosis: String, differential: [String], plan: String, focus: GradingFocus) async throws -> Grade { throw Unused() }
     func startLiveCall(attempt: String, offer: String) async throws -> LiveCall { throw Unused() }
     func logVoiceTurn(attempt: String, call: String, question: String, reply: String) async throws -> VoiceTurnOutcome { throw Unused() }
     func endLiveCall(attempt: String, call: String) async throws { throw Unused() }

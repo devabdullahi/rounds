@@ -56,4 +56,22 @@ struct GradeDecodingTests {
         #expect(!item.mustNotMiss && !item.inYours)
         #expect(item.why.isEmpty && item.tellApart.isEmpty)
     }
+
+    @Test func lensAndFocusNotesMapWhenSent() throws {
+        let json = """
+        {"score": 70, "diagnosis_correct": true, "diagnosis": "Acute cholecystitis", "verdict": "Right call.",
+         "rating_delta": 5, "rating": 1210, "missed_red_flags": [],
+         "feedback": [{"tone": "miss", "title": "History gap: onset", "detail": "You never asked about it.", "focus": true}],
+         "lens": {"title": "For Step 2 CK: next best steps", "points": ["Ultrasound first"]}}
+        """
+        let g = try LiveCaseService.decodeGrade(from: Data(json.utf8))
+        #expect(g.lens == ExamLens(title: "For Step 2 CK: next best steps", points: ["Ultrasound first"]))
+        #expect(g.feedback.first?.isFocus == true)
+    }
+
+    @Test func olderGradesHaveNoLensAndNoFocusNotes() throws {
+        let g = try decode()
+        #expect(g.lens == nil)
+        #expect(g.feedback.allSatisfy { !$0.isFocus })
+    }
 }

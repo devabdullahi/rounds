@@ -228,11 +228,11 @@ struct GenerateCardsView: View {
                 Menu {
                     Picker("Group by", selection: $bySystem) {
                         Text("By specialty").tag(false)
-                        Text("By system").tag(true)
+                        Text("By body system").tag(true)
                     }
                 } label: {
                     HStack(spacing: 4) {
-                        Text(bySystem ? "By system" : "By specialty")
+                        Text(bySystem ? "By body system" : "By specialty")
                         AppIcon(.chevronDown, size: 14)
                     }
                     .font(.system(size: 15, weight: .semibold))

@@ -369,7 +369,8 @@ final class CaseSession {
     func submit() async throws -> Grade {
         if let grade { return grade }
         if let grading { return try await grading.value }
-        let task = Task { try await service.submit(attempt: attempt(), diagnosis: diagnosis, differential: differential, plan: plan) }
+        let task = Task { try await service.submit(attempt: attempt(), diagnosis: diagnosis, differential: differential, plan: plan,
+                                                  focus: GradingFocus.stored()) }
         grading = task
         do {
             let g = try await task.value

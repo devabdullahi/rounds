@@ -32,6 +32,26 @@ enum StudyGoal: String, CaseIterable, Identifiable {
     /// only, so they start in clinic cases. They can change it any time in the Focus sheet.
     var careSetting: CareSetting { self == .osce ? .clinic : .any }
 
+    /// What the debrief's exam lens adds for this goal (the server's `examLens`), said plainly; nil
+    /// when the goal has no lens. Onboarding promises only this, so it must match what grading sends.
+    var debriefTips: String? {
+        switch self {
+        case .step2CK, .shelf: "The next best steps for each case"
+        case .osce: "The questions that mattered most"
+        case .step1: "The complications to know"
+        case .other, .practicing: nil
+        }
+    }
+
+    /// The goal as it reads before "tips": "Step 2 CK tips", "OSCE tips", "Shelf tips".
+    var tipsName: String {
+        switch self {
+        case .shelf: "Shelf"
+        case .osce: "OSCE"
+        default: label
+        }
+    }
+
     /// Reads the stored raw value; nil when nothing (or something unknown) was saved.
     init?(stored: String) { self.init(rawValue: stored) }
 }

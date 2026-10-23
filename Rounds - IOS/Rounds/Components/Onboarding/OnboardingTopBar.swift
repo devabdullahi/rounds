@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Back button plus a segmented progress bar, filled up to `current` (1-based).
+/// Back button plus a progress bar, filled to `current` of `total` (1-based).
 struct OnboardingTopBar: View {
     let total: Int
     let current: Int
@@ -12,14 +12,15 @@ struct OnboardingTopBar: View {
                 IconButton(glyph: .chevronLeft, label: "Back", quiet: true, action: onBack)
                     .padding(.leading, -3)   // circle edge on the page's 20pt margin (3pt inset in the hit box)
             }
-            HStack(spacing: 6) {
-                ForEach(1...total, id: \.self) { i in
-                    Capsule()
-                        .fill(i <= current ? Theme.text : Theme.control)
-                        .frame(height: 4)
-                }
+            GeometryReader { geo in
+                Capsule().fill(Theme.track)
+                    .overlay(alignment: .leading) {
+                        Capsule().fill(Theme.accent)
+                            .frame(width: geo.size.width * CGFloat(current) / CGFloat(max(total, 1)))
+                    }
             }
-            .animation(.easeOut(duration: 0.25), value: current)
+            .frame(height: 6)
+            .animation(.easeOut(duration: 0.3), value: current)
             .accessibilityElement()
             .accessibilityLabel("Step \(current) of \(total)")
         }

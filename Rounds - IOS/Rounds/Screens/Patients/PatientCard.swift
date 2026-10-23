@@ -105,7 +105,7 @@ struct PatientCard: View {
             Spacer(minLength: 24)
 
             Button(opening ? "Opening…" : revisit ? "Retry the patient" : "Take the patient", action: onTake)
-                .buttonStyle(PrimaryButtonStyle(height: 54, reactive: false))   // static: never swells, even mid-swipe
+                .buttonStyle(PrimaryButtonStyle(height: 54, reactive: false))   // non-interactive glass: never swells, even mid-swipe
                 .allowsHitTesting(!dragging)
                 .opacity(stage >= 4 ? 1 : 0)
                 .scaleEffect(stage >= 4 ? 1 : 0.96)

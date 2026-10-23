@@ -248,8 +248,9 @@ struct LiveCaseService: CaseService {
         }
     }
 
-    func submit(attempt: String, diagnosis: String, differential: [String], plan: String) async throws -> Grade {
-        let r: GradeRow = try await invoke("case-session", SubmitBody(attempt_id: attempt, diagnosis: diagnosis, differential: differential, plan: plan))
+    func submit(attempt: String, diagnosis: String, differential: [String], plan: String, focus: GradingFocus) async throws -> Grade {
+        let r: GradeRow = try await invoke("case-session", SubmitBody(attempt_id: attempt, diagnosis: diagnosis, differential: differential, plan: plan,
+                                                                               goal: focus.goal?.rawValue, struggles: focus.struggleValues))
         return r.grade
     }
 
@@ -388,7 +389,7 @@ private struct PastTryRow: Decodable {
             actualDiagnosis: grade.diagnosis, yourDiagnosis: diagnosis ?? "", differential: differential ?? [], plan: plan ?? "",
             testsOrdered: (ordered_tests ?? []).compactMap { o in tests.first { $0.id == o.id }?.name },
             examDone: (examined ?? []).compactMap { id in exam.first { $0.id == id }?.title },
-            feedback: grade.feedback.map { Feedback(tone: $0.tone == "good" ? .good : .miss, title: $0.title, detail: $0.detail, coversMiss: $0.covers_miss) },
+            feedback: grade.feedback.map { Feedback(tone: $0.tone == "good" ? .good : .miss, title: $0.title, detail: $0.detail, coversMiss: $0.covers_miss, isFocus: $0.focus ?? false) },
             missedRedFlags: grade.missed_red_flags.map { Miss(flag: $0.flag, why: $0.why) },
             examMode: exam_mode ?? false)
     }
@@ -530,10 +531,14 @@ private struct SubmitBody: Encodable {
     let diagnosis: String
     let differential: [String]
     let plan: String
+    /// The student's exam (StudyGoal) and hardest areas (StudyStruggle): see GradingFocus.
+    let goal: String?
+    let struggles: [String]
 }
 
 private struct GradeRow: Decodable {
-    struct FeedbackRow: Decodable { let tone: String; let title: String; let detail: String; let covers_miss: String? }
+    struct FeedbackRow: Decodable { let tone: String; let title: String; let detail: String; let covers_miss: String?; let focus: Bool? }
+    struct LensRow: Decodable { let title: String; let points: [String] }
     let score: Int
     let diagnosis_correct: Bool
     let diagnosis: String
@@ -558,11 +563,12 @@ private struct GradeRow: Decodable {
     let about: AboutRow?
     let differential: [DifferentialRow]?
     let your_extras: [String]?
+    let lens: LensRow?
 
     var grade: Grade {
         Grade(score: score, diagnosisCorrect: diagnosis_correct, diagnosis: diagnosis, verdict: verdict,
               ratingDelta: rating_delta, rating: rating,
-              feedback: feedback.map { Feedback(tone: $0.tone == "good" ? .good : .miss, title: $0.title, detail: $0.detail, coversMiss: $0.covers_miss) },
+              feedback: feedback.map { Feedback(tone: $0.tone == "good" ? .good : .miss, title: $0.title, detail: $0.detail, coversMiss: $0.covers_miss, isFocus: $0.focus ?? false) },
               missedRedFlags: missed_red_flags.map { Miss(flag: $0.flag, why: $0.why) },
               about: about.map { ConditionAbout(summaryPoints: $0.summary_points ?? [], symptoms: $0.symptoms ?? [], riskFactors: $0.risk_factors ?? []) }
                   .flatMap { $0.isEmpty ? nil : $0 },
@@ -570,6 +576,7 @@ private struct GradeRow: Decodable {
                   DifferentialReview(name: $0.name, mustNotMiss: $0.must_not_miss ?? false, why: $0.why ?? "",
                                      tellApart: $0.tell_apart ?? [], inYours: $0.in_yours ?? false)
               },
-              yourExtras: your_extras ?? [])
+              yourExtras: your_extras ?? [],
+              lens: lens.map { ExamLens(title: $0.title, points: $0.points) }.flatMap { $0.points.isEmpty ? nil : $0 })
     }
 }

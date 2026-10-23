@@ -61,7 +61,7 @@ protocol CaseService: Sendable {
     func logVoiceTurn(attempt: String, call: String, question: String, reply: String) async throws -> VoiceTurnOutcome
     /// Live voice: the call ended on the phone; the server hangs up its side too.
     func endLiveCall(attempt: String, call: String) async throws
-    func submit(attempt: String, diagnosis: String, differential: [String], plan: String) async throws -> Grade
+    func submit(attempt: String, diagnosis: String, differential: [String], plan: String, focus: GradingFocus) async throws -> Grade
 }
 
 extension CaseService {

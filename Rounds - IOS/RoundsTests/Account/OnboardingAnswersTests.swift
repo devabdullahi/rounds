@@ -42,4 +42,20 @@ struct OnboardingAnswersTests {
         #expect(answers.redFlagPick == nil)
         #expect(answers.redFlagCorrect == nil)
     }
+
+    @Test func startingOverClearsTheQuestionPicksOnly() {
+        let d = defaults()
+        d.set("ms3", forKey: SchoolYear.storageKey)
+        d.set("step2CK", forKey: StudyGoal.storageKey)
+        d.set("2026-12", forKey: ExamMonth.storageKey)
+        d.set("friend", forKey: HeardFrom.storageKey)
+        d.set(false, forKey: Preferences.voiceModeKey)
+        OnboardingAnswers.clearPicks(in: d)
+        let answers = OnboardingAnswers.stored(in: d, redFlagPick: nil)
+        #expect(answers.schoolYear == nil)
+        #expect(answers.studyGoal == nil)
+        #expect(d.string(forKey: ExamMonth.storageKey) == nil)
+        #expect(d.string(forKey: HeardFrom.storageKey) == nil)
+        #expect(answers.voiceMode == false)
+    }
 }

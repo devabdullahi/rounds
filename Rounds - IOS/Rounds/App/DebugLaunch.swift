@@ -2,9 +2,11 @@
 import SwiftUI
 
 /// Dev-only deep link for screenshots: launch with `-screen <name>`.
-/// Names: firstopen, firstopen-auth, duplicate-account, voice-glass, onboarding (focus), onboarding-account, onboarding-intro, onboarding-try, onboarding-graded,
-/// onboarding-promise, onboarding-graph, onboarding-goal, onboarding-to-goal, onboarding-year, onboarding-name, onboarding-setting, onboarding-redflag, onboarding-cards, onboarding-reminder, onboarding-struggles, onboarding-talk, onboarding-mode, onboarding-timer, onboarding-progress, onboarding-daily, onboarding-plan, onboarding-heart, onboarding-promised,
-/// settings-about, onboarding-consent, ai-consent, paywall, paywall-unavailable, paywall-delete,
+/// Names: firstopen, firstopen-auth, duplicate-account, voice-glass, onboarding (year), onboarding-year, onboarding-goal,
+/// onboarding-practice, onboarding-blanked, onboarding-blanked-reply, onboarding-exam, onboarding-countdown, onboarding-study-time, onboarding-pace, onboarding-setting-up, onboarding-plan,
+/// onboarding-confidence, onboarding-reality,
+/// onboarding-account, onboarding-heard, onboarding-heart, onboarding-promised (every `onboarding…` name opens onboarding),
+/// settings-about, ai-consent, paywall (trial page), paywall-plans, purchased, reminders, paywall-unavailable, paywall-delete,
 /// focus-system, focus-sheet, home, patients, patients-open, previous-tries, previous-try, badge-unlock-many, badge-unlock-all, paywall-taken, plan-checking, profile, brief, interview, examine, workup, diagnosis, debrief, diagnosis-suggest.
 enum DebugLaunch {
     static var screen: String? { UserDefaults.standard.string(forKey: "screen") }
@@ -19,25 +21,22 @@ enum DebugLaunch {
 
     /// Screens that stay on the paywall (no debug unlock): Superwall's, the "plans couldn't load"
     /// fallback, the delete confirmation over it, and the plan-owned-by-another-account state.
-    static let paywallScreens: Set<String> = ["paywall", "paywall-taken", "paywall-unavailable", "paywall-delete", "plan-checking"]
+    static let paywallScreens: Set<String> = ["paywall", "paywall-plans", "paywall-taken", "paywall-unavailable", "paywall-delete", "plan-checking"]
     /// `-screen paywall-unavailable`: the fallback in place of Superwall's paywall.
     static var isPaywallUnavailable: Bool { screen == "paywall-unavailable" }
 
-    private static let authScreens = ["firstopen", "firstopen-auth", "duplicate-account", "onboarding", "focus-system", "google-signin",
-                                      "onboarding-intro", "onboarding-try", "onboarding-graded", "onboarding-promise", "onboarding-graph",
-                                      "onboarding-goal", "onboarding-to-goal", "onboarding-account", "onboarding-heart",
-                                      "onboarding-promised", "onboarding-year", "onboarding-name", "onboarding-plan",
-                                      "onboarding-setting", "onboarding-redflag", "onboarding-cards", "onboarding-reminder",
-                                      "onboarding-struggles", "onboarding-talk", "onboarding-mode", "onboarding-timer",
-                                      "onboarding-progress", "onboarding-daily", "onboarding-consent"]
+    private static let authScreens = ["firstopen", "firstopen-auth", "duplicate-account", "focus-system", "google-signin"]
+
+    /// Every `onboarding…` screen opens onboarding, signed out.
+    private static func isAuthScreen(_ name: String) -> Bool { name.hasPrefix("onboarding") || authScreens.contains(name) }
 
     /// Runs before the first frame so the root picks the right side (auth vs app).
     static func prepareDefaults() {
         guard let screen else { return }
         let d = UserDefaults.standard
-        d.set(!authScreens.contains(screen), forKey: AuthModel.signedInKey)
+        d.set(!isAuthScreen(screen), forKey: AuthModel.signedInKey)
         // App screens open past the AI consent; `ai-consent` and onboarding start without it.
-        let consented = !authScreens.contains(screen) && screen != "ai-consent"
+        let consented = !isAuthScreen(screen) && screen != "ai-consent"
         d.set(consented ? AIConsent.agreed : AIConsent.withdrawn, forKey: AIConsent.storageKey)
         if ["onboarding-heart", "onboarding-promised"].contains(screen) || paywallScreens.contains(screen) {
             d.set(StudyGoal.step2CK.rawValue, forKey: StudyGoal.storageKey)
@@ -55,12 +54,7 @@ enum DebugLaunch {
 
     static var authPath: [AuthStep] {
         switch screen {
-        case "onboarding-intro", "onboarding-try", "onboarding-graded", "onboarding-promise", "onboarding-graph",
-             "onboarding-goal", "onboarding-to-goal", "onboarding", "focus-system",
-             "onboarding-account", "onboarding-heart", "onboarding-promised",
-             "onboarding-year", "onboarding-name", "onboarding-plan", "onboarding-setting", "onboarding-redflag",
-             "onboarding-cards", "onboarding-reminder", "onboarding-struggles", "onboarding-talk", "onboarding-mode",
-             "onboarding-timer", "onboarding-progress", "onboarding-daily", "onboarding-consent": [.onboarding]
+        case let name? where name.hasPrefix("onboarding") || name == "focus-system": [.onboarding]
         default: []
         }
     }
@@ -100,6 +94,9 @@ enum DebugLaunch {
         case "home-preparing":
             tab = .today
             app.debugShowPreparing()
+        case "purchased", "reminders":
+            // The welcome after buying shows over Home (RootView).
+            tab = .today
         case "admit":
             // Generates a live patient (the AI model via local Supabase) and opens its door note.
             tab = .today

@@ -297,6 +297,18 @@ struct DebriefView: View {
                 HStack(alignment: .top, spacing: 12) {
                     Circle().fill(f.tone == .good ? Theme.good : Theme.warn).frame(width: 8, height: 8).padding(.top, 7)
                     VStack(alignment: .leading, spacing: 3) {
+                        if f.isFocus {
+                            Text("Your focus")
+                                .font(.system(size: 11, weight: .bold))
+                                .tracking(0.6)
+                                .textCase(.uppercase)
+                                .foregroundStyle(Theme.accentText)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 3)
+                                .background(Theme.accent.opacity(0.14), in: Capsule())
+                                .padding(.bottom, 2)
+                                .accessibilityLabel("One of the areas you said you find hardest")
+                        }
                         Text(f.title).font(.system(size: 16, weight: .semibold))
                         Text(f.detail).font(.system(size: 14)).foregroundStyle(Theme.muted).lineSpacing(2)
                     }
@@ -315,6 +327,10 @@ struct DebriefView: View {
     /// What the case teaches once the answer is out. Older grades carry none of it, so nothing shows.
     @ViewBuilder
     private func teaching(_ g: Grade) -> some View {
+        if let lens = g.lens {
+            ExamLensCard(lens: lens)
+                .modifier(reveal(at: STAGE.about))
+        }
         if let about = g.about {
             ConditionAboutCard(diagnosis: g.diagnosis, about: about)
                 .modifier(reveal(at: STAGE.about))

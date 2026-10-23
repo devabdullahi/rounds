@@ -42,6 +42,10 @@ struct HomeView: View {
     @AppStorage(StudyFocus.storageKey) private var focusStored = ""
     @AppStorage(CareSetting.storageKey) private var settingStored = ""
     @AppStorage(DailyGoal.storageKey) private var dailyGoalStored = DailyGoal.default.rawValue
+    @AppStorage(PracticeReminder.offeredKey) private var reminderOffered = false
+    @AppStorage(PracticeReminder.storageKey) private var reminderStored = ""
+    @Environment(PaywallModel.self) private var paywall
+    @State private var askingReminder = false
     private var focus: FocusSelection { FocusSelection(stored: focusStored) }
 
     var body: some View {
@@ -72,9 +76,40 @@ struct HomeView: View {
         // Write this focus's first patients ahead, so tapping a patient doesn't wait for one.
         .task(id: focusStored + "@" + settingStored) { await app.prepareAhead(focus: focus) }
         .sheet(isPresented: $editingFocus) { FocusSheet(counts: app.topicCounts) }
+        // The daily reminder is offered once, as its own screen, after onboarding (and after the
+        // welcome that follows a purchase).
+        .task { await offerReminder() }
+        .onChange(of: paywall.justBought) { _, now in if !now { Task { await offerReminder() } } }
+        .fullScreenCover(isPresented: $askingReminder) {
+            ReminderView {
+                reminderOffered = true
+                askingReminder = false
+            }
+        }
         #if DEBUG
         .onAppear { if DebugLaunch.screen == "focus-sheet" { editingFocus = true } }
         #endif
+    }
+
+    private func offerReminder() async {
+        #if DEBUG
+        // Debug launches show the reminder screen only when asked for (`-screen reminders`).
+        if let screen = DebugLaunch.screen {
+            if screen == "reminders" { showReminder() }
+            return
+        }
+        #endif
+        guard !reminderOffered, PracticeReminder(stored: reminderStored) == nil else { return }
+        guard !Task.isCancelled, !paywall.justBought, !editingFocus else { return }
+        showReminder()
+    }
+
+    /// Opens the reminder screen at once, with no slide up over Home: it is the next step after
+    /// onboarding, not something laid over the app.
+    private func showReminder() {
+        var instant = Transaction()
+        instant.disablesAnimations = true
+        withTransaction(instant) { askingReminder = true }
     }
 
     private func play() async {

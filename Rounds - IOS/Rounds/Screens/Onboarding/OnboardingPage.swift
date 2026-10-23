@@ -1,35 +1,30 @@
 import Foundation
 
-/// Every onboarding step, in order. Ordered for attention: one promise page, a scripted interview to
-/// try (show, don't tell), then quick questions
-/// early (fast progress), a value page between groups of answers, the heavier focus picker mid-flow,
-/// the answers read back as a plan, the AI consent (before anything is sent to an AI provider),
-/// then the account (only when onboarding began signed out) and the promise. They're pages of one carousel (`OnboardingView`), so every step slides the same way.
+/// Every onboarding step, in order (the design canvas's flow, shaped like Ahead's: questions about
+/// the student, then a plan built from them, then the paywall). The quick questions (year, goal,
+/// what to practice, whether they blank, and a line back for that answer), when the exam is and
+/// how many weeks that leaves, how sure they feel and a reality check built from those answers,
+/// their pace and study time, a short "setting up" beat, their plan,
+/// the account (only when onboarding began signed out), where they heard about Rounds, and the
+/// promise. Students meet their first real patient after onboarding; reminders are asked after
+/// it, on their own screen (ReminderView). They're pages of one carousel (`OnboardingView`), so
+/// every step slides the same way. The welcome screen before it and the paywall after it are
+/// their own screens.
 enum OnboardingPage: Int, CaseIterable {
-    case patients, tryInterview, schoolYear, studyGoal, examReady, graded, focus, careSetting, struggles, redFlag, talkStyle,
-         caseMode, caseTimer, name, promise, missCards, progress, dailyGoal, reminder, plan, aiConsent, account, pledge
+    case schoolYear, studyGoal, practice, blanked, blankedReply, examDate, countdown, confidence,
+         realityCheck, pace, studyTime, settingUp, plan, account, heardFrom, pledge
 
-    /// Question pages share one layout (question on top, answers as a list); the rest show art.
+    /// Question pages share one layout (question on top, answers below) and a Continue button.
     var isQuestion: Bool {
         switch self {
-        case .tryInterview, .schoolYear, .studyGoal, .careSetting, .struggles, .redFlag, .talkStyle, .caseMode, .caseTimer,
-             .name, .dailyGoal, .reminder: true
+        case .schoolYear, .studyGoal, .practice, .blanked, .examDate, .confidence, .studyTime, .heardFrom: true
         default: false
         }
     }
 
-    /// The big headline under the hero art. Question pages and the focus picker set their own title.
-    var headline: String? {
-        switch self {
-        case .patients: "Interview Patients,\nFind the Diagnosis"
-        case .examReady: "Walk Into Your\nExam Ready"
-        case .graded: "Graded On\nEvery Move"
-        case .promise: "Think Like\na Doctor"
-        case .missCards: "Learn From\nEvery Miss"
-        case .progress: "See Where You're\nGetting Better"
-        case .plan: "Your Rounds\nAre Ready"
-        case .account: "Create Your\nAccount"
-        default: nil
-        }
-    }
+    /// Questions the student may pass over: nothing is saved and the flow goes on.
+    var isSkippable: Bool { self == .examDate || self == .heardFrom }
+
+    /// What Skip says on a skippable page.
+    var skipTitle: String { self == .examDate ? "Not sure yet" : "Skip" }
 }

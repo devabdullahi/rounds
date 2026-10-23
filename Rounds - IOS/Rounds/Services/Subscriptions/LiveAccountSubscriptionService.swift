@@ -29,5 +29,7 @@ private struct PurchaseBody: Encodable {
 private struct AccessReply: Decodable {
     let entitled: Bool
     let owner: String?
-    var access: AccountAccess { AccountAccess(entitled: entitled, ownedBy: owner) }
+    /// Only `status` sends it; older servers never do.
+    let free_case: Bool?
+    var access: AccountAccess { AccountAccess(entitled: entitled, ownedBy: owner, freeCase: free_case ?? false) }
 }

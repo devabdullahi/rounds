@@ -13,6 +13,13 @@ import Observation
 final class PaywallModel {
     /// Nil until the store has answered once.
     private(set) var isEntitled: Bool?
+    /// Set by a purchase from the paywall, until the welcome screen has been shown for it.
+    private(set) var justBought = false
+    /// No plan yet, but the server lets this account play its one free graded case. The app opens
+    /// for it; after that case the next check closes the gate (the server enforces it either way).
+    private(set) var freeCase = false
+    /// Whether the app opens: a plan, or the free case. Nil until the first answer.
+    var opensApp: Bool? { isEntitled.map { $0 || freeCase } }
     /// The plan held now; shown in Settings.
     private(set) var activePlan: ActivePlan?
     private(set) var isWorking = false
@@ -73,6 +80,7 @@ final class PaywallModel {
             guard asked == generation else { return }
             takenBy = access.entitled ? nil : access.ownedBy
             takenTransactionID = access.entitled ? nil : access.takenTransactionID
+            freeCase = !access.entitled && access.freeCase
             isEntitled = access.entitled
         } catch {
             guard asked == generation else { return }
@@ -91,6 +99,7 @@ final class PaywallModel {
         isEntitled = nil
         takenBy = nil
         takenTransactionID = nil
+        freeCase = false
         boundIDs = []
         activePlan = nil
         if signedIn { await refresh() }
@@ -125,6 +134,7 @@ final class PaywallModel {
     /// purchase); only a server saying another account has it does.
     func purchased() async {
         isEntitled = true
+        justBought = true
         activePlan = await store.activePlan()
         guard verifiesAccount, let accounts else { return }
         let asked = generation
@@ -138,6 +148,9 @@ final class PaywallModel {
             }
         }
     }
+
+    /// The welcome after a purchase has been shown.
+    func welcomed() { justBought = false }
 
     /// The student asked to move the phone's plan to this account; the account that had it loses it.
     func movePlanHere() async {

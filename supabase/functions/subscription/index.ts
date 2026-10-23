@@ -7,15 +7,16 @@
 //            and `transferable`; a lapsed or refunded one goes to the caller (rules.ts).
 //   transfer {transaction_id}  → {entitled}  the student asked to move the phone's plan to their
 //            account; the other account loses it.
-//   status  {}                → {entitled, expires_at?}  the caller's own access, on any device,
-//           refreshed from Apple where our record may be stale (_shared/plan.ts).
+//   status  {}                → {entitled, expires_at?, free_case}  the caller's own access, on any
+//           device, refreshed from Apple where our record may be stale (_shared/plan.ts). `free_case`:
+//           no plan, but the one free graded case is still unused, so the app opens for it.
 //
 // Verify the caller → ask Apple (never trust the app's word on a purchase) → write with the service
 // role. Students can read their own rows (RLS) but never write them.
 import { body, callerId, HttpError, json, serve } from "../_shared/http.ts";
 import { sql } from "../_shared/db.ts";
 import { lookUp, maskEmail, type Subscription } from "../_shared/appstore.ts";
-import { accountPlan, environmentCounts } from "../_shared/plan.ts";
+import { accountPlan, environmentCounts, freeCaseLeft } from "../_shared/plan.ts";
 import { tryQuota } from "../_shared/quota.ts";
 import { decideClaim } from "./rules.ts";
 
@@ -25,10 +26,16 @@ serve(async (req) => {
   switch (input.action) {
     case "claim": return json(await claim(userId, input.transaction_id));
     case "transfer": return json(await transfer(userId, input.transaction_id));
-    case "status": return json(await accountPlan(userId));
+    case "status": return json(await status(userId));
     default: throw new HttpError(400, "unknown action");
   }
 });
+
+/** The caller's access, plus whether the free case still lets them in without a plan. */
+async function status(userId: string) {
+  const plan = await accountPlan(userId);
+  return { ...plan, free_case: !plan.entitled && await freeCaseLeft(userId) };
+}
 
 /** Apple's record of the purchase, or a 4xx/5xx a student can act on. */
 async function confirmed(transactionId: unknown): Promise<Subscription> {

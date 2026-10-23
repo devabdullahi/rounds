@@ -39,3 +39,15 @@ struct OnboardingAnswers: Equatable, Sendable {
             reminder: text(PracticeReminder.storageKey))
     }
 }
+
+extension OnboardingAnswers {
+    /// The question picks onboarding asks for, cleared when it starts so a second run (after a
+    /// sign-out, or a new account on this phone) opens with nothing chosen. Settings the app owns
+    /// once onboarding is over (voice mode, focus, reminders) are left alone.
+    static func clearPicks(in defaults: UserDefaults = .standard) {
+        for key in [SchoolYear.storageKey, StudyGoal.storageKey, ExamMonth.storageKey, HeardFrom.storageKey, DiagnosisConfidence.storageKey,
+                    BlankFrequency.storageKey, PracticeReminder.preferredKey] {
+            defaults.removeObject(forKey: key)
+        }
+    }
+}

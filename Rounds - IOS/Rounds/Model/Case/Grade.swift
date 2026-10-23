@@ -18,6 +18,8 @@ struct Grade {
     var differential: [DifferentialReview] = []
     /// Conditions the student listed that aren't usual considerations for this case.
     var yourExtras: [String] = []
+    /// The case taught for the student's exam. Nil without a goal, or on older grades.
+    var lens: ExamLens? = nil
 }
 
 #if DEBUG
@@ -29,7 +31,7 @@ extension Grade {
         verdict: "Right call. You ruled out fever and spread before settling on it.", ratingDelta: 12, rating: 1312,
         feedback: [Feedback(tone: .good, title: "Focused history", detail: "You pinned down timing, recurrence and stress as a trigger."),
                    Feedback(tone: .miss, title: "Bowel symptoms not asked", detail: "Recurrent mouth ulcers can come with Crohn's or celiac disease; ask about diarrhea and weight loss.",
-                            coversMiss: "Bowel symptoms")],
+                            coversMiss: "Bowel symptoms", isFocus: true)],
         missedRedFlags: [Miss(flag: "Bowel symptoms", why: "Mouth ulcers can be the first sign of inflammatory bowel disease.")],
         about: ConditionAbout(
             summaryPoints: ["Common, benign ulcers of the non-keratinized mouth lining that recur in crops.",
@@ -58,6 +60,10 @@ extension Grade {
                                why: "Can cause painful erosions inside the cheeks.",
                                tellApart: ["Lacy white streaks", "Chronic rather than coming and going", "Usually middle-aged adults"],
                                inYours: false)],
-        yourExtras: ["Scurvy"])
+        yourExtras: ["Scurvy"],
+        lens: ExamLens(title: "For Step 2 CK: next best steps",
+                       points: ["Treat symptoms first: topical steroid or anesthetic rinse",
+                                "Check CBC, iron, B12 and folate when ulcers are frequent or severe",
+                                "Biopsy any single ulcer that lasts more than 3 weeks"]))
 }
 #endif
