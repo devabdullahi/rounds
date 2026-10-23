@@ -50,6 +50,12 @@ struct ExamMonth: Equatable, Hashable {
         return max(1, days / 7)
     }
 
+    /// "7 weeks", under each month in the picker, so the student sees how far away it is.
+    func away(from now: Date = .now, calendar: Calendar = .current) -> String {
+        let weeks = weeksLeft(from: now, calendar: calendar)
+        return weeks == 1 ? "1 week" : "\(weeks) weeks"
+    }
+
     /// Patients seen by test day at `perDay` a day.
     func patients(perDay: Int, from now: Date = .now, calendar: Calendar = .current) -> Int {
         weeksLeft(from: now, calendar: calendar) * 7 * perDay
