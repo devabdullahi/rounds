@@ -68,16 +68,12 @@ struct PacePage: View {
 
     /// What the pace adds up to, on the same dark card as the exam countdown.
     private var totals: some View {
-        let weeks = exam?.weeksLeft() ?? 1
         let total = exam?.patients(perDay: pace.cases) ?? pace.cases * 7
         return VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .firstTextBaseline, spacing: 8) {
                 Text("\(total)").font(.system(size: 40, weight: .bold)).tracking(-1)
                     .contentTransition(.numericText(value: Double(total)))
                 Text(exam == nil ? "patients a week" : "patients by test day").font(.system(size: 17, weight: .semibold))
-            }
-            if exam != nil {
-                WeekBars(weeks: weeks).accessibilityHidden(true)
             }
             Text(pace.cases <= 1 ? "A steady start. You can raise it any time." : "One patient at a time. Change it any time in Settings.")
                 .font(.system(size: 15))
