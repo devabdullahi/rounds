@@ -14,7 +14,7 @@ struct StudyTimePage: View {
     var body: some View {
         OnboardingQuestion(title: "When do you study best?", shown: shown) {
             ForEach(Array(PracticeReminder.allCases.enumerated()), id: \.element) { i, time in
-                ChoiceRow(title: time.period, detail: Self.details[time], glyph: Self.glyphs[time],
+                ChoiceRow(title: time.period, detail: Self.details[time], glyph: Self.glyphs[time], tint: ChoiceRow.tint(i),
                           on: stored == time.rawValue, order: i) { stored = time.rawValue }
             }
         }

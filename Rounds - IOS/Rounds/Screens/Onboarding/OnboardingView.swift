@@ -168,7 +168,17 @@ struct OnboardingView: View {
         case .heardFrom: HeardFromPage(shown: shown)
         case .pledge: PledgePage(heart: $heart, isHolding: $holdingHeart)
         case .account:
-            AccountPage(busy: auth.signingInWith) { provider in Task { await signUp(with: provider) } }
+            VStack(spacing: 14) {
+                OnboardingHeadline(text: "Save Your\nPlan")
+                Spacer(minLength: 0)
+                AppIcon(.brandMark, size: 72)
+                    .foregroundStyle(Theme.accent)
+                    .accessibilityHidden(true)
+                Spacer(minLength: 0)
+                ProviderButtons(busy: auth.signingInWith) { provider in Task { await signUp(with: provider) } }
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 12)
         }
     }
 

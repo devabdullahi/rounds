@@ -14,7 +14,7 @@ struct SchoolYearPage: View {
         OnboardingQuestion(title: "What year are you in?", shown: shown) {
             ForEach(Array(SchoolYear.allCases.enumerated()), id: \.element) { i, year in
                 ChoiceRow(title: year.label, detail: Self.detail[year], glyph: year == .practicing ? .dice : nil,
-                          badge: year == .practicing ? nil : String(i + 1),
+                          badge: year == .practicing ? nil : String(i + 1), tint: ChoiceRow.tint(i),
                           on: SchoolYear(stored: stored) == year, order: i) { stored = year.rawValue }
             }
         }
