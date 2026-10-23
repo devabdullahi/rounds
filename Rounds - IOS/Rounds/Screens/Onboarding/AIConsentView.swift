@@ -1,7 +1,7 @@
 import SwiftUI
 
-/// The AI consent, full screen, for a signed-in student who hasn't agreed on this phone (an account
-/// that skipped onboarding, or one signed in before the consent existed). The app opens only after
+/// The AI consent and Terms of Use, full screen, for a signed-in student who hasn't agreed on this
+/// phone (a new account, or one that agreed to an older version). The app opens only after
 /// "I agree"; signing out is the other way off this screen.
 struct AIConsentView: View {
     @Environment(AuthModel.self) private var auth
@@ -9,8 +9,9 @@ struct AIConsentView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            OnboardingQuestion(title: "How Rounds uses AI", glyph: .shieldCheck) {
-                AIConsentPoints(points: AIConsent.points, privacyPolicy: AppLinks.privacyPolicy)
+            OnboardingQuestion(title: "Before you start", glyph: .shieldCheck) {
+                AIConsentPoints(points: AIConsent.points, note: AIConsent.termsNote,
+                                terms: AppLinks.terms, privacyPolicy: AppLinks.privacyPolicy)
             }
             VStack(spacing: 4) {
                 Button("I agree") { consentStored = AIConsent.agreed }
