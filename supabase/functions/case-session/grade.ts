@@ -135,10 +135,17 @@ export function isNegated(answer: string): boolean {
   return new RegExp(`(^| )${NEGATION}( |$)`).test(words(answer.replace(/r\/o/gi, "rule out")));
 }
 
-/** True when the answer commits to one diagnosis: one candidate, nothing ruled out. The model's
- *  synonym judgment is trusted only for answers like this (see judge in index.ts). */
+/** Longest answer the model may widen to a synonym. Real diagnosis names fit easily ("Acute
+ *  exacerbation of chronic obstructive pulmonary disease" is 7); a sentence trying to talk the
+ *  grader into a pass doesn't, so it's left to the exact word match alone. */
+export const MAX_JUDGED_WORDS = 8;
+
+/** True when the answer commits to one diagnosis: one candidate, nothing ruled out, short enough
+ *  to be a name. The model's synonym judgment is trusted only for answers like this (see judge
+ *  in index.ts). */
 export function isSingleDiagnosis(answer: string): boolean {
-  return !isNegated(answer) && diagnosisCandidates(answer).length === 1;
+  const candidates = diagnosisCandidates(answer);
+  return !isNegated(answer) && candidates.length === 1 && candidates[0].split(" ").length <= MAX_JUDGED_WORDS;
 }
 
 /**
