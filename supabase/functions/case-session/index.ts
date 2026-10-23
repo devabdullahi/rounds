@@ -50,7 +50,7 @@ import { sql } from "../_shared/db.ts";
 import { completeJSON, streamJSON } from "../_shared/llm.ts";
 import { GRADER, LIVE_PATIENT, PATIENT, REPLY_CHECKER, VOICE_TURN_REVIEW } from "../_shared/prompts.ts";
 import { patientPrompt, type PromptPersona } from "../_shared/patientprompt.ts";
-import { type Actions, FOCUS_AREAS, type FocusArea, grade, type Grade, isSingleDiagnosis, matchesDiagnosis, type Rubric, unrated } from "./grade.ts";
+import { type Actions, creditedFacts, FOCUS_AREAS, type FocusArea, grade, type Grade, isSingleDiagnosis, matchesDiagnosis, type Rubric, unrated } from "./grade.ts";
 import { examLens, type Lens, type LensProfile, parseGoal } from "./lens.ts";
 import { conditionInsights, type InsightProfile, type Insights } from "./insights.ts";
 import { namedDiagnoses } from "./leak.ts";
@@ -614,6 +614,7 @@ async function submit(userId: string, input: Record<string, unknown>) {
     : new Date(attempt.started_at).getTime() + (attempt.time_limit_minutes + GRACE_MINUTES) * 60_000;
   const actions: Actions = {
     revealed: attempt.revealed_facts, examined: attempt.examined, ordered,
+    credited: creditedFacts(attempt.transcript) ?? undefined,
     overTime: deadline !== null && Date.now() > deadline,
   };
   let judged;
