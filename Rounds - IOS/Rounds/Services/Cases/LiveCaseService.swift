@@ -20,7 +20,7 @@ struct LiveCaseService: CaseService {
     func ward() async throws -> [WardPatient] {
         let user = try await client.auth.session.user.id
         let cases: [CaseRow] = try await client.from("cases")
-            .select("id, patient_name, age, sex, quote, vitals, clerkship, organ_system, created_at")
+            .select("id, patient_name, age, sex, quote, complaint, key_history, vitals, clerkship, organ_system, created_at")
             .eq("created_by", value: user)
             .order("created_at", ascending: false)
             .execute().value
@@ -280,6 +280,8 @@ private struct CaseRow: Decodable {
     let age: Int
     let sex: String
     let quote: String
+    let complaint: String?
+    let key_history: Int?
     let vitals: [VitalRow]
     let clerkship: String?
     let organ_system: String?
@@ -301,7 +303,8 @@ private struct CaseRow: Decodable {
             rotation: rotation, system: organ_system.flatMap(OrganSystem.init(rawValue:)),
             hr: vital("hr").flatMap { Int($0) }, bp: vital("sbp"),
             spo2: vital("spo2").flatMap { Int($0.trimmingCharacters(in: CharacterSet(charactersIn: "%"))) },
-            status: status, misses: misses, missedDiagnosis: missedDiagnosis, lastScore: latest?.score, tries: tries)
+            status: status, misses: misses, missedDiagnosis: missedDiagnosis, lastScore: latest?.score, tries: tries,
+            complaint: complaint ?? "", historyTotal: key_history ?? 0)
     }
 }
 

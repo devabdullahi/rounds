@@ -18,6 +18,24 @@ struct WardPatient: Identifiable, Hashable {
     var lastScore: Int?
     /// Graded attempts at this patient, for "Previous tries".
     var tries = 0
+    /// The door-note summary ("65-year-old man with 6 months of trouble walking"); empty on older rows.
+    var complaint = ""
+    /// Key history areas in the case, and how many a half-done attempt has found (nil until known).
+    var historyTotal = 0
+    var historyFound: Int?
+
+    /// The complaint without the age and sex the meta line already gives, capitalized, for a
+    /// one-glance title: "6 months of trouble walking". Falls back to the patient's quote.
+    var shortComplaint: String {
+        var text = complaint.trimmingCharacters(in: .whitespacesAndNewlines)
+        if let range = text.range(of: #"^[^,]*?\b\d+[- ](?:year|month|week|day)s?[- ]old\s+\w+(?:\s+(?:with|presenting with|reporting|complaining of))?[\s,]+"#,
+                                  options: [.regularExpression, .caseInsensitive]) {
+            text.removeSubrange(range)
+        }
+        text = text.trimmingCharacters(in: CharacterSet(charactersIn: " .,"))
+        guard !text.isEmpty else { return "\u{201C}\(quote)\u{201D}" }
+        return text.prefix(1).uppercased() + text.dropFirst()
+    }
 
     enum Status: Hashable { case new, resume, revisit, done }
 

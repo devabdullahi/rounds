@@ -532,6 +532,12 @@ struct PatientsView: View {
             VStack(spacing: 10) {
                 ForEach(inProgress) { p in resumeCard(p).transition(rowExit) }
             }
+            Text(inProgress.count == 1 ? "Finish this one, or start someone new from the New tab."
+                                       : "Finish these, or start someone new from the New tab.")
+                .font(.system(size: 14))
+                .foregroundStyle(Theme.muted)
+                .frame(maxWidth: .infinity)
+                .padding(.top, 6)
         }
     }
 
@@ -543,8 +549,12 @@ struct PatientsView: View {
             HStack(spacing: 12) {
                 selectMark(p.id)
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("\u{201C}\(p.quote)\u{201D}").font(.system(size: 16, weight: .semibold)).lineLimit(2)
-                    Text(p.meta).font(.system(size: 13)).foregroundStyle(Theme.muted)
+                    Text(p.shortComplaint).font(.system(size: 17, weight: .semibold)).lineLimit(2)
+                    Text(p.meta).font(.system(size: 14)).foregroundStyle(Theme.muted)
+                    if let found = p.historyFound, p.historyTotal > 0 {
+                        historyDashes(found: found, total: p.historyTotal)
+                            .padding(.top, 6)
+                    }
                 }
                 Spacer(minLength: 8)
                 if app.openingBed == p.id {
@@ -571,6 +581,18 @@ struct PatientsView: View {
         .swipeToDelete(id: p.id, openRow: $openRow, enabled: selection == nil) { deleteOne(p.id) }
         // The swipe row paints a square surface behind the card; keep it inside the card's corners.
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+    }
+
+    /// Key history found so far, one dash per area, the same count the case screen's bar shows.
+    private func historyDashes(found: Int, total: Int) -> some View {
+        HStack(spacing: 4) {
+            ForEach(0..<total, id: \.self) { i in
+                Capsule().fill(i < found ? Theme.accent : Theme.track).frame(height: 5)
+            }
+        }
+        .frame(maxWidth: 190)
+        .accessibilityElement()
+        .accessibilityLabel("Key history \(found) of \(total)")
     }
 
     @ViewBuilder private var newList: some View {
