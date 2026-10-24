@@ -17,8 +17,17 @@ struct PrimaryButtonStyle: ButtonStyle {
                            strength: isEnabled ? GLASS.tint : GLASS.disabled)
                 .scaleEffect(configuration.isPressed ? 0.97 : 1)
                 .animation(Springs.pop, value: configuration.isPressed)
+        } else if #available(iOS 26, *) {
+            // Real Liquid Glass, but non-interactive: it doesn't swell or flare under a finger,
+            // so a swipe that starts on the button leaves it as it is.
+            configuration.label
+                .font(.system(size: 17, weight: .semibold))
+                .frame(maxWidth: .infinity, minHeight: height)
+                .foregroundStyle(.white)
+                .glassFill(isEnabled ? tint : Theme.faint, in: RoundedRectangle(cornerRadius: height / 2, style: .continuous),
+                           strength: isEnabled ? GLASS.tint : GLASS.disabled, interactive: false)
         } else {
-            // Static glass look (no live glass layer): nothing can swell, stretch or ripple it.
+            // Before iOS 26, a static glass look: nothing can swell, stretch or ripple it.
             let shape = RoundedRectangle(cornerRadius: height / 2, style: .continuous)
             configuration.label
                 .font(.system(size: 17, weight: .semibold))

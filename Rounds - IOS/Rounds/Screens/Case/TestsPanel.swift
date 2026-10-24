@@ -108,14 +108,14 @@ struct TestsPanel: View {
                 if !t.kind.isEmpty { Text(t.kind).font(.system(size: 13)).foregroundStyle(Theme.muted) }
             }
             Spacer()
-            // Soft like Examine: each test is a choice to weigh, not a call to action.
+            // A small glass button like Examine's, so every test reads as tappable.
             Button("Order") { session.order(t) }
                 .font(.system(size: 15, weight: .semibold))
-                .foregroundStyle(Theme.accentText)
-                .padding(.horizontal, 12)
+                .foregroundStyle(.white)
+                .padding(.horizontal, 14)
                 .frame(minWidth: 44, minHeight: 36)
-                .background(Theme.accentSoft, in: Capsule())
-                .buttonStyle(PressableStyle())
+                .glassCapsule(tint: Theme.accentFill)
+                .buttonStyle(PressDownStyle())
                 .accessibilityLabel("Order \(t.name)")
         }
         .padding(.horizontal, 16)

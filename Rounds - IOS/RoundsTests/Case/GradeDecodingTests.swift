@@ -25,6 +25,16 @@ struct GradeDecodingTests {
         #expect(g.yourExtras.isEmpty)
     }
 
+    @Test func breakdownMapsToScoreParts() throws {
+        let g = try decode("""
+        "breakdown": {"diagnosis": {"got": 35, "max": 35}, "red_flags": {"got": 5, "max": 10}, "unknown_part": {"got": 1, "max": 1}}
+        """)
+        #expect(g.breakdown[.diagnosis] == Points(got: 35, max: 35))
+        #expect(g.breakdown[.redFlags] == Points(got: 5, max: 10))
+        #expect(g.breakdown.count == 2)
+        #expect(try decode().breakdown.isEmpty)
+    }
+
     @Test func teachingFieldsMapToDomainTypes() throws {
         let g = try decode("""
         "about": {"summary_points": ["Benign, recurring ulcers."], "symptoms": ["Painful ulcers"], "risk_factors": ["Stress"]},

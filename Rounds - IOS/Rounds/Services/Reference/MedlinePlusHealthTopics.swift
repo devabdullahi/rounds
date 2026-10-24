@@ -2,11 +2,19 @@ import Foundation
 
 /// Live "Learn more" pages from MedlinePlus (NLM's health-topic search: wsearch.nlm.nih.gov, free,
 /// no key). Searches by the diagnosis name and returns the best-ranked topic pages with a one-line
-/// summary. Results are cached for 24 h, within NLM's guidance, so a revisited debrief never
-/// repeats a request.
+/// summary. MedlinePlus's ranking alone can put an unrelated page first ("aphthous stomatitis" ranks
+/// Fever above Canker Sores), so only pages that name a distinctive word of the diagnosis are kept;
+/// no link beats a wrong one. Results are cached for 24 h, within NLM's guidance, so a revisited
+/// debrief never repeats a request.
 struct MedlinePlusHealthTopics: HealthTopicLinking {
     /// Pages shown per diagnosis: the best match, plus one alternative when the name is ambiguous.
     static let pageCount = 2
+    /// Results asked for per search, so the relevance check has a few to choose from.
+    static let searchCount = 5
+    /// Words that qualify a diagnosis without naming it; a page matching only these isn't about it.
+    static let qualifiers: Set<String> = ["recurrent", "acute", "chronic", "primary", "secondary", "severe", "mild",
+                                          "benign", "idiopathic", "normal", "disease", "syndrome", "disorder",
+                                          "infection", "with", "without", "left", "right", "type", "early", "late"]
     /// Summary length for a debrief row.
     static let summaryLength = 140
 
@@ -27,22 +35,42 @@ struct MedlinePlusHealthTopics: HealthTopicLinking {
         // can match nothing. Leading qualifiers are dropped until something matches.
         var topics: [HealthTopic] = []
         for query in Self.queries(for: term) {
-            topics = try await search(query)
+            topics = try await search(query, matching: term)
             if !topics.isEmpty { break }
         }
         await cache.store(topics, for: key)
         return topics
     }
 
-    /// The name, then without its leading qualifier words, down to the last two words
-    /// ("recurrent aphthous stomatitis" → "aphthous stomatitis").
+    /// The name, then without its leading qualifier words, down to the last word
+    /// ("recurrent aphthous stomatitis" → "aphthous stomatitis" → "stomatitis"; "streptococcal
+    /// pharyngitis" → "pharyngitis", which MedlinePlus files under Sore Throat).
     static func queries(for term: String) -> [String] {
         let words = term.split(separator: " ")
-        guard words.count > 2 else { return [term] }
-        return (0...(words.count - 2)).prefix(3).map { words[$0...].joined(separator: " ") }
+        guard words.count > 1 else { return [term] }
+        return (0..<words.count).prefix(4).map { words[$0...].joined(separator: " ") }
     }
 
-    private func search(_ term: String) async throws -> [HealthTopic] {
+    /// The diagnosis's distinctive words as matching stems: lowercased, qualifiers dropped, cut to
+    /// six letters so "stomatitis" also finds "stomatitis-like" and "hydrocephalus" finds "hydrocephalic".
+    static func stems(of term: String) -> [String] {
+        term.lowercased()
+            .split(whereSeparator: { !$0.isLetter })
+            .map(String.init)
+            .filter { $0.count >= 4 && !qualifiers.contains($0) }
+            .map { String($0.prefix(6)) }
+    }
+
+    /// Whether a page is about the diagnosis: one of its distinctive words is in the page's title,
+    /// its other names, or the opening of its summary.
+    static func isRelevant(title: String, altTitles: [String], summary: String, to term: String) -> Bool {
+        let stems = stems(of: term)
+        guard !stems.isEmpty else { return true }
+        let text = ([title] + altTitles + [String(summary.prefix(400))]).joined(separator: " ").lowercased()
+        return stems.contains { text.contains($0) }
+    }
+
+    private func search(_ term: String, matching diagnosis: String) async throws -> [HealthTopic] {
         var components = URLComponents()
         components.scheme = "https"
         components.host = "wsearch.nlm.nih.gov"
@@ -50,25 +78,31 @@ struct MedlinePlusHealthTopics: HealthTopicLinking {
         components.queryItems = [
             URLQueryItem(name: "db", value: "healthTopics"),
             URLQueryItem(name: "term", value: term),
-            URLQueryItem(name: "retmax", value: String(Self.pageCount)),
+            URLQueryItem(name: "retmax", value: String(Self.searchCount)),
         ]
         guard let url = components.url else { throw URLError(.badURL) }
         let (data, response) = try await session.data(from: url)
         guard (response as? HTTPURLResponse)?.statusCode == 200 else { throw URLError(.badServerResponse) }
-        return Self.topics(from: data)
+        return Self.topics(from: data, matching: diagnosis)
     }
 
     /// Maps the search reply (XML) to topics, in MedlinePlus's ranking order. Titles and summaries
     /// arrive with search-highlight HTML, which is stripped; a summary is cut at a sentence end.
-    static func topics(from data: Data) -> [HealthTopic] {
+    /// With a diagnosis, pages that aren't about it are dropped (`isRelevant`); at most `pageCount` stay.
+    static func topics(from data: Data, matching diagnosis: String? = nil) -> [HealthTopic] {
         let reader = SearchReplyReader()
         let parser = XMLParser(data: data)
         parser.delegate = reader
         parser.parse()
-        return reader.documents.compactMap { doc in
+        let topics: [HealthTopic] = reader.documents.compactMap { doc in
             guard let url = URL(string: doc.url), let title = doc.title.map(plainText), !title.isEmpty else { return nil }
-            return HealthTopic(title: title, summary: doc.summary.map { shortSummary(plainText($0)) } ?? "", url: url)
+            let summary = doc.summary.map(plainText) ?? ""
+            if let diagnosis, !isRelevant(title: title, altTitles: doc.altTitles.map(plainText), summary: summary, to: diagnosis) {
+                return nil
+            }
+            return HealthTopic(title: title, summary: shortSummary(summary), url: url)
         }
+        return Array(topics.prefix(pageCount))
     }
 
     /// Text without tags or entities, with whitespace collapsed.
@@ -100,7 +134,7 @@ struct MedlinePlusHealthTopics: HealthTopicLinking {
 
 /// Pulls each `<document url=…>` with its title and FullSummary out of the search reply.
 private final class SearchReplyReader: NSObject, XMLParserDelegate {
-    struct Document { var url: String; var title: String?; var summary: String? }
+    struct Document { var url: String; var title: String?; var summary: String?; var altTitles: [String] = [] }
     private(set) var documents: [Document] = []
     private var field: String?
     private var buffer = ""
@@ -109,7 +143,7 @@ private final class SearchReplyReader: NSObject, XMLParserDelegate {
                 attributes: [String: String] = [:]) {
         if name == "document", let url = attributes["url"] {
             documents.append(Document(url: url))
-        } else if name == "content", let kind = attributes["name"], kind == "title" || kind == "FullSummary" {
+        } else if name == "content", let kind = attributes["name"], ["title", "FullSummary", "altTitle"].contains(kind) {
             field = kind
             buffer = ""
         }
@@ -123,6 +157,7 @@ private final class SearchReplyReader: NSObject, XMLParserDelegate {
         guard name == "content", let kind = field, !documents.isEmpty else { return }
         if kind == "title", documents[documents.count - 1].title == nil { documents[documents.count - 1].title = buffer }
         if kind == "FullSummary", documents[documents.count - 1].summary == nil { documents[documents.count - 1].summary = buffer }
+        if kind == "altTitle" { documents[documents.count - 1].altTitles.append(buffer) }
         field = nil
     }
 }

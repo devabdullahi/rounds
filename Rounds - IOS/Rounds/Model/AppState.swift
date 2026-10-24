@@ -520,7 +520,7 @@ final class AppState {
         let patient = session.clinical.bed
         graded.insert(GradedCase(id: "local-\(UUID().uuidString)", submittedAt: .now, score: grade.score,
                                  diagnosisCorrect: grade.diagnosisCorrect, missedRedFlags: grade.missedRedFlags.count,
-                                 clerkship: session.clinical.clerkship, system: session.clinical.system, breakdown: [:],
+                                 clerkship: session.clinical.clerkship, system: session.clinical.system, breakdown: grade.breakdown,
                                  examMode: session.examMode, timed: session.isTimed, caseID: patient), at: 0)
         checkUnlocks()
         lastGrade = grade

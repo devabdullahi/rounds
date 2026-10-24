@@ -20,6 +20,8 @@ struct Grade {
     var yourExtras: [String] = []
     /// The case taught for the student's exam. Nil without a goal, or on older grades.
     var lens: ExamLens? = nil
+    /// Points earned out of the points available for each part. Empty on grades older than the breakdown.
+    var breakdown: [ScoreCategory: Points] = [:]
 }
 
 #if DEBUG
@@ -64,6 +66,8 @@ extension Grade {
         lens: ExamLens(title: "For Step 2 CK: next best steps",
                        points: ["Treat symptoms first: topical steroid or anesthetic rinse",
                                 "Check CBC, iron, B12 and folate when ulcers are frequent or severe",
-                                "Biopsy any single ulcer that lasts more than 3 weeks"]))
+                                "Biopsy any single ulcer that lasts more than 3 weeks"]),
+        breakdown: [.diagnosis: Points(got: 35, max: 35), .history: Points(got: 17, max: 20), .exam: Points(got: 12, max: 15),
+                    .redFlags: Points(got: 5, max: 10), .tests: Points(got: 10, max: 10), .plan: Points(got: 7, max: 10)])
 }
 #endif

@@ -10,10 +10,8 @@ struct LiveCaseService: CaseService {
         do {
             _ = try await client.auth.session
         } catch AuthError.sessionMissing {
-            // Only a device with no session at all starts a guest one. Any other failure (a refresh
-            // that didn't go through) is thrown, so a signed-in student is never silently swapped
-            // into an empty guest account.
-            _ = try await client.auth.signInAnonymously()
+            // Every student has a registered account; there are no guest sessions to fall back to.
+            throw AuthServiceError(message: "Sign in to see your patients.")
         }
     }
 
@@ -564,6 +562,8 @@ private struct GradeRow: Decodable {
     let differential: [DifferentialRow]?
     let your_extras: [String]?
     let lens: LensRow?
+    struct PartRow: Decodable { let got: Int; let max: Int }
+    let breakdown: [String: PartRow]?
 
     var grade: Grade {
         Grade(score: score, diagnosisCorrect: diagnosis_correct, diagnosis: diagnosis, verdict: verdict,
@@ -577,6 +577,9 @@ private struct GradeRow: Decodable {
                                      tellApart: $0.tell_apart ?? [], inYours: $0.in_yours ?? false)
               },
               yourExtras: your_extras ?? [],
-              lens: lens.map { ExamLens(title: $0.title, points: $0.points) }.flatMap { $0.points.isEmpty ? nil : $0 })
+              lens: lens.map { ExamLens(title: $0.title, points: $0.points) }.flatMap { $0.points.isEmpty ? nil : $0 },
+              breakdown: Dictionary(uniqueKeysWithValues: (breakdown ?? [:]).compactMap { key, part in
+                  ScoreCategory(rawValue: key).map { ($0, Points(got: part.got, max: part.max)) }
+              }))
     }
 }

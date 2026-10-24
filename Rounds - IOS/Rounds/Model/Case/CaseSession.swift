@@ -50,7 +50,7 @@ final class CaseSession {
     init(clinical: ClinicalCase, service: any CaseService) {
         self.clinical = clinical
         self.service = service
-        self.timeLimitMinutes = clinical.minutes
+        self.timeLimitMinutes = TimeLimit.minutes(clinical.minutes)
         self.coverage = (0, clinical.keyHistoryTotal)
     }
 
@@ -78,11 +78,21 @@ final class CaseSession {
             + a.ordered.compactMap { o in clinical.tests.first { $0.id == o.id }.map { TimelineEvent(at: o.at, kind: .test, text: "Ordered \($0.name)") } }
     }
 
+    #if DEBUG
+    /// `-screen interview-nudge`: a few questions already asked, so the step bar and the chat point at the exam.
+    func debugSeedHistory() {
+        messages = [("What brings you in today?", "My walking has gotten strange."), ("When did it start?", "About six months ago."),
+                    ("Any trouble with your bladder?", "I don't always make it in time."), ("How is your memory?", "My wife says I repeat myself.")]
+            .flatMap { [ChatMessage(kind: .doctor, text: $0.0), ChatMessage(kind: .patient, text: $0.1)] }
+    }
+    #endif
+
     // MARK: Clock
 
     /// Chosen on the door note before the clock starts. nil = untimed.
     var timeLimitMinutes: Int?
-    var isTimed: Bool { timeLimitMinutes != nil }
+    /// A limit of 0 minutes is no limit: counting down from nothing would start the case at a red 00:00.
+    var isTimed: Bool { (timeLimitMinutes ?? 0) > 0 }
     var totalSeconds: TimeInterval { TimeInterval((timeLimitMinutes ?? 0) * 60) }
 
     func elapsed(at date: Date) -> TimeInterval {
