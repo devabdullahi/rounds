@@ -23,6 +23,9 @@ final class CaseSession {
     private(set) var startedAt: Date?
     private(set) var messages: [ChatMessage] = []
     private(set) var revealed: Set<String> = []
+    /// Labels of the facts found so far, in order: what "Found so far" lists. Kept here, not read
+    /// back from the chat's reveal lines, because a resumed case has no reveal lines.
+    private(set) var foundFacts: [String] = []
     private(set) var examined: [String] = []
     /// Findings returned by the server, by maneuver id.
     private(set) var findings: [String: String] = [:]
@@ -67,6 +70,7 @@ final class CaseSession {
         startedAt = a.startedAt
         messages = a.transcript.map { ChatMessage(kind: $0.fromStudent ? .doctor : .patient, text: $0.text) }
         revealed = a.revealedIDs
+        foundFacts = a.revealedLabels
         if a.coverage.total > 0 { coverage = a.coverage }
         examined = a.examined.map(\.id)
         findings = Dictionary(a.examined.map { ($0.id, $0.finding) }, uniquingKeysWith: { first, _ in first })
@@ -218,6 +222,7 @@ final class CaseSession {
                 revealed = Set(answer.revealedIDs)
                 coverage = answer.coverage
                 if !answer.revealed.isEmpty && !examMode {
+                    foundFacts += answer.revealed.map(\.label).filter { !foundFacts.contains($0) }
                     messages.append(ChatMessage(kind: .reveal, text: "Revealed: " + answer.revealed.map(\.label).joined(separator: ", ")))
                 }
                 if outcome.brokeRule {
@@ -287,6 +292,7 @@ final class CaseSession {
             revealed = Set(answer.revealedIDs)
             coverage = answer.coverage
             if !answer.revealed.isEmpty && !examMode {
+                foundFacts += answer.revealed.map(\.label).filter { !foundFacts.contains($0) }
                 messages.append(ChatMessage(kind: .reveal, text: "Revealed: " + answer.revealed.map(\.label).joined(separator: ", ")))
             }
         }

@@ -51,12 +51,13 @@ struct AttemptStartTests {
         session.restore(ResumedAttempt(
             id: "LEFT", examMode: false, timeLimitMinutes: 15, startedAt: started,
             transcript: [.init(fromStudent: true, text: "When did it start?"), .init(fromStudent: false, text: "Last night.")],
-            revealedIDs: ["f1"], coverage: (1, 4), examined: [("abdomen", "Soft, non-tender.")],
+            revealedIDs: ["f1"], revealedLabels: ["Onset"], coverage: (1, 4), examined: [("abdomen", "Soft, non-tender.")],
             ordered: [.init(id: "cbc", at: started, result: TestResult(text: "WBC 14", isAbnormal: true))], hiddenTests: []))
 
         #expect(session.resumed)
         #expect(session.messages.map(\.text) == ["When did it start?", "Last night."])
         #expect(session.historyCoverage == (1, 4))
+        #expect(session.foundFacts == ["Onset"])
         #expect(session.findings["abdomen"] == "Soft, non-tender.")
         #expect(session.tests["cbc"] == .ready)
         #expect(session.testsTaken == (1, 1))

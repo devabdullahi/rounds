@@ -21,6 +21,8 @@ struct ResumedAttempt: Sendable, Equatable {
     let startedAt: Date
     let transcript: [Turn]
     let revealedIDs: Set<String>
+    /// The revealed facts' labels in the order they turned up, for "Found so far".
+    var revealedLabels: [String] = []
     let coverage: (got: Int, total: Int)
     /// Exam steps in the order done, with their findings.
     let examined: [(id: String, finding: String)]
@@ -28,7 +30,7 @@ struct ResumedAttempt: Sendable, Equatable {
     let hiddenTests: Set<String>
 
     static func == (a: ResumedAttempt, b: ResumedAttempt) -> Bool {
-        a.id == b.id && a.transcript == b.transcript && a.revealedIDs == b.revealedIDs && a.ordered == b.ordered
+        a.id == b.id && a.transcript == b.transcript && a.revealedIDs == b.revealedIDs && a.revealedLabels == b.revealedLabels && a.ordered == b.ordered
             && a.examined.map(\.id) == b.examined.map(\.id) && a.coverage == b.coverage
     }
 }
