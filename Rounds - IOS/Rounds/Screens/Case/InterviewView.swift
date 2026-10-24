@@ -361,103 +361,122 @@ struct InterviewView: View {
         }
     }
 
+    /// One big card, field on top and its actions below: a box that reads as "type anything here",
+    /// with the suggested questions folded behind "Questions to try" so they don't look like the
+    /// only things a student can ask.
     private var composer: some View {
         VStack(spacing: 8) {
-            if !session.examMode && !unaskedSuggestions.isEmpty && draft.isEmpty {
-                Button { showingIdeas.toggle() } label: {
-                    HStack(spacing: 6) {
-                        Text("Questions to try")
-                        AppIcon(.chevronDown, size: 14)
-                            .rotationEffect(.degrees(showingIdeas ? 180 : 0))
-                    }
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 14)
-                    .frame(minHeight: 36)
-                    .glassCapsule(tint: Theme.neutralFill)
-                }
-                .buttonStyle(PressDownStyle())
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 12)
-                .accessibilityHint(showingIdeas ? "Hides the suggested questions" : "Shows a few questions you could ask")
-                .transition(.opacity)
-            }
             // Exam mode is unassisted: no suggested questions.
-            if !session.examMode && showingIdeas && !unaskedSuggestions.isEmpty {
+            if offersIdeas && showingIdeas {
                 ScrollView(.horizontal) {
                     HStack(spacing: 8) {
                         ForEach(unaskedSuggestions, id: \.self) { s in
-                            // Slate glass, not the accent: a fallback when stuck, quieter than the student's own question.
                             // Fills the field instead of sending, so it reads as the student's own question to edit.
                             Button(s) {
                                 draft = s
                                 showingIdeas = false
                                 inputFocused = true
                             }
-                                .font(.system(size: 14))
-                                .foregroundStyle(.white)
-                                .lineLimit(1)
-                                .padding(.horizontal, 14)
-                                .frame(minHeight: 36)
-                                .glassCapsule(tint: Theme.neutralFill)
-                                .buttonStyle(PressDownStyle())
-                                .disabled(session.isPatientTyping)
+                            .font(.system(size: 14))
+                            .foregroundStyle(.white)
+                            .lineLimit(1)
+                            .padding(.horizontal, 14)
+                            .frame(minHeight: 36)
+                            .glassCapsule(tint: Theme.neutralFill)
+                            .buttonStyle(PressDownStyle())
+                            .disabled(session.isPatientTyping)
                         }
                     }
                     .padding(.horizontal, 12)
                 }
                 .scrollIndicators(.hidden)
                 .trailingFade()
-                .transition(.opacity)
+                .transition(.opacity.combined(with: .move(edge: .bottom)))
             }
-            HStack(spacing: 8) {
-                TextField("", text: $draft, prompt: Text("Ask the patient…").foregroundStyle(Theme.faint))
-                    .font(.system(size: 16))
+            VStack(alignment: .leading, spacing: 10) {
+                TextField("", text: $draft, prompt: Text("Ask \(c.firstName) a question\u{2026}").foregroundStyle(Theme.faint), axis: .vertical)
+                    .font(.system(size: 17))
+                    .lineLimit(1...4)
                     .focused($inputFocused)
                     .submitLabel(.send)
-                    .onSubmit(send)
-                    .padding(.horizontal, 16)
-                    .frame(height: 44)
-                    .background(Theme.bg, in: Capsule())
-                    .overlay(Capsule().strokeBorder(inputFocused ? Theme.accent : Theme.border))
-                    .accessibilityLabel("Ask the patient")
-                let hasText = !draft.trimmingCharacters(in: .whitespaces).isEmpty
-                ZStack {
-                    // Voice mode off in Settings: the send button stays, greyed until there's text.
-                    if hasText || !voiceMode {
-                        Button(action: send) {
-                            AppIcon(.arrowUp, size: 22)
-                                .foregroundStyle(.white)
-                                .frame(width: 48, height: 48)
-                                .glassCircle(tint: Theme.accent)
+                    .frame(maxWidth: .infinity, minHeight: 44, alignment: .topLeading)
+                    .accessibilityLabel("Ask \(c.firstName) a question")
+                    // A multi-line field takes Return as a newline; treat it as Send, like the old one-line field.
+                    .onChange(of: draft) { _, now in
+                        if now.contains("\n") {
+                            draft = now.replacingOccurrences(of: "\n", with: "")
+                            send()
                         }
-                        .accessibilityLabel("Send")
-                        .disabled(session.isPatientTyping || !hasText)
-                        .transition(.scale(scale: 0.6).combined(with: .opacity))
-                    } else {
-                        // Liquid Glass with a light green tint: the quieter twin of the solid send button.
-                        Button(action: startVoice) {
-                            AppIcon(.mic, size: 22)
-                                .foregroundStyle(Theme.accentText)
-                                .frame(width: 48, height: 48)
-                                .glassFill(Theme.accent, in: Circle(), strength: 0.16)
-                        }
-                        .accessibilityLabel("Talk to the patient")
-                        .disabled(session.isPatientTyping)
-                        .transition(.scale(scale: 0.6).combined(with: .opacity))
                     }
+                HStack(spacing: 8) {
+                    if offersIdeas {
+                        Button { showingIdeas.toggle() } label: {
+                            HStack(spacing: 6) {
+                                Text("Questions to try")
+                                AppIcon(.chevronDown, size: 14)
+                                    .rotationEffect(.degrees(showingIdeas ? 180 : 0))
+                            }
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 14)
+                            .frame(minHeight: 40)
+                            .glassCapsule(tint: Theme.neutralFill)
+                        }
+                        .buttonStyle(PressDownStyle())
+                        .accessibilityHint(showingIdeas ? "Hides the suggested questions" : "Shows a few questions you could ask")
+                    }
+                    Spacer(minLength: 0)
+                    sendOrTalkButton
                 }
-                .animation(Springs.pop, value: hasText)   // both swap at once: fast replace
             }
+            .padding(.horizontal, 16)
+            .padding(.top, 14)
+            .padding(.bottom, 10)
+            .background(Theme.surface, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 24, style: .continuous).strokeBorder(Theme.accent, lineWidth: inputFocused ? 2 : 1.5))
+            .shadow(color: Theme.text.opacity(0.08), radius: 12, y: 4)
+            .contentShape(Rectangle())
+            .onTapGesture { inputFocused = true }
             .padding(.horizontal, 12)
         }
-        .padding(.top, 10)
+        .padding(.top, 8)
         .padding(.bottom, 8)
-        .background(Theme.surface.ignoresSafeArea(edges: .bottom))
-        .overlay(alignment: .top) { Rectangle().fill(Theme.text.opacity(0.10)).frame(height: 1) }
+        .background(Theme.bg.ignoresSafeArea(edges: .bottom))
         .animation(Springs.slide, value: inputFocused)
         .animation(Springs.slide, value: showingIdeas)
-        .animation(Springs.slide, value: draft.isEmpty)
+    }
+
+    /// "Questions to try" shows while there are suggestions left, never in exam mode.
+    private var offersIdeas: Bool { !session.examMode && !unaskedSuggestions.isEmpty }
+
+    private var sendOrTalkButton: some View {
+        let hasText = !draft.trimmingCharacters(in: .whitespaces).isEmpty
+        return ZStack {
+            // Voice mode off in Settings: the send button stays, greyed until there's text.
+            if hasText || !voiceMode {
+                Button(action: send) {
+                    AppIcon(.arrowUp, size: 22)
+                        .foregroundStyle(.white)
+                        .frame(width: 44, height: 44)
+                        .glassCircle(tint: Theme.accent)
+                }
+                .accessibilityLabel("Send")
+                .disabled(session.isPatientTyping || !hasText)
+                .transition(.scale(scale: 0.6).combined(with: .opacity))
+            } else {
+                // Liquid Glass with a light green tint: the quieter twin of the solid send button.
+                Button(action: startVoice) {
+                    AppIcon(.mic, size: 22)
+                        .foregroundStyle(Theme.accentText)
+                        .frame(width: 44, height: 44)
+                        .glassFill(Theme.accent, in: Circle(), strength: 0.16)
+                }
+                .accessibilityLabel("Talk to \(c.firstName)")
+                .disabled(session.isPatientTyping)
+                .transition(.scale(scale: 0.6).combined(with: .opacity))
+            }
+        }
+        .animation(Springs.pop, value: hasText)   // both swap at once: fast replace
     }
 
     // MARK: Voice
