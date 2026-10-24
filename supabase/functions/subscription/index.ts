@@ -5,8 +5,10 @@
 //            it; a new plan goes to the account it was tagged with (appAccountToken), else the first
 //            to claim. A plan in use by another account answers entitled false, `owner` (masked email)
 //            and `transferable`; a lapsed or refunded one goes to the caller (rules.ts).
-//   transfer {transaction_id}  → {entitled}  the student asked to move the phone's plan to their
-//            account; the other account loses it.
+//   transfer {transaction_id, signed_transaction}  → {entitled}  the student asked to move the phone's
+//            plan to their account; the other account loses it. `signed_transaction` is StoreKit's
+//            Transaction.jwsRepresentation from the phone: only the Apple ID that bought the plan can
+//            produce it, so knowing a transaction id alone can't take someone's plan.
 //   status  {}                → {entitled, expires_at?, free_case}  the caller's own access, on any
 //           device, refreshed from Apple where our record may be stale (_shared/plan.ts). `free_case`:
 //           no plan, but the one free graded case is still unused, so the app opens for it.
@@ -15,7 +17,8 @@
 // role. Students can read their own rows (RLS) but never write them.
 import { body, callerId, HttpError, json, serve } from "../_shared/http.ts";
 import { sql } from "../_shared/db.ts";
-import { lookUp, maskEmail, type Subscription } from "../_shared/appstore.ts";
+import { BUNDLE_ID, lookUp, maskEmail, type Subscription } from "../_shared/appstore.ts";
+import { verifySignedTransaction } from "../_shared/appstorejws.ts";
 import { accountPlan, environmentCounts, freeCaseLeft } from "../_shared/plan.ts";
 import { tryQuota } from "../_shared/quota.ts";
 import { decideClaim } from "./rules.ts";
@@ -25,7 +28,7 @@ serve(async (req) => {
   const input = await body<Record<string, unknown>>(req);
   switch (input.action) {
     case "claim": return json(await claim(userId, input.transaction_id));
-    case "transfer": return json(await transfer(userId, input.transaction_id));
+    case "transfer": return json(await transfer(userId, input.transaction_id, input.signed_transaction));
     case "status": return json(await status(userId));
     default: throw new HttpError(400, "unknown action");
   }
@@ -93,9 +96,21 @@ async function claim(userId: string, transactionId: unknown) {
 
 /** The student asked to move the phone's plan to their account: the other account loses it. Apple
  *  still confirms the purchase first, and it counts against the same daily allowance as claims. */
-async function transfer(userId: string, transactionId: unknown) {
+async function transfer(userId: string, transactionId: unknown, signed: unknown) {
+  if (typeof signed !== "string" || signed.length > 16_384) throw new HttpError(400, "update Rounds to move a plan");
   if (!(await tryQuota(userId, "claim"))) throw new HttpError(429, "too many plan checks today; try again tomorrow");
   const sub = await confirmed(transactionId);
+  // Proof the caller's phone holds this purchase: Apple signed it, for our app, for this same plan.
+  let held;
+  try {
+    held = await verifySignedTransaction(signed);
+  } catch (error) {
+    console.error("signed transaction refused", (error as Error).message);
+    throw new HttpError(403, "this phone's purchase couldn't be confirmed");
+  }
+  if (held.bundleId !== BUNDLE_ID || held.originalTransactionId !== sub.originalTransactionId) {
+    throw new HttpError(403, "this phone's purchase couldn't be confirmed");
+  }
   const [before] = await sql<{ user_id: string }[]>`
     select user_id from public.subscriptions where original_transaction_id = ${sub.originalTransactionId}`;
   await record(userId, sub, true);

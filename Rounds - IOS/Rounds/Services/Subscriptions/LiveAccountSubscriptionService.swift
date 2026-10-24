@@ -10,8 +10,8 @@ struct LiveAccountSubscriptionService: AccountSubscriptionService {
         return reply.access
     }
 
-    func transfer(transactionID: String) async throws -> AccountAccess {
-        let reply: AccessReply = try await client.invokeSigned("subscription", body: PurchaseBody(action: "transfer", transaction_id: transactionID))
+    func transfer(transactionID: String, signedTransaction: String) async throws -> AccountAccess {
+        let reply: AccessReply = try await client.invokeSigned("subscription", body: TransferBody(transaction_id: transactionID, signed_transaction: signedTransaction))
         return reply.access
     }
 
@@ -24,6 +24,12 @@ struct LiveAccountSubscriptionService: AccountSubscriptionService {
 private struct PurchaseBody: Encodable {
     let action: String
     let transaction_id: String
+}
+
+private struct TransferBody: Encodable {
+    let action = "transfer"
+    let transaction_id: String
+    let signed_transaction: String
 }
 
 private struct AccessReply: Decodable {

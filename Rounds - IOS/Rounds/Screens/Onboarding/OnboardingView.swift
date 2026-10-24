@@ -42,8 +42,6 @@ struct OnboardingView: View {
     @State private var seen: Set<OnboardingPage> = []
     @State private var heart = HoldToCommit()
     @State private var holdingHeart = false
-    /// Optional questions the student skipped: they count as answered, with nothing saved.
-    @State private var skipped: Set<OnboardingPage> = []
     /// Pages whose task the student has done (the practice pick); their Continue waits for it.
     @State private var finished: Set<OnboardingPage> = []
     /// Set on arrival: whether this run includes the account page.
@@ -80,8 +78,7 @@ struct OnboardingView: View {
 
     /// Whether a page's choice is made, so the pages after it may be shown.
     private func answered(_ p: OnboardingPage) -> Bool {
-        if skipped.contains(p) { return true }
-        return switch p {
+        switch p {
         case .schoolYear: SchoolYear(stored: yearStored) != nil
         case .studyGoal: goal != nil
         case .examDate: !examStored.isEmpty
@@ -195,19 +192,6 @@ struct OnboardingView: View {
     @ViewBuilder
     private var bottom: some View {
         switch page {
-        case let p where p.isSkippable:
-            VStack(spacing: 4) {
-                OnboardingNextButton(title: nextTitle(p), enabled: answered(p)) { step(1) }
-                Button(p.skipTitle) {
-                    skipped.insert(p)
-                    later { step(1) }
-                }
-                .font(.system(size: 15, weight: .semibold))
-                .foregroundStyle(Theme.muted)
-                .frame(minHeight: 44)
-                .opacity(answered(p) && !skipped.contains(p) ? 0 : 1)
-                .disabled(answered(p) && !skipped.contains(p))
-            }
         case .settingUp:
             // It moves on by itself; the space keeps the page from jumping.
             Color.clear.frame(height: 60)
@@ -248,15 +232,6 @@ struct OnboardingView: View {
         case .realityCheck: "Close the gap"
         case .plan: "Save my plan"
         default: "Continue"
-        }
-    }
-
-    /// Runs after the change that adds or drops a page is laid out: a scroll position set before
-    /// that is dropped.
-    private func later(_ action: @escaping () -> Void) {
-        Task {
-            try? await Task.sleep(for: .milliseconds(120))
-            action()
         }
     }
 

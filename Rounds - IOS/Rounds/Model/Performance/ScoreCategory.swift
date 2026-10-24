@@ -17,6 +17,18 @@ enum ScoreCategory: String, CaseIterable, Identifiable, Sendable {
         }
     }
 
+    /// One or two words, for the debrief's points list where the full label wraps.
+    var shortLabel: String {
+        switch self {
+        case .diagnosis: "Diagnosis"
+        case .history: "History"
+        case .exam: "Exam"
+        case .redFlags: "Red flags"
+        case .tests: "Tests"
+        case .plan: "Plan"
+        }
+    }
+
     /// What earns these points, so a weak spot says what to practice.
     var detail: String {
         switch self {

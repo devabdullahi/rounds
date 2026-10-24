@@ -54,6 +54,10 @@ enum Theme {
     /// deeper emerald than `accent` because iOS 26's clear glass and the top highlight lift it by
     /// about 45 levels: rendered, white measures 4.8–5.7:1 across the label. Dark keeps the blue accent.
     static let accentFill = Color.adaptive(dark: 0x226DFF, light: 0x014D2E)
+    /// Fill behind white labels on secondary glass buttons (`QuietButtonStyle`): a deep slate, so a
+    /// second button beside the accent one is clearly the lesser action. Dark like `accentFill`, so
+    /// white stays above 4.5:1 after the glass lifts it.
+    static let neutralFill = Color.adaptive(dark: 0x34373F, light: 0x2A2D3A)
     static let accentText = Color.adaptive(dark: 0xA5BFEC, light: 0x017A45)   // light: 5.0:1 on bg, 4.7:1 on heroMint
     static let accentSoft = Color.adaptive(dark: 0x226DFF, light: 0x029957, darkOpacity: 0.12, lightOpacity: 0.10)
     static let warn       = Color.adaptive(dark: 0xFC968B, light: 0xE5011A)

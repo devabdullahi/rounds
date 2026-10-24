@@ -4,6 +4,8 @@ import AppIntents
 struct ReviewMistakesIntent: AppIntent {
     static let title: LocalizedStringResource = "Review My Mistakes"
     static let description = IntentDescription("Makes flashcards from your wrong diagnoses and missed red flags.")
+    /// It spends the account's AI allowance, so it waits for Face ID or the passcode on a locked phone.
+    static let authenticationPolicy: IntentAuthenticationPolicy = .requiresAuthentication
 
     @Parameter(title: "Cards", default: .twenty)
     var count: CardCountOption

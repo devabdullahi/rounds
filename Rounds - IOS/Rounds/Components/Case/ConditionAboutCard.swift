@@ -5,9 +5,29 @@ import SwiftUI
 struct ConditionAboutCard: View {
     let diagnosis: String
     let about: ConditionAbout
+    /// False inside a debrief section row, which already shows the title and the surface.
+    var framed = true
 
     var body: some View {
+        if framed {
+            content.card()
+        } else {
+            content.padding(.horizontal, 16).padding(.bottom, 16)
+        }
+    }
+
+    private var content: some View {
         VStack(alignment: .leading, spacing: 14) {
+            if framed { header }
+            summary
+            chips("Typical symptoms", about.symptoms)
+            chips("Risk factors", about.riskFactors)
+        }
+        .foregroundStyle(Theme.text)
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private var header: some View {
             HStack(spacing: 10) {
                 AppIcon(.bookOpen, size: 20).foregroundStyle(Theme.accent)
                     .accessibilityHidden(true)
@@ -17,7 +37,10 @@ struct ConditionAboutCard: View {
             }
             .accessibilityElement(children: .combine)
             .accessibilityAddTraits(.isHeader)
+    }
 
+    @ViewBuilder
+    private var summary: some View {
             if !about.summaryPoints.isEmpty {
                 VStack(alignment: .leading, spacing: 8) {
                     ForEach(about.summaryPoints, id: \.self) { point in
@@ -32,12 +55,6 @@ struct ConditionAboutCard: View {
                     }
                 }
             }
-
-            chips("Typical symptoms", about.symptoms)
-            chips("Risk factors", about.riskFactors)
-        }
-        .foregroundStyle(Theme.text)
-        .card()
     }
 
     @ViewBuilder

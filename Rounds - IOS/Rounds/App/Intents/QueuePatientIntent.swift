@@ -6,6 +6,8 @@ struct QueuePatientIntent: AppIntent {
     static let title: LocalizedStringResource = "Queue Patient"
     static let description = IntentDescription(
         "Admits a new fictional patient to your ward in the background, ready when you open Rounds. Use it in an automation to have a patient waiting at the same time every day.")
+    /// It writes a patient on the account, so it waits for Face ID or the passcode on a locked phone.
+    static let authenticationPolicy: IntentAuthenticationPolicy = .requiresAuthentication
 
     @Parameter(title: "Topic", description: "A specialty or organ system. Leave empty for your saved focus.")
     var topic: IntentTopic?

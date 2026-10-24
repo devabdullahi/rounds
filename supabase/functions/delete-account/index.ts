@@ -2,13 +2,16 @@
 //
 //   1. Verify the caller (their own token; nobody can delete someone else).
 //   2. Remove their profile photo (storage isn't tied to the user row, so it wouldn't cascade).
-//   3. Delete the auth user with the service role. Every table hangs off it with on delete
+//   3. Hang up any live voice call: its voice_calls row cascades away with the user, and the sweeper
+//      would never find it again, so OpenAI would keep the session open (and billing) to its limit.
+//   4. Delete the auth user with the service role. Every table hangs off it with on delete
 //      cascade (profiles → cases, attempts, flashcards, reviews, usage; cases → case content),
 //      so one delete removes all of it. Condition profiles are shared knowledge and stay.
 //
 // Apple requires apps with accounts to offer this in-app.
 
 import { callerId, HttpError, json, serve } from "../_shared/http.ts";
+import { closeCalls } from "../_shared/voicecalls.ts";
 
 const SERVICE_HEADERS = {
   Authorization: `Bearer ${Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")}`,
@@ -34,6 +37,9 @@ serve(async (req) => {
     body: JSON.stringify({ prefixes: files }),
   });
   if (!photo.ok) console.error("delete-account file cleanup failed", userId, photo.status);
+
+  // Best effort too: a call that can't be hung up ends at OpenAI's own limit.
+  await closeCalls({ userId, overdueOnly: false }).catch((error) => console.error("delete-account call cleanup failed", userId, error));
 
   const res = await fetch(`${base}/auth/v1/admin/users/${userId}`, { method: "DELETE", headers: SERVICE_HEADERS });
   if (!res.ok) {

@@ -8,8 +8,8 @@ struct LiveCardService: CardService {
         do {
             return try await client.auth.session.user.id
         } catch AuthError.sessionMissing {
-            // As LiveCaseService.ensureSignedIn: only a missing session starts a guest one.
-            return try await client.auth.signInAnonymously().user.id
+            // As LiveCaseService.ensureSignedIn: no guest accounts, so no session means sign in.
+            throw AuthServiceError(message: "Sign in to see your cards.")
         }
     }
 

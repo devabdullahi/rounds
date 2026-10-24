@@ -34,7 +34,8 @@ enum SupabaseService {
         // emitted as the initial session as-is, even if expired. Nothing here listens to auth
         // events; every call goes through `auth.session`, which refreshes an expired session.
         return SupabaseClient(supabaseURL: url, supabaseKey: key,
-                              options: SupabaseClientOptions(auth: .init(emitLocalSessionAsInitialSession: true),
+                              options: SupabaseClientOptions(auth: .init(storage: DeviceKeychainStorage(),
+                                                                         emitLocalSessionAsInitialSession: true),
                                                              global: .init(session: session)))
     }()
 

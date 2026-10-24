@@ -8,6 +8,8 @@ struct DifferentialReviewCard: View {
     let extrasNote: String?
     /// Rows shown before "Show all".
     var collapsedLimit = 3
+    /// False inside a debrief section row, which already shows the title and the surface.
+    var framed = true
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var showAll = false
@@ -16,13 +18,15 @@ struct DifferentialReviewCard: View {
         let visible = showAll ? items : DifferentialReview.collapsed(items, limit: collapsedLimit)
         let hidden = items.count - DifferentialReview.collapsed(items, limit: collapsedLimit).count
 
-        VStack(alignment: .leading, spacing: 0) {
-            Text("What else it could have been")
-                .font(.system(size: 17, weight: .semibold))
-                .accessibilityAddTraits(.isHeader)
-                .padding(.horizontal, 16)
-                .padding(.top, 14)
-                .padding(.bottom, 4)
+        let list = VStack(alignment: .leading, spacing: 0) {
+            if framed {
+                Text("What else it could have been")
+                    .font(.system(size: 17, weight: .semibold))
+                    .accessibilityAddTraits(.isHeader)
+                    .padding(.horizontal, 16)
+                    .padding(.top, 14)
+                    .padding(.bottom, 4)
+            }
 
             ForEach(Array(visible.enumerated()), id: \.element.id) { i, item in
                 if i > 0 { Hairline() }
@@ -58,8 +62,12 @@ struct DifferentialReviewCard: View {
             }
         }
         .foregroundStyle(Theme.text)
-        .listSurface()
-        .clipped()
+
+        if framed {
+            list.listSurface().clipped()
+        } else {
+            list.clipped()
+        }
     }
 
     /// Rows revealed by "Show all" drop in like every other disclosure, except under Reduce Motion.

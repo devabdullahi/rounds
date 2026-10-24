@@ -117,11 +117,14 @@ export function freeCaseAllows(record: { graded: boolean; written: number }, wri
 }
 
 /** Whether the caller's free case is still unused, and, for `writing`, whether another patient may be
- *  written for it (cases they own plus ones waiting for them). */
+ *  written for it (cases they own plus ones waiting for them). Read from records delete_patients()
+ *  leaves alone (first_submissions, patient_fingerprints), so deleting patients can't reset it. */
 export async function freeCaseLeft(userId: string, writing = false): Promise<boolean> {
   const [record] = await sql<{ graded: boolean; written: number }[]>`
-    select exists (select 1 from public.attempts where user_id = ${userId} and submitted_at is not null) as graded,
-      (select count(*)::int from public.cases where created_by = ${userId})
+    select exists (select 1 from private.first_submissions where user_id = ${userId})
+        or exists (select 1 from public.attempts where user_id = ${userId} and submitted_at is not null) as graded,
+      greatest((select count(*)::int from public.cases where created_by = ${userId}),
+               (select count(*)::int from private.patient_fingerprints where user_id = ${userId}))
         + (select count(*)::int from private.ready_cases where user_id = ${userId}) as written`;
   return freeCaseAllows(record, writing);
 }

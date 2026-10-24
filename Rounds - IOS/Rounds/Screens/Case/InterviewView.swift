@@ -31,8 +31,8 @@ struct InterviewView: View {
     @Environment(CaseRouter.self) private var router
     let session: CaseSession
 
-    @State private var tab: InterviewTab = .history
-    @State private var workupTab: WorkupTab = .exam
+    /// Ask, Examine or Tests, picked on the step bar at the bottom.
+    @State private var tab: WorkupStep = .ask
     @State private var showingFindings = false
     @State private var draft = ""
     @FocusState private var inputFocused: Bool
@@ -54,7 +54,7 @@ struct InterviewView: View {
             topBar
             // The patient on the monitor while you talk. It steps aside while typing, when the
             // keyboard leaves the chat little room.
-            if tab == .history && !inputFocused {
+            if tab == .ask && !inputFocused {
                 PatientMonitor(vitals: c.vitals)
                     .padding(.horizontal, 20)
                     .padding(.top, 10)
@@ -62,38 +62,25 @@ struct InterviewView: View {
             }
             Group {
                 switch tab {
-                case .history: chat
-                case .workup: workup
+                case .ask: chat
+                case .examine: examine
+                case .tests: TestsPanel(session: session)
                 }
             }
             .frame(maxHeight: .infinity)
-            if tab == .workup {
-                // Quiet until some workup is done, then the main action.
-                Group {
-                    if session.hasWorkedUp {
-                        Button("I'm ready to diagnose") { router.go(.diagnosis) }.buttonStyle(PrimaryButtonStyle())
-                    } else {
-                        // Secondary: still there, just not the loudest thing before any workup.
-                        Button { router.go(.diagnosis) } label: {
-                            Text("I'm ready to diagnose")
-                                .font(.system(size: 17, weight: .semibold))
-                                .foregroundStyle(Theme.accentText)
-                                .frame(maxWidth: .infinity, minHeight: 54)
-                                .background(Theme.accentSoft, in: Capsule())
-                        }
-                        .buttonStyle(PressableStyle())
-                    }
+            if tab == .ask {
+                if isVoiceActive {
+                    voicePanel
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                } else {
+                    composer
+                        .transition(.opacity)   // pops out at once so the panel isn't waiting on it
                 }
-                .animation(Springs.slide, value: session.hasWorkedUp)
-                    .padding(.horizontal, 20)
-                    .padding(.top, 16)
-                    .padding(.bottom, 8)
-            } else if isVoiceActive {
-                voicePanel
-                    .transition(.move(edge: .bottom).combined(with: .opacity))
-            } else {
-                composer
-                    .transition(.opacity)   // pops out at once so the panel isn't waiting on it
+            }
+            // Every step one tap away. It steps aside for the keyboard and a voice conversation,
+            // which need the room and only happen while asking.
+            if !inputFocused && !isVoiceActive {
+                stepBar.transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
         .animation(VOICEPANEL.spring, value: isVoiceActive)
@@ -130,10 +117,11 @@ struct InterviewView: View {
             voice.streamedReply = { [session] in try await session.streamedReply() }
             voice.askAloud = { [session] question in await session.askAloud(question) }
             session.startClockIfNeeded()
-            tab = .history
+            tab = .ask
             #if DEBUG
-            if DebugLaunch.screen == "examine" { tab = .workup }
-            if DebugLaunch.screen == "workup" { tab = .workup; workupTab = .tests }
+            if DebugLaunch.screen == "examine" { tab = .examine }
+            if DebugLaunch.screen == "workup" { tab = .tests }
+            if DebugLaunch.screen == "interview-nudge" { session.debugSeedHistory() }
             if DebugLaunch.screen == "interview-exam" { session.examMode = true }
             if DebugLaunch.screen == "interview-findings" {
                 Task { try? await Task.sleep(for: .seconds(1)); showingFindings = true }
@@ -144,8 +132,10 @@ struct InterviewView: View {
             #endif
         }
         .onChange(of: tab) { _, new in
-            if new != .history { endVoice() }
+            if new != .ask { endVoice() }
         }
+        // The tests menu loads now, so the step bar can show its count before Tests is opened.
+        .task { await session.loadMenu() }
     }
 
     // MARK: Header
@@ -180,11 +170,8 @@ struct InterviewView: View {
                 Spacer()
                 CountdownLabel(session: session).frame(width: 64, alignment: .trailing)
             }
-            // Talking, then working the patient up: the exam and the tests live together under Workup.
-            Segmented(options: [(InterviewTab.history, "History"), (.workup, "Workup")], selection: $tab)
-                .padding(.horizontal, 8)
-            // History's own progress: shown while talking, not over the workup.
-            if tab == .history {
+            // History's own progress: shown while talking, not over the exam or tests.
+            if tab == .ask {
                 Group {
                     // With the meter turned off, the plain question count keeps the header's shape.
                     if session.examMode || !showCoverage { questionCount } else { coverageMeter }
@@ -281,6 +268,7 @@ struct InterviewView: View {
                             .transition(.opacity.combined(with: .offset(y: BUBBLE.offsetY)))
                             .id("typing")
                     }
+                    nudge
                     Color.clear.frame(height: 24).id("bottom")
                 }
                 .padding(16)
@@ -309,6 +297,28 @@ struct InterviewView: View {
                 proxy.scrollTo("bottom", anchor: .bottom)
             }
         }
+    }
+
+    /// The step bar's hint, said in the chat: once the history is underway, a card that points at
+    /// the exam (or, after the exam, the tests). Exam mode has no hints, so no card.
+    @ViewBuilder
+    private var nudge: some View {
+        if !session.examMode, !session.showsTypingDots, let step = stepHint,
+           let words = WorkupStep.nudge(for: step, firstManeuver: ExamRegion.grouped(c.exam).first?.maneuvers.first?.title, sex: c.sex) {
+            NudgeCard(glyph: step == .examine ? .stethoscope : .flask, title: words.title, detail: words.detail,
+                      actionTitle: step == .examine ? "Examine" : "Tests") {
+                withAnimation(Springs.slide) { tab = step }
+            }
+            .padding(.top, 6)
+            .transition(.opacity.combined(with: .offset(y: BUBBLE.offsetY)))
+            .id("nudge")
+        }
+    }
+
+    /// The step worth trying next (`WorkupStep.hint`), shared by the step bar's dot and the chat's card.
+    private var stepHint: WorkupStep? {
+        WorkupStep.hint(questionsAsked: session.messages.filter { $0.kind == .doctor }.count,
+                        examDone: session.examDone.done, testsDone: session.testOrder.count)
     }
 
     @ViewBuilder
@@ -354,16 +364,15 @@ struct InterviewView: View {
                 ScrollView(.horizontal) {
                     HStack(spacing: 8) {
                         ForEach(unaskedSuggestions, id: \.self) { s in
-                            // Outlined, not filled: a fallback when stuck, quieter than the student's own question.
+                            // Slate glass, not the accent: a fallback when stuck, quieter than the student's own question.
                             Button(s) { session.ask(s) }
                                 .font(.system(size: 14))
-                                .foregroundStyle(Theme.accentText)
+                                .foregroundStyle(.white)
                                 .lineLimit(1)
-                                .padding(.horizontal, 12)
+                                .padding(.horizontal, 14)
                                 .frame(minHeight: 36)
-                                .background(Theme.surface, in: Capsule())
-                                .overlay(Capsule().strokeBorder(Theme.accent.opacity(0.5)))
-                                .buttonStyle(.plain)
+                                .glassCapsule(tint: Theme.neutralFill)
+                                .buttonStyle(PressDownStyle())
                                 .disabled(session.isPatientTyping)
                         }
                     }
@@ -541,19 +550,30 @@ struct InterviewView: View {
         session.ask(text)
     }
 
-    // MARK: Workup
+    // MARK: Steps
 
-    /// Exam and tests side by side as sub-tabs, so the whole workup is one place.
-    private var workup: some View {
-        VStack(spacing: 0) {
-            UnderlineTabs(options: [(WorkupTab.exam, "Exam"), (.tests, "Tests")], selection: $workupTab)
-                .padding(.horizontal, 16)
-                .padding(.top, 4)
-            switch workupTab {
-            case .exam: examine
-            case .tests: TestsPanel(session: session)
-            }
-        }
+    private var stepBar: some View {
+        let asked = session.messages.filter { $0.kind == .doctor }.count
+        let history = session.historyCoverage
+        let exam = session.examDone
+        let tests = session.testsTaken
+        // Exam mode hides coverage, so Ask counts questions instead of key facts.
+        let coverage = !session.examMode && showCoverage
+        let steps = [
+            CaseStepBar.Step(step: .ask, label: "Ask", glyph: .messageSquare,
+                             progress: coverage ? "\(history.got)/\(history.total)" : "\(asked)",
+                             spokenProgress: coverage ? "\(history.got) of \(history.total) key history found" : "\(asked) questions asked"),
+            CaseStepBar.Step(step: .examine, label: "Examine", glyph: .stethoscope,
+                             progress: "\(exam.done)/\(exam.total)", spokenProgress: "\(exam.done) of \(exam.total) done"),
+            CaseStepBar.Step(step: .tests, label: "Tests", glyph: .flask,
+                             progress: session.menuReady ? "\(tests.done)/\(tests.total)" : nil,
+                             spokenProgress: session.menuReady ? "\(tests.done) of \(tests.total) taken" : nil),
+        ]
+        return CaseStepBar(steps: steps, current: tab,
+                           hint: stepHint,
+                           readyToDiagnose: session.hasWorkedUp,
+                           select: { step in withAnimation(Springs.slide) { tab = step } },
+                           diagnose: { router.go(.diagnosis) })
     }
 
     /// The exam grouped the way it's done: general look, vitals, then head to toe.
@@ -593,14 +613,14 @@ struct InterviewView: View {
                                 .foregroundStyle(Theme.accent)
                                 .transition(.scale(scale: 0.5).combined(with: .opacity))
                         } else {
-                            // Visible action so the row reads as a button, not a checklist.
-                            // Soft, not saturated: six rows of bright buttons drowned out the findings.
+                            // Visible action so the row reads as a button, not a checklist. Glass like every
+                            // button; not interactive, since the whole row is what's pressed.
                             Text("Examine")
                                 .font(.system(size: 14, weight: .semibold))
-                                .foregroundStyle(Theme.accentText)
-                                .padding(.horizontal, 12)
+                                .foregroundStyle(.white)
+                                .padding(.horizontal, 14)
                                 .frame(minHeight: 32)
-                                .background(Theme.accentSoft, in: Capsule())
+                                .glassFill(Theme.accentFill, in: Capsule(), interactive: false)
                                 .transition(.opacity)
                         }
                     }

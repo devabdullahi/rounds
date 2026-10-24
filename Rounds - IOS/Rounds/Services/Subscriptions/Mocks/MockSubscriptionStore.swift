@@ -19,6 +19,8 @@ actor MockSubscriptionStore: SubscriptionStore {
 
     func currentTransactionIDs() async -> [String] { entitled ? ["2000000111"] : [] }
 
+    func signedTransaction(id: String) async -> String? { entitled ? "signed-\(id)" : nil }
+
     func activePlan() async -> ActivePlan? {
         entitled ? ActivePlan(period: .year, periodEnd: .now.addingTimeInterval(3 * 86_400), isTrial: true, willRenew: true) : nil
     }
