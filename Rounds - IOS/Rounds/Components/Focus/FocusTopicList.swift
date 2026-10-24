@@ -11,6 +11,10 @@ struct FocusTopicList: View {
     /// Off until the student has tapped something, so a fresh onboarding shows nothing picked
     /// (an empty selection would otherwise read as "mix").
     var showsSelection = true
+    /// The specialties listed; onboarding's "Other" passes only the ones without a tile of their own.
+    var rotations: [Clerkship] = Clerkship.allCases
+    /// Off where "mix it up" already has its own tile.
+    var showsMix = true
     let onToggle: (StudyFocus) -> Void
     let onMix: () -> Void
 
@@ -19,9 +23,11 @@ struct FocusTopicList: View {
             if bySystem {
                 ForEach(OrganSystem.allCases) { s in row(s.label, s.examples, .system(s)) }
             } else {
-                ForEach(Clerkship.allCases) { c in row(c.label, c.examples, .rotation(c)) }
+                ForEach(rotations) { c in row(c.label, c.examples, .rotation(c)) }
             }
-            MixRow(byRotation: !bySystem, on: showsSelection && focus.isMix, action: onMix)
+            if showsMix {
+                MixRow(byRotation: !bySystem, on: showsSelection && focus.isMix, action: onMix)
+            }
         }
     }
 

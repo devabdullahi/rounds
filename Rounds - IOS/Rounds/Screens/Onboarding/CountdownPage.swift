@@ -5,7 +5,8 @@ import SwiftUI
  *
  *    0ms   label and the big number rise, y 8 → 0 (ease-out)
  *  200ms   one block per week rises in, 40ms apart (ease-out)
- *  700ms   "We'll plan every week around it." rises
+ *  700ms   "2 patients a day = N by exam day" rises
+ *  850ms   why it helps on the exam rises
  * Reduce Motion: final state.
  * ───────────────────────────────────────────────────────── */
 
@@ -13,11 +14,13 @@ private enum TIMING {
     static let blocks = 0.2
     static let blockGap = 0.04
     static let line = 0.7
+    static let why = 0.85
 }
 
 /// The exam month made concrete, on its own screen: weeks until the exam as a big number and one
-/// block per week, this week filled and the exam week outlined. No case math here: the pace isn't
-/// picked yet, so the total waits for the plan (StudyPlanPage). Only shown with an exam month.
+/// block per week, this week filled and the exam week outlined, then what two patients a day add up
+/// to by then. Two is a sample pace; the student's own pace comes later (PacePage) and the plan
+/// uses that. Only shown with an exam month.
 struct CountdownPage: View {
     var shown = true
     @AppStorage(ExamMonth.storageKey) private var examStored = ""
@@ -30,6 +33,9 @@ struct CountdownPage: View {
     private var examName: String { StudyGoal(stored: goalStored)?.tipsName ?? "your exam" }
     /// Past this many weeks the blocks would be crumbs, so the grid stops at four rows.
     private static let mostBlocks = 28
+    /// The sample pace in the line under the weeks.
+    private static let samplePerDay = 2
+    private var patients: Int { exam?.patients(perDay: Self.samplePerDay) ?? 0 }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -54,11 +60,18 @@ struct CountdownPage: View {
                 .background(Theme.bg, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
                 .padding(.top, 24)
 
-            Text("We\u{2019}ll plan every week around it.")
+            Text("Do \(Self.samplePerDay) patients a day and you\u{2019}ll have seen \(patients) by exam day.")
                 .font(.system(size: 17, weight: .semibold))
                 .foregroundStyle(Theme.text)
+                .fixedSize(horizontal: false, vertical: true)
                 .padding(.top, 16)
                 .rise(shown, at: TIMING.line, offset: 8)
+            Text("Each one is practice for the patients you\u{2019}ll meet on \(examName).")
+                .font(.system(size: 15))
+                .foregroundStyle(Theme.muted)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 6)
+                .rise(shown, at: TIMING.why, offset: 8)
             Spacer(minLength: 0)
             Spacer(minLength: 0)
         }
