@@ -23,7 +23,7 @@ struct CaseStepBar: View {
     let diagnose: () -> Void
 
     var body: some View {
-        HStack(spacing: 4) {
+        HStack(spacing: 6) {
             ForEach(steps) { s in
                 stepButton(s)
             }
@@ -73,10 +73,10 @@ struct CaseStepBar: View {
 
     private var diagnoseButton: some View {
         Button(action: diagnose) {
-            VStack(spacing: 3) {
-                AppIcon(.sealCheck, size: 20)
+            // No progress line, so the icon and label sit centered in the glass instead of riding high.
+            VStack(spacing: 4) {
+                AppIcon(.sealCheck, size: 22)
                 Text("Diagnose").font(.system(size: 13, weight: .semibold))
-                Text(" ").font(.mono(11, weight: .medium))
             }
             .foregroundStyle(.white)
             .frame(maxWidth: .infinity, minHeight: 62)
