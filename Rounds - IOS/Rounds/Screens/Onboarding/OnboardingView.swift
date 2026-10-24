@@ -263,7 +263,7 @@ struct OnboardingView: View {
     /// `-screen` names that open onboarding on a given page.
     private static let debugPages: [String: OnboardingPage] = [
         "onboarding": .schoolYear, "onboarding-year": .schoolYear, "onboarding-goal": .studyGoal,
-        "onboarding-practice": .practice, "onboarding-blanked": .blanked, "onboarding-blanked-reply": .blankedReply,
+        "onboarding-practice": .practice, "onboarding-practice-other": .practice, "onboarding-blanked": .blanked, "onboarding-blanked-reply": .blankedReply,
         "onboarding-exam": .examDate, "onboarding-countdown": .countdown, "onboarding-study-time": .studyTime,
         "onboarding-pace": .pace, "onboarding-setting-up": .settingUp, "onboarding-plan": .plan,
         "onboarding-confidence": .confidence, "onboarding-reality": .realityCheck,

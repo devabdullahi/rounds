@@ -72,6 +72,9 @@ struct PracticePage: View {
         .accessibilityAddTraits(on ? .isSelected : [])
         .modifier(QuestionEntrance(order: 4))
         .sheet(isPresented: $showsOther) { otherSheet }
+        #if DEBUG
+        .onAppear { if DebugLaunch.screen == "onboarding-practice-other" { showsOther = true } }
+        #endif
     }
 
     private var otherSheet: some View {

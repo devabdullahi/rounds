@@ -35,6 +35,9 @@ struct InterviewView: View {
     @State private var tab: WorkupStep = .ask
     @State private var showingFindings = false
     @State private var draft = ""
+    /// The suggested questions stay folded behind "Questions to try": shown up front, students took
+    /// them for the only things they could ask.
+    @State private var showingIdeas = false
     @FocusState private var inputFocused: Bool
     @State private var voice = VoiceController()
     /// Live voice (real-time, interruptible). Tried first; turn-by-turn `voice` is the fallback.
@@ -122,6 +125,7 @@ struct InterviewView: View {
             if DebugLaunch.screen == "examine" { tab = .examine }
             if DebugLaunch.screen == "workup" { tab = .tests }
             if DebugLaunch.screen == "interview-nudge" { session.debugSeedHistory() }
+            if DebugLaunch.screen == "interview-ideas" { showingIdeas = true }
             if DebugLaunch.screen == "interview-exam" { session.examMode = true }
             if DebugLaunch.screen == "interview-findings" {
                 Task { try? await Task.sleep(for: .seconds(1)); showingFindings = true }
@@ -252,7 +256,7 @@ struct InterviewView: View {
                 LazyVStack(spacing: 10) {
                     if session.messages.isEmpty {
                         Text(session.examMode ? "Introduce yourself, then take a focused history."
-                                              : "Introduce yourself, then take a focused history. Type or tap a suggestion.")
+                                              : "Introduce yourself, then take a focused history. Type or say any question.")
                             .font(.system(size: 15))
                             .foregroundStyle(Theme.muted)
                             .multilineTextAlignment(.center)
@@ -359,13 +363,37 @@ struct InterviewView: View {
 
     private var composer: some View {
         VStack(spacing: 8) {
+            if !session.examMode && !unaskedSuggestions.isEmpty && draft.isEmpty {
+                Button { showingIdeas.toggle() } label: {
+                    HStack(spacing: 6) {
+                        Text("Questions to try")
+                        AppIcon(.chevronDown, size: 14)
+                            .rotationEffect(.degrees(showingIdeas ? 180 : 0))
+                    }
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 14)
+                    .frame(minHeight: 36)
+                    .glassCapsule(tint: Theme.neutralFill)
+                }
+                .buttonStyle(PressDownStyle())
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 12)
+                .accessibilityHint(showingIdeas ? "Hides the suggested questions" : "Shows a few questions you could ask")
+                .transition(.opacity)
+            }
             // Exam mode is unassisted: no suggested questions.
-            if !session.examMode && (!inputFocused || draft.isEmpty) {
+            if !session.examMode && showingIdeas && !unaskedSuggestions.isEmpty {
                 ScrollView(.horizontal) {
                     HStack(spacing: 8) {
                         ForEach(unaskedSuggestions, id: \.self) { s in
                             // Slate glass, not the accent: a fallback when stuck, quieter than the student's own question.
-                            Button(s) { session.ask(s) }
+                            // Fills the field instead of sending, so it reads as the student's own question to edit.
+                            Button(s) {
+                                draft = s
+                                showingIdeas = false
+                                inputFocused = true
+                            }
                                 .font(.system(size: 14))
                                 .foregroundStyle(.white)
                                 .lineLimit(1)
@@ -428,6 +456,8 @@ struct InterviewView: View {
         .background(Theme.surface.ignoresSafeArea(edges: .bottom))
         .overlay(alignment: .top) { Rectangle().fill(Theme.text.opacity(0.10)).frame(height: 1) }
         .animation(Springs.slide, value: inputFocused)
+        .animation(Springs.slide, value: showingIdeas)
+        .animation(Springs.slide, value: draft.isEmpty)
     }
 
     // MARK: Voice
