@@ -414,8 +414,6 @@ struct InterviewView: View {
                             HStack(spacing: 6) {
                                 AppIcon(.lightbulb, size: 16)
                                 Text("Questions to try")
-                                AppIcon(.chevronDown, size: 14)
-                                    .rotationEffect(.degrees(showingIdeas ? 180 : 0))
                             }
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundStyle(.white)
