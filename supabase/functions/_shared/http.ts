@@ -14,6 +14,7 @@ export function json(body: unknown, status = 200): Response {
 export function serve(handler: (req: Request) => Promise<Response>): void {
   Deno.serve(async (req) => {
     if (req.method !== "POST") return json({ error: "POST only" }, 405);
+    if (compressedBody(req)) return json({ error: "compressed request bodies are not accepted" }, 415);
     try {
       return await handler(req);
     } catch (error) {
@@ -21,6 +22,20 @@ export function serve(handler: (req: Request) => Promise<Response>): void {
       console.error(error);
       return json({ error: "internal error" }, 500);
     }
+  });
+}
+
+/**
+ * True when the request says its body is compressed. Our clients only send plain JSON, so any
+ * Content-Encoding other than identity is refused before anything reads or decompresses the body.
+ * This closes the Brotli decoding path (a 2026 decoder advisory) and any other codec with it.
+ */
+export function compressedBody(req: Request): boolean {
+  const encoding = req.headers.get("Content-Encoding");
+  if (!encoding) return false;
+  return encoding.split(",").some((part) => {
+    const codec = part.trim().toLowerCase();
+    return codec !== "" && codec !== "identity";
   });
 }
 

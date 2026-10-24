@@ -649,6 +649,10 @@ async function submit(userId: string, input: Record<string, unknown>) {
       update public.profiles p set rating = p.rating + ${result.rating_delta}
       from graded where p.id = graded.user_id
       returning p.rating`;
+    // Ends the free case for good, even if the student later deletes this patient.
+    if (profile) {
+      await tx`insert into private.first_submissions (user_id) values (${userId}) on conflict (user_id) do nothing`;
+    }
     return profile ? { ...result, rating: profile.rating } : null;
   });
   if (!saved) throw new HttpError(409, "attempt already submitted");
