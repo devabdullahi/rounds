@@ -454,6 +454,8 @@ private struct ResumeReply: Decodable {
         let started_at: String
         let transcript: [Turn]
         let revealed_ids: [String]
+        // Absent from servers before the labels were returned.
+        let revealed: [AskReply.Revealed]?
         let coverage: Coverage
         let examined: [Examined]
         let ordered: [Ordered]
@@ -466,7 +468,8 @@ private struct ResumeReply: Decodable {
             return ResumedAttempt(
                 id: attempt_id, examMode: exam_mode, timeLimitMinutes: time_limit_minutes, startedAt: date(started_at),
                 transcript: transcript.map { .init(fromStudent: $0.role == "student", text: $0.text) },
-                revealedIDs: Set(revealed_ids), coverage: (coverage.got, coverage.total),
+                revealedIDs: Set(revealed_ids), revealedLabels: (revealed ?? []).map(\.label),
+                coverage: (coverage.got, coverage.total),
                 examined: examined.map { ($0.id, $0.finding) },
                 ordered: ordered.map { .init(id: $0.id, at: date($0.at), result: TestResult(text: $0.result, isAbnormal: $0.abnormal)) },
                 hiddenTests: Set(hidden_tests))

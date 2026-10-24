@@ -200,8 +200,8 @@ struct InterviewView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    /// Facts found so far, in the order they turned up (the reveal chips in the chat).
-    private var findings: [String] { session.messages.filter { $0.kind == .reveal }.map(\.text) }
+    /// Facts found so far, in the order they turned up, including from before the case was left.
+    private var findings: [String] { session.foundFacts }
 
     /// Tapping the meter lists what's been found, so a long chat needn't be scrolled back through.
     private var coverageMeter: some View {
