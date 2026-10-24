@@ -17,7 +17,7 @@ actor MockAccountSubscriptionService: AccountSubscriptionService {
         return claimAnswer
     }
 
-    func transfer(transactionID: String) async throws -> AccountAccess {
+    func transfer(transactionID: String, signedTransaction: String) async throws -> AccountAccess {
         transferred.append(transactionID)
         return AccountAccess(entitled: true)
     }

@@ -31,6 +31,15 @@ struct StoreKitSubscriptionStore: SubscriptionStore {
         return ids
     }
 
+    func signedTransaction(id: String) async -> String? {
+        for await result in Transaction.currentEntitlements {
+            if case .verified(let transaction) = result, String(transaction.id) == id {
+                return result.jwsRepresentation
+            }
+        }
+        return nil
+    }
+
     func activePlan() async -> ActivePlan? {
         for await result in Transaction.currentEntitlements {
             guard case .verified(let transaction) = result, Self.productIDs.contains(transaction.productID),

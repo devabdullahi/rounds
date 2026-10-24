@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// "When is your Step 2 CK?": the next five months and "Later". The weeks it leaves are their own
-/// screen after it (CountdownPage). "Not sure yet" (the page's Skip) leaves it unset. Only asked
+/// screen after it (CountdownPage). The page has no Skip: "Later" is the answer for no date yet. Only asked
 /// when the goal is an exam.
 struct ExamDatePage: View {
     var shown = true

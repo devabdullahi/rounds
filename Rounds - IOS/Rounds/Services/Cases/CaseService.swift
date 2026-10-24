@@ -3,7 +3,8 @@ import Foundation
 /// Everything the app asks of the case backend. Models depend on this protocol only; the live
 /// version talks to Supabase (`LiveCaseService`).
 protocol CaseService: Sendable {
-    /// Signs in if needed (anonymously until real accounts are wired up).
+    /// Confirms a student is signed in. Rounds has no guest accounts: with no session this throws,
+    /// and the app asks the student to sign in.
     func ensureSignedIn() async throws
 
     /// The student's ward: generated patients, newest first, with last-attempt status.

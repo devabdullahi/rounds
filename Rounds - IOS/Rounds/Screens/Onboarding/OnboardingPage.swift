@@ -21,10 +21,4 @@ enum OnboardingPage: Int, CaseIterable {
         default: false
         }
     }
-
-    /// Questions the student may pass over: nothing is saved and the flow goes on.
-    var isSkippable: Bool { self == .examDate || self == .heardFrom }
-
-    /// What Skip says on a skippable page.
-    var skipTitle: String { self == .examDate ? "Not sure yet" : "Skip" }
 }

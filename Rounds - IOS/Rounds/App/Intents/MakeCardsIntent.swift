@@ -5,6 +5,8 @@ import AppIntents
 struct MakeCardsIntent: AppIntent {
     static let title: LocalizedStringResource = "Make Flashcards"
     static let description = IntentDescription("Writes a new flashcard deck on a topic.")
+    /// It spends the account's AI allowance, so it waits for Face ID or the passcode on a locked phone.
+    static let authenticationPolicy: IntentAuthenticationPolicy = .requiresAuthentication
 
     @Parameter(title: "Topic", description: "A specialty or organ system. Leave empty for your saved focus.")
     var topic: IntentTopic?

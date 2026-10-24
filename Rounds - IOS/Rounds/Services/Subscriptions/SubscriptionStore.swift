@@ -12,6 +12,9 @@ protocol SubscriptionStore: Sendable {
     func activePlan() async -> ActivePlan?
     /// Ids of this phone's active subscription transactions, to hand to the account that owns them.
     func currentTransactionIDs() async -> [String]
+    /// Apple's signed copy of one of those transactions (StoreKit's JWS). Only the Apple ID that
+    /// bought the plan has it, so the server takes it as proof when a plan moves between accounts.
+    func signedTransaction(id: String) async -> String?
     /// The entitlement again whenever a transaction changes it (renewal, refund, a purchase elsewhere).
     func entitlementChanges() -> AsyncStream<Bool>
 }

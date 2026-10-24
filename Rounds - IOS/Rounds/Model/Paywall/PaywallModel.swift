@@ -157,8 +157,13 @@ final class PaywallModel {
         guard !isWorking, let accounts, let id = takenTransactionID else { return }
         isWorking = true
         defer { isWorking = false }
+        // Apple's signed copy from this phone; without it the server can't confirm the phone holds the plan.
+        guard let signed = await store.signedTransaction(id: id) else {
+            problem = "This phone's plan couldn't be found. Restore purchases, then try again."
+            return
+        }
         do {
-            let access = try await accounts.transfer(transactionID: id)
+            let access = try await accounts.transfer(transactionID: id, signedTransaction: signed)
             if access.entitled {
                 boundIDs.insert(id)
                 takenBy = nil
