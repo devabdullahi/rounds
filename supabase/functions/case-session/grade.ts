@@ -18,6 +18,9 @@ export type Rubric = {
 
 export type Actions = {
   revealed: string[];
+  /** The revealed facts that count for history and red flags (see creditedFacts); all of them
+   *  when absent. */
+  credited?: string[];
   examined: string[];
   ordered: string[];      // in order
   /** Submitted after the chosen time limit (plus grace). Still graded; the grade says so. */
@@ -55,13 +58,46 @@ export type Grade = {
   missed_red_flags: { flag: string; why: string }[];
   /** Points earned out of the most available, per part, so the app can show where points go. */
   breakdown: Record<Part, { got: number; max: number }>;
+  /** Everything but the diagnosis: what the workup itself earned. With a right call the score is
+   *  raised to the passing floor, so this keeps the workup's own number honest on screen. */
+  workup: { got: number; max: number };
+  /** True when a right diagnosis lifted the score to the passing floor. */
+  floor_applied: boolean;
 };
 
 export type Part = "diagnosis" | "history" | "exam" | "red_flags" | "tests" | "plan";
 
 // Points per part; they sum to 100.
 const POINTS = { diagnosis: 35, history: 25, exam: 15, redFlags: 10, tests: 10, plan: 5 };
-const PENALTY = { unnecessaryTest: 3 };
+const PENALTY = { unnecessaryTest: 3, extraManeuver: 1 };
+/** Exam rows beyond the key ones that cost nothing: the 2–3 routine checks any exam includes. */
+const FREE_EXTRA_MANEUVERS = 3;
+/** Facts a catch-all question ("tell me everything", "anything else?") can earn credit for. Open
+ *  questions are good interviewing, so one counts; fishing for the whole history doesn't. */
+const CATCH_ALL_CREDIT = 1;
+
+// Questions that ask for everything at once rather than about something.
+const CATCH_ALL = /\b(tell me (everything|all|more about everything)|everything (about|you know)|all (of )?your symptoms|list (all|every|your symptoms)|anything else|what else|any other symptoms|all the details)\b/;
+
+/** True when a question fishes for everything at once instead of asking about something. */
+export function isCatchAll(question: string): boolean {
+  return CATCH_ALL.test(words(question));
+}
+
+/** The facts that earn history and red-flag credit: each one revealed in answer to a question,
+ *  with a catch-all question earning at most CATCH_ALL_CREDIT of the facts its reply revealed.
+ *  Null when the transcript doesn't record which facts each reply revealed (older attempts). */
+export function creditedFacts(transcript: { role: string; text: string; facts?: string[] }[]): string[] | null {
+  if (!transcript.some((t) => t.role === "patient" && Array.isArray(t.facts))) return null;
+  const credited = new Set<string>();
+  let question = "";
+  for (const turn of transcript) {
+    if (turn.role === "student") { question = turn.text; continue; }
+    const facts = turn.facts ?? [];
+    for (const id of isCatchAll(question) ? facts.slice(0, CATCH_ALL_CREDIT) : facts) credited.add(id);
+  }
+  return [...credited];
+}
 /** At most this many indicated tests count; the rubric lists the core workup (initial, then
  *  confirmatory) first, so a long list never punishes a focused workup. */
 const KEY_TESTS = 5;
@@ -99,10 +135,17 @@ export function isNegated(answer: string): boolean {
   return new RegExp(`(^| )${NEGATION}( |$)`).test(words(answer.replace(/r\/o/gi, "rule out")));
 }
 
-/** True when the answer commits to one diagnosis: one candidate, nothing ruled out. The model's
- *  synonym judgment is trusted only for answers like this (see judge in index.ts). */
+/** Longest answer the model may widen to a synonym. Real diagnosis names fit easily ("Acute
+ *  exacerbation of chronic obstructive pulmonary disease" is 7); a sentence trying to talk the
+ *  grader into a pass doesn't, so it's left to the exact word match alone. */
+export const MAX_JUDGED_WORDS = 8;
+
+/** True when the answer commits to one diagnosis: one candidate, nothing ruled out, short enough
+ *  to be a name. The model's synonym judgment is trusted only for answers like this (see judge
+ *  in index.ts). */
 export function isSingleDiagnosis(answer: string): boolean {
-  return !isNegated(answer) && diagnosisCandidates(answer).length === 1;
+  const candidates = diagnosisCandidates(answer);
+  return !isNegated(answer) && candidates.length === 1 && candidates[0].split(" ").length <= MAX_JUDGED_WORDS;
 }
 
 /**
@@ -135,14 +178,22 @@ export function grade(r: Rubric, act: Actions, judge: Judge, focus: FocusArea[] 
   if (judge.diagnosisCorrect) got.diagnosis = POINTS.diagnosis;
   else feedback.push({ rank: RANK.diagnosis, tone: "miss", title: `The diagnosis was ${r.diagnosis}`, detail: r.reasoning_points.slice(0, 3).join(". ") + "." });
 
+  const credited = act.credited ?? act.revealed;
   const totalWeight = r.key_facts.reduce((s, f) => s + f.weight, 0);
-  const gotWeight = r.key_facts.filter((f) => act.revealed.includes(f.id)).reduce((s, f) => s + f.weight, 0);
+  const gotWeight = r.key_facts.filter((f) => credited.includes(f.id)).reduce((s, f) => s + f.weight, 0);
   got.history = totalWeight ? Math.round((gotWeight / totalWeight) * POINTS.history) : POINTS.history;
-  const gap = [...r.key_facts].sort((a, b) => b.weight - a.weight).find((f) => !act.revealed.includes(f.id));
+  const gap = [...r.key_facts].sort((a, b) => b.weight - a.weight).find((f) => !credited.includes(f.id));
   if (gap) feedback.push({ rank: RANK.history, area: "whatToAsk", tone: "miss", title: `History gap: ${gap.label}`, detail: "You never asked about it." });
 
   const examined = r.key_maneuvers.filter((m) => act.examined.includes(m.id));
-  got.exam = r.key_maneuvers.length ? Math.round((examined.length / r.key_maneuvers.length) * POINTS.exam) : POINTS.exam;
+  const keyIds = new Set(r.key_maneuvers.map((m) => m.id));
+  const extras = act.examined.filter((id) => !keyIds.has(id)).length;
+  const extraPenalty = Math.max(0, extras - FREE_EXTRA_MANEUVERS) * PENALTY.extraManeuver;
+  const examEarned = r.key_maneuvers.length ? Math.round((examined.length / r.key_maneuvers.length) * POINTS.exam) : POINTS.exam;
+  got.exam = Math.max(0, examEarned - extraPenalty);
+  if (extraPenalty > 0) {
+    feedback.push({ rank: RANK.exam, tone: "miss", title: `${extras} exam checks this case didn't need`, detail: "A focused exam goes straight to what the history points to." });
+  }
   const skipped = r.key_maneuvers.find((m) => !act.examined.includes(m.id));
   if (skipped) feedback.push({ rank: RANK.exam, tone: "miss", title: `Exam gap: ${skipped.title}`, detail: "A key part of this exam was skipped." });
 
@@ -150,7 +201,7 @@ export function grade(r: Rubric, act: Actions, judge: Judge, focus: FocusArea[] 
   const flags = new Map<string, { why: string; screened: boolean }>();
   for (const f of r.red_flags) {
     const entry = flags.get(f.flag) ?? { why: f.why, screened: false };
-    flags.set(f.flag, { ...entry, screened: entry.screened || act.revealed.includes(f.fact) });
+    flags.set(f.flag, { ...entry, screened: entry.screened || credited.includes(f.fact) });
   }
   const screened = [...flags.values()].filter((f) => f.screened).length;
   got.red_flags = flags.size ? Math.round((screened / flags.size) * POINTS.redFlags) : POINTS.redFlags;
@@ -199,6 +250,8 @@ export function grade(r: Rubric, act: Actions, judge: Judge, focus: FocusArea[] 
 
   score = got.diagnosis + got.history + got.exam + got.red_flags + testPoints + got.plan;
   score = Math.min(100, Math.max(0, score));
+  const workupGot = Math.max(0, score - got.diagnosis);
+  const floorApplied = judge.diagnosisCorrect && score < PASSING_SCORE;
   if (judge.diagnosisCorrect) score = Math.max(score, PASSING_SCORE);
   const max: Record<Part, number> = {
     diagnosis: POINTS.diagnosis, history: POINTS.history, exam: POINTS.exam,
@@ -210,6 +263,8 @@ export function grade(r: Rubric, act: Actions, judge: Judge, focus: FocusArea[] 
     score, diagnosis_correct: judge.diagnosisCorrect, diagnosis: r.diagnosis, verdict,
     rating_delta: Math.round((score - 60) / 2), rated: true, over_time: act.overTime === true, feedback: ordered.slice(0, MAX_FEEDBACK), missed_red_flags: missed,
     breakdown: Object.fromEntries((Object.keys(got) as Part[]).map((k) => [k, { got: got[k], max: max[k] }])) as Grade["breakdown"],
+    workup: { got: workupGot, max: 100 - POINTS.diagnosis },
+    floor_applied: floorApplied,
   };
 }
 

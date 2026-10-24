@@ -7,6 +7,7 @@ enum IconGlyph: String, CaseIterable {
     case cards = "tab-cards"
     case plus = "plus"
     case minus = "minus"
+    case moon = "moon"
     case shuffle = "shuffle"
     case clock = "clock"
     case chevronLeft = "caret-left"

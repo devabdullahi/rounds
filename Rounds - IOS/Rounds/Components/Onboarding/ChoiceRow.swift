@@ -10,7 +10,9 @@ struct ChoiceRow: View {
     var glyph: IconGlyph?
     /// Short text in the tile instead of an icon ("MS1", "2").
     var badge: String?
-    var tint: Color = Theme.accent
+    /// The accent by default; the onboarding questions give each row its own color (`tint(_:)`) so
+    /// the lists feel alive.
+    var tint: Color = Theme.accentText
     let on: Bool
     var multiple = false
     var order = 0

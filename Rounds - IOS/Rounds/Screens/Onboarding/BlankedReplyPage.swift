@@ -72,11 +72,12 @@ struct BlankedReplyPage: View {
         .onChange(of: shown, initial: true) { _, now in if now { played = true } }
     }
 
+    /// The circle behind each scene, in the color of the answer's tile on the question before.
     private var wash: Color {
         switch answer {
-        case .often: Theme.cardYellow.opacity(0.12)
-        case .sometimes: Theme.cardBlue.opacity(0.10)
-        case .rarely: Theme.accentSoft
+        case .often: Theme.cardBlue.opacity(0.12)
+        case .sometimes: Theme.cardTeal.opacity(0.12)
+        case .rarely: Theme.cardPurple.opacity(0.12)
         }
     }
 

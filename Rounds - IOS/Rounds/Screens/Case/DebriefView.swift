@@ -356,6 +356,11 @@ struct DebriefView: View {
             }
             .accessibilityElement(children: .ignore)
             .accessibilityLabel("Score \(g.score) out of 100")
+            if let note = g.floorNote {
+                Text(note)
+                    .font(.system(size: 14))
+                    .foregroundStyle(Theme.muted)
+            }
 
             // Rating is the secondary, career-level number.
             VStack(alignment: .leading, spacing: 8) {

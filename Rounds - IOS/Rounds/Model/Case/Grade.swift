@@ -22,6 +22,18 @@ struct Grade {
     var lens: ExamLens? = nil
     /// Points earned out of the points available for each part. Empty on grades older than the breakdown.
     var breakdown: [ScoreCategory: Points] = [:]
+    /// What the workup earned on its own (everything but the diagnosis), out of its most. Nil on
+    /// older grades.
+    var workupPoints: (got: Int, max: Int)? = nil
+    /// A right diagnosis lifted the score to the passing floor.
+    var floorApplied = false
+
+    /// Under the score when the floor lifted it: the workup's own points, so a lucky call doesn't
+    /// read like a strong workup.
+    var floorNote: String? {
+        guard floorApplied, let workupPoints else { return nil }
+        return "Right call. Your workup earned \(workupPoints.got) of \(workupPoints.max)."
+    }
 }
 
 #if DEBUG

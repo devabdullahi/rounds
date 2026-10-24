@@ -33,5 +33,9 @@ struct ExamMonthTests {
         #expect(dec.patients(perDay: 2, from: date(2026, 10, 22), calendar: calendar) == 98)
         // This month, past the middle: at least a week.
         #expect(ExamMonth(year: 2026, month: 10).weeksLeft(from: date(2026, 10, 22), calendar: calendar) == 1)
+        #expect(dec.away(from: date(2026, 10, 22), calendar: calendar) == "7 weeks")
+        #expect(ExamMonth(year: 2026, month: 10).away(from: date(2026, 10, 22), calendar: calendar) == "This month")
+        #expect(ExamMonth(year: 2026, month: 11).away(from: date(2026, 11, 2), calendar: calendar) == "This month")
+        #expect(ExamMonth(year: 2026, month: 11).away(from: date(2026, 10, 30), calendar: calendar) == "2 weeks")
     }
 }

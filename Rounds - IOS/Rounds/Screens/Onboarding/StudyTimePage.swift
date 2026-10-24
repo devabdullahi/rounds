@@ -9,7 +9,7 @@ struct StudyTimePage: View {
     private static let details: [PracticeReminder: String] = [
         .morning: "Before class or rounds", .lunch: "Between lectures", .evening: "After the wards", .lateNight: "When it's quiet",
     ]
-    private static let glyphs: [PracticeReminder: IconGlyph] = [.morning: .compass, .lunch: .clock, .evening: .bell, .lateNight: .star]
+    private static let glyphs: [PracticeReminder: IconGlyph] = [.morning: .compass, .lunch: .clock, .evening: .bell, .lateNight: .moon]
 
     var body: some View {
         OnboardingQuestion(title: "When do you study best?", shown: shown) {

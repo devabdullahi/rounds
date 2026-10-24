@@ -564,6 +564,10 @@ private struct GradeRow: Decodable {
     let lens: LensRow?
     struct PartRow: Decodable { let got: Int; let max: Int }
     let breakdown: [String: PartRow]?
+    struct PointsRow: Decodable { let got: Int; let max: Int }
+    // Absent on grades made before the workup's own points were reported.
+    let workup: PointsRow?
+    let floor_applied: Bool?
 
     var grade: Grade {
         Grade(score: score, diagnosisCorrect: diagnosis_correct, diagnosis: diagnosis, verdict: verdict,
@@ -580,6 +584,8 @@ private struct GradeRow: Decodable {
               lens: lens.map { ExamLens(title: $0.title, points: $0.points) }.flatMap { $0.points.isEmpty ? nil : $0 },
               breakdown: Dictionary(uniqueKeysWithValues: (breakdown ?? [:]).compactMap { key, part in
                   ScoreCategory(rawValue: key).map { ($0, Points(got: part.got, max: part.max)) }
-              }))
+              }),
+              workupPoints: workup.map { (got: $0.got, max: $0.max) },
+              floorApplied: floor_applied ?? false)
     }
 }

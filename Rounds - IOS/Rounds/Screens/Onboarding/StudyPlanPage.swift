@@ -44,6 +44,14 @@ struct StudyPlanPage: View {
             .compactMap { $0 }.joined(separator: " · ")
     }
 
+    /// Under the total, in words, so the number reads on its own: "patients you'll have worked up
+    /// before Step 1, if you see 2 a day".
+    private var totalLabel: String {
+        let pace = "if you see \(self.pace.cases) a day"
+        guard exam != nil else { return "patients you'll work up in \(weeks) weeks, \(pace)" }
+        return "patients you'll have worked up before \(goal?.tipsName ?? "test day"), \(pace)"
+    }
+
     private var rows: [(IconGlyph, String, String)] {
         var out: [(IconGlyph, String, String)] = [(.user, "Each day", "\(pace.cases) \(pace.cases == 1 ? "patient" : "patients")")]
         if let time = PracticeReminder(stored: timeStored) { out.append((.clock, "When", time.period)) }
@@ -64,7 +72,7 @@ struct StudyPlanPage: View {
                 .rise(shown, at: 0, offset: 8)
 
                 HStack(spacing: 10) {
-                    stat("\(total)", exam == nil ? "cases in \(weeks) weeks" : "cases by test day", dark: true)
+                    stat("\(total)", totalLabel, dark: true)
                     stat("\(pace.cases * 10)", "min a day", dark: false)
                 }
                 .rise(shown, at: 0, offset: 8)
@@ -111,7 +119,7 @@ struct StudyPlanPage: View {
         let count = min(weeks, 12)
         return VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Text("\(pace.cases * 7) cases a week").font(.system(size: 13, weight: .semibold))
+                Text("\(pace.cases * 7) patients a week").font(.system(size: 13, weight: .semibold))
                 Spacer()
                 Text("\(weeks) \(weeks == 1 ? "week" : "weeks")").font(.system(size: 13)).foregroundStyle(Theme.muted)
             }
@@ -129,6 +137,6 @@ struct StudyPlanPage: View {
         .padding(14)
         .background(Theme.bg, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(pace.cases * 7) cases a week for \(weeks) weeks")
+        .accessibilityLabel("\(pace.cases * 7) patients a week for \(weeks) weeks")
     }
 }

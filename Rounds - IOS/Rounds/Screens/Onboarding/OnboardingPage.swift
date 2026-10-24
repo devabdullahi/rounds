@@ -12,7 +12,7 @@ import Foundation
 /// their own screens.
 enum OnboardingPage: Int, CaseIterable {
     case schoolYear, studyGoal, practice, blanked, blankedReply, examDate, countdown, confidence,
-         realityCheck, pace, studyTime, settingUp, plan, account, heardFrom, pledge
+         pace, realityCheck, studyTime, settingUp, plan, account, heardFrom, pledge
 
     /// Question pages share one layout (question on top, answers below) and a Continue button.
     var isQuestion: Bool {

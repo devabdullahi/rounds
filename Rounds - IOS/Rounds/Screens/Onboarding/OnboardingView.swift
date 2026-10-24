@@ -210,12 +210,12 @@ struct OnboardingView: View {
             }
         case .pledge:
             if heart.isDone {
-                OnboardingNextButton(title: "Get Started") { auth.finishOnboarding(answers: .stored(redFlagPick: nil)) }
+                OnboardingNextButton(title: "Get started") { auth.finishOnboarding(answers: .stored(redFlagPick: nil)) }
                     .transition(reduceMotion ? .opacity : .opacity.combined(with: .scale(scale: 0.95)))
             } else {
                 Text(holdingHeart ? "Keep holding\u{2026}" : "Press and hold")
                     .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(Theme.warnText)
+                    .foregroundStyle(Theme.accentText)
                     .frame(height: 60)
                     .accessibilityHidden(true)   // the heart's own hint covers it
             }
@@ -224,14 +224,14 @@ struct OnboardingView: View {
         }
     }
 
-    /// What the page's main button says: what happens next, not just "Continue".
+    /// What the page's main button says: "Continue", except at the three milestones, where it
+    /// names what happens next.
     private func nextTitle(_ p: OnboardingPage) -> String {
         switch p {
         case .studyTime: "Build my plan"
         case .realityCheck: "Close the gap"
         case .plan: "Save my plan"
-        case let p where p.isQuestion: "Continue"
-        default: "Next"
+        default: "Continue"
         }
     }
 
