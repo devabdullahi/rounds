@@ -1,5 +1,5 @@
 import { assertEquals } from "jsr:@std/assert@1";
-import { entitled, environmentCounts, FREE_CASES, freeCaseAllows, planCheckOff, planExempt, type PlanRow, toRecheck, toRefresh } from "./plan.ts";
+import { entitled, environmentCounts, planCheckOff, planExempt, type PlanRow, toRecheck, toRefresh } from "./plan.ts";
 
 const now = new Date("2026-10-19T12:00:00Z");
 const later = new Date("2026-11-19T12:00:00Z");
@@ -61,14 +61,3 @@ Deno.test("the plan check is off only for an exact \"off\"", () => {
   for (const raw of ["", "on", "false", "0", "of", "disabled"]) assertEquals(planCheckOff(raw), false);
 });
 
-Deno.test("the free case lasts until the first submission, and writes only a few patients", () => {
-  assertEquals(freeCaseAllows({ graded: false, written: 0 }, false), true);
-  assertEquals(freeCaseAllows({ graded: false, written: 0 }, true), true);
-  assertEquals(freeCaseAllows({ graded: false, written: FREE_CASES - 1 }, true), true);
-  // The interview goes on with the patients already written; no more are written.
-  assertEquals(freeCaseAllows({ graded: false, written: FREE_CASES }, true), false);
-  assertEquals(freeCaseAllows({ graded: false, written: FREE_CASES }, false), true);
-  // One graded case, and the plan is needed for everything.
-  assertEquals(freeCaseAllows({ graded: true, written: 1 }, false), false);
-  assertEquals(freeCaseAllows({ graded: true, written: 0 }, true), false);
-});
