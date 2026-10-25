@@ -15,6 +15,9 @@ struct PatientsView: View {
     @State private var heldRow: String?
     /// The patient whose previous tries are open in a sheet.
     @State private var tries: PastTries?
+    /// The tab the student picked; nil until they pick, so it opens on what's most useful.
+    @State private var chosenTab: Tab?
+    @State private var searching = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private enum DELETE {
@@ -31,50 +34,53 @@ struct PatientsView: View {
         _expanded = State(initialValue: initialExpanded)
     }
 
-    private var rotation: [WardPatient] { filter(app.ward.filter { $0.status != .revisit }) }
+    /// The three tabs, in the order a student works through a patient.
+    private enum Tab: Hashable, CaseIterable {
+        case inProgress, new, seen
+        var title: String {
+            switch self {
+            case .inProgress: "In progress"
+            case .new: "New"
+            case .seen: "Seen"
+            }
+        }
+    }
+
+    private var inProgress: [WardPatient] { filter(app.ward.filter { $0.status == .resume }) }
+    private var newPatients: [WardPatient] { filter(app.ward.filter { $0.status == .new }) }
     private var revisit: [WardPatient] { filter(app.revisitPatients) }
+    private var seen: [WardPatient] { filter(app.ward.filter { $0.status == .done }) }
+
+    /// Opens on a case to finish when there is one, else on new patients.
+    private var tab: Tab { chosenTab ?? (app.ward.contains { $0.status == .resume } ? .inProgress : .new) }
+
+    private func count(_ t: Tab) -> Int {
+        switch t {
+        case .inProgress: inProgress.count
+        case .new: newPatients.count
+        case .seen: revisit.count + seen.count
+        }
+    }
 
     var body: some View {
         ScrimScrollView {
             VStack(alignment: .leading, spacing: 14) {
                 ScreenTitle(title: "Patients") { titleControls }
 
-                progress
-
-                searchField
-                chips
-
-                if !revisit.isEmpty {
-                    sectionHeader("Worth a second visit", trailing: "\(revisit.count) patient\(revisit.count == 1 ? "" : "s")", color: Theme.warn)
-                    VStack(spacing: 0) {
-                        ForEach(Array(revisit.enumerated()), id: \.element.id) { i, p in
-                            VStack(spacing: 0) {
-                                if i > 0 { Hairline() }
-                                revisitRow(p)
-                            }
-                            .transition(rowExit)
-                        }
+                if !app.ward.isEmpty {
+                    statsLine
+                    if searching { searchField.transition(.opacity.combined(with: .move(edge: .top))) }
+                    tabBar
+                    switch tab {
+                    case .inProgress: inProgressList
+                    case .new: newList
+                    case .seen: seenList
                     }
-                    .listSurface()
-                }
-
-                if !rotation.isEmpty {
-                    sectionHeader(system?.label ?? "Your patients", trailing: "\(rotation.count)", color: Theme.muted)
-                    VStack(spacing: 0) {
-                        ForEach(Array(rotation.enumerated()), id: \.element.id) { i, p in
-                            VStack(spacing: 0) {
-                                if i > 0 { Hairline() }
-                                row(p)
-                            }
-                            .transition(rowExit)
-                        }
-                    }
-                    .listSurface()
                 }
 
                 if app.ward.isEmpty {
                     emptyWard
-                } else if rotation.isEmpty && revisit.isEmpty {
+                } else if !query.isEmpty && count(tab) == 0 {
                     Text("No patients match \u{201C}\(query)\u{201D}.")
                         .font(.system(size: 15))
                         .foregroundStyle(Theme.muted)
@@ -87,6 +93,8 @@ struct PatientsView: View {
             .padding(.bottom, 20)
             .animation(Springs.slide, value: system)
             .animation(Springs.slide, value: query)
+            .animation(Springs.slide, value: tab)
+            .animation(Springs.slide, value: searching)
         }
         .scrollIndicators(.hidden)
         .scrollDismissesKeyboard(.interactively)
@@ -111,6 +119,10 @@ struct PatientsView: View {
         .sheet(item: $tries) { PreviousTriesView(model: $0) }
         #if DEBUG
         .task(id: app.ward.count) { applyDebugMode() }
+        .onAppear {
+            if DebugLaunch.screen == "patients-new" { chosenTab = .new }
+            if DebugLaunch.screen == "patients-seen" || DebugLaunch.screen == "patients-open" { chosenTab = .seen }
+        }
         #endif
     }
 
@@ -123,6 +135,17 @@ struct PatientsView: View {
                 .foregroundStyle(Theme.accentText)
                 .frame(minWidth: 44, minHeight: 44)
         } else if !app.ward.isEmpty {
+            Button {
+                searching.toggle()
+                if !searching { query = "" }
+            } label: {
+                AppIcon(searching ? .x : .search, size: 20)
+                    .foregroundStyle(.white)
+                    .frame(width: 40, height: 40)
+                    .glassCircle(tint: Theme.faint)
+                    .frame(width: 44, height: 44)
+            }
+            .accessibilityLabel(searching ? "Close search" : "Search patients")
             Menu {
                 Button { selection = [] } label: {
                     Label { Text("Select patients") } icon: { Image(IconGlyph.check.assetName) }
@@ -142,7 +165,7 @@ struct PatientsView: View {
     }
 
     private func selectionBar(_ picked: Set<String>) -> some View {
-        let visible = Set((revisit + rotation).map(\.id))
+        let visible = Set((inProgress + newPatients + revisit + seen).map(\.id))
         let allPicked = !visible.isEmpty && visible.isSubset(of: picked)
         return HStack(spacing: 12) {
             Button(allPicked ? "Deselect all" : "Select all") {
@@ -257,9 +280,9 @@ struct PatientsView: View {
         if ["previous-tries", "previous-try"].contains(DebugLaunch.screen), tries == nil {
             tries = PastTries(bed: "debug", tries: PastTry.debugSamples)
         }
-        guard let first = (revisit + rotation).first else { return }
+        guard let first = (inProgress + newPatients + revisit + seen).first else { return }
         switch app.debugPatientsMode {
-        case "select": selection = Set((revisit + rotation).prefix(2).map(\.id))
+        case "select": selection = Set((inProgress + newPatients + revisit + seen).prefix(2).map(\.id))
         case "swipe": openRow = first.id
         case "delete":
             Task { @MainActor in
@@ -315,29 +338,6 @@ struct PatientsView: View {
         .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).strokeBorder(Theme.border.opacity(0.6)))
     }
 
-    private var chips: some View {
-        ScrollView(.horizontal) {
-            HStack(spacing: 8) {
-                ForEach([nil] + app.wardSystems.map(Optional.some), id: \.self) { s in
-                    let on = s == system
-                    Button(s?.label ?? "All") { system = s }
-                        .font(.system(size: 15, weight: on ? .semibold : .regular))
-                        .foregroundStyle(.white)
-                        .padding(.horizontal, 14)
-                        .frame(minHeight: 36)
-                        // Static glass: interactive glass flares white while held, too bright for a filter chip.
-                        .glassFill(on ? Theme.accent : Theme.faint, in: Capsule(), strength: on ? 1 : 0.7, interactive: false)
-                        .buttonStyle(PressDownStyle())
-                        .accessibilityAddTraits(on ? .isSelected : [])
-                }
-            }
-            .padding(.horizontal, 20)
-        }
-        .scrollIndicators(.hidden)
-        .trailingFade()
-        .padding(.horizontal, -20)
-    }
-
     private func sectionHeader(_ title: String, trailing: String, color: Color, trailingMono: Bool = false) -> some View {
         HStack(alignment: .firstTextBaseline) {
             Eyebrow(title, color: color)
@@ -365,9 +365,9 @@ struct PatientsView: View {
         } label: {
             HStack(spacing: 12) {
                 selectMark(p.id)
-                bedLabel(p.id)
+                // Two lines at most, no bed code: the list is for scanning, the full quote waits in the door note.
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("\u{201C}\(p.quote)\u{201D}").font(.system(size: 16, weight: .semibold))
+                    Text("\u{201C}\(p.quote)\u{201D}").font(.system(size: 16, weight: .semibold)).lineLimit(2)
                     Text(p.meta).font(.system(size: 13)).foregroundStyle(Theme.muted)
                 }
                 Spacer()
@@ -477,49 +477,208 @@ struct PatientsView: View {
         .swipeToDelete(id: p.id, openRow: $openRow, enabled: selection == nil) { deleteOne(p.id) }
     }
 
-    // MARK: Progress (moved from Home)
+    // MARK: Tabs
 
-    private var progress: some View {
-        VStack(spacing: 12) {
-            HStack(spacing: 14) {
-                Text("\(app.totalMisses)")
-                    .font(.mono(30))
-                    .foregroundStyle(Theme.warn)
-                VStack(alignment: .leading, spacing: 1) {
-                    Text("Red flags you missed").font(.system(size: 17, weight: .semibold))
-                    Text(missedSummary).font(.system(size: 15)).foregroundStyle(Theme.muted).lineLimit(1)
-                }
-                Spacer()
-            }
-            .card()
-            .accessibilityElement(children: .combine)
+    /// One quiet line instead of the old stat cards: the list is what this screen is for.
+    private var statsLine: some View {
+        HStack(spacing: 16) {
+            (Text("\(app.totalMisses)").font(.system(size: 15, weight: .bold)).foregroundColor(Theme.warn)
+                + Text(" red flags missed"))
+            (Text(app.rightDiagnosisText).font(.system(size: 15, weight: .bold)).foregroundColor(Theme.text)
+                + Text(" right diagnosis"))
+        }
+        .font(.system(size: 13))
+        .foregroundStyle(Theme.muted)
+        .accessibilityElement(children: .combine)
+    }
 
-            HStack(alignment: .top, spacing: 12) {
-                VStack(alignment: .leading, spacing: 0) {
-                    Text("Correct diagnosis").font(.system(size: 13)).foregroundStyle(Theme.muted)
-                    Text(app.rightDiagnosisText).font(.mono(26))
+    private var tabBar: some View {
+        HStack(spacing: 4) {
+            ForEach(Tab.allCases, id: \.self) { t in
+                let on = t == tab
+                Button { chosenTab = t } label: {
+                    HStack(spacing: 6) {
+                        Text("\(t.title) \(count(t))")
+                        // A patient worth a second visit is waiting behind Seen.
+                        if t == .seen && !revisit.isEmpty && !on {
+                            Circle().fill(Theme.warn).frame(width: 8, height: 8)
+                        }
+                    }
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(on ? Color.white : Theme.text)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+                    .frame(maxWidth: .infinity, minHeight: 44)
+                    .background {
+                        if on {
+                            Color.clear.glassFill(Theme.accentFill, in: RoundedRectangle(cornerRadius: 12, style: .continuous), interactive: false)
+                        }
+                    }
+                    .contentShape(Rectangle())
                 }
-                .card(padding: 14, fillHeight: true)
-                // Progress through the student's own focus, not a fixed rotation.
-                let focus = FocusSelection(stored: focusStored)
-                let progress = app.focusProgress(focus)
-                VStack(alignment: .leading, spacing: 0) {
-                    Text(focus.isMix ? "All topics" : focus.label)
-                        .font(.system(size: 13)).foregroundStyle(Theme.muted).lineLimit(1)
-                    Text(progress.map { "\($0.done)/\($0.total)" } ?? "–").font(.mono(26))
-                    ProgressBar(value: progress?.share ?? 0, height: 4)
-                        .padding(.top, 6)
-                }
-                .accessibilityElement(children: .combine)
-                .accessibilityLabel(progress.map { "\(focus.isMix ? "All topics" : focus.label): \($0.done) of \($0.total) conditions seen" } ?? "")
-                .card(padding: 14, fillHeight: true)
+                .buttonStyle(PressDownStyle())
+                .accessibilityAddTraits(on ? .isSelected : [])
+                .accessibilityHint(t == .seen && !revisit.isEmpty ? "Includes patients worth a second visit" : "")
             }
-            .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(4)
+        .background(Theme.track, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+    }
+
+    @ViewBuilder private var inProgressList: some View {
+        if inProgress.isEmpty {
+            tabEmpty("Nothing in progress. Start someone from New.")
+        } else {
+            VStack(spacing: 10) {
+                ForEach(inProgress) { p in resumeCard(p).transition(rowExit) }
+            }
+            Text(inProgress.count == 1 ? "Finish this one, or start someone new from the New tab."
+                                       : "Finish these, or start someone new from the New tab.")
+                .font(.system(size: 14))
+                .foregroundStyle(Theme.muted)
+                .frame(maxWidth: .infinity)
+                .padding(.top, 6)
         }
     }
 
-    private var missedSummary: String {
-        let n = app.revisitPatients.count
-        return n == 0 ? "None. Clean sweep." : "Across \(n) patient\(n == 1 ? "" : "s"), see below"
+    /// The case to finish: outlined in the accent so it reads as "yours, underway", Resume on the right.
+    private func resumeCard(_ p: WardPatient) -> some View {
+        Button {
+            tapped(p.id) { Task { await app.open(bed: p.id) } }
+        } label: {
+            HStack(spacing: 12) {
+                selectMark(p.id)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(p.shortComplaint).font(.system(size: 17, weight: .semibold)).lineLimit(2)
+                    Text(p.meta).font(.system(size: 14)).foregroundStyle(Theme.muted)
+                    if let found = p.historyFound, p.historyTotal > 0 {
+                        historyDashes(found: found, total: p.historyTotal)
+                            .padding(.top, 6)
+                    }
+                }
+                Spacer(minLength: 8)
+                if app.openingBed == p.id {
+                    ProgressView()
+                } else {
+                    Text("Resume")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 14)
+                        .frame(minHeight: 36)
+                        .glassCapsule(tint: Theme.accentFill)
+                }
+            }
+            .foregroundStyle(Theme.text)
+            .padding(16)
+            .background(Theme.surface, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 20, style: .continuous).strokeBorder(Theme.accent, lineWidth: 2))
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(PressableStyle())
+        .simultaneousGesture(hold(p.id))
+        .accessibilityAddTraits(selection?.contains(p.id) == true ? .isSelected : [])
+        .accessibilityHint("Picks up where you left off")
+        .swipeToDelete(id: p.id, openRow: $openRow, enabled: selection == nil) { deleteOne(p.id) }
+        // The swipe row paints a square surface behind the card; keep it inside the card's corners.
+        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+    }
+
+    /// Key history found so far, one dash per area, the same count the case screen's bar shows.
+    private func historyDashes(found: Int, total: Int) -> some View {
+        HStack(spacing: 4) {
+            ForEach(0..<total, id: \.self) { i in
+                Capsule().fill(i < found ? Theme.accent : Theme.track).frame(height: 5)
+            }
+        }
+        .frame(maxWidth: 190)
+        .accessibilityElement()
+        .accessibilityLabel("Key history \(found) of \(total)")
+    }
+
+    @ViewBuilder private var newList: some View {
+        if !app.wardSystems.isEmpty { systemFilter }
+        if newPatients.isEmpty {
+            VStack(spacing: 14) {
+                tabEmpty(system == nil ? "No new patients waiting." : "No new \(system?.label.lowercased() ?? "") patients.")
+                admitButton
+            }
+        } else {
+            list(newPatients)
+            admitButton.frame(maxWidth: .infinity)
+        }
+    }
+
+    /// One button for the body-system filter, in place of a row of chips that ran off the screen.
+    private var systemFilter: some View {
+        Menu {
+            Button("All systems") { system = nil }
+            ForEach(app.wardSystems, id: \.self) { s in
+                Button(s.label) { system = s }
+            }
+        } label: {
+            HStack(spacing: 6) {
+                Text(system?.label ?? "All systems")
+                AppIcon(.chevronDown, size: 14)
+            }
+            .font(.system(size: 14, weight: .semibold))
+            .foregroundStyle(.white)
+            .padding(.horizontal, 14)
+            .frame(minHeight: 36)
+            .glassCapsule(tint: Theme.neutralFill)
+        }
+        .accessibilityLabel("Body system: \(system?.label ?? "All systems")")
+    }
+
+    private var admitButton: some View {
+        Button(app.isAdmitting ? "Preparing patient…" : "Admit a new patient") {
+            Task { await app.admit(focus: FocusSelection(stored: focusStored)) }
+        }
+        .buttonStyle(QuietButtonStyle())
+        .disabled(app.isAdmitting)
+    }
+
+    @ViewBuilder private var seenList: some View {
+        if revisit.isEmpty && seen.isEmpty {
+            tabEmpty("Patients you finish show up here with their scores.")
+        }
+        if !revisit.isEmpty {
+            sectionHeader("Worth a second visit", trailing: "\(revisit.count) patient\(revisit.count == 1 ? "" : "s")", color: Theme.warn)
+            VStack(spacing: 0) {
+                ForEach(Array(revisit.enumerated()), id: \.element.id) { i, p in
+                    VStack(spacing: 0) {
+                        if i > 0 { Hairline() }
+                        revisitRow(p)
+                    }
+                    .transition(rowExit)
+                }
+            }
+            .listSurface()
+        }
+        if !seen.isEmpty {
+            sectionHeader("All seen", trailing: "\(seen.count)", color: Theme.muted)
+            list(seen)
+        }
+    }
+
+    private func list(_ patients: [WardPatient]) -> some View {
+        VStack(spacing: 0) {
+            ForEach(Array(patients.enumerated()), id: \.element.id) { i, p in
+                VStack(spacing: 0) {
+                    if i > 0 { Hairline() }
+                    row(p)
+                }
+                .transition(rowExit)
+            }
+        }
+        .listSurface()
+    }
+
+    private func tabEmpty(_ text: String) -> some View {
+        Text(text)
+            .font(.system(size: 15))
+            .foregroundStyle(Theme.muted)
+            .multilineTextAlignment(.center)
+            .frame(maxWidth: .infinity)
+            .padding(.top, 28)
     }
 }

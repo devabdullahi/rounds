@@ -182,6 +182,7 @@ final class AppState {
             // Decks count toward badges too, so they load before the first unlock check.
             await flashcards.load()
             self.ward = try await ward
+            await loadHistoryProgress()
             self.topicCounts = try await counts
             self.graded = try await graded
             self.rating = try await rating ?? Self.residentFloor
@@ -192,6 +193,20 @@ final class AppState {
         } catch {
             problem = error.localizedDescription
         }
+    }
+
+    /// Key history found on each half-done patient, for the progress dashes on Patients. Only the
+    /// server knows which facts are key, so it asks the resume endpoint; a failure just leaves no dashes.
+    private func loadHistoryProgress() async {
+        guard let cases else { return }
+        let beds = ward.filter { $0.status == .resume }.map(\.id)
+        let found = await withTaskGroup(of: (String, Int?).self) { group in
+            for bed in beds {
+                group.addTask { (bed, try? await cases.resume(bed: bed)?.coverage.got) }
+            }
+            return await group.reduce(into: [String: Int]()) { if let got = $1.1 { $0[$1.0] = got } }
+        }
+        for i in ward.indices { if let got = found[ward[i].id] { ward[i].historyFound = got } }
     }
 
     /// How often to check for a case the server is writing in the background. Tests shorten it.

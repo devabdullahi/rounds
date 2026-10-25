@@ -7,7 +7,7 @@ import SwiftUI
 /// onboarding-confidence, onboarding-reality,
 /// onboarding-account, onboarding-heard, onboarding-heart, onboarding-promised (every `onboarding…` name opens onboarding),
 /// settings-about, ai-consent, paywall (trial page), paywall-plans, purchased, reminders, paywall-unavailable, paywall-delete,
-/// focus-system, focus-sheet, home, patients, patients-open, previous-tries, previous-try, badge-unlock-many, badge-unlock-all, paywall-taken, plan-checking, profile, brief, interview, interview-nudge, interview-ideas, examine, workup, diagnosis, debrief, debrief-graded, debrief-deeper (graded, last card, every section open), debrief-tour (graded, steps through every card), diagnosis-suggest.
+/// focus-system, focus-sheet, home, patients, patients-new, patients-seen, patients-open, previous-tries, previous-try, badge-unlock-many, badge-unlock-all, paywall-taken, plan-checking, profile, brief, interview, interview-nudge, interview-ideas, examine, workup, diagnosis, debrief, debrief-graded, debrief-deeper (graded, last card, every section open), debrief-tour (graded, steps through every card), diagnosis-suggest.
 enum DebugLaunch {
     static var screen: String? { UserDefaults.standard.string(forKey: "screen") }
     /// `-screen voice-glass` shows `VoiceGlassDebugView` in place of the app.
@@ -62,7 +62,7 @@ enum DebugLaunch {
     @MainActor static func apply(app: AppState, tab: inout Tab, expandedPatient: inout String?) {
         guard let screen else { return }
         switch screen {
-        case "patients", "previous-tries", "previous-try": tab = .patients
+        case "patients", "patients-new", "patients-seen", "previous-tries", "previous-try": tab = .patients
         case "cards", "cards-flip", "cards-correct", "cards-unknown", "cards-new", "cards-new-color", "cards-new-answer",
              "cards-add", "cards-generate", "cards-generate-notes", "cards-generate-notes-pick", "cards-generate-mistakes": tab = .cards
         case "patients-open": tab = .patients; expandedPatient = "R2"
