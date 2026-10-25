@@ -204,6 +204,15 @@ enum BadgeCatalog {
               group: .exam, rarity: .rare, goal: 1, measure: { $0.cases.filter { $0.examMode && $0.score >= 85 }.count }),
     ]
 
+    /// The first unlock check for an account on this phone: everything it already holds is recorded
+    /// quietly, except the welcome badge of an account onboarding has just made, which is celebrated.
+    /// An account signing back in (even one with no graded case yet) never replays the welcome.
+    static func firstLook(_ statuses: [BadgeStatus], newAccount: Bool) -> (quiet: [String], celebrate: [BadgeStatus]) {
+        let held = statuses.filter(\.unlocked)
+        let celebrate = newAccount ? held.filter { $0.id == beginningID } : []
+        return (held.map(\.id).filter { id in !celebrate.contains { $0.id == id } }, celebrate)
+    }
+
     static func status(for record: BadgeRecord) -> [BadgeStatus] {
         let chronological = record.cases.sorted { $0.submittedAt < $1.submittedAt }
         return all.map { badge in

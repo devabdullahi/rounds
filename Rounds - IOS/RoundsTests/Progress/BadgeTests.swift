@@ -209,4 +209,18 @@ struct BadgeTests {
         #expect(BadgeCatalog.practiceDays([on(8), on(8), on(9)], calendar: calendar) == 2)
         #expect(BadgeCatalog.weekendCases([on(9), on(10), on(11)], calendar: calendar) == 2)
     }
+
+    @Test func signingBackInNeverReplaysTheWelcome() {
+        let statuses = BadgeCatalog.status(for: BadgeRecord(rating: AppState.residentFloor, bestStreak: 0, cases: []))
+        let first = BadgeCatalog.firstLook(statuses, newAccount: false)
+        #expect(first.celebrate.isEmpty)
+        #expect(first.quiet.contains(BadgeCatalog.beginningID))
+    }
+
+    @Test func aJustCreatedAccountSeesItsWelcomeOnce() {
+        let statuses = BadgeCatalog.status(for: BadgeRecord(rating: AppState.residentFloor, bestStreak: 0, cases: []))
+        let first = BadgeCatalog.firstLook(statuses, newAccount: true)
+        #expect(first.celebrate.map(\.id) == [BadgeCatalog.beginningID])
+        #expect(!first.quiet.contains(BadgeCatalog.beginningID))
+    }
 }

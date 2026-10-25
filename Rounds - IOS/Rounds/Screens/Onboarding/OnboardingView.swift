@@ -251,6 +251,8 @@ struct OnboardingView: View {
         guard let account = await auth.continueWith(provider) else { return }
         // Making the account under the sign-up note is the agreement (SignUpTermsNote).
         consentStored = AIConsent.agreed
+        // A brand-new account gets its "Beginning" badge once; a returning one never replays it.
+        if !account.onboarded { app.accountJustCreated = true }
         if account.onboarded { auth.finishSignIn() } else { step(1) }
     }
 

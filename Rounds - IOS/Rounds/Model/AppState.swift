@@ -411,6 +411,10 @@ final class AppState {
     var debriefSettled = false
     /// Unlocks waiting to be shown, biggest first.
     private(set) var pendingUnlocks: [BadgeStatus] = []
+    /// Set when onboarding has just made this account, so its "Beginning" badge is celebrated once.
+    /// Only that run knows the account is new: signing back in to an account that hasn't finished a
+    /// case yet mustn't replay the welcome.
+    var accountJustCreated = false
     /// The student chose "Accept all": the waiting unlocks show together, lined up, instead of one by one.
     var showingAllUnlocks = false
 
@@ -431,6 +435,7 @@ final class AppState {
         hasLoadedRecord = false
         preparedFocus = nil
         seenBadges = nil
+        accountJustCreated = false
         UserDefaults.standard.removeObject(forKey: Self.seenBadgesStorageKey)
         skipped = []
         UserDefaults.standard.removeObject(forKey: Self.skippedStorageKey)
@@ -447,12 +452,11 @@ final class AppState {
         guard !showcasing, hasLoadedRecord else { return }
         let statuses = BadgeCatalog.status(for: badgeRecord)
         guard let seen = seenBadges else {
-            // First check for this account: what it already holds is recorded quietly, except a
-            // brand-new account's welcome badge, which is the one unlock it should see.
-            let isNew = graded.isEmpty
-            let quiet = statuses.filter { $0.unlocked && !(isNew && $0.id == BadgeCatalog.beginningID) }
-            markSeen(quiet.map(\.id))
-            pendingUnlocks += statuses.filter { isNew && $0.unlocked && $0.id == BadgeCatalog.beginningID }
+            // First check for this account on this phone: what it already holds is recorded quietly,
+            // except a brand-new account's welcome badge, which is the one unlock it should see.
+            let first = BadgeCatalog.firstLook(statuses, newAccount: accountJustCreated)
+            markSeen(first.quiet)
+            pendingUnlocks += first.celebrate
             return
         }
         let new = BadgeCatalog.newlyUnlocked(statuses, seen: seen)
