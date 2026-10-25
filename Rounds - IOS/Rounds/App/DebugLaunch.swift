@@ -6,7 +6,7 @@ import SwiftUI
 /// onboarding-practice, onboarding-practice-other, onboarding-blanked, onboarding-blanked-reply, onboarding-blanked-sometimes, onboarding-blanked-rarely, onboarding-exam, onboarding-countdown, onboarding-study-time, onboarding-pace, onboarding-setting-up, onboarding-plan,
 /// onboarding-confidence, onboarding-reality,
 /// onboarding-account, onboarding-heard, onboarding-heart, onboarding-promised (every `onboarding…` name opens onboarding),
-/// settings-about, ai-consent, paywall (trial page), paywall-plans, purchased, reminders, paywall-unavailable, paywall-delete,
+/// settings-about, paywall (trial page), paywall-plans, purchased, reminders, paywall-unavailable, paywall-delete,
 /// focus-system, focus-sheet, home, patients, patients-new, patients-seen, patients-open, previous-tries, previous-try, badge-unlock-many, badge-unlock-all, paywall-taken, plan-checking, profile, brief, interview, interview-nudge, interview-ideas, examine, workup, diagnosis, debrief, debrief-graded, debrief-deeper (graded, last card, every section open), debrief-tour (graded, steps through every card), diagnosis-suggest.
 enum DebugLaunch {
     static var screen: String? { UserDefaults.standard.string(forKey: "screen") }
@@ -35,8 +35,8 @@ enum DebugLaunch {
         guard let screen else { return }
         let d = UserDefaults.standard
         d.set(!isAuthScreen(screen), forKey: AuthModel.signedInKey)
-        // App screens open past the AI consent; `ai-consent` and onboarding start without it.
-        let consented = !isAuthScreen(screen) && screen != "ai-consent"
+        // App screens open with the consent given (as after signing in); onboarding starts without it.
+        let consented = !isAuthScreen(screen)
         d.set(consented ? AIConsent.agreed : AIConsent.withdrawn, forKey: AIConsent.storageKey)
         if ["onboarding-heart", "onboarding-promised"].contains(screen) || paywallScreens.contains(screen) {
             d.set(StudyGoal.step2CK.rawValue, forKey: StudyGoal.storageKey)

@@ -202,11 +202,10 @@ struct OnboardingView: View {
             if auth.account != nil {
                 OnboardingNextButton { step(1) }
             } else {
-                Text("For practice only. Fictional patients, not medical advice.")
-                    .font(.system(size: 12))
-                    .foregroundStyle(Theme.muted)
-                    .multilineTextAlignment(.center)
-                    .frame(height: 60)
+                SignUpTermsNote()
+                    .padding(.horizontal, 24)
+                    .padding(.top, 6)
+                    .frame(minHeight: 60)
             }
         case .pledge:
             if heart.isDone {
@@ -247,6 +246,8 @@ struct OnboardingView: View {
     /// a new one goes on.
     private func signUp(with provider: SocialProvider) async {
         guard let account = await auth.continueWith(provider) else { return }
+        // Making the account under the sign-up note is the agreement (SignUpTermsNote).
+        consentStored = AIConsent.agreed
         if account.onboarded { auth.finishSignIn() } else { step(1) }
     }
 
