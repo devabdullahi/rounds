@@ -39,11 +39,10 @@ struct RootView: View {
     var body: some View {
         ZStack {
             if signedIn {
-                // Signed in, the app opens only with an active plan (or the free first case) and the AI
-                // consent; until the store answers, nothing shows.
+                // Signed in, the app opens only with an active plan (or the free first case); until the
+                // store answers, nothing shows. The AI consent was given by making the account.
                 switch Self.debugPlanCheck(paywall.opensApp) {
-                case true? where AIConsent.isGiven(stored: consentStored): MainTabsView().transition(.opacity)
-                case true?: AIConsentView().transition(.opacity)
+                case true?: MainTabsView().transition(.opacity)
                 case false?: GateView(model: paywall).transition(.opacity)
                 // The plan check can take a moment (StoreKit, then our server): say so, never a blank.
                 case nil: ProgressView()
@@ -76,8 +75,12 @@ struct RootView: View {
         .animation(.easeInOut(duration: 0.35), value: consentStored)
         // Signing out (or deleting the account) leaves nothing of that account behind for the next
         // one, including the consent: whoever signs in next agrees for themselves.
-        .onChange(of: signedIn) { _, now in
-            guard !now else { return }
+        .onChange(of: signedIn, initial: true) { _, now in
+            // Signing in under the sign-up note is the agreement (SignUpTermsNote).
+            guard !now else {
+                if !AIConsent.isGiven(stored: consentStored) { consentStored = AIConsent.agreed }
+                return
+            }
             app.reset()
             consentStored = AIConsent.withdrawn
         }

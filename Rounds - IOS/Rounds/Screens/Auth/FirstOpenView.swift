@@ -121,10 +121,7 @@ struct FirstOpenView: View {
 
             ProviderButtons(busy: signingInWith, onSelect: onSocial)
 
-            Text("For practice only. Fictional patients, not medical advice.")
-                .font(.system(size: 12))
-                .foregroundStyle(Theme.muted)
-                .multilineTextAlignment(.center)
+            SignUpTermsNote()
                 .padding(.top, 4)
         }
         .padding(.horizontal, 20)

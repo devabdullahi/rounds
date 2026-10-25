@@ -5,7 +5,7 @@ import Foundation
 enum AppLinks {
     static let supportEmail: String? = "tryroundsapp@gmail.com"
     static let privacyPolicy: URL? = URL(string: "https://rounds-2hg.pages.dev/privacy")
-    /// Rounds' own Terms of Use (website/app/public/terms.html), agreed to on the AI consent screen.
+    /// Rounds' own Terms of Use (website/app/public/terms.html), agreed to by creating an account (SignUpTermsNote).
     static let terms: URL? = URL(string: "https://rounds-2hg.pages.dev/terms")
 
     /// "Send feedback" opens a mail draft to support.
