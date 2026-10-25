@@ -26,10 +26,9 @@ struct AIConsentTests {
         #expect(AIConsent.isGiven(stored: defaults.integer(forKey: AIConsent.storageKey)))
     }
 
-    @Test func signUpNoteNamesTheProvidersBothDocumentsAndRealPatientData() {
+    @Test func signUpNoteDisclosesAIBothDocumentsAndRealPatientData() {
         let note = AIConsent.signUpNote(terms: URL(string: "https://example.com/terms"), privacy: URL(string: "https://example.com/privacy"))
-        #expect(note.contains("OpenAI"))
-        #expect(note.contains("DeepSeek"))
+        #expect(note.contains("third-party AI providers"))
         #expect(note.contains("real patient"))
         #expect(note.contains("[Terms of Use](https://example.com/terms)"))
         #expect(note.contains("[Privacy Policy](https://example.com/privacy)"))
