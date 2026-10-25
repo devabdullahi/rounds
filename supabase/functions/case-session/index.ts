@@ -67,7 +67,7 @@ import { closeCalls } from "../_shared/voicecalls.ts";
 import { liveSessionPrompt, voiceTurnPrompt } from "../_shared/patientprompt.ts";
 import { recordUsage, takeBudget } from "../_shared/usage.ts";
 import { speak, speakStream, STREAM_SAMPLE_RATE, transcribe } from "../_shared/speech.ts";
-import { requirePlanOrFreeCase } from "../_shared/plan.ts";
+import { requirePlan } from "../_shared/plan.ts";
 import { refundQuota, withQuota } from "../_shared/quota.ts";
 import { naturalDenial, naturalRefusal, talksAboutScript } from "./refusal.ts";
 import { ReplyGate } from "./stream.ts";
@@ -102,9 +102,8 @@ const GRACE_MINUTES = 2;
 
 serve(async (req) => {
   const userId = await callerId(req);
-  // Cases are part of the paid plan, except one free graded case; the app's paywall is only the face
-  // of this check.
-  await requirePlanOrFreeCase(userId);
+  // Cases are part of the paid plan (hard paywall); the app's paywall is only the face of this check.
+  await requirePlan(userId);
   const input = await body<Record<string, unknown>>(req);
   switch (input.action) {
     case "start": return json(await start(userId, input));
@@ -651,10 +650,6 @@ async function submit(userId: string, input: Record<string, unknown>) {
       update public.profiles p set rating = p.rating + ${result.rating_delta}
       from graded where p.id = graded.user_id
       returning p.rating`;
-    // Ends the free case for good, even if the student later deletes this patient.
-    if (profile) {
-      await tx`insert into private.first_submissions (user_id) values (${userId}) on conflict (user_id) do nothing`;
-    }
     return profile ? { ...result, rating: profile.rating } : null;
   });
   if (!saved) throw new HttpError(409, "attempt already submitted");

@@ -28,7 +28,7 @@
 import { body, callerId, HttpError, json, serve } from "../_shared/http.ts";
 import { currentModel } from "../_shared/llm.ts";
 import { type Focus, parseFocus } from "../_shared/focus.ts";
-import { requirePlanOrFreeCase } from "../_shared/plan.ts";
+import { requirePlan } from "../_shared/plan.ts";
 import { refundQuota, takeQuota } from "../_shared/quota.ts";
 import { BudgetExceeded } from "../_shared/usage.ts";
 import { BACKGROUND_WRITER_MS, composeCase, NoNewPatient } from "./compose.ts";
@@ -56,8 +56,8 @@ declare const EdgeRuntime: { waitUntil(promise: Promise<unknown>): void };
 serve(async (req) => {
   const invoked = Date.now();
   const userId = await callerId(req);
-  // A plan, or the free first case (which caps how many patients are written for it).
-  await requirePlanOrFreeCase(userId, true);
+  // Writing patients needs a plan (hard paywall).
+  await requirePlan(userId);
   // `polling` is still sent by app builds that waited on background jobs; it no longer changes anything.
   const { focus: requested = "", setting = "", prepare } =
     await body<{ focus?: string; setting?: unknown; polling?: unknown; prepare?: unknown }>(req);
