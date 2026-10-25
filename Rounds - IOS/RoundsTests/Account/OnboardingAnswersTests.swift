@@ -28,6 +28,15 @@ struct OnboardingAnswersTests {
         #expect(answers.timeLimitMinutes == TimeLimit.defaultMinutes)
     }
 
+    @Test func savesWhyTheyDownloadedRounds() {
+        let d = defaults()
+        #expect(OnboardingAnswers.stored(in: d, redFlagPick: nil).downloadReason == nil)
+        d.set(DownloadReason.differentials.rawValue, forKey: DownloadReason.storageKey)
+        let answers = OnboardingAnswers.stored(in: d, redFlagPick: nil)
+        #expect(answers.downloadReason == "differentials")
+        #expect(OnboardingAnswersRow(userID: UUID(), answers: answers, appVersion: "1").download_reason == "differentials")
+    }
+
     /// The quiz pick is saved as the option's place and whether it was the red flag.
     @Test(arguments: RedFlagQuiz.chestPain.options.indices)
     func recordsTheQuizPick(index: Int) {

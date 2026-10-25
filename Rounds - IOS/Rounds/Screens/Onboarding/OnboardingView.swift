@@ -33,6 +33,7 @@ struct OnboardingView: View {
     @AppStorage(ExamMonth.storageKey) private var examStored = ""
     @AppStorage(DiagnosisConfidence.storageKey) private var confidenceStored = 0
     @AppStorage(BlankFrequency.storageKey) private var blankStored = ""
+    @AppStorage(DownloadReason.storageKey) private var reasonStored = ""
     @AppStorage(PracticeReminder.preferredKey) private var studyTimeStored = ""
     @AppStorage(AIConsent.storageKey) private var consentStored = AIConsent.withdrawn
 
@@ -81,6 +82,7 @@ struct OnboardingView: View {
         switch p {
         case .schoolYear: SchoolYear(stored: yearStored) != nil
         case .studyGoal: goal != nil
+        case .downloadReason: DownloadReason(stored: reasonStored) != nil
         case .examDate: !examStored.isEmpty
         case .heardFrom: HeardFrom(rawValue: heardStored) != nil
         case .account: auth.account != nil
@@ -151,6 +153,7 @@ struct OnboardingView: View {
         switch p {
         case .schoolYear: SchoolYearPage(shown: shown)
         case .studyGoal: StudyGoalPage(shown: shown)
+        case .downloadReason: DownloadReasonPage(shown: shown)
         case .practice: PracticePage(shown: shown) { finished.insert(.practice) }
         case .blanked: BlankedPage(shown: shown)
         case .blankedReply: BlankedReplyPage(shown: shown)
@@ -263,7 +266,7 @@ struct OnboardingView: View {
     #if DEBUG
     /// `-screen` names that open onboarding on a given page.
     private static let debugPages: [String: OnboardingPage] = [
-        "onboarding": .schoolYear, "onboarding-year": .schoolYear, "onboarding-goal": .studyGoal,
+        "onboarding": .schoolYear, "onboarding-year": .schoolYear, "onboarding-goal": .studyGoal, "onboarding-reason": .downloadReason,
         "onboarding-practice": .practice, "onboarding-practice-other": .practice, "onboarding-blanked": .blanked, "onboarding-blanked-reply": .blankedReply, "onboarding-blanked-sometimes": .blankedReply, "onboarding-blanked-rarely": .blankedReply,
         "onboarding-exam": .examDate, "onboarding-countdown": .countdown, "onboarding-study-time": .studyTime,
         "onboarding-pace": .pace, "onboarding-setting-up": .settingUp, "onboarding-plan": .plan,
@@ -277,6 +280,7 @@ struct OnboardingView: View {
         // Answer every question before the target, so the carousel can reach it.
         if target.rawValue > OnboardingPage.schoolYear.rawValue, SchoolYear(stored: yearStored) == nil { yearStored = SchoolYear.ms3.rawValue }
         if target.rawValue > OnboardingPage.studyGoal.rawValue, goal == nil { goalStored = StudyGoal.step2CK.rawValue }
+        if target.rawValue > OnboardingPage.downloadReason.rawValue, reasonStored.isEmpty { reasonStored = DownloadReason.differentials.rawValue }
         if target.rawValue > OnboardingPage.examDate.rawValue, examStored.isEmpty, let month = ExamMonth.upcoming().dropFirst(2).first { examStored = month.stored }
         if target.rawValue > OnboardingPage.practice.rawValue { finished.insert(.practice) }
         if target.rawValue > OnboardingPage.confidence.rawValue, DiagnosisConfidence(stored: confidenceStored) == nil { confidenceStored = 6 }

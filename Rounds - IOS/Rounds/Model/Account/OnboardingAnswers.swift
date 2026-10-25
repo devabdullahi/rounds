@@ -17,6 +17,8 @@ struct OnboardingAnswers: Equatable, Sendable {
     var timeLimitMinutes: Int
     var dailyGoal: Int
     var reminder: String?
+    /// "Why did you download Rounds?" (`DownloadReason` raw value).
+    var downloadReason: String?
 
     /// The picks as onboarding stored them on this phone. `redFlagPick` is the quiz option's id,
     /// which onboarding holds in memory only.
@@ -36,7 +38,8 @@ struct OnboardingAnswers: Equatable, Sendable {
             examByDefault: defaults.object(forKey: Preferences.examByDefaultKey) as? Bool ?? Preferences.examByDefaultDefault,
             timeLimitMinutes: defaults.object(forKey: TimeLimit.storageKey) as? Int ?? TimeLimit.defaultMinutes,
             dailyGoal: DailyGoal(stored: defaults.object(forKey: DailyGoal.storageKey) as? Int ?? DailyGoal.default.rawValue).rawValue,
-            reminder: text(PracticeReminder.storageKey))
+            reminder: text(PracticeReminder.storageKey),
+            downloadReason: text(DownloadReason.storageKey))
     }
 }
 
@@ -45,7 +48,7 @@ extension OnboardingAnswers {
     /// sign-out, or a new account on this phone) opens with nothing chosen. Settings the app owns
     /// once onboarding is over (voice mode, focus, reminders) are left alone.
     static func clearPicks(in defaults: UserDefaults = .standard) {
-        for key in [SchoolYear.storageKey, StudyGoal.storageKey, ExamMonth.storageKey, HeardFrom.storageKey, DiagnosisConfidence.storageKey,
+        for key in [SchoolYear.storageKey, StudyGoal.storageKey, ExamMonth.storageKey, HeardFrom.storageKey, DiagnosisConfidence.storageKey, DownloadReason.storageKey,
                     BlankFrequency.storageKey, PracticeReminder.preferredKey] {
             defaults.removeObject(forKey: key)
         }
