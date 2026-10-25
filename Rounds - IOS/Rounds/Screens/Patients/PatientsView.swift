@@ -555,7 +555,7 @@ struct PatientsView: View {
         }
     }
 
-    /// The case to finish: outlined in the accent so it reads as "yours, underway", Resume on the right.
+    /// The case to finish: a card with its key history dashes and Resume on the right.
     private func resumeCard(_ p: WardPatient) -> some View {
         Button {
             tapped(p.id) { Task { await app.open(bed: p.id) } }
@@ -585,7 +585,7 @@ struct PatientsView: View {
             .foregroundStyle(Theme.text)
             .padding(16)
             .background(Theme.surface, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
-            .overlay(RoundedRectangle(cornerRadius: 20, style: .continuous).strokeBorder(Theme.accent, lineWidth: 2))
+            .overlay(RoundedRectangle(cornerRadius: 20, style: .continuous).strokeBorder(Theme.border, lineWidth: 1))
             .contentShape(Rectangle())
         }
         .buttonStyle(PressableStyle())

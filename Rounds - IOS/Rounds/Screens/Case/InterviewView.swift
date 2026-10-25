@@ -432,7 +432,7 @@ struct InterviewView: View {
             .padding(.top, 14)
             .padding(.bottom, 10)
             .background(Theme.surface, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
-            .overlay(RoundedRectangle(cornerRadius: 24, style: .continuous).strokeBorder(Theme.accent, lineWidth: inputFocused ? 2 : 1.5))
+            .overlay(RoundedRectangle(cornerRadius: 24, style: .continuous).strokeBorder(Theme.border, lineWidth: 1))
             .shadow(color: Theme.text.opacity(0.08), radius: 12, y: 4)
             .contentShape(Rectangle())
             .onTapGesture { inputFocused = true }
