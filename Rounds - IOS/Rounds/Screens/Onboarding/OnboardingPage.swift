@@ -11,13 +11,13 @@ import Foundation
 /// every step slides the same way. The welcome screen before it and the paywall after it are
 /// their own screens.
 enum OnboardingPage: Int, CaseIterable {
-    case schoolYear, studyGoal, practice, blanked, blankedReply, examDate, countdown, confidence,
+    case schoolYear, studyGoal, downloadReason, practice, blanked, blankedReply, examDate, countdown, confidence,
          pace, realityCheck, studyTime, settingUp, plan, account, heardFrom, pledge
 
     /// Question pages share one layout (question on top, answers below) and a Continue button.
     var isQuestion: Bool {
         switch self {
-        case .schoolYear, .studyGoal, .practice, .blanked, .examDate, .confidence, .studyTime, .heardFrom: true
+        case .schoolYear, .studyGoal, .downloadReason, .practice, .blanked, .examDate, .confidence, .studyTime, .heardFrom: true
         default: false
         }
     }

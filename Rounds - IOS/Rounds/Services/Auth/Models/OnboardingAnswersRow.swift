@@ -15,6 +15,7 @@ struct OnboardingAnswersRow: Encodable {
     let time_limit_minutes: Int
     let daily_goal: Int
     let reminder: String?
+    let download_reason: String?
     let app_version: String
 
     init(userID: UUID, answers: OnboardingAnswers, appVersion: String) {
@@ -31,6 +32,7 @@ struct OnboardingAnswersRow: Encodable {
         time_limit_minutes = answers.timeLimitMinutes
         daily_goal = answers.dailyGoal
         reminder = answers.reminder
+        download_reason = answers.downloadReason
         app_version = String(appVersion.prefix(40))
     }
 }
