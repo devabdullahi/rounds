@@ -11,9 +11,14 @@ Deno.test("unpriced models cost nothing rather than guessing", () => {
   assertEquals(costUSD("gpt-4.1", { hit: 1e6, miss: 1e6, output: 1e6, reasoning: 0 }), 0);
 });
 
-Deno.test("the daily budget falls back to the default for missing or bad values", () => {
-  const table: [string | undefined, number][] = [[undefined, 25], ["", 25], ["abc", 25], ["-5", 25], ["0", 25], ["40", 40], ["7.5", 7.5]];
+Deno.test("no daily budget unless a positive one is set", () => {
+  const table: [string | undefined, number | null][] = [[undefined, null], ["", null], ["abc", null], ["0", null], ["-5", null], ["40", 40], ["12.5", 12.5]];
   for (const [raw, want] of table) assertEquals(dailyBudgetUSD(raw), want, String(raw));
+});
+
+Deno.test("with no cap every call goes ahead", () => {
+  assertEquals(withinBudget("case", { total: 1e6, content: 1e6 }, null, 0.6), true);
+  assertEquals(withinBudget("patient", { total: 1e6, content: 0 }, null, 0.6), true);
 });
 
 Deno.test("content stops at its share of the cap; chat, grading and voice keep the rest", () => {

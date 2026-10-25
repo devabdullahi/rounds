@@ -38,8 +38,8 @@
 //
 // Only a student's first submitted attempt on a case moves their rating; a restart after seeing the
 // answer is graded as usual but unrated. A submission past the chosen time limit is graded and
-// marked over time. Asking and submitting each cost a unit of the daily allowance (_shared/quota.ts);
-// voice has no allowance of its own, only the project-wide daily spend cap (_shared/usage.ts).
+// marked over time. Asking and submitting each take a unit of the per-minute burst guard (_shared/quota.ts);
+// voice has no allowance of its own (its cost is logged, _shared/usage.ts).
 //
 // Every action verifies the caller, then loads the attempt only if it belongs to them. The patient
 // LLM sees the persona and revealable facts, never the diagnosis or rubric; its reply is checked for
@@ -109,13 +109,14 @@ serve(async (req) => {
   switch (input.action) {
     case "start": return json(await start(userId, input));
     case "resume": return json(await resume(userId, input));
-    // Each question costs a model call (reply plus check): it counts against the daily limit.
+    // Each question costs a model call (reply plus check): it counts against the burst guard.
     case "ask": return json(await withQuota(userId, "question", () => ask(userId, input)));
     // The same answer, shown as it's written. Refunds its own unit if it fails after streaming starts.
     case "ask_stream": return await withQuota(userId, "question", () => askStream(userId, input));
     case "examine": return json(await examine(userId, input));
     case "order": return json(await order(userId, input));
-    // Voice has no daily allowance (2026-10-21); the audio models' cost counts toward the daily cap.
+    // Voice has no allowance of its own; the audio models' cost is logged (and capped only if a daily
+    // budget is set, usage.ts).
     case "transcribe": return json(await transcribeTurn(userId, input));
     case "speak": return json(await speakReply(userId, input));
     // The same reply as raw PCM, streamed as it's made: the first sound in a few hundred ms.
