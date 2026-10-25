@@ -16,10 +16,19 @@ func pill(cx: CGFloat, cy: CGFloat, w: CGFloat, h: CGFloat) -> Path {
 func drawLiveEye(
     _ context: GraphicsContext, side: CGFloat, eye: EyeGeometry, ink: FaceInk, choreo: Choreo, t: Double
 ) {
+    drawLiveEye(context, side: side, eye: eye, ink: ink,
+                lid: CGFloat(track(t, side > 0 ? (choreo.lidRight ?? choreo.lid) : choreo.lid)),
+                lookX: CGFloat(track(t, choreo.lookX)), lookY: CGFloat(track(t, choreo.lookY)),
+                cheek: choreo.cheek.map { CGFloat(track(t, $0)) })
+}
+
+/// The same eye from values already worked out, for a scene that layers its own motion on top
+/// (follow-through, gaze that follows a prop) instead of reading one `Choreo`.
+func drawLiveEye(
+    _ context: GraphicsContext, side: CGFloat, eye: EyeGeometry, ink: FaceInk,
+    lid: CGFloat, lookX lx: CGFloat, lookY ly: CGFloat, cheek: CGFloat? = nil
+) {
     let cx = eye.cx, cy = eye.cy, w = eye.w, h = eye.h
-    let lid = CGFloat(track(t, side > 0 ? (choreo.lidRight ?? choreo.lid) : choreo.lid))
-    let lx = CGFloat(track(t, choreo.lookX))
-    let ly = CGFloat(track(t, choreo.lookY))
     let top = cy - h / 2 + eye.pupilTop + ly
     let lidH = h + 4
 
@@ -48,8 +57,7 @@ func drawLiveEye(
             lash.addLine(to: CGPoint(x: cx + w / 2 + 2, y: y))
             c.stroke(lash, with: .color(ink.line.opacity(lashOn)), lineWidth: ink.lineWidth * 0.6)
         }
-        if let cheekKeys = choreo.cheek {
-            let k = CGFloat(track(t, cheekKeys))
+        if let k = cheek {
             c.fill(Path(CGRect(x: cx - w / 2 - 2, y: cy + h / 2 + 2 - k * lidH, width: w + 4, height: k * lidH)),
                    with: .color(ink.skin))
         }
@@ -68,8 +76,8 @@ func drawLiveEye(
     }
 
     // The happy squint: an upward arc once the cheek is nearly up.
-    if let cheekKeys = choreo.cheek {
-        let happyOn = min(1, max(0, (CGFloat(track(t, cheekKeys)) - 0.86) / 0.14))
+    if let k = cheek {
+        let happyOn = min(1, max(0, (k - 0.86) / 0.14))
         if happyOn > 0 {
             var arc = Path()
             arc.move(to: CGPoint(x: cx - w * 0.4, y: cy - h * 0.1))
