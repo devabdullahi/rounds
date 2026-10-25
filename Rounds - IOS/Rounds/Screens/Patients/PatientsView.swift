@@ -18,6 +18,9 @@ struct PatientsView: View {
     /// The tab the student picked; nil until they pick, so it opens on what's most useful.
     @State private var chosenTab: Tab?
     @State private var searching = false
+    /// The selected tab's glass pill is one view that slides between tabs (matched geometry),
+    /// instead of vanishing from one and appearing on the next.
+    @Namespace private var tabPill
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private enum DELETE {
@@ -496,7 +499,9 @@ struct PatientsView: View {
         HStack(spacing: 4) {
             ForEach(Tab.allCases, id: \.self) { t in
                 let on = t == tab
-                Button { chosenTab = t } label: {
+                Button {
+                    withAnimation(reduceMotion ? nil : Springs.slide) { chosenTab = t }
+                } label: {
                     HStack(spacing: 6) {
                         Text("\(t.title) \(count(t))")
                         // A patient worth a second visit is waiting behind Seen.
@@ -511,7 +516,9 @@ struct PatientsView: View {
                     .frame(maxWidth: .infinity, minHeight: 44)
                     .background {
                         if on {
-                            Color.clear.glassFill(Theme.accentFill, in: RoundedRectangle(cornerRadius: 12, style: .continuous), interactive: false)
+                            Color.clear
+                                .glassFill(Theme.accentFill, in: RoundedRectangle(cornerRadius: 12, style: .continuous), interactive: false)
+                                .matchedGeometryEffect(id: "selected", in: tabPill)
                         }
                     }
                     .contentShape(Rectangle())
