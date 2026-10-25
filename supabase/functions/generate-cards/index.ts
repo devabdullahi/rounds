@@ -19,7 +19,7 @@ import { type Profile } from "../_shared/casegen.ts";
 import { type CardFacts, cardFacts, missFacts } from "../_shared/cardfacts.ts";
 import { CARD_WRITER, NOTES_CARD_WRITER } from "../_shared/prompts.ts";
 import { requirePlan } from "../_shared/plan.ts";
-import { remainingToday, withQuota } from "../_shared/quota.ts";
+import { withQuota } from "../_shared/quota.ts";
 import { deckTitle, mentionsSource } from "../_shared/notescards.ts";
 
 type Request = { topics?: string[]; count?: number; include_misses?: boolean; deck?: string; notes?: string; mistakes?: boolean };
@@ -100,7 +100,7 @@ serve(async (req) => {
     if (misses) sets.push(misses);
   }
 
-  // A deck costs a model call, so it counts against the daily limit (refunded on failure).
+  // A deck costs a model call, so it counts against the per-minute burst guard (refunded on failure).
   const user = `Write ${count} cards.\nFact sets:\n${JSON.stringify(sets)}`;
   return withQuota(userId, "cards", () => writeCards(userId, deck, count, CARD_WRITER, user, new Set(sets.map((s) => s.source))));
 });
@@ -160,7 +160,6 @@ async function writeCards(
       color: "standard", source: c.source,
     })))}
     returning id, topic, front, back, source, color`;
-  // Lets the app show how many decks are left today; a failed lookup just leaves it out.
-  const left = await remainingToday(userId, "cards").catch(() => null);
-  return json({ deck, cards: saved, ...(left ? { remaining_today: left.remaining, daily_limit: left.limit } : {}) });
+  // No daily deck allowance any more (2026-10-25), so no "left today" count for the app to show.
+  return json({ deck, cards: saved });
 }

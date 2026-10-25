@@ -1,6 +1,6 @@
 // generate-case: makes a new fictional patient for the calling student.
 //
-//   1. Verify the caller and take one case from their daily allowance.
+//   1. Verify the caller and take one unit of their per-minute burst guard.
 //   2. Use the case written ahead for this student and focus, if one is waiting (instant). Otherwise
 //      pick a condition in their study focus. Stored first, live fallback: a validated stored profile
 //      (private.condition_profiles) is used as is; a condition without one gets its profile built live
@@ -70,11 +70,9 @@ serve(async (req) => {
     return json({ status: "preparing" }, 202);
   }
 
-  // A new patient counts against the daily limit (refunded on failure), whether it's written now or
-  // was written ahead. The quota comes first: a student over the limit mustn't start background
-  // writing either.
-  // One account mustn't use up the shared content budget for everyone (LIMIT_CASES_PER_DAY, 10 by
-  // default; launch blocker from the security review, 2026-10-20).
+  // A new patient counts against the per-minute burst guard (refunded on failure), whether it's
+  // written now or was written ahead. It comes first: a script hammering this mustn't start
+  // background writing either. There's no daily limit (2026-10-25: customers are unlimited).
   await takeQuota(userId, "case");
   // No case waiting: write one now, in this request. A student never waits on a background job,
   // which could die with its worker; writing ahead is only a head start.

@@ -1,6 +1,7 @@
-// What model calls cost, and a project-wide daily spending cap (private.llm_usage, migration
-// 20261018000000_llm_usage). Per-student limits live in quota.ts; this cap is the backstop that
-// holds even if many students, a bug or a retry loop all spend at once.
+// What model calls cost (private.llm_usage, migration 20261018000000_llm_usage), and an optional
+// project-wide daily spending cap. Off by default since 2026-10-25 (customers are unlimited; the AI
+// providers' billing limits are the ceiling): set LLM_DAILY_BUDGET_USD to switch it on in an
+// emergency. Per-student burst guards live in quota.ts.
 
 import { HttpError } from "./http.ts";
 import { sql } from "./db.ts";
@@ -18,8 +19,6 @@ const PRICES: Record<string, { hit: number; miss: number; output: number }> = {
   "deepseek-flash": { hit: 0.006, miss: 0.30, output: 1.20 },
 };
 
-/** Default daily cap in USD; LLM_DAILY_BUDGET_USD overrides it per deployment. */
-const DEFAULT_DAILY_BUDGET_USD = 25;
 
 /** Tasks that make content (cases, profiles, flashcards) rather than serve a student mid-visit. */
 const CONTENT_TASKS = ["case", "audit", "template", "profile", "cards"];
@@ -42,9 +41,10 @@ export function costUSD(model: string, u: Usage): number {
   return (u.hit * p.hit + u.miss * p.miss + u.output * p.output) / 1_000_000;
 }
 
-export function dailyBudgetUSD(raw = Deno.env.get("LLM_DAILY_BUDGET_USD")): number {
+/** The daily cap in USD, or null for none: only a positive LLM_DAILY_BUDGET_USD switches it on. */
+export function dailyBudgetUSD(raw = Deno.env.get("LLM_DAILY_BUDGET_USD")): number | null {
   const value = Number(raw);
-  return raw !== undefined && Number.isFinite(value) && value > 0 ? value : DEFAULT_DAILY_BUDGET_USD;
+  return raw !== undefined && raw.trim() !== "" && Number.isFinite(value) && value > 0 ? value : null;
 }
 
 /** The daily spending cap refused a call. Retrying today won't help, so callers pass it on as is. */
@@ -57,6 +57,7 @@ export class BudgetExceeded extends HttpError {
 /** Whether a call may go ahead, from today's spend: content stops at its share of the cap, and
  *  everything stops at the whole cap. Pure, so the split is unit-tested. */
 export function withinBudget(task: string | undefined, spent: { total: number; content: number }, cap = dailyBudgetUSD(), share = contentShare()): boolean {
+  if (cap === null) return true;
   if (spent.total >= cap) return false;
   return !isContentTask(task) || spent.content < cap * share;
 }
@@ -65,6 +66,8 @@ export function withinBudget(task: string | undefined, spent: { total: number; c
  *  student mid-visit through (the cap guards cost, not access, and their quotas still apply), but not
  *  content writing (new patients, profiles, cards), which can run unattended and add up. */
 export async function takeBudget(task?: string): Promise<void> {
+  // No cap set: nothing to check, so no query on every model call.
+  if (dailyBudgetUSD() === null) return;
   let spent = { total: 0, content: 0 };
   try {
     [spent] = await sql<{ total: number; content: number }[]>`
