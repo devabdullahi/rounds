@@ -18,10 +18,13 @@ struct PatientsView: View {
     /// The tab the student picked; nil until they pick, so it opens on what's most useful.
     @State private var chosenTab: Tab?
     @State private var searching = false
-    /// The selected tab's glass pill is one view that slides between tabs (matched geometry),
-    /// instead of vanishing from one and appearing on the next.
-    @Namespace private var tabPill
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    /// Switching tabs: the glass fades onto the tapped tab and the list cross-fades, quick and even,
+    /// instead of the pill popping and rows springing into place.
+    private enum TABS {
+        static let fade = Animation.easeOut(duration: 0.22)
+    }
 
     private enum DELETE {
         /// Rows below a deleted one move up as it collapses (Mail-like).
@@ -74,11 +77,15 @@ struct PatientsView: View {
                     statsLine
                     if searching { searchField.transition(.opacity.combined(with: .move(edge: .top))) }
                     tabBar
-                    switch tab {
-                    case .inProgress: inProgressList
-                    case .new: newList
-                    case .seen: seenList
+                    VStack(alignment: .leading, spacing: 14) {
+                        switch tab {
+                        case .inProgress: inProgressList
+                        case .new: newList
+                        case .seen: seenList
+                        }
                     }
+                    .id(tab)
+                    .transition(.opacity)
                 }
 
                 if app.ward.isEmpty {
@@ -96,7 +103,7 @@ struct PatientsView: View {
             .padding(.bottom, 20)
             .animation(Springs.slide, value: system)
             .animation(Springs.slide, value: query)
-            .animation(Springs.slide, value: tab)
+            .animation(reduceMotion ? nil : TABS.fade, value: tab)
             .animation(Springs.slide, value: searching)
         }
         .scrollIndicators(.hidden)
@@ -500,7 +507,7 @@ struct PatientsView: View {
             ForEach(Tab.allCases, id: \.self) { t in
                 let on = t == tab
                 Button {
-                    withAnimation(reduceMotion ? nil : Springs.slide) { chosenTab = t }
+                    withAnimation(reduceMotion ? nil : TABS.fade) { chosenTab = t }
                 } label: {
                     HStack(spacing: 6) {
                         Text("\(t.title) \(count(t))")
@@ -514,12 +521,11 @@ struct PatientsView: View {
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
                     .frame(maxWidth: .infinity, minHeight: 44)
+                    // Always drawn, faded in and out, so selecting never pops the glass in.
                     .background {
-                        if on {
-                            Color.clear
-                                .glassFill(Theme.accentFill, in: RoundedRectangle(cornerRadius: 12, style: .continuous), interactive: false)
-                                .matchedGeometryEffect(id: "selected", in: tabPill)
-                        }
+                        Color.clear
+                            .glassFill(Theme.accentFill, in: RoundedRectangle(cornerRadius: 12, style: .continuous), interactive: false)
+                            .opacity(on ? 1 : 0)
                     }
                     .contentShape(Rectangle())
                 }
@@ -530,6 +536,7 @@ struct PatientsView: View {
         }
         .padding(4)
         .background(Theme.track, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .sensoryFeedback(.selection, trigger: tab)
     }
 
     @ViewBuilder private var inProgressList: some View {
