@@ -19,7 +19,7 @@ import { body, callerId, HttpError, json, serve } from "../_shared/http.ts";
 import { sql } from "../_shared/db.ts";
 import { BUNDLE_ID, lookUp, maskEmail, type Subscription } from "../_shared/appstore.ts";
 import { verifySignedTransaction } from "../_shared/appstorejws.ts";
-import { accountPlan, environmentCounts } from "../_shared/plan.ts";
+import { accountPlan, environmentCounts, planExempt } from "../_shared/plan.ts";
 import { tryQuota } from "../_shared/quota.ts";
 import { decideClaim } from "./rules.ts";
 
@@ -37,6 +37,9 @@ serve(async (req) => {
 /** The caller's access. `free_case` is always false since the hard paywall (2026-10-25); it stays
  *  in the reply for app builds that still read it. */
 async function status(userId: string) {
+  // Developer accounts (PLAN_EXEMPT_USER_IDS) open the app too, not just pass the server's checks,
+  // so a dev account can use TestFlight builds without buying.
+  if (planExempt(userId)) return { entitled: true, free_case: false };
   return { ...(await accountPlan(userId)), free_case: false };
 }
 
