@@ -263,7 +263,7 @@ struct OnboardingView: View {
     /// `-screen` names that open onboarding on a given page.
     private static let debugPages: [String: OnboardingPage] = [
         "onboarding": .schoolYear, "onboarding-year": .schoolYear, "onboarding-goal": .studyGoal,
-        "onboarding-practice": .practice, "onboarding-practice-other": .practice, "onboarding-blanked": .blanked, "onboarding-blanked-reply": .blankedReply,
+        "onboarding-practice": .practice, "onboarding-practice-other": .practice, "onboarding-blanked": .blanked, "onboarding-blanked-reply": .blankedReply, "onboarding-blanked-sometimes": .blankedReply, "onboarding-blanked-rarely": .blankedReply,
         "onboarding-exam": .examDate, "onboarding-countdown": .countdown, "onboarding-study-time": .studyTime,
         "onboarding-pace": .pace, "onboarding-setting-up": .settingUp, "onboarding-plan": .plan,
         "onboarding-confidence": .confidence, "onboarding-reality": .realityCheck,
@@ -280,6 +280,8 @@ struct OnboardingView: View {
         if target.rawValue > OnboardingPage.practice.rawValue { finished.insert(.practice) }
         if target.rawValue > OnboardingPage.confidence.rawValue, DiagnosisConfidence(stored: confidenceStored) == nil { confidenceStored = 6 }
         if target.rawValue > OnboardingPage.blanked.rawValue, blankStored.isEmpty { blankStored = BlankFrequency.often.rawValue }
+        if screen == "onboarding-blanked-sometimes" { blankStored = BlankFrequency.sometimes.rawValue }
+        if screen == "onboarding-blanked-rarely" { blankStored = BlankFrequency.rarely.rawValue }
         if target.rawValue > OnboardingPage.studyTime.rawValue, studyTimeStored.isEmpty { studyTimeStored = PracticeReminder.evening.rawValue }
         if target.rawValue > OnboardingPage.heardFrom.rawValue, heardStored.isEmpty { heardStored = HeardFrom.friend.rawValue }
         // Where-heard and the promise come after the account, so these screens start with the sample one.

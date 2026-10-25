@@ -28,17 +28,17 @@ enum BlankFrequency: String, CaseIterable, Identifiable {
     /// The next screen's headline and line.
     var replyHeadline: String {
         switch self {
-        case .often: "You're not alone."
-        case .sometimes: "Pressure does that."
-        case .rarely: "Nice. Let's keep it that way."
+        case .often: "You're in good company."
+        case .sometimes: "Nerves are normal."
+        case .rarely: "Sharp. Keep it that way."
         }
     }
 
     var replyLine: String {
         switch self {
-        case .often: "Knowing it and saying it are different skills. Rounds trains the second one."
-        case .sometimes: "The more cases you talk through, the less it happens."
-        case .rarely: "Recall stays sharp when you use it."
+        case .often: "Blanking is a recall problem, not a knowledge problem."
+        case .sometimes: "Every case you talk through makes the next one calmer."
+        case .rarely: "Recall fades without use. A case a day keeps it."
         }
     }
 
