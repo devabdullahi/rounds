@@ -1,8 +1,7 @@
 /* The page's one conversion: getting the app. The same badge sits in the hero and the closing
  * section, so wherever a reader stops scrolling, the last action they saw was this one.
- * Until Rounds is live on the App Store, STORE_URL stays null and the badge is a plain
- * "Coming soon" status, not a link. */
-export const STORE_URL = null;
+ * With STORE_URL null the badge is a plain "Coming soon" status, not a link. */
+export const STORE_URL = 'https://apps.apple.com/app/id6821500982';
 
 /* The Apple logo, as on Apple's own "Download on the App Store" badge. */
 function AppleLogo() {
