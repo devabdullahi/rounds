@@ -12,7 +12,7 @@ import { auditPrompt, candidateFlags, confirmWithUmls, type Flag, fixRequest, ty
 import { conceptOf } from "../_shared/terms.ts";
 import { patientName } from "../_shared/names.ts";
 import { backgroundForWriter, type PatientBackground } from "./background.ts";
-import { applyFixes, assemble, checkWriting, fixPrompt, leakSpots, neutralIds, type Voice, voicePrompt, type Writing } from "./writer.ts";
+import { applyFixes, assemble, checkWriting, fixPrompt, leakSpots, neutralIds, stillFlagged, type Voice, voicePrompt, withFactsFrom, type Writing } from "./writer.ts";
 import { buildSkeleton } from "./skeleton.ts";
 import { templateVoice } from "./template.ts";
 import { fingerprint, PLAN_TRIES } from "./fingerprint.ts";
@@ -115,12 +115,27 @@ export async function composeCase(
   // Facts the plan doesn't support are reworded in place: a few lines in seconds, where a full
   // rewrite takes 7–9 s and can invent something else.
   let writtenBy: string | undefined;
+  const plain = () => assemble(skeleton, templateVoice(profile, plan, skeleton, background, Math.random), name);
   if (writing && problems.length === 0) {
-    writing = await fixUnsupported(writing, await auditCase(writing, items, deadline), profile.slug, deadline);
+    const flags = await auditCase(writing, items, deadline);
+    const fixed = flags ? await fixUnsupported(writing, flags, profile.slug, deadline) : writing;
+    // Fail closed: facts the audit couldn't check, or that it flagged and the fix left as they were,
+    // take the template's wording, which comes only from the plan.
+    const unchecked = flags ? stillFlagged(writing, fixed, flags) : writing.facts.map((f) => f.id);
+    writing = fixed;
+    if (unchecked.length) {
+      console.warn("generate-case: unaudited facts take template wording", profile.slug, flags ? unchecked : "audit failed");
+      writing = withFactsFrom(writing, plain(), unchecked);
+      problems = checkWriting(writing, plan, terms);
+      if (problems.length) {
+        writing = await fixLeaks(writing, terms, deadline);
+        problems = checkWriting(writing, plan, terms);
+      }
+    }
   } else {
     // The writer failed: a plainer case from templates beats no case. Its words come only from the plan.
     console.warn("generate-case: writer failed, using templates", profile.slug, problems.slice(0, 3));
-    writing = assemble(skeleton, templateVoice(profile, plan, skeleton, background, Math.random), name);
+    writing = plain();
     writtenBy = "template";
     problems = checkWriting(writing, plan, terms);
     if (problems.length) {
@@ -158,9 +173,9 @@ function planItems(profile: Profile, plan: CasePlan, background: PatientBackgrou
   };
 }
 
-/** The fact audit (_shared/factaudit.ts): claims the plan doesn't support. Advisory if it can't
- *  run: a failed audit call never blocks a case. */
-async function auditCase(writing: Writing, items: PlanItems, deadline: number): Promise<Flag[]> {
+/** The fact audit (_shared/factaudit.ts): claims the plan doesn't support. Null when it can't run,
+ *  so the caller words every fact from the template instead of trusting unchecked writing. */
+async function auditCase(writing: Writing, items: PlanItems, deadline: number): Promise<Flag[] | null> {
   try {
     const reply = await completeJSON(FACT_AUDITOR, auditPrompt(items, writing.facts ?? []), 2500, {
       task: "audit", timeoutMs: timeoutFor(deadline, CHECK_TIMEOUT_MS),
@@ -181,7 +196,7 @@ async function auditCase(writing: Writing, items: PlanItems, deadline: number): 
     }
   } catch (error) {
     console.error("generate-case: fact audit failed", (error as Error).message.slice(0, 200));
-    return [];
+    return null;
   }
 }
 

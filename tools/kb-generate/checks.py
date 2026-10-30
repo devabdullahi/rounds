@@ -8,6 +8,7 @@ tool needs no third-party packages.
 from __future__ import annotations
 
 import json
+import math
 import re
 from pathlib import Path
 
@@ -252,6 +253,60 @@ def rule_errors(profile: dict) -> list[str]:
     errors += empty_string_errors(profile)
     errors += snomed_id_errors(profile)
     errors += direction_errors(profile)
+    errors += vital_errors(profile)
+    return errors
+
+
+# Outer limits a planned vital may reach, by age (same as supabase/functions/_shared/vitalcheck.ts):
+# past them the value is a wrong number, not a sick patient. Low blood pressures aren't bounded.
+VITAL_BOUNDS = [
+    (1, {"hr": (50, 230), "rr": (10, 100), "sbp": (0, 130), "dbp": (0, 90)}),
+    (18, {"hr": (25, 240), "rr": (8, 80), "sbp": (0, 230), "dbp": (0, 140)}),
+    (float("inf"), {"hr": (25, 250), "rr": (4, 60), "sbp": (0, 260), "dbp": (0, 160)}),
+]
+
+
+def _vital_for_age(vital: str, value: float, age: float) -> int:
+    """A profile's adult vital as generate-case plans it for a male patient of this age (casegen.ts forPatient)."""
+    value = _js_round(value)
+    test = TESTS.get(vital)
+    if age >= 18 or not test:
+        return value
+    band = next((b for b in test.get("pediatric", []) if age < b["max_age"]), None)
+    if not band:
+        return value
+    adult = test.get("male") or (test.get("low"), test.get("high"))
+    mid = lambda lo, hi: ((lo or 0) + (hi or 0)) / 2
+    return _js_round(value + mid(band["low"], band["high"]) - mid(*adult))
+
+
+def _js_round(x: float) -> int:
+    """Halves round up, as JavaScript's Math.round does (Python's round goes to even)."""
+    return math.floor(x + 0.5)
+
+
+def vital_errors(profile: dict) -> list[str]:
+    """Vital ranges that plan an impossible value at either end of the typical age range (a newborn's
+    own numbers, shifted for their age a second time), and diastolic ranges that reach the systolic."""
+    vitals = profile.get("vitals") or {}
+    age = (profile.get("patient") or {}).get("age") or {}
+    ages = list(dict.fromkeys(a for a in (age.get("typical_min"), age.get("typical_max")) if isinstance(a, (int, float))))
+    errors: list[str] = []
+    for vital, ranges in vitals.items():
+        for severity, r in (ranges or {}).items():
+            for a in ages:
+                limits = next(b for top, b in VITAL_BOUNDS if a < top).get(vital)
+                if not limits:
+                    continue
+                lo, hi = _vital_for_age(vital, r["min"], a), _vital_for_age(vital, r["max"], a)
+                if lo < limits[0] or hi > limits[1]:
+                    errors.append(f"vitals.{vital}.{severity}: {r['min']}–{r['max']} plans {lo}–{hi} at age {a:g}, outside "
+                                  f"{limits[0]}–{limits[1]}; write vital ranges for an adult (code adjusts them for a child's age)")
+                    break
+    for severity, s in (vitals.get("sbp") or {}).items():
+        d = (vitals.get("dbp") or {}).get(severity)
+        if d and (d["min"] >= s["min"] or d["max"] >= s["max"]):
+            errors.append(f"vitals.dbp.{severity}: reaches the systolic range")
     return errors
 
 

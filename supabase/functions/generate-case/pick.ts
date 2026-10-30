@@ -9,6 +9,7 @@ import { checkTerms, umlsKey } from "../_shared/terms.ts";
 import { buildLiveProfile } from "../_shared/liveprofile.ts";
 import { SYSTEM_PROMPT } from "../_shared/profilegen.ts";
 import { agesUsable } from "../_shared/agecheck.ts";
+import { vitalErrors } from "../_shared/vitalcheck.ts";
 import { timeoutFor } from "./compose.ts";
 import { nextCondition, saveProfile } from "./stores.ts";
 import type { Picked, Source } from "./types.ts";
@@ -40,9 +41,14 @@ export async function pickProfile(userId: string, focus: Focus, deadline: number
       console.warn("generate-case: stored profile has impossible ages, skipped", c.slug);
       continue;
     }
+    // A stored profile whose vitals plan impossible values (a newborn's own numbers, shifted for
+    // their age a second time) is rebuilt live, where vitals are written against adult normals,
+    // and the rebuild replaces it.
+    const broken = c.stored ? vitalErrors(c.stored) : [];
+    if (broken.length) console.warn("generate-case: stored profile has impossible vitals, rebuilding", c.slug, broken.slice(0, 3));
     await opts.onPick?.(c.slug);
     const topics = { clerkships: c.clerkships, organ_systems: c.organ_systems, synonyms: c.synonyms };
-    if (c.stored) return { profile: c.stored, ...topics, source: "stored" };
+    if (c.stored && !broken.length) return { profile: c.stored, ...topics, source: "stored" };
     // Out of content budget: say so now, rather than build a profile whose calls are all refused.
     await takeBudget("template");
     builds++;
@@ -57,7 +63,7 @@ export async function pickProfile(userId: string, focus: Focus, deadline: number
     });
     if (problems.length === 0) {
       // Saved even when time ran out, so the next tap doesn't build it again.
-      await saveProfile(c, profile as Profile);
+      await saveProfile(c, profile as Profile, broken.length > 0);
       if (Date.now() >= deadline) throw new HttpError(504, "patient generation timed out; try again");
       return { profile: profile as Profile, ...topics, source: "live" };
     }

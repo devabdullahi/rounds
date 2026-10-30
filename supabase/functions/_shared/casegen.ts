@@ -147,7 +147,7 @@ export function isPregnant(profile: Profile, sex: Sex, age: number): boolean {
 
 /** Vital ranges in profiles are written for adults. For a child, shift them by the gap between the
  *  child's and an adult's normal midpoint, so "severe tachycardia" stays severe for a toddler. */
-function forPatient(id: string, value: number, patient: Patient): number {
+export function forPatient(id: string, value: number, patient: Patient): number {
   if (patient.age >= 18 || id === "temp" || id === "spo2") return value;
   const test = TESTS.get(id);
   if (!test) return value;
