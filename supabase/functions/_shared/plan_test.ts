@@ -1,5 +1,5 @@
 import { assertEquals } from "jsr:@std/assert@1";
-import { entitled, environmentCounts, planCheckOff, planExempt, type PlanRow, toRecheck, toRefresh } from "./plan.ts";
+import { entitled, environmentCounts, FREE_CASES, freeAllows, type FreeUse, planCheckOff, planExempt, type PlanRow, toRecheck, toRefresh } from "./plan.ts";
 
 const now = new Date("2026-10-19T12:00:00Z");
 const later = new Date("2026-11-19T12:00:00Z");
@@ -61,3 +61,21 @@ Deno.test("the plan check is off only for an exact \"off\"", () => {
   for (const raw of ["", "on", "false", "0", "of", "disabled"]) assertEquals(planCheckOff(raw), false);
 });
 
+
+Deno.test("three free cases: written, played through their grades, then the gate closes", () => {
+  const cases: [written: number, waiting: number, unplayed: boolean, use: FreeUse, allowed: boolean][] = [
+    [0, 0, false, "open", true],
+    [2, 0, false, "write", true],
+    [3, 0, false, "write", false],
+    [2, 1, false, "ahead", false],
+    [1, 1, false, "ahead", true],
+    [3, 0, true, "open", true],    // the third patient is still to play
+    [3, 0, false, "open", false],  // all three graded: the paywall
+    [3, 0, false, "play", true],   // reviewing a graded free case still works
+    [8, 0, true, "play", false],   // a lapsed plan with more patients needs a plan again
+  ];
+  for (const [written, waiting, unplayed, use, allowed] of cases) {
+    assertEquals(freeAllows({ written, waiting, unplayed }, use), allowed, `${use} at ${written}+${waiting}`);
+  }
+  assertEquals(FREE_CASES, 3);
+});

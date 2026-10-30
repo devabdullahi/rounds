@@ -28,7 +28,7 @@
 import { body, callerId, HttpError, json, serve } from "../_shared/http.ts";
 import { currentModel } from "../_shared/llm.ts";
 import { type Focus, parseFocus } from "../_shared/focus.ts";
-import { requirePlan } from "../_shared/plan.ts";
+import { FREE_CASES, freeAllows, freeRecord, requireAccess } from "../_shared/plan.ts";
 import { refundQuota, takeQuota } from "../_shared/quota.ts";
 import { BudgetExceeded } from "../_shared/usage.ts";
 import { BACKGROUND_WRITER_MS, composeCase, NoNewPatient } from "./compose.ts";
@@ -56,12 +56,12 @@ declare const EdgeRuntime: { waitUntil(promise: Promise<unknown>): void };
 serve(async (req) => {
   const invoked = Date.now();
   const userId = await callerId(req);
-  // Writing patients needs a plan (hard paywall).
-  await requirePlan(userId);
   // `polling` is still sent by app builds that waited on background jobs; it no longer changes anything.
   const { focus: requested = "", setting = "", prepare } =
     await body<{ focus?: string; setting?: unknown; polling?: unknown; prepare?: unknown }>(req);
   const focus = parseFocus(requested, setting);
+  // Writing patients needs a plan, or one of the free cases (plan.ts).
+  const access = await requireAccess(userId, prepare === true ? "ahead" : "write");
 
   // Prepare only: write this focus's next case ahead, before the student asks for it, so even the
   // first patient in a topic opens instantly. Bounded by one job and one ready case per focus.
@@ -78,14 +78,16 @@ serve(async (req) => {
   // which could die with its worker; writing ahead is only a head start.
   let caseId: string;
   try {
+    // A free case is counted as it's saved, so two taps at once can't make a fourth.
+    const freeLimit = access === "free" ? FREE_CASES : undefined;
     let rows = await claimReady(userId, focus);
     try {
-      caseId = await insertCase(userId, rows ?? (rows = await writeNow(userId, focus)));
+      caseId = await insertCase(userId, rows ?? (rows = await writeNow(userId, focus)), freeLimit);
     } catch (error) {
       // A case written ahead can turn out identical to one written for this student since (409):
       // write a fresh one instead of losing the tap.
       if (!(error instanceof HttpError && error.status === 409)) throw error;
-      caseId = await insertCase(userId, await writeNow(userId, focus));
+      caseId = await insertCase(userId, await writeNow(userId, focus), freeLimit);
     }
   } catch (error) {
     // No patient came of it: the tap doesn't count against the day.
@@ -93,7 +95,8 @@ serve(async (req) => {
     throw error;
   }
   // Queue the next case after this response; the next start can take it as soon as it's ready.
-  queueGeneration(userId, focus, invoked);
+  // Without a plan, only while a free case is left to write it for.
+  if (access === "paid" || freeAllows(await freeRecord(userId), "ahead")) queueGeneration(userId, focus, invoked);
   return json({ case_id: caseId, model: currentModel("case") });
 });
 

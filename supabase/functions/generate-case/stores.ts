@@ -165,11 +165,19 @@ export async function finishGeneration(
 
 /** Saves a case for the student under a fresh bed code, with its fingerprint. The fingerprint's key
  *  turns down an identical patient written for the same student at the same moment. */
-export async function insertCase(userId: string, { case: c, content: k, fingerprint }: CaseRows): Promise<string> {
+export async function insertCase(userId: string, { case: c, content: k, fingerprint }: CaseRows, freeLimit?: number): Promise<string> {
   for (let attempt = 0; attempt < 5; attempt++) {
     const id = bedCode();
     try {
       await sql.begin(async (tx) => {
+        // A free case: one save at a time per student, and none past the limit (plan.ts FREE_CASES).
+        if (freeLimit !== undefined) {
+          await tx`select pg_advisory_xact_lock(hashtextextended(${userId}, 0))`;
+          const [{ written }] = await tx<{ written: number }[]>`
+            select greatest((select count(*)::int from public.cases where created_by = ${userId}),
+                            (select count(*)::int from private.patient_fingerprints where user_id = ${userId})) as written`;
+          if (written >= freeLimit) throw new HttpError(402, "an active plan is required");
+        }
         await tx`
           insert into public.cases (id, specialty, patient_name, age, sex, quote, complaint, vitals, minutes,
             published, created_by, setting, demeanor, organ_system, clerkship, suggested, maneuvers, test_menu, key_history)
