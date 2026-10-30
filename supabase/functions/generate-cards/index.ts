@@ -21,6 +21,7 @@ import { CARD_WRITER, NOTES_CARD_WRITER } from "../_shared/prompts.ts";
 import { requirePlan } from "../_shared/plan.ts";
 import { withQuota } from "../_shared/quota.ts";
 import { deckTitle, mentionsSource } from "../_shared/notescards.ts";
+import { cardProblems } from "../_shared/cardcheck.ts";
 
 type Request = { topics?: string[]; count?: number; include_misses?: boolean; deck?: string; notes?: string; mistakes?: boolean };
 type Card = { topic: string; front: string; back: string; source: string };
@@ -136,10 +137,14 @@ async function writeCards(
         c.front.length <= 400 && c.back.length <= 300 && sources.has(c.source)
       );
       // From notes, a card that talks about the notes instead of the topic is dropped.
-      cards = (fromNotes ? usable.filter((c) => !mentionsSource(c.front) && !mentionsSource(c.back)) : usable).slice(0, count);
-      if (fromNotes && cards.length < usable.length) {
-        problems.push(`${usable.length - cards.length} cards mentioned the notes, a lecture or slides; ask about the topic itself`);
+      const onTopic = fromNotes ? usable.filter((c) => !mentionsSource(c.front) && !mentionsSource(c.back)) : usable;
+      if (onTopic.length < usable.length) {
+        problems.push(`${usable.length - onTopic.length} cards mentioned the notes, a lecture or slides; ask about the topic itself`);
       }
+      // A confusingly worded card is dropped too, and the writer told why.
+      const unclear = onTopic.map((c) => ({ c, why: cardProblems(c) })).filter((x) => x.why.length);
+      for (const { c, why } of unclear) problems.push(`"${c.front.slice(0, 80)}" ${why.join(" and ")}`);
+      cards = onTopic.filter((c) => !unclear.some((x) => x.c === c)).slice(0, count);
       if (cards.length < Math.max(1, Math.ceil(count * minShare))) problems.push(`only ${cards.length} usable cards; every card needs front, back and a source from the list`);
     } catch (error) {
       unreadable = true;

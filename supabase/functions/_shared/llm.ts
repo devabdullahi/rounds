@@ -34,17 +34,19 @@ const REASONING_BUDGET: Record<Exclude<Effort, "off">, number> = { low: 2000, me
 
 /** Per task, as the user split it (2026-10-19): OpenAI for everything the student talks to or is
  *  judged by, DeepSeek V4.1 Flash for generating content.
- *  - GPT-6 Luna, reasoning off: patient chat and the reply check (~1.6 s a turn; voice runs on them).
+ *  - GPT-6 Luna, reasoning off: patient chat and the reply check (~1.6 s a turn; voice runs on them),
+ *    and flashcards (2026-10-30: Flash kept adding unasked management to answers; Luna follows the
+ *    wording rules, ~9 s a 20-card deck).
  *  - GPT-6.1 Sol: grading and condition profiles, where judgment and medical recall matter. It has
  *    no "none" effort, so its tasks always name one.
- *  - DeepSeek Flash, thinking off: flashcards and live profile templates.
+ *  - DeepSeek Flash, thinking off: live profile templates.
  *  - GPT-5.4 mini, reasoning off: writing each case (see `case` below). */
 const OPENAI_TASKS: Record<Task, Setting> = {
   patient: { model: "gpt-6-luna", effort: "off" },
   check: { model: "gpt-6-luna", effort: "off" },
   // The fact audit of a written case: the same model as the reply check, but content spend (usage.ts).
   audit: { model: "gpt-6-luna", effort: "off" },
-  cards: { provider: "deepseek", model: "deepseek-flash", effort: "off" },
+  cards: { model: "gpt-6-luna", effort: "off" },
   // Writing each patient (the voice, leak and fact fixes): GPT-5.4 mini, reasoning off. Measured
   // 2026-10-19 on 25 conditions: 9.2 s average (DeepSeek Flash 8–10 s), 2 leaks in 25 (fixed in code
   // paths), as natural; OpenAI stays reachable where networks block DeepSeek.
