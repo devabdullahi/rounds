@@ -6,6 +6,7 @@
 import assets from "./profilegen_assets.json" with { type: "json" };
 import ranges from "./reference_ranges.json" with { type: "json" };
 import labDirections from "./lab_directions.json" with { type: "json" };
+import { vitalErrors } from "./vitalcheck.ts";
 
 // deno-lint-ignore no-explicit-any
 type Json = any;
@@ -381,7 +382,7 @@ export function ruleErrors(profile: Json): string[] {
     errors.push("differential: no must-not-miss alternative; every case should have one to rule out");
   }
   errors.push(...ageErrors(profile), ...duplicateErrors(profile), ...emptyStringErrors(profile), ...snomedIdErrors(profile));
-  errors.push(...directionErrors(profile));
+  errors.push(...directionErrors(profile), ...vitalErrors(profile));
   return errors;
 }
 

@@ -18,7 +18,6 @@ import { autoFix, labNormal, repair, ruleErrors, sectionErrors, sectionsOutput, 
 import { type Level, levelRange, LEVELS, rangeLevel, VITAL_NORMALS } from "./levels.ts";
 import { type Family, familiesOf, withFamilyNotes } from "./families.ts";
 import { ageUnitErrors } from "./agecheck.ts";
-import { vitalErrors } from "./vitalcheck.ts";
 
 // deno-lint-ignore no-explicit-any
 type Json = any;
@@ -286,7 +285,7 @@ export async function buildLiveProfile(
   let blocking = results.flatMap((r) => r.blocking);
   if (blocking.length === 0) {
     const byStage = new Map<number, string[]>();
-    for (const e of [...ruleErrors(profile), ...ageUnitErrors(profile), ...vitalErrors(profile)]) byStage.set(stageOf(e), [...(byStage.get(stageOf(e)) ?? []), e]);
+    for (const e of [...ruleErrors(profile), ...ageUnitErrors(profile)]) byStage.set(stageOf(e), [...(byStage.get(stageOf(e)) ?? []), e]);
     byStage.delete(-1);
     if (byStage.size) {
       await Promise.all([...byStage.entries()].map(async ([stage, errors]) => {
@@ -304,7 +303,7 @@ export async function buildLiveProfile(
         return [...missing, ...Object.keys(output).flatMap((k) => sectionErrors(k, output[k]))];
       });
       // As before, a rule error no section owns can't be rewritten, so it doesn't block.
-      if (blocking.length === 0) blocking = [...ruleErrors(profile), ...ageUnitErrors(profile), ...vitalErrors(profile)].filter((e) => stageOf(e) >= 0);
+      if (blocking.length === 0) blocking = [...ruleErrors(profile), ...ageUnitErrors(profile)].filter((e) => stageOf(e) >= 0);
     }
   }
   const unverified = results.flatMap((r) => r.terms);
