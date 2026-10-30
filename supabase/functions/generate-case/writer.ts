@@ -177,6 +177,24 @@ export function applyFixes(w: Writing, fixes: { where: string; text: string }[])
   return out;
 }
 
+/** Facts the audit flagged that the fix left word for word: the unsupported claim is still there. */
+export function stillFlagged(before: Writing, after: Writing, flags: { fact: string }[]): string[] {
+  const reply = (w: Writing, id: string) => w.facts.find((f) => f.id === id)?.reply;
+  return [...new Set(flags.map((f) => f.fact))].filter((id) => reply(before, id) !== undefined && reply(before, id) === reply(after, id));
+}
+
+/** The writing with the given facts' label and reply taken from `plain` (the template's wording). */
+export function withFactsFrom(w: Writing, plain: Writing, ids: string[]): Writing {
+  const swap = new Set(ids);
+  return {
+    ...w,
+    facts: w.facts.map((f) => {
+      const p = swap.has(f.id) ? plain.facts.find((x) => x.id === f.id) : undefined;
+      return p ? { ...f, label: p.label, reply: p.reply } : f;
+    }),
+  };
+}
+
 /** Replaces the writer's descriptive ids ("diffuse_rhonchi") with neutral ones, since the app
  *  receives maneuver ids and suggested-question fact ids and a telling id would hint at the answer. */
 export function neutralIds(w: Writing): Writing {

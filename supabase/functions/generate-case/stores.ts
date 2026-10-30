@@ -63,9 +63,9 @@ export async function studentHistory(userId: string): Promise<History> {
 }
 
 /** Keeps a live profile that passed its checks, so the condition's next case starts from it. It
- *  goes to clinician review like any new profile, and never replaces a stored one. A failed save
- *  fails the case: its content points at this row. */
-export async function saveProfile(c: Condition, profile: Profile): Promise<void> {
+ *  goes to review like any new profile, and replaces a stored one only when `replace` says the
+ *  stored one failed its checks. A failed save fails the case: its content points at this row. */
+export async function saveProfile(c: Condition, profile: Profile, replace = false): Promise<void> {
   const t = profile.triage;
   // deno-lint-ignore no-explicit-any
   const json = sql.json(profile as any);
@@ -73,7 +73,9 @@ export async function saveProfile(c: Condition, profile: Profile): Promise<void>
     await sql`
       insert into private.condition_profiles (slug, name, primary_clerkship, clerkships, organ_systems, validation, review, profile)
       values (${c.slug}, ${t.name}, ${t.primary_clerkship}, ${c.clerkships}, ${c.organ_systems}, 'passed', 'pending', ${json})
-      on conflict (slug) do nothing`;
+      on conflict (slug) do update set profile = excluded.profile, name = excluded.name, validation = 'passed',
+        review = 'pending', updated_at = now()
+      where ${replace}`;
   } catch (error) {
     console.error("generate-case: saving the live profile failed", c.slug, error);
     throw new HttpError(503, "Couldn't prepare a patient just now. Tap to try again.");

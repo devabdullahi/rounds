@@ -5,7 +5,7 @@ from __future__ import annotations
 import unittest
 
 from checks import (age_errors, direction_errors, duplicate_errors, empty_string_errors, repair, rule_errors,
-                    snomed_id_errors, workup_key)
+                    snomed_id_errors, vital_errors, workup_key)
 
 
 def ranges(*mids: tuple[str, float, float]) -> dict:
@@ -130,6 +130,34 @@ class DirectionTests(unittest.TestCase):
             with self.subTest(slug=slug, test=test):
                 profile = {"slug": slug, "labs": [{"test_id": test, "ranges": r}]}
                 self.assertEqual(direction_errors(profile), expected)
+
+
+class VitalErrorsTests(unittest.TestCase):
+    """Same cases as supabase/functions/_shared/vitalcheck_test.ts."""
+
+    @staticmethod
+    def profile(typical_min: float, typical_max: float, vitals: dict) -> dict:
+        return {"patient": {"age": {"typical_min": typical_min, "typical_max": typical_max}}, "vitals": vitals}
+
+    def test_newborn_numbers_shifted_twice_are_caught(self):
+        errors = vital_errors(self.profile(0, 0, {"hr": {"severe": {"min": 160, "max": 200}}, "rr": {"severe": {"min": 80, "max": 120}}}))
+        self.assertEqual([e.split(":")[0] for e in errors], ["vitals.hr.severe", "vitals.rr.severe"])
+
+    def test_baby_breathing_rate_for_an_adult_is_caught(self):
+        self.assertEqual(len(vital_errors(self.profile(0, 90, {"rr": {"critical": {"min": 70, "max": 100}}}))), 1)
+
+    def test_adult_referenced_ranges_pass(self):
+        for p in [
+            self.profile(0, 1, {"hr": {"severe": {"min": 110, "max": 140}}, "rr": {"severe": {"min": 24, "max": 34}}}),
+            self.profile(55, 90, {"hr": {"critical": {"min": 150, "max": 220}}}),
+            self.profile(1, 90, {"sbp": {"critical": {"min": 50, "max": 90}}, "dbp": {"critical": {"min": 30, "max": 60}}}),
+        ]:
+            with self.subTest(p=p):
+                self.assertEqual(vital_errors(p), [])
+
+    def test_diastolic_reaching_systolic_is_caught(self):
+        p = self.profile(30, 60, {"sbp": {"severe": {"min": 90, "max": 110}}, "dbp": {"severe": {"min": 60, "max": 115}}})
+        self.assertEqual(vital_errors(p), ["vitals.dbp.severe: reaches the systolic range"])
 
 
 if __name__ == "__main__":

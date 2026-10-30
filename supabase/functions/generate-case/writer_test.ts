@@ -1,7 +1,7 @@
 import { assert, assertEquals } from "jsr:@std/assert@1";
 import { leakTerms, planCase, type Profile } from "../_shared/casegen.ts";
 import { seeded } from "../_shared/labs.ts";
-import { applyFixes, buildRubric, checkWriting, fixPrompt, leakSpots, neutralIds, type Writing } from "./writer.ts";
+import { applyFixes, buildRubric, checkWriting, fixPrompt, leakSpots, neutralIds, stillFlagged, withFactsFrom, type Writing } from "./writer.ts";
 import { skeletonFacts } from "./skeleton.ts";
 
 const dir = new URL("../../../knowledge-base/profiles/", import.meta.url);
@@ -160,4 +160,24 @@ Deno.test("a leak fixed by rewording passes the checks again", () => {
   assert(checkWriting(w, plan, terms).some((p) => p.startsWith("reveals the diagnosis")));
   const { where } = leakSpots(w, terms);
   assertEquals(checkWriting(applyFixes(w, where.map((at) => ({ where: at, text: "My sister had something similar." }))), plan, terms), []);
+});
+
+Deno.test("a flagged fact the fix left word for word is still flagged; a reworded one isn't", () => {
+  const before = goodWriting();
+  const after = applyFixes(before, [{ where: "fact fact_1 reply", text: "It started yesterday." }]);
+  const flags = [{ fact: "fact_1" }, { fact: "fact_2" }, { fact: "fact_2" }, { fact: "no_such_fact" }];
+  assertEquals(stillFlagged(before, after, flags), ["fact_2"]);
+});
+
+Deno.test("swapped facts take the plain wording; the rest and their grading fields stay", () => {
+  const w = goodWriting();
+  const plain = structuredClone(w);
+  plain.facts = plain.facts.map((f) => ({ ...f, label: `plain ${f.id}`, reply: "I have a cough.", importance: "optional" as const }));
+  const out = withFactsFrom(w, plain, ["fact_0"]);
+  assertEquals(out.facts[0].reply, "I have a cough.");
+  assertEquals(out.facts[0].label, "plain fact_0");
+  assertEquals(out.facts[0].importance, w.facts[0].importance);
+  assertEquals(out.facts[0].screens_for, w.facts[0].screens_for);
+  assertEquals(out.facts.slice(1), w.facts.slice(1));
+  assertEquals(w.facts[0].reply, "It started a couple of days ago.");
 });
