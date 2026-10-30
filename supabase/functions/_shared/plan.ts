@@ -1,7 +1,9 @@
 // Who has a paid plan right now. The app's paywall is only the face of it: every model-backed action
 // calls requirePlan, so a modified app or a scripted guest account can't spend model calls unpaid.
 //
-// Hard paywall (2026-10-25): no free case and no free trial; every model-backed action needs a plan.
+// Three free cases (2026-10-30): an account without a plan gets FREE_CASES patients, played through
+// their grades (requireAccess). Counted from records deleting patients can't reset, so the free cases
+// can't be earned again. Flashcards still need a plan.
 //
 // Our record of a subscription is refreshed from Apple when it may be wrong: a lapsed one (it may have
 // renewed) and a paid-up one we haven't checked for a day (it may have been refunded).
@@ -102,6 +104,47 @@ export async function accountPlan(userId: string): Promise<{ entitled: boolean; 
   const live = rows.filter((r) => entitled([r], now));
   if (!live.length) return { entitled: false };
   return { entitled: true, expires_at: live.map((r) => r.expires_at).sort((a, b) => b.getTime() - a.getTime())[0] };
+}
+
+/** Patients an account without a plan may have written for it. */
+export const FREE_CASES = 3;
+
+/** What the free cases have been used for. `written`: patients made for the account, from records
+ *  delete_patients() leaves alone. `waiting`: cases written ahead and not yet taken. `unplayed`: one
+ *  of its patients has no submitted attempt yet. */
+export type FreeRecord = { written: number; waiting: number; unplayed: boolean };
+
+/** What an account without a plan is doing: opening the app, playing one of its patients (any
+ *  case-session action), writing a new one, or writing one ahead. */
+export type FreeUse = "open" | "play" | "write" | "ahead";
+
+/** Whether the free cases allow it. Pure, so the rule is tested. Playing is allowed for an account
+ *  that never went past the free cases (a lapsed plan with more patients needs a plan again). */
+export function freeAllows(r: FreeRecord, use: FreeUse): boolean {
+  switch (use) {
+    case "open": return r.written < FREE_CASES || r.unplayed;
+    case "play": return r.written <= FREE_CASES;
+    case "write": return r.written < FREE_CASES;
+    case "ahead": return r.written + r.waiting < FREE_CASES;
+  }
+}
+
+/** The caller's free-case record. */
+export async function freeRecord(userId: string): Promise<FreeRecord> {
+  const [r] = await sql<FreeRecord[]>`
+    select greatest((select count(*)::int from public.cases where created_by = ${userId}),
+                    (select count(*)::int from private.patient_fingerprints where user_id = ${userId})) as written,
+      (select count(*)::int from private.ready_cases where user_id = ${userId}) as waiting,
+      exists (select 1 from public.cases c where c.created_by = ${userId}
+              and not exists (select 1 from public.attempts a where a.case_id = c.id and a.submitted_at is not null)) as unplayed`;
+  return r;
+}
+
+/** "paid" with a plan, "free" when the free cases allow `use`, else a 402. Run it before taking any quota. */
+export async function requireAccess(userId: string, use: FreeUse): Promise<"paid" | "free"> {
+  if (planExempt(userId) || (await accountPlan(userId)).entitled) return "paid";
+  if (freeAllows(await freeRecord(userId), use)) return "free";
+  throw new HttpError(402, "an active plan is required");
 }
 
 /** Refuses with a 402 unless the caller has a paid plan. Run it before taking any quota. */

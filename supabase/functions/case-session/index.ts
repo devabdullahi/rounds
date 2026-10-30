@@ -67,7 +67,7 @@ import { closeCalls } from "../_shared/voicecalls.ts";
 import { liveSessionPrompt, voiceTurnPrompt } from "../_shared/patientprompt.ts";
 import { recordUsage, takeBudget } from "../_shared/usage.ts";
 import { speak, speakStream, STREAM_SAMPLE_RATE, transcribe } from "../_shared/speech.ts";
-import { requirePlan } from "../_shared/plan.ts";
+import { requireAccess } from "../_shared/plan.ts";
 import { refundQuota, withQuota } from "../_shared/quota.ts";
 import { naturalDenial, naturalRefusal, talksAboutScript } from "./refusal.ts";
 import { ReplyGate } from "./stream.ts";
@@ -102,8 +102,8 @@ const GRACE_MINUTES = 2;
 
 serve(async (req) => {
   const userId = await callerId(req);
-  // Cases are part of the paid plan (hard paywall); the app's paywall is only the face of this check.
-  await requirePlan(userId);
+  // Cases need a plan or one of the free cases; the app's paywall is only the face of this check.
+  await requireAccess(userId, "play");
   const input = await body<Record<string, unknown>>(req);
   switch (input.action) {
     case "start": return json(await start(userId, input));

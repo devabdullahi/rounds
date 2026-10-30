@@ -11,7 +11,7 @@
 //            produce it, so knowing a transaction id alone can't take someone's plan.
 //   status  {}                → {entitled, expires_at?, free_case}  the caller's own access, on any
 //           device, refreshed from Apple where our record may be stale (_shared/plan.ts). `free_case`:
-//           no plan, but the one free graded case is still unused, so the app opens for it.
+//           no plan, but a free case is left to write or still to play, so the app opens for it.
 //
 // Verify the caller → ask Apple (never trust the app's word on a purchase) → write with the service
 // role. Students can read their own rows (RLS) but never write them.
@@ -19,7 +19,7 @@ import { body, callerId, HttpError, json, serve } from "../_shared/http.ts";
 import { sql } from "../_shared/db.ts";
 import { BUNDLE_ID, lookUp, maskEmail, type Subscription } from "../_shared/appstore.ts";
 import { verifySignedTransaction } from "../_shared/appstorejws.ts";
-import { accountPlan, environmentCounts, planExempt } from "../_shared/plan.ts";
+import { accountPlan, environmentCounts, freeAllows, freeRecord, planExempt } from "../_shared/plan.ts";
 import { tryQuota } from "../_shared/quota.ts";
 import { decideClaim } from "./rules.ts";
 
@@ -34,13 +34,14 @@ serve(async (req) => {
   }
 });
 
-/** The caller's access. `free_case` is always false since the hard paywall (2026-10-25); it stays
- *  in the reply for app builds that still read it. */
+/** The caller's access, plus whether the free cases still open the app without a plan. The app
+ *  checks again after each graded case, so the paywall shows right after the last free one. */
 async function status(userId: string) {
   // Developer accounts (PLAN_EXEMPT_USER_IDS) open the app too, not just pass the server's checks,
   // so a dev account can use TestFlight builds without buying.
   if (planExempt(userId)) return { entitled: true, free_case: false };
-  return { ...(await accountPlan(userId)), free_case: false };
+  const plan = await accountPlan(userId);
+  return { ...plan, free_case: !plan.entitled && freeAllows(await freeRecord(userId), "open") };
 }
 
 /** Apple's record of the purchase, or a 4xx/5xx a student can act on. */
