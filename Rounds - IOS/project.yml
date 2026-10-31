@@ -30,8 +30,8 @@ configFiles:
 settings:
   base:
     SWIFT_VERSION: "5.0"
-    MARKETING_VERSION: "0.1.0"
-    CURRENT_PROJECT_VERSION: "26"
+    MARKETING_VERSION: "1.1"
+    CURRENT_PROJECT_VERSION: "38"
 targets:
   Rounds:
     type: application
@@ -50,6 +50,9 @@ targets:
     info:
       path: Rounds/Info.plist
       properties:
+        # The App Store version and build come from MARKETING_VERSION / CURRENT_PROJECT_VERSION above.
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         UILaunchScreen:
           UIColorName: LaunchBackground
         # Only standard HTTPS: skips App Store Connect's export-compliance question on every build.
