@@ -38,6 +38,12 @@ struct RootView: View {
         return entitled
     }
 
+    /// Without a plan, asks the server again whether free cases are left; a plan never needs it.
+    private func recheckFreeCases() {
+        guard paywall.isEntitled != true else { return }
+        Task { await paywall.refresh() }
+    }
+
     var body: some View {
         ZStack {
             if signedIn {
@@ -70,10 +76,9 @@ struct RootView: View {
             welcomeAboard
         }
         // Leaving a graded case may have used up the last free one (the third): check, so the paywall shows now.
-        .onChange(of: app.casesFinished) { _, _ in
-            guard paywall.isEntitled != true else { return }
-            Task { await paywall.refresh() }
-        }
+        .onChange(of: app.casesFinished) { _, _ in recheckFreeCases() }
+        // So may deleting the last unplayed patient.
+        .onChange(of: app.patientsDeleted) { _, _ in recheckFreeCases() }
         // The free cases are used up and the student asked for another patient: offer plans.
         .onChange(of: app.planNeeded) { _, needed in
             guard needed else { return }
