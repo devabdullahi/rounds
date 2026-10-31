@@ -24,6 +24,23 @@ enum SuperwallService {
         Superwall.configure(apiKey: key, options: options)
     }
 
+    /// Shows the gate's paywall over whatever is on screen, for a student who still has free
+    /// patients to play but asked for one more. False when Superwall isn't running.
+    /// `bought` runs after a purchase or a restore.
+    @MainActor static func presentPlans(bought: @escaping @MainActor (_ restored: Bool) -> Void) -> Bool {
+        guard Superwall.isInitialized else { return false }
+        let handler = PaywallPresentationHandler()
+        handler.onDismiss { _, result in
+            switch result {
+            case .purchased: Task { @MainActor in bought(false) }
+            case .restored: Task { @MainActor in bought(true) }
+            case .declined: break
+            }
+        }
+        Superwall.shared.register(placement: gatePlacement, handler: handler)
+        return true
+    }
+
     /// Opens Superwall's own links (on-device paywall previews from the dashboard, which arrive on
     /// the rounds:// scheme). False for any other link, which the app handles itself.
     @MainActor static func handle(_ url: URL) -> Bool {

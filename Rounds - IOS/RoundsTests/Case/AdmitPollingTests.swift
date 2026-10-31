@@ -30,6 +30,17 @@ struct AdmitPollingTests {
         #expect(await service.loadedBeds == ["B7"])
     }
 
+    @Test func usedUpFreeCasesOfferPlansInsteadOfAnError() async {
+        let service = ScriptedCases(replies: [], needsPlan: true)
+        let app = AppState(cases: service, cards: nil)
+
+        await app.admit(focus: FocusSelection())
+
+        #expect(app.planNeeded)
+        #expect(app.problem == nil)
+        #expect(!app.isAdmitting)
+    }
+
     @Test func queuingAdmitsWithoutOpeningTheCase() async {
         let service = ScriptedCases(replies: [.admitted(bed: "C3")])
         let app = AppState(cases: service, cards: nil)
@@ -122,6 +133,37 @@ struct StockWardTests {
     }
 }
 
+/// Deleting patients: a delete the server took makes the paywall check again (it may have used up
+/// the free cases); a failed one doesn't.
+@MainActor
+struct DeletePatientsRecheckTests {
+    /// Waits for the delete, which runs in its own task, to report back.
+    private func settle(_ app: AppState) async {
+        for _ in 0..<200 where app.patientsDeleted == 0 && app.problem == nil {
+            try? await Task.sleep(for: .milliseconds(5))
+        }
+    }
+
+    @Test func aDeleteTheServerTookAsksForARecheck() async {
+        let app = AppState(cases: ScriptedCases(replies: []), cards: nil)
+
+        app.deletePatients(["A1"])
+        await settle(app)
+
+        #expect(app.patientsDeleted == 1)
+    }
+
+    @Test func aFailedDeleteDoesNot() async {
+        let app = AppState(cases: ScriptedCases(replies: [], deleteFails: true), cards: nil)
+
+        app.deletePatients(["A1"])
+        await settle(app)
+
+        #expect(app.patientsDeleted == 0)
+        #expect(app.problem != nil)
+    }
+}
+
 /// A case service that answers `admit` from a script and records which beds were opened.
 private actor ScriptedCases: CaseService {
     func rating() async throws -> Int? { nil }
@@ -132,10 +174,15 @@ private actor ScriptedCases: CaseService {
     private(set) var prepared: [String] = []
     private(set) var admittedTopics: [String] = []
     private let wardPatients: [WardPatient]
+    /// Refuses every admit the way the server does once the free cases are used up (402).
+    private let needsPlan: Bool
+    private let deleteFails: Bool
 
-    init(replies: [AdmitOutcome], ward: [WardPatient] = []) {
+    init(replies: [AdmitOutcome], ward: [WardPatient] = [], needsPlan: Bool = false, deleteFails: Bool = false) {
         self.replies = replies
         self.wardPatients = ward
+        self.needsPlan = needsPlan
+        self.deleteFails = deleteFails
     }
 
     struct Unused: Error {}
@@ -147,6 +194,7 @@ private actor ScriptedCases: CaseService {
 
     func admit(focus: StudyFocus, setting: CareSetting, polling: Bool) async throws -> AdmitOutcome {
         admitCalls += 1
+        if needsPlan { throw PlanRequiredError() }
         admittedTopics.append(focus.stored)
         pollingFlags.append(polling)
         return replies.isEmpty ? .preparing : replies.removeFirst()
@@ -164,7 +212,10 @@ private actor ScriptedCases: CaseService {
     func speakLatestReply(attempt: String) async throws -> Data { throw Unused() }
     func streamLatestReply(attempt: String) async throws -> AsyncThrowingStream<Data, Error> { throw Unused() }
     func askAloud(attempt: String, question: String) async throws -> SpokenAnswer { throw Unused() }
-    func deletePatients(_ beds: [String]?) async throws -> Int { throw Unused() }
+    func deletePatients(_ beds: [String]?) async throws -> Int {
+        if deleteFails { throw Unused() }
+        return beds?.count ?? wardPatients.count
+    }
     func start(bed: String, examMode: Bool, timeLimitMinutes: Int?) async throws -> AttemptStart { throw Unused() }
     func resume(bed: String) async throws -> ResumedAttempt? { nil }
     func ask(attempt: String, question: String) async throws -> PatientAnswer { throw Unused() }

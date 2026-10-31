@@ -149,6 +149,16 @@ final class PaywallModel {
         }
     }
 
+    /// Offers plans without closing the app (free patients may still be waiting): Superwall's
+    /// paywall over the current screen. A purchase opens up like one from the gate. False when the
+    /// paywall can't show.
+    func offerPlans() -> Bool {
+        SuperwallService.presentPlans { [weak self] restored in
+            guard let self else { return }
+            Task { if restored { await self.refresh() } else { await self.purchased() } }
+        }
+    }
+
     /// The welcome after a purchase has been shown.
     func welcomed() { justBought = false }
 

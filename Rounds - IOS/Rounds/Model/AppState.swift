@@ -31,6 +31,9 @@ final class AppState {
     /// The focus the ward was last stocked for after onboarding, so it's stocked once per focus.
     private var stockedFocus: String?
     var problem: String?
+    /// Set when the server refused a new patient because the free cases are used up; the root view
+    /// offers plans (Superwall's paywall) and clears it. Patients already written stay playable.
+    var planNeeded = false
 
     var misses: [String: [Miss]] { Dictionary(uniqueKeysWithValues: ward.map { ($0.id, $0.misses) }) }
     var lastScores: [String: Int] { ward.reduce(into: [:]) { $0[$1.id] = $1.lastScore } }
@@ -246,6 +249,8 @@ final class AppState {
             }
         } catch is CancellationError {
             return
+        } catch is PlanRequiredError {
+            planNeeded = true
         } catch {
             problem = error.localizedDescription
         }
@@ -342,6 +347,8 @@ final class AppState {
             // opens, just from the start.
             if let left = try? await cases.resume(bed: bed) { session.restore(left) }
             activeCase = session
+        } catch is PlanRequiredError {
+            planNeeded = true
         } catch {
             problem = error.localizedDescription
         }
@@ -358,6 +365,9 @@ final class AppState {
     /// Closes a graded case and lands on the ward, or on a mistakes deck when the student asked for one.
     /// Bumped each time a graded case is left, so the paywall can check again: a free case ends here.
     private(set) var casesFinished = 0
+    /// Bumped after patients are deleted on the server, so the paywall can check again: without a
+    /// plan, deleting the last unplayed free patient uses up the free cases (they never come back).
+    private(set) var patientsDeleted = 0
     /// Set once, after the student's first graded case (and the reminder prompt it brings): the
     /// root view then asks for an App Store rating and clears it. Apple decides whether the sheet shows.
     private(set) var ratingDue = false
@@ -534,6 +544,7 @@ final class AppState {
         guard let cases else { return }
         do {
             _ = try await cases.deletePatients(beds.map { Array($0) })
+            patientsDeleted += 1
         } catch {
             let message = error.localizedDescription
             await refresh()   // clears `problem` on success, so set it after
