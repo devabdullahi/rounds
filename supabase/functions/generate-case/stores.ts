@@ -3,6 +3,7 @@
 // or talk only to models.
 import { sql } from "../_shared/db.ts";
 import { HttpError } from "../_shared/http.ts";
+import { FREE_CASES_USED } from "../_shared/plan.ts";
 import type { CasePlan, Profile } from "../_shared/casegen.ts";
 import { type Focus, settingTags } from "../_shared/focus.ts";
 import { MAX_AGE_GAP, type PatientBackground, pickBackground } from "./background.ts";
@@ -176,7 +177,7 @@ export async function insertCase(userId: string, { case: c, content: k, fingerpr
           const [{ written }] = await tx<{ written: number }[]>`
             select greatest((select count(*)::int from public.cases where created_by = ${userId}),
                             (select count(*)::int from private.patient_fingerprints where user_id = ${userId})) as written`;
-          if (written >= freeLimit) throw new HttpError(402, "an active plan is required");
+          if (written >= freeLimit) throw new HttpError(402, FREE_CASES_USED);
         }
         await tx`
           insert into public.cases (id, specialty, patient_name, age, sex, quote, complaint, vitals, minutes,

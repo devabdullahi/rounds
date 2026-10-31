@@ -140,11 +140,17 @@ export async function freeRecord(userId: string): Promise<FreeRecord> {
   return r;
 }
 
+/** The 402 text for an account whose free cases are used up. App 1.0 shows a 402's text as the error
+ *  (capitalised, with a full stop added), so it reads as a sentence without one; newer apps open
+ *  the paywall instead and ignore it. */
+export const FREE_CASES_USED = `you've used your ${FREE_CASES} free patients. Choose a plan to get new ones`;
+
 /** "paid" with a plan, "free" when the free cases allow `use`, else a 402. Run it before taking any quota. */
 export async function requireAccess(userId: string, use: FreeUse): Promise<"paid" | "free"> {
   if (planExempt(userId) || (await accountPlan(userId)).entitled) return "paid";
   if (freeAllows(await freeRecord(userId), use)) return "free";
-  throw new HttpError(402, "an active plan is required");
+  // Playing is refused only past the free cases (a lapsed plan): new patients aren't the issue there.
+  throw new HttpError(402, use === "play" ? "choose a plan to keep seeing patients" : FREE_CASES_USED);
 }
 
 /** Refuses with a 402 unless the caller has a paid plan. Run it before taking any quota. */
