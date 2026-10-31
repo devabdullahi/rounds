@@ -31,6 +31,9 @@ final class AppState {
     /// The focus the ward was last stocked for after onboarding, so it's stocked once per focus.
     private var stockedFocus: String?
     var problem: String?
+    /// Set when the server refused a new patient because the free cases are used up; the root view
+    /// offers plans (Superwall's paywall) and clears it. Patients already written stay playable.
+    var planNeeded = false
 
     var misses: [String: [Miss]] { Dictionary(uniqueKeysWithValues: ward.map { ($0.id, $0.misses) }) }
     var lastScores: [String: Int] { ward.reduce(into: [:]) { $0[$1.id] = $1.lastScore } }
@@ -246,6 +249,8 @@ final class AppState {
             }
         } catch is CancellationError {
             return
+        } catch is PlanRequiredError {
+            planNeeded = true
         } catch {
             problem = error.localizedDescription
         }
@@ -342,6 +347,8 @@ final class AppState {
             // opens, just from the start.
             if let left = try? await cases.resume(bed: bed) { session.restore(left) }
             activeCase = session
+        } catch is PlanRequiredError {
+            planNeeded = true
         } catch {
             problem = error.localizedDescription
         }

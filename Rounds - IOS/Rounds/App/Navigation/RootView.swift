@@ -74,6 +74,12 @@ struct RootView: View {
             guard paywall.isEntitled != true else { return }
             Task { await paywall.refresh() }
         }
+        // The free cases are used up and the student asked for another patient: offer plans.
+        .onChange(of: app.planNeeded) { _, needed in
+            guard needed else { return }
+            app.planNeeded = false
+            if !paywall.offerPlans() { app.problem = PlanRequiredError().localizedDescription }
+        }
         // After the first graded patient: Apple's rating sheet, a beat after landing on the ward so it
         // doesn't arrive mid-transition. Only Apple's own sheet, never a custom one or a reward.
         .task(id: app.ratingDue) {

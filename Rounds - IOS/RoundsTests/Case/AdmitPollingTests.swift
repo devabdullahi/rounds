@@ -30,6 +30,17 @@ struct AdmitPollingTests {
         #expect(await service.loadedBeds == ["B7"])
     }
 
+    @Test func usedUpFreeCasesOfferPlansInsteadOfAnError() async {
+        let service = ScriptedCases(replies: [], needsPlan: true)
+        let app = AppState(cases: service, cards: nil)
+
+        await app.admit(focus: FocusSelection())
+
+        #expect(app.planNeeded)
+        #expect(app.problem == nil)
+        #expect(!app.isAdmitting)
+    }
+
     @Test func queuingAdmitsWithoutOpeningTheCase() async {
         let service = ScriptedCases(replies: [.admitted(bed: "C3")])
         let app = AppState(cases: service, cards: nil)
@@ -132,10 +143,13 @@ private actor ScriptedCases: CaseService {
     private(set) var prepared: [String] = []
     private(set) var admittedTopics: [String] = []
     private let wardPatients: [WardPatient]
+    /// Refuses every admit the way the server does once the free cases are used up (402).
+    private let needsPlan: Bool
 
-    init(replies: [AdmitOutcome], ward: [WardPatient] = []) {
+    init(replies: [AdmitOutcome], ward: [WardPatient] = [], needsPlan: Bool = false) {
         self.replies = replies
         self.wardPatients = ward
+        self.needsPlan = needsPlan
     }
 
     struct Unused: Error {}
@@ -147,6 +161,7 @@ private actor ScriptedCases: CaseService {
 
     func admit(focus: StudyFocus, setting: CareSetting, polling: Bool) async throws -> AdmitOutcome {
         admitCalls += 1
+        if needsPlan { throw PlanRequiredError() }
         admittedTopics.append(focus.stored)
         pollingFlags.append(polling)
         return replies.isEmpty ? .preparing : replies.removeFirst()

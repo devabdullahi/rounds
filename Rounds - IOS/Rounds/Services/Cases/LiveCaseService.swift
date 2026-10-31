@@ -212,6 +212,8 @@ struct LiveCaseService: CaseService {
         guard let project = SupabaseService.project else { throw CaseServiceError(message: "Supabase isn't configured.") }
         do {
             return try await client.streamSigned("case-session", body: body, project: project)
+        } catch FunctionsError.httpError(402, _) {
+            throw PlanRequiredError()
         } catch let FunctionsError.httpError(code, data) {
             let message = (try? JSONDecoder().decode(ErrorReply.self, from: data))?.error
             throw CaseServiceError(message: message.map(Self.sentence) ?? "The server returned \(code).")
@@ -263,6 +265,8 @@ struct LiveCaseService: CaseService {
     private func invoke<Body: Encodable, Reply: Decodable>(_ function: String, _ body: Body) async throws -> Reply {
         do {
             return try await client.invokeSigned(function, body: body)
+        } catch FunctionsError.httpError(402, _) {
+            throw PlanRequiredError()
         } catch let FunctionsError.httpError(code, data) {
             let message = (try? JSONDecoder().decode(ErrorReply.self, from: data))?.error
             throw CaseServiceError(message: message.map { "\($0.prefix(1).uppercased())\($0.dropFirst())." } ?? "The server returned \(code).")
