@@ -15,10 +15,10 @@ final class PaywallModel {
     private(set) var isEntitled: Bool?
     /// Set by a purchase from the paywall, until the welcome screen has been shown for it.
     private(set) var justBought = false
-    /// No plan yet, but the server lets this account play its one free graded case. The app opens
-    /// for it; after that case the next check closes the gate (the server enforces it either way).
+    /// No plan yet, but the server lets this account play its free cases (three, plan.ts FREE_CASES).
+    /// The app opens for them; after the third graded case the next check closes the gate (the server enforces it either way).
     private(set) var freeCase = false
-    /// Whether the app opens: a plan, or the free case. Nil until the first answer.
+    /// Whether the app opens: a plan, or free cases left. Nil until the first answer.
     var opensApp: Bool? { isEntitled.map { $0 || freeCase } }
     /// The plan held now; shown in Settings.
     private(set) var activePlan: ActivePlan?

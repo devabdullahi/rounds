@@ -358,6 +358,11 @@ final class AppState {
     /// Closes a graded case and lands on the ward, or on a mistakes deck when the student asked for one.
     /// Bumped each time a graded case is left, so the paywall can check again: a free case ends here.
     private(set) var casesFinished = 0
+    /// Set once, after the student's first graded case (and the reminder prompt it brings): the
+    /// root view then asks for an App Store rating and clears it. Apple decides whether the sheet shows.
+    private(set) var ratingDue = false
+    /// Whether this phone has asked for a rating yet. Kept across sign-outs: it's the phone's ask.
+    static let ratingAskedStorageKey = "ratingAsked"
 
     func finishCase(reviewingMistakes: Bool = false) {
         casesFinished += 1
@@ -370,8 +375,16 @@ final class AppState {
             _ = await reminders?.requestPermission()
             // The graded case may have unlocked a badge; the refresh queues its moment.
             await refresh()
+            // After the first patient, once the reminder prompt is answered: one rating request.
+            if !UserDefaults.standard.bool(forKey: Self.ratingAskedStorageKey) {
+                UserDefaults.standard.set(true, forKey: Self.ratingAskedStorageKey)
+                ratingDue = true
+            }
         }
     }
+
+    /// The rating request was handed to the system.
+    func ratingAsked() { ratingDue = false }
 
     /// Tells the student something finished while the app wasn't watching (a deck made from Siri).
     func announce(title: String, body: String) async {
