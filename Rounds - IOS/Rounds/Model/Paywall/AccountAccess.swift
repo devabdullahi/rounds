@@ -8,6 +8,6 @@ struct AccountAccess: Equatable, Sendable {
     var ownedBy: String? = nil
     /// The phone's purchase another account has, which `transfer` can move here.
     var takenTransactionID: String? = nil
-    /// No plan, but the account's one free graded case is still unused, so the app opens for it.
+    /// No plan, but the account still has free cases (three in all), so the app opens for them.
     var freeCase = false
 }

@@ -1,3 +1,4 @@
+import StoreKit
 import SwiftUI
 
 /// Signed out → account flow; signed in → the app. `AuthModel` owns the flag.
@@ -6,6 +7,7 @@ struct RootView: View {
     @Environment(AppState.self) private var app
     @Environment(PaywallModel.self) private var paywall
     @Environment(AuthModel.self) private var auth
+    @Environment(\.requestReview) private var requestReview
     @AppStorage(SchoolYear.storageKey) private var yearStored = ""
     @AppStorage(StudyGoal.storageKey) private var goalStored = ""
     /// The AI consent on this phone: nothing that reaches an AI provider runs before it.
@@ -39,7 +41,7 @@ struct RootView: View {
     var body: some View {
         ZStack {
             if signedIn {
-                // Signed in, the app opens only with an active plan (or the free first case); until the
+                // Signed in, the app opens only with an active plan (or free cases left); until the
                 // store answers, nothing shows. The AI consent was given by making the account.
                 switch Self.debugPlanCheck(paywall.opensApp) {
                 case true?: MainTabsView().transition(.opacity)
@@ -67,10 +69,19 @@ struct RootView: View {
         .fullScreenCover(isPresented: Binding(get: { paywall.justBought && signedIn }, set: { if !$0 { paywall.welcomed() } })) {
             welcomeAboard
         }
-        // Leaving a graded case may have used up the free one: check, so the paywall shows now.
+        // Leaving a graded case may have used up the last free one (the third): check, so the paywall shows now.
         .onChange(of: app.casesFinished) { _, _ in
             guard paywall.isEntitled != true else { return }
             Task { await paywall.refresh() }
+        }
+        // After the first graded patient: Apple's rating sheet, a beat after landing on the ward so it
+        // doesn't arrive mid-transition. Only Apple's own sheet, never a custom one or a reward.
+        .task(id: app.ratingDue) {
+            guard app.ratingDue else { return }
+            try? await Task.sleep(for: .seconds(1.2))
+            guard !Task.isCancelled else { return }
+            app.ratingAsked()
+            requestReview()
         }
         .animation(.easeInOut(duration: 0.35), value: consentStored)
         // Signing out (or deleting the account) leaves nothing of that account behind for the next
