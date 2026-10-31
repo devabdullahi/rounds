@@ -61,7 +61,7 @@ serve(async (req) => {
     await body<{ focus?: string; setting?: unknown; polling?: unknown; prepare?: unknown }>(req);
   const focus = parseFocus(requested, setting);
   // Writing patients needs a plan, or one of the free cases (plan.ts).
-  const access = await requireAccess(userId, prepare === true ? "ahead" : "write");
+  const access = await requireAccess(userId, prepare === true ? "ahead" : "write", req.headers.get("user-agent"));
 
   // Prepare only: write this focus's next case ahead, before the student asks for it, so even the
   // first patient in a topic opens instantly. Bounded by one job and one ready case per focus.

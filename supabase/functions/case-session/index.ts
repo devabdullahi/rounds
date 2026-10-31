@@ -103,7 +103,7 @@ const GRACE_MINUTES = 2;
 serve(async (req) => {
   const userId = await callerId(req);
   // Cases need a plan or one of the free cases; the app's paywall is only the face of this check.
-  await requireAccess(userId, "play");
+  await requireAccess(userId, "play", req.headers.get("user-agent"));
   const input = await body<Record<string, unknown>>(req);
   switch (input.action) {
     case "start": return json(await start(userId, input));

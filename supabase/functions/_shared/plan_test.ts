@@ -1,5 +1,5 @@
 import { assertEquals } from "jsr:@std/assert@1";
-import { entitled, environmentCounts, FREE_CASES, freeAllows, type FreeUse, planCheckOff, planExempt, type PlanRow, toRecheck, toRefresh } from "./plan.ts";
+import { appBuild, entitled, environmentCounts, FREE_CASES, FREE_CASES_FROM_BUILD, freeAllows, type FreeUse, offersFreeCases, planCheckOff, planExempt, type PlanRow, toRecheck, toRefresh } from "./plan.ts";
 
 const now = new Date("2026-10-19T12:00:00Z");
 const later = new Date("2026-11-19T12:00:00Z");
@@ -78,4 +78,21 @@ Deno.test("three free cases: written, played through their grades, then the gate
     assertEquals(freeAllows({ written, waiting, unplayed }, use), allowed, `${use} at ${written}+${waiting}`);
   }
   assertEquals(FREE_CASES, 3);
+});
+
+Deno.test("appBuild reads the build number iOS puts in the User-Agent", () => {
+  assertEquals(appBuild("Rounds/38 CFNetwork/3896.100.1.2.1 Darwin/27.2.0"), 38);
+  assertEquals(appBuild("Rounds/37 CFNetwork/1568 Darwin/25.0.0"), 37);
+  assertEquals(appBuild("Mozilla/5.0 Rounds/40"), null);
+  assertEquals(appBuild("RoundsX/40 CFNetwork"), null);
+  assertEquals(appBuild(""), null);
+  assertEquals(appBuild(null), null);
+});
+
+Deno.test("free cases start at FREE_CASES_FROM_BUILD; 1.0 and unknown clients keep the hard paywall", () => {
+  assertEquals(offersFreeCases("Rounds/37 CFNetwork/1568 Darwin/25.0.0"), false);
+  assertEquals(offersFreeCases(`Rounds/${FREE_CASES_FROM_BUILD} CFNetwork/1 Darwin/1`), true);
+  assertEquals(offersFreeCases("Rounds/120 CFNetwork/1 Darwin/1"), true);
+  assertEquals(offersFreeCases("curl/8.0"), false);
+  assertEquals(offersFreeCases(null), false);
 });
