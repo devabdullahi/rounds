@@ -19,7 +19,7 @@ import { body, callerId, HttpError, json, serve } from "../_shared/http.ts";
 import { sql } from "../_shared/db.ts";
 import { BUNDLE_ID, lookUp, maskEmail, type Subscription } from "../_shared/appstore.ts";
 import { verifySignedTransaction } from "../_shared/appstorejws.ts";
-import { accountPlan, environmentCounts, freeAllows, freeRecord, planExempt } from "../_shared/plan.ts";
+import { accountPlan, environmentCounts, freeAllows, freeRecord, offersFreeCases, planExempt } from "../_shared/plan.ts";
 import { tryQuota } from "../_shared/quota.ts";
 import { decideClaim } from "./rules.ts";
 
@@ -29,19 +29,20 @@ serve(async (req) => {
   switch (input.action) {
     case "claim": return json(await claim(userId, input.transaction_id));
     case "transfer": return json(await transfer(userId, input.transaction_id, input.signed_transaction));
-    case "status": return json(await status(userId));
+    case "status": return json(await status(userId, req.headers.get("user-agent")));
     default: throw new HttpError(400, "unknown action");
   }
 });
 
 /** The caller's access, plus whether the free cases still open the app without a plan. The app
  *  checks again after each graded case, so the paywall shows right after the last free one. */
-async function status(userId: string) {
+async function status(userId: string, userAgent: string | null) {
   // Developer accounts (PLAN_EXEMPT_USER_IDS) open the app too, not just pass the server's checks,
   // so a dev account can use TestFlight builds without buying.
   if (planExempt(userId)) return { entitled: true, free_case: false };
   const plan = await accountPlan(userId);
-  return { ...plan, free_case: !plan.entitled && freeAllows(await freeRecord(userId), "open") };
+  // Older builds keep the hard paywall (plan.ts FREE_CASES_FROM_BUILD).
+  return { ...plan, free_case: !plan.entitled && offersFreeCases(userAgent) && freeAllows(await freeRecord(userId), "open") };
 }
 
 /** Apple's record of the purchase, or a 4xx/5xx a student can act on. */

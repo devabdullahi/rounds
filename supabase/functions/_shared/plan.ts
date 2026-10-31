@@ -2,7 +2,7 @@
 // calls requirePlan, so a modified app or a scripted guest account can't spend model calls unpaid.
 //
 // Three free cases (2026-10-30): an account without a plan gets FREE_CASES patients, played through
-// their grades (requireAccess). Counted from records deleting patients can't reset, so the free cases
+// their grades (requireAccess), from app build FREE_CASES_FROM_BUILD on; older builds keep the hard paywall. Counted from records deleting patients can't reset, so the free cases
 // can't be earned again. Flashcards still need a plan.
 //
 // Our record of a subscription is refreshed from Apple when it may be wrong: a lapsed one (it may have
@@ -140,17 +140,40 @@ export async function freeRecord(userId: string): Promise<FreeRecord> {
   return r;
 }
 
-/** The 402 text for an account whose free cases are used up. App 1.0 shows a 402's text as the error
- *  (capitalised, with a full stop added), so it reads as a sentence without one; newer apps open
- *  the paywall instead and ignore it. */
+/** The first app build that offers the free cases. Build 37 (1.0) had no way to reach the paywall
+ *  while free patients were still waiting, so a refused patient could leave a student stuck: older
+ *  builds keep the hard paywall (no free cases), and the server tells them apart by build number. */
+export const FREE_CASES_FROM_BUILD = 38;
+
+/** The app's build number from its User-Agent ("Rounds/38 CFNetwork/… Darwin/…", set by iOS from
+ *  CFBundleVersion), or null for anything else. */
+export function appBuild(userAgent: string | null): number | null {
+  const m = /^Rounds\/(\d{1,6})\s/.exec(userAgent ?? "");
+  return m ? Number(m[1]) : null;
+}
+
+/** Whether this caller's app offers the free cases. An unknown client gets the hard paywall, which
+ *  never strands anyone: the app's gate shows and plans can be bought. */
+export function offersFreeCases(userAgent: string | null): boolean {
+  const build = appBuild(userAgent);
+  return build !== null && build >= FREE_CASES_FROM_BUILD;
+}
+
+/** The 402 text when the free cases are used up. Builds that offer them open the paywall on a 402
+ *  and ignore the text; it's here for logs and other clients. */
 export const FREE_CASES_USED = `you've used your ${FREE_CASES} free patients. Choose a plan to get new ones`;
 
-/** "paid" with a plan, "free" when the free cases allow `use`, else a 402. Run it before taking any quota. */
-export async function requireAccess(userId: string, use: FreeUse): Promise<"paid" | "free"> {
+/** The 402 text otherwise (no free cases for this app, or playing past them). App 1.0 shows it as the
+ *  error (capitalised, with a full stop added); reopening shows its paywall. */
+export const PLAN_NEEDED = "a plan is needed to keep going. Close and reopen Rounds to see plans";
+
+/** "paid" with a plan, "free" when this app offers the free cases and they allow `use`, else a 402.
+ *  Run it before taking any quota. */
+export async function requireAccess(userId: string, use: FreeUse, userAgent: string | null): Promise<"paid" | "free"> {
   if (planExempt(userId) || (await accountPlan(userId)).entitled) return "paid";
-  if (freeAllows(await freeRecord(userId), use)) return "free";
-  // Playing is refused only past the free cases (a lapsed plan): new patients aren't the issue there.
-  throw new HttpError(402, use === "play" ? "choose a plan to keep seeing patients" : FREE_CASES_USED);
+  const offered = offersFreeCases(userAgent);
+  if (offered && freeAllows(await freeRecord(userId), use)) return "free";
+  throw new HttpError(402, offered && use !== "play" ? FREE_CASES_USED : PLAN_NEEDED);
 }
 
 /** Refuses with a 402 unless the caller has a paid plan. Run it before taking any quota. */
