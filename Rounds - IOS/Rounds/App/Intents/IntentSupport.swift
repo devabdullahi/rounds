@@ -13,7 +13,7 @@ enum IntentSupport {
         return defaults.bool(forKey: AuthModel.signedInKey)
             && AIConsent.isGiven(stored: defaults.integer(forKey: AIConsent.storageKey))
     }
-    static let openAppFirst: IntentDialog = "Open Rounds and sign in first."
+    static let openAppFirst: IntentDialog = "Open Palpo and sign in first."
 
     /// The focus the student picked in the app, or a mix.
     static var savedFocus: FocusSelection {
@@ -31,7 +31,7 @@ enum IntentSupport {
                     later: @escaping @MainActor (Bool) async -> Void) async -> Bool? {
         let job = Task { @MainActor in await work() }
         // If iOS runs out of background time, give it back (cancelling the work) instead of being killed.
-        let background = BackgroundTime(name: "Rounds intent") { job.cancel() }
+        let background = BackgroundTime(name: "Palpo intent") { job.cancel() }
         let early: Bool? = await withTaskGroup(of: Bool?.self) { group in
             group.addTask { await job.value }
             group.addTask { try? await Task.sleep(for: limit); return nil }

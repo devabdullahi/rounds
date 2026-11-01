@@ -56,10 +56,10 @@ export default function HeldPhone() {
         style={{ '--rise': `${LIFT.rise}%`, '--tilt': `${LIFT.tilt}deg`, '--roll': `${LIFT.roll}deg`, '--from-scale': LIFT.scale }}>
         <div className="held-scene">
           <div className="held-screen" style={{ left: pct(SCREEN.cx), top: pct(SCREEN.cy), width: pct(SCREEN.w), height: pct(SCREEN.h), transform: `translate(-50%, -50%) rotate(${SCREEN.tilt}deg)` }}>
-            <Phone bare video="media/interview.mp4" poster="media/interview.jpg" label="Recording of a student interviewing a patient in Rounds" />
+            <Phone bare video="media/interview.mp4" poster="media/interview.jpg" label="Recording of a student interviewing a patient in Palpo" />
           </div>
           <img src="media/hand-v2.webp" srcSet="media/hand-v2-1120.webp 1120w, media/hand-v2.webp 1680w" sizes="(max-width: 900px) 270vw, 104vw"
-            width="1680" height="921" alt="A gloved doctor's hand holding an iPhone running Rounds" />
+            width="1680" height="921" alt="A gloved doctor's hand holding an iPhone running Palpo" />
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-/* The outcome before the features: what a student gets out of Rounds for each thing they're
+/* The outcome before the features: what a student gets out of Palpo for each thing they're
  * preparing for. Tabs follow the WAI-ARIA tab pattern; arrow keys move between them. */
 const TABS = [
   { key: 'wards', label: 'Wards', title: 'Walk onto the rotation having seen it before.',
@@ -14,7 +14,7 @@ const TABS = [
     app: 'Misses turn into cards on their own.' },
   { key: 'boards', label: 'Step 1 & 2 CK', title: 'Connect the case to the question.',
     body: 'Each debrief adds next best steps, mechanisms and complications, so the patient you just saw becomes the vignette you’ll recognize.',
-    app: 'Set your exam month and a pace; Rounds counts the cases to test day.' },
+    app: 'Set your exam month and a pace; Palpo counts the cases to test day.' },
 ];
 
 export default function ReadyTabs() {

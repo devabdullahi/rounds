@@ -1,6 +1,6 @@
 import Foundation
 
-/// The "Your Rounds are ready" summary: the student's onboarding answers read back as rows, so the
+/// The "Your Palpo are ready" summary: the student's onboarding answers read back as rows, so the
 /// last question pays off before the account ask. Unanswered questions are left out.
 struct OnboardingPlan: Equatable {
     struct Row: Equatable, Identifiable {

@@ -1,6 +1,6 @@
 import AppIntents
 
-/// "Make flashcards in Rounds": generates a deck for the student's focus (or a named topic)
+/// "Make flashcards in Palpo": generates a deck for the student's focus (or a named topic)
 /// without opening the app.
 struct MakeCardsIntent: AppIntent {
     static let title: LocalizedStringResource = "Make Flashcards"

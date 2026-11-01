@@ -27,7 +27,7 @@ final class PastTries: Identifiable {
 
     func load() async {
         guard case .loading = phase else { return }
-        guard let service else { phase = .failed("Rounds isn't connected to its server."); return }
+        guard let service else { phase = .failed("Palpo isn't connected to its server."); return }
         do {
             phase = .loaded(try await service.pastTries(bed: bed))
         } catch {

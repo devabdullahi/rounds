@@ -76,14 +76,14 @@ export async function takeBudget(task?: string): Promise<void> {
       from private.llm_usage where day = (now() at time zone 'utc')::date`;
   } catch (error) {
     console.error("llm budget check failed", error);
-    if (isContentTask(task)) throw new BudgetExceeded("Rounds couldn't check its limits just now. Please try again in a moment.");
+    if (isContentTask(task)) throw new BudgetExceeded("Palpo couldn't check its limits just now. Please try again in a moment.");
     return;
   }
   if (!withinBudget(task, spent)) {
     console.error("llm daily budget reached", task, spent);
     throw new BudgetExceeded(isContentTask(task)
-      ? "Rounds is writing a lot of patients right now. Please try again in a little while."
-      : "Rounds is very busy right now. Please try again tomorrow.");
+      ? "Palpo is writing a lot of patients right now. Please try again in a little while."
+      : "Palpo is very busy right now. Please try again tomorrow.");
   }
 }
 

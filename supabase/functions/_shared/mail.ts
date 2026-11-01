@@ -64,7 +64,7 @@ async function writeAll(conn: Deno.Conn, text: string): Promise<void> {
 function message(mail: Mail, from: string): string {
   const boundary = `rounds-${crypto.randomUUID()}`;
   return [
-    `From: Rounds <${from}>`,
+    `From: Palpo <${from}>`,
     `To: <${mail.to}>`,
     `Subject: ${encodeHeader(mail.subject)}`,
     `Date: ${new Date().toUTCString()}`,

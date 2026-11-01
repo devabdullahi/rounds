@@ -1,6 +1,8 @@
-# Rounds
+# Palpo (code name Rounds)
 
 AI roleplay practice app for **US medical students**: the student interviews a fictional patient, examines, orders tests, commits to a diagnosis, and gets graded. Education only, never real patients, never medical advice.
+
+User-facing name is **Palpo** (since 2026-11-01). Code, targets, bundle id `com.abdul.rounds`, the `rounds://` scheme and the `Rounds/<build>` User-Agent the server reads (`_shared/plan.ts`) keep the Rounds name on purpose: renaming the target would break the build check.
 
 | Folder | What |
 |---|---|

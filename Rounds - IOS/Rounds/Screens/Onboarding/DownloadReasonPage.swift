@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// "Why did you download Rounds?": what the student hopes to get out of it, one tap picks.
+/// "Why did you download Palpo?": what the student hopes to get out of it, one tap picks.
 struct DownloadReasonPage: View {
     var shown = true
     @AppStorage(DownloadReason.storageKey) private var stored = ""
@@ -10,7 +10,7 @@ struct DownloadReasonPage: View {
     ]
 
     var body: some View {
-        OnboardingQuestion(title: "Why did you download Rounds?", shown: shown) {
+        OnboardingQuestion(title: "Why did you download Palpo?", shown: shown) {
             ForEach(Array(DownloadReason.allCases.enumerated()), id: \.element) { i, reason in
                 ChoiceRow(title: reason.label, glyph: Self.glyphs[reason], tint: ChoiceRow.tint(i),
                           on: DownloadReason(stored: stored) == reason, order: i) { stored = reason.rawValue }

@@ -1,4 +1,4 @@
-TRIAGE BATCH. For each condition below, decide whether it makes a good Rounds case and tag it.
+TRIAGE BATCH. For each condition below, decide whether it makes a good Palpo case and tag it.
 
 A good case topic is a diagnosis a student can reach by interviewing a patient, examining them and ordering tests. Not good: broad categories ("Bone Diseases"), care topics ("Caregivers", "Treatment"), wellness topics ("Body Weight"), or things with no patient presentation.
 

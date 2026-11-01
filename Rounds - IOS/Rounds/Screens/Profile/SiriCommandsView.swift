@@ -75,7 +75,7 @@ struct SiriCommandsView: View {
                 .foregroundStyle(Theme.accent)
                 .frame(width: 32, height: 32)
                 .background(Theme.accentSoft, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
-            Text("Start with \"Hey Siri\" and say \"Rounds\" in the command, so Siri knows it's for this app.")
+            Text("Start with \"Hey Siri\" and say \"Palpo\" in the command, so Siri knows it's for this app.")
                 .font(.system(size: 15))
                 .fixedSize(horizontal: false, vertical: true)
         }

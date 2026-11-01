@@ -75,13 +75,13 @@ final class VoiceController: NSObject, AVSpeechSynthesizerDelegate, AVAudioPlaye
         // Each failure gets its own message, so the fix is obvious.
         let micOK = await AVAudioApplication.requestRecordPermission()
         guard micOK else {
-            return fail("Microphone access is off. Turn it on in Settings › Privacy & Security › Microphone › Rounds.")
+            return fail("Microphone access is off. Turn it on in Settings › Privacy & Security › Microphone › Palpo.")
         }
         let speech = await withCheckedContinuation { c in
             SFSpeechRecognizer.requestAuthorization { c.resume(returning: $0) }
         }
         guard speech == .authorized else {
-            return fail("Speech recognition is off. Turn it on in Settings › Privacy & Security › Speech Recognition › Rounds.")
+            return fail("Speech recognition is off. Turn it on in Settings › Privacy & Security › Speech Recognition › Palpo.")
         }
         guard let recognizer, recognizer.isAvailable else {
             return fail("Speech recognition isn't available right now. Check your internet connection, or turn on Dictation in Settings › General › Keyboard.")

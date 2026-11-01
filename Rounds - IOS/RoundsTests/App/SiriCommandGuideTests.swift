@@ -10,6 +10,6 @@ struct SiriCommandGuideTests {
 
     /// Every phrase the guide shows names the app, as Siri requires.
     @Test func everyPhraseNamesRounds() {
-        #expect(SiriCommand.direct.flatMap(\.phrases).allSatisfy { $0.contains("Rounds") })
+        #expect(SiriCommand.direct.flatMap(\.phrases).allSatisfy { $0.contains("Palpo") })
     }
 }

@@ -183,7 +183,7 @@ struct SettingsView: View {
                             .frame(maxWidth: .infinity, minHeight: 44)
                             .disabled(auth.busy != nil)
 
-                        Text("Rounds \(AppVersion.display)")
+                        Text("Palpo \(AppVersion.display)")
                             .font(.system(size: 12))
                             .foregroundStyle(Theme.faint)
                             .multilineTextAlignment(.center)
@@ -212,7 +212,7 @@ struct SettingsView: View {
         .background(Theme.bg)
         .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $editingFocus) { FocusSheet(counts: app.topicCounts) }
-        .confirmationDialog("Sign out of Rounds?", isPresented: $confirmSignOut, titleVisibility: .visible) {
+        .confirmationDialog("Sign out of Palpo?", isPresented: $confirmSignOut, titleVisibility: .visible) {
             Button("Sign out", role: .destructive) { Task { await auth.signOut() } }
             Button("Cancel", role: .cancel) {}
         } message: {

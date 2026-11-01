@@ -19,10 +19,10 @@ enum IntentActions {
         switch await app.queuePatient(focus: focus) {
         case .ready(let patient):
             // The notification is the point when an automation runs it: it's what the student sees.
-            await app.announce(title: "New patient waiting", body: patient.map { "“\($0.quote)” · \($0.meta)" } ?? "Open Rounds to meet them.")
+            await app.announce(title: "New patient waiting", body: patient.map { "“\($0.quote)” · \($0.meta)" } ?? "Open Palpo to meet them.")
             return "Your next patient is on the ward."
         case .preparing:
-            return "Rounds is still writing the first case for \(focus.isMix ? "that topic" : focus.label). Try again in a few minutes."
+            return "Palpo is still writing the first case for \(focus.isMix ? "that topic" : focus.label). Try again in a few minutes."
         case .failed(let message):
             return "I couldn't queue a patient. \(message)"
         }

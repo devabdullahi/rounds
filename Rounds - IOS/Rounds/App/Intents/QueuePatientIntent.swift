@@ -1,11 +1,11 @@
 import AppIntents
 
-/// "Queue my next patient in Rounds": admits a patient onto the ward without opening the app, so a
+/// "Queue my next patient in Palpo": admits a patient onto the ward without opening the app, so a
 /// Shortcuts automation ("every day at 6 PM") can have one waiting. A notification says who's there.
 struct QueuePatientIntent: AppIntent {
     static let title: LocalizedStringResource = "Queue Patient"
     static let description = IntentDescription(
-        "Admits a new fictional patient to your ward in the background, ready when you open Rounds. Use it in an automation to have a patient waiting at the same time every day.")
+        "Admits a new fictional patient to your ward in the background, ready when you open Palpo. Use it in an automation to have a patient waiting at the same time every day.")
     /// It writes a patient on the account, so it waits for Face ID or the passcode on a locked phone.
     static let authenticationPolicy: IntentAuthenticationPolicy = .requiresAuthentication
 

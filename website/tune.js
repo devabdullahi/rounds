@@ -1,6 +1,6 @@
-/* Tuning surface for the Rounds site. Loaded only with ?tune (see script.js), never for visitors.
+/* Tuning surface for the Palpo site. Loaded only with ?tune (see script.js), never for visitors.
  *
- * - "Rounds" panel (DialKit): ECG, springs, flashcard timing, tilt, accent.
+ * - "Palpo" panel (DialKit): ECG, springs, flashcard timing, tilt, accent.
  * - "Hero" timeline (DialKit): the hero entrance, scrubbable.
  *
  * When something feels right, use the panel's Copy button (or read the timeline clips) and
@@ -8,14 +8,14 @@
  * on its own once removed. */
 (function () {
   const { createDialRoot, createDialKit, createDialTimeline, createDialTimelineRoot } = window.DialKit;
-  const R = window.Rounds;
+  const R = window.Palpo;
   const root = document.documentElement;
   const sec = (ms) => ms / 1000;
 
   /* ── Live dials ─────────────────────────────────────── */
 
   createDialRoot({ position: "top-right", theme: "light", defaultOpen: true });
-  const dials = createDialKit("Rounds", {
+  const dials = createDialKit("Palpo", {
     ecg: {
       bpm: [R.ECG.bpm, 40, 140, 1],
       beatWidth: [R.ECG.sweep, 0.1, 0.5, 0.01],

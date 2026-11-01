@@ -1,6 +1,6 @@
 import AppIntents
 
-/// "Start my next patient in Rounds": admits a patient for the student's focus (or the topic they
+/// "Start my next patient in Palpo": admits a patient for the student's focus (or the topic they
 /// name) and opens the case. The app comes forward, since a case is interactive.
 struct StartPatientIntent: AppIntent {
     static let title: LocalizedStringResource = "Start Next Patient"
