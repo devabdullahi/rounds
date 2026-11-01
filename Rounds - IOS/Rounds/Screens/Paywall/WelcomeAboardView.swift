@@ -52,7 +52,7 @@ struct WelcomeAboardView: View {
         if plan.isTrial {
             return "Free until \(plan.periodEnd.formatted(.dateTime.month(.abbreviated).day())). We'll remind you the day before."
         }
-        return "Rounds \(plan.period.name) is active."
+        return "Palpo \(plan.period.name) is active."
     }
 
     var body: some View {
@@ -144,7 +144,7 @@ struct WelcomeAboardView: View {
             badge.padding(.top, -4)
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(["Rounds badge", DoctorTitle.from(fullName: fullName), year?.label, goal?.label].compactMap { $0 }.joined(separator: ", "))
+        .accessibilityLabel(["Palpo badge", DoctorTitle.from(fullName: fullName), year?.label, goal?.label].compactMap { $0 }.joined(separator: ", "))
     }
 
     /// One side of the lanyard: a striped strap, slanted toward the clip.
@@ -187,7 +187,7 @@ struct WelcomeAboardView: View {
                         .font(.system(size: 13)).foregroundStyle(Theme.muted)
                 }
                 HStack(spacing: 8) {
-                    field("PLAN", plan?.period.name ?? "Rounds")
+                    field("PLAN", plan?.period.name ?? "Palpo")
                     field("FOCUS", goal?.label ?? "Every rotation")
                 }
                 .padding(.top, 4)

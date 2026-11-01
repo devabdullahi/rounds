@@ -104,11 +104,11 @@ struct RealityCheckPage: View {
             }
             .font(.system(size: 11))
             .foregroundStyle(Theme.muted)
-            legend(Theme.accent, bold: "With Rounds:", rest: "\(total) graded cases")
+            legend(Theme.accent, bold: "With Palpo:", rest: "\(total) graded cases")
             legend(Theme.faint, bold: nil, rest: "Rotations alone: a few")
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Graded cases by test day. With Rounds at \(perDay) a day: \(total). Rotations alone: a few.")
+        .accessibilityLabel("Graded cases by test day. With Palpo at \(perDay) a day: \(total). Rotations alone: a few.")
     }
 
     private func legend(_ color: Color, bold: String?, rest: String) -> some View {

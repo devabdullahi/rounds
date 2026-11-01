@@ -55,7 +55,7 @@ async function confirmed(transactionId: unknown): Promise<Subscription> {
     console.error("app store lookup failed", error);
     throw new HttpError(502, "couldn't reach the App Store; try again");
   }
-  if (!sub) throw new HttpError(404, "no Rounds subscription found for that purchase");
+  if (!sub) throw new HttpError(404, "no Palpo subscription found for that purchase");
   return sub;
 }
 
@@ -102,7 +102,7 @@ async function claim(userId: string, transactionId: unknown) {
 /** The student asked to move the phone's plan to their account: the other account loses it. Apple
  *  still confirms the purchase first, and it counts against the same daily allowance as claims. */
 async function transfer(userId: string, transactionId: unknown, signed: unknown) {
-  if (typeof signed !== "string" || signed.length > 16_384) throw new HttpError(400, "update Rounds to move a plan");
+  if (typeof signed !== "string" || signed.length > 16_384) throw new HttpError(400, "update Palpo to move a plan");
   if (!(await tryQuota(userId, "claim"))) throw new HttpError(429, "too many plan checks today; try again tomorrow");
   const sub = await confirmed(transactionId);
   // Proof the caller's phone holds this purchase: Apple signed it, for our app, for this same plan.

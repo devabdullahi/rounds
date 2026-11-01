@@ -29,7 +29,7 @@ struct AuthFlowView: View {
             Button("Use my \(earlier.providerLabel) account") { auth.choose(.useEarlier) }
             Button("Keep this new account", role: .cancel) { auth.choose(.keepNew) }
         } message: { earlier in
-            Text("You\u{2019}ve used Rounds with \(earlier.providerLabel)\(earlier.maskedEmail.map { " (\($0))" } ?? "") on this iPhone. Sign in with \(earlier.providerLabel) once more and this sign-in will open that account, with your patients, cards and plan.")
+            Text("You\u{2019}ve used Palpo with \(earlier.providerLabel)\(earlier.maskedEmail.map { " (\($0))" } ?? "") on this iPhone. Sign in with \(earlier.providerLabel) once more and this sign-in will open that account, with your patients, cards and plan.")
         }
         .alert("Couldn't sign in", isPresented: Binding(get: { auth.problem != nil }, set: { if !$0 { auth.problem = nil } })) {
             Button("OK", role: .cancel) {}

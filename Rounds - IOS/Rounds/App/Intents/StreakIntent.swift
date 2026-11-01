@@ -1,6 +1,6 @@
 import AppIntents
 
-/// "What's my streak in Rounds": the streak and how long is left to keep it, read out. It also
+/// "What's my streak in Palpo": the streak and how long is left to keep it, read out. It also
 /// returns the day count, so a shortcut can act on it ("if my streak is 0, remind me").
 struct StreakIntent: AppIntent {
     static let title: LocalizedStringResource = "Check Streak"

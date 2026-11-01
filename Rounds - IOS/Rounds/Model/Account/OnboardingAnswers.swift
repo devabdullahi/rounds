@@ -17,7 +17,7 @@ struct OnboardingAnswers: Equatable, Sendable {
     var timeLimitMinutes: Int
     var dailyGoal: Int
     var reminder: String?
-    /// "Why did you download Rounds?" (`DownloadReason` raw value).
+    /// "Why did you download Palpo?" (`DownloadReason` raw value).
     var downloadReason: String?
 
     /// The picks as onboarding stored them on this phone. `redFlagPick` is the quiz option's id,

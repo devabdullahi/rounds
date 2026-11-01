@@ -145,10 +145,10 @@ struct HomeView: View {
             HStack {
                 HStack(spacing: 8) {
                     AppIcon(.brandMark, size: 22).foregroundStyle(Theme.accent)
-                    Text("Rounds").font(.system(size: 17, weight: .bold)).tracking(-0.2)
+                    Text("Palpo").font(.system(size: 17, weight: .bold)).tracking(-0.2)
                 }
                 .accessibilityElement(children: .combine)
-                .accessibilityLabel("Rounds")
+                .accessibilityLabel("Palpo")
                 Spacer()
                 Button { withAnimation(.easeOut(duration: 0.25)) { app.showingStreak = true } } label: {
                     HStack(spacing: 6) {

@@ -11,7 +11,7 @@ struct AcknowledgementsView: View {
                 VStack(alignment: .leading, spacing: 16) {
                     Text("Badge artwork")
                         .font(.system(size: 20, weight: .bold))
-                    Text("Badge icons are from game-icons.net, used under the Creative Commons Attribution 3.0 licence, and recoloured for Rounds.")
+                    Text("Badge icons are from game-icons.net, used under the Creative Commons Attribution 3.0 licence, and recoloured for Palpo.")
                         .font(.system(size: 15))
                         .foregroundStyle(Theme.muted)
                         .fixedSize(horizontal: false, vertical: true)

@@ -1,10 +1,10 @@
-# Rounds website brief
+# Palpo website brief
 
-A one-page marketing site for Rounds. It's an advertisement: sell the experience, keep feature copy short, and let real app recordings do the explaining. This brief describes the page as shipped (`index.html`, `styles.css`, `script.js`).
+A one-page marketing site for Palpo. It's an advertisement: sell the experience, keep feature copy short, and let real app recordings do the explaining. This brief describes the page as shipped (`index.html`, `styles.css`, `script.js`).
 
 ## The product in one line
 
-**Rounds puts a fictional patient on your phone.** US medical students interview the patient, examine, order tests, commit to a diagnosis, and get graded.
+**Palpo puts a fictional patient on your phone.** US medical students interview the patient, examine, order tests, commit to a diagnosis, and get graded.
 
 - **Audience:** US medical students, MS1–MS4.
 - **Goal of the page:** "I want to try this." Primary action: **Meet the patient** (scroll to the demo). The app isn't on the App Store yet, so there's no store badge and no sign-up form; the closing panel says it's coming soon to iPhone.
@@ -67,10 +67,10 @@ A one-page marketing site for Rounds. It's an advertisement: sell the experience
    - Three sources: from your mistakes · from your notes · from any topic.
 
 4. **Final call to action**
-   - "Your next patient is waiting." and "Rounds is coming soon to iPhone." No sign-up form yet.
+   - "Your next patient is waiting." and "Palpo is coming soon to iPhone." No sign-up form yet.
 
 5. **Footer**
-   - Brand, disclaimer, © 2026 Rounds.
+   - Brand, disclaimer, © 2026 Palpo.
 
 ## Motion
 

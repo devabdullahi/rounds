@@ -33,7 +33,7 @@ struct StudyPlanPage: View {
     private var total: Int { exam?.patients(perDay: pace.cases) ?? pace.cases * 7 * weeks }
 
     private var title: String {
-        guard let goal, goal.debriefTips != nil else { return "Your Rounds plan" }
+        guard let goal, goal.debriefTips != nil else { return "Your Palpo plan" }
         return "Your \(goal.tipsName) plan"
     }
 

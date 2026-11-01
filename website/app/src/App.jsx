@@ -61,11 +61,11 @@ const STEPS = [
 const ROTATIONS = ['Internal Medicine', 'Surgery', 'Pediatrics', 'OB/GYN', 'Psychiatry', 'Family Medicine', 'Neurology', 'Emergency Medicine', 'Dermatology'];
 
 const FAQ = [
-  { q: 'Who is Rounds for?', a: 'US medical students, MS1 to MS4, getting ready for rotations, OSCEs and shelf or board exams. Anyone else who wants to practice is welcome too.' },
+  { q: 'Who is Palpo for?', a: 'US medical students, MS1 to MS4, getting ready for rotations, OSCEs and shelf or board exams. Anyone else who wants to practice is welcome too.' },
   { q: 'Are the patients real?', a: 'No. Every patient is fictional, written for practice. Never enter real patient information.' },
   { q: 'How is a case graded?', a: 'On the whole workup: the history you took, the exam, the tests you ordered and your diagnosis. The debrief shows the points for each part and what you missed.' },
   { q: 'Do I have to talk out loud?', a: 'No. Ask out loud like a real encounter, or type. Both work.' },
-  { q: 'Is it medical advice?', a: 'No. Rounds is for training only. The patients, grades and feedback are written by AI and can be wrong, so check what you learn against your coursework.' },
+  { q: 'Is it medical advice?', a: 'No. Palpo is for training only. The patients, grades and feedback are written by AI and can be wrong, so check what you learn against your coursework.' },
   { q: 'What happens to my data?', a: 'No ads, no tracking across other apps, and you can delete your account and its data from inside the app at any time. The privacy policy has the details.' },
 ];
 
@@ -74,7 +74,7 @@ export default function App() {
     <>
       <header className="nav">
         <div className="wrap nav-in">
-          <a href="#top" className="brand" aria-label="Rounds home"><Mark /> Rounds</a>
+          <a href="#top" className="brand" aria-label="Palpo home"><Mark /> Palpo</a>
           <nav aria-label="Sections">
             <a href="#case">Try a case</a>
             <a href="#debrief">The debrief</a>
@@ -177,7 +177,7 @@ export default function App() {
               </div>
             </Reveal>
             <Reveal delay={120} className="center">
-              <Phone video="media/debrief.mp4" poster="media/debrief.jpg" label="Recording of a graded debrief in Rounds" />
+              <Phone video="media/debrief.mp4" poster="media/debrief.jpg" label="Recording of a graded debrief in Palpo" />
             </Reveal>
           </div>
         </section>
@@ -196,7 +196,7 @@ export default function App() {
           <div className="wrap split reverse">
             <Reveal className="split-copy">
               <h2>Know how many cases stand between you and test day.</h2>
-              <p>Pick your exam month and your pace. Rounds counts the weeks and keeps you on it, a couple of patients at a time.</p>
+              <p>Pick your exam month and your pace. Palpo counts the weeks and keeps you on it, a couple of patients at a time.</p>
             </Reveal>
             <Reveal delay={120}><PlanDemo /></Reveal>
           </div>
@@ -213,7 +213,7 @@ export default function App() {
                 {ROTATIONS.map((r) => <li key={r}>{r}</li>)}
               </ul>
               <p className="rots-more">Plus 16 body systems, and a filter for clinic or hospital patients.</p>
-              <p className="rots-note">iPhone only for now. Not on iPhone? <a href="mailto:tryroundsapp@gmail.com?subject=Rounds%20updates">Get updates by email</a>.</p>
+              <p className="rots-note">iPhone only for now. Not on iPhone? <a href="mailto:tryroundsapp@gmail.com?subject=Palpo%20updates">Get updates by email</a>.</p>
             </Reveal>
           </div>
         </section>
@@ -237,7 +237,7 @@ export default function App() {
         <section className="final" id="get">
           <div className="wrap final-in">
             <h2>Your next patient is waiting.</h2>
-            <p>Get Rounds on your iPhone and take your first case.</p>
+            <p>Get Palpo on your iPhone and take your first case.</p>
             <StoreBadge />
           </div>
           <Ecg className="final-ecg" />
@@ -246,13 +246,13 @@ export default function App() {
 
       <footer className="foot">
         <div className="wrap foot-in">
-          <span className="brand"><Mark size={22} /> Rounds</span>
+          <span className="brand"><Mark size={22} /> Palpo</span>
           <span>For training only. All patients are fictional. Not medical advice.</span>
-          <span><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="mailto:tryroundsapp@gmail.com">Support</a> · © 2026 Rounds</span>
+          <span><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="mailto:tryroundsapp@gmail.com">Support</a> · © 2026 Palpo</span>
         </div>
         <div className="wrap legal-notes">
-          <p><b>Medical disclaimer.</b> Rounds is an educational simulation for medical students. Every patient, case, finding, test result, grade and piece of feedback is fictional and written with AI, and may be inaccurate or out of date. Nothing on this site or in the app is medical advice, a diagnosis or a treatment recommendation, and it must not be used to diagnose or treat any real person, including yourself. Rounds is not responsible for any diagnosis, treatment or other decision made about a real person. In an emergency, call 911.</p>
-          <p>Rounds is not a medical device and has not been reviewed by the FDA. It is not affiliated with or endorsed by any medical school, licensing board or examining organization, and its scores don't predict exam results.</p>
+          <p><b>Medical disclaimer.</b> Palpo is an educational simulation for medical students. Every patient, case, finding, test result, grade and piece of feedback is fictional and written with AI, and may be inaccurate or out of date. Nothing on this site or in the app is medical advice, a diagnosis or a treatment recommendation, and it must not be used to diagnose or treat any real person, including yourself. Palpo is not responsible for any diagnosis, treatment or other decision made about a real person. In an emergency, call 911.</p>
+          <p>Palpo is not a medical device and has not been reviewed by the FDA. It is not affiliated with or endorsed by any medical school, licensing board or examining organization, and its scores don't predict exam results.</p>
           <p>This product uses publicly available data from the U.S. National Library of Medicine (NLM), National Institutes of Health, Department of Health and Human Services, and drug labeling from openFDA. NLM and the FDA are not responsible for the product and do not endorse or recommend this or any other product.</p>
         </div>
       </footer>

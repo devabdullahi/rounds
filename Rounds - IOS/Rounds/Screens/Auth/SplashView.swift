@@ -44,7 +44,7 @@ struct SplashView: View {
             .contentShape(Rectangle())
             .onTapGesture(perform: finish)
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel("Rounds")
+            .accessibilityLabel("Palpo")
             .task { await play() }
     }
 

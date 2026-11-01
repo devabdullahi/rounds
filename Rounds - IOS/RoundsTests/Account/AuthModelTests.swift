@@ -37,11 +37,11 @@ struct AuthModelTests {
     }
 
     @Test func aRefusedCodeRequestExplainsWhy() async {
-        let failing = ScriptedAuth(send: .failure(CaseServiceError(message: "There's no Rounds account for that email.")))
+        let failing = ScriptedAuth(send: .failure(CaseServiceError(message: "There's no Palpo account for that email.")))
         let auth = AuthModel(service: failing, defaults: defaults)
         #expect(await auth.sendCode(email: "new@school.edu") == nil)
         #expect(auth.codeSentAt == nil)
-        #expect(auth.problem == "There's no Rounds account for that email.")
+        #expect(auth.problem == "There's no Palpo account for that email.")
     }
 
     @Test func theRightCodeSignsIn() async {

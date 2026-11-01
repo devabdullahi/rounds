@@ -313,7 +313,7 @@ final class AppState {
     /// Admits a patient onto the ward without opening the case, for Shortcuts and Siri. One try: a
     /// topic whose first case is still being written answers `.preparing` rather than waiting minutes.
     func queuePatient(focus: FocusSelection) async -> QueueOutcome {
-        guard let cases else { return .failed("Rounds isn't connected to its server.") }
+        guard let cases else { return .failed("Palpo isn't connected to its server.") }
         do {
             try await cases.ensureSignedIn()
             switch try await cases.admit(focus: pickTopic(from: focus), setting: .current, polling: false) {

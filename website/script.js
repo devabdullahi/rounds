@@ -1,5 +1,5 @@
 /* ─────────────────────────────────────────────────────────
- * ANIMATION STORYBOARD · Rounds website
+ * ANIMATION STORYBOARD · Palpo website
  *
  * Tuning: open the page with ?tune on a local server (localhost / 127.0.0.1) or from a
  * file for live dials and a scrubbable hero timeline (tune.js, DialKit). Copy tuned values
@@ -364,7 +364,7 @@ setupVideos();
 // The tuning page drives the hero from a scrubbable timeline instead. Only it needs the
 // internals, so they're exposed on window only while tuning.
 if (tuning) {
-  window.Rounds = { TIMING, SPRING, ECG, TILT, springCurve, applySprings, playHero, replayDeck: () => replayDeck() };
+  window.Palpo = { TIMING, SPRING, ECG, TILT, springCurve, applySprings, playHero, replayDeck: () => replayDeck() };
   const load = (tag, attrs) => new Promise((resolve, reject) => {
     const el = Object.assign(document.createElement(tag), attrs, { onload: resolve, onerror: reject });
     document.head.append(el);

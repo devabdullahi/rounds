@@ -15,7 +15,7 @@ struct LiveAuthService: AuthService {
                                                 data: name.map { ["full_name": .string($0)] })
         } catch let error as AuthError where [.otpDisabled, .signupDisabled].contains(error.errorCode) {
             // Log in only asks for existing accounts; the server refuses to make one.
-            throw AuthServiceError(message: "There's no Rounds account for that email. Create one instead.")
+            throw AuthServiceError(message: "There's no Palpo account for that email. Create one instead.")
         } catch let error as AuthError where error.errorCode == .overEmailSendRateLimit {
             // One code per address per minute: a code from moments ago is still in the inbox.
             // "...you can only request this after 41 seconds." → wait 41s; no number → a full minute.
@@ -60,7 +60,7 @@ struct LiveAuthService: AuthService {
         do {
             return Self.account(try await client.auth.linkIdentityWithIdToken(credentials: credentials).user)
         } catch let error as AuthError where error.errorCode == .identityAlreadyExists {
-            throw AuthServiceError(message: "That sign-in already belongs to another Rounds account. Sign in with it to use that account.")
+            throw AuthServiceError(message: "That sign-in already belongs to another Palpo account. Sign in with it to use that account.")
         }
     }
 

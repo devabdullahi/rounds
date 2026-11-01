@@ -165,7 +165,7 @@ export const FREE_CASES_USED = `you've used your ${FREE_CASES} free patients. Ch
 
 /** The 402 text otherwise (no free cases for this app, or playing past them). App 1.0 shows it as the
  *  error (capitalised, with a full stop added); reopening shows its paywall. */
-export const PLAN_NEEDED = "a plan is needed to keep going. Close and reopen Rounds to see plans";
+export const PLAN_NEEDED = "a plan is needed to keep going. Close and reopen Palpo to see plans";
 
 /** "paid" with a plan, "free" when this app offers the free cases and they allow `use`, else a 402.
  *  Run it before taking any quota. */

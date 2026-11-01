@@ -61,7 +61,7 @@ enum BadgeCatalog {
         "clean-workup": "Ordered only the tests that mattered.",
         "double": "Made 2 right diagnoses in a row.",
         "back-again": "Came back for a second day.",
-        "beginning": "Joined Rounds. Every doctor starts somewhere.",
+        "beginning": "Joined Palpo. Every doctor starts somewhere.",
         "weekend-rounds": "Practiced on a weekend.",
         "second-rotation": "Worked in a second specialty.",
         "body-tour": "Saw cases in 3 organ systems.",
@@ -144,7 +144,7 @@ enum BadgeCatalog {
 
         // Habits
         // Earned by having an account at all: the first card every student holds.
-        Badge(id: beginningID, name: "Beginning", detail: "Create your Rounds account.", art: .sprout,
+        Badge(id: beginningID, name: "Beginning", detail: "Create your Palpo account.", art: .sprout,
               group: .habit, rarity: .common, goal: 1, measure: { _ in 1 }),
         Badge(id: "warming-up", name: "Warming up", detail: "Keep a 3-day streak.", art: .flame,
               group: .habit, rarity: .common, goal: 3, measure: { $0.bestStreak }),

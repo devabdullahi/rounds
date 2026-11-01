@@ -1,7 +1,7 @@
 import SwiftUI
 
 // ─────────────────────────────────────────────────────────
-// Rounds tokens — lifted from the "Rounds App Design" canvas
+// Palpo tokens — lifted from the "Palpo App Design" canvas
 // ─────────────────────────────────────────────────────────
 
 extension Color {

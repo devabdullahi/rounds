@@ -73,7 +73,7 @@ final class LiveVoice {
     /// Starts a call. False when it couldn't start, so the caller can fall back to turn-by-turn voice.
     func begin() async -> Bool {
         guard await micAllowed() else {
-            phase = .unavailable("Microphone access is off. Turn it on in Settings › Privacy & Security › Microphone › Rounds.")
+            phase = .unavailable("Microphone access is off. Turn it on in Settings › Privacy & Security › Microphone › Palpo.")
             return true   // shown here: the fallback would hit the same wall
         }
         phase = .thinking

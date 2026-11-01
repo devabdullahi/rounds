@@ -1,6 +1,6 @@
 import AppIntents
 
-/// "Review my mistakes in Rounds": a deck from the student's wrong diagnoses and missed red flags.
+/// "Review my mistakes in Palpo": a deck from the student's wrong diagnoses and missed red flags.
 struct ReviewMistakesIntent: AppIntent {
     static let title: LocalizedStringResource = "Review My Mistakes"
     static let description = IntentDescription("Makes flashcards from your wrong diagnoses and missed red flags.")
