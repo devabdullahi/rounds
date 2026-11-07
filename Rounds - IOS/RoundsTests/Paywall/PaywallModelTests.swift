@@ -54,6 +54,20 @@ struct PaywallModelTests {
         #expect(model.freeCase == false)
     }
 
+    @Test func onlyAPlanGeneratesCards() async {
+        let free = PaywallModel(store: MockSubscriptionStore(),
+                                accounts: MockAccountSubscriptionService(status: AccountAccess(entitled: false, freeCase: true)),
+                                verifiesAccount: true)
+        #expect(free.canGenerateCards == false)   // before the first answer
+        await free.refresh()
+        #expect(free.opensApp == true)
+        #expect(free.canGenerateCards == false)
+
+        let paid = PaywallModel(store: MockSubscriptionStore(entitled: true))
+        await paid.refresh()
+        #expect(paid.canGenerateCards == true)
+    }
+
     // MARK: A subscription belongs to the account that bought it
 
     @Test func thePhonesPurchaseOpensTheAppForTheAccountThatOwnsIt() async {

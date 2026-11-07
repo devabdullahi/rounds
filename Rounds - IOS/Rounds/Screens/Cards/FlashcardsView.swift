@@ -74,6 +74,7 @@ struct FlashcardsView: View {
     private enum Verdict { case correct, unknown }
 
     @Environment(AppState.self) private var app
+    @Environment(PaywallModel.self) private var paywall
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var flipped = false
     @State private var verdict: Verdict?
@@ -87,6 +88,8 @@ struct FlashcardsView: View {
     /// Opens the Generate sheet on Mistakes (from a debrief) instead of Topics.
     @State private var generateFromMistakes = false
     @State private var confirmingClear = false
+    /// No plan: asking to generate opens the plans instead.
+    @State private var showingPlans = false
     /// Set by the add sheet; the matching sheet opens once it has closed.
     @State private var pendingAdd: AddCardsSheet.Choice?
 
@@ -157,8 +160,9 @@ struct FlashcardsView: View {
         .background(Theme.bg)
         .clipped()   // cards rise from the bottom edge, never over the tab bar
         .sheet(isPresented: $choosingAdd, onDismiss: openPendingAdd) {
-            AddCardsSheet { pendingAdd = $0 }
+            AddCardsSheet(generateLocked: !paywall.canGenerateCards) { pendingAdd = $0 }
         }
+        .sheet(isPresented: $showingPlans) { PlansSheet(model: paywall) }
         .sheet(isPresented: $composing) {
             NewCardSheet { card in
                 Task {
@@ -174,8 +178,7 @@ struct FlashcardsView: View {
         .onChange(of: app.reviewMistakesRequested, initial: true) { _, go in
             guard go else { return }
             app.reviewMistakesRequested = false
-            generateFromMistakes = true
-            generating = true
+            openGenerate(fromMistakes: true)
         }
         .onChange(of: generating) { _, open in if !open { generateFromMistakes = false } }
         .sheet(isPresented: $generating) {
@@ -204,7 +207,7 @@ struct FlashcardsView: View {
             case "cards-correct": flipped = true; verdict = .correct
             case "cards-unknown": flipped = true; verdict = .unknown
             case "cards-new", "cards-new-color", "cards-new-answer": composing = true
-            case "cards-add": choosingAdd = true
+            case "cards-add", "cards-add-locked": choosingAdd = true
             case "cards-generate", "cards-generate-notes", "cards-generate-notes-pick", "cards-generate-mistakes": generating = true
             default: break
             }
@@ -258,7 +261,7 @@ struct FlashcardsView: View {
                 .foregroundStyle(Theme.muted)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 12)
-            Button("Generate cards") { generating = true }
+            Button("Generate cards") { openGenerate() }
                 .buttonStyle(PrimaryButtonStyle(height: 52))
                 .padding(.top, 14)
             Button("Write your own card") { composing = true }
@@ -420,10 +423,20 @@ struct FlashcardsView: View {
     private func openPendingAdd() {
         switch pendingAdd {
         case .write?: composing = true
-        case .generate?: generating = true
+        case .generate?: openGenerate()
         case nil: break
         }
         pendingAdd = nil
+    }
+
+    /// The Generate sheet with a plan; the plans without one (generated decks aren't in the free cases).
+    private func openGenerate(fromMistakes: Bool = false) {
+        guard paywall.canGenerateCards else {
+            showingPlans = true
+            return
+        }
+        generateFromMistakes = fromMistakes
+        generating = true
     }
 
     private func restart() {

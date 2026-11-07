@@ -20,6 +20,9 @@ final class PaywallModel {
     private(set) var freeCase = false
     /// Whether the app opens: a plan, or free cases left. Nil until the first answer.
     var opensApp: Bool? { isEntitled.map { $0 || freeCase } }
+    /// Generated decks need a paid plan; the free cases don't include them. The server enforces it
+    /// (generate-cards answers 402), so this only decides what the Flashcards screen offers.
+    var canGenerateCards: Bool { isEntitled == true }
     /// The plan held now; shown in Settings.
     private(set) var activePlan: ActivePlan?
     private(set) var isWorking = false
