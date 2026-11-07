@@ -35,14 +35,16 @@ struct RoundsApp: App {
                 .task {
                     #if DEBUG
                     // Debug screens other than the paywall open straight into the app.
-                    if let screen = DebugLaunch.screen, !DebugLaunch.paywallScreens.contains(screen) { paywall.debugUnlock() }
+                    if let screen = DebugLaunch.screen, !DebugLaunch.paywallScreens.contains(screen) {
+                        if DebugLaunch.freeCaseScreens.contains(screen) { paywall.debugFreeCase() } else { paywall.debugUnlock() }
+                    }
                     #endif
                     await paywall.start()
                 }
                 .task {
                     await auth.restore()
                     #if DEBUG
-                    if ["settings", "settings-siri", "settings-voice", "settings-about", "settings-subscription", "profile", "profile-edit"].contains(DebugLaunch.screen) { auth.debugUse(DebugLaunch.sampleAccount) }
+                    if ["settings", "settings-siri", "settings-voice", "settings-about", "settings-subscription", "settings-free", "settings-plans", "profile", "profile-edit"].contains(DebugLaunch.screen) { auth.debugUse(DebugLaunch.sampleAccount) }
                     #endif
                 }
                 // Superwall's paywall previews, Google's sheet returning, and email confirmation links

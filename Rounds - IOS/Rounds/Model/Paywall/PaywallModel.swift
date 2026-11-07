@@ -208,5 +208,12 @@ final class PaywallModel {
         debugUnlocked = true
         isEntitled = true
     }
+
+    /// `-screen settings-free` / `settings-plans`: the app open on a free case, with no plan.
+    func debugFreeCase() {
+        debugUnlocked = true
+        freeCase = true
+        isEntitled = false
+    }
     #endif
 }

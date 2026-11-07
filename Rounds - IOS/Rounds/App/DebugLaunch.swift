@@ -6,7 +6,7 @@ import SwiftUI
 /// onboarding-practice, onboarding-practice-other, onboarding-blanked, onboarding-blanked-reply, onboarding-blanked-sometimes, onboarding-blanked-rarely, onboarding-exam, onboarding-countdown, onboarding-study-time, onboarding-pace, onboarding-setting-up, onboarding-plan,
 /// onboarding-confidence, onboarding-reality,
 /// onboarding-account, onboarding-heard, onboarding-heart, onboarding-promised (every `onboarding…` name opens onboarding),
-/// settings-about, paywall, paywall-plans, purchased, reminders, paywall-unavailable, paywall-delete,
+/// settings-about, settings-free (no plan, on free cases), settings-plans (its plans sheet), paywall, paywall-plans, purchased, reminders, paywall-unavailable, paywall-delete,
 /// focus-system, focus-sheet, home, patients, patients-new, patients-seen, patients-open, previous-tries, previous-try, badge-unlock-many, badge-unlock-all, paywall-taken, plan-checking, profile, brief, interview, interview-nudge, interview-ideas, examine, workup, diagnosis, debrief, debrief-graded, debrief-deeper (graded, last card, every section open), debrief-tour (graded, steps through every card), diagnosis-suggest.
 enum DebugLaunch {
     static var screen: String? { UserDefaults.standard.string(forKey: "screen") }
@@ -22,6 +22,8 @@ enum DebugLaunch {
     /// Screens that stay on the paywall (no debug unlock): Superwall's, the "plans couldn't load"
     /// fallback, the delete confirmation over it, and the plan-owned-by-another-account state.
     static let paywallScreens: Set<String> = ["paywall", "paywall-plans", "paywall-taken", "paywall-unavailable", "paywall-delete", "plan-checking"]
+    /// Screens open on the free cases with no plan, so Settings offers "See plans".
+    static let freeCaseScreens: Set<String> = ["settings-free", "settings-plans"]
     /// `-screen paywall-unavailable`: the fallback in place of Superwall's paywall.
     static var isPaywallUnavailable: Bool { screen == "paywall-unavailable" }
 
@@ -42,7 +44,7 @@ enum DebugLaunch {
             d.set(StudyGoal.step2CK.rawValue, forKey: StudyGoal.storageKey)
             d.set(StudyFocus.rotation(.internalMedicine).stored, forKey: StudyFocus.storageKey)
         }
-        if ["focus-sheet", "home", "settings", "settings-siri", "settings-voice", "settings-about", "settings-subscription"].contains(screen) {
+        if ["focus-sheet", "home", "settings", "settings-siri", "settings-voice", "settings-about", "settings-subscription", "settings-free", "settings-plans"].contains(screen) {
             d.set(StudyFocus.rotation(.internalMedicine).stored, forKey: StudyFocus.storageKey)
         }
     }
@@ -66,7 +68,7 @@ enum DebugLaunch {
         case "cards", "cards-flip", "cards-correct", "cards-unknown", "cards-new", "cards-new-color", "cards-new-answer",
              "cards-add", "cards-generate", "cards-generate-notes", "cards-generate-notes-pick", "cards-generate-mistakes": tab = .cards
         case "patients-open": tab = .patients; expandedPatient = "R2"
-        case "profile", "settings", "settings-siri", "settings-voice", "settings-about", "settings-subscription", "profile-weakspots", "profile-badges", "profile-edit": tab = .profile
+        case "profile", "settings", "settings-siri", "settings-voice", "settings-about", "settings-subscription", "settings-free", "settings-plans", "profile-weakspots", "profile-badges", "profile-edit": tab = .profile
         case "home", "focus-sheet", "splash", "home-swipe-right", "home-swipe-left": tab = .today
         case "home-empty":
             tab = .today
