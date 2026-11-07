@@ -42,6 +42,8 @@ final class FlashcardStore {
     /// Deck being studied; nil studies every card.
     var selectedDeck: String?
     var problem: String?
+    /// Called when the server refused a deck for want of a plan; the app offers plans instead of an error.
+    @ObservationIgnored var onPlanNeeded: (() -> Void)?
     /// Shown briefly after a deck is generated ("20 cards added to …").
     var notice: String?
 
@@ -149,7 +151,7 @@ final class FlashcardStore {
             notice = "\(new.count) cards added to \(deck)"
             return true
         } catch {
-            problem = error.localizedDescription
+            generateFailed(error)
             return false
         }
     }
@@ -203,7 +205,7 @@ final class FlashcardStore {
             notice = "\(generated.cards.count) cards added to \(generated.deck)"
             return true
         } catch {
-            problem = error.localizedDescription
+            generateFailed(error)
             return false
         }
     }
@@ -223,8 +225,17 @@ final class FlashcardStore {
             notice = "\(new.count) cards added to \(generated.deck)"
             return true
         } catch {
-            problem = error.localizedDescription
+            generateFailed(error)
             return false
+        }
+    }
+
+    /// A refused deck: plans when it needs one, otherwise the error.
+    private func generateFailed(_ error: Error) {
+        if error is PlanRequiredError, let onPlanNeeded {
+            onPlanNeeded()
+        } else {
+            problem = error.localizedDescription
         }
     }
 
