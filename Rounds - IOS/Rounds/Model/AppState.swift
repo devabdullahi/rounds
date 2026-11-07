@@ -31,9 +31,8 @@ final class AppState {
     /// The focus the ward was last stocked for after onboarding, so it's stocked once per focus.
     private var stockedFocus: String?
     var problem: String?
-    /// Set when the server refused something for want of a plan (a new patient past the free cases, or
-    /// a generated deck); the root view offers plans (Superwall's paywall) and clears it. Patients
-    /// already written stay playable.
+    /// Set when the server refused a new patient because the free cases are used up; the root view
+    /// offers plans (a closable sheet) and clears it. Patients already written stay playable.
     var planNeeded = false
 
     var misses: [String: [Miss]] { Dictionary(uniqueKeysWithValues: ward.map { ($0.id, $0.misses) }) }
@@ -142,8 +141,6 @@ final class AppState {
         self.reminders = reminders
         self.flashcards = FlashcardStore(service: cards)
         flashcards.onProgress = { [weak self] in self?.checkUnlocks() }
-        // A deck refused for want of a plan opens the plans, as a refused patient does.
-        flashcards.onPlanNeeded = { [weak self] in self?.planNeeded = true }
     }
 
     var tier: RatingTier { .of(rating) }

@@ -19,11 +19,9 @@ struct FlashcardStoreTests {
 
     @Test func aDeckRefusedForWantOfAPlanOffersPlansNotAnError() async {
         let store = FlashcardStore(service: NoPlanCardService())
-        var offered = false
-        store.onPlanNeeded = { offered = true }
         let made = await store.generateFromMistakes(count: 10)
         #expect(made == false)
-        #expect(offered)
+        #expect(store.planNeeded)
         #expect(store.problem == nil)
     }
 }

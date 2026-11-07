@@ -15,6 +15,8 @@ struct RootView: View {
     /// Fresh on every cold launch (process start), so the splash replays each time the app is reopened
     /// after being closed. Signed-out launches skip it: the welcome screen plays the same heart trace.
     @State private var showSplash = RootView.splashOnLaunch
+    /// The plans, closable, for a student past the free patients who asked for another.
+    @State private var showingPlans = false
 
     private static var splashOnLaunch: Bool {
         #if DEBUG
@@ -83,8 +85,10 @@ struct RootView: View {
         .onChange(of: app.planNeeded) { _, needed in
             guard needed else { return }
             app.planNeeded = false
-            if !paywall.offerPlans() { app.problem = PlanRequiredError().localizedDescription }
+            showingPlans = true
         }
+        // Closable, unlike the gate: patients already written stay playable without a plan.
+        .sheet(isPresented: $showingPlans) { PlansSheet(model: paywall) }
         // After the first graded patient: Apple's rating sheet, a beat after landing on the ward so it
         // doesn't arrive mid-transition. Only Apple's own sheet, never a custom one or a reward.
         .task(id: app.ratingDue) {

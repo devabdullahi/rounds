@@ -42,8 +42,9 @@ final class FlashcardStore {
     /// Deck being studied; nil studies every card.
     var selectedDeck: String?
     var problem: String?
-    /// Called when the server refused a deck for want of a plan; the app offers plans instead of an error.
-    @ObservationIgnored var onPlanNeeded: (() -> Void)?
+    /// Set when the server refused a deck for want of a plan; the Generate sheet offers plans instead
+    /// of an error, and closing them clears it.
+    var planNeeded = false
     /// Shown briefly after a deck is generated ("20 cards added to …").
     var notice: String?
 
@@ -232,8 +233,8 @@ final class FlashcardStore {
 
     /// A refused deck: plans when it needs one, otherwise the error.
     private func generateFailed(_ error: Error) {
-        if error is PlanRequiredError, let onPlanNeeded {
-            onPlanNeeded()
+        if error is PlanRequiredError {
+            planNeeded = true
         } else {
             problem = error.localizedDescription
         }
