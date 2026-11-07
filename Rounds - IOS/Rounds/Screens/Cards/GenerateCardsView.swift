@@ -5,6 +5,7 @@ import PhotosUI
 /// written, cards deal in on loop.
 struct GenerateCardsView: View {
     @Environment(AppState.self) private var app
+    @Environment(PaywallModel.self) private var paywall
     @Environment(\.dismiss) private var dismiss
     @AppStorage(StudyFocus.storageKey) private var focusStored = ""
 
@@ -94,6 +95,10 @@ struct GenerateCardsView: View {
         }
         // The sheet covers Flashcards, whose own alert can't show until it closes.
         .problemAlert(Binding(get: { store.problem }, set: { store.problem = $0 }))
+        // Refused for want of a plan: the plans over this sheet (closable), not an error.
+        .sheet(isPresented: Binding(get: { store.planNeeded }, set: { store.planNeeded = $0 })) {
+            PlansSheet(model: paywall)
+        }
     }
 
     // MARK: Form

@@ -32,7 +32,7 @@ final class AppState {
     private var stockedFocus: String?
     var problem: String?
     /// Set when the server refused a new patient because the free cases are used up; the root view
-    /// offers plans (Superwall's paywall) and clears it. Patients already written stay playable.
+    /// offers plans (a closable sheet) and clears it. Patients already written stay playable.
     var planNeeded = false
 
     var misses: [String: [Miss]] { Dictionary(uniqueKeysWithValues: ward.map { ($0.id, $0.misses) }) }

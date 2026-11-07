@@ -20,6 +20,9 @@ final class PaywallModel {
     private(set) var freeCase = false
     /// Whether the app opens: a plan, or free cases left. Nil until the first answer.
     var opensApp: Bool? { isEntitled.map { $0 || freeCase } }
+    /// Generated decks need a paid plan; the free cases don't include them. The server enforces it
+    /// (generate-cards answers 402), so this only decides what the Flashcards screen offers.
+    var canGenerateCards: Bool { isEntitled == true }
     /// The plan held now; shown in Settings.
     private(set) var activePlan: ActivePlan?
     private(set) var isWorking = false
@@ -149,16 +152,6 @@ final class PaywallModel {
         }
     }
 
-    /// Offers plans without closing the app (free patients may still be waiting): Superwall's
-    /// paywall over the current screen. A purchase opens up like one from the gate. False when the
-    /// paywall can't show.
-    func offerPlans() -> Bool {
-        SuperwallService.presentPlans { [weak self] restored in
-            guard let self else { return }
-            Task { if restored { await self.refresh() } else { await self.purchased() } }
-        }
-    }
-
     /// The welcome after a purchase has been shown.
     func welcomed() { justBought = false }
 
@@ -207,6 +200,13 @@ final class PaywallModel {
     func debugUnlock() {
         debugUnlocked = true
         isEntitled = true
+    }
+
+    /// `-screen settings-free` / `settings-plans`: the app open on a free case, with no plan.
+    func debugFreeCase() {
+        debugUnlocked = true
+        freeCase = true
+        isEntitled = false
     }
     #endif
 }

@@ -4,6 +4,8 @@ import SwiftUI
 struct AddCardsSheet: View {
     enum Choice { case write, generate }
 
+    /// No plan: Generate is shown with a lock and opens the plans instead (the parent decides).
+    var generateLocked = false
     var onChoose: (Choice) -> Void
     @Environment(\.dismiss) private var dismiss
 
@@ -14,7 +16,8 @@ struct AddCardsSheet: View {
                 .padding(.top, 24)
                 .accessibilityAddTraits(.isHeader)
             row(.pencil, "Write a card", "Your own question and answer", highlighted: false) { choose(.write) }
-            row(.cards, "Generate cards", "Pick topics and a count", highlighted: true) {
+            row(.cards, "Generate cards", generateLocked ? "Included with a plan" : "Pick topics and a count",
+                highlighted: true, locked: generateLocked) {
                 choose(.generate)
             }
             Spacer(minLength: 0)
@@ -33,7 +36,7 @@ struct AddCardsSheet: View {
         dismiss()
     }
 
-    private func row(_ glyph: IconGlyph, _ title: String, _ detail: String, highlighted: Bool, action: @escaping () -> Void) -> some View {
+    private func row(_ glyph: IconGlyph, _ title: String, _ detail: String, highlighted: Bool, locked: Bool = false, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             HStack(spacing: 14) {
                 AppIcon(glyph, size: 22)
@@ -45,7 +48,9 @@ struct AddCardsSheet: View {
                     Text(detail).font(.system(size: 14)).foregroundStyle(Theme.muted).multilineTextAlignment(.leading)
                 }
                 Spacer(minLength: 8)
-                AppIcon(.chevronRight, size: 16).foregroundStyle(Theme.faint)
+                AppIcon(locked ? .lock : .chevronRight, size: 16).foregroundStyle(locked ? Theme.muted : Theme.faint)
+                    .accessibilityLabel(locked ? "Needs a plan" : "")
+                    .accessibilityHidden(!locked)
             }
             .foregroundStyle(Theme.text)
             .padding(16)

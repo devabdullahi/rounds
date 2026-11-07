@@ -52,6 +52,9 @@ struct LiveCardService: CardService {
                                                   back: $0.back, color: $0.color, source: $0.source).flashcard(me: me) }
             let allowance = reply.remaining_today.flatMap { left in reply.daily_limit.map { DeckAllowance(remaining: left, limit: $0) } }
             return GeneratedDeck(deck: reply.deck, cards: cards, allowance: allowance)
+        } catch FunctionsError.httpError(402, _) {
+            // No plan: generated decks aren't in the free cases. The app offers plans, not an error.
+            throw PlanRequiredError()
         } catch let FunctionsError.httpError(code, data) {
             let message = (try? JSONDecoder().decode(ErrorReply.self, from: data))?.error
             throw CaseServiceError(message: message.map { "\($0.prefix(1).uppercased())\($0.dropFirst())." } ?? "The server returned \(code).")

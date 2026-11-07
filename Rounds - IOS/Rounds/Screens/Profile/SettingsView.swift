@@ -45,6 +45,8 @@ struct SettingsView: View {
     @Environment(PaywallModel.self) private var paywall
     /// Apple's own subscription sheet.
     @State private var managingAppStorePlan = false
+    /// The plans (Superwall's paywall), for a student without one.
+    @State private var showingPlans = false
     @State private var confirmDelete = false
     @AppStorage(StudyFocus.storageKey) private var focusStored = ""
     @State private var editingFocus = false
@@ -77,7 +79,8 @@ struct SettingsView: View {
                             // in TestFlight): Apple's sheet still manages it.
                             navRow(.crown, "Manage subscription", detail: ActivePlan.manageHint) { managingAppStorePlan = true }
                         } else {
-                            infoRow(.crown, "Subscription", value: "No active plan")
+                            // No plan yet (free cases): the plans are one tap away, not only after the last free case.
+                            navRow(.crown, "See plans", detail: "No active plan") { showingPlans = true }
                         }
                     }
 
@@ -229,11 +232,20 @@ struct SettingsView: View {
         .sheet(isPresented: $editingProfile) { EditProfileView() }
         .sheet(isPresented: $showingCredits) { AcknowledgementsView() }
         .sheet(isPresented: $showingSiri) { SiriCommandsView() }
+        .sheet(isPresented: $showingPlans) { PlansSheet(model: paywall) }
         .manageSubscriptionsSheet(isPresented: $managingAppStorePlan)
         // Picks up a cancellation or plan change made in Apple's sheet.
         .task { await paywall.refresh() }
         #if DEBUG
-        .onAppear { if DebugLaunch.screen == "settings-siri" { showingSiri = true } }
+        .onAppear {
+            if DebugLaunch.screen == "settings-siri" { showingSiri = true }
+        }
+        // After the push settles: a sheet asked for during it is dropped.
+        .task {
+            guard DebugLaunch.screen == "settings-plans" else { return }
+            try? await Task.sleep(for: .seconds(1))
+            showingPlans = true
+        }
         #endif
         .problemAlert(Binding(get: { auth.problem }, set: { auth.problem = $0 }))
         // Turning streak alerts off clears a pending reminder now, not after the next case.
