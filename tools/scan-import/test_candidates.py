@@ -73,6 +73,11 @@ class NihBoxTests(unittest.TestCase):
                           "k.png,Effusion,0,6,50,M,PA,1024,1024,0.1,0.1\n")
         self.assertEqual(rows, [])
 
+    def test_same_side_boxes_in_different_zones_are_dropped(self):
+        rows = self.build("z.png,Mass,100,100,80,80,,,\nz.png,Mass,100,800,80,80,,,\n",
+                          "z.png,Mass,0,6,50,M,PA,1024,1024,0.1,0.1\n")
+        self.assertEqual(rows, [])
+
     def test_repeated_identical_boxes_collapse_to_one_candidate(self):
         rows = self.build("k.png,Effusion,100,500,80,80,,,\nk.png,Effusion,110,505,80,80,,,\n",
                           "k.png,Effusion,0,6,50,M,PA,1024,1024,0.1,0.1\n")

@@ -38,7 +38,7 @@ class ReportTests(unittest.TestCase):
 
     def test_zone_appears_where_the_wording_uses_one(self):
         self.assertEqual(report("opacity", "right", "lower"),
-                         "Airspace opacity in the right lower zone. Heart size within normal limits.")
+                         "Airspace opacity in the right lower zone.")
 
     def test_incomplete_labels_are_refused(self):
         for finding, side, zone in [("opacity", None, "upper"), ("opacity", "left", None), ("fracture", "left", "upper")]:

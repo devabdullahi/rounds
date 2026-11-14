@@ -81,8 +81,8 @@ def _entries(entry_csv: Path) -> dict[str, dict]:
 
 
 def nih_box_candidates(bbox_csv: Path, entry_csv: Path) -> list[dict]:
-    """Candidates from NIH's radiologist boxes. An image whose boxes disagree (different findings, or
-    the same finding on both sides) is dropped rather than guessed at."""
+    """Candidates from NIH's radiologist boxes. An image whose boxes disagree (different findings, sides
+    or zones) is dropped rather than guessed at."""
     entries = _entries(Path(entry_csv))
     labels: dict[str, set[tuple]] = {}
     with open(bbox_csv, newline="") as f:
@@ -109,9 +109,10 @@ def nih_box_candidates(bbox_csv: Path, entry_csv: Path) -> list[dict]:
     for image, found in labels.items():
         if None in found:
             continue
-        if len({(finding, side) for finding, side, _ in found}) != 1:
+        # Different sides, or different zones on one side, mean the label is not one place: drop it.
+        if len(found) != 1:
             continue
-        finding, side, zone = min(found, key=lambda label: (label[2] or ""))
+        finding, side, zone = next(iter(found))
         meta = entries[image]
         result.append({"source_image": image, "finding": finding, "side": side, "zone": zone,
                        "view": meta["view"], "age": meta["age"], "sex": meta["sex"], "label_source": "nih_bbox"})

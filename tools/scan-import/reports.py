@@ -16,7 +16,7 @@ DIFFUSE = {"normal", "cardiomegaly", "edema", "emphysema"}
 _ZONED = {"opacity", "nodule_mass", "atelectasis"}
 
 _TEMPLATES = {
-    "opacity": "Airspace opacity in the {side} {zone} zone. Heart size within normal limits.",
+    "opacity": "Airspace opacity in the {side} {zone} zone.",
     "pneumothorax": "Visible visceral pleural line with absent lung markings peripherally on the {side}.",
     "effusion": "Blunting of the {side} costophrenic angle with a meniscus.",
     "nodule_mass": "Rounded opacity in the {side} {zone} zone.",

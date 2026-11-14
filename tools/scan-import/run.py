@@ -56,11 +56,16 @@ def collect(root: Path) -> list[dict]:
     return pool
 
 
+def write_manifest(manifest: Path, rows: list[dict]) -> None:
+    manifest.write_text(json.dumps(rows, indent=2))
+
+
 def build(root: Path, limit: int | None) -> list[dict]:
     """Walks shuffled candidates, filling each (finding, side) bucket. Stops at `limit` candidates
     tried (for small spot-check runs), or when every bucket is full."""
     out_dir = root / "out"
     out_dir.mkdir(parents=True, exist_ok=True)
+    manifest = out_dir / "assets.json"
     pool = collect(root)
     random.Random(7).shuffle(pool)
     kept: Counter = Counter()
@@ -88,6 +93,8 @@ def build(root: Path, limit: int | None) -> list[dict]:
         rows.append({"id": asset_id, "object_name": object_name, **c,
                      "report": reports.report(c["finding"], c["side"], c["zone"]), "gate": result})
         kept[bucket] += 1
+        # Written per asset so a crash never leaves JPEGs in out/ that the manifest does not list.
+        write_manifest(manifest, rows)
     log(f"kept {len(rows)} of {tried} tried: " + ", ".join(f"{f}/{s or '-'}={n}" for (f, s), n in sorted(kept.items(), key=str)))
     return rows
 
@@ -110,7 +117,7 @@ def main() -> None:
         log("uploaded")
         return
     rows = build(args.root, args.limit)
-    manifest.write_text(json.dumps(rows, indent=2))
+    write_manifest(manifest, rows)
     log(f"wrote {manifest}")
 
 

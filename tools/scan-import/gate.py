@@ -32,7 +32,21 @@ PROMPT = (
 )
 
 
-def gate(image_bytes: bytes) -> dict:
+class GateError(RuntimeError):
+    """A pass returned something unusable (empty, not JSON, wrong shape). The candidate is skipped."""
+
+
+def _ask(post, key: str, body: dict) -> dict:
+    """One pass: the answer as {"finding", "side"}, or GateError if the reply is malformed."""
+    try:
+        reply = post(llm.PROVIDERS["openai"].url, [f"Authorization: Bearer {key}"], body)
+        parsed = llm._parse_json(reply["choices"][0]["message"]["content"])
+        return {"finding": str(parsed.get("finding", "")).lower(), "side": str(parsed.get("side", "none")).lower()}
+    except (KeyError, IndexError, TypeError, ValueError, AttributeError) as error:
+        raise GateError(f"malformed gate reply ({type(error).__name__}: {error})") from error
+
+
+def gate(image_bytes: bytes, post=llm._post) -> dict:
     """Runs the passes and returns {"model", "answers": [{"finding", "side"}, ...]}. Judging against
     the label is `agrees`, so the stored record can be re-checked later."""
     key = os.environ.get("OPENAI_API_KEY")
@@ -48,11 +62,7 @@ def gate(image_bytes: bytes) -> dict:
         "response_format": {"type": "json_object"},
         **llm.thinking_fields("openai", 200, os.environ.get("LLM_EFFORT", "medium")),
     }
-    answers = []
-    for _ in range(PASSES):
-        reply = llm._post(llm.PROVIDERS["openai"].url, [f"Authorization: Bearer {key}"], body)
-        parsed = llm._parse_json(reply["choices"][0]["message"]["content"])
-        answers.append({"finding": str(parsed.get("finding", "")).lower(), "side": str(parsed.get("side", "none")).lower()})
+    answers = [_ask(post, key, body) for _ in range(PASSES)]
     return {"model": GATE_MODEL, "answers": answers}
 
 
