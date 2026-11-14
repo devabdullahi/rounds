@@ -64,15 +64,17 @@ recognition, without turning Palpo into an image quiz bank.
 4. **Negatives get normals.** A chest X-ray that should be unremarkable in this case gets an adjudicated
    normal image, so an image never implies an abnormal result.
 5. **Rotation.** Several assets per finding; pick one the student hasn't seen when possible.
-6. **UX.** "Going to the radiologist": scan on top (zoom, pan, full screen), report below, caption
-   *"Real de-identified teaching image (NIH Clinical Center). Not this patient's own scan."* Full credits in
-   Settings → Acknowledgements. Designed on a claude.ai Design canvas before any Swift.
+6. **UX.** "Going to the radiologist": scan on top (zoom, pan, full screen), report below. Credit is a
+   small subtitle directly under each scan (owner): *"Real de-identified teaching image · NIH Clinical
+   Center"*, which also makes clear it isn't this patient's own scan. Tapping it shows the rest of NIH's
+   attribution (link to the NIH download site, citation of Wang et al., CVPR 2017) — Claude's call, since
+   NIH asks for the link and citation too. Designed on a claude.ai Design canvas before any Swift.
 7. **Storage.** Images re-encoded server-side at import (≈1024 px, metadata stripped), named by random
    UUID, in a **private** Supabase Storage bucket. Labels, source ids and provenance live in a `private`
    table. The client only ever gets a short-lived signed URL, the caption and the report.
 8. **Switch.** An edge-function secret (e.g. `REAL_SCANS`) defaults off; when off, nothing changes for
-   anyone. It turns on only after the owner accepts the NIH basis, ideally backed by written confirmation
-   from the NIH Clinical Center (draft email: `docs/real-scans-nih-email.md`).
+   anyone. The owner accepts NIH's stated terms as the basis (2026-11-13); no written confirmation from
+   NIH is sought. The switch goes on once the library and screen are ready.
 
 ## Calls made after the builder check (Claude's, owner to check)
 
@@ -95,7 +97,7 @@ recognition, without turning Palpo into an image quiz bank.
   the expert labels couldn't be confirmed online; it's read when the labels are downloaded through the
   form. If it restricts paid-app use, the library falls back to NIH's ~1,000 radiologist-boxed images
   (8 findings, all localized) and diffuse findings drop out of the MVP. If it requires credit, the credit
-  joins the caption details and Acknowledgements.
+  joins the tap-through attribution under each scan.
 
 ## How it fits today's code (for the builder)
 
