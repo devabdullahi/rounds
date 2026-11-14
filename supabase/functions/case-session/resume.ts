@@ -3,6 +3,8 @@
 // results, so the case picks up where it stopped. Pure, so what's returned (and what exam mode
 // keeps hidden) is unit-tested.
 
+import type { ScanReply } from "./scanurl.ts";
+
 type Turn = { role: "student" | "patient"; text: string; conduct?: string };
 type ResumeAttempt = {
   id: string; exam_mode: boolean; started_at: Date; time_limit_minutes: number | null; transcript: Turn[];
@@ -15,7 +17,7 @@ type ResumeContent = {
   rubric: { key_facts: { id: string }[] };
 };
 
-export function resumeState(a: ResumeAttempt, c: ResumeContent, hidden: string[]) {
+export function resumeState(a: ResumeAttempt, c: ResumeContent, hidden: string[], scans: Map<string, ScanReply> = new Map()) {
   const label = new Map(c.facts.map((f) => [f.id, f.label]));
   const finding = new Map(c.exam.map((m) => [m.id, m.finding]));
   const test = new Map(c.tests.map((t) => [t.id, t]));
@@ -34,7 +36,8 @@ export function resumeState(a: ResumeAttempt, c: ResumeContent, hidden: string[]
     examined: a.examined.filter((id) => finding.has(id)).map((id) => ({ id, finding: finding.get(id)! })),
     ordered: a.ordered_tests.filter((o) => test.has(o.id)).map((o) => {
       const t = test.get(o.id)!;
-      return { id: o.id, at: o.at, result: t.result, abnormal: t.abnormal };
+      const scan = scans.get(o.id);
+      return { id: o.id, at: o.at, result: t.result, abnormal: t.abnormal, ...(scan ? { scan } : {}) };
     }),
     hidden_tests: hidden,
   };
