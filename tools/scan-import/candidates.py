@@ -28,6 +28,18 @@ NIH_BOX_FINDINGS = {
 }
 # Boxes on these findings carry no side or zone: they are central or bilateral.
 NIH_DIFFUSE = {"cardiomegaly"}
+# Data_Entry_2017.csv "Finding Labels" (NLP-mined) that belong to each boxed finding. NLP labels may
+# only disqualify an image: any label outside the boxed finding's family means the film may show
+# something its report would not mention, so the image is dropped. Infiltration and Pneumonia are
+# one opacity family, matching the boxes' Infiltrate and Pneumonia.
+NIH_ENTRY_LABELS = {
+    "atelectasis": {"Atelectasis"},
+    "effusion": {"Effusion"},
+    "opacity": {"Infiltration", "Pneumonia"},
+    "nodule_mass": {"Mass", "Nodule"},
+    "pneumothorax": {"Pneumothorax"},
+    "cardiomegaly": {"Cardiomegaly"},
+}
 
 # Google's all-findings test_labels.csv. Their documentation describes the file (image ID, a
 # normal/abnormal column, one column per NIH finding and "Other") but does not list the headers or
@@ -43,13 +55,19 @@ GOOGLE_POSITIVE = {"YES", "TRUE", "1", "1.0"}
 
 # NIH's age field has typos in the hundreds (e.g. 412); a student would notice a 412-year-old.
 MAX_AGE = 110
+# BBox_List_2017.csv coordinates are in the released 1024x1024 PNGs, not the original scans
+# (Data_Entry's OriginalImage[Width/Height], ~2000-3000 px). CONFIRM on the real CSV that every
+# box has x + w <= 1024 and y + h <= 1024 before the first run.
+NIH_PNG_SIZE = 1024
 # A box that reaches this far past the image midline on its minor side has no honest left or right.
 MIDLINE_TOLERANCE = 0.10
 
 
-def side_zone(x: float, y: float, w: float, h: float, width: int = 1024, height: int = 1024) -> tuple[str | None, str | None]:
-    """(side, zone) for a box in image pixels. Side is the patient's, by radiographic convention:
-    the patient's right sits on the viewer's left. A box straddling the midline gives (None, None)."""
+def side_zone(x: float, y: float, w: float, h: float) -> tuple[str | None, str | None]:
+    """(side, zone) for a box in the released PNG's pixels (NIH_PNG_SIZE square). Side is the
+    patient's, by radiographic convention: the patient's right sits on the viewer's left. A box
+    straddling the midline gives (None, None)."""
+    width = height = NIH_PNG_SIZE
     midline = width / 2
     left_extent = midline - x
     right_extent = x + w - midline
@@ -68,21 +86,21 @@ def _entries(entry_csv: Path) -> dict[str, dict]:
         for row in csv.DictReader(f):
             try:
                 age = int(row["Patient Age"])
-                width = int(row["OriginalImage[Width"])
-                height = int(row["Height]"])
             except (KeyError, ValueError):
                 continue
             sex = {"M": "male", "F": "female"}.get(row.get("Patient Gender", ""))
             view = row.get("View Position", "")
             if sex is None or view not in ("PA", "AP") or not 0 <= age <= MAX_AGE:
                 continue
-            entries[row["Image Index"]] = {"age": age, "sex": sex, "view": view, "width": width, "height": height}
+            labels = set(row.get("Finding Labels", "").split("|")) - {"", "No Finding"}
+            entries[row["Image Index"]] = {"age": age, "sex": sex, "view": view, "labels": labels}
     return entries
 
 
 def nih_box_candidates(bbox_csv: Path, entry_csv: Path) -> list[dict]:
     """Candidates from NIH's radiologist boxes. An image whose boxes disagree (different findings, sides
-    or zones) is dropped rather than guessed at."""
+    or zones), or whose NLP labels name anything outside the boxed finding, is dropped rather than
+    guessed at."""
     entries = _entries(Path(entry_csv))
     labels: dict[str, set[tuple]] = {}
     with open(bbox_csv, newline="") as f:
@@ -96,8 +114,7 @@ def nih_box_candidates(bbox_csv: Path, entry_csv: Path) -> list[dict]:
             if finding in NIH_DIFFUSE:
                 label = (finding, None, None)
             else:
-                meta = entries[row[0]]
-                side, zone = side_zone(*(float(v) for v in row[2:6]), width=meta["width"], height=meta["height"])
+                side, zone = side_zone(*(float(v) for v in row[2:6]))
                 if side is None:
                     label = None
                 else:
@@ -114,6 +131,8 @@ def nih_box_candidates(bbox_csv: Path, entry_csv: Path) -> list[dict]:
             continue
         finding, side, zone = next(iter(found))
         meta = entries[image]
+        if not meta["labels"] <= NIH_ENTRY_LABELS[finding]:
+            continue
         result.append({"source_image": image, "finding": finding, "side": side, "zone": zone,
                        "view": meta["view"], "age": meta["age"], "sex": meta["sex"], "label_source": "nih_bbox"})
     return sorted(result, key=lambda c: c["source_image"])

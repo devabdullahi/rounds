@@ -30,7 +30,7 @@ Deno.test("links are signed afresh on every call", async () => {
   assertEquals(first.get("cxr")!.url === second.get("cxr")!.url, false);
 });
 
-Deno.test("signObject posts to the scans bucket with the service key and joins the reply path", async () => {
+Deno.test("signObject posts to the scans bucket with the service key (bearer and apikey) and joins the reply path", async () => {
   let call: { url: string; init: RequestInit } | undefined;
   const fake = ((url: string, init: RequestInit) => {
     call = { url, init };
@@ -41,6 +41,7 @@ Deno.test("signObject posts to the scans bucket with the service key and joins t
   assertEquals(call!.url, "https://p.supabase.co/storage/v1/object/sign/scans/o.jpg");
   assertEquals(JSON.parse(call!.init.body as string), { expiresIn: 3600 });
   assertEquals((call!.init.headers as Record<string, string>).Authorization, "Bearer KEY");
+  assertEquals((call!.init.headers as Record<string, string>).apikey, "KEY");
 });
 
 Deno.test("signObject rejects on a failed reply", async () => {

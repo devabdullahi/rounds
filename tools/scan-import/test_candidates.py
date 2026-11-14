@@ -36,9 +36,9 @@ class SideZoneTests(unittest.TestCase):
     def test_small_overlap_with_the_midline_keeps_its_side(self):
         self.assertEqual(side_zone(450, 400, 100, 100), ("right", "middle"))
 
-    def test_uses_the_real_image_size(self):
-        self.assertEqual(side_zone(100, 100, 100, 100, width=2048, height=2048), ("right", "upper"))
-        self.assertEqual(side_zone(1500, 1900, 100, 100, width=2048, height=2048), ("left", "lower"))
+    def test_judges_boxes_in_the_released_png_size(self):
+        self.assertEqual(candidates.NIH_PNG_SIZE, 1024)
+        self.assertEqual(side_zone(700, 800, 80, 80), ("left", "lower"))
 
 
 class NihBoxTests(unittest.TestCase):
@@ -53,6 +53,26 @@ class NihBoxTests(unittest.TestCase):
         self.assertEqual(rows, [{
             "source_image": "a.png", "finding": "opacity", "side": "right", "zone": "upper",
             "view": "PA", "age": 58, "sex": "male", "label_source": "nih_bbox"}])
+
+    def test_ignores_the_original_image_size(self):
+        # Boxes are in 1024x1024 PNG space; judged against a 2500x2048 original this box would read
+        # as the patient's right, upper zone.
+        rows = self.build("b.png,Effusion,700,800,80,80,,,\n",
+                          "b.png,Effusion,0,1,60,F,PA,2500,2048,0.14,0.14\n")
+        self.assertEqual((rows[0]["side"], rows[0]["zone"]), ("left", "lower"))
+
+    def test_other_nlp_labels_disqualify_a_boxed_image(self):
+        rows = self.build("k.png,Effusion,100,500,80,80,,,\n", "k.png,Effusion|Mass,0,6,50,M,PA,1024,1024,0.1,0.1\n")
+        self.assertEqual(rows, [])
+
+    def test_infiltration_and_pneumonia_labels_fit_a_boxed_opacity(self):
+        rows = self.build("i.png,Infiltrate,100,100,80,80,,,\n",
+                          "i.png,Infiltration|Pneumonia,0,6,50,M,PA,1024,1024,0.1,0.1\n")
+        self.assertEqual([(r["finding"], r["side"]) for r in rows], [("opacity", "right")])
+
+    def test_nlp_labels_never_qualify_an_image_without_a_box(self):
+        rows = self.build("", "n.png,Effusion,0,6,50,M,PA,1024,1024,0.1,0.1\n")
+        self.assertEqual(rows, [])
 
     def test_cardiomegaly_has_no_side_or_zone(self):
         rows = self.build("c.png,Cardiomegaly,300,500,400,300,,,\n", "c.png,Cardiomegaly,0,2,40,F,AP,1024,1024,0.14,0.14\n")

@@ -3,27 +3,53 @@
 // of expert-labeled images (_shared/scans.ts holds the matching rules). A scan only adds a picture:
 // when nothing fits, or the library can't be read, the case keeps its text-only study.
 import type { CasePlan, PlannedTest } from "../_shared/casegen.ts";
-import { chooseScan, isChestXray, type ScanAsset, scanFinding, type ScanWant, sideHint } from "../_shared/scans.ts";
+import {
+  chooseScan,
+  isChestXray,
+  isPositiveFinding,
+  preferredView,
+  type ScanAsset,
+  scanFinding,
+  type ScanWant,
+  sideHint,
+  ZONED_FINDINGS,
+  zoneHint,
+} from "../_shared/scans.ts";
 import { scanCandidates, seenScans } from "./stores.ts";
-
-/** Profile findings that say what's absent ("No pneumothorax", "Normal early on") describe no
- *  picture; only positive ones choose the image. */
-const NEGATIVE_FINDING = /^\s*(no|normal|without|absent)\b/i;
 
 /** Findings that cover both lungs or the whole heart: the image has no side, so the case asks for none. */
 const SIDELESS = new Set(["normal", "edema", "emphysema", "cardiomegaly"]);
 
-/** The plan's chest X-ray and the image it calls for, or null when it has no chest X-ray or its
- *  findings aren't a class the library covers. */
+/** Library images of lateral findings show one side; a case whose film is bilateral gets none. */
+const BILATERAL = /\bbilateral\b|\bboth\b/i;
+
+/** Exam findings about the chest. Only these can say which lung is involved: "right heart strain"
+ *  or "right upper quadrant tenderness" name a side, but not the side of the film. */
+const CHEST_EXAM = /chest|lung|breath|pleur|thora|crackle|wheez|percussion|costophrenic|\bbases?\b/i;
+
+/** Symptoms that place the problem in the chest wall or pleura (pleuritic pain on one side). */
+const CHEST_SYMPTOM = /chest|pleuritic|\bribs?\b/i;
+
+/** The plan's chest X-ray and the image it calls for, or null when it has no chest X-ray, its
+ *  findings aren't one class the library covers, or a lateral finding is on both sides. */
 export function scanWant(plan: CasePlan): { test: PlannedTest; want: ScanWant } | null {
   const test = plan.tests.find((t) => t.kind === "study" && isChestXray(t.name));
   if (!test) return null;
-  const positive = (test.findings ?? []).filter((f) => !NEGATIVE_FINDING.test(f));
-  const finding = scanFinding(positive);
+  const findings = test.findings ?? [];
+  const finding = scanFinding(findings);
   if (!finding) return null;
-  const exam = plan.exam.filter((f) => f.present).map((f) => f.finding);
-  const side = SIDELESS.has(finding) ? null : sideHint([...positive, ...exam]);
-  return { test, want: { finding, side, age: plan.age, sex: plan.sex === "F" ? "female" : "male" } };
+  const positive = findings.filter(isPositiveFinding);
+  const lateral = !SIDELESS.has(finding);
+  if (lateral && positive.some((f) => BILATERAL.test(f))) return null;
+  const exam = plan.exam.filter((f) => f.present && CHEST_EXAM.test(`${f.region} ${f.finding}`)).map((f) => f.finding);
+  const symptoms = plan.symptomsPresent.filter((s) => CHEST_SYMPTOM.test(s));
+  const texts = [...positive, ...exam, ...symptoms];
+  const side = lateral ? sideHint(texts) : null;
+  const zone = ZONED_FINDINGS.has(finding) ? zoneHint(texts) : null;
+  return {
+    test,
+    want: { finding, side, zone, view: preferredView(test.name), age: plan.age, sex: plan.sex === "F" ? "female" : "male" },
+  };
 }
 
 /**
@@ -60,7 +86,8 @@ export async function attachScan(plan: CasePlan, userId: string, banned: string[
     if (!candidates.length) return plan;
     return applyScan(plan, chooseScan(candidates, wanted.want, await seenScans(userId), rng), banned);
   } catch (error) {
-    console.error("generate-case: scan lookup failed", (error as Error).message.slice(0, 200));
+    const message = error instanceof Error ? error.message : String(error);
+    console.error("generate-case: scan lookup failed", message.slice(0, 200));
     return plan;
   }
 }

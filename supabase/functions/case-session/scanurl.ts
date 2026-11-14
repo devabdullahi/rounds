@@ -44,7 +44,7 @@ export async function signObject(
 ): Promise<string> {
   const res = await fetcher(`${supabaseUrl}/storage/v1/object/sign/scans/${objectName}`, {
     method: "POST",
-    headers: { Authorization: `Bearer ${serviceKey}`, "Content-Type": "application/json" },
+    headers: { Authorization: `Bearer ${serviceKey}`, apikey: serviceKey, "Content-Type": "application/json" },
     body: JSON.stringify({ expiresIn: SCAN_URL_SECONDS }),
   });
   if (!res.ok) throw new Error(`sign failed: ${res.status}`);

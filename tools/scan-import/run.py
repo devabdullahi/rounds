@@ -26,9 +26,10 @@ from upload import upload_all
 
 ROOT = Path(__file__).resolve().parents[2] / "knowledge-base" / "licensed" / "scans"
 IMAGE_URL = "https://storage.googleapis.com/gcs-public-data--healthcare-nih-chest-xray/png/"
-# Library size: enough variety per finding and side that a case rarely repeats an image.
+# Library size caps: enough variety per finding and side that a case rarely repeats an image.
 MAX_PER_BUCKET = 30
-MIN_NORMALS = 60
+# Normals have no side, so their one bucket gets a larger cap.
+MAX_NORMALS = 60
 
 
 def log(message: str) -> None:
@@ -73,7 +74,7 @@ def build(root: Path, limit: int | None) -> list[dict]:
     tried = 0
     for c in pool:
         bucket = (c["finding"], c["side"])
-        if kept[bucket] >= (MIN_NORMALS if c["finding"] == "normal" else MAX_PER_BUCKET):
+        if kept[bucket] >= (MAX_NORMALS if c["finding"] == "normal" else MAX_PER_BUCKET):
             continue
         if limit is not None and tried >= limit:
             break

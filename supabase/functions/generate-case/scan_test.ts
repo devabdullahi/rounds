@@ -1,18 +1,20 @@
 import { assertEquals, assertStrictEquals } from "jsr:@std/assert@1";
 import { applyScan, scanWant } from "./scan.ts";
 import type { CasePlan, PlannedTest } from "../_shared/casegen.ts";
-import type { ScanAsset } from "../_shared/scans.ts";
+import type { ScanAsset, ScanWant } from "../_shared/scans.ts";
 
 const xray = (findings: string[]): PlannedTest => ({
   id: "cxr", name: "Chest X-ray", kind: "study", findings, role: "indicated",
 });
 
-const plan = (tests: PlannedTest[], exam: string[] = []): CasePlan => ({
+/** Exam findings as text (a lung finding) or [region, text]. */
+const plan = (tests: PlannedTest[], exam: (string | [string, string])[] = [], symptoms: string[] = []): CasePlan => ({
   slug: "pneumonia", condition: "Pneumonia", severity: "moderate", severityText: "Moderate", age: 54, sex: "F",
-  pregnant: false, symptomsPresent: [], symptomsAbsent: [],
-  exam: exam.map((finding, i) => ({
-    id: `e${i}`, region: "chest", finding, frequency: "common", significance: "", importance: "key", present: true,
-  })),
+  pregnant: false, symptomsPresent: symptoms, symptomsAbsent: [],
+  exam: exam.map((e, i) => {
+    const [region, finding] = typeof e === "string" ? ["lung", e] : e;
+    return { id: `e${i}`, region, finding, frequency: "common", significance: "", importance: "key", present: true };
+  }),
   vitals: {} as CasePlan["vitals"], tests, psychology: false, dermatology: false,
 });
 
@@ -64,18 +66,73 @@ Deno.test("a diffuse image leaves the affected side alone", () => {
   assertEquals(after.exam[0].finding, "Crackles on the affected side");
 });
 
-Deno.test("what a case wants: positive findings only, its side, and the asset's sex words", () => {
-  const p = plan([xray(["Normal chest x-ray early in the illness", "Right lower lobe consolidation"])]);
-  assertEquals(scanWant(p), { test: p.tests[0], want: { finding: "opacity", side: "right", age: 54, sex: "female" } });
+const want = (extra: Partial<ScanWant> = {}): ScanWant => ({
+  finding: "opacity", side: null, zone: null, view: "PA", age: 54, sex: "female", ...extra,
 });
 
-Deno.test("only negative findings want a normal film; diffuse findings want no side", () => {
-  const normal = plan([xray(["No pneumothorax", "Without effusion"])]);
-  assertEquals(scanWant(normal)?.want, { finding: "normal", side: null, age: 54, sex: "female" });
+Deno.test("what a case wants: positive findings only, its side and zone, and the asset's sex words", () => {
+  const p = plan([xray(["Normal chest x-ray early in the illness", "Right lower lobe consolidation"])]);
+  assertEquals(scanWant(p), { test: p.tests[0], want: want({ side: "right", zone: "lower" }) });
+});
+
+Deno.test("an empty film wants a normal image; all-negated or hedged findings want none", () => {
+  assertEquals(scanWant(plan([xray([])]))?.want, want({ finding: "normal" }));
+  assertEquals(scanWant(plan([xray(["No pneumothorax", "Without effusion"])])), null);
+  assertEquals(scanWant(plan([xray(["Usually normal; no infiltrate, pneumothorax, or mediastinal widening"])])), null);
+  assertEquals(scanWant(plan([xray(["Clear lungs without focal consolidation, infiltrate, or pleural effusion"])])), null);
+  assertEquals(scanWant(plan([xray(["Usually normal; may show cardiomegaly or pulmonary vascular congestion"])])), null);
+  assertEquals(scanWant(plan([xray(["Usually normal; no vascular congestion"])])), null);
+});
+
+Deno.test("lateral findings take a side; diffuse findings want no side", () => {
   const effusion = plan([xray(["Small right pleural effusion"])]);
-  assertEquals(scanWant({ ...effusion, sex: "M" })?.want, { finding: "effusion", side: "right", age: 54, sex: "male" });
+  assertEquals(scanWant({ ...effusion, sex: "M" })?.want, want({ finding: "effusion", side: "right", sex: "male" }));
   const diffuse = plan([xray(["Kerley B lines"])], ["Crackles at the right base"]);
-  assertEquals(scanWant(diffuse)?.want, { finding: "edema", side: null, age: 54, sex: "female" });
+  assertEquals(scanWant(diffuse)?.want, want({ finding: "edema" }));
+});
+
+Deno.test("a lateral finding on both sides wants no image", () => {
+  assertEquals(scanWant(plan([xray(["Bilateral pleural effusions"])])), null);
+  assertEquals(scanWant(plan([xray(["Small bilateral pleural effusions"])])), null);
+  assertEquals(scanWant(plan([xray(["Patchy opacities in both lungs"])])), null);
+});
+
+Deno.test("findings that span more than one class want no image", () => {
+  const heartFailure = plan([xray([
+    "Cardiomegaly with increased cardiothoracic ratio",
+    "Interstitial or alveolar edema with perihilar haziness",
+    "Bilateral pleural effusions, often larger on the right",
+  ])]);
+  assertEquals(scanWant(heartFailure), null);
+  assertEquals(scanWant(plan([xray(["Focal consolidation", "Small pleural effusion"])])), null);
+});
+
+Deno.test("the zone comes from the film or the chest exam, only for zoned findings", () => {
+  const base = plan([xray(["Focal consolidation"])], ["Crackles at the left base"]);
+  assertEquals(scanWant(base)?.want, want({ side: "left", zone: "lower" }));
+  const middle = plan([xray(["Patchy atelectasis, especially of the right middle lobe"])]);
+  assertEquals(scanWant(middle)?.want, want({ finding: "atelectasis", side: "right", zone: "middle" }));
+  const effusion = plan([xray(["Small pleural effusion"])], ["Dullness to percussion at the right base"]);
+  assertEquals(scanWant(effusion)?.want, want({ finding: "effusion", side: "right" }));
+});
+
+Deno.test("a portable or AP film prefers AP images", () => {
+  const portable = plan([{ ...xray(["Focal consolidation"]), name: "Portable chest X-ray" }]);
+  assertEquals(scanWant(portable)?.want.view, "AP");
+  assertEquals(scanWant(plan([xray(["Focal consolidation"])]))?.want.view, "PA");
+});
+
+Deno.test("only chest exam findings and chest symptoms set the side", () => {
+  const heart = plan([xray(["Focal consolidation"])], [["cardiac", "Signs of right heart strain"]]);
+  assertEquals(scanWant(heart)?.want.side, null);
+  const belly = plan([xray(["Focal consolidation"])], [["abdomen", "Right upper quadrant tenderness"]]);
+  assertEquals(scanWant(belly)?.want.side, null);
+  const lung = plan([xray(["Focal consolidation"])], ["Decreased breath sounds on the left"]);
+  assertEquals(scanWant(lung)?.want.side, "left");
+  const pleuritic = plan([xray(["Focal consolidation"])], [], ["Sharp right-sided pleuritic chest pain"]);
+  assertEquals(scanWant(pleuritic)?.want.side, "right");
+  const other = plan([xray(["Focal consolidation"])], [], ["Right knee pain"]);
+  assertEquals(scanWant(other)?.want.side, null);
 });
 
 Deno.test("no chest X-ray or no library class means no want", () => {

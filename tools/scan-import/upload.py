@@ -29,13 +29,22 @@ def require_env(name: str) -> str:
 
 def insert_sql(rows: list[dict]) -> str:
     """One INSERT for all rows. The rows travel as a single dollar-quoted JSON document, so no value
-    is spliced into SQL text."""
+    is spliced into SQL text. Rows already there (same object_name) are left alone, so a re-run after
+    a partial failure is safe."""
     document = json.dumps([{c: row[c] for c in ROW_COLUMNS} for row in rows])
     if "$rows$" in document:
         raise ValueError("row data contains the SQL quote tag")
     columns = ", ".join(ROW_COLUMNS)
     return (f"insert into private.scan_assets ({columns})\n"
-            f"select {columns} from jsonb_populate_recordset(null::private.scan_assets, $rows${document}$rows$::jsonb);\n")
+            f"select {columns} from jsonb_populate_recordset(null::private.scan_assets, $rows${document}$rows$::jsonb)\n"
+            f"on conflict (object_name) do nothing;\n")
+
+
+def curl_config(service_key: str) -> str:
+    """Headers for a Storage upload. `x-upsert` overwrites an object that is already there, so a
+    re-run after a partial failure does not stop on the first uploaded file."""
+    return "\n".join([f'header = "Authorization: Bearer {service_key}"', f'header = "apikey: {service_key}"',
+                      'header = "content-type: image/jpeg"', 'header = "x-upsert: true"'])
 
 
 def upload_object(base_url: str, service_key: str, object_name: str, jpeg: bytes) -> None:
@@ -44,8 +53,7 @@ def upload_object(base_url: str, service_key: str, object_name: str, jpeg: bytes
     with tempfile.NamedTemporaryFile(suffix=".jpg", delete=False) as f:
         f.write(jpeg)
         path = f.name
-    config = "\n".join([f'header = "Authorization: Bearer {service_key}"', f'header = "apikey: {service_key}"',
-                        'header = "content-type: image/jpeg"'])
+    config = curl_config(service_key)
     try:
         result = subprocess.run(
             ["curl", "-sS", "--fail-with-body", "-K", "-", "-X", "POST", "--data-binary", f"@{path}",
