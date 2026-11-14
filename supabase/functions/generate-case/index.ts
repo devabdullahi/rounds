@@ -122,7 +122,7 @@ async function writeNow(userId: string, focus: Focus): Promise<CaseRows> {
     if (!picked) throw new HttpError(503, usedUp ? USED_UP_MESSAGE : "Couldn't prepare a patient just now. Tap to try again.");
     const profiled = Date.now();
     try {
-      const rows = await composeCase(picked, focus, deadline, history);
+      const rows = await composeCase(userId, picked, focus, deadline, history);
       logGenerated(focus, picked.profile.slug, picked.source, true, true, started, profiled);
       return rows;
     } catch (error) {
@@ -156,7 +156,7 @@ async function writeAhead(userId: string, focus: Focus, token: string, studentWa
       if (!picked) throw new Error(usedUp ? "every condition tried was used up for this student" : "no suitable condition could be prepared");
       const profiled = Date.now();
       try {
-        const rows = await composeCase(picked, focus, deadline, history, BACKGROUND_WRITER_MS);
+        const rows = await composeCase(userId, picked, focus, deadline, history, BACKGROUND_WRITER_MS);
         await finishGeneration(userId, focus, token, rows);
         logGenerated(focus, picked.profile.slug, picked.source, studentWaiting, false, started, profiled);
         return;

@@ -5,6 +5,7 @@ import { sql } from "../_shared/db.ts";
 import { HttpError } from "../_shared/http.ts";
 import { FREE_CASES_USED } from "../_shared/plan.ts";
 import type { CasePlan, Profile } from "../_shared/casegen.ts";
+import type { ScanAsset, ScanFinding } from "../_shared/scans.ts";
 import { type Focus, settingTags } from "../_shared/focus.ts";
 import { MAX_AGE_GAP, type PatientBackground, pickBackground } from "./background.ts";
 import { bedCode } from "./bedcode.ts";
@@ -96,6 +97,22 @@ export async function findBackground(plan: CasePlan, diagnosisNames: string[]): 
     console.error("generate-case: background lookup failed", error);
     return null;
   }
+}
+
+/** Active library images showing this finding. Callers handle errors: a scan only adds a picture. */
+export async function scanCandidates(finding: ScanFinding): Promise<ScanAsset[]> {
+  return await sql<ScanAsset[]>`
+    select id, object_name, finding, side, zone, view, age, sex, report
+    from private.scan_assets where active and finding = ${finding}`;
+}
+
+/** Library images this student already has in a case, so the next one shows a new picture. */
+export async function seenScans(userId: string): Promise<Set<string>> {
+  const rows = await sql<{ id: string | null }[]>`
+    select distinct t ->> 'scan_asset_id' as id
+    from private.case_content cc join public.cases c on c.id = cc.case_id, jsonb_array_elements(cc.tests) t
+    where c.created_by = ${userId} and t ? 'scan_asset_id'`;
+  return new Set(rows.flatMap((r) => (r.id ? [r.id] : [])));
 }
 
 /** Takes the student's case written ahead for this focus, if there is a fresh one. */

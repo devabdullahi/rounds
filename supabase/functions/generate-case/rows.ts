@@ -52,9 +52,12 @@ export function buildRows(
     return {
       id: t.id, name: t.name, detail: m.detail, cost: m.cost, turnaround_s: m.turnaround_s,
       delays_care_min: m.delays_care_min ?? 0,
-      result: t.kind === "lab" ? t.result : study!.result,
-      abnormal: t.kind === "lab" ? t.abnormal : studyAbnormal(t, study!),
+      // A study with a real image keeps that image's report word for word, whatever the writer said.
+      result: t.kind === "lab" ? t.result : t.scan_report ?? study!.result,
+      abnormal: t.kind === "lab" ? t.abnormal : t.scan_report ? t.abnormal === true : studyAbnormal(t, study!),
       role: t.role, why: t.why ?? null,
+      // Private: which library image to show. Never on the test menu or in a client response.
+      scan_asset_id: t.scan_asset_id ?? null,
     };
   });
 

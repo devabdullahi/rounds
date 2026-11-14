@@ -13,7 +13,8 @@ import { conceptOf } from "../_shared/terms.ts";
 import { patientName } from "../_shared/names.ts";
 import { backgroundForWriter, type PatientBackground } from "./background.ts";
 import { applyFixes, assemble, checkWriting, fixPrompt, leakSpots, neutralIds, stillFlagged, type Voice, voicePrompt, withFactsFrom, type Writing } from "./writer.ts";
-import { buildSkeleton } from "./skeleton.ts";
+import { buildSkeleton, diagnosisWords } from "./skeleton.ts";
+import { attachScan } from "./scan.ts";
 import { templateVoice } from "./template.ts";
 import { fingerprint, PLAN_TRIES } from "./fingerprint.ts";
 import { buildRows } from "./rows.ts";
@@ -72,7 +73,7 @@ function freshName(plan: CasePlan, history: History): string {
 
 /** Plans the patient in code, has the model write them and checks the writing. */
 export async function composeCase(
-  picked: Picked, focus: Focus, deadline: number, history: History,
+  userId: string, picked: Picked, focus: Focus, deadline: number, history: History,
   writerMs = INLINE_WRITER_MS,
 ): Promise<CaseRows> {
   const { clerkships, organ_systems: systems, synonyms } = picked;
@@ -83,7 +84,10 @@ export async function composeCase(
   // A heart case: filed under cardiology or the cardiovascular system, or made for either focus.
   const cardiac = clerkships.includes("cardiology") || systems.includes("cardiovascular") ||
     (focus.kind === "rotation" && focus.value === "cardiology") || (focus.kind === "system" && focus.value === "cardiovascular");
-  const { plan, print } = await freshPlan(profile, { psychology, dermatology, cardiac }, history);
+  const fresh = await freshPlan(profile, { psychology, dermatology, cardiac }, history);
+  const print = fresh.print;
+  // The image comes before the writing, so the report and the exam's sides match the picture.
+  const plan = await attachScan(fresh.plan, userId, diagnosisWords(profile), Math.random);
   const terms = leakTerms(profile);
   const background = await findBackground(plan, [profile.triage.name, ...acceptedNames(profile.teaching.accepted_names, synonyms)]);
   const skeleton = buildSkeleton(profile, plan, background, Math.random);
