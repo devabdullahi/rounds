@@ -70,6 +70,7 @@ import { speak, speakStream, STREAM_SAMPLE_RATE, transcribe } from "../_shared/s
 import { requireAccess } from "../_shared/plan.ts";
 import { refundQuota, withQuota } from "../_shared/quota.ts";
 import { naturalDenial, naturalRefusal, talksAboutScript } from "./refusal.ts";
+import { scansOn, signObject, signScans, type ScanReply } from "./scanurl.ts";
 import { ReplyGate } from "./stream.ts";
 import { type Conduct, conductReply, isProfane, MAX_INAPPROPRIATE, parseConduct, strikes } from "../_shared/conduct.ts";
 
@@ -77,7 +78,7 @@ declare const EdgeRuntime: { waitUntil(promise: Promise<unknown>): void };
 
 type Fact = { id: string; label: string; reply: string; importance: string; screens_for: string | null };
 type Maneuver = { id: string; title: string; finding: string };
-type Test = { id: string; name: string; cost: number; turnaround_s: number; delays_care_min: number; result: string; abnormal: boolean };
+type Test = { id: string; name: string; cost: number; turnaround_s: number; delays_care_min: number; result: string; abnormal: boolean; scan_asset_id?: string | null };
 /** `flag` marks a live-voice reply that broke the patient's rules after it was already heard. */
 type Turn = { role: "student" | "patient"; text: string; facts?: string[]; conduct?: Conduct; flag?: "diagnosis" | "invented"; live?: boolean };
 type Attempt = {
@@ -183,7 +184,9 @@ async function resume(userId: string, input: Record<string, unknown>) {
     order by started_at desc limit 1`;
   if (!open) return { attempt: null };
   const { attempt, content } = await loadAttempt(userId, open.id);
-  return { attempt: resumeState(attempt, content, hiddenTests(content.rubric, attempt.exam_mode)) };
+  const ordered = new Set(attempt.ordered_tests.map((o) => o.id));
+  const scans = await scansFor(content.tests.filter((t) => ordered.has(t.id)));
+  return { attempt: resumeState(attempt, content, hiddenTests(content.rubric, attempt.exam_mode), scans) };
 }
 
 /** The stored persona as the patient prompts take it. */
@@ -368,7 +371,27 @@ async function order(userId: string, input: Record<string, unknown>) {
     await sql`update public.attempts set ordered_tests = ordered_tests || ${sql.json([{ id, at: new Date().toISOString() }])}
               where id = ${attempt.id} and submitted_at is null and not ordered_tests @> ${sql.json([{ id }])}`;
   }
-  return { result: test.result, abnormal: test.abnormal, turnaround_s: test.turnaround_s };
+  const scan = (await scansFor([test])).get(id);
+  return { result: test.result, abnormal: test.abnormal, turnaround_s: test.turnaround_s, ...(scan ? { scan } : {}) };
+}
+
+/** Signed image links for the tests that have a real scan, when the REAL_SCANS switch is on. Any
+ *  failure (database or storage) means no images, never a failed order or resume: the text result
+ *  is the case, the picture is a bonus. */
+async function scansFor(tests: Test[]): Promise<Map<string, ScanReply>> {
+  if (!scansOn((k) => Deno.env.get(k)) || !tests.some((t) => t.scan_asset_id)) return new Map();
+  try {
+    const url = Deno.env.get("SUPABASE_URL")!;
+    const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    return await signScans(tests, async (assetId) => {
+      const [row] = await sql<{ object_name: string }[]>`select object_name from private.scan_assets where id = ${assetId}`;
+      if (!row) throw new Error("scan asset missing");
+      return await signObject(url, key, row.object_name);
+    });
+  } catch (error) {
+    console.error("scan signing failed", error instanceof Error ? error.message : String(error));
+    return new Map();
+  }
 }
 
 // MARK: - voice

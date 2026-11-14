@@ -160,7 +160,17 @@ struct LiveCaseService: CaseService {
 
     func order(attempt: String, test: String) async throws -> TestResult {
         let r: OrderReply = try await invoke("case-session", ["action": "order", "attempt_id": attempt, "test_id": test])
-        return TestResult(text: r.result, isAbnormal: r.abnormal)
+        return r.testResult
+    }
+
+    /// Maps an `order` reply to a `TestResult`. Exposed so tests can check the wire mapping without a network call.
+    static func decodeOrderReply(from data: Data) throws -> TestResult {
+        try JSONDecoder().decode(OrderReply.self, from: data).testResult
+    }
+
+    /// Maps a `resume` reply to the attempt it holds, if any. Exposed for the same reason as `decodePastTries`.
+    static func decodeResumedAttempt(from data: Data) throws -> ResumedAttempt? {
+        try JSONDecoder().decode(ResumeReply.self, from: data).attempt?.resumed
     }
 
     func transcribe(attempt: String, audio: Data) async throws -> String {
@@ -454,7 +464,7 @@ private struct ResumeReply: Decodable {
         struct Turn: Decodable { let role: String; let text: String }
         struct Coverage: Decodable { let got: Int; let total: Int }
         struct Examined: Decodable { let id: String; let finding: String }
-        struct Ordered: Decodable { let id: String; let at: String; let result: String; let abnormal: Bool }
+        struct Ordered: Decodable { let id: String; let at: String; let result: String; let abnormal: Bool; let scan: ScanWire? }
         let attempt_id: String
         let exam_mode: Bool
         let time_limit_minutes: Int?
@@ -478,14 +488,37 @@ private struct ResumeReply: Decodable {
                 revealedIDs: Set(revealed_ids), revealedLabels: (revealed ?? []).map(\.label),
                 coverage: (coverage.got, coverage.total),
                 examined: examined.map { ($0.id, $0.finding) },
-                ordered: ordered.map { .init(id: $0.id, at: date($0.at), result: TestResult(text: $0.result, isAbnormal: $0.abnormal)) },
+                ordered: ordered.map { .init(id: $0.id, at: date($0.at), result: TestResult(text: $0.result, isAbnormal: $0.abnormal, scan: $0.scan?.image)) },
                 hiddenTests: Set(hidden_tests))
         }
     }
     let attempt: Attempt?
 }
 private struct ExamineReply: Decodable { let finding: String }
-private struct OrderReply: Decodable { let result: String; let abnormal: Bool }
+private struct OrderReply: Decodable {
+    let result: String
+    let abnormal: Bool
+    let scan: ScanWire?
+
+    var testResult: TestResult { TestResult(text: result, isAbnormal: abnormal, scan: scan?.image) }
+}
+/// The image attached to an X-ray result. URLs arrive as strings so one bad link drops the image, not the whole result.
+private struct ScanWire: Decodable {
+    let url: String
+    let credit: String
+    let citation: String
+    let source_url: String
+
+    var image: ScanImage? {
+        guard let url = Self.secureURL(url), let source = Self.secureURL(source_url) else { return nil }
+        return ScanImage(url: url, credit: credit, citation: citation, sourceURL: source)
+    }
+
+    private static func secureURL(_ s: String) -> URL? {
+        guard let u = URL(string: s), u.scheme == "https", u.host != nil else { return nil }
+        return u
+    }
+}
 private struct TranscribeReply: Decodable { let text: String }
 private struct SpeakReply: Decodable { let audio: String }
 

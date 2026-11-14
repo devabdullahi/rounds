@@ -41,7 +41,8 @@ export type Voice = {
 
 /** The voice step's input: the skeleton's facts and maneuvers to word, and the person to write. */
 export function voicePrompt(profile: Profile, plan: CasePlan, skeleton: Skeleton, background?: PatientBackground | null, name?: string): string {
-  const studies = plan.tests.filter((t) => t.kind === "study");
+  // A study with a real image already has its report (scan.ts), which must match the picture.
+  const studies = plan.tests.filter((t) => t.kind === "study" && !t.scan_report);
   const who = `${plan.age}-year-old ${plan.age < 18 ? (plan.sex === "F" ? "girl" : "boy") : plan.sex === "F" ? "woman" : "man"}${plan.pregnant ? ", pregnant" : ""}`;
   return `${plan.psychology ? PSYCHOLOGY_FRAME : ""}${plan.dermatology ? DERMATOLOGY_FRAME : ""}Hidden diagnosis (never reveal): ${plan.condition}
 Severity: ${plan.severity}: ${plan.severityText}
@@ -108,7 +109,7 @@ export function checkWriting(w: Writing, plan: CasePlan, terms: string[]): strin
   }
   if (maneuverIds.size < 3) problems.push("need at least 3 maneuvers");
   const studies = new Set((w.studies ?? []).map((s) => s.test_id));
-  for (const t of plan.tests.filter((t) => t.kind === "study")) if (!studies.has(t.id)) problems.push(`missing report for ${t.id}`);
+  for (const t of plan.tests.filter((t) => t.kind === "study" && !t.scan_report)) if (!studies.has(t.id)) problems.push(`missing report for ${t.id}`);
   const meta = new Map((w.test_meta ?? []).map((m) => [m.test_id, m]));
   for (const t of plan.tests) {
     const m = meta.get(t.id);

@@ -36,3 +36,11 @@ Deno.test("ids the case no longer has are dropped, not sent as blanks", () => {
   assertEquals(s.examined.map((e) => e.id), ["x1"]);
   assertEquals(s.ordered, []);
 });
+
+Deno.test("a scan comes back with its ordered test, and the key is absent otherwise", () => {
+  const scan = { url: "https://x/u", credit: "c", citation: "z", source_url: "s" };
+  const withScan = resumeState(attempt, content, [], new Map([["cbc", scan]]));
+  assertEquals(withScan.ordered[0], { id: "cbc", at: "2026-10-20T10:05:00Z", result: "WBC 14.2", abnormal: true, scan });
+  const without = resumeState(attempt, content, []);
+  assertEquals("scan" in without.ordered[0], false);
+});

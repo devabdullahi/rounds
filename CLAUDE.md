@@ -117,7 +117,8 @@ Prefer springs. Drive sequences with stage state from one `.task`, and continuou
 
 - Cases are original writing about fictional patients. Never copy question-bank items (UWorld, NBME, USMLE, AMBOSS), textbook wording, or "NCLEX"/"USMLE" branding. Facts are fine; wording must be ours.
 - US terms and units: CBC/BMP, mg/dL, °F, ACC/AHA guidelines, acetaminophen. Tag every case with one `Clerkship` and one `OrganSystem`; students browse by these topics, never by training year.
-- Never store or request real patient data.
+- Never store or request real patient data (no PHI, no user-uploaded images). One exception: publicly released, de-identified teaching images from a source whose terms allow use in a paid app (today only NIH ChestX-ray14, see `docs/superpowers/specs/2026-11-13-real-scans-design.md`). They are shown as teaching examples, never as the fictional patient's own scan, and always credited.
+- Never say NIH or the NIH Clinical Center endorses Palpo; say the app shows images from their public dataset.
 
 ## Licensed data
 

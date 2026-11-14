@@ -153,6 +153,8 @@ export function templateVoice(profile: Profile, plan: CasePlan, skeleton: Skelet
   }));
 
   const studies = plan.tests.filter((t) => t.kind === "study").map((t) => {
+    // A real image's report is used word for word (scan.ts).
+    if (t.scan_report) return { test_id: t.id, result: t.scan_report, abnormal: t.abnormal === true };
     const found = studyReport(t.findings ?? [], banned);
     if (!found.length && t.positive) return { test_id: t.id, result: positiveReport(t.name), abnormal: true };
     return { test_id: t.id, result: found.length ? found.join(" ") : normalReport(t.name, plan.psychology), abnormal: found.length > 0 };

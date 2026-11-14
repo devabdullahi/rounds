@@ -68,6 +68,10 @@ export type PlannedTest = {
   positive?: boolean;
   role: "indicated" | "conditional" | "not_indicated" | "neutral";
   why?: string;
+  /** The real chest X-ray shown with this study (a private.scan_assets id), set by generate-case/scan.ts. */
+  scan_asset_id?: string;
+  /** That image's report, used word for word as the result so the text matches the picture. */
+  scan_report?: string;
 };
 
 export type CasePlan = {
