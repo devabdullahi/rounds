@@ -75,6 +75,18 @@ for (
     [["Normal lungs in uncomplicated influenza", "Patchy or lobar consolidation suggesting secondary bacterial pneumonia"], "opacity"],
     [["Normal chest radiograph", "Pulmonary nodules or masses suggesting metastasis"], "nodule_mass"],
     [["No acute cardiopulmonary process", "Small left pleural effusion"], "effusion"],
+    [["Normal chest x-ray (for example in pulmonary embolism, neuromuscular weakness or early ARDS)", "Focal consolidation suggesting pneumonia"], "opacity"],
+    [["Usually normal heart size and clear lungs", "Kerley B lines"], "edema"],
+    [["Normal lung fields", "Kerley B lines"], "edema"],
+    [["Normal or no acute cardiopulmonary process", "Small pleural effusion"], "effusion"],
+    [["Normal heart size and clear lung fields", "Kerley B lines"], "edema"],
+    [["Normal chest x-ray despite fever", "Kerley B lines"], "edema"],
+    [["Normal-appearing lungs in mild disease", "Kerley B lines"], "edema"],
+    // An opening like "Normal lungs" followed by another finding is not whole-film, even when the
+    // library has no class for that finding.
+    [["Normal lungs with widened mediastinum", "Right lower lobe opacity"], null],
+    [["No acute findings, widened mediastinum", "Right lower lobe opacity"], null],
+    [["Normal heart size; widened mediastinum", "Small left pleural effusion"], null],
   ] as [string[], ScanFinding | null][]
 ) {
   Deno.test(`scanFinding: ${JSON.stringify(findings)}`, () => assertEquals(scanFinding(findings), want));

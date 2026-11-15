@@ -85,16 +85,23 @@ function findingClasses(text: string): ScanFinding[] {
   return FINDING_KEYWORDS.filter(([, pattern]) => pattern.test(text)).map(([finding]) => finding);
 }
 
-// A whole-film statement ("Usually normal", "Normal lung fields", "Normal lungs in uncomplicated
-// influenza", "No acute findings"): it opens like one and names no finding class, so it says nothing
-// about one finding and can sit beside a positive one without hiding anything. "No pneumothorax"
-// and "Usually normal; may show cardiomegaly" are not: the first names a class after a plain "no",
-// the second names one at all.
+// A whole-film statement ("Usually normal", "Normal lung fields", "No acute findings") says nothing
+// about one finding, so it can sit beside a positive one without hiding anything. It must be only
+// that: the opening phrase, then nothing or a context clause ("in uncomplicated influenza", "early in
+// the illness", a parenthesis). Anything listed after it ("with widened mediastinum", ", widened
+// mediastinum") is a finding of its own, so the text is not whole-film even when the library has no
+// class for it. "No pneumothorax" never opens like one.
 const WHOLE_FILM_OPENING =
-  /^\s*(?:(?:usually|typically|often|may be)\s+)?(?:normal|clear lungs?|clear lung fields|unremarkable|no acute)\b/i;
+  /^\s*(?:(?:usually|typically|often|may be)\s+)?(?:(?:normal or\s+)?no acute(?:\s+cardiopulmonary)?(?:\s+(?:findings?|abnormalit(?:y|ies)|process|disease))?|normal(?:-appearing)?(?:\s+(?:chest(?:\s+(?:x-?ray|radiograph|film))?|lung fields|lungs?|cardiomediastinal silhouette|study|film|radiograph|x-?ray|heart size(?:\s+and clear (?:lung fields|lungs?))?))?|clear lungs?(?:\s+fields)?|clear lung fields|unremarkable(?:\s+(?:chest|study|film))?)\b/i;
+// A context clause: when or in whom the film is normal, not what else it shows.
+const CONTEXT_CLAUSE = /^(?:in|early|for|during|when|at|until|before|after|despite)\b/i;
 
 function isWholeFilm(text: string): boolean {
-  return WHOLE_FILM_OPENING.test(text) && findingClasses(text).length === 0;
+  const opening = WHOLE_FILM_OPENING.exec(text);
+  if (!opening || findingClasses(text).length > 0) return false;
+  const rest = text.slice(opening[0].length).replace(/\([^)]*\)/g, " ").replace(/[\s.!]+$/, "").trim();
+  if (rest === "") return true;
+  return CONTEXT_CLAUSE.test(rest) && !/[,;]|\bwith\b|\band\b(?! in\b)/i.test(rest);
 }
 
 /**
