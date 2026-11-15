@@ -82,7 +82,25 @@ final class CaseSession {
             + a.ordered.compactMap { o in clinical.tests.first { $0.id == o.id }.map { TimelineEvent(at: o.at, kind: .test, text: "Ordered \($0.name)") } }
     }
 
+    /// Image links are signed and expire, so a reading room left open (or reopened later) asks the
+    /// server for the attempt again and keeps the new link. nil when the server has no image.
+    func freshScan(for testID: String) async -> ScanImage? {
+        guard let attempt = try? await service.resume(bed: clinical.bed),
+              let fresh = attempt.ordered.first(where: { $0.id == testID })?.result else { return nil }
+        results[testID] = fresh
+        return fresh.scan
+    }
+
     #if DEBUG
+    /// `-screen reading-room-card`: the first test resulted with a sample film, so its card shows
+    /// "Go to the radiologist" without a live image link.
+    func debugSeedScan() {
+        guard let test = clinical.tests.first, let scan = ScanImage.debugSample() else { return }
+        tests[test.id] = .ready
+        testOrder = [test.id]
+        results[test.id] = TestResult(text: "Airspace opacity in the right lower zone.", isAbnormal: true, scan: scan)
+    }
+
     /// `-screen interview-nudge`: a few questions already asked, so the step bar and the chat point at the exam.
     func debugSeedHistory() {
         messages = [("What brings you in today?", "My walking has gotten strange."), ("When did it start?", "About six months ago."),

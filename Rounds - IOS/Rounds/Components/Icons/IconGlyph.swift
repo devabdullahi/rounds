@@ -72,6 +72,7 @@ enum IconGlyph: String, CaseIterable {
     case flask = "flask"
     case arrowRight = "arrow-right"
     case shieldCheck = "shield-check"
+    case arrowsIn = "arrows-in"
 
     /// Asset catalog name ("Icons" folder provides the namespace).
     var assetName: String { "Icons/\(rawValue)" }

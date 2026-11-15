@@ -27,6 +27,8 @@ private enum RESULT {
 /// Ordering tests and reading their results, inside the interview's workup tab.
 struct TestsPanel: View {
     let session: CaseSession
+    /// The test whose X-ray is open in the reading room.
+    @State private var readingRoom: Investigation?
 
     private var c: ClinicalCase { session.clinical }
     private var resulted: [Investigation] { session.testOrder.compactMap { id in c.tests.first { $0.id == id } } }
@@ -61,6 +63,16 @@ struct TestsPanel: View {
         }
         .scrollIndicators(.hidden)
         .task { await session.loadMenu() }
+        .fullScreenCover(item: $readingRoom) { t in
+            if let result = session.results[t.id] {
+                ReadingRoomView(testName: t.name, result: result) { await session.freshScan(for: t.id) }
+            }
+        }
+        #if DEBUG
+        .task {
+            if DebugLaunch.screen == "reading-room-card" { session.debugSeedScan() }
+        }
+        #endif
     }
 
     /// How many of the menu's tests have been taken.
@@ -96,6 +108,16 @@ struct TestsPanel: View {
                 .lineSpacing(3)
                 .foregroundStyle(ready ? (result?.isAbnormal == true ? Theme.warnText : Theme.text) : Theme.muted)
                 .contentTransition(.opacity)
+            if ready, result?.scan != nil {
+                Button { readingRoom = t } label: {
+                    HStack(spacing: 8) {
+                        AppIcon(.images, size: 16)
+                        Text("Go to the radiologist")
+                    }
+                }
+                .buttonStyle(QuietButtonStyle(height: 44, fontSize: 15))
+                .transition(.opacity)
+            }
         }
         .card()
         .animation(RESULT.spring, value: ready)

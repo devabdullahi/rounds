@@ -7,11 +7,22 @@ import SwiftUI
 /// onboarding-confidence, onboarding-reality,
 /// onboarding-account, onboarding-heard, onboarding-heart, onboarding-promised (every `onboarding…` name opens onboarding),
 /// settings-about, settings-free (no plan, on free cases), settings-plans (its plans sheet), cards-add-locked (Generate locked without a plan), home-plans (plans after a refused patient), paywall, paywall-plans, purchased, reminders, paywall-unavailable, paywall-delete,
-/// focus-system, focus-sheet, home, patients, patients-new, patients-seen, patients-open, previous-tries, previous-try, badge-unlock-many, badge-unlock-all, paywall-taken, plan-checking, profile, brief, interview, interview-nudge, interview-ideas, examine, workup, diagnosis, debrief, debrief-graded, debrief-deeper (graded, last card, every section open), debrief-tour (graded, steps through every card), diagnosis-suggest.
+/// focus-system, focus-sheet, home, patients, patients-new, patients-seen, patients-open, previous-tries, previous-try, badge-unlock-many, badge-unlock-all, paywall-taken, plan-checking, profile, brief, interview, interview-nudge, interview-ideas, examine, workup, diagnosis, debrief, debrief-graded, debrief-deeper (graded, last card, every section open), debrief-tour (graded, steps through every card), diagnosis-suggest,
+/// reading-room (radiologist screen with a drawn sample film, no sign-in needed), reading-room-failed (its image didn't load),
+/// reading-room-card (the X-ray result card in the newest patient's workup).
 enum DebugLaunch {
     static var screen: String? { UserDefaults.standard.string(forKey: "screen") }
     /// `-screen voice-glass` shows `VoiceGlassDebugView` in place of the app.
     static var isVoiceGlass: Bool { screen == "voice-glass" }
+    /// `-screen reading-room` / `reading-room-failed`: the radiologist screen on its own, over the app.
+    static var readingRoomSample: TestResult? {
+        guard screen == "reading-room" || screen == "reading-room-failed", let scan = ScanImage.debugSample() else { return nil }
+        // `.invalid` never resolves, so the load fails fast like an expired link.
+        let broken = URL(string: "https://film.invalid/expired.png") ?? scan.url
+        let shown = screen == "reading-room" ? scan
+            : ScanImage(url: broken, credit: scan.credit, citation: scan.citation, sourceURL: scan.sourceURL)
+        return TestResult(text: "Airspace opacity in the right lower zone.", isAbnormal: true, scan: shown)
+    }
 
     /// `-hr 130` previews the Home monitor at another heart rate.
     static var heartRate: Int? {
@@ -114,7 +125,7 @@ enum DebugLaunch {
             // Case screens open the newest generated patient (admit one first from Home).
             let path: [CaseStep]
             switch screen {
-            case "interview", "interview-nudge", "interview-ideas", "interview-exam", "interview-findings", "voice-listen", "voice-patient", "voice-live", "examine", "workup": path = [.interview]
+            case "interview", "interview-nudge", "interview-ideas", "interview-exam", "interview-findings", "voice-listen", "voice-patient", "voice-live", "examine", "workup", "reading-room-card": path = [.interview]
             case "diagnosis", "diagnosis-suggest", "diagnosis-ddx", "diagnosis-ddx-add": path = [.interview, .diagnosis]
             case "handoff": path = [.interview, .diagnosis, .handoff]
             case "debrief", "debrief-graded", "debrief-deeper", "debrief-tour": path = [.interview, .diagnosis, .handoff, .debrief]
