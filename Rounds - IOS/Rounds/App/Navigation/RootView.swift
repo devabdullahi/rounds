@@ -113,6 +113,11 @@ struct RootView: View {
         .background(Theme.bg.ignoresSafeArea())
         #if DEBUG
         .overlay { if DebugLaunch.isVoiceGlass { VoiceGlassDebugView() } }
+        .overlay {
+            if let sample = DebugLaunch.readingRoomSample {
+                ReadingRoomView(testName: "Chest X-ray", result: sample) { nil }
+            }
+        }
         // `-screen purchased`: the welcome after buying, over whatever the launch shows.
         .overlay { if DebugLaunch.screen == "purchased" { welcomeAboard } }
         #endif

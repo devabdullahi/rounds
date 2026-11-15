@@ -123,7 +123,7 @@ struct InterviewView: View {
             tab = .ask
             #if DEBUG
             if DebugLaunch.screen == "examine" { tab = .examine }
-            if DebugLaunch.screen == "workup" { tab = .tests }
+            if DebugLaunch.screen == "workup" || DebugLaunch.screen == "reading-room-card" { tab = .tests }
             if DebugLaunch.screen == "interview-nudge" { session.debugSeedHistory() }
             if DebugLaunch.screen == "interview-ideas" { showingIdeas = true }
             if DebugLaunch.screen == "interview-exam" { session.examMode = true }
