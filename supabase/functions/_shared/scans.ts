@@ -85,20 +85,34 @@ function findingClasses(text: string): ScanFinding[] {
   return FINDING_KEYWORDS.filter(([, pattern]) => pattern.test(text)).map(([finding]) => finding);
 }
 
+// A whole-film statement ("Usually normal", "Normal lung fields", "Normal lungs in uncomplicated
+// influenza", "No acute findings"): it opens like one and names no finding class, so it says nothing
+// about one finding and can sit beside a positive one without hiding anything. "No pneumothorax"
+// and "Usually normal; may show cardiomegaly" are not: the first names a class after a plain "no",
+// the second names one at all.
+const WHOLE_FILM_OPENING =
+  /^\s*(?:(?:usually|typically|often|may be)\s+)?(?:normal|clear lungs?|clear lung fields|unremarkable|no acute)\b/i;
+
+function isWholeFilm(text: string): boolean {
+  return WHOLE_FILM_OPENING.test(text) && findingClasses(text).length === 0;
+}
+
 /**
  * Maps a case's sampled imaging findings to one library class; null means no real image fits.
- * Only an empty list is a normal film: findings that are all negated or hedged say too little to
- * pick a picture. The positive findings must all name the same single class: a study that also
- * shows something else (a second class, or a finding the library has no class for, like a widened
- * mediastinum) would lose that finding when the image's report replaces the text, so it stays
- * text-only.
+ * Only an empty list is a normal film: findings that are all whole-film statements say too little
+ * to pick a picture. Any other negated or hedged finding makes the study text-only, even beside a
+ * positive one: "pleural line with absent lung markings" is a pneumothorax worded with a negation,
+ * and dropping it would let another finding pick an image that lacks the defining sign. The
+ * positive findings must all name the same single class: a study that also shows something else
+ * (a second class, or a finding the library has no class for, like a widened mediastinum) would
+ * lose that finding when the image's report replaces the text, so it stays text-only.
  */
 export function scanFinding(findings: string[]): ScanFinding | null {
   if (findings.length === 0) return "normal";
-  const positive = findings.filter(isPositiveFinding);
-  if (positive.length === 0) return null;
+  const specific = findings.filter((f) => !isWholeFilm(f));
+  if (specific.length === 0 || !specific.every(isPositiveFinding)) return null;
   const classes = new Set<ScanFinding>();
-  for (const text of positive) {
+  for (const text of specific) {
     const named = findingClasses(text);
     if (named.length === 0) return null;
     named.forEach((c) => classes.add(c));

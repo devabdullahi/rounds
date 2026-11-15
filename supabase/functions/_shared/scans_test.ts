@@ -60,6 +60,21 @@ for (
     [["Peribronchial cuffing or thickened bronchial walls", "Pneumothorax"], null],
     [["Air bronchograms extending beyond the perihilar region", "Pneumothorax or pneumomediastinum (air leak from positive pressure ventilation)"], null],
     [["Cardiomegaly or pulmonary edema suggesting alcohol-related cardiomyopathy"], null],
+    // A positive worded with a negation keeps the study text-only rather than letting another
+    // finding pick a film without the defining sign (respiratory failure, collapsed lung).
+    [["Pleural line with absent lung markings"], null],
+    [["Focal consolidation suggesting pneumonia", "Pneumothorax with visible pleural line and absent lung markings"], null],
+    [["Focal consolidation suggesting pneumonia", "Diffuse bilateral opacities without cardiomegaly suggesting ARDS"], null],
+    [["No pneumothorax", "Right lower lobe opacity"], null],
+    [["Normal or hyperinflated lungs with flattened diaphragms", "Focal consolidation suggesting pneumonia"], null],
+    // Whole-film statements alone stay text-only (never a normal film from wording alone)…
+    [["Usually normal"], null],
+    [["Clear lungs"], null],
+    [["No acute findings"], null],
+    // …but beside a positive finding they hide nothing, so the positive picks the film.
+    [["Normal lungs in uncomplicated influenza", "Patchy or lobar consolidation suggesting secondary bacterial pneumonia"], "opacity"],
+    [["Normal chest radiograph", "Pulmonary nodules or masses suggesting metastasis"], "nodule_mass"],
+    [["No acute cardiopulmonary process", "Small left pleural effusion"], "effusion"],
   ] as [string[], ScanFinding | null][]
 ) {
   Deno.test(`scanFinding: ${JSON.stringify(findings)}`, () => assertEquals(scanFinding(findings), want));
