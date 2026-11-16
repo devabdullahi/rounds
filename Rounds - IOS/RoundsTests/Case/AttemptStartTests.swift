@@ -38,6 +38,19 @@ struct AttemptStartTests {
         #expect(await service.examinedOn == ["A1", "A1"])
     }
 
+    /// The mode can change on the door note until the first action creates the attempt, then it's fixed.
+    @Test func theModeLocksOnceTheCaseStarts() async throws {
+        let session = CaseSession(clinical: ClinicalCase(bed: "X1", name: "Test Patient", age: 40, sex: "F", setting: "", quote: "",
+                                                         demeanor: "", complaint: "", vitals: [], task: "", minutes: 10,
+                                                         suggestedQuestions: [], exam: [], tests: [], clerkship: nil, system: nil,
+                                                         keyHistoryTotal: 0),
+                                  service: SlowStartCases())
+        #expect(!session.modeLocked)
+        session.examine("abdomen")
+        try await Task.sleep(for: .milliseconds(400))
+        #expect(session.modeLocked)
+    }
+
     /// A case the student left comes back as they left it, and new work goes on the same attempt.
     @Test func aLeftCaseContinuesOnItsAttempt() async throws {
         let tests = [Investigation(id: "cbc", name: "CBC", detail: "", cost: 10)]

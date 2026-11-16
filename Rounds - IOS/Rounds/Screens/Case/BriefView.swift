@@ -6,6 +6,8 @@ struct BriefView: View {
     @Bindable var session: CaseSession
     /// Last chosen limit, remembered across cases. 0 = untimed.
     @AppStorage(TimeLimit.storageKey) private var savedLimit = TimeLimit.defaultMinutes
+    /// The mode picked here is also the next case's starting mode (the same setting as Settings').
+    @AppStorage(Preferences.examByDefaultKey) private var examByDefault = Preferences.examByDefaultDefault
     @State private var tries: PastTries?
 
     /// Graded attempts at this patient so far; a revisit offers them for comparison.
@@ -80,8 +82,15 @@ struct BriefView: View {
                     VStack(alignment: .leading, spacing: 16) {
                         VStack(alignment: .leading, spacing: 8) {
                             FieldLabel("Mode")
-                            Segmented(options: [(false, "Practice"), (true, "Exam mode")], selection: $session.examMode)
-                            Text(session.examMode ? "No hints. Findings stay hidden until the debrief." : "Findings are flagged as you uncover them.")
+                            Segmented(options: [(false, "Practice"), (true, "Exam mode")], selection: Binding(
+                                get: { session.examMode },
+                                set: { session.examMode = $0; examByDefault = $0 }
+                            ))
+                            .accessibilityLabel("Mode")
+                            .disabled(session.modeLocked)
+                            .opacity(session.modeLocked ? 0.5 : 1)
+                            Text(session.modeLocked ? "Locked: this case started in \(session.examMode ? "Exam mode" : "Practice")."
+                                 : session.examMode ? "No hints. Findings stay hidden until the debrief." : "Findings are flagged as you uncover them.")
                                 .font(.system(size: 13))
                                 .foregroundStyle(Theme.muted)
                                 .contentTransition(.opacity)
