@@ -85,20 +85,55 @@ function findingClasses(text: string): ScanFinding[] {
   return FINDING_KEYWORDS.filter(([, pattern]) => pattern.test(text)).map(([finding]) => finding);
 }
 
+// A whole-film statement ("Usually normal", "Normal lung fields", "No acute findings") says nothing
+// about one finding, so it can sit beside a positive one without hiding anything. It must be only
+// that: the opening phrase, then nothing or a context clause ("in uncomplicated influenza", "early in
+// the illness", a parenthesis). Anything listed after it ("with widened mediastinum", ", widened
+// mediastinum") is a finding of its own, so the text is not whole-film even when the library has no
+// class for it. "No pneumothorax" never opens like one.
+const WHOLE_FILM_OPENING =
+  /^\s*(?:(?:usually|typically|often|may be)\s+)?(?:(?:normal or\s+)?no acute(?:\s+cardiopulmonary)?(?:\s+(?:findings?|abnormalit(?:y|ies)|process|disease))?|normal(?:-appearing)?(?:\s+(?:chest(?:\s+(?:x-?ray|radiograph|film))?|lung fields|lungs?|cardiomediastinal silhouette|study|film|radiograph|x-?ray|heart size(?:\s+and clear (?:lung fields|lungs?))?))?|clear lungs?(?:\s+fields)?|clear lung fields|unremarkable(?:\s+(?:chest|study|film))?)\b/i;
+// A context clause: when or in whom the film is normal, not what else it shows.
+const CONTEXT_CLAUSE = /^(?:in|early|for|during|when|at|until|before|after|despite)\b/i;
+
+/** A clause that only says when or in whom: opens with a context word and lists nothing. A
+ *  parenthesis counts too, after an optional "for example". */
+function isContext(clause: string, insideParens: boolean): boolean {
+  const c = clause.replace(insideParens ? /^\s*(?:for example|e\.g\.,?)\s+/i : /^/, "").trim();
+  if (!CONTEXT_CLAUSE.test(c) || /\bwith\b/i.test(c)) return false;
+  // Outside brackets a comma or "and" starts a list ("…, widened mediastinum"); inside, the list is
+  // of contexts ("in pulmonary embolism, neuromuscular weakness or early ARDS").
+  return insideParens || !/[,;]|\band\b(?! in\b)/i.test(c);
+}
+
+function isWholeFilm(text: string): boolean {
+  const opening = WHOLE_FILM_OPENING.exec(text);
+  if (!opening || findingClasses(text).length > 0) return false;
+  let rest = text.slice(opening[0].length);
+  for (const [whole, inside] of rest.matchAll(/\(([^)]*)\)/g)) {
+    if (!isContext(inside, true)) return false;
+    rest = rest.replace(whole, " ");
+  }
+  rest = rest.replace(/[\s.!]+$/, "").trim();
+  return rest === "" || isContext(rest, false);
+}
+
 /**
  * Maps a case's sampled imaging findings to one library class; null means no real image fits.
- * Only an empty list is a normal film: findings that are all negated or hedged say too little to
- * pick a picture. The positive findings must all name the same single class: a study that also
- * shows something else (a second class, or a finding the library has no class for, like a widened
- * mediastinum) would lose that finding when the image's report replaces the text, so it stays
- * text-only.
+ * Only an empty list is a normal film: findings that are all whole-film statements say too little
+ * to pick a picture. Any other negated or hedged finding makes the study text-only, even beside a
+ * positive one: "pleural line with absent lung markings" is a pneumothorax worded with a negation,
+ * and dropping it would let another finding pick an image that lacks the defining sign. The
+ * positive findings must all name the same single class: a study that also shows something else
+ * (a second class, or a finding the library has no class for, like a widened mediastinum) would
+ * lose that finding when the image's report replaces the text, so it stays text-only.
  */
 export function scanFinding(findings: string[]): ScanFinding | null {
   if (findings.length === 0) return "normal";
-  const positive = findings.filter(isPositiveFinding);
-  if (positive.length === 0) return null;
+  const specific = findings.filter((f) => !isWholeFilm(f));
+  if (specific.length === 0 || !specific.every(isPositiveFinding)) return null;
   const classes = new Set<ScanFinding>();
-  for (const text of positive) {
+  for (const text of specific) {
     const named = findingClasses(text);
     if (named.length === 0) return null;
     named.forEach((c) => classes.add(c));

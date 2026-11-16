@@ -60,6 +60,36 @@ for (
     [["Peribronchial cuffing or thickened bronchial walls", "Pneumothorax"], null],
     [["Air bronchograms extending beyond the perihilar region", "Pneumothorax or pneumomediastinum (air leak from positive pressure ventilation)"], null],
     [["Cardiomegaly or pulmonary edema suggesting alcohol-related cardiomyopathy"], null],
+    // A positive worded with a negation keeps the study text-only rather than letting another
+    // finding pick a film without the defining sign (respiratory failure, collapsed lung).
+    [["Pleural line with absent lung markings"], null],
+    [["Focal consolidation suggesting pneumonia", "Pneumothorax with visible pleural line and absent lung markings"], null],
+    [["Focal consolidation suggesting pneumonia", "Diffuse bilateral opacities without cardiomegaly suggesting ARDS"], null],
+    [["No pneumothorax", "Right lower lobe opacity"], null],
+    [["Normal or hyperinflated lungs with flattened diaphragms", "Focal consolidation suggesting pneumonia"], null],
+    // Whole-film statements alone stay text-only (never a normal film from wording alone)…
+    [["Usually normal"], null],
+    [["Clear lungs"], null],
+    [["No acute findings"], null],
+    // …but beside a positive finding they hide nothing, so the positive picks the film.
+    [["Normal lungs in uncomplicated influenza", "Patchy or lobar consolidation suggesting secondary bacterial pneumonia"], "opacity"],
+    [["Normal chest radiograph", "Pulmonary nodules or masses suggesting metastasis"], "nodule_mass"],
+    [["No acute cardiopulmonary process", "Small left pleural effusion"], "effusion"],
+    [["Normal chest x-ray (for example in pulmonary embolism, neuromuscular weakness or early ARDS)", "Focal consolidation suggesting pneumonia"], "opacity"],
+    [["Usually normal heart size and clear lungs", "Kerley B lines"], "edema"],
+    [["Normal lung fields", "Kerley B lines"], "edema"],
+    [["Normal or no acute cardiopulmonary process", "Small pleural effusion"], "effusion"],
+    [["Normal heart size and clear lung fields", "Kerley B lines"], "edema"],
+    [["Normal chest x-ray despite fever", "Kerley B lines"], "edema"],
+    [["Normal-appearing lungs in mild disease", "Kerley B lines"], "edema"],
+    // An opening like "Normal lungs" followed by another finding is not whole-film, even when the
+    // library has no class for that finding.
+    [["Normal lungs with widened mediastinum", "Right lower lobe opacity"], null],
+    [["No acute findings, widened mediastinum", "Right lower lobe opacity"], null],
+    [["Normal heart size; widened mediastinum", "Small left pleural effusion"], null],
+    [["Normal lungs (with widened mediastinum)", "Right lower lobe opacity"], null],
+    [["Normal chest x-ray (widened mediastinum)", "Right lower lobe opacity"], null],
+    [["Normal chest x-ray despite symptoms (early disease)", "Kerley B lines"], "edema"],
   ] as [string[], ScanFinding | null][]
 ) {
   Deno.test(`scanFinding: ${JSON.stringify(findings)}`, () => assertEquals(scanFinding(findings), want));
