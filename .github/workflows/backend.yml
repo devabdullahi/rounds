@@ -1,0 +1,50 @@
+# Edge functions (type-check + Deno tests) and the database (every migration and seed applied to a
+# fresh Postgres, then the SQL access tests in supabase/tests). Runs on PRs that touch supabase/.
+name: Backend
+
+on:
+  pull_request:
+    paths: ["supabase/**", ".github/workflows/backend.yml"]
+  push:
+    branches: [main]
+    paths: ["supabase/**", ".github/workflows/backend.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: backend-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  functions:
+    name: Edge functions
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Type-check and test
+        run: supabase/functions/check.sh
+
+  database:
+    name: Migrations and SQL tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.95.4
+      # Starts only Postgres; on first start it applies every migration and the seed files.
+      - name: Apply migrations and seeds
+        run: supabase db start
+      - name: SQL access tests
+        run: |
+          for test in supabase/tests/*.sql; do
+            echo "== $test"
+            psql "postgresql://postgres:postgres@127.0.0.1:55322/postgres" -v ON_ERROR_STOP=1 -q -f "$test"
+          done
