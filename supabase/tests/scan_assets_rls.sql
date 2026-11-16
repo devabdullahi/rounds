@@ -42,12 +42,11 @@ do $$ begin
 end $$;
 reset role;
 
--- service_role (edge functions) can read the table.
-set role service_role;
+-- Edge functions read the table over SUPABASE_DB_URL (the postgres role), not as service_role,
+-- which has no usage on schema private.
 do $$ begin
   perform 1 from private.scan_assets;
 end $$;
-reset role;
 
 delete from storage.objects where bucket_id = 'scans' and name = 'rls-test.jpg';
 select 'scan_assets_rls: PASS' as result;

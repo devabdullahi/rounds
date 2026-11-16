@@ -22,19 +22,30 @@ jobs:
     name: Build and test
     runs-on: macos-26
     timeout-minutes: 45
+    env:
+      MIN_XCODE: 27
     defaults:
       run:
         working-directory: Rounds - IOS
     steps:
       - uses: actions/checkout@v5
 
+      # The app ships with Xcode 27; Xcode 26's compiler rejects code that 27 accepts, so an older
+      # runner would fail for reasons that never reach users. Skip (with a warning) until GitHub's
+      # image has Xcode 27 or newer.
       - name: Use the newest Xcode on the runner
         run: |
           xcode=$(ls -d /Applications/Xcode_*.app | grep -v -i beta | sort -V | tail -1)
           sudo xcode-select -s "$xcode"
           xcodebuild -version
+          major=$(xcodebuild -version | awk 'NR==1 {split($2, v, "."); print v[1]}')
+          if [ "$major" -lt "$MIN_XCODE" ]; then
+            echo "::warning::Runner's newest Xcode is $major; the app needs $MIN_XCODE+. iOS build and tests skipped."
+            echo "SKIP_IOS=1" >> "$GITHUB_ENV"
+          fi
 
       - name: Pick an iPhone simulator
+        if: env.SKIP_IOS != '1'
         run: |
           id=$(xcrun simctl list devices available -j \
             | jq -r '[.devices | to_entries[] | select(.key | contains("iOS")) | .value[]
@@ -43,12 +54,14 @@ jobs:
           echo "SIMULATOR_ID=$id" >> "$GITHUB_ENV"
 
       - name: Cache Swift packages
+        if: env.SKIP_IOS != '1'
         uses: actions/cache@v4
         with:
           path: Rounds - IOS/build/SourcePackages
           key: spm-${{ hashFiles('Rounds - IOS/Rounds.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
 
       - name: Build and test
+        if: env.SKIP_IOS != '1'
         run: |
           xcodebuild test \
             -project Rounds.xcodeproj -scheme Rounds \
