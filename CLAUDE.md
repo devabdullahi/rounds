@@ -12,7 +12,7 @@ User-facing name is **Palpo** (since 2026-11-01). Code, targets, bundle id `com.
 | `tools/` | Python pipeline: `kb-import/` (MedlinePlus, MeSH, UMLS/SNOMED import), `kb-generate/` (AI triage, tagging, profiles, loaders) |
 | `website/` | Marketing site (static HTML/CSS/JS, app recordings in `media/`) |
 
-Current phase: **live backend, pre-launch.** The app talks to the cloud Supabase project (`mpyxaefnytviwnjuqtbu`, linked; `supabase/cloud.env` holds the DB password, git-ignored): accounts (email code, Apple, Google), cases and patient chat, grading, flashcards, profile photos. Edge functions are deployed with `supabase functions deploy <name>`, migrations with `supabase db push --linked`. Reference lookups (`Services/Reference/`) are live too (NIH Clinical Tables, RxNorm, MedlinePlus); mocks exist only for tests, previews and `#if DEBUG` screens, never in what students run. Changes to cloud data, deploys and pushes affect the real project: say what you'll change first. Don't create new cloud projects or add keys unless asked.
+Current phase: **live backend, pre-launch.** The app talks to the cloud Supabase project (`mpyxaefnytviwnjuqtbu`, linked; `supabase/cloud.env` holds the DB password, git-ignored): accounts (email code, Apple, Google), cases and patient chat, grading, flashcards, profile photos. Edge functions are deployed with `supabase functions deploy <name>`, migrations with `supabase db push --linked`. Reference lookups (`Services/Reference/`) are live too (NIH Clinical Tables, RxNorm, MedlinePlus); mocks exist only for tests, previews and `#if DEBUG` screens, never in what students run. Changes to cloud data, deploys and pushes affect the real project: say what you'll change first. A second project, **palpo-staging** (`cwceoydoxoejdbmvakya`, `supabase/staging.env` git-ignored), serves TestFlight testers: same schema, functions and sign-in, its own data, `SANDBOX_PURCHASES=all`, a $5/day LLM cap and no background profile jobs. Ship backend changes to staging first, then production: merging to `main` deploys `supabase/` changes to staging automatically (GitHub Actions `deploy-staging.yml`); `supabase/deploy-staging.sh` does it by hand from a branch. CI (`backend.yml`, `ios.yml`) runs on every PR; `supabase/functions/check.sh` runs the same function checks locally. iOS: the **Rounds Staging** scheme (Staging configuration, `Config/Staging.xcconfig` + git-ignored `Config/Secrets.staging.xcconfig`) builds "Palpo Test" against staging; App Store builds use Release (production). Don't create new cloud projects or add keys unless asked.
 
 ## Commands
 
@@ -27,6 +27,7 @@ xcrun simctl launch booted com.abdul.rounds -screen <name>   # names listed in A
 supabase db reset                        # local DB from migrations + seed (needs Docker; optional)
 supabase db push --linked -p "$SUPABASE_DB_PASSWORD"   # apply new migrations to the cloud
 supabase functions deploy <name> --project-ref mpyxaefnytviwnjuqtbu
+supabase/deploy-staging.sh [name…]     # same migrations + functions to palpo-staging (testers) first
 
 cd tools/kb-generate                    # condition catalog (see its README for the full order)
 python3 generate.py triage              # triage new conditions

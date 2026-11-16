@@ -24,9 +24,15 @@ packages:
   WebRTC:
     url: https://github.com/stasel/WebRTC
     exactVersion: 154.0.0
+# Staging is Release pointed at the palpo-staging backend, for TestFlight testers.
+configs:
+  Debug: debug
+  Release: release
+  Staging: release
 configFiles:
   Debug: Config/Base.xcconfig
   Release: Config/Base.xcconfig
+  Staging: Config/Staging.xcconfig
 settings:
   base:
     SWIFT_VERSION: "5.0"
@@ -59,6 +65,7 @@ targets:
         ITSAppUsesNonExemptEncryption: false
         SupabaseURL: $(SUPABASE_URL)
         SupabaseAnonKey: $(SUPABASE_ANON_KEY)
+        RoundsEnvironment: $(ROUNDS_ENVIRONMENT)
         GIDClientID: $(GOOGLE_IOS_CLIENT_ID)
         SuperwallAPIKey: $(SUPERWALL_API_KEY)
         # Google Sign-In returns to the reversed client ID; "rounds" receives email confirmation links.
@@ -97,6 +104,9 @@ targets:
         # The local development server prompt is for Debug builds only.
         Debug:
           INFOPLIST_KEY_NSLocalNetworkUsageDescription: "Palpo connects to the development server on your Mac."
+        # Testers see which app is which on the home screen.
+        Staging:
+          INFOPLIST_KEY_CFBundleDisplayName: Palpo Test
   RoundsTests:
     type: bundle.unit-test
     platform: iOS
@@ -107,3 +117,17 @@ targets:
       base:
         GENERATE_INFOPLIST_FILE: YES
         PRODUCT_BUNDLE_IDENTIFIER: com.abdul.rounds.tests
+schemes:
+  # TestFlight builds for testers: run and archive with the Staging configuration (palpo-staging).
+  Rounds Staging:
+    build:
+      targets:
+        Rounds: all
+    run:
+      config: Staging
+    profile:
+      config: Staging
+    analyze:
+      config: Staging
+    archive:
+      config: Staging
