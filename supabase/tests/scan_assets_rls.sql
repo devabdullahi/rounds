@@ -2,6 +2,9 @@
 -- Run against a reset local database: psql "$LOCAL_DB_URL" -v ON_ERROR_STOP=1 -f supabase/tests/scan_assets_rls.sql
 -- Fails (non-zero exit) if the app roles can read the table or the bucket's objects.
 
+-- One transaction, rolled back at the end: Storage blocks deleting from its tables directly.
+begin;
+
 insert into storage.objects (bucket_id, name) values ('scans', 'rls-test.jpg');
 
 do $$ begin
@@ -48,5 +51,5 @@ do $$ begin
   perform 1 from private.scan_assets;
 end $$;
 
-delete from storage.objects where bucket_id = 'scans' and name = 'rls-test.jpg';
 select 'scan_assets_rls: PASS' as result;
+rollback;
