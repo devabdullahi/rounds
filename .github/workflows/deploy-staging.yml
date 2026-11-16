@@ -1,0 +1,52 @@
+# When supabase/ changes on main, applies new migrations and deploys every edge function to the
+# palpo-staging project (TestFlight testers). Production is never touched here; it stays a manual
+# `supabase db push --linked` / `supabase functions deploy` after testing on staging.
+#
+# Needs two secrets on the "staging" environment (Settings → Environments → staging):
+#   SUPABASE_ACCESS_TOKEN   a personal access token (supabase.com → Account → Access Tokens)
+#   STAGING_DB_PASSWORD     the palpo-staging database password (supabase/staging.env)
+name: Deploy staging
+
+on:
+  push:
+    branches: [main]
+    paths: ["supabase/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Never run two deploys at once, and never cancel one halfway through a migration.
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: false
+
+env:
+  STAGING_REF: cwceoydoxoejdbmvakya
+
+jobs:
+  deploy:
+    name: Migrations and functions → staging
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: staging
+    steps:
+      - uses: actions/checkout@v5
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Type-check and test before deploying
+        run: supabase/functions/check.sh
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.95.4
+      - name: Apply migrations
+        env:
+          STAGING_DB_PASSWORD: ${{ secrets.STAGING_DB_PASSWORD }}
+        run: |
+          supabase db push --db-url \
+            "postgresql://postgres.$STAGING_REF:$STAGING_DB_PASSWORD@aws-0-us-east-1.pooler.supabase.com:5432/postgres"
+      - name: Deploy functions
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: supabase functions deploy --project-ref "$STAGING_REF" --use-api

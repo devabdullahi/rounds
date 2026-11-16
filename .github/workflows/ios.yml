@@ -1,0 +1,59 @@
+# Builds the app and runs RoundsTests on a simulator. No secrets: Secrets.xcconfig is optional
+# (Base.xcconfig includes it with #include?), and the tests run on mocks.
+name: iOS
+
+on:
+  pull_request:
+    paths: ["Rounds - IOS/**", ".github/workflows/ios.yml"]
+  push:
+    branches: [main]
+    paths: ["Rounds - IOS/**", ".github/workflows/ios.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ios-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Build and test
+    runs-on: macos-26
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: Rounds - IOS
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Use the newest Xcode on the runner
+        run: |
+          xcode=$(ls -d /Applications/Xcode_*.app | grep -v -i beta | sort -V | tail -1)
+          sudo xcode-select -s "$xcode"
+          xcodebuild -version
+
+      - name: Pick an iPhone simulator
+        run: |
+          id=$(xcrun simctl list devices available -j \
+            | jq -r '[.devices | to_entries[] | select(.key | contains("iOS")) | .value[]
+                      | select(.name | startswith("iPhone"))] | last | .udid')
+          echo "Simulator: $id"
+          echo "SIMULATOR_ID=$id" >> "$GITHUB_ENV"
+
+      - name: Cache Swift packages
+        uses: actions/cache@v4
+        with:
+          path: Rounds - IOS/build/SourcePackages
+          key: spm-${{ hashFiles('Rounds - IOS/Rounds.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+
+      - name: Build and test
+        run: |
+          xcodebuild test \
+            -project Rounds.xcodeproj -scheme Rounds \
+            -destination "platform=iOS Simulator,id=$SIMULATOR_ID" \
+            -derivedDataPath build \
+            -clonedSourcePackagesDirPath build/SourcePackages \
+            CODE_SIGNING_ALLOWED=NO \
+            -quiet
