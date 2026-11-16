@@ -96,12 +96,26 @@ const WHOLE_FILM_OPENING =
 // A context clause: when or in whom the film is normal, not what else it shows.
 const CONTEXT_CLAUSE = /^(?:in|early|for|during|when|at|until|before|after|despite)\b/i;
 
+/** A clause that only says when or in whom: opens with a context word and lists nothing. A
+ *  parenthesis counts too, after an optional "for example". */
+function isContext(clause: string, insideParens: boolean): boolean {
+  const c = clause.replace(insideParens ? /^\s*(?:for example|e\.g\.,?)\s+/i : /^/, "").trim();
+  if (!CONTEXT_CLAUSE.test(c) || /\bwith\b/i.test(c)) return false;
+  // Outside brackets a comma or "and" starts a list ("…, widened mediastinum"); inside, the list is
+  // of contexts ("in pulmonary embolism, neuromuscular weakness or early ARDS").
+  return insideParens || !/[,;]|\band\b(?! in\b)/i.test(c);
+}
+
 function isWholeFilm(text: string): boolean {
   const opening = WHOLE_FILM_OPENING.exec(text);
   if (!opening || findingClasses(text).length > 0) return false;
-  const rest = text.slice(opening[0].length).replace(/\([^)]*\)/g, " ").replace(/[\s.!]+$/, "").trim();
-  if (rest === "") return true;
-  return CONTEXT_CLAUSE.test(rest) && !/[,;]|\bwith\b|\band\b(?! in\b)/i.test(rest);
+  let rest = text.slice(opening[0].length);
+  for (const [whole, inside] of rest.matchAll(/\(([^)]*)\)/g)) {
+    if (!isContext(inside, true)) return false;
+    rest = rest.replace(whole, " ");
+  }
+  rest = rest.replace(/[\s.!]+$/, "").trim();
+  return rest === "" || isContext(rest, false);
 }
 
 /**

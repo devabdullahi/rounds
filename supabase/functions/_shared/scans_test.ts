@@ -87,6 +87,9 @@ for (
     [["Normal lungs with widened mediastinum", "Right lower lobe opacity"], null],
     [["No acute findings, widened mediastinum", "Right lower lobe opacity"], null],
     [["Normal heart size; widened mediastinum", "Small left pleural effusion"], null],
+    [["Normal lungs (with widened mediastinum)", "Right lower lobe opacity"], null],
+    [["Normal chest x-ray (widened mediastinum)", "Right lower lobe opacity"], null],
+    [["Normal chest x-ray despite symptoms (early disease)", "Kerley B lines"], "edema"],
   ] as [string[], ScanFinding | null][]
 ) {
   Deno.test(`scanFinding: ${JSON.stringify(findings)}`, () => assertEquals(scanFinding(findings), want));
